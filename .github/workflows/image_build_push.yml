@@ -5,7 +5,7 @@ on:
 
 jobs:
   image-build-and-push:
-
+    name: Image build and push
     runs-on: ubuntu-latest
 
     env:
@@ -29,18 +29,16 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Extract image name and tag from package.json
+      - name: Extract image tag from package.json
         run: |
-          APP_NAME=$(jq -r .name package.json)
           IMAGE_TAG=$(jq -r .version package.json)
-          echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
       - name: Build and Tag Image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          docker build -t $APP_NAME:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
 
       - name: Push Image to AWS ECR
         env:

@@ -8,7 +8,7 @@ on:
 
 jobs:
   unit-tests:
-    name: Angular Build
+    name: Unit Tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
