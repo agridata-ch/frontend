@@ -25,4 +25,4 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Run unit tests
-        run: ng test --browsers ChromeHeadless --watch false
+        run: npx ng test --browsers ChromeHeadless --watch false
