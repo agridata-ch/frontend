@@ -1,12 +1,29 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from './api.service';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  imports: [
+    RouterOutlet
+  ],
+  standalone: true
 })
-export class AppComponent {
-  title = 'agridata.ch';
+export class AppComponent implements OnInit {
+  title = '';
+
+  constructor(private readonly apiService: ApiService) {}
+
+  ngOnInit(): void {
+    this.apiService.getTitle().subscribe({
+      next: (response) => {
+        this.title = response;
+      },
+      error: (err) => {
+        console.error('Fehler beim Abrufen des Titels:', err);
+      }
+    });
+  }
 }
