@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: eu-central-2
-      ECR_REPOSITORY: "backend"
+      ECR_REPOSITORY: "frontend"
     permissions:
       id-token: write
       contents: read
