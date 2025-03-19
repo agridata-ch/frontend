@@ -33,7 +33,7 @@ jobs:
         run: npx ng test --code-coverage --browsers ChromeHeadless --watch false
 
       - name: Run SonarQube Analysis
-        uses: sonarsource/sonarcloud-github-action@v5
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
