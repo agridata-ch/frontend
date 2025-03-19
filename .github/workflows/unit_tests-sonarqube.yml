@@ -39,6 +39,6 @@ jobs:
         with:
           projectBaseDir: .
           args: >
-            -Dsonar.organization=agridata-ch \
-            -Dsonar.projectKey=agridata-ch_backend \
+            -Dsonar.organization=agridata-ch
+            -Dsonar.projectKey=agridata-ch_backend
             -Dsonar.javascript.lcov.reportPaths=coverage/frontend/lcov.info
