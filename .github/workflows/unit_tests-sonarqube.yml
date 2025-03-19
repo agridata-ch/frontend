@@ -2,9 +2,9 @@ name: Unit Tests and SonarQube Analysis
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ disabled_main ]
   push:
-    branches: [ main ]
+    branches: [ disabled_main ]
 
 jobs:
   unit-tests-sonarqube:

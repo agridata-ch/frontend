@@ -2,7 +2,7 @@ name: Image build and push
 
 on:
   push:
-    branches: [ main ]
+    branches: [ disabled_main ]
 
 jobs:
   image-build-and-push:

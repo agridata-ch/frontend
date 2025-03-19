@@ -1,16 +1,6 @@
-FROM node:20 AS build
+FROM nginx:1.27.4-alpine
 
-WORKDIR /app
-
-COPY package.json package-lock.json ./
-RUN npm install
-
-COPY . .
-RUN npm run build -- --configuration=production
-
-FROM nginx:alpine
-
-COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
+COPY dist/frontend/browser /usr/share/nginx/html
 
 EXPOSE 80
 
