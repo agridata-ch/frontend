@@ -30,7 +30,7 @@ jobs:
         run: npm ci
 
       - name: Run unit tests
-        run: npx ng test -code-coverage --browsers ChromeHeadless --watch false
+        run: npx ng test --code-coverage --browsers ChromeHeadless --watch false
 
       - name: Run SonarQube Analysis
         uses: sonarsource/sonarcloud-github-action@v5
