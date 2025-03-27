@@ -60,7 +60,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::209479275792:role/agridata-application-deployment-role
+          role-to-assume: arn:aws:iam::108782064107:role/agridata-application-deployment-role
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to AWS ECR
@@ -119,7 +119,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::209479275792:role/agridata-application-deployment-role
+          role-to-assume: arn:aws:iam::108782064107:role/agridata-application-deployment-role
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Fill in the new image ID in the Amazon ECS task definition
