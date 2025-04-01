@@ -10,6 +10,7 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,6 +46,7 @@ jobs:
     needs: test
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       IMAGE: ${{ steps.push-image.outputs.image }}
     env:
@@ -106,6 +108,7 @@ jobs:
     needs: build-push
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     env:
       AWS_REGION: eu-central-2
       ECR_REPOSITORY: "frontend"
