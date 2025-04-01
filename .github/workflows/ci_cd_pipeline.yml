@@ -135,7 +135,7 @@ jobs:
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: agridata-frontend
-          cluster: agridata-frontend-cluster
+          cluster: agridata-cluster
           wait-for-service-stability: true
 
       - name: Update SSM Parameter with deployed image
