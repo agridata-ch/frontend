@@ -12,17 +12,17 @@ import {RouterOutlet} from '@angular/router';
   standalone: true
 })
 export class AppComponent implements OnInit {
-  title = '';
+  backendMessage = '';
 
   constructor(private readonly apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.apiService.getTitle().subscribe({
+    this.apiService.getBackendMessage().subscribe({
       next: (response) => {
-        this.title = response;
+        this.backendMessage = response;
       },
       error: (err) => {
-        console.error('Fehler beim Abrufen des Titels:', err);
+        console.error('Error contacting the backend', err);
       }
     });
   }
