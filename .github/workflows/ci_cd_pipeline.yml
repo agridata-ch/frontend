@@ -40,7 +40,7 @@ jobs:
           projectBaseDir: .
           args: >
             -Dsonar.organization=agridata-ch
-            -Dsonar.projectKey=agridata-ch_terraform-aws-infrastructure
+            -Dsonar.projectKey=agridata-ch_frontend
             -Dsonar.javascript.lcov.reportPaths=coverage/frontend/lcov.info
 
   build-deploy:
