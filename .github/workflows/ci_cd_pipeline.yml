@@ -43,8 +43,8 @@ jobs:
             -Dsonar.projectKey=agridata-ch_frontend
             -Dsonar.javascript.lcov.reportPaths=coverage/frontend/lcov.info
 
-  build-push:
-    name: Build and push image
+  build-deploy:
+    name: Build and deploy application
     needs: test
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
       IMAGE: ${{ steps.push-image.outputs.image }}
     env:
       AWS_REGION: eu-central-2
-      ECR_REPOSITORY: "frontend"
+      S3_BUCKET: agridata-entwicklung-frontend-bucket
     permissions:
       id-token: write
       contents: read
@@ -66,10 +66,6 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::108782064107:role/agridata-application-deployment-role
           aws-region: ${{ env.AWS_REGION }}
-
-      - name: Login to AWS ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -84,69 +80,9 @@ jobs:
       - name: npm build
         run: npm run build -- --configuration=production
 
-      - name: Extract image tag from package.json and append commit SHA
-        run: |
-          VERSION=$(jq -r .version package.json)
-          COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
-          IMAGE_TAG="${VERSION}-${COMMIT_SHA}"
-          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
-
-      - name: Build and Tag Image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-
-      - name: Push Image to AWS ECR
-        id: push-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        run: |
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "IMAGE=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
-  deploy:
-    name: Deploy
-    needs: build-push
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    env:
-      AWS_REGION: eu-central-2
-      ECR_REPOSITORY: "frontend"
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - name:
+        uses: reggionick/s3-deploy@v4
         with:
-          role-to-assume: arn:aws:iam::108782064107:role/agridata-application-deployment-role
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          container-name: agridata-frontend-container
-          task-definition-family: agridata-frontend
-          image: ${{ needs.build-push.outputs.image }}
-
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: agridata-frontend
-          cluster: agridata-cluster
-          wait-for-service-stability: true
-
-      - name: Update SSM Parameter with deployed image
-        run: |
-          aws ssm put-parameter \
-            --name "/frontend/image" \
-            --value "${{needs.build-push.outputs.IMAGE}}" \
-            --type "String" \
-            --overwrite
+          folder: dist/frontend/browser
+          bucket: ${{ env.S3_BUCKET }}
+          bucket-region: ${{ env.AWS_REGION }}
