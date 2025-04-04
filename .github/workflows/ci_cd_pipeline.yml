@@ -54,6 +54,7 @@ jobs:
     env:
       AWS_REGION: eu-central-2
       S3_BUCKET: agridata-entwicklung-frontend-bucket
+      CLOUDFRONT_DISTRIBUTION_ID: E2YREVIT7NKVTL
     permissions:
       id-token: write
       contents: read
@@ -80,9 +81,13 @@ jobs:
       - name: npm build
         run: npm run build -- --configuration=production
 
-      - name:
+      - name: Deploy to S3 bucket
         uses: reggionick/s3-deploy@v4
         with:
           folder: dist/frontend/browser
           bucket: ${{ env.S3_BUCKET }}
           bucket-region: ${{ env.AWS_REGION }}
+          dist-id: ${{ env.CLOUDFRONT_DISTRIBUTION_ID }}
+          invalidation: /
+          delete-removed: true
+          private: false
