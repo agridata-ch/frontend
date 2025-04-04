@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: 'https://api.agridata.ch'
+  apiUrl: 'https://dev.api.agridata.ch'
 };
