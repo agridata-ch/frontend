@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class ApiService {
   constructor(private readonly http: HttpClient) {}
 
-  getTitle(): Observable<string> {
-    return this.http.get(environment.apiUrl + "/names", { responseType: 'text' });
+  getBackendMessage(): Observable<string> {
+    return this.http.get(environment.apiUrl, { responseType: 'text' });
   }
 }
