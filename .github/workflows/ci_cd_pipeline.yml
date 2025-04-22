@@ -54,7 +54,7 @@ jobs:
     env:
       AWS_REGION: eu-central-2
       S3_BUCKET: agridata-entwicklung-frontend-bucket
-      CLOUDFRONT_DISTRIBUTION_ID: E2YREVIT7NKVTL
+      CLOUDFRONT_DISTRIBUTION_ID: EQXQGDYNTU9IT
     permissions:
       id-token: write
       contents: read
