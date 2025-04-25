@@ -53,8 +53,8 @@ jobs:
       IMAGE: ${{ steps.push-image.outputs.image }}
     env:
       AWS_REGION: eu-central-2
-      S3_BUCKET: agridata-entwicklung-frontend-bucket
-      CLOUDFRONT_DISTRIBUTION_ID: EQXQGDYNTU9IT
+      S3_BUCKET: agridata-s3-entwicklung-frontend
+      CLOUDFRONT_DISTRIBUTION_ID: EZ4QXZV5B64VV
     permissions:
       id-token: write
       contents: read
