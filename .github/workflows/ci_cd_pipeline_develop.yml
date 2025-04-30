@@ -51,6 +51,10 @@ jobs:
     timeout-minutes: 5
     outputs:
       IMAGE: ${{ steps.push-image.outputs.image }}
+    env:
+      AWS_REGION: eu-central-2
+      S3_BUCKET: agridata-s3-entwicklung-frontend
+      CLOUDFRONT_DISTRIBUTION_ID: EZ4QXZV5B64VV
     permissions:
       id-token: write
       contents: read
