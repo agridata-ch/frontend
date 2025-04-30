@@ -10,6 +10,7 @@ on:
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
 env:
   GITHUB_APP_SEMANTIC_RELEASE_APP_ID: 1236243
   AWS_REGION: eu-central-2
@@ -17,6 +18,8 @@ env:
   CLOUDFRONT_DISTRIBUTION_ID: EZ4QXZV5B64VV
 >>>>>>> 1eabead (feat(setup): update pipeline.yml file to use semantic-release)
 
+=======
+>>>>>>> f80d060 (feat(setup): add npmrc, update pipeline.yml)
 jobs:
   test:
     name: Test
@@ -100,6 +103,10 @@ jobs:
     timeout-minutes: 5
     outputs:
       IMAGE: ${{ steps.push-image.outputs.image }}
+    env:
+      AWS_REGION: eu-central-2
+      S3_BUCKET: agridata-s3-entwicklung-frontend
+      CLOUDFRONT_DISTRIBUTION_ID: EZ4QXZV5B64VV
     permissions:
       id-token: write
       contents: read
