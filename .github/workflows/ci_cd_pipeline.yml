@@ -8,12 +8,6 @@ on:
   merge_group:
     branches: [main]
 
-env:
-  GITHUB_APP_SEMANTIC_RELEASE_APP_ID: 1236243
-  AWS_REGION: eu-central-2
-  S3_BUCKET: agridata-s3-entwicklung-frontend
-  CLOUDFRONT_DISTRIBUTION_ID: EZ4QXZV5B64VV
-
 jobs:
   test:
     name: Test
@@ -75,6 +69,8 @@ jobs:
 
       - uses: actions/create-github-app-token@v1
         id: app-token
+        env:
+          GITHUB_APP_SEMANTIC_RELEASE_APP_ID: 1236243
         with:
           app-id: ${{ env.GITHUB_APP_SEMANTIC_RELEASE_APP_ID }}
           private-key: ${{ secrets.PRIVATE_KEY_GITHUB_APP_SEMANTIC_RELEASE }}
@@ -92,6 +88,10 @@ jobs:
     timeout-minutes: 5
     outputs:
       IMAGE: ${{ steps.push-image.outputs.image }}
+    env:
+      AWS_REGION: eu-central-2
+      S3_BUCKET: agridata-s3-entwicklung-frontend
+      CLOUDFRONT_DISTRIBUTION_ID: EZ4QXZV5B64VV
     permissions:
       id-token: write
       contents: read
