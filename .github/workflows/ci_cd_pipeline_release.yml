@@ -82,3 +82,31 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: npx semantic-release
+
+  sync-develop:
+    name: Merge main → develop
+    runs-on: ubuntu-latest
+    needs: semantic-release
+
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v3
+        with:
+          ref: develop
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add remote and fetch main
+        run: |
+          git remote add upstream https://github.com/${{ github.repository }}.git
+          git fetch upstream main
+
+      - name: Merge main into develop (favor main)
+        run: |
+          git merge -X theirs upstream/main || true
+          git commit -am "Merge main into develop (favoring main)" || echo "No changes"
+          git push origin develop
