@@ -45,7 +45,7 @@ jobs:
 
   semantic-release:
     name: Semantic Release
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/develop'
     needs: test
     runs-on: ubuntu-latest
     timeout-minutes: 5
