@@ -45,7 +45,7 @@ jobs:
 
   build-deploy:
     name: Build and deploy application
-    needs: semantic-release
+    needs: test
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     timeout-minutes: 5
