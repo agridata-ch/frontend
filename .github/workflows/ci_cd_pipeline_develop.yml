@@ -2,11 +2,11 @@ name: CI/CD Pipeline
 
 on:
   pull_request:
-    branches: [main]
+    branches: [develop]
   push:
-    branches: [main]
+    branches: [develop]
   merge_group:
-    branches: [main]
+    branches: [develop]
 
 jobs:
   test:
@@ -45,7 +45,7 @@ jobs:
 
   semantic-release:
     name: Semantic Release
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/develop'
     needs: test
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -85,8 +85,8 @@ jobs:
 
   build-deploy:
     name: Build and deploy application
-    needs: semantic-release
-    if: github.ref == 'refs/heads/main'
+    needs: test
+    if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:

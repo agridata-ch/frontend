@@ -1,0 +1,84 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  merge_group:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npx ng test --code-coverage --browsers ChromeHeadless --watch false
+
+      - name: Run SonarQube Analysis
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.organization=agridata-ch
+            -Dsonar.projectKey=agridata-ch_frontend
+            -Dsonar.javascript.lcov.reportPaths=coverage/frontend/lcov.info
+
+  semantic-release:
+    name: Semantic Release
+    if: github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: npm install
+        run: npm install
+
+      - name: Build
+        run: npm run build -- --configuration=production
+
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        env:
+          GITHUB_APP_SEMANTIC_RELEASE_APP_ID: 1236243
+        with:
+          app-id: ${{ env.GITHUB_APP_SEMANTIC_RELEASE_APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY_GITHUB_APP_SEMANTIC_RELEASE }}
+
+      - name: Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: npx semantic-release
