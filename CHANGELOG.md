@@ -1,3 +1,9 @@
+# [1.2.0](https://github.com/agridata-ch/frontend/compare/v1.1.0...v1.2.0) (2025-05-02)
+
+### Features
+
+- update welcome message ([a9855c0](https://github.com/agridata-ch/frontend/commit/a9855c0c0d8cc7243b3df8d02abc8f562ac5afac))
+
 # [1.2.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.1.0...v1.2.0-rc.1) (2025-05-02)
 
 ### Features
