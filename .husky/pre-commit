@@ -1,2 +1,1 @@
 npm run prettier:staged
-npx --no-install commitlint --edit $1
