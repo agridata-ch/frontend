@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline main
 
 on:
   pull_request:
@@ -89,24 +89,36 @@ jobs:
     needs: semantic-release
 
     steps:
-      - name: Checkout develop
-        uses: actions/checkout@v3
+      - name: Generate GitHub App Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        env:
+          GITHUB_APP_SEMANTIC_RELEASE_APP_ID: 1236243
         with:
-          ref: develop
-          fetch-depth: 0
+          app-id: ${{ env.GITHUB_APP_SEMANTIC_RELEASE_APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY_GITHUB_APP_SEMANTIC_RELEASE }}
 
-      - name: Configure Git
+      - name: Set up Git user for GitHub App
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "semantic-release[bot]"
+          git config --global user.email "semantic-release[bot]@users.noreply.github.com"
 
-      - name: Add remote and fetch main
+      - name: Sync main to develop
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          git remote add upstream https://github.com/${{ github.repository }}.git
-          git fetch upstream main
+          git clone https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} repo
+          cd repo
 
-      - name: Merge main into develop (favor main)
-        run: |
-          git merge -X theirs upstream/main || true
-          git commit -am "Merge main into develop (favoring main)" || echo "No changes"
-          git push origin develop
+          git remote add app-origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          git fetch app-origin main
+          git fetch app-origin develop
+          git checkout develop
+          git merge --ff-only app-origin/main || true
+
+          if git diff --quiet app-origin/develop; then
+            echo "No changes to push. Skipping."
+            exit 0
+          fi
+
+          git push app-origin develop
