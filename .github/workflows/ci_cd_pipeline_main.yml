@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
+          cache: 'npm'
           cache-dependency-path: package-lock.json
 
       - name: Install dependencies
@@ -61,7 +61,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
+          cache: 'npm'
           cache-dependency-path: package-lock.json
 
       - name: npm install
@@ -107,18 +107,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
+          set -e
+
+          echo "🔄 Cloning repository..."
           git clone https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} repo
           cd repo
 
+          echo "📦 Setting up remotes..."
           git remote add app-origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
-          git fetch app-origin main
-          git fetch app-origin develop
-          git checkout develop
-          git merge --ff-only app-origin/main || true
+          git fetch app-origin
 
+          echo "🔀 Checking out 'develop' branch..."
+          git checkout develop
+
+          echo "🔁 Attempting fast-forward merge from 'main' to 'develop'..."
+          git merge --ff-only app-origin/main || echo "⚠️ Fast-forward not possible, continuing..."
+
+          echo "📊 Checking for changes after merge..."
           if git diff --quiet app-origin/develop; then
-            echo "No changes to push. Skipping."
+            echo "✅ No changes to push. Skipping push."
             exit 0
           fi
 
+          echo "🚀 Pushing changes to 'develop'..."
           git push app-origin develop
