@@ -8,7 +8,10 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:coverage": "ng test --coverage",
-    "test:watch": "ng test --watch"
+    "test:watch": "ng test --watch",
+    "cm": "cz",
+    "prettier:staged": "npx pretty-quick --staged --restage",
+    "prepare": "husky"
   },
   "private": true,
   "dependencies": {
