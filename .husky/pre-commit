@@ -1,1 +1,1 @@
-npm run prettier:staged
+npm run prettier:staged && npx eslint
