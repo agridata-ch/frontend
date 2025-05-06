@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
+          cache: 'npm'
           cache-dependency-path: package-lock.json
 
       - name: Install dependencies
@@ -61,7 +61,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
+          cache: 'npm'
           cache-dependency-path: package-lock.json
 
       - name: npm install
@@ -85,7 +85,7 @@ jobs:
 
   build-deploy:
     name: Build and deploy application
-    needs: test
+    needs: semantic-release
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -112,7 +112,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
+          cache: 'npm'
           cache-dependency-path: package-lock.json
 
       - name: npm install
