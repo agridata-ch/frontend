@@ -9,8 +9,33 @@ on:
     branches: [develop]
 
 jobs:
+  check-single-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check number of commits in PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+             if (!pr) {
+                console.log("Not a pull request event. Skipping commit check.");
+                return;
+            }
+            const commits = await github.rest.pulls.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+            });
+            const count = commits.data.length;
+            if (count > 1) {
+              core.setFailed(`PR has ${count} commits. Please squash to a single commit.`);
+            } else {
+              console.log("PR has a single commit. ✅");
+            }
   test:
     name: Test
+    needs: check-single-commit
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -68,7 +93,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npm run build -- --configuration=production
+        run: npm run build -- --configuration=development
 
       - uses: actions/create-github-app-token@v1
         id: app-token
@@ -101,6 +126,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: refs/heads/develop
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -119,7 +148,7 @@ jobs:
         run: npm install
 
       - name: npm build
-        run: npm run build -- --configuration=production
+        run: npm run build -- --configuration=development
 
       - name: Deploy to S3 bucket
         run: |

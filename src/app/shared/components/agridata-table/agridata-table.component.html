@@ -1,0 +1,75 @@
+<div class="rounded-xl border border-gray-200 overflow-hidden">
+  <table class="table-auto w-full bg-white">
+    <thead class="text-left border-b border-gray-200">
+      <tr>
+        @for (col of columns(); track col) {
+          <th
+            class="py-4 px-6 select-none text-slate-500 outline-0 hover:bg-gray-50 cursor-pointer focus:bg-gray-200 text-sm font-semibold"
+            (click)="setSort(col)"
+            (keydown.enter)="setSort(col)"
+            [tabindex]="0"
+          >
+            <div class="flex items-center">
+              <span class="mr-2">{{ col }}</span>
+              <div class="min-w-4">
+                @if (sortColumn() === col) {
+                  @if (sortDirection() === 'desc') {
+                    <fa-icon [icon]="iconSortDown" />
+                  } @else {
+                    <fa-icon [icon]="iconSortUp" />
+                  }
+                }
+              </div>
+            </div>
+          </th>
+        }
+        <th
+          class="py-4 px-6 select-none text-slate-500 outline-0 hover:bg-gray-50 cursor-pointer focus:bg-gray-200 text-sm font-semibold text-right"
+        >
+          Aktionen
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of paginated(); track item) {
+        <tr class="hover:bg-gray-50 cursor-pointer">
+          @for (col of columns(); track col) {
+            <td class="py-4 px-6 border-t border-gray-200">
+              @if (getTemplate(col)) {
+                <ng-container *ngTemplateOutlet="getTemplate(col); context: { $implicit: item }">
+                </ng-container>
+              } @else {
+                {{ item[col] }}
+              }
+            </td>
+          }
+          <td class="py-4 px-6 border-t border-gray-200">
+            <app-table-actions [actions]="actions" />
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  @if (showPagination()) {
+    <div class="flex justify-between items-center p-4 bg-gray-50">
+      <div class="text-sm text-slate-500">
+        Zeige {{ paginated().length }} von {{ sorted().length }} Einträgen
+      </div>
+      <div class="flex items-center">
+        <button class="button-secondary" (click)="prevPage()" [disabled]="currentPage() === 1">
+          <
+        </button>
+        <span class="mx-2 text-sm text-slate-500"
+          >Seite {{ currentPage() }} von {{ totalPages() }}</span
+        >
+        <button
+          class="button-secondary"
+          (click)="nextPage()"
+          [disabled]="currentPage() === totalPages()"
+        >
+          >
+        </button>
+      </div>
+    </div>
+  }
+</div>
