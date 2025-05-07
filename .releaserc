@@ -17,7 +17,13 @@
     [
       "@semantic-release/release-notes-generator",
       {
-        "preset": "conventionalcommits"
+        "preset": "conventionalcommits",
+        "presetConfig": {
+          "issuePrefixes": [
+            "DIGIB2"
+          ],
+          "issueUrlFormat": "https://blw-ofag-ufag.atlassian.net/browse/{{prefix}}{{id}}"
+        }
       }
     ],
     [
