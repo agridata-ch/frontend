@@ -40,3 +40,10 @@ In this project we use the [Conventional Commits](https://www.conventionalcommit
 # Deployment
 We use [semantic-release](https://semantic-release.gitbook.io/semantic-release/) to automatically version and to generate the release notes. After a merge into the develop branch, the version is automatically increased and a new pre-release is created. After a merge into the main branch, the version is automatically increased and a new release is created. Also the main branch is automatically merged back into develop. The release notes are generated automatically based on the commit messages. The release notes are generated in the CHANGELOG.md file.
 
+# API-Client Generation
+We use [openapi-generator](https://openapi-generator.tech/) to generate the API client. The API client is generated from the OpenAPI specification file located in the `src/assets/openapi` folder. The OpenAPI specification file is generated from the backend using [swagger-ui](https://swagger.io/tools/swagger-ui/). The API client is generated using the following command:
+```bash
+npm run generate:api
+```
+The generated API client is located in the `src/app/shared/services` and the models are located in the `src/app/shared/models` folder.
+You can then import the API client in your component-services and use it to make API calls.

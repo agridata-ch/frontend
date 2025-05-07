@@ -1,0 +1,4 @@
+.table-action-button:hover {
+  background-color: var(--color-blue-50);
+  border-color: var(--color-blue-50);
+}

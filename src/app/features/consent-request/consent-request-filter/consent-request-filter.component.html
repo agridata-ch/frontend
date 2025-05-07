@@ -1,0 +1,14 @@
+<div class="mb-4 flex justify-start gap-4">
+  @for (filter of filterOptions; track filter) {
+    <button
+      (click)="handleClick(filter.value)"
+      (keydown.enter)="handleClick(filter.value)"
+      class="button-secondary consent-filter-button {{ isSelected(filter.value) && 'selected' }}"
+      tabindex="0"
+    >
+      <span>
+        {{ filter.label }}
+      </span>
+    </button>
+  }
+</div>

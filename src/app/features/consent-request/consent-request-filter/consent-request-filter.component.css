@@ -1,0 +1,9 @@
+.consent-filter-button {
+  border-radius: var(--radius-4xl);
+}
+
+.consent-filter-button.selected {
+  background-color: var(--color-gray-200);
+  border-color: var(--color-gray-800);
+  color: var(--color-gray-800);
+}

@@ -1,0 +1,82 @@
+openapi: 3.1.0
+components:
+  schemas:
+    ConsentRequest:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+        dataProducerUid:
+          type: string
+        state:
+          $ref: "#/components/schemas/ConsentRequestState"
+        requestDate:
+          $ref: "#/components/schemas/LocalDate"
+        dataRequest:
+          $ref: "#/components/schemas/DataRequest"
+    ConsentRequestState:
+      type: string
+      enum:
+      - GRANTED
+      - OPENED
+      - DECLINED
+    DataRequest:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+        descriptionDe:
+          type: string
+        descriptionFr:
+          type: string
+        descriptionIt:
+          type: string
+        purposeDe:
+          type: string
+        purposeFr:
+          type: string
+        purposeIt:
+          type: string
+        dataConsumerBur:
+          type: string
+    LocalDate:
+      type: string
+      format: date
+      examples:
+      - 2022-03-10
+    UUID:
+      type: string
+      format: uuid
+      pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+paths:
+  /agreement/v1/consent-requests:
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConsentRequest"
+      summary: Consent Requests
+      tags:
+      - Consent Request Controller
+  /agreement/v1/data-requests:
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataRequest"
+      summary: Data Requests
+      tags:
+      - Data Request Controller
+info:
+  title: backend API
+  version: 0.0.1-SNAPSHOT
