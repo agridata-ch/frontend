@@ -1,31 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from './api.service';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { version } from '../../package.json';
+import { ConsentRequestComponent } from './features/consent-request/consent-request.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [RouterOutlet],
-  standalone: true,
+  imports: [RouterOutlet, ConsentRequestComponent],
 })
-export class AppComponent implements OnInit {
-  backendMessage = '';
+export class AppComponent {
   public version;
 
-  constructor(private readonly apiService: ApiService) {
+  constructor() {
     this.version = version;
-  }
-
-  ngOnInit(): void {
-    this.apiService.getBackendMessage().subscribe({
-      next: (response) => {
-        this.backendMessage = response;
-      },
-      error: (err) => {
-        console.error('Error contacting the backend', err);
-      },
-    });
   }
 }

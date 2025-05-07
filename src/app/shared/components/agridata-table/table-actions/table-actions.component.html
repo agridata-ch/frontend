@@ -1,0 +1,31 @@
+<div class="flex flex-row gap-4 justify-end">
+  @if (mainAction()) {
+    <button type="button" (click)="handleClick(mainAction()!)" class="button-primary-accept">
+      {{ mainAction()?.label }}
+    </button>
+  }
+  <button
+    type="button"
+    (click)="handleToggle()"
+    [attr.aria-expanded]="isOpen()"
+    aria-haspopup="menu"
+    class="button-secondary table-action-button"
+  >
+    <fa-icon [icon]="iconEllipsis" />
+  </button>
+  @if (isOpen()) {
+    <div class="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg">
+      <ul>
+        @for (action of actions; track action.label) {
+          <li
+            class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+            (click)="handleClick(action)"
+            (keydown.enter)="handleClick(action)"
+          >
+            {{ action.label }}
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

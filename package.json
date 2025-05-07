@@ -13,7 +13,8 @@
     "prettier:staged": "npx pretty-quick --staged --restage",
     "prepare": "husky",
     "lint": "eslint src/",
-    "lint:fix": "eslint --fix src/"
+    "lint:fix": "eslint --fix src/",
+    "generate:api": "openapi-generator-cli generate -i src/assets/openapi.yaml -g typescript-angular -o ./src/app/shared/openapi --global-property=apis,models,supportingFiles --skip-validate-spec --enable-post-process-file --additional-properties=supportsES6=true --ignore-file-override=./scripts/openapi-ignore.txt"
   },
   "private": true,
   "dependencies": {
@@ -35,6 +36,9 @@
     "@angular/compiler-cli": "^19.2.9",
     "@commitlint/config-conventional": "^19.8.0",
     "@eslint/js": "^9.25.1",
+    "@fortawesome/angular-fontawesome": "^1.0.0",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@openapitools/openapi-generator-cli": "^2.20.0",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/commit-analyzer": "13.0.1",
     "@semantic-release/git": "10.0.1",
