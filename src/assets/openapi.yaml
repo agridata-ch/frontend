@@ -1,0 +1,47 @@
+openapi: 3.1.0
+components:
+  schemas:
+    DataRequest:
+      type: object
+      properties:
+        requestDate:
+          $ref: "#/components/schemas/LocalDate"
+        descriptionDe:
+          type: string
+        descriptionFr:
+          type: string
+        descriptionIt:
+          type: string
+        dataConsumer:
+          type: string
+        state:
+          $ref: "#/components/schemas/DataRequestState"
+    DataRequestState:
+      type: string
+      enum:
+      - GRANTED
+      - OPENED
+      - DECLINED
+    LocalDate:
+      type: string
+      format: date
+      examples:
+      - 2022-03-10
+paths:
+  /api/data-requests:
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataRequest"
+      summary: Data Requests
+      tags:
+      - Example Resource
+info:
+  title: backend API
+  version: 1.1.0-rc.2

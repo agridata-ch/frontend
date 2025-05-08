@@ -14,6 +14,8 @@ export default defineConfig([
       'node_modules/*',
       'coverage/*',
       'dist/*',
+      'src/app/shared/services/default.service.ts',
+      'src/app/shared/models/*.ts',
     ],
   },
   tseslint.configs.recommended,
