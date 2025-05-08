@@ -14,7 +14,7 @@
     "prepare": "husky",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
-    "generate:api": "openapi-generator-cli generate -i src/assets/openapi.yaml -g typescript-angular -o ./src/app/shared --skip-validate-spec --global-property=models,apis --additional-properties=withSeparateModelsAndApi=true,modelSuffix=Dto,supportsES6=true,modelPropertyNaming=camelCase,apiSuffix=Service,apiPackage=services,modelPackage=models --enable-post-process-file"
+    "generate:api": "openapi-generator-cli generate -i src/assets/openapi.yaml -g typescript-angular -o ./src/app/shared/openapi --global-property=apis,models,supportingFiles --skip-validate-spec --enable-post-process-file --additional-properties=supportsES6=true --ignore-file-override=./scripts/openapi-ignore.txt"
   },
   "private": true,
   "dependencies": {

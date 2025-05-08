@@ -1,0 +1,12 @@
+api.base.service.ts
+api.module.ts
+api/api.ts
+api/exampleResource.service.ts
+configuration.ts
+encoder.ts
+index.ts
+model/dataRequest.ts
+model/dataRequestState.ts
+model/models.ts
+param.ts
+variables.ts

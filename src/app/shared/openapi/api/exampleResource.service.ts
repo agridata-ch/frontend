@@ -23,7 +23,7 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
-import { DataRequestDto } from '../models/dataRequest';
+import { DataRequest } from '../model/dataRequest';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -33,7 +33,7 @@ import { BaseService } from '../api.base.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ExampleResourceService extends BaseService {
+export class DefaultService extends BaseService {
   constructor(
     protected httpClient: HttpClient,
     @Optional() @Inject(BASE_PATH) basePath: string | string[],
@@ -55,7 +55,7 @@ export class ExampleResourceService extends BaseService {
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<Array<DataRequestDto>>;
+  ): Observable<Array<DataRequest>>;
   public apiDataRequestsGet(
     observe?: 'response',
     reportProgress?: boolean,
@@ -64,7 +64,7 @@ export class ExampleResourceService extends BaseService {
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<HttpResponse<Array<DataRequestDto>>>;
+  ): Observable<HttpResponse<Array<DataRequest>>>;
   public apiDataRequestsGet(
     observe?: 'events',
     reportProgress?: boolean,
@@ -73,7 +73,7 @@ export class ExampleResourceService extends BaseService {
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<HttpEvent<Array<DataRequestDto>>>;
+  ): Observable<HttpEvent<Array<DataRequest>>>;
   public apiDataRequestsGet(
     observe: any = 'body',
     reportProgress: boolean = false,
@@ -106,9 +106,9 @@ export class ExampleResourceService extends BaseService {
       }
     }
 
-    let localVarPath = `/api/data-requests`;
+    const localVarPath = `/api/data-requests`;
     const { basePath, withCredentials } = this.configuration;
-    return this.httpClient.request<Array<DataRequestDto>>('get', `${basePath}${localVarPath}`, {
+    return this.httpClient.request<Array<DataRequest>>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
       responseType: <any>responseType_,
       ...(withCredentials ? { withCredentials } : {}),
