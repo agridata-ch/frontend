@@ -27,7 +27,6 @@ export class DataRequestComponent {
 
   readonly requests = computed(() => {
     const filter = this.stateFilter();
-    console.log(filter);
     return this.dataRequestResult
       .value()
       .filter((r) => (filter ? r.state === filter : true))
@@ -44,7 +43,6 @@ export class DataRequestComponent {
   }
 
   setStateFilter(state: string | null) {
-    console.log('state', state);
     if (state === 'ALL') {
       state = null;
     }

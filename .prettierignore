@@ -23,4 +23,4 @@ src/assets/
 src/themes/
 src/styles/
 src/index.html
-src/app/shared/services/default.service.ts'
+src/app/shared/openapi/'
