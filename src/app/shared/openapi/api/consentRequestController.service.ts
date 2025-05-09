@@ -23,7 +23,7 @@ import { CustomHttpParameterCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 // @ts-ignore
-import { DataRequest } from '../model/dataRequest';
+import { ConsentRequest } from '../model/consentRequest';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
@@ -33,7 +33,7 @@ import { BaseService } from '../api.base.service';
 @Injectable({
   providedIn: 'root',
 })
-export class DefaultService extends BaseService {
+export class ConsentRequestControllerService extends BaseService {
   constructor(
     protected httpClient: HttpClient,
     @Optional() @Inject(BASE_PATH) basePath: string | string[],
@@ -43,11 +43,11 @@ export class DefaultService extends BaseService {
   }
 
   /**
-   * Data Requests
+   * Consent Requests
    * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
    * @param reportProgress flag to report request and response progress.
    */
-  public apiDataRequestsGet(
+  public agreementV1ConsentRequestsGet(
     observe?: 'body',
     reportProgress?: boolean,
     options?: {
@@ -55,8 +55,8 @@ export class DefaultService extends BaseService {
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<Array<DataRequest>>;
-  public apiDataRequestsGet(
+  ): Observable<Array<ConsentRequest>>;
+  public agreementV1ConsentRequestsGet(
     observe?: 'response',
     reportProgress?: boolean,
     options?: {
@@ -64,8 +64,8 @@ export class DefaultService extends BaseService {
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<HttpResponse<Array<DataRequest>>>;
-  public apiDataRequestsGet(
+  ): Observable<HttpResponse<Array<ConsentRequest>>>;
+  public agreementV1ConsentRequestsGet(
     observe?: 'events',
     reportProgress?: boolean,
     options?: {
@@ -73,8 +73,8 @@ export class DefaultService extends BaseService {
       context?: HttpContext;
       transferCache?: boolean;
     },
-  ): Observable<HttpEvent<Array<DataRequest>>>;
-  public apiDataRequestsGet(
+  ): Observable<HttpEvent<Array<ConsentRequest>>>;
+  public agreementV1ConsentRequestsGet(
     observe: any = 'body',
     reportProgress: boolean = false,
     options?: {
@@ -106,9 +106,9 @@ export class DefaultService extends BaseService {
       }
     }
 
-    const localVarPath = `/api/data-requests`;
+    let localVarPath = `/agreement/v1/consent-requests`;
     const { basePath, withCredentials } = this.configuration;
-    return this.httpClient.request<Array<DataRequest>>('get', `${basePath}${localVarPath}`, {
+    return this.httpClient.request<Array<ConsentRequest>>('get', `${basePath}${localVarPath}`, {
       context: localVarHttpContext,
       responseType: <any>responseType_,
       ...(withCredentials ? { withCredentials } : {}),

@@ -1,2 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'tailwindcss';
+
+/* Base font & colors for the whole app */
+body {
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-slate-50);
+}
+
+/* Reset default margins on all headings, then re-apply our own */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: bold;
+  color: inherit; /* inherit from body or container */
+  line-height: 1.2;
+}
+
+/* Your “default” h2 style */
+h2 {
+  font-size: 1.5rem; /* ~24px at base 16px font */
+  margin-top: 1.5rem; /* space above */
+  margin-bottom: 1rem; /* space below */
+}

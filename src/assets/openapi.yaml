@@ -1,34 +1,69 @@
 openapi: 3.1.0
 components:
   schemas:
+    ConsentRequest:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+        dataProducerUid:
+          type: string
+        state:
+          $ref: "#/components/schemas/ConsentRequestState"
+        requestDate:
+          $ref: "#/components/schemas/LocalDate"
+        dataRequest:
+          $ref: "#/components/schemas/DataRequest"
+    ConsentRequestState:
+      type: string
+      enum:
+      - GRANTED
+      - OPENED
+      - DECLINED
     DataRequest:
       type: object
       properties:
-        requestDate:
-          $ref: "#/components/schemas/LocalDate"
+        id:
+          $ref: "#/components/schemas/UUID"
         descriptionDe:
           type: string
         descriptionFr:
           type: string
         descriptionIt:
           type: string
-        dataConsumer:
+        purposeDe:
           type: string
-        state:
-          $ref: "#/components/schemas/DataRequestState"
-    DataRequestState:
-      type: string
-      enum:
-      - GRANTED
-      - OPENED
-      - DECLINED
+        purposeFr:
+          type: string
+        purposeIt:
+          type: string
+        dataConsumerBur:
+          type: string
     LocalDate:
       type: string
       format: date
       examples:
       - 2022-03-10
+    UUID:
+      type: string
+      format: uuid
+      pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
 paths:
-  /api/data-requests:
+  /agreement/v1/consent-requests:
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConsentRequest"
+      summary: Consent Requests
+      tags:
+      - Consent Request Controller
+  /agreement/v1/data-requests:
     get:
       responses:
         "200":
@@ -41,7 +76,7 @@ paths:
                   $ref: "#/components/schemas/DataRequest"
       summary: Data Requests
       tags:
-      - Example Resource
+      - Data Request Controller
 info:
   title: backend API
-  version: 1.1.0-rc.2
+  version: 0.0.1-SNAPSHOT

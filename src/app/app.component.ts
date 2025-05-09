@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from './api.service';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { version } from '../../package.json';
 import { DataRequestComponent } from './features/data-request/data-request.component';
@@ -10,13 +9,10 @@ import { DataRequestComponent } from './features/data-request/data-request.compo
   styleUrl: './app.component.css',
   imports: [RouterOutlet, DataRequestComponent],
 })
-export class AppComponent implements OnInit {
-  backendMessage = '';
+export class AppComponent {
   public version;
 
-  constructor(private readonly apiService: ApiService) {
+  constructor() {
     this.version = version;
   }
-
-  ngOnInit(): void {}
 }

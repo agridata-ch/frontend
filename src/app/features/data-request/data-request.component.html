@@ -1,1 +1,36 @@
-<p>data-request works!</p>
+@if (dataRequestResult.isLoading()) {
+  <div>Loading…</div>
+} @else {
+  <h2>Freigaben</h2>
+  <div class="mb-4 flex justify-start gap-4">
+    <app-chip (onClick)="setStateFilter('ALL')" label="Alle" [selected]="stateFilter() === null" />
+    <app-chip
+      (onClick)="setStateFilter('OPENED')"
+      label="Offene"
+      [selected]="stateFilter() === 'OPENED'"
+    />
+    <app-chip
+      (onClick)="setStateFilter('GRANTED')"
+      label="Eingewilligte"
+      indicator="3"
+      [selected]="stateFilter() === 'GRANTED'"
+    />
+    <app-chip
+      (onClick)="setStateFilter('DECLINED')"
+      label="Abgelehnte"
+      [selected]="stateFilter() === 'DECLINED'"
+    />
+  </div>
+  <app-agridata-table [data]="requests()">
+    <ng-template stCell="Status" let-item>
+      <span
+        class="px-2 py-1 rounded"
+        [class.bg-cyan-50]="item.Status === 'OPENED'"
+        [class.bg-green-100]="item.Status === 'GRANTED'"
+        [class.bg-red-100]="item.Status === 'DECLINED'"
+      >
+        {{ item.Status }}
+      </span>
+    </ng-template>
+  </app-agridata-table>
+}

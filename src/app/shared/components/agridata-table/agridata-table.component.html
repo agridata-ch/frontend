@@ -1,0 +1,39 @@
+<div class="rounded-xl border border-gray-200 overflow-hidden">
+  <table class="table-auto w-full bg-white">
+    <thead class="text-left border-b border-gray-200">
+      <tr>
+        @for (col of columns(); track col) {
+          <th
+            class="py-4 px-6 select-none text-slate-500 outline-0 hover:bg-gray-50 cursor-pointer focus:bg-gray-200 text-sm font-semibold"
+            (click)="setSort(col)"
+            (keydown.enter)="setSort(col)"
+            [tabindex]="0"
+          >
+            {{ col }}
+            @if (sortColumn() === col) {
+              <span>
+                {{ sortDirection() === 'asc' ? '▲' : '▼' }}
+              </span>
+            }
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of paginated(); track item) {
+        <tr class="hover:bg-gray-50 cursor-pointer">
+          @for (col of columns(); track col) {
+            <td class="py-4 px-6 border-t border-gray-200">
+              @if (getTemplate(col)) {
+                <ng-container *ngTemplateOutlet="getTemplate(col); context: { $implicit: item }">
+                </ng-container>
+              } @else {
+                {{ item[col] }}
+              }
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
