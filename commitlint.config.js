@@ -9,6 +9,7 @@ module.exports = {
       rules: {
         // Custom rule for checking Jira tickets in the commit message
         'jira-ticket': ({ scope }) => {
+          if (/^release$/.test(scope)) return [true]; // Allow 'release' scope without Jira ticket
           // Check if the commit message scope matches the Jira ticket pattern
           if (!/DIGIB2-\d+/.test(scope)) {
             return [
