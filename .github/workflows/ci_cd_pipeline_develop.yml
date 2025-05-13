@@ -110,6 +110,7 @@ jobs:
 
   build-deploy:
     name: Build and deploy application
+    needs: semantic-release
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -146,7 +147,7 @@ jobs:
         run: npm install
 
       - name: npm build
-        run: npm run build -- --configuration=development
+        run: npm run build -- --configuration=production
 
       - name: Deploy to S3 bucket
         run: |
