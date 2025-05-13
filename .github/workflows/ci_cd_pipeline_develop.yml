@@ -93,7 +93,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: npm run build -- --configuration=production
+        run: npm run build -- --configuration=development
 
       - uses: actions/create-github-app-token@v1
         id: app-token
@@ -147,7 +147,7 @@ jobs:
         run: npm install
 
       - name: npm build
-        run: npm run build -- --configuration=production
+        run: npm run build -- --configuration=development
 
       - name: Deploy to S3 bucket
         run: |
