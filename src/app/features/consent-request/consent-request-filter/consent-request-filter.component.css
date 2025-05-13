@@ -1,5 +1,6 @@
 .consent-filter-button {
   border-radius: var(--radius-4xl);
+  background-color: white;
 }
 
 .consent-filter-button.selected {
