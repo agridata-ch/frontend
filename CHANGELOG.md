@@ -1,3 +1,9 @@
+## [1.0.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2025-05-13)
+
+### Features
+
+- **setup:** use conventionalcommits ([302553f](https://github.com/agridata-ch/frontend/commit/302553fe6c6c8fadece87da47605d1e9583da012)), closes [DIGIB2-297](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-297)
+
 # 1.0.0-rc.1 (2025-05-13)
 
 ### Features
