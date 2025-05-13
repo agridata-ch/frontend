@@ -1,3 +1,9 @@
+## 1.0.0-rc.1 (2025-05-13)
+
+### Features
+
+- **consent-request:** consent-request component ([fe03754](https://github.com/agridata-ch/frontend/commit/fe037548c8e59fb57c2317de6e7c2048d8108a12)), closes [DIGIB2-297](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-297)
+
 ## [1.0.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.3...v1.0.0-rc.4) (2025-05-13)
 
 ### Features
