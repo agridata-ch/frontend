@@ -19,8 +19,32 @@
       {
         "preset": "conventionalcommits",
         "presetConfig": {
+          "types": [
+            {
+              "type": "feat",
+              "section": "Features",
+              "hidden": false
+            },
+            {
+              "type": "fix",
+              "section": "Bug Fixes",
+              "hidden": false
+            },
+            {
+              "type": "chore",
+              "section": "Miscellaneous Chores",
+              "hidden": false
+            }
+          ],
+          "parserOpts": {
+            "noteKeywords": [
+              "BREAKING CHANGE",
+              "BREAKING CHANGES",
+              "BREAKING"
+            ]
+          },
           "issuePrefixes": [
-            "DIGIB2"
+            "DIGIB2-"
           ],
           "issueUrlFormat": "https://blw-ofag-ufag.atlassian.net/browse/{{prefix}}{{id}}"
         }
