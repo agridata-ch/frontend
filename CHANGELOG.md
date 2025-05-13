@@ -1,3 +1,9 @@
+## [1.0.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.2...v1.0.0-rc.3) (2025-05-13)
+
+### Features
+
+- update pipeline ([a58147f](https://github.com/agridata-ch/frontend/commit/a58147fb4d2ea8a4502e4985fed127243a1be60f))
+
 ## [1.0.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2025-05-13)
 
 ### Features
