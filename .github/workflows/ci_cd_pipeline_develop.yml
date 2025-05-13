@@ -129,7 +129,7 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: refs/heads/develop
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
