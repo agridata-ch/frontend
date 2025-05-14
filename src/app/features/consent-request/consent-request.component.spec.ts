@@ -1,35 +1,40 @@
-import { TestBed, ComponentFixture, waitForAsync } from '@angular/core/testing';
+// consent-request.component.spec.ts
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { Resource, signal, NO_ERRORS_SCHEMA } from '@angular/core';
+
 import { ConsentRequestComponent } from './consent-request.component';
 import { ConsentRequestService } from './consent-request.service';
-import { Resource, signal, NO_ERRORS_SCHEMA } from '@angular/core';
-import type { ConsentRequest } from '@/app/shared/openapi/model/models';
-
-type DynamicRow = Record<string, unknown>;
+import { ConsentRequest } from '@/app/shared/openapi/model/models';
 
 describe('ConsentRequestComponent', () => {
   let fixture: ComponentFixture<ConsentRequestComponent>;
   let component: ConsentRequestComponent;
   let mockService: Partial<ConsentRequestService>;
   let reloadSpy: jest.Mock;
-
-  const testData: ConsentRequest[] = [
+  const sample: ConsentRequest[] = [
     {
-      dataProducerUid: 'Producer1',
-      dataRequest: { descriptionDe: 'Desc1' },
-      requestDate: '2025-01-01T00:00:00Z',
+      dataProducerUid: 'u1',
+      dataRequest: { descriptionDe: 'D1' },
+      requestDate: '2025-05-10',
       state: 'OPENED',
-    } as ConsentRequest,
+    },
     {
-      dataProducerUid: 'Producer2',
-      dataRequest: { descriptionDe: 'Desc2' },
-      requestDate: '2025-02-01T00:00:00Z',
+      dataProducerUid: 'u2',
+      dataRequest: { descriptionDe: 'D2' },
+      requestDate: '2025-04-01',
+      state: 'DECLINED',
+    },
+    {
+      dataProducerUid: 'u3',
+      dataRequest: { descriptionDe: 'D3' },
+      requestDate: '2025-03-15',
       state: 'GRANTED',
-    } as ConsentRequest,
+    },
   ];
 
   beforeEach(waitForAsync(() => {
     const stubResource: Partial<Resource<ConsentRequest[]>> = {
-      value: signal(testData),
+      value: signal(sample),
       reload: jest.fn(),
     };
 
@@ -49,41 +54,30 @@ describe('ConsentRequestComponent', () => {
     component = fixture.componentInstance;
   }));
 
-  it('should create the component', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should call reload on init', () => {
+  it('calls reload() on ngOnInit', () => {
     component.ngOnInit();
     expect(reloadSpy).toHaveBeenCalled();
   });
 
-  it('requests should return mapped DynamicRow[] when no filter', () => {
-    component.stateFilter.set([]);
+  it('filters out states not in stateFilter', () => {
+    component.setStateFilter(['DECLINED', 'GRANTED']);
     const rows = component.requests();
-    expect(Array.isArray(rows)).toBe(true);
-    expect(rows.length).toBe(2);
-    const first = rows[0] as DynamicRow;
-    expect(first['Antragsteller']).toBe('Producer1');
-    expect(first['Datenantrag']).toBe('Desc1');
-    const formatted = component.dateFormatter.format(new Date('2025-01-01T00:00:00Z'));
-    expect(first['Antragsdatum']).toBe(formatted);
-    expect(first['Status']).toBe('OPENED');
+    expect(
+      rows.every((r) => ['DECLINED', 'GRANTED'].includes(component.getCellValue(r, 'Status'))),
+    ).toBe(true);
+    expect(rows).toHaveLength(2);
   });
 
-  it('requests should filter by state values array', () => {
-    component.stateFilter.set(['GRANTED']);
-    const rows = component.requests();
-    expect(rows.length).toBe(1);
-    const only = rows[0] as DynamicRow;
-    expect(only['Antragsteller']).toBe('Producer2');
+  it('produces correct action sets per state', () => {
+    component.setStateFilter([]);
+    const labels = component.requests().map((r) => r.actions.map((a) => a.label));
+    expect(labels[0]).toEqual(['Details', 'Einwilligen', 'Ablehnen']); // OPENED
+    expect(labels[1]).toEqual(['Details', 'Zurückziehen']); // DECLINED
+    expect(labels[2]).toEqual(['Details', 'Zurückziehen']); // GRANTED
   });
 
-  it('actions signal yields correct default actions', () => {
-    const acts = component.actions();
-    expect(acts).toHaveLength(2);
-    const main = acts.find((a) => a.isMainAction === true);
-    expect(main).toBeDefined();
-    expect(main?.label).toBe('Einwilligen');
+  it('getCellValue returns empty string if header missing', () => {
+    const rows = component.requests();
+    expect(component.getCellValue(rows[0], 'NonExistent')).toBe('');
   });
 });

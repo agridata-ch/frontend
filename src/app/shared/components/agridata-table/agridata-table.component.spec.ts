@@ -1,146 +1,109 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { CommonModule } from '@angular/common';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AgridataTableComponent, CellTemplateDirective } from './agridata-table.component';
-import { TableActionsComponent } from './table-actions/table-actions.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  AgridataTableComponent,
+  AgridataTableData,
+  CellTemplateDirective,
+} from '@/app/shared/components/agridata-table/agridata-table.component';
 import { QueryList, TemplateRef } from '@angular/core';
 
-interface TestItem {
-  id: number;
-  name: string;
-}
+describe('AgridataTableComponent (Jest)', () => {
+  let component: AgridataTableComponent;
+  let fixture: ComponentFixture<AgridataTableComponent>;
 
-describe('AgridataTableComponent', () => {
-  let fixture: ComponentFixture<AgridataTableComponent<TestItem>>;
-  let component: AgridataTableComponent<TestItem>;
+  const sampleData: AgridataTableData[] = [
+    {
+      data: [
+        { header: 'Name', value: 'Alice' },
+        { header: 'Age', value: '30' },
+      ],
+      highlighted: false,
+      actions: [],
+    },
+    {
+      data: [
+        { header: 'Name', value: 'Bob' },
+        { header: 'Age', value: '20' },
+      ],
+      highlighted: true,
+      actions: [],
+    },
+  ];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        AgridataTableComponent,
-        CellTemplateDirective,
-        TableActionsComponent,
-        FontAwesomeModule,
-        CommonModule,
-      ],
+      imports: [AgridataTableComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent<AgridataTableComponent<TestItem>>(AgridataTableComponent);
+    fixture = TestBed.createComponent(AgridataTableComponent);
     component = fixture.componentInstance;
   });
 
-  it('should create', () => {
+  it('creates the component', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('columns computation', () => {
-    it('should derive columns from first item', () => {
-      component.data = [{ id: 1, name: 'Alice' }];
-      expect(component.columns()).toEqual(['id', 'name']);
-    });
-
-    it('should return empty array when data is null or empty', () => {
-      component.data = null;
-      expect(component.columns()).toEqual([]);
-      component.data = [];
-      expect(component.columns()).toEqual([]);
-    });
+  it('infers headers from provided data', () => {
+    component.data = sampleData;
+    expect(component.headers()).toEqual(['Name', 'Age']);
   });
 
-  describe('sorting behavior', () => {
-    beforeEach(() => {
-      component.data = [
-        { id: 2, name: 'Bob' },
-        { id: 1, name: 'Alice' },
-      ];
-    });
-
-    it('should sort descending by column', () => {
-      component.setSort('id');
-      expect(component.sortColumn()).toBe('id');
-      expect(component.sortDirection()).toBe('desc');
-      expect(component.sorted().map((item) => item.id)).toEqual([2, 1]);
-    });
-
-    it('should toggle to descending on same column click', () => {
-      component.setSort('id');
-      component.setSort('id');
-      expect(component.sortDirection()).toBe('asc');
-      expect(component.sorted().map((item) => item.id)).toEqual([1, 2]);
-    });
+  it('initializes sortColumnIndex based on defaultSortColumn input', () => {
+    component.defaultSortColumn = 'Age';
+    component.defaultSortDirection = 'desc';
+    component.data = sampleData;
+    expect(component.sortColumnIndex()).toBe(1);
+    expect(component.sortDirection()).toBe('desc');
   });
 
-  describe('pagination behavior', () => {
-    beforeEach(() => {
-      const items: TestItem[] = Array.from({ length: 25 }, (_, i) => ({
-        id: i + 1,
-        name: `Item ${i + 1}`,
-      }));
-      component.pageSize = 10;
-      component.data = items;
-    });
+  it('sorts data ascending then descending on setSort', () => {
+    component.data = sampleData;
 
-    it('should calculate total pages correctly', () => {
-      expect(component.totalPages()).toBe(3);
-    });
+    // first click: ascending
+    component.setSort(1);
+    expect(component.sortDirection()).toBe('asc');
+    let sorted = component.sorted();
+    expect(sorted[0].data[1].value).toBe('20');
 
-    it('should return first page by default', () => {
-      expect(component.paginated().length).toBe(10);
-      expect(component.paginated()[0].id).toBe(1);
-    });
-
-    it('should navigate to next and previous pages', () => {
-      component.nextPage();
-      expect(component.currentPage()).toBe(2);
-      expect(component.paginated()[0].id).toBe(11);
-
-      component.prevPage();
-      expect(component.currentPage()).toBe(1);
-      expect(component.paginated()[0].id).toBe(1);
-    });
-
-    it('should not navigate beyond bounds', () => {
-      component.prevPage();
-      expect(component.currentPage()).toBe(1);
-
-      component.currentPage.set(component.totalPages());
-      component.nextPage();
-      expect(component.currentPage()).toBe(component.totalPages());
-    });
+    // second click: descending
+    component.setSort(1);
+    expect(component.sortDirection()).toBe('desc');
+    sorted = component.sorted();
+    expect(sorted[0].data[1].value).toBe('30');
   });
 
-  describe('template handling', () => {
-    let idTemplateRef: TemplateRef<{ $implicit: TestItem }>;
-    let nameTemplateRef: TemplateRef<{ $implicit: TestItem }>;
+  it('paginates rows correctly', () => {
+    const manyRows: AgridataTableData[] = Array.from({ length: 5 }, (_, i) => ({
+      data: [{ header: 'Col', value: `row${i}` }],
+      highlighted: false,
+      actions: [],
+    }));
+    component.pageSize = 2;
+    component.data = manyRows;
 
-    beforeEach(() => {
-      idTemplateRef = {} as TemplateRef<{ $implicit: TestItem }>;
-      nameTemplateRef = {} as TemplateRef<{ $implicit: TestItem }>;
+    expect(component.totalPages()).toBe(3);
+    expect(component.paginated().length).toBe(2);
 
-      // Set up mock cell templates that would normally be injected via ContentChildren
-      const mockDirectives = [
-        { column: 'id' as keyof TestItem, template: idTemplateRef },
-        { column: 'name' as keyof TestItem, template: nameTemplateRef },
-      ] as CellTemplateDirective<TestItem>[];
+    component.nextPage();
+    expect(component.paginated().length).toBe(2);
 
-      // Mock the QueryList that would be populated by ContentChildren
-      component.cellTemplates = {
-        find: jest.fn((predicate) => mockDirectives.find(predicate)),
-      } as unknown as QueryList<CellTemplateDirective<TestItem>>;
-    });
+    component.nextPage();
+    expect(component.paginated().length).toBe(1);
 
-    it('should return the correct template when it exists for a column', () => {
-      const idTemplate = component.getTemplate('id');
-      const nameTemplate = component.getTemplate('name');
+    component.prevPage();
+    expect(component.paginated().length).toBe(2);
+  });
 
-      expect(idTemplate).toBe(idTemplateRef);
-      expect(nameTemplate).toBe(nameTemplateRef);
-    });
+  it('returns template for existing header', () => {
+    const template = {
+      header: 'Name',
+      template: {} as TemplateRef<{ $implicit: AgridataTableData }>,
+    };
 
-    it('should return null when a column template does not exist', () => {
-      const nonExistentTemplate = component.getTemplate('status' as keyof TestItem);
+    const queryList = new QueryList<CellTemplateDirective>();
+    queryList.reset([template]);
+    component.cellTemplates = queryList;
 
-      expect(nonExistentTemplate).toBeNull();
-    });
+    const result = component.getTemplate('Name');
+    expect(result).toBe(template.template);
   });
 });

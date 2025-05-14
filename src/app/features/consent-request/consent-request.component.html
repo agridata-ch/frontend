@@ -3,20 +3,15 @@
 } @else {
   <h2>Freigaben</h2>
   <app-consent-request-filter (onClick)="setStateFilter($event)"></app-consent-request-filter>
-  <app-agridata-table
-    [data]="requests()"
-    [actions]="actions()"
-    defaultSortColumn="Status"
-    defaultSortDirection="desc"
-  >
+  <app-agridata-table [data]="requests()" defaultSortColumn="Status" defaultSortDirection="desc">
     <ng-template stCell="Status" let-item>
       <span
         class="px-2 py-1 rounded text-xs"
-        [class.bg-cyan-50]="item.Status === 'OPENED'"
-        [class.bg-green-100]="item.Status === 'GRANTED'"
-        [class.bg-red-100]="item.Status === 'DECLINED'"
+        [class.bg-cyan-50]="getCellValue(item, 'Status') === 'OPENED'"
+        [class.bg-green-100]="getCellValue(item, 'Status') === 'GRANTED'"
+        [class.bg-red-100]="getCellValue(item, 'Status') === 'DECLINED'"
       >
-        {{ item.Status }}
+        {{ getCellValue(item, 'Status') }}
       </span>
     </ng-template>
   </app-agridata-table>
