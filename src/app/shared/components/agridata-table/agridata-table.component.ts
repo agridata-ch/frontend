@@ -13,10 +13,21 @@ import { TableActionsComponent, ActionDTO } from './table-actions/table-actions.
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
+export interface AgridataTableCell {
+  header: string;
+  value: string;
+}
+
+export interface AgridataTableData {
+  data: AgridataTableCell[];
+  highlighted?: boolean;
+  actions: ActionDTO[];
+}
+
 @Directive({ selector: '[stCell]' })
-export class CellTemplateDirective<T> {
-  @Input('stCell') column!: keyof T;
-  constructor(public template: TemplateRef<{ $implicit: T }>) {}
+export class CellTemplateDirective {
+  @Input('stCell') header!: string;
+  constructor(public template: TemplateRef<{ $implicit: AgridataTableData }>) {}
 }
 
 @Component({
@@ -25,40 +36,41 @@ export class CellTemplateDirective<T> {
   templateUrl: './agridata-table.component.html',
   styleUrl: './agridata-table.component.css',
 })
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class AgridataTableComponent<T extends Record<string, any>> {
-  private readonly _data = signal<T[]>([]);
-  readonly sortColumn = signal<keyof T | ''>('');
+export class AgridataTableComponent {
+  private readonly _data = signal<AgridataTableData[]>([]);
+  readonly sortColumnIndex = signal<number | null>(null);
   readonly sortDirection = signal<'asc' | 'desc'>('desc');
   readonly currentPage = signal(1);
   readonly iconSortUp = faArrowUp;
   readonly iconSortDown = faArrowDown;
 
-  @Input() defaultSortColumn: keyof T | '' = '';
+  @Input() defaultSortColumn: string = '';
   @Input() defaultSortDirection: 'asc' | 'desc' = 'desc';
-  @Input() set data(value: T[] | null) {
-    this._data.set(value ?? []);
+  @Input() set data(value: AgridataTableData[] | null) {
+    const rows = value ?? [];
+    this._data.set(rows);
     this.currentPage.set(1);
-    this.sortColumn.set(this.defaultSortColumn);
+    const headers = rows.length ? rows[0].data.map((c) => c.header) : [];
+    const idx = this.defaultSortColumn ? headers.indexOf(this.defaultSortColumn) : -1;
+    this.sortColumnIndex.set(idx >= 0 ? idx : null);
     this.sortDirection.set(this.defaultSortDirection);
   }
   @Input() pageSize = 10;
-  @Input() actions: ActionDTO[] = [];
-  @ContentChildren(CellTemplateDirective) cellTemplates!: QueryList<CellTemplateDirective<T>>;
+  @ContentChildren(CellTemplateDirective) cellTemplates!: QueryList<CellTemplateDirective>;
 
-  readonly columns = computed<(keyof T)[]>(() => {
-    const arr = this._data();
-    return arr.length ? (Object.keys(arr[0]) as (keyof T)[]) : [];
+  readonly headers = computed<string[]>(() => {
+    const rows = this._data();
+    return rows.length ? rows[0].data.map((cell) => cell.header) : [];
   });
 
   readonly sorted = computed(() => {
-    const arr = [...this._data()];
-    const col = this.sortColumn();
-    if (!col) return arr;
+    const rows = [...this._data()];
+    const idx = this.sortColumnIndex();
+    if (idx === null) return rows;
     const dir = this.sortDirection();
-    return arr.sort((a, b) => {
-      const aV = String(a[col] ?? '');
-      const bV = String(b[col] ?? '');
+    return rows.sort((a, b) => {
+      const aV = a.data[idx]?.value ?? '';
+      const bV = b.data[idx]?.value ?? '';
       return dir === 'asc' ? aV.localeCompare(bV) : bV.localeCompare(aV);
     });
   });
@@ -71,17 +83,12 @@ export class AgridataTableComponent<T extends Record<string, any>> {
   readonly totalPages = computed(() => Math.max(1, Math.ceil(this._data().length / this.pageSize)));
   readonly showPagination = computed(() => this.totalPages() > 1);
 
-  getTemplate(col: keyof T): TemplateRef<{ $implicit: T }> | null {
-    const dir = this.cellTemplates.find((t) => t.column === col);
-    return dir ? dir.template : null;
-  }
-
-  setSort(col: keyof T) {
-    if (this.sortColumn() === col) {
+  setSort(colIndex: number) {
+    if (this.sortColumnIndex() === colIndex) {
       this.sortDirection.update((d) => (d === 'asc' ? 'desc' : 'asc'));
     } else {
-      this.sortColumn.set(col);
-      this.sortDirection.set('desc');
+      this.sortColumnIndex.set(colIndex);
+      this.sortDirection.set('asc');
     }
     this.currentPage.set(1);
   }
@@ -92,5 +99,10 @@ export class AgridataTableComponent<T extends Record<string, any>> {
 
   nextPage() {
     this.currentPage.update((p) => Math.min(this.totalPages(), p + 1));
+  }
+
+  getTemplate(header: string): TemplateRef<{ $implicit: AgridataTableData }> | null {
+    const tpl = this.cellTemplates.find((t) => t.header === header);
+    return tpl ? tpl.template : null;
   }
 }
