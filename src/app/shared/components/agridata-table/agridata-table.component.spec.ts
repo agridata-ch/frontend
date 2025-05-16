@@ -6,7 +6,7 @@ import {
 } from '@/app/shared/components/agridata-table/agridata-table.component';
 import { QueryList, TemplateRef } from '@angular/core';
 
-describe('AgridataTableComponent (Jest)', () => {
+describe('AgridataTableComponent', () => {
   let component: AgridataTableComponent;
   let fixture: ComponentFixture<AgridataTableComponent>;
 
@@ -43,6 +43,11 @@ describe('AgridataTableComponent (Jest)', () => {
   });
 
   it('infers headers from provided data', () => {
+    component.data = null;
+    expect(component.headers()).toEqual([]);
+  });
+
+  it('infers headers from provided data', () => {
     component.data = sampleData;
     expect(component.headers()).toEqual(['Name', 'Age']);
   });
@@ -69,6 +74,12 @@ describe('AgridataTableComponent (Jest)', () => {
     expect(component.sortDirection()).toBe('desc');
     sorted = component.sorted();
     expect(sorted[0].data[1].value).toBe('30');
+
+    // third click: back to ascending
+    component.setSort(1);
+    expect(component.sortDirection()).toBe('asc');
+    sorted = component.sorted();
+    expect(sorted[0].data[1].value).toBe('20');
   });
 
   it('paginates rows correctly', () => {
@@ -93,6 +104,14 @@ describe('AgridataTableComponent (Jest)', () => {
     expect(component.paginated().length).toBe(2);
   });
 
+  it('returns null for non-existing header', () => {
+    const queryList = new QueryList<CellTemplateDirective>();
+    queryList.reset([]);
+    component.cellTemplates = queryList;
+    const result = component.getTemplate('NonExistingHeader');
+    expect(result).toBeNull();
+  });
+
   it('returns template for existing header', () => {
     const template = {
       header: 'Name',
@@ -105,5 +124,32 @@ describe('AgridataTableComponent (Jest)', () => {
 
     const result = component.getTemplate('Name');
     expect(result).toBe(template.template);
+  });
+
+  it('should format values correctly', () => {
+    // format null
+    const nullValue = null;
+    const formattedNull = component.formatValue(nullValue);
+    expect(formattedNull).toBe('');
+
+    // format number
+    const number = 123456789;
+    const formattedNumber = component.formatValue(number);
+    expect(formattedNumber).toBe(123456789);
+
+    // format string
+    const string = 'my string';
+    const formattedString = component.formatValue(string);
+    expect(formattedString).toBe(string);
+
+    // format date
+    const date = new Date('2023-10-01T12:00:00Z');
+    const formattedDate = component.formatValue(date);
+    expect(formattedDate).toBe('01.10.2023');
+
+    // format iso date string
+    const isoDateString = '2023-10-01T12:00:00Z';
+    const formattedIsoDateString = component.formatValue(isoDateString);
+    expect(formattedIsoDateString).toBe('01.10.2023');
   });
 });

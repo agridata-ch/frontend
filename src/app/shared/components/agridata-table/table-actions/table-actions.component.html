@@ -14,7 +14,7 @@
     <fa-icon [icon]="iconEllipsis" />
   </button>
   @if (isOpen()) {
-    <div class="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg">
+    <div class="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
       <ul>
         @for (action of actions; track action.label) {
           <li
