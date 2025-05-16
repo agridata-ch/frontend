@@ -43,13 +43,17 @@ export class ConsentRequestComponent {
           { header: 'Datenantrag', value: req.dataRequest?.descriptionDe ?? '' },
           {
             header: 'Antragsdatum',
-            value: req.requestDate ? this.dateFormatter.format(new Date(req.requestDate)) : '',
+            value: req.requestDate ?? '',
           },
           { header: 'Status', value: req.state ?? '' },
         ],
         highlighted: req.state === 'OPENED',
         actions: this.getFilteredActions(req.state),
       }));
+  });
+  readonly totalOpenRequests: Signal<number> = computed(() => {
+    // return count for requests with state 'OPENED'
+    return this.consentRequestResult.value().filter((r) => r.state === 'OPENED').length;
   });
 
   private getFilteredActions = (state: string | undefined): ActionDTO[] => {

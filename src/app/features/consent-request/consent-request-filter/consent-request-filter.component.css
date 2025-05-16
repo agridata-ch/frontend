@@ -1,4 +1,5 @@
 .consent-filter-button {
+  font-size: var(--text-sm);
   border-radius: var(--radius-4xl);
   background-color: white;
 }

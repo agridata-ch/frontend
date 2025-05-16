@@ -12,6 +12,7 @@ import {
 import { TableActionsComponent, ActionDTO } from './table-actions/table-actions.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { compareAsc, compareDesc, format, isValid, parseISO } from 'date-fns';
 
 export interface AgridataTableCell {
   header: string;
@@ -68,10 +69,23 @@ export class AgridataTableComponent {
     const idx = this.sortColumnIndex();
     if (idx === null) return rows;
     const dir = this.sortDirection();
+
     return rows.sort((a, b) => {
-      const aV = a.data[idx]?.value ?? '';
-      const bV = b.data[idx]?.value ?? '';
-      return dir === 'asc' ? aV.localeCompare(bV) : bV.localeCompare(aV);
+      const aVal = a.data[idx]?.value;
+      const bVal = b.data[idx]?.value;
+
+      // Try parsing both as ISO dates
+      const dateA = parseISO(aVal);
+      const dateB = parseISO(bVal);
+      const bothDates = isValid(dateA) && isValid(dateB);
+
+      if (bothDates) {
+        // compareAsc/compareDesc return negative/positive/zero
+        return dir === 'asc' ? compareAsc(dateA, dateB) : compareDesc(dateA, dateB);
+      }
+
+      // Fallback to string comparison
+      return dir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
     });
   });
 
@@ -104,5 +118,21 @@ export class AgridataTableComponent {
   getTemplate(header: string): TemplateRef<{ $implicit: AgridataTableData }> | null {
     const tpl = this.cellTemplates.find((t) => t.header === header);
     return tpl ? tpl.template : null;
+  }
+
+  formatValue(value: unknown) {
+    if (value === null || value === undefined) return '';
+    if (typeof value === 'number') return value;
+    // check if value is a real Date object (return false for iso date strings)
+    if (value instanceof Date && isValid(value)) {
+      return format(value, 'dd.MM.yyyy');
+    }
+
+    // check if value is a string that can be parsed as a date (for example if it's in ISO format)
+    const parsedDate = parseISO(value as string);
+    if (isValid(parsedDate)) {
+      return format(parsedDate, 'dd.MM.yyyy');
+    }
+    return value;
   }
 }

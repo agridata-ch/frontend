@@ -42,7 +42,7 @@
                 </ng-container>
               } @else {
                 <div class="agridata-table-ellipsis-cell w-auto" [title]="column.value">
-                  {{ column.value }}
+                  {{ formatValue(column.value) }}
                 </div>
               }
             </td>

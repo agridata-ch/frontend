@@ -2,8 +2,15 @@
   <div>Loading…</div>
 } @else {
   <h2>Freigaben</h2>
-  <app-consent-request-filter (onClick)="setStateFilter($event)"></app-consent-request-filter>
-  <app-agridata-table [data]="requests()" defaultSortColumn="Status" defaultSortDirection="desc">
+  <app-consent-request-filter
+    (onClick)="setStateFilter($event)"
+    [indicatorValue]="totalOpenRequests()"
+  ></app-consent-request-filter>
+  <app-agridata-table
+    [data]="requests()"
+    defaultSortColumn="Antragsdatum"
+    defaultSortDirection="desc"
+  >
     <ng-template stCell="Status" let-item>
       <span
         class="px-2 py-1 rounded text-xs"

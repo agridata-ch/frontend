@@ -8,6 +8,13 @@
     >
       <span>
         {{ filter.label }}
+        @if (filter.value === 'OPENED') {
+          <span
+            class="text-agridata-secondary-text bg-agridata-content-gray size-3 rounded-full px-2"
+          >
+            {{ indicatorValue }}
+          </span>
+        }
       </span>
     </button>
   }
