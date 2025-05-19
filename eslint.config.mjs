@@ -14,7 +14,7 @@ export default defineConfig([
       'node_modules/*',
       'coverage/*',
       'dist/*',
-      'src/app/shared/openapi/*',
+      'src/shared/api/openapi/*',
     ],
   },
   tseslint.configs.recommended,

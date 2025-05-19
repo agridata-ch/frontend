@@ -4,8 +4,10 @@
  */
 
 import type { Config } from 'jest';
+import { createCjsPreset } from 'jest-preset-angular/presets';
 
 const config: Config = {
+  ...createCjsPreset(),
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -28,7 +30,7 @@ const config: Config = {
   coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
-  coveragePathIgnorePatterns: ['/node_modules/', 'app/shared/openapi'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'shared/api/openapi'],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: 'v8',
@@ -85,6 +87,12 @@ const config: Config = {
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@app/(.*)$': '<rootDir>/src/app/$1',
+    '^@pages/(.*)$': '<rootDir>/src/pages/$1',
+    '^@widgets/(.*)$': '<rootDir>/src/widgets/$1',
+    '^@features/(.*)$': '<rootDir>/src/features/$1',
+    '^@entities/(.*)$': '<rootDir>/src/entities/$1',
+    '^@shared/(.*)$': '<rootDir>/src/shared/$1',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -132,7 +140,7 @@ const config: Config = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  // setupFilesAfterEnv: [],
+  setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,

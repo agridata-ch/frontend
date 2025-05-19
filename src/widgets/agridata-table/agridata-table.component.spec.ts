@@ -3,7 +3,7 @@ import {
   AgridataTableComponent,
   AgridataTableData,
   CellTemplateDirective,
-} from '@/app/shared/components/agridata-table/agridata-table.component';
+} from './agridata-table.component';
 import { QueryList, TemplateRef } from '@angular/core';
 
 describe('AgridataTableComponent', () => {

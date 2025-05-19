@@ -2,16 +2,16 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Resource, signal, NO_ERRORS_SCHEMA } from '@angular/core';
 
-import { ConsentRequestComponent } from './consent-request.component';
-import { ConsentRequestService } from './consent-request.service';
-import { ConsentRequest } from '@/app/shared/openapi/model/models';
+import { ConsentRequestProducerPage } from './consent-request-producer.page';
+import { ConsentRequestService } from '@pages/consent-request-producer/api/consent-request.service';
+import { ConsentRequest as ConsentRequestDTO } from '@shared/api/openapi/model/models';
 
-describe('ConsentRequestComponent', () => {
-  let fixture: ComponentFixture<ConsentRequestComponent>;
-  let component: ConsentRequestComponent;
+describe('ConsentRequestProducerPage', () => {
+  let fixture: ComponentFixture<ConsentRequestProducerPage>;
+  let component: ConsentRequestProducerPage;
   let mockService: Partial<ConsentRequestService>;
   let reloadSpy: jest.Mock;
-  const sample: ConsentRequest[] = [
+  const sample: ConsentRequestDTO[] = [
     {
       dataProducerUid: 'u1',
       dataRequest: { descriptionDe: 'D1' },
@@ -33,7 +33,7 @@ describe('ConsentRequestComponent', () => {
   ];
 
   beforeEach(waitForAsync(() => {
-    const stubResource: Partial<Resource<ConsentRequest[]>> = {
+    const stubResource: Partial<Resource<ConsentRequestDTO[]>> = {
       value: signal(sample),
       reload: jest.fn(),
     };
@@ -41,16 +41,16 @@ describe('ConsentRequestComponent', () => {
     reloadSpy = stubResource.reload as jest.Mock;
 
     mockService = {
-      consentRequests: stubResource as Resource<ConsentRequest[]>,
+      consentRequests: stubResource as Resource<ConsentRequestDTO[]>,
     };
 
     TestBed.configureTestingModule({
-      imports: [ConsentRequestComponent],
+      imports: [ConsentRequestProducerPage],
       providers: [{ provide: ConsentRequestService, useValue: mockService }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ConsentRequestComponent);
+    fixture = TestBed.createComponent(ConsentRequestProducerPage);
     component = fixture.componentInstance;
   }));
 
@@ -79,5 +79,29 @@ describe('ConsentRequestComponent', () => {
   it('getCellValue returns empty string if header missing', () => {
     const rows = component.requests();
     expect(component.getCellValue(rows[0], 'NonExistent')).toBe('');
+  });
+
+  it('should return the correct value for totalOpenRequests', () => {
+    const totalOpenRequests = component.totalOpenRequests();
+    expect(totalOpenRequests).toBe(1);
+  });
+
+  it('should return correct actions for getFilteredActions with given value', () => {
+    const actions = component.getFilteredActions('OPENED');
+    expect(actions).toEqual([
+      { label: 'Details', callback: expect.any(Function) },
+      { label: 'Einwilligen', callback: expect.any(Function), isMainAction: true },
+      { label: 'Ablehnen', callback: expect.any(Function) },
+    ]);
+  });
+
+  it('should return correct actions for getFilteredActions with no given value', () => {
+    const actions = component.getFilteredActions();
+    expect(actions).toEqual([
+      { label: 'Details', callback: expect.any(Function) },
+      { label: 'Einwilligen', callback: expect.any(Function), isMainAction: true },
+      { label: 'Ablehnen', callback: expect.any(Function) },
+      { label: 'Zurückziehen', callback: expect.any(Function) },
+    ]);
   });
 });
