@@ -1,3 +1,9 @@
+## [1.0.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2025-05-19)
+
+### Features
+
+- **layout:** add default layout components ([77754bf](https://github.com/agridata-ch/frontend/commit/77754bf41d5bf8823ab9dc0d25ef7ea7ecdb8125)), closes [DIGIB2-428](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-428)
+
 ## 1.0.0-rc.1 (2025-05-13)
 
 ### Features
