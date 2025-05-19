@@ -3,7 +3,9 @@
     <button
       (click)="handleClick(filter.value)"
       (keydown.enter)="handleClick(filter.value)"
-      class="button-secondary consent-filter-button {{ isSelected(filter.value) && 'selected' }}"
+      class="agridata-button button-secondary consent-filter-button {{
+        isSelected(filter.value) && 'selected'
+      }}"
       tabindex="0"
     >
       <span>

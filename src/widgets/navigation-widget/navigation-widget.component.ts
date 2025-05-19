@@ -1,0 +1,21 @@
+import { Component, computed, signal } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faFile } from '@fortawesome/free-regular-svg-icons';
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+
+@Component({
+  selector: 'app-navigation-widget',
+  imports: [RouterLink, RouterLinkActive, FontAwesomeModule],
+  templateUrl: './navigation-widget.component.html',
+  styleUrl: './navigation-widget.component.css',
+})
+export class NavigationWidgetComponent {
+  readonly isNavigationOpen = signal(false);
+  readonly chevronIcon = computed(() => (this.isNavigationOpen() ? faChevronLeft : faChevronRight));
+  readonly navigationItems = [{ label: 'Freigaben', icon: faFile, route: '/consent-requests' }];
+
+  readonly toggleNavigation = () => {
+    this.isNavigationOpen.update((prev) => !prev);
+  };
+}

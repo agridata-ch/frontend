@@ -9,14 +9,17 @@ import {
 } from '@widgets/agridata-table/agridata-table.component';
 import { ActionDTO } from '@widgets/agridata-table/table-actions/table-actions.component';
 import { ConsentRequestFilterComponent } from './consent-request-filter/consent-request-filter.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faFile } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-consent-request-producer-page',
   imports: [
+    CommonModule,
     ConsentRequestFilterComponent,
     AgridataTableComponent,
     CellTemplateDirective,
-    CommonModule,
+    FontAwesomeModule,
   ],
   templateUrl: './consent-request-producer.page.html',
   styleUrl: './consent-request-producer.page.css',
@@ -26,6 +29,7 @@ export class ConsentRequestProducerPage {
     this.consentRequestResult = this.consentRequestService.consentRequests;
   }
 
+  readonly fileIcon = faFile;
   readonly consentRequestResult!: Resource<ConsentRequest[]>;
   readonly dateFormatter = Intl.DateTimeFormat('de-DE', {
     dateStyle: 'medium',

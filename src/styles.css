@@ -19,6 +19,8 @@
   --color-agridata-secondary-text: #46596b;
   --color-agridata-tertiary-text: #62748e;
 
+  --color-agridata-stroke: #ededed;
+  --color-agridata-background-page: #ededed;
   --color-agridata-content-gray: #f1f5f9;
 }
 
@@ -42,56 +44,55 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 0;
   font-weight: bold;
-  color: inherit; /* inherit from body or container */
   line-height: 1.2;
 }
 
 /* Your “default” h2 style */
 h2 {
   font-size: 1.5rem; /* ~24px at base 16px font */
-  margin-top: 1.5rem; /* space above */
-  margin-bottom: 1rem; /* space below */
 }
 
 button {
-  border: 1px solid;
-  border-radius: 0.375rem; /* ~6px */
-  padding: 0.5rem 1rem; /* ~8px top/bottom, ~16px left/right */
   cursor: pointer;
   outline-color: var(--color-gray-900);
   outline-offset: 0.125rem;
 }
 
-button.button-primary {
+.agridata-button {
+  border: 1px solid;
+  border-radius: 0.375rem; /* ~6px */
+  padding: 0.5rem 1rem; /* ~8px top/bottom, ~16px left/right */
+}
+
+.agridata-button.button-primary {
   color: white;
   border-color: var(--color-blue-500);
   background-color: var(--color-blue-500);
 }
 
-button.button-primary:hover {
+.agridata-button.button-primary:hover {
   background-color: var(--color-blue-400);
   border-color: var(--color-blue-400);
 }
 
-button.button-primary-accept {
+.agridata-button.button-primary-accept {
   color: white;
   border-color: var(--color-green-600);
   background-color: var(--color-green-600);
 }
 
-button.button-primary-accept:hover {
+.agridata-button.button-primary-accept:hover {
   background-color: var(--color-green-500);
   border-color: var(--color-green-500);
 }
 
-button.button-secondary {
+.agridata-button.button-secondary {
   color: var(--color-agridata-primary-600);
   border-color: var(--color-agridata-primary-600);
   background-color: transparent;
 }
 
-button.button-secondary:hover {
+.agridata-button.button-secondary:hover {
   border-color: var(--color-blue-400);
 }
