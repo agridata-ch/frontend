@@ -1,28 +1,27 @@
-import { Component, computed, Injectable, Resource, Signal, signal } from '@angular/core';
-import { ConsentRequestService } from './consent-request.service';
-import { ConsentRequest } from '@/app/shared/openapi/model/models';
+import { Component, computed, Resource, Signal, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ConsentRequestService } from '@pages/consent-request-producer/api/consent-request.service';
+import { ConsentRequest } from '@/shared/api/openapi/model/models';
 import {
   AgridataTableComponent,
   AgridataTableData,
   CellTemplateDirective,
-} from '@/app/shared/components/agridata-table/agridata-table.component';
-import { ActionDTO } from '@/app/shared/components/agridata-table/table-actions/table-actions.component';
+} from '@widgets/agridata-table/agridata-table.component';
+import { ActionDTO } from '@widgets/agridata-table/table-actions/table-actions.component';
 import { ConsentRequestFilterComponent } from './consent-request-filter/consent-request-filter.component';
-import { CommonModule } from '@angular/common';
 
-@Injectable({ providedIn: 'root' })
 @Component({
-  selector: 'app-consent-request',
+  selector: 'app-consent-request-producer-page',
   imports: [
     ConsentRequestFilterComponent,
     AgridataTableComponent,
     CellTemplateDirective,
     CommonModule,
   ],
-  templateUrl: './consent-request.component.html',
-  styleUrl: './consent-request.component.css',
+  templateUrl: './consent-request-producer.page.html',
+  styleUrl: './consent-request-producer.page.css',
 })
-export class ConsentRequestComponent {
+export class ConsentRequestProducerPage {
   constructor(private readonly consentRequestService: ConsentRequestService) {
     this.consentRequestResult = this.consentRequestService.consentRequests;
   }
@@ -52,11 +51,10 @@ export class ConsentRequestComponent {
       }));
   });
   readonly totalOpenRequests: Signal<number> = computed(() => {
-    // return count for requests with state 'OPENED'
     return this.consentRequestResult.value().filter((r) => r.state === 'OPENED').length;
   });
 
-  private getFilteredActions = (state: string | undefined): ActionDTO[] => {
+  getFilteredActions = (state?: string): ActionDTO[] => {
     const details = {
       label: 'Details',
       callback: () => console.log('Details clicked'),
