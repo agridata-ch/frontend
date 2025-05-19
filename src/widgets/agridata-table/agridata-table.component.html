@@ -60,14 +60,18 @@
         Zeige {{ paginated().length }} von {{ sorted().length }} Einträgen
       </div>
       <div class="flex items-center">
-        <button class="button-secondary" (click)="prevPage()" [disabled]="currentPage() === 1">
+        <button
+          class="agridata-button button-secondary"
+          (click)="prevPage()"
+          [disabled]="currentPage() === 1"
+        >
           <
         </button>
         <span class="mx-2 text-sm text-slate-500"
           >Seite {{ currentPage() }} von {{ totalPages() }}</span
         >
         <button
-          class="button-secondary"
+          class="agridata-button button-secondary"
           (click)="nextPage()"
           [disabled]="currentPage() === totalPages()"
         >

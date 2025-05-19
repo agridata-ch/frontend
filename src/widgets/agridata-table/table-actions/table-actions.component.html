@@ -1,6 +1,10 @@
 <div class="flex flex-row gap-4 justify-end">
   @if (mainAction()) {
-    <button type="button" (click)="handleClick(mainAction()!)" class="button-primary-accept">
+    <button
+      type="button"
+      (click)="handleClick(mainAction()!)"
+      class="agridata-button button-primary-accept"
+    >
       {{ mainAction()?.label }}
     </button>
   }
@@ -9,7 +13,7 @@
     (click)="handleToggle()"
     [attr.aria-expanded]="isOpen()"
     aria-haspopup="menu"
-    class="button-secondary table-action-button"
+    class="agridata-button button-secondary table-action-button"
   >
     <fa-icon [icon]="iconEllipsis" />
   </button>
