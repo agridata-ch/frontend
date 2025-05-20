@@ -1,5 +1,5 @@
-export * from './consentRequestController.service';
-import { ConsentRequestControllerService } from './consentRequestController.service';
-export * from './dataRequestController.service';
-import { DataRequestControllerService } from './dataRequestController.service';
-export const APIS = [ConsentRequestControllerService, DataRequestControllerService];
+export * from './dataConsentResource.service';
+import { DataConsentResourceService } from './dataConsentResource.service';
+export * from './dataRequestResource.service';
+import { DataRequestResourceService } from './dataRequestResource.service';
+export const APIS = [DataConsentResourceService, DataRequestResourceService];

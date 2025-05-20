@@ -8,7 +8,7 @@ import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 })
 export class ConsentRequestFilterComponent {
   @Input() indicatorValue: number | null = null;
-  @Output() onClick = new EventEmitter<(string | null)[]>();
+  @Output() onClick = new EventEmitter<string | null>();
 
   readonly filterOptions = [
     { label: 'Alle', value: null },
@@ -16,30 +16,17 @@ export class ConsentRequestFilterComponent {
     { label: 'Abgelehnt', value: 'DECLINED' },
     { label: 'Genehmigt', value: 'GRANTED' },
   ];
-  readonly selectedValues = signal<(string | null)[]>([]);
+  readonly selectedValue = signal<string | null>(null);
 
   handleClick(value: string | null) {
-    let newValues = [...this.selectedValues()];
-    if (value === null) {
-      newValues = [];
-    } else if (newValues.includes(value)) {
-      newValues = newValues.filter((v) => v !== value);
-    } else {
-      newValues.push(value);
+    if (this.selectedValue() === value) {
+      value = null;
     }
-
-    if (newValues.length === this.selectedValues().length) {
-      return;
-    }
-
-    this.selectedValues.set(newValues);
-    this.onClick.emit(newValues);
+    this.selectedValue.set(value);
+    this.onClick.emit(value);
   }
 
   isSelected(value: string | null): boolean {
-    if (value === null) {
-      return this.selectedValues().length === 0;
-    }
-    return this.selectedValues().includes(value);
+    return this.selectedValue() === value;
   }
 }

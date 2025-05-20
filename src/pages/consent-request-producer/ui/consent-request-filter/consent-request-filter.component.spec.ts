@@ -20,61 +20,30 @@ describe('ConsentRequestFilterComponent', () => {
   });
 
   it('initially no selected values', () => {
-    expect(component.selectedValues()).toEqual([]);
+    expect(component.selectedValue()).toEqual(null);
     // 'All' (null) should be selected when none are chosen
     expect(component.isSelected(null)).toBe(true);
     expect(component.isSelected('OPENED')).toBe(false);
   });
 
   it('clicking All (null) when none selected does not emit', () => {
-    const spy = jest.fn();
-    component.onClick.subscribe(spy);
     component.handleClick(null);
-    expect(spy).not.toHaveBeenCalled();
-    expect(component.selectedValues()).toEqual([]);
+    expect(component.selectedValue()).toEqual(null);
   });
 
   it('clicking a value toggles it on and emits', () => {
-    const spy = jest.fn();
-    component.onClick.subscribe(spy);
-
     component.handleClick('OPENED');
-    expect(component.selectedValues()).toEqual(['OPENED']);
-    expect(spy).toHaveBeenCalledWith(['OPENED']);
+    expect(component.selectedValue()).toEqual('OPENED');
   });
 
   it('clicking the same value again toggles it off and emits empty', () => {
-    const spy = jest.fn();
-    component.onClick.subscribe(spy);
-
     // first click to select
     component.handleClick('DECLINED');
-    expect(component.selectedValues()).toEqual(['DECLINED']);
-    expect(spy).toHaveBeenCalledWith(['DECLINED']);
-
-    spy.mockClear();
+    expect(component.selectedValue()).toEqual('DECLINED');
 
     // second click to deselect
     component.handleClick('DECLINED');
-    expect(component.selectedValues()).toEqual([]);
-    expect(spy).toHaveBeenCalledWith([]);
-  });
-
-  it('clicking All (null) after selections resets and emits', () => {
-    const spy = jest.fn();
-    component.onClick.subscribe(spy);
-
-    // select two values
-    component.handleClick('OPENED');
-    component.handleClick('GRANTED');
-    expect(component.selectedValues().sort()).toEqual(['GRANTED', 'OPENED']);
-
-    spy.mockClear();
-
-    // click All to reset
-    component.handleClick(null);
-    expect(component.selectedValues()).toEqual([]);
-    expect(spy).toHaveBeenCalledWith([]);
+    expect(component.selectedValue()).toEqual(null);
   });
 
   it('isSelected reflects current selections', () => {

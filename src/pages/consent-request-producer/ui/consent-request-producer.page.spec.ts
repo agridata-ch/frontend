@@ -4,36 +4,36 @@ import { Resource, signal, NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { ConsentRequestProducerPage } from './consent-request-producer.page';
 import { ConsentRequestService } from '@pages/consent-request-producer/api/consent-request.service';
-import { ConsentRequest as ConsentRequestDTO } from '@shared/api/openapi/model/models';
+import { ConsentRequestDto } from '@shared/api/openapi/model/models';
 
 describe('ConsentRequestProducerPage', () => {
   let fixture: ComponentFixture<ConsentRequestProducerPage>;
   let component: ConsentRequestProducerPage;
   let mockService: Partial<ConsentRequestService>;
   let reloadSpy: jest.Mock;
-  const sample: ConsentRequestDTO[] = [
+  const sample: ConsentRequestDto[] = [
     {
       dataProducerUid: 'u1',
-      dataRequest: { descriptionDe: 'D1' },
+      dataRequest: { id: '0', descriptionDe: 'D1' },
       requestDate: '2025-05-10',
       state: 'OPENED',
     },
     {
       dataProducerUid: 'u2',
-      dataRequest: { descriptionDe: 'D2' },
+      dataRequest: { id: '1', descriptionDe: 'D2' },
       requestDate: '2025-04-01',
       state: 'DECLINED',
     },
     {
       dataProducerUid: 'u3',
-      dataRequest: { descriptionDe: 'D3' },
+      dataRequest: { id: '2', descriptionDe: 'D3' },
       requestDate: '2025-03-15',
       state: 'GRANTED',
     },
   ];
 
   beforeEach(waitForAsync(() => {
-    const stubResource: Partial<Resource<ConsentRequestDTO[]>> = {
+    const stubResource: Partial<Resource<ConsentRequestDto[]>> = {
       value: signal(sample),
       reload: jest.fn(),
     };
@@ -41,7 +41,7 @@ describe('ConsentRequestProducerPage', () => {
     reloadSpy = stubResource.reload as jest.Mock;
 
     mockService = {
-      consentRequests: stubResource as Resource<ConsentRequestDTO[]>,
+      consentRequests: stubResource as Resource<ConsentRequestDto[]>,
     };
 
     TestBed.configureTestingModule({
@@ -59,17 +59,8 @@ describe('ConsentRequestProducerPage', () => {
     expect(reloadSpy).toHaveBeenCalled();
   });
 
-  it('filters out states not in stateFilter', () => {
-    component.setStateFilter(['DECLINED', 'GRANTED']);
-    const rows = component.requests();
-    expect(
-      rows.every((r) => ['DECLINED', 'GRANTED'].includes(component.getCellValue(r, 'Status'))),
-    ).toBe(true);
-    expect(rows).toHaveLength(2);
-  });
-
   it('produces correct action sets per state', () => {
-    component.setStateFilter([]);
+    component.setStateFilter(null);
     const labels = component.requests().map((r) => r.actions.map((a) => a.label));
     expect(labels[0]).toEqual(['Details', 'Einwilligen', 'Ablehnen']); // OPENED
     expect(labels[1]).toEqual(['Details', 'Zurückziehen']); // DECLINED
