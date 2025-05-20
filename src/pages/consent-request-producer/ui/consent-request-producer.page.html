@@ -1,7 +1,7 @@
 @if (consentRequestResult.isLoading()) {
 <div>Loading…</div>
 } @else {
-<h2 class="mb-6"><fa-icon [icon]="fileIcon" class="mr-3" />Freigaben</h2>
+<h2 class="mb-12"><fa-icon [icon]="fileIcon" class="mr-3" />Freigaben</h2>
 <app-consent-request-filter
   (onClick)="setStateFilter($event)"
   [indicatorValue]="totalOpenRequests()"
