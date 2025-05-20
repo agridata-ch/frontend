@@ -1,3 +1,9 @@
+## [1.0.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.2...v1.0.0-rc.3) (2025-05-20)
+
+### Features
+
+- **router:** add hash routing ([93dc129](https://github.com/agridata-ch/frontend/commit/93dc129bfdb19e92251814fb2dbaf7e0885856a8))
+
 ## [1.0.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2025-05-19)
 
 ### Features
