@@ -1,7 +1,7 @@
 import { Component, computed, Resource, Signal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConsentRequestService } from '@pages/consent-request-producer/api/consent-request.service';
-import { ConsentRequest } from '@/shared/api/openapi/model/models';
+import { ConsentRequestDto } from '@/shared/api/openapi/model/models';
 import {
   AgridataTableComponent,
   AgridataTableData,
@@ -30,28 +30,28 @@ export class ConsentRequestProducerPage {
   }
 
   readonly fileIcon = faFile;
-  readonly consentRequestResult!: Resource<ConsentRequest[]>;
+  readonly consentRequestResult!: Resource<ConsentRequestDto[]>;
   readonly dateFormatter = Intl.DateTimeFormat('de-DE', {
     dateStyle: 'medium',
   });
-  readonly stateFilter = signal<(string | null)[]>([]);
+  readonly stateFilter = signal<string | null>(null);
   readonly requests: Signal<AgridataTableData[]> = computed(() => {
     const filter = this.stateFilter();
     return this.consentRequestResult
       .value()
-      .filter((r) => !filter.length || filter.includes(r.state!))
-      .map((req: ConsentRequest) => ({
+      .filter((request) => !filter || request.state === filter)
+      .map((request: ConsentRequestDto) => ({
         data: [
-          { header: 'Antragsteller', value: req.dataProducerUid ?? '' },
-          { header: 'Datenantrag', value: req.dataRequest?.descriptionDe ?? '' },
+          { header: 'Antragsteller', value: request.dataRequest?.dataConsumer?.name ?? '' },
+          { header: 'Datenantrag', value: request.dataRequest?.descriptionDe ?? '' },
           {
             header: 'Antragsdatum',
-            value: req.requestDate ?? '',
+            value: request.requestDate ?? '',
           },
-          { header: 'Status', value: req.state ?? '' },
+          { header: 'Status', value: request.state ?? '' },
         ],
-        highlighted: req.state === 'OPENED',
-        actions: this.getFilteredActions(req.state),
+        highlighted: request.state === 'OPENED',
+        actions: this.getFilteredActions(request.state),
       }));
   });
   readonly totalOpenRequests: Signal<number> = computed(() => {
@@ -95,7 +95,7 @@ export class ConsentRequestProducerPage {
     this.consentRequestResult.reload();
   }
 
-  setStateFilter(state: (string | null)[]) {
+  setStateFilter(state: string | null) {
     this.stateFilter.set(state);
   }
 

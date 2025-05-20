@@ -1,44 +1,166 @@
+---
 openapi: 3.1.0
 components:
   schemas:
-    ConsentRequest:
+    ConsentRequestDto:
       type: object
+      description: Data transfer object representing a consent request
       properties:
         id:
           $ref: "#/components/schemas/UUID"
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          description: Unique identifier of the consent request
         dataProducerUid:
           type: string
+          examples:
+          - producer-123
+          description: Unique identifier of the data producer
         state:
-          $ref: "#/components/schemas/ConsentRequestState"
+          $ref: "#/components/schemas/ConsentRequestStateEnum"
+          type: string
+          examples:
+          - PENDING
+          description: Current state of the consent request
         requestDate:
           $ref: "#/components/schemas/LocalDate"
+          type: string
+          examples:
+          - 2025-05-19
+          description: Date when the request was made
         dataRequest:
-          $ref: "#/components/schemas/DataRequest"
-    ConsentRequestState:
+          type: object
+          required:
+          - id
+          description: Details of the underlying data request
+          properties:
+            id:
+              $ref: "#/components/schemas/UUID"
+              type: string
+              examples:
+              - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+              description: Unique identifier of the data request
+            descriptionDe:
+              type: string
+              examples:
+              - Anfrage zu Bodentypen und Bodenqualitaetsdaten
+              description: Description of the data request in German
+            descriptionFr:
+              type: string
+              examples:
+              - Demande de types de sol et de donnees sur la qualite du sol
+              description: Description of the data request in French
+            descriptionIt:
+              type: string
+              examples:
+              - Richiesta di tipi di suolo e dati sulla qualita del suolo
+              description: Description of the data request in Italian
+            purposeDe:
+              type: string
+              examples:
+              - Bewertung der Bodenqualitaet
+              description: Purpose of the data request in German
+            purposeFr:
+              type: string
+              examples:
+              - Evaluation de la qualite du sol
+              description: Purpose of the data request in French
+            purposeIt:
+              type: string
+              examples:
+              - Valutazione della qualita del suolo
+              description: Purpose of the data request in Italian
+            dataConsumer:
+              type: object
+              description: Details of the data consumer making the request
+              properties:
+                name:
+                  type: string
+                  examples:
+                  - LabelOrganisation A
+                  description: Name of the data consumer organization or individual
+    ConsentRequestStateEnum:
       type: string
       enum:
       - GRANTED
       - OPENED
       - DECLINED
-    DataRequest:
+    DataConsumerDto:
       type: object
+      description: Details of the data consumer making the request
+      properties:
+        name:
+          type: string
+          examples:
+          - LabelOrganisation A
+          description: Name of the data consumer organization or individual
+    DataRequestDto:
+      type: object
+      required:
+      - id
+      description: Details of the underlying data request
       properties:
         id:
           $ref: "#/components/schemas/UUID"
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+          description: Unique identifier of the data request
         descriptionDe:
           type: string
+          examples:
+          - Anfrage zu Bodentypen und Bodenqualitaetsdaten
+          description: Description of the data request in German
         descriptionFr:
           type: string
+          examples:
+          - Demande de types de sol et de donnees sur la qualite du sol
+          description: Description of the data request in French
         descriptionIt:
           type: string
+          examples:
+          - Richiesta di tipi di suolo e dati sulla qualita del suolo
+          description: Description of the data request in Italian
         purposeDe:
           type: string
+          examples:
+          - Bewertung der Bodenqualitaet
+          description: Purpose of the data request in German
         purposeFr:
           type: string
+          examples:
+          - Evaluation de la qualite du sol
+          description: Purpose of the data request in French
         purposeIt:
           type: string
-        dataConsumerBur:
+          examples:
+          - Valutazione della qualita del suolo
+          description: Purpose of the data request in Italian
+        dataConsumer:
+          type: object
+          description: Details of the data consumer making the request
+          properties:
+            name:
+              type: string
+              examples:
+              - LabelOrganisation A
+              description: Name of the data consumer organization or individual
+    ExceptionDto:
+      type: object
+      properties:
+        message:
           type: string
+        requestId:
+          type: string
+        type:
+          $ref: "#/components/schemas/ExceptionEnum"
+        debugMessage:
+          type: string
+    ExceptionEnum:
+      type: string
+      enum:
+      - GENERIC
     LocalDate:
       type: string
       format: date
@@ -48,9 +170,17 @@ components:
       type: string
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+tags:
+- name: Data consent resource
+  description: Handles all data const retrieval and creation by the producer
+- name: Data request resource
+  description: Handles all data request retrieval and creation
 paths:
-  /agreement/v1/consent-requests:
+  /api/agreement/v1/consent-requests:
     get:
+      operationId: getConsentRequests
+      tags:
+      - Data consent resource
       responses:
         "200":
           description: OK
@@ -59,12 +189,70 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ConsentRequest"
-      summary: Consent Requests
+                  $ref: "#/components/schemas/ConsentRequestDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Consent Requests
+  /api/agreement/v1/consent-requests/{id}/status:
+    put:
+      operationId: updateConsentRequestStatus
       tags:
-      - Consent Request Controller
-  /agreement/v1/data-requests:
+      - Data consent resource
+      parameters:
+      - description: ID of the consent request
+        required: true
+        name: id
+        in: path
+        schema:
+          $ref: "#/components/schemas/UUID"
+      requestBody:
+        description: New status for the consent request
+        content:
+          application/json:
+            schema:
+              type: string
+              enum:
+              - GRANTED
+              - OPENED
+              - DECLINED
+              examples:
+              - GRANTED
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentRequestDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Update Consent Request Status
+  /api/agreement/v1/data-requests:
     get:
+      operationId: getDataRequests
+      tags:
+      - Data request resource
       responses:
         "200":
           description: OK
@@ -73,10 +261,21 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/DataRequest"
-      summary: Data Requests
-      tags:
-      - Data Request Controller
+                  $ref: "#/components/schemas/DataRequestDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Requests
 info:
-  title: backend API
-  version: 0.0.1-SNAPSHOT
+  title: agridata.ch API
+  version: 1.0.0-rc.2
+  description: This API handles data and consent requests for agridata.ch.

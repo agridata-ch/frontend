@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { DefaultLayoutComponent } from '@app/layout/ui/default-layout.component';
-import { ConsentRequestProducerPage } from '@/pages/consent-request-producer/ui/consent-request-producer.page';
+import { ConsentRequestProducerPage } from '@pages/consent-request-producer/ui/consent-request-producer.page';
+import { NotFoundPage } from '@pages/not-found/not-found.page';
 
 export const routes: Routes = [
   {
@@ -8,8 +9,9 @@ export const routes: Routes = [
     component: DefaultLayoutComponent,
     children: [
       { path: 'consent-requests', component: ConsentRequestProducerPage },
-      // any future "app" pages…
+      { path: 'consent-requests/:id', component: ConsentRequestProducerPage },
       { path: '', redirectTo: 'consent-requests', pathMatch: 'full' },
+      { path: '**', component: NotFoundPage },
     ],
   },
 ];

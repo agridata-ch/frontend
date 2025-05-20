@@ -1,18 +1,18 @@
 import { inject, Injectable, resource, Resource } from '@angular/core';
-import { ConsentRequestControllerService } from '@shared/api/openapi/api/consentRequestController.service';
-import { ConsentRequest } from '@shared/api/openapi/model/models';
+import { DataConsentResourceService } from '@shared/api/openapi/api/dataConsentResource.service';
+import { ConsentRequestDto } from '@shared/api/openapi/model/models';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConsentRequestService {
-  private readonly apiService = inject(ConsentRequestControllerService);
+  private readonly apiService = inject(DataConsentResourceService);
 
-  readonly consentRequests: Resource<ConsentRequest[]> = resource<ConsentRequest[], unknown>({
+  readonly consentRequests: Resource<ConsentRequestDto[]> = resource<ConsentRequestDto[], unknown>({
     request: () => true,
     loader: async () => {
-      const data = await firstValueFrom(this.apiService.agreementV1ConsentRequestsGet());
+      const data = await firstValueFrom(this.apiService.getConsentRequests());
       return data;
     },
     defaultValue: [],
