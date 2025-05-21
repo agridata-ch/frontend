@@ -1,5 +1,17 @@
-import { Component, computed, Resource, Signal, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  Resource,
+  Signal,
+  signal,
+} from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faFile } from '@fortawesome/free-regular-svg-icons';
+
 import { ConsentRequestService } from '@pages/consent-request-producer/api/consent-request.service';
 import { ConsentRequestDto } from '@/shared/api/openapi/model/models';
 import {
@@ -8,26 +20,28 @@ import {
   CellTemplateDirective,
 } from '@widgets/agridata-table/agridata-table.component';
 import { ActionDTO } from '@widgets/agridata-table/table-actions/table-actions.component';
+import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details/consent-request-details.component';
+
 import { ConsentRequestFilterComponent } from './consent-request-filter/consent-request-filter.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFile } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-consent-request-producer-page',
   imports: [
     CommonModule,
+    FontAwesomeModule,
+    CellTemplateDirective,
     ConsentRequestFilterComponent,
     AgridataTableComponent,
-    CellTemplateDirective,
-    FontAwesomeModule,
+    ConsentRequestDetailsComponent,
   ],
   templateUrl: './consent-request-producer.page.html',
   styleUrl: './consent-request-producer.page.css',
 })
 export class ConsentRequestProducerPage {
-  constructor(private readonly consentRequestService: ConsentRequestService) {
-    this.consentRequestResult = this.consentRequestService.consentRequests;
-  }
+  private readonly browserLocation = inject(Location);
+
+  // binds to the route parameter :consentRequestId
+  readonly consentRequestId = input<string>();
 
   readonly fileIcon = faFile;
   readonly consentRequestResult!: Resource<ConsentRequestDto[]>;
@@ -51,17 +65,38 @@ export class ConsentRequestProducerPage {
           { header: 'Status', value: request.state ?? '' },
         ],
         highlighted: request.state === 'OPENED',
-        actions: this.getFilteredActions(request.state),
+        actions: this.getFilteredActions(request),
+        rowAction: this.showConsentRequestDetails.bind(this, request),
       }));
   });
   readonly totalOpenRequests: Signal<number> = computed(() => {
     return this.consentRequestResult.value().filter((r) => r.state === 'OPENED').length;
   });
+  readonly selectedRequest = signal<ConsentRequestDto | null>(null);
 
-  getFilteredActions = (state?: string): ActionDTO[] => {
+  constructor(private readonly consentRequestService: ConsentRequestService) {
+    this.consentRequestResult = this.consentRequestService.consentRequests;
+
+    // effect to open the details view if we visit the page with a consentRequestId in the URL directly
+    effect(() => {
+      if (this.consentRequestResult.isLoading() || !this.consentRequestId()) return;
+
+      const request = this.consentRequestResult
+        .value()
+        .find((request) => request.id === this.consentRequestId());
+
+      this.showConsentRequestDetails(request, false);
+    });
+  }
+
+  ngOnInit() {
+    this.consentRequestResult.reload();
+  }
+
+  getFilteredActions = (request: ConsentRequestDto): ActionDTO[] => {
     const details = {
       label: 'Details',
-      callback: () => console.log('Details clicked'),
+      callback: () => this.showConsentRequestDetails(request),
     };
 
     const consent = {
@@ -80,7 +115,7 @@ export class ConsentRequestProducerPage {
       callback: () => console.log('Zurückziehen clicked'),
     };
 
-    switch (state) {
+    switch (request.state) {
       case 'OPENED':
         return [details, consent, decline];
       case 'DECLINED':
@@ -91,16 +126,21 @@ export class ConsentRequestProducerPage {
     }
   };
 
-  ngOnInit() {
-    this.consentRequestResult.reload();
+  getCellValue(row: AgridataTableData, header: string): string {
+    const cell = row.data.find((c) => c.header === header);
+    return cell ? cell.value : '';
   }
 
   setStateFilter(state: string | null) {
     this.stateFilter.set(state);
   }
 
-  getCellValue(row: AgridataTableData, header: string): string {
-    const cell = row.data.find((c) => c.header === header);
-    return cell ? cell.value : '';
-  }
+  showConsentRequestDetails = (request?: ConsentRequestDto, pushUrl: boolean = true) => {
+    this.selectedRequest.set(request ?? null);
+
+    // update the URL without triggering the router so the transition animation works
+    if (pushUrl) {
+      this.browserLocation.go(`/consent-requests/${request?.id ?? ''}`);
+    }
+  };
 }

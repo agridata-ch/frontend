@@ -1,0 +1,70 @@
+@if (showDetails()) {
+  <div
+    class="absolute right-0 top-0 bottom-0 z-10 w-full bg-gray-900 opacity-20"
+    (click)="handleCloseDetails()"
+    (keydown.enter)="handleCloseDetails()"
+  ></div>
+}
+<div
+  class="absolute right-0 top-0 bottom-0 z-10 bg-white max-w-[650px] overflow-hidden backdrop-brightness-75 shadow-2xl transition-[width] duration-300 ease-in-out"
+  [class.w-0]="!showDetails()"
+  [class.w-full]="showDetails()"
+>
+  <div
+    class="flex flex-col gap-6 h-full bg-white py-2 px-6 transition-opacity duration-100 ease-in-out overflow-y-scroll"
+    [class.opacity-0]="!showDetails()"
+    [class.opacity-100]="showDetails()"
+  >
+    <div class="flex items-center justify-between">
+      <span class="text-lg text-agridata-secondary-text font-semibold">Detailansicht</span>
+      <fa-icon
+        size="3x"
+        [icon]="closeIcon"
+        class="text-agridata-primary-600 cursor-pointer hover:text-agridata-primary-500"
+        (click)="handleCloseDetails()"
+        (keydown.enter)="handleCloseDetails()"
+      ></fa-icon>
+    </div>
+    <span class="text-agridata-tertiary-text text-sm font-normal"
+      >Anfrage vom {{ formattedRequestDate() }}</span
+    >
+    <h6 class="text-3xl text-agridata-primary-text font-semibold">
+      {{ _requestSignal()?.dataRequest?.descriptionDe }}
+    </h6>
+    <span class="text-gray-800 text-lg font-semibold">{{ dataConsumerName() }}</span>
+    <span class="text-agridata-primary-text font-normal">
+      Mit der Einwilligung zur Datenweitergabe an {{ dataConsumerName() }} vereinfachen Sie Ihre
+      tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse.
+    </span>
+    <div class="flex flex-col gap-2 px-4 py-4 rounded-lg bg-sky-100">
+      <span class="text-agridata-primary-text font-semibold text-lg">Zweck</span>
+      <div class="flex flex-col">
+        <span class="text-agridata-primary-text font-normal"
+          >{{ dataConsumerName() }} nutzt die angefragten Daten für Produktstudien. Die Daten werden
+          (nicht) an Dritte weitergegeben.</span
+        >
+        <span class="font-bold">
+          {{ dataConsumerName() }} verpflichtet sich im Umgang mit den Daten geltende Vorschriften
+          einzuhalten.
+        </span>
+      </div>
+      <app-agridata-accordion
+        [header]="'Folgende Daten werden übermittelt'"
+        [content]="'Inhalt fehlt noch'"
+      />
+    </div>
+    @for (privacySection of privacySections(); track privacySection.description) {
+      <div class="flex">
+        <fa-icon size="xl" [icon]="privacySection.icon" class="text-agridata-secondary-text mr-2" />
+        <div class="flex flex-col">
+          <span class="text-agridata-secondary-text font-semibold">
+            {{ privacySection.title }}
+          </span>
+          <span class="text-agridata-secondary-text font-normal">
+            {{ privacySection.description }}
+          </span>
+        </div>
+      </div>
+    }
+  </div>
+</div>

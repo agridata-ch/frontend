@@ -66,19 +66,19 @@ describe('AgridataTableComponent', () => {
     // first click: ascending
     component.setSort(1);
     expect(component.sortDirection()).toBe('asc');
-    let sorted = component.sorted();
+    let sorted = component.sortedRows();
     expect(sorted[0].data[1].value).toBe('20');
 
     // second click: descending
     component.setSort(1);
     expect(component.sortDirection()).toBe('desc');
-    sorted = component.sorted();
+    sorted = component.sortedRows();
     expect(sorted[0].data[1].value).toBe('30');
 
     // third click: back to ascending
     component.setSort(1);
     expect(component.sortDirection()).toBe('asc');
-    sorted = component.sorted();
+    sorted = component.sortedRows();
     expect(sorted[0].data[1].value).toBe('20');
   });
 
