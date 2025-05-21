@@ -13,6 +13,7 @@ import { TableActionsComponent, ActionDTO } from './table-actions/table-actions.
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { compareAsc, compareDesc, format, isValid, parseISO } from 'date-fns';
+import { ClickStopPropagationDirective } from '@/shared/directives/click-stop-propagation.directive';
 
 export interface AgridataTableCell {
   header: string;
@@ -23,6 +24,7 @@ export interface AgridataTableData {
   data: AgridataTableCell[];
   highlighted?: boolean;
   actions: ActionDTO[];
+  rowAction?: () => void;
 }
 
 @Directive({ selector: '[stCell]' })
@@ -33,17 +35,12 @@ export class CellTemplateDirective {
 
 @Component({
   selector: 'app-agridata-table',
-  imports: [CommonModule, TableActionsComponent, FontAwesomeModule],
+  imports: [CommonModule, TableActionsComponent, FontAwesomeModule, ClickStopPropagationDirective],
   templateUrl: './agridata-table.component.html',
   styleUrl: './agridata-table.component.css',
 })
 export class AgridataTableComponent {
   private readonly _data = signal<AgridataTableData[]>([]);
-  readonly sortColumnIndex = signal<number | null>(null);
-  readonly sortDirection = signal<'asc' | 'desc'>('desc');
-  readonly currentPage = signal(1);
-  readonly iconSortUp = faArrowUp;
-  readonly iconSortDown = faArrowDown;
 
   @Input() defaultSortColumn: string = '';
   @Input() defaultSortDirection: 'asc' | 'desc' = 'desc';
@@ -59,12 +56,18 @@ export class AgridataTableComponent {
   @Input() pageSize = 10;
   @ContentChildren(CellTemplateDirective) cellTemplates!: QueryList<CellTemplateDirective>;
 
+  readonly sortColumnIndex = signal<number | null>(null);
+  readonly sortDirection = signal<'asc' | 'desc'>('desc');
+  readonly currentPage = signal(1);
+  readonly iconSortUp = faArrowUp;
+  readonly iconSortDown = faArrowDown;
+
   readonly headers = computed<string[]>(() => {
     const rows = this._data();
     return rows.length ? rows[0].data.map((cell) => cell.header) : [];
   });
 
-  readonly sorted = computed(() => {
+  readonly sortedRows = computed(() => {
     const rows = [...this._data()];
     const idx = this.sortColumnIndex();
     if (idx === null) return rows;
@@ -91,7 +94,7 @@ export class AgridataTableComponent {
 
   readonly paginated = computed(() => {
     const start = (this.currentPage() - 1) * this.pageSize;
-    return this.sorted().slice(start, start + this.pageSize);
+    return this.sortedRows().slice(start, start + this.pageSize);
   });
 
   readonly totalPages = computed(() => Math.max(1, Math.ceil(this._data().length / this.pageSize)));
@@ -134,5 +137,11 @@ export class AgridataTableComponent {
       return format(parsedDate, 'dd.MM.yyyy');
     }
     return value;
+  }
+
+  onRowClick(row: AgridataTableData) {
+    if (row.rowAction) {
+      row.rowAction();
+    }
   }
 }

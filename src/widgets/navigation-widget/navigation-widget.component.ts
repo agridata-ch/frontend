@@ -15,7 +15,7 @@ export class NavigationWidgetComponent {
   readonly chevronIcon = computed(() => (this.isNavigationOpen() ? faChevronLeft : faChevronRight));
   readonly navigationItems = [{ label: 'Freigaben', icon: faFile, route: '/consent-requests' }];
 
-  readonly toggleNavigation = () => {
+  toggleNavigation = () => {
     this.isNavigationOpen.update((prev) => !prev);
   };
 }

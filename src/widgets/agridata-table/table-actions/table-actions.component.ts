@@ -15,7 +15,7 @@ export interface ActionDTO {
   styleUrl: './table-actions.component.css',
 })
 export class TableActionsComponent {
-  constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
+  private readonly _actions = signal<ActionDTO[]>([]);
 
   @Input()
   set actions(v: ActionDTO[]) {
@@ -25,10 +25,11 @@ export class TableActionsComponent {
     return this._actions();
   }
 
-  private readonly _actions = signal<ActionDTO[]>([]);
   readonly mainAction = computed(() => this._actions().find((action) => action.isMainAction));
   readonly isOpen = signal(false);
   readonly iconEllipsis = faEllipsisVertical;
+
+  constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
 
   handleToggle() {
     this.isOpen.update((v) => !v);

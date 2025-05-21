@@ -7,9 +7,10 @@ export const routes: Routes = [
   {
     path: '',
     component: DefaultLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
     children: [
       { path: 'consent-requests', component: ConsentRequestProducerPage },
-      { path: 'consent-requests/:id', component: ConsentRequestProducerPage },
+      { path: 'consent-requests/:consentRequestId', component: ConsentRequestProducerPage },
       { path: '', redirectTo: 'consent-requests', pathMatch: 'full' },
       { path: '**', component: NotFoundPage },
     ],

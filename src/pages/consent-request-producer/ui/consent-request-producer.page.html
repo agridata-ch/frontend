@@ -22,4 +22,8 @@
     </span>
   </ng-template>
 </app-agridata-table>
+<app-consent-request-details
+  [request]="selectedRequest()"
+  (onCloseDetail)="showConsentRequestDetails()"
+/>
 }

@@ -11,7 +11,7 @@ describe('ConsentRequestProducerPage', () => {
   let component: ConsentRequestProducerPage;
   let mockService: Partial<ConsentRequestService>;
   let reloadSpy: jest.Mock;
-  const sample: ConsentRequestDto[] = [
+  const mockRequest: ConsentRequestDto[] = [
     {
       dataProducerUid: 'u1',
       dataRequest: { id: '0', descriptionDe: 'D1' },
@@ -34,7 +34,7 @@ describe('ConsentRequestProducerPage', () => {
 
   beforeEach(waitForAsync(() => {
     const stubResource: Partial<Resource<ConsentRequestDto[]>> = {
-      value: signal(sample),
+      value: signal(mockRequest),
       reload: jest.fn(),
     };
 
@@ -78,7 +78,7 @@ describe('ConsentRequestProducerPage', () => {
   });
 
   it('should return correct actions for getFilteredActions with given value', () => {
-    const actions = component.getFilteredActions('OPENED');
+    const actions = component.getFilteredActions(mockRequest[0]);
     expect(actions).toEqual([
       { label: 'Details', callback: expect.any(Function) },
       { label: 'Einwilligen', callback: expect.any(Function), isMainAction: true },
@@ -87,7 +87,7 @@ describe('ConsentRequestProducerPage', () => {
   });
 
   it('should return correct actions for getFilteredActions with no given value', () => {
-    const actions = component.getFilteredActions();
+    const actions = component.getFilteredActions({});
     expect(actions).toEqual([
       { label: 'Details', callback: expect.any(Function) },
       { label: 'Einwilligen', callback: expect.any(Function), isMainAction: true },

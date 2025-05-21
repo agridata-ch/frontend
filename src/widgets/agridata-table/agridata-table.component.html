@@ -32,7 +32,12 @@
     </thead>
     <tbody>
       @for (row of paginated(); track row) {
-        <tr class="hover:bg-gray-50 cursor-pointer" [class.bg-orange-50]="row.highlighted">
+        <tr
+          class="hover:bg-gray-50 cursor-pointer"
+          [class.bg-orange-50]="row.highlighted"
+          (click)="onRowClick(row)"
+          (keydown.enter)="onRowClick(row)"
+        >
           @for (column of row.data; track column) {
             <td class="py-3 px-4 border-t border-gray-200">
               @if (getTemplate(column.header)) {
@@ -47,7 +52,7 @@
               }
             </td>
           }
-          <td class="py-3 px-4 border-t border-gray-200">
+          <td class="py-3 px-4 border-t border-gray-200" click-stop-propagation>
             <app-table-actions [actions]="row.actions" />
           </td>
         </tr>
@@ -57,7 +62,7 @@
   @if (showPagination()) {
     <div class="flex justify-between items-center p-4 bg-gray-50">
       <div class="text-sm text-slate-500">
-        Zeige {{ paginated().length }} von {{ sorted().length }} Einträgen
+        Zeige {{ paginated().length }} von {{ sortedRows().length }} Einträgen
       </div>
       <div class="flex items-center">
         <button
@@ -67,9 +72,9 @@
         >
           <
         </button>
-        <span class="mx-2 text-sm text-slate-500"
-          >Seite {{ currentPage() }} von {{ totalPages() }}</span
-        >
+        <span class="mx-2 text-sm text-slate-500">
+          Seite {{ currentPage() }} von {{ totalPages() }}
+        </span>
         <button
           class="agridata-button button-secondary"
           (click)="nextPage()"
