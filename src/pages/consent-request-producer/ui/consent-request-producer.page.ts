@@ -53,7 +53,7 @@ export class ConsentRequestProducerPage {
     const filter = this.stateFilter();
     return this.consentRequestResult
       .value()
-      .filter((request) => !filter || request.state === filter)
+      .filter((request) => !filter || request.stateCode === filter)
       .map((request: ConsentRequestDto) => ({
         data: [
           { header: 'Antragsteller', value: request.dataRequest?.dataConsumer?.name ?? '' },
@@ -62,15 +62,15 @@ export class ConsentRequestProducerPage {
             header: 'Antragsdatum',
             value: request.requestDate ?? '',
           },
-          { header: 'Status', value: request.state ?? '' },
+          { header: 'Status', value: request.stateCode ?? '' },
         ],
-        highlighted: request.state === 'OPENED',
+        highlighted: request.stateCode === 'OPENED',
         actions: this.getFilteredActions(request),
         rowAction: this.showConsentRequestDetails.bind(this, request),
       }));
   });
   readonly totalOpenRequests: Signal<number> = computed(() => {
-    return this.consentRequestResult.value().filter((r) => r.state === 'OPENED').length;
+    return this.consentRequestResult.value().filter((r) => r.stateCode === 'OPENED').length;
   });
   readonly selectedRequest = signal<ConsentRequestDto | null>(null);
 
@@ -115,7 +115,7 @@ export class ConsentRequestProducerPage {
       callback: () => console.log('Zurückziehen clicked'),
     };
 
-    switch (request.state) {
+    switch (request.stateCode) {
       case 'OPENED':
         return [details, consent, decline];
       case 'DECLINED':

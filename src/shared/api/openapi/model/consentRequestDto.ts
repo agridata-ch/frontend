@@ -19,11 +19,12 @@ export interface ConsentRequestDto {
     /**
      * Unique identifier of the data producer
      */
-    dataProducerUid?: string;
+    dataProducerId?: string;
     /**
      * Current state of the consent request
      */
-    state?: ConsentRequestStateEnum;
+    stateCode?: ConsentRequestStateEnum;
+    lastStateChangeDate?: string;
     requestDate?: string;
     dataRequest?: ConsentRequestDtoDataRequest;
 }

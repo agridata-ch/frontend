@@ -9,6 +9,9 @@
  */
 
 
+/**
+ * Possible states of a consent request
+ */
 export const ConsentRequestStateEnum = {
     Granted: 'GRANTED',
     Opened: 'OPENED',

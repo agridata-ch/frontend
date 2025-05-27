@@ -13,22 +13,22 @@ describe('ConsentRequestProducerPage', () => {
   let reloadSpy: jest.Mock;
   const mockRequest: ConsentRequestDto[] = [
     {
-      dataProducerUid: 'u1',
+      dataProducerId: 'u1',
       dataRequest: { id: '0', descriptionDe: 'D1' },
       requestDate: '2025-05-10',
-      state: 'OPENED',
+      stateCode: 'OPENED',
     },
     {
-      dataProducerUid: 'u2',
+      dataProducerId: 'u2',
       dataRequest: { id: '1', descriptionDe: 'D2' },
       requestDate: '2025-04-01',
-      state: 'DECLINED',
+      stateCode: 'DECLINED',
     },
     {
-      dataProducerUid: 'u3',
+      dataProducerId: 'u3',
       dataRequest: { id: '2', descriptionDe: 'D3' },
       requestDate: '2025-03-15',
-      state: 'GRANTED',
+      stateCode: 'GRANTED',
     },
   ];
 

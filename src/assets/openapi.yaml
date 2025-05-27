@@ -12,17 +12,23 @@ components:
           examples:
           - 3fa85f64-5717-4562-b3fc-2c963f66afa6
           description: Unique identifier of the consent request
-        dataProducerUid:
+        dataProducerId:
           type: string
           examples:
-          - producer-123
+          - eb034f30-511b-4888-9b73-5572dd7d846c
           description: Unique identifier of the data producer
-        state:
+        stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
           type: string
           examples:
           - PENDING
           description: Current state of the consent request
+        lastStateChangeDate:
+          $ref: "#/components/schemas/LocalDate"
+          type: string
+          examples:
+          - 2025-05-20
+          description: Date when the state was changed last
         requestDate:
           $ref: "#/components/schemas/LocalDate"
           type: string
@@ -86,6 +92,7 @@ components:
       - GRANTED
       - OPENED
       - DECLINED
+      description: Possible states of a consent request
     DataConsumerDto:
       type: object
       description: Details of the data consumer making the request
@@ -170,6 +177,11 @@ components:
       type: string
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+  securitySchemes:
+    SecurityScheme:
+      type: openIdConnect
+      description: Authentication
+      openIdConnectUrl: http://localhost:53561/realms/quarkus/.well-known/openid-configuration
 tags:
 - name: Data consent resource
   description: Handles all data const retrieval and creation by the producer
@@ -216,25 +228,15 @@ paths:
         schema:
           $ref: "#/components/schemas/UUID"
       requestBody:
-        description: New status for the consent request
+        description: New status of the consent request
         content:
           application/json:
             schema:
-              type: string
-              enum:
-              - GRANTED
-              - OPENED
-              - DECLINED
-              examples:
-              - GRANTED
+              $ref: "#/components/schemas/ConsentRequestStateEnum"
         required: true
       responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ConsentRequestDto"
+        "204":
+          description: No Content
         "404":
           description: The resource or element was not found
           content:
@@ -262,6 +264,10 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/DataRequestDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
         "404":
           description: The resource or element was not found
           content:
@@ -275,7 +281,36 @@ paths:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Data Requests
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+  /q/info:
+    get:
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Info
+      tags:
+      - Info Resource
 info:
   title: agridata.ch API
-  version: 1.0.0-rc.2
+  version: dev
   description: This API handles data and consent requests for agridata.ch.
