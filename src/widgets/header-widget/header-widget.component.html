@@ -1,4 +1,12 @@
 <div class="px-12 py-6 flex justify-between items-center bg-agridata-primary-text text-white">
   <h1 class="agridata-logo text-[40px]"><a routerLink="/">agridata.ch</a></h1>
-  <div>Lukas Landwirt</div>
+  @if (isAuthenticated() && userData()) {
+    <div class="flex flex-col">
+      <span>{{ userData()?.name }}</span>
+      <span>{{ userData()?.email }}</span>
+      <button (click)="logout()">Logout</button>
+    </div>
+  } @else {
+    <button (click)="login()">Login</button>
+  }
 </div>

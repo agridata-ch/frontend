@@ -5,6 +5,8 @@ import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { Configuration } from '@shared/api/openapi/configuration';
 import { environment } from '@/environments/environment';
+import { provideAuth } from 'angular-auth-oidc-client';
+import { oidcConfig } from './auth.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,5 +17,10 @@ export const appConfig: ApplicationConfig = {
       provide: Configuration,
       useValue: new Configuration({ basePath: environment.apiBaseUrl }),
     },
+    provideAuth({
+      config: {
+        ...oidcConfig,
+      },
+    }),
   ],
 };

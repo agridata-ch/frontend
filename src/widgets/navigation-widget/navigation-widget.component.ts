@@ -13,7 +13,21 @@ import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons
 export class NavigationWidgetComponent {
   readonly isNavigationOpen = signal(false);
   readonly chevronIcon = computed(() => (this.isNavigationOpen() ? faChevronLeft : faChevronRight));
-  readonly navigationItems = [{ label: 'Freigaben', icon: faFile, route: '/consent-requests' }];
+  readonly userRoles = computed(() => {
+    try {
+      return JSON.parse(sessionStorage.getItem('userRoles') ?? '[]');
+    } catch {
+      return [];
+    }
+  });
+  readonly showNavigation = computed(() => this.userRoles().length > 0);
+  readonly navigationItems = [
+    this.userRoles()?.includes('agridata.ch.Agridata_Einwilliger') && {
+      label: 'Freigaben',
+      icon: faFile,
+      route: '/consent-requests',
+    },
+  ];
 
   toggleNavigation = () => {
     this.isNavigationOpen.update((prev) => !prev);
