@@ -21,4 +21,13 @@ export class ConsentRequestService {
   reload() {
     this.consentRequests.reload();
   }
+
+  updateConsentRequestStatus(
+    consentRequestId: string,
+    stateCode: string,
+  ): Promise<ConsentRequestDto> {
+    return firstValueFrom(
+      this.apiService.updateConsentRequestStatus(consentRequestId, `"${stateCode}"`),
+    );
+  }
 }

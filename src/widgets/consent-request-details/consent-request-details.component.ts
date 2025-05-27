@@ -5,6 +5,7 @@ import {
   effect,
   EventEmitter,
   HostListener,
+  inject,
   Input,
   Output,
   signal,
@@ -12,7 +13,14 @@ import {
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faClose, faPenSquare, faLock, faRepeat } from '@fortawesome/free-solid-svg-icons';
 import { format } from 'date-fns';
-import { AgridataAccordionComponent } from '../agridata-accordion/agridata-accordion.component';
+import { AgridataAccordionComponent } from '@widgets/agridata-accordion/agridata-accordion.component';
+import { ConsentRequestService } from '@shared/services/consent-request.service';
+import { ToastService } from '@/shared/services/toast.service';
+import {
+  getToastMessage,
+  getToastTitle,
+  getToastType,
+} from '@pages/consent-request-producer/ui/consent-request-producer.page';
 
 @Component({
   selector: 'app-consent-request-details',
@@ -21,13 +29,18 @@ import { AgridataAccordionComponent } from '../agridata-accordion/agridata-accor
   styleUrl: './consent-request-details.component.css',
 })
 export class ConsentRequestDetailsComponent {
+  private readonly toastService = inject(ToastService);
+
   @Input()
   set request(value: ConsentRequestDto | null) {
-    this._requestSignal.set(value);
+    this._requestSignal.set(value ? { ...value } : null);
   }
   @Output() onCloseDetail = new EventEmitter<string | null>();
 
+  readonly showSuccessToast = signal<boolean>(false);
+  readonly showErrorToast = signal<boolean>(false);
   readonly _requestSignal = signal<ConsentRequestDto | null>(null);
+  readonly requestId = computed(() => this._requestSignal()?.id ?? '');
   readonly closeIcon = faClose;
   readonly editIcon = faPenSquare;
   readonly lockIcon = faLock;
@@ -51,10 +64,14 @@ export class ConsentRequestDetailsComponent {
       title: 'Datenschutz',
       description: `${this.dataConsumerName()} ist für den datenschutzkonformen Umgang mit diesen Informationen verantwortlich. Wende dich direkt an ${this.dataConsumerName()}, wenn du möchtest, dass deine Daten gelöscht werden.`,
     },
-    { icon: this.repeatIcon, title: 'Wiederrufsmöglichkeit', description: 'Hier fehlt noch Text' },
+    {
+      icon: this.repeatIcon,
+      title: 'Wiederrufsmöglichkeit',
+      description: 'Du kannst deine Einwilligung jederzeit widerrufen oder anpassen',
+    },
   ]);
 
-  constructor() {
+  constructor(private readonly consentRequestService: ConsentRequestService) {
     effect(() => {
       if (this._requestSignal()) {
         this.showDetails.set(true);
@@ -72,5 +89,29 @@ export class ConsentRequestDetailsComponent {
   handleCloseDetails() {
     this.showDetails.set(false);
     this.onCloseDetail.emit();
+  }
+
+  async acceptRequest() {
+    this.toastService.show(
+      getToastTitle('GRANTED'),
+      getToastMessage('GRANTED', this.dataConsumerName()),
+      getToastType('GRANTED'),
+    );
+    this.handleCloseDetails();
+    this.consentRequestService.updateConsentRequestStatus(this.requestId(), 'GRANTED').then(() => {
+      this.consentRequestService.reload();
+    });
+  }
+
+  async rejectRequest() {
+    this.toastService.show(
+      getToastTitle('DECLINED'),
+      getToastMessage('DECLINED', this.dataConsumerName()),
+      getToastType('DECLINED'),
+    );
+    this.handleCloseDetails();
+    this.consentRequestService.updateConsentRequestStatus(this.requestId(), 'DECLINED').then(() => {
+      this.consentRequestService.reload();
+    });
   }
 }

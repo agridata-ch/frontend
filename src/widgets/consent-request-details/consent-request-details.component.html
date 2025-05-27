@@ -11,7 +11,7 @@
   [class.w-full]="showDetails()"
 >
   <div
-    class="flex flex-col gap-6 h-full bg-white py-2 px-6 transition-opacity duration-100 ease-in-out overflow-y-scroll"
+    class="flex flex-col gap-6 h-full max-h-[calc(100%-100px)] bg-white py-2 px-6 transition-opacity duration-100 ease-in-out overflow-y-auto"
     [class.opacity-0]="!showDetails()"
     [class.opacity-100]="showDetails()"
   >
@@ -23,29 +23,24 @@
         class="text-agridata-primary-600 cursor-pointer hover:text-agridata-primary-500"
         (click)="handleCloseDetails()"
         (keydown.enter)="handleCloseDetails()"
-      ></fa-icon>
+        tabindex="0"
+      />
     </div>
-    <span class="text-agridata-tertiary-text text-sm font-normal"
-      >Anfrage vom {{ formattedRequestDate() }}</span
-    >
+    <span class="text-agridata-tertiary-text text-sm font-normal">
+      Anfrage vom {{ formattedRequestDate() }}
+    </span>
     <h6 class="text-3xl text-agridata-primary-text font-semibold">
-      {{ _requestSignal()?.dataRequest?.descriptionDe }}
+      {{ _requestSignal()?.dataRequest?.titleDe }}
     </h6>
     <span class="text-gray-800 text-lg font-semibold">{{ dataConsumerName() }}</span>
     <span class="text-agridata-primary-text font-normal">
-      Mit der Einwilligung zur Datenweitergabe an {{ dataConsumerName() }} vereinfachen Sie Ihre
-      tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse.
+      {{ _requestSignal()?.dataRequest?.descriptionDe }}
     </span>
     <div class="flex flex-col gap-2 px-4 py-4 rounded-lg bg-sky-100">
       <span class="text-agridata-primary-text font-semibold text-lg">Zweck</span>
       <div class="flex flex-col">
-        <span class="text-agridata-primary-text font-normal"
-          >{{ dataConsumerName() }} nutzt die angefragten Daten für Produktstudien. Die Daten werden
-          (nicht) an Dritte weitergegeben.</span
-        >
-        <span class="font-bold">
-          {{ dataConsumerName() }} verpflichtet sich im Umgang mit den Daten geltende Vorschriften
-          einzuhalten.
+        <span class="text-agridata-primary-text font-normal">
+          {{ _requestSignal()?.dataRequest?.purposeDe }}
         </span>
       </div>
       <app-agridata-accordion
@@ -66,5 +61,30 @@
         </div>
       </div>
     }
+  </div>
+  <div class="fixed bottom-0 bg-white w-full py-4 px-6 justify-center flex flex-col gap-1.5">
+    <div class="flex gap-2">
+      <button
+        class="w-full agridata-button agridata-button-secondary-reject"
+        [disabled]="_requestSignal()?.stateCode === 'DECLINED'"
+        (click)="rejectRequest()"
+        (keydown.enter)="rejectRequest()"
+        tabindex="0"
+      >
+        Ablehnen
+      </button>
+      <button
+        class="w-full agridata-button agridata-button-primary-accept"
+        [disabled]="_requestSignal()?.stateCode === 'GRANTED'"
+        (click)="acceptRequest()"
+        (keydown.enter)="acceptRequest()"
+        tabindex="0"
+      >
+        Einwilligen
+      </button>
+    </div>
+    <span class="w-full flex justify-center text-agridata-tertiary-text text-xs">
+      Du kannst deine Einwilligung jederzeit ändern.
+    </span>
   </div>
 </div>

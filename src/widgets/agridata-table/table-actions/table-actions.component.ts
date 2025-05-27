@@ -1,8 +1,9 @@
 import { Component, computed, ElementRef, HostListener, Input, signal } from '@angular/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
 export interface ActionDTO {
+  icon?: IconDefinition;
   label: string;
   callback: () => void;
   isMainAction?: boolean;

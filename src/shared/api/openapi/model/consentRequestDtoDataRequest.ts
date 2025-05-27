@@ -16,6 +16,18 @@ import { ConsentRequestDtoDataRequestDataConsumer } from './consentRequestDtoDat
 export interface ConsentRequestDtoDataRequest { 
     id: string;
     /**
+     * Title of the data request in German
+     */
+    titleDe?: string;
+    /**
+     * Title of the data request in French
+     */
+    titleFr?: string;
+    /**
+     * Title of the data request in Italian
+     */
+    titleIt?: string;
+    /**
      * Description of the data request in German
      */
     descriptionDe?: string;
