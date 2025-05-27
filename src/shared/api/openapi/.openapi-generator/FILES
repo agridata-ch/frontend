@@ -1,11 +1,11 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.base.service.ts
 api.module.ts
 api/api.ts
 api/dataConsentResource.service.ts
 api/dataRequestResource.service.ts
+api/infoResource.service.ts
 configuration.ts
 encoder.ts
 git_push.sh

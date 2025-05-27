@@ -38,16 +38,16 @@ describe('ConsentRequestService', () => {
   it('reload() loads data on success', async () => {
     const mockData: ConsentRequestDto[] = [
       {
-        dataProducerUid: 'u1',
+        dataProducerId: 'u1',
         dataRequest: { id: '0', descriptionDe: 'D1' },
         requestDate: '2025-05-10',
-        state: 'OPENED',
+        stateCode: 'OPENED',
       },
       {
-        dataProducerUid: 'u2',
+        dataProducerId: 'u2',
         dataRequest: { id: '1', descriptionDe: 'D2' },
         requestDate: '2025-05-11',
-        state: 'DECLINED',
+        stateCode: 'DECLINED',
       },
     ];
     (apiMock.getConsentRequests as jest.Mock).mockReturnValue(of(mockData));

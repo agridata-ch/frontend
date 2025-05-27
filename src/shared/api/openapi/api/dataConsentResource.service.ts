@@ -19,6 +19,8 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { ConsentRequestDto } from '../model/consentRequestDto';
 // @ts-ignore
+import { ConsentRequestStateEnum } from '../model/consentRequestStateEnum';
+// @ts-ignore
 import { ExceptionDto } from '../model/exceptionDto';
 
 // @ts-ignore
@@ -90,13 +92,13 @@ export class DataConsentResourceService extends BaseService {
     /**
      * Update Consent Request Status
      * @param id ID of the consent request
-     * @param body New status for the consent request
+     * @param body New status of the consent request
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateConsentRequestStatus(id: string, body: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ConsentRequestDto>;
-    public updateConsentRequestStatus(id: string, body: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ConsentRequestDto>>;
-    public updateConsentRequestStatus(id: string, body: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ConsentRequestDto>>;
+    public updateConsentRequestStatus(id: string, body: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public updateConsentRequestStatus(id: string, body: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public updateConsentRequestStatus(id: string, body: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
     public updateConsentRequestStatus(id: string, body: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateConsentRequestStatus.');
@@ -141,7 +143,7 @@ export class DataConsentResourceService extends BaseService {
 
         let localVarPath = `/api/agreement/v1/consent-requests/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/status`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<ConsentRequestDto>('put', `${basePath}${localVarPath}`,
+        return this.httpClient.request<any>('put', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: body,
