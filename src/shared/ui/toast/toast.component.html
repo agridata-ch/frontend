@@ -1,0 +1,25 @@
+<div class="fixed top-2 right-8 flex flex-col space-y-3 z-50">
+  @for (toast of toasts(); track toast.id) {
+    <div
+      class="border rounded-lg border-transparent shadow-xl p-4 flex items-center justify-between cursor-pointer"
+      [class]="getToastClasses(toast)"
+      [class.animate-toast-in]="toast.state === ToastState.Enter"
+      [class.animate-toast-out]="toast.state === ToastState.Exit"
+    >
+      <div class="flex items-center">
+        <fa-icon size="xl" [icon]="toast.type === 'error' ? errorIcon : successIcon" />
+        <div class="flex flex-col ml-4">
+          <span class="font-medium">{{ toast.title }}</span>
+          <span>{{ toast.message }}</span>
+        </div>
+      </div>
+      <fa-icon
+        size="xl"
+        class="ml-4 text-agridata-tertiary-text"
+        [icon]="closeIcon"
+        (click)="dismiss(toast.id)"
+        (keydown.enter)="dismiss(toast.id)"
+      />
+    </div>
+  }
+</div>

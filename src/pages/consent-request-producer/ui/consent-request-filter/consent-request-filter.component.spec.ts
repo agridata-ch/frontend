@@ -47,7 +47,6 @@ describe('ConsentRequestFilterComponent', () => {
   });
 
   it('isSelected reflects current selections', () => {
-    // select OPENED
     component.handleClick('OPENED');
     expect(component.isSelected('OPENED')).toBe(true);
     expect(component.isSelected('DECLINED')).toBe(false);

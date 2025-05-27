@@ -1,14 +1,35 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConsentRequestDetailsComponent } from './consent-request-details.component';
 import { ConsentRequestDto } from '@/shared/api/openapi/model/models';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ToastService } from '@shared/services/toast.service';
+import { ConsentRequestService } from '@shared/services/consent-request.service';
 
 describe('ConsentRequestDetailsComponent', () => {
   let component: ConsentRequestDetailsComponent;
   let fixture: ComponentFixture<ConsentRequestDetailsComponent>;
+  let toastService: { show: jest.Mock };
+  let consentRequestService: {
+    updateConsentRequestStatus: jest.Mock;
+    reload: jest.Mock;
+  };
 
   beforeEach(async () => {
+    toastService = { show: jest.fn() };
+    consentRequestService = {
+      updateConsentRequestStatus: jest.fn().mockResolvedValue({}),
+      reload: jest.fn(),
+    };
+
     await TestBed.configureTestingModule({
       imports: [ConsentRequestDetailsComponent],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: ToastService, useValue: toastService },
+        { provide: ConsentRequestService, useValue: consentRequestService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ConsentRequestDetailsComponent);
@@ -80,5 +101,42 @@ describe('ConsentRequestDetailsComponent', () => {
 
     expect(closeSpy).toHaveBeenCalled();
     expect(component.showDetails()).toBe(false);
+  });
+
+  it('should should show toast after acceptRequest', async () => {
+    const req = {
+      id: '123',
+      dataRequest: { dataConsumer: { name: 'TestConsumer' } },
+    } as unknown as ConsentRequestDto;
+    component.request = req;
+    fixture.detectChanges();
+
+    const closeSpy = jest.spyOn(component, 'handleCloseDetails');
+    await component.acceptRequest();
+
+    expect(toastService.show).toHaveBeenCalled();
+    expect(closeSpy).toHaveBeenCalled();
+    expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith('123', 'GRANTED');
+    expect(consentRequestService.reload).toHaveBeenCalled();
+  });
+
+  it('should should show toast after rejectRequest', async () => {
+    const req = {
+      id: '456',
+      dataRequest: { dataConsumer: { name: 'TestConsumer' } },
+    } as unknown as ConsentRequestDto;
+    component.request = req;
+    fixture.detectChanges();
+
+    const closeSpy = jest.spyOn(component, 'handleCloseDetails');
+    await component.rejectRequest();
+
+    expect(toastService.show).toHaveBeenCalled();
+    expect(closeSpy).toHaveBeenCalled();
+    expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith(
+      '456',
+      'DECLINED',
+    );
+    expect(consentRequestService.reload).toHaveBeenCalled();
   });
 });

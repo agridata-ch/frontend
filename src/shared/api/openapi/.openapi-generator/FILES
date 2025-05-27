@@ -3,9 +3,10 @@ README.md
 api.base.service.ts
 api.module.ts
 api/api.ts
-api/dataConsentResource.service.ts
-api/dataRequestResource.service.ts
+api/consentRequests.service.ts
+api/dataRequests.service.ts
 api/infoResource.service.ts
+api/testData.service.ts
 configuration.ts
 encoder.ts
 git_push.sh

@@ -15,7 +15,7 @@ import { ConsentRequestDtoDataRequest } from './consentRequestDtoDataRequest';
  * Data transfer object representing a consent request
  */
 export interface ConsentRequestDto { 
-    id?: string;
+    id: string;
     /**
      * Unique identifier of the data producer
      */

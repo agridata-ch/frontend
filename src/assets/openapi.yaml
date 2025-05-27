@@ -4,6 +4,8 @@ components:
   schemas:
     ConsentRequestDto:
       type: object
+      required:
+      - id
       description: Data transfer object representing a consent request
       properties:
         id:
@@ -47,20 +49,42 @@ components:
               examples:
               - 3fa85f64-5717-4562-b3fc-2c963f66afb7
               description: Unique identifier of the data request
-            descriptionDe:
+            titleDe:
               type: string
               examples:
               - Anfrage zu Bodentypen und Bodenqualitaetsdaten
+              description: Title of the data request in German
+            titleFr:
+              type: string
+              examples:
+              - Demande de types de sol et de donnees sur la qualite du sol
+              description: Title of the data request in French
+            titleIt:
+              type: string
+              examples:
+              - Richiesta di tipi di suolo e dati sulla qualita del suolo
+              description: Title of the data request in Italian
+            descriptionDe:
+              type: string
+              examples:
+              - "Ziel der Anfrage ist es, Informationen über Bodentypen und deren\
+                \ Qualität zu erhalten, um fundierte Entscheidungen zur Fruchtfolge,\
+                \ Düngung und nachhaltigen Bewirtschaftung treffen zu können."
               description: Description of the data request in German
             descriptionFr:
               type: string
               examples:
-              - Demande de types de sol et de donnees sur la qualite du sol
+              - "L’objectif de cette demande est de recueillir des informations sur\
+                \ les types de sols et leur qualité afin de pouvoir prendre des dé\
+                cisions éclairées concernant la rotation des cultures, la fertilisation\
+                \ et une gestion durable."
               description: Description of the data request in French
             descriptionIt:
               type: string
               examples:
-              - Richiesta di tipi di suolo e dati sulla qualita del suolo
+              - "L’obiettivo della richiesta è ottenere informazioni sui tipi di suolo\
+                \ e sulla loro qualità per prendere decisioni consapevoli sulla rotazione\
+                \ delle colture, la fertilizzazione e una gestione sostenibile."
               description: Description of the data request in Italian
             purposeDe:
               type: string
@@ -114,20 +138,42 @@ components:
           examples:
           - 3fa85f64-5717-4562-b3fc-2c963f66afb7
           description: Unique identifier of the data request
-        descriptionDe:
+        titleDe:
           type: string
           examples:
           - Anfrage zu Bodentypen und Bodenqualitaetsdaten
+          description: Title of the data request in German
+        titleFr:
+          type: string
+          examples:
+          - Demande de types de sol et de donnees sur la qualite du sol
+          description: Title of the data request in French
+        titleIt:
+          type: string
+          examples:
+          - Richiesta di tipi di suolo e dati sulla qualita del suolo
+          description: Title of the data request in Italian
+        descriptionDe:
+          type: string
+          examples:
+          - "Ziel der Anfrage ist es, Informationen über Bodentypen und deren Qualitä\
+            t zu erhalten, um fundierte Entscheidungen zur Fruchtfolge, Düngung und\
+            \ nachhaltigen Bewirtschaftung treffen zu können."
           description: Description of the data request in German
         descriptionFr:
           type: string
           examples:
-          - Demande de types de sol et de donnees sur la qualite du sol
+          - "L’objectif de cette demande est de recueillir des informations sur les\
+            \ types de sols et leur qualité afin de pouvoir prendre des décisions\
+            \ éclairées concernant la rotation des cultures, la fertilisation et une\
+            \ gestion durable."
           description: Description of the data request in French
         descriptionIt:
           type: string
           examples:
-          - Richiesta di tipi di suolo e dati sulla qualita del suolo
+          - "L’obiettivo della richiesta è ottenere informazioni sui tipi di suolo\
+            \ e sulla loro qualità per prendere decisioni consapevoli sulla rotazione\
+            \ delle colture, la fertilizzazione e una gestione sostenibile."
           description: Description of the data request in Italian
         purposeDe:
           type: string
@@ -181,18 +227,20 @@ components:
     SecurityScheme:
       type: openIdConnect
       description: Authentication
-      openIdConnectUrl: http://localhost:53561/realms/quarkus/.well-known/openid-configuration
+      openIdConnectUrl: http://localhost:6999/realms/agate/.well-known/openid-configuration
 tags:
-- name: Data consent resource
-  description: Handles all data const retrieval and creation by the producer
-- name: Data request resource
-  description: Handles all data request retrieval and creation
+- name: Consent Requests
+  description: "Handles creation, retrieval, and updates of consent requests by the\
+    \ data producer"
+- name: Data Requests
+  description: "Handles creation, retrieval, and updates of consent requests"
+- name: Test Data
 paths:
   /api/agreement/v1/consent-requests:
     get:
       operationId: getConsentRequests
       tags:
-      - Data consent resource
+      - Consent Requests
       responses:
         "200":
           description: OK
@@ -219,7 +267,7 @@ paths:
     put:
       operationId: updateConsentRequestStatus
       tags:
-      - Data consent resource
+      - Consent Requests
       parameters:
       - description: ID of the consent request
         required: true
@@ -254,7 +302,7 @@ paths:
     get:
       operationId: getDataRequests
       tags:
-      - Data request resource
+      - Data Requests
       responses:
         "200":
           description: OK
@@ -284,6 +332,27 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Admin
+  /api/test-data/reset:
+    post:
+      operationId: resetTestData
+      tags:
+      - Test Data
+      responses:
+        "201":
+          description: Created
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Reset Test Data
   /q/info:
     get:
       responses:

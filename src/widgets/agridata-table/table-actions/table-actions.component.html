@@ -3,7 +3,7 @@
     <button
       type="button"
       (click)="handleClick(mainAction()!)"
-      class="agridata-button button-primary-accept"
+      class="agridata-button agridata-button-primary-accept"
     >
       {{ mainAction()?.label }}
     </button>
@@ -13,7 +13,7 @@
     (click)="handleToggle()"
     [attr.aria-expanded]="isOpen()"
     aria-haspopup="menu"
-    class="agridata-button button-secondary table-action-button"
+    class="agridata-button agridata-button-secondary table-action-button"
   >
     <fa-icon [icon]="iconEllipsis" />
   </button>
@@ -26,6 +26,9 @@
             (click)="handleClick(action)"
             (keydown.enter)="handleClick(action)"
           >
+            @if (action.icon) {
+              <fa-icon [icon]="action.icon" class="mr-2" />
+            }
             {{ action.label }}
           </li>
         }

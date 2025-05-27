@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-// reuse your widgets / shared UI
+import { ToastComponent } from '@/shared/ui/toast/toast.component';
 import { HeaderWidgetComponent } from '@widgets/header-widget/header-widget.component';
 import { FooterWidgetComponent } from '@widgets/footer-widget/footer-widget.component';
 import { NavigationWidgetComponent } from '@widgets/navigation-widget/navigation-widget.component';
@@ -12,10 +12,11 @@ import { NavigationWidgetComponent } from '@widgets/navigation-widget/navigation
   selector: 'app-default-layout',
   imports: [
     CommonModule,
-    RouterModule, // for <router-outlet> and routerLink
+    RouterModule,
     HeaderWidgetComponent,
     NavigationWidgetComponent,
     FooterWidgetComponent,
+    ToastComponent,
   ],
   templateUrl: './default-layout.component.html',
   styleUrls: ['./default-layout.component.css'],
