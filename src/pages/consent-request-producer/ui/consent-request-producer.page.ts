@@ -22,7 +22,7 @@ import {
   CellTemplateDirective,
 } from '@widgets/agridata-table/agridata-table.component';
 import { ActionDTO } from '@widgets/agridata-table/table-actions/table-actions.component';
-import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details/consent-request-details.component';
+import { ConsentRequestDetailsComponent } from '@widgets/consent-request-details/consent-request-details.component';
 
 import { ConsentRequestFilterComponent } from './consent-request-filter/consent-request-filter.component';
 

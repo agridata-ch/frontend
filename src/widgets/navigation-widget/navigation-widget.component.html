@@ -1,33 +1,37 @@
-<div class="relative h-full">
-  <nav
-    class="bg-white border-r border-agridata-stroke px-2 py-15 gap-2 h-full overflow-hidden transition-[width] duration-300 ease-in-out will-change-[width]"
-    [class.w-20]="!isNavigationOpen()"
-    [class.w-48]="isNavigationOpen()"
-  >
-    <ul class="flex flex-col gap-2">
-      @for (navigationItem of navigationItems; track navigationItem) {
-        <li
-          class="rounded-lg text-agridata-primary-text"
-          routerLinkActive="bg-agridata-background-page"
-        >
-          <a [routerLink]="navigationItem.route" class="w-full flex items-center px-6 py-6">
-            <fa-icon [icon]="navigationItem.icon" />
-            <span
-              class="ml-3 transition-opacity duration-300 ease-in-out will-change-[opacity] opacity-0"
-              [class.opacity-100]="isNavigationOpen()"
+@if (showNavigation()) {
+  <div class="relative h-full">
+    <nav
+      class="bg-white border-r border-agridata-stroke px-2 py-15 gap-2 h-full overflow-hidden transition-[width] duration-300 ease-in-out will-change-[width]"
+      [class.w-20]="!isNavigationOpen()"
+      [class.w-48]="isNavigationOpen()"
+    >
+      <ul class="flex flex-col gap-2">
+        @for (navigationItem of navigationItems; track navigationItem) {
+          @if (navigationItem && typeof navigationItem === 'object') {
+            <li
+              class="rounded-lg text-agridata-primary-text"
+              routerLinkActive="bg-agridata-background-page"
             >
-              {{ navigationItem.label }}
-            </span>
-          </a>
-        </li>
-      }
-    </ul>
-  </nav>
-  <button
-    (click)="toggleNavigation()"
-    class="absolute bottom-14 -right-3 w-6 h-6 border rounded-full bg-white hover:bg-agridata-background-page z-10"
-    aria-label="Toggle navigation"
-  >
-    <fa-icon size="xs" [icon]="chevronIcon()" class="text-agridata-secondary-text"></fa-icon>
-  </button>
-</div>
+              <a [routerLink]="navigationItem.route" class="w-full flex items-center px-6 py-6">
+                <fa-icon [icon]="navigationItem.icon" />
+                <span
+                  class="ml-3 transition-opacity duration-300 ease-in-out will-change-[opacity] opacity-0"
+                  [class.opacity-100]="isNavigationOpen()"
+                >
+                  {{ navigationItem.label }}
+                </span>
+              </a>
+            </li>
+          }
+        }
+      </ul>
+    </nav>
+    <button
+      (click)="toggleNavigation()"
+      class="absolute bottom-14 -right-3 w-6 h-6 border rounded-full bg-white hover:bg-agridata-background-page z-10"
+      aria-label="Toggle navigation"
+    >
+      <fa-icon size="xs" [icon]="chevronIcon()" class="text-agridata-secondary-text"></fa-icon>
+    </button>
+  </div>
+}
