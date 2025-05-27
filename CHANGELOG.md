@@ -1,3 +1,9 @@
+## [1.0.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.3...v1.0.0-rc.4) (2025-05-27)
+
+### Features
+
+- **ui:** add consent-request-detail component ([4a0b69d](https://github.com/agridata-ch/frontend/commit/4a0b69d98e2306fe17dfd4334fa009b95bea7092)), closes [DIGIB2-423](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-423)
+
 ## [1.0.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.2...v1.0.0-rc.3) (2025-05-20)
 
 ### Features
