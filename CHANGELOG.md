@@ -1,3 +1,9 @@
+## [1.0.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.4...v1.0.0-rc.5) (2025-06-02)
+
+### Features
+
+- **ui:** consent-request accept/reject ([85fafc3](https://github.com/agridata-ch/frontend/commit/85fafc35ed4fae02ed1043f53d43353e2ba5e90d)), closes [DIGIB2-435](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-435)
+
 ## [1.0.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.3...v1.0.0-rc.4) (2025-05-27)
 
 ### Features
