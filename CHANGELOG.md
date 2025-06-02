@@ -1,3 +1,9 @@
+## [1.0.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.5...v1.0.0-rc.6) (2025-06-02)
+
+### Features
+
+- **auth:** keycloak and guards ([719c2ef](https://github.com/agridata-ch/frontend/commit/719c2ef723865ba00530c3dff65d308c36c9f59f)), closes [DIGIB2-462](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-462)
+
 ## [1.0.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.4...v1.0.0-rc.5) (2025-06-02)
 
 ### Features
