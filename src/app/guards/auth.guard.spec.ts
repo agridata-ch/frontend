@@ -1,29 +1,51 @@
 import { TestBed } from '@angular/core/testing';
+import { of, firstValueFrom } from 'rxjs';
 import { Router, UrlTree, ActivatedRouteSnapshot } from '@angular/router';
-import { of } from 'rxjs';
-import { AuthorizationGuard } from './auth.guard';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+
+import { AuthorizationGuard } from './auth.guard';
 
 describe('AuthorizationGuard', () => {
   let guard: AuthorizationGuard;
-  let mockOidc: { getAuthenticationResult: jest.Mock };
-  let mockRouter: { parseUrl: jest.Mock };
+  let mockOidc: Partial<OidcSecurityService>;
+  let mockRouter: Partial<Router>;
+  let fakeUrlTree: UrlTree;
+  let setItemSpy: jest.SpyInstance;
 
-  // Helper to create a fake JWT with a given payload
-  function createJwt(payload: object): string {
-    const encode = (obj: unknown) =>
-      btoa(JSON.stringify(obj)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-    const header = encode({ alg: 'none', typ: 'JWT' });
-    const body = encode(payload);
-    return `${header}.${body}.`;
+  /**
+   * We only care about access_token here. Any other properties on the auth result
+   * are irrelevant for this guard.
+   */
+  interface AuthResult {
+    access_token?: string;
+  }
+
+  /**
+   * Helper to build a minimal JWT‐style string whose payload
+   * is base64(JSON.stringify(payloadObj)). The guard’s decodeAccessToken splits on '.'
+   * and does atob(...) → JSON.parse(...).
+   */
+  function makeJwt(payloadObj: object): string {
+    const json = JSON.stringify(payloadObj);
+    const base64 = btoa(json);
+    return `header.${base64}.signature`;
   }
 
   beforeEach(() => {
-    mockOidc = {
-      getAuthenticationResult: jest.fn(),
-    };
+    // Spy on localStorage.setItem via Storage.prototype
+    setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
+    setItemSpy.mockClear();
+
+    // Create a dummy UrlTree; we only check identity in our expectations.
+    fakeUrlTree = new UrlTree();
+
     mockRouter = {
-      parseUrl: jest.fn().mockReturnValue({} as UrlTree),
+      parseUrl: jest.fn().mockReturnValue(fakeUrlTree),
+    };
+
+    // By default, getAuthenticationResult() emits an empty object ⇒ no access_token
+    mockOidc = {
+      getAuthenticationResult: jest.fn().mockReturnValue(of({} as AuthResult)),
     };
 
     TestBed.configureTestingModule({
@@ -35,73 +57,114 @@ describe('AuthorizationGuard', () => {
     });
 
     guard = TestBed.inject(AuthorizationGuard);
-    sessionStorage.clear();
   });
 
-  it('allows activation when no roles are required', (done) => {
-    mockOidc.getAuthenticationResult.mockReturnValue(of({ access_token: null }));
-    const routeSnapshot = { data: { roles: [] } } as unknown as ActivatedRouteSnapshot;
-
-    guard.canActivate(routeSnapshot).subscribe((result) => {
-      expect(result).toBe(true);
-      expect(sessionStorage.getItem('userRoles')).toBe(JSON.stringify([]));
-      done();
-    });
+  afterEach(() => {
+    setItemSpy.mockRestore();
+    jest.restoreAllMocks();
   });
 
-  it('allows activation if JWT contains a required role', (done) => {
-    const jwt = createJwt({ realm_access: { roles: ['admin', 'user'] } });
-    mockOidc.getAuthenticationResult.mockReturnValue(of({ access_token: jwt }));
-    const routeSnapshot = { data: { roles: ['user'] } } as unknown as ActivatedRouteSnapshot;
+  it('allows activation when no roles are required (route.data.roles undefined)', async () => {
+    // Cast via unknown to satisfy TS that not all properties are present
+    const route = { data: {} } as unknown as ActivatedRouteSnapshot;
 
-    guard.canActivate(routeSnapshot).subscribe((result) => {
-      expect(result).toBe(true);
-      expect(sessionStorage.getItem('userRoles')).toBe(JSON.stringify(['admin', 'user']));
-      done();
-    });
+    // Simulate auth result with no access_token
+    (mockOidc.getAuthenticationResult as jest.Mock).mockReturnValue(of({} as AuthResult));
+
+    const result = await firstValueFrom(guard.canActivate(route));
+
+    expect(result).toBe(true);
+    expect(setItemSpy).toHaveBeenCalledWith('userRoles', JSON.stringify([]));
+    expect(mockRouter.parseUrl).not.toHaveBeenCalled();
   });
 
-  it('denies activation if JWT does not contain a required role', (done) => {
-    const jwt = createJwt({ realm_access: { roles: ['viewer'] } });
-    mockOidc.getAuthenticationResult.mockReturnValue(of({ access_token: jwt }));
-    const routeSnapshot = {
-      data: { roles: ['editor', 'admin'] },
-    } as unknown as ActivatedRouteSnapshot;
+  it('allows activation when required role is present in token', async () => {
+    const route = { data: { roles: ['admin'] } } as unknown as ActivatedRouteSnapshot;
 
-    const fakeTree = {} as UrlTree;
-    mockRouter.parseUrl.mockReturnValue(fakeTree);
+    // Create a JWT whose payload has realm_access.roles = ['admin','user']
+    const payload = { realm_access: { roles: ['admin', 'user'] } };
+    const token = makeJwt(payload);
+    const fakeAuth: AuthResult = { access_token: token };
+    (mockOidc.getAuthenticationResult as jest.Mock).mockReturnValue(of(fakeAuth));
 
-    guard.canActivate(routeSnapshot).subscribe((result) => {
-      expect(result).toBe(fakeTree);
-      expect(sessionStorage.getItem('userRoles')).toBe(JSON.stringify(['viewer']));
-      expect(mockRouter.parseUrl).toHaveBeenCalledWith('/forbidden');
-      done();
-    });
+    const result = await firstValueFrom(guard.canActivate(route));
+
+    expect(result).toBe(true);
+    expect(setItemSpy).toHaveBeenCalledWith('userRoles', JSON.stringify(['admin', 'user']));
+    expect(mockRouter.parseUrl).not.toHaveBeenCalled();
   });
 
-  it('denies activation when access_token is missing and roles required', (done) => {
-    mockOidc.getAuthenticationResult.mockReturnValue(of({}));
-    const routeSnapshot = { data: { roles: ['anyrole'] } } as unknown as ActivatedRouteSnapshot;
+  it('denies activation (UrlTree) when required role is missing', async () => {
+    const route = { data: { roles: ['manager'] } } as unknown as ActivatedRouteSnapshot;
 
-    const fakeTree = {} as UrlTree;
-    mockRouter.parseUrl.mockReturnValue(fakeTree);
+    // Token payload has roles ['admin','user'], but route needs ['manager']
+    const payload = { realm_access: { roles: ['admin', 'user'] } };
+    const token = makeJwt(payload);
+    const fakeAuth: AuthResult = { access_token: token };
+    (mockOidc.getAuthenticationResult as jest.Mock).mockReturnValue(of(fakeAuth));
 
-    guard.canActivate(routeSnapshot).subscribe((result) => {
-      expect(result).toBe(fakeTree);
-      expect(sessionStorage.getItem('userRoles')).toBe(JSON.stringify([]));
-      done();
-    });
+    const result = await firstValueFrom(guard.canActivate(route));
+
+    expect(result).toBe(fakeUrlTree);
+    expect(setItemSpy).toHaveBeenCalledWith('userRoles', JSON.stringify(['admin', 'user']));
+    expect(mockRouter.parseUrl).toHaveBeenCalledWith('/forbidden');
   });
 
-  it('handles malformed JWT gracefully', (done) => {
-    const badJwt = 'invalid.token.string';
-    mockOidc.getAuthenticationResult.mockReturnValue(of({ access_token: badJwt }));
-    const routeSnapshot = { data: { roles: [] } } as unknown as ActivatedRouteSnapshot;
+  it('treats malformed token as having no roles (forbidden if roles required)', async () => {
+    const route = { data: { roles: ['admin'] } } as unknown as ActivatedRouteSnapshot;
 
-    guard.canActivate(routeSnapshot).subscribe((result) => {
-      expect(result).toBe(true);
-      expect(sessionStorage.getItem('userRoles')).toBe(JSON.stringify([]));
-      done();
-    });
+    // Malformed JWT (decodeAccessToken will catch and return empty object)
+    const badToken = 'not-a.valid.token';
+    const fakeAuth: AuthResult = { access_token: badToken };
+    (mockOidc.getAuthenticationResult as jest.Mock).mockReturnValue(of(fakeAuth));
+
+    const result = await firstValueFrom(guard.canActivate(route));
+
+    expect(result).toBe(fakeUrlTree);
+    expect(setItemSpy).toHaveBeenCalledWith('userRoles', JSON.stringify([]));
+    expect(mockRouter.parseUrl).toHaveBeenCalledWith('/forbidden');
+  });
+
+  it('allows activation if malformed token but no roles required', async () => {
+    const route = { data: { roles: [] } } as unknown as ActivatedRouteSnapshot;
+
+    // Malformed JWT, but since no roles are required, guard returns true
+    const badToken = 'abc.def.ghi';
+    const fakeAuth: AuthResult = { access_token: badToken };
+    (mockOidc.getAuthenticationResult as jest.Mock).mockReturnValue(of(fakeAuth));
+
+    const result = await firstValueFrom(guard.canActivate(route));
+
+    expect(result).toBe(true);
+    expect(setItemSpy).toHaveBeenCalledWith('userRoles', JSON.stringify([]));
+    expect(mockRouter.parseUrl).not.toHaveBeenCalled();
+  });
+
+  it('treats missing access_token as no roles (forbidden if roles required)', async () => {
+    const route = { data: { roles: ['user'] } } as unknown as ActivatedRouteSnapshot;
+
+    // auth result has no access_token field
+    const fakeAuth: AuthResult = {};
+    (mockOidc.getAuthenticationResult as jest.Mock).mockReturnValue(of(fakeAuth));
+
+    const result = await firstValueFrom(guard.canActivate(route));
+
+    expect(result).toBe(fakeUrlTree);
+    expect(setItemSpy).toHaveBeenCalledWith('userRoles', JSON.stringify([]));
+    expect(mockRouter.parseUrl).toHaveBeenCalledWith('/forbidden');
+  });
+
+  it('allows activation if missing access_token but no roles required', async () => {
+    const route = { data: {} } as unknown as ActivatedRouteSnapshot;
+
+    // auth result empty
+    const fakeAuth: AuthResult = {};
+    (mockOidc.getAuthenticationResult as jest.Mock).mockReturnValue(of(fakeAuth));
+
+    const result = await firstValueFrom(guard.canActivate(route));
+
+    expect(result).toBe(true);
+    expect(setItemSpy).toHaveBeenCalledWith('userRoles', JSON.stringify([]));
+    expect(mockRouter.parseUrl).not.toHaveBeenCalled();
   });
 });

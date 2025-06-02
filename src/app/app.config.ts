@@ -2,11 +2,12 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 
-import { routes } from './app.routes';
-import { Configuration } from '@shared/api/openapi/configuration';
+import { routes } from '@app/app.routes';
+import { oidcConfig } from '@app/auth.config';
+import { AgridataOIDCStorage } from '@app/agridata-oidc-storage';
 import { environment } from '@/environments/environment';
-import { provideAuth } from 'angular-auth-oidc-client';
-import { oidcConfig } from './auth.config';
+import { Configuration } from '@shared/api/openapi/configuration';
+import { AbstractSecurityStorage, provideAuth } from 'angular-auth-oidc-client';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,5 +23,6 @@ export const appConfig: ApplicationConfig = {
         ...oidcConfig,
       },
     }),
+    { provide: AbstractSecurityStorage, useClass: AgridataOIDCStorage },
   ],
 };

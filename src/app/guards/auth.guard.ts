@@ -35,7 +35,7 @@ export class AuthorizationGuard implements CanActivate {
         }
 
         // save user roles in session storage for later use
-        sessionStorage.setItem('userRoles', JSON.stringify(userRoles));
+        localStorage.setItem('userRoles', JSON.stringify(userRoles));
 
         const hasRole =
           requiredRoles.length === 0 || requiredRoles.some((role) => userRoles.includes(role));

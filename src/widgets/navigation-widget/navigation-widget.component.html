@@ -6,7 +6,7 @@
       [class.w-48]="isNavigationOpen()"
     >
       <ul class="flex flex-col gap-2">
-        @for (navigationItem of navigationItems; track navigationItem) {
+        @for (navigationItem of navigationItems(); track navigationItem) {
           @if (navigationItem && typeof navigationItem === 'object') {
             <li
               class="rounded-lg text-agridata-primary-text"

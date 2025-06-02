@@ -1,13 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { AuthService } from '@/shared/services/auth.service';
+import { Component, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-
-interface UserData {
-  sub?: string;
-  name?: string;
-  preferred_username?: string;
-  email?: string;
-}
 
 @Component({
   selector: 'app-header-widget',
@@ -16,29 +9,16 @@ interface UserData {
   styleUrl: './header-widget.component.css',
 })
 export class HeaderWidgetComponent {
-  private readonly oidcSecurityService = inject(OidcSecurityService);
+  constructor(private readonly authService: AuthService) {}
 
-  readonly isAuthenticated = signal<boolean>(false);
-  readonly userData = signal<UserData | null>(null);
-
-  ngOnInit() {
-    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated, userData }) => {
-      this.isAuthenticated.set(isAuthenticated);
-      if (isAuthenticated) {
-        this.userData.set(userData);
-      } else {
-        this.userData.set(null);
-      }
-    });
-  }
+  readonly isAuthenticated = computed(() => this.authService.isAuthenticated());
+  readonly userData = computed(() => this.authService.userData());
 
   login = () => {
-    this.oidcSecurityService.authorize();
+    this.authService.login();
   };
 
   logout = () => {
-    this.oidcSecurityService.logoff().subscribe(() => {
-      window.sessionStorage.clear();
-    });
+    this.authService.logout();
   };
 }
