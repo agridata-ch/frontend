@@ -1,3 +1,9 @@
+## [1.0.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.6...v1.0.0-rc.7) (2025-06-02)
+
+### Features
+
+- **auth:** config update, cross tab synchronization ([b63d498](https://github.com/agridata-ch/frontend/commit/b63d498909b1152484f7bf2655744c51c4c736d5)), closes [DIGIB2-462](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-462)
+
 ## [1.0.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.5...v1.0.0-rc.6) (2025-06-02)
 
 ### Features
