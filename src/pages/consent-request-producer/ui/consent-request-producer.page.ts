@@ -138,7 +138,7 @@ export class ConsentRequestProducerPage {
 
   getFilteredActions = (request?: ConsentRequestDto): ActionDTO[] => {
     if (!request) return [];
-    const dataConsumerName = request.dataRequest?.dataConsumer?.name;
+    const requestTitle = request.dataRequest?.titleDe;
     const details = {
       icon: this.eyeIcon,
       label: 'Details',
@@ -148,14 +148,14 @@ export class ConsentRequestProducerPage {
     const consent = {
       icon: this.checkIcon,
       label: 'Einwilligen',
-      callback: () => this.updateConsentRequestState(request.id, 'GRANTED', dataConsumerName),
+      callback: () => this.updateConsentRequestState(request.id, 'GRANTED', requestTitle),
       isMainAction: request.stateCode === 'OPENED',
     };
 
     const decline = {
       icon: this.banIcon,
       label: 'Ablehnen',
-      callback: () => this.updateConsentRequestState(request.id, 'DECLINED', dataConsumerName),
+      callback: () => this.updateConsentRequestState(request.id, 'DECLINED', requestTitle),
     };
 
     switch (request.stateCode) {

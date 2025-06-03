@@ -11,11 +11,11 @@
   [class.w-full]="showDetails()"
 >
   <div
-    class="flex flex-col gap-6 h-full max-h-[calc(100%-100px)] bg-white py-2 px-6 transition-opacity duration-100 ease-in-out overflow-y-auto"
+    class="flex flex-col gap-6 h-full bg-white py-2 px-6 transition-opacity duration-100 ease-in-out relative"
     [class.opacity-0]="!showDetails()"
     [class.opacity-100]="showDetails()"
   >
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between sticky top-0">
       <span class="text-lg text-agridata-secondary-text font-semibold">Detailansicht</span>
       <fa-icon
         size="3x"
@@ -26,65 +26,71 @@
         tabindex="0"
       />
     </div>
-    <span class="text-agridata-tertiary-text text-sm font-normal">
-      Anfrage vom {{ formattedRequestDate() }}
-    </span>
-    <h6 class="text-3xl text-agridata-primary-text font-semibold">
-      {{ _requestSignal()?.dataRequest?.titleDe }}
-    </h6>
-    <span class="text-gray-800 text-lg font-semibold">{{ dataConsumerName() }}</span>
-    <span class="text-agridata-primary-text font-normal">
-      {{ _requestSignal()?.dataRequest?.descriptionDe }}
-    </span>
-    <div class="flex flex-col gap-2 px-4 py-4 rounded-lg bg-sky-100">
-      <span class="text-agridata-primary-text font-semibold text-lg">Zweck</span>
-      <div class="flex flex-col">
-        <span class="text-agridata-primary-text font-normal">
-          {{ _requestSignal()?.dataRequest?.purposeDe }}
-        </span>
-      </div>
-      <app-agridata-accordion
-        [header]="'Folgende Daten werden übermittelt'"
-        [content]="'Inhalt fehlt noch'"
-      />
-    </div>
-    @for (privacySection of privacySections(); track privacySection.description) {
-      <div class="flex">
-        <fa-icon size="xl" [icon]="privacySection.icon" class="text-agridata-secondary-text mr-2" />
+    <div class="overflow-y-auto flex flex-col gap-6 grow">
+      <span class="text-agridata-tertiary-text text-sm font-normal">
+        Anfrage vom {{ formattedRequestDate() }}
+      </span>
+      <h6 class="text-3xl text-agridata-primary-text font-semibold">
+        {{ _requestSignal()?.dataRequest?.titleDe }}
+      </h6>
+      <span class="text-gray-800 text-lg font-semibold">{{ dataConsumerName() }}</span>
+      <span class="text-agridata-primary-text font-normal">
+        {{ _requestSignal()?.dataRequest?.descriptionDe }}
+      </span>
+      <div class="flex flex-col gap-2 px-4 py-4 rounded-lg bg-sky-100">
+        <span class="text-agridata-primary-text font-semibold text-lg">Zweck</span>
         <div class="flex flex-col">
-          <span class="text-agridata-secondary-text font-semibold">
-            {{ privacySection.title }}
-          </span>
-          <span class="text-agridata-secondary-text font-normal">
-            {{ privacySection.description }}
+          <span class="text-agridata-primary-text font-normal">
+            {{ _requestSignal()?.dataRequest?.purposeDe }}
           </span>
         </div>
+        <app-agridata-accordion
+          [header]="'Folgende Daten werden übermittelt'"
+          [content]="'Inhalt fehlt noch'"
+        />
       </div>
-    }
-  </div>
-  <div class="fixed bottom-0 bg-white w-full py-4 px-6 justify-center flex flex-col gap-1.5">
-    <div class="flex gap-2">
-      <button
-        class="w-full agridata-button agridata-button-secondary-reject"
-        [disabled]="_requestSignal()?.stateCode === 'DECLINED'"
-        (click)="rejectRequest()"
-        (keydown.enter)="rejectRequest()"
-        tabindex="0"
-      >
-        Ablehnen
-      </button>
-      <button
-        class="w-full agridata-button agridata-button-primary-accept"
-        [disabled]="_requestSignal()?.stateCode === 'GRANTED'"
-        (click)="acceptRequest()"
-        (keydown.enter)="acceptRequest()"
-        tabindex="0"
-      >
-        Einwilligen
-      </button>
+      @for (privacySection of privacySections(); track privacySection.description) {
+        <div class="flex">
+          <fa-icon
+            size="xl"
+            [icon]="privacySection.icon"
+            class="text-agridata-secondary-text mr-2"
+          />
+          <div class="flex flex-col">
+            <span class="text-agridata-secondary-text font-semibold">
+              {{ privacySection.title }}
+            </span>
+            <span class="text-agridata-secondary-text font-normal">
+              {{ privacySection.description }}
+            </span>
+          </div>
+        </div>
+      }
     </div>
-    <span class="w-full flex justify-center text-agridata-tertiary-text text-xs">
-      Du kannst deine Einwilligung jederzeit ändern.
-    </span>
+    <div class="justify-center flex flex-col gap-1.5">
+      <div class="flex gap-2">
+        <button
+          class="w-full agridata-button agridata-button-secondary-reject"
+          [disabled]="_requestSignal()?.stateCode === 'DECLINED'"
+          (click)="rejectRequest()"
+          (keydown.enter)="rejectRequest()"
+          tabindex="0"
+        >
+          Ablehnen
+        </button>
+        <button
+          class="w-full agridata-button agridata-button-primary-accept"
+          [disabled]="_requestSignal()?.stateCode === 'GRANTED'"
+          (click)="acceptRequest()"
+          (keydown.enter)="acceptRequest()"
+          tabindex="0"
+        >
+          Einwilligen
+        </button>
+      </div>
+      <span class="w-full flex justify-center text-agridata-tertiary-text text-xs">
+        Du kannst deine Einwilligung jederzeit ändern.
+      </span>
+    </div>
   </div>
 </div>

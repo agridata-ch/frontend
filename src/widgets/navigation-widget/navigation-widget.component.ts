@@ -1,5 +1,3 @@
-// src/app/widgets/navigation-widget/navigation-widget.component.ts
-
 import { AuthService } from '@/shared/services/auth.service';
 import { Component, computed, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';

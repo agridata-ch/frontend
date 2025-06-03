@@ -13,7 +13,6 @@ import { TableActionsComponent, ActionDTO } from './table-actions/table-actions.
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { compareAsc, compareDesc, format, isValid, parseISO } from 'date-fns';
-import { ClickStopPropagationDirective } from '@/shared/directives/click-stop-propagation.directive';
 
 export interface AgridataTableCell {
   header: string;
@@ -35,7 +34,7 @@ export class CellTemplateDirective {
 
 @Component({
   selector: 'app-agridata-table',
-  imports: [CommonModule, TableActionsComponent, FontAwesomeModule, ClickStopPropagationDirective],
+  imports: [CommonModule, TableActionsComponent, FontAwesomeModule],
   templateUrl: './agridata-table.component.html',
   styleUrl: './agridata-table.component.css',
 })

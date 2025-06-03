@@ -53,6 +53,7 @@ export class ConsentRequestDetailsComponent {
   readonly dataConsumerName = computed(
     () => this._requestSignal()?.dataRequest?.dataConsumer?.name,
   );
+  readonly requestTitle = computed(() => this._requestSignal()?.dataRequest?.titleDe);
   readonly privacySections = computed(() => [
     {
       icon: this.editIcon,
@@ -94,7 +95,7 @@ export class ConsentRequestDetailsComponent {
   async acceptRequest() {
     this.toastService.show(
       getToastTitle('GRANTED'),
-      getToastMessage('GRANTED', this.dataConsumerName()),
+      getToastMessage('GRANTED', this.requestTitle()),
       getToastType('GRANTED'),
     );
     this.handleCloseDetails();
@@ -106,7 +107,7 @@ export class ConsentRequestDetailsComponent {
   async rejectRequest() {
     this.toastService.show(
       getToastTitle('DECLINED'),
-      getToastMessage('DECLINED', this.dataConsumerName()),
+      getToastMessage('DECLINED', this.requestTitle()),
       getToastType('DECLINED'),
     );
     this.handleCloseDetails();
