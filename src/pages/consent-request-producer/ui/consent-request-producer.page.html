@@ -15,9 +15,7 @@
     <span class="text-agridata-primary-600"> {{ getCellValue(item, 'Datenantrag') }} </span>
   </ng-template>
   <ng-template stCell="Status" let-item>
-    <span class="px-2 py-1 rounded text-xs" [class]="getStateClasses(getCellValue(item, 'Status'))">
-      {{ getCellValue(item, 'Status') }}
-    </span>
+    <request-state-badge [status]="getCellValue(item, 'Status')" />
   </ng-template>
 </app-agridata-table>
 <app-consent-request-details

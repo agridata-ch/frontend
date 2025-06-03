@@ -12,7 +12,8 @@ import {
 import { TableActionsComponent, ActionDTO } from './table-actions/table-actions.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import { compareAsc, compareDesc, format, isValid, parseISO } from 'date-fns';
+import { compareAsc, compareDesc, isValid, parseISO } from 'date-fns';
+import { formatDate } from '@/shared/lib/date-utils';
 
 export interface AgridataTableCell {
   header: string;
@@ -127,13 +128,13 @@ export class AgridataTableComponent {
     if (typeof value === 'number') return value;
     // check if value is a real Date object (return false for iso date strings)
     if (value instanceof Date && isValid(value)) {
-      return format(value, 'dd.MM.yyyy');
+      return formatDate(value);
     }
 
     // check if value is a string that can be parsed as a date (for example if it's in ISO format)
     const parsedDate = parseISO(value as string);
     if (isValid(parsedDate)) {
-      return format(parsedDate, 'dd.MM.yyyy');
+      return formatDate(parsedDate);
     }
     return value;
   }
