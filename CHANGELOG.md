@@ -1,3 +1,9 @@
+## [1.0.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.7...v1.0.0-rc.8) (2025-06-03)
+
+### Features
+
+- **ui:** update details panel ([d0a1a63](https://github.com/agridata-ch/frontend/commit/d0a1a632498d8f736da39c2dc8e1b1ed345d66dd)), closes [DIGIB2-435](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-435)
+
 ## [1.0.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.6...v1.0.0-rc.7) (2025-06-02)
 
 ### Features
