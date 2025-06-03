@@ -11,7 +11,6 @@ export interface UserData {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  // Signals that components can read
   readonly isAuthenticated = signal<boolean>(false);
   readonly userData = signal<UserData | null>(null);
   readonly userRoles = signal<string[] | null>(null);
@@ -22,7 +21,7 @@ export class AuthService {
   ) {
     this.setUserDataAndRoles(true);
 
-    // 2️⃣  Listen for “storage” events so other tabs’ logins/logouts propagate here
+    // Listen for “storage” events so other tabs’ logins/logouts propagate here
     window.addEventListener('storage', (event: StorageEvent) => {
       if (event.key?.startsWith('oidc.')) {
         this.setUserDataAndRoles();

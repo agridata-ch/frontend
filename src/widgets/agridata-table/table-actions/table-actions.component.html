@@ -1,6 +1,7 @@
 <div class="flex flex-row gap-4 justify-end">
   @if (mainAction()) {
     <button
+      click-stop-propagation
       type="button"
       (click)="handleClick(mainAction()!)"
       class="agridata-button agridata-button-primary-accept"
@@ -9,6 +10,7 @@
     </button>
   }
   <button
+    click-stop-propagation
     type="button"
     (click)="handleToggle()"
     [attr.aria-expanded]="isOpen()"
@@ -22,6 +24,7 @@
       <ul>
         @for (action of actions; track action.label) {
           <li
+            click-stop-propagation
             class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
             (click)="handleClick(action)"
             (keydown.enter)="handleClick(action)"

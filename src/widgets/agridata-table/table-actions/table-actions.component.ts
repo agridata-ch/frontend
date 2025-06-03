@@ -2,6 +2,8 @@ import { Component, computed, ElementRef, HostListener, Input, signal } from '@a
 import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
+import { ClickStopPropagationDirective } from '@/shared/directives/click-stop-propagation.directive';
+
 export interface ActionDTO {
   icon?: IconDefinition;
   label: string;
@@ -11,7 +13,7 @@ export interface ActionDTO {
 
 @Component({
   selector: 'app-table-actions',
-  imports: [FontAwesomeModule],
+  imports: [FontAwesomeModule, ClickStopPropagationDirective],
   templateUrl: './table-actions.component.html',
   styleUrl: './table-actions.component.css',
 })
