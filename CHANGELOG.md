@@ -1,3 +1,9 @@
+## [1.0.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.8...v1.0.0-rc.9) (2025-06-03)
+
+### Features
+
+- **badge:** badge component ([89bdcf1](https://github.com/agridata-ch/frontend/commit/89bdcf1d3a51b44d4461ff7d30b4483fc653a830)), closes [DIGIB2-435](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-435)
+
 ## [1.0.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.7...v1.0.0-rc.8) (2025-06-03)
 
 ### Features
