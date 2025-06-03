@@ -21,6 +21,7 @@ import {
   getToastTitle,
   getToastType,
 } from '@pages/consent-request-producer/ui/consent-request-producer.page';
+import { ConsentRequestStateEnum } from '@/shared/api/openapi/model/consentRequestStateEnum';
 
 @Component({
   selector: 'app-consent-request-details',
@@ -45,6 +46,7 @@ export class ConsentRequestDetailsComponent {
   readonly editIcon = faPenSquare;
   readonly lockIcon = faLock;
   readonly repeatIcon = faRepeat;
+  readonly consentRequestStateEnum = ConsentRequestStateEnum;
   readonly formattedRequestDate = computed(() => {
     const requestDate = this._requestSignal()?.requestDate;
     return requestDate ? format(requestDate, 'dd.MM.yyyy') : '';
@@ -94,25 +96,29 @@ export class ConsentRequestDetailsComponent {
 
   async acceptRequest() {
     this.toastService.show(
-      getToastTitle('GRANTED'),
-      getToastMessage('GRANTED', this.requestTitle()),
-      getToastType('GRANTED'),
+      getToastTitle(ConsentRequestStateEnum.Granted),
+      getToastMessage(ConsentRequestStateEnum.Granted, this.requestTitle()),
+      getToastType(ConsentRequestStateEnum.Granted),
     );
     this.handleCloseDetails();
-    this.consentRequestService.updateConsentRequestStatus(this.requestId(), 'GRANTED').then(() => {
-      this.consentRequestService.reload();
-    });
+    this.consentRequestService
+      .updateConsentRequestStatus(this.requestId(), ConsentRequestStateEnum.Granted)
+      .then(() => {
+        this.consentRequestService.reload();
+      });
   }
 
   async rejectRequest() {
     this.toastService.show(
-      getToastTitle('DECLINED'),
-      getToastMessage('DECLINED', this.requestTitle()),
-      getToastType('DECLINED'),
+      getToastTitle(ConsentRequestStateEnum.Declined),
+      getToastMessage(ConsentRequestStateEnum.Declined, this.requestTitle()),
+      getToastType(ConsentRequestStateEnum.Declined),
     );
     this.handleCloseDetails();
-    this.consentRequestService.updateConsentRequestStatus(this.requestId(), 'DECLINED').then(() => {
-      this.consentRequestService.reload();
-    });
+    this.consentRequestService
+      .updateConsentRequestStatus(this.requestId(), ConsentRequestStateEnum.Declined)
+      .then(() => {
+        this.consentRequestService.reload();
+      });
   }
 }

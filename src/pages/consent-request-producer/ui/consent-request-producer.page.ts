@@ -14,7 +14,7 @@ import { faFile, faEye } from '@fortawesome/free-regular-svg-icons';
 import { faBan, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { ConsentRequestService } from '@shared/services/consent-request.service';
-import { ConsentRequestDto } from '@shared/api/openapi/model/models';
+import { ConsentRequestDto, ConsentRequestStateEnum } from '@shared/api/openapi/model/models';
 import { ToastService, ToastType } from '@shared/services/toast.service';
 import {
   AgridataTableComponent,
@@ -28,9 +28,9 @@ import { ConsentRequestFilterComponent } from './consent-request-filter/consent-
 
 export function getToastTitle(stateCode: string): string {
   switch (stateCode) {
-    case 'GRANTED':
+    case ConsentRequestStateEnum.Granted:
       return 'Einwilligung erteilt';
-    case 'DECLINED':
+    case ConsentRequestStateEnum.Declined:
       return 'Einwilligung abgelehnt';
     default:
       return 'Antrag aktualisiert';
@@ -39,9 +39,9 @@ export function getToastTitle(stateCode: string): string {
 
 export function getToastMessage(stateCode: string, requestName?: string): string {
   switch (stateCode) {
-    case 'GRANTED':
+    case ConsentRequestStateEnum.Granted:
       return `Du hast den Antrag ${requestName ?? ''} erfolgreich eingewilligt.`;
-    case 'DECLINED':
+    case ConsentRequestStateEnum.Declined:
       return `Du hast den Antrag ${requestName ?? ''} erfolgreich abgelehnt.`;
     default:
       return 'Der Antrag wurde aktualisiert.';
@@ -50,9 +50,9 @@ export function getToastMessage(stateCode: string, requestName?: string): string
 
 export function getToastType(stateCode: string): ToastType {
   switch (stateCode) {
-    case 'GRANTED':
+    case ConsentRequestStateEnum.Granted:
       return ToastType.Success;
-    case 'DECLINED':
+    case ConsentRequestStateEnum.Declined:
       return ToastType.Error;
     default:
       return ToastType.Info;
@@ -103,13 +103,15 @@ export class ConsentRequestProducerPage {
           },
           { header: 'Status', value: request.stateCode ?? '' },
         ],
-        highlighted: request.stateCode === 'OPENED',
+        highlighted: request.stateCode === ConsentRequestStateEnum.Opened,
         actions: this.getFilteredActions(request),
         rowAction: this.showConsentRequestDetails.bind(this, request),
       }));
   });
   readonly totalOpenRequests: Signal<number> = computed(() => {
-    return this.consentRequestResult.value().filter((r) => r.stateCode === 'OPENED').length;
+    return this.consentRequestResult
+      .value()
+      .filter((r) => r.stateCode === ConsentRequestStateEnum.Opened).length;
   });
   readonly selectedRequest = signal<ConsentRequestDto | null>(null);
 
@@ -148,22 +150,24 @@ export class ConsentRequestProducerPage {
     const consent = {
       icon: this.checkIcon,
       label: 'Einwilligen',
-      callback: () => this.updateConsentRequestState(request.id, 'GRANTED', requestTitle),
-      isMainAction: request.stateCode === 'OPENED',
+      callback: () =>
+        this.updateConsentRequestState(request.id, ConsentRequestStateEnum.Granted, requestTitle),
+      isMainAction: request.stateCode === ConsentRequestStateEnum.Opened,
     };
 
     const decline = {
       icon: this.banIcon,
       label: 'Ablehnen',
-      callback: () => this.updateConsentRequestState(request.id, 'DECLINED', requestTitle),
+      callback: () =>
+        this.updateConsentRequestState(request.id, ConsentRequestStateEnum.Declined, requestTitle),
     };
 
     switch (request.stateCode) {
-      case 'OPENED':
+      case ConsentRequestStateEnum.Opened:
         return [details, consent, decline];
-      case 'DECLINED':
+      case ConsentRequestStateEnum.Declined:
         return [details, consent];
-      case 'GRANTED':
+      case ConsentRequestStateEnum.Granted:
         return [details, decline];
       default:
         return [];
@@ -177,11 +181,11 @@ export class ConsentRequestProducerPage {
 
   getStateClasses(stateCode: string): string {
     switch (stateCode) {
-      case 'OPENED':
+      case ConsentRequestStateEnum.Opened:
         return 'bg-cyan-100 text-cyan-700';
-      case 'GRANTED':
+      case ConsentRequestStateEnum.Granted:
         return 'bg-green-100 text-green-700';
-      case 'DECLINED':
+      case ConsentRequestStateEnum.Declined:
         return 'bg-red-100 text-red-700';
       default:
         return 'bg-gray-100 text-gray-800';
