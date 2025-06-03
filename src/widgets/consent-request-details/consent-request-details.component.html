@@ -71,7 +71,7 @@
       <div class="flex gap-2">
         <button
           class="w-full agridata-button agridata-button-secondary-reject"
-          [disabled]="_requestSignal()?.stateCode === 'DECLINED'"
+          [disabled]="_requestSignal()?.stateCode === consentRequestStateEnum.Declined"
           (click)="rejectRequest()"
           (keydown.enter)="rejectRequest()"
           tabindex="0"
@@ -80,7 +80,7 @@
         </button>
         <button
           class="w-full agridata-button agridata-button-primary-accept"
-          [disabled]="_requestSignal()?.stateCode === 'GRANTED'"
+          [disabled]="_requestSignal()?.stateCode === consentRequestStateEnum.Granted"
           (click)="acceptRequest()"
           (keydown.enter)="acceptRequest()"
           tabindex="0"
