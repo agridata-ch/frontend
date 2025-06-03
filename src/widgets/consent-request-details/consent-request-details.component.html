@@ -27,13 +27,20 @@
       />
     </div>
     <div class="overflow-y-auto flex flex-col gap-6 grow">
-      <span class="text-agridata-tertiary-text text-sm font-normal">
-        Anfrage vom {{ formattedRequestDate() }}
-      </span>
+      <div>
+        <span class="text-agridata-tertiary-text text-sm font-normal">
+          Anfrage vom {{ formattedRequestDate() }} |
+        </span>
+        <request-state-badge
+          [status]="this._requestSignal()?.stateCode!"
+          [lastStateChangeDate]="this._requestSignal()?.lastStateChangeDate"
+          [size]="badgeSize.MD"
+        />
+      </div>
       <h6 class="text-3xl text-agridata-primary-text font-semibold">
         {{ _requestSignal()?.dataRequest?.titleDe }}
       </h6>
-      <span class="text-gray-800 text-lg font-semibold">{{ dataConsumerName() }}</span>
+      <span class="text-gray-800 text-lg font-semibold font-">{{ dataConsumerName() }}</span>
       <span class="text-agridata-primary-text font-normal">
         {{ _requestSignal()?.dataRequest?.descriptionDe }}
       </span>

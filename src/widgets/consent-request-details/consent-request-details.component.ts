@@ -8,24 +8,27 @@ import {
   inject,
   Input,
   Output,
+  Signal,
   signal,
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faClose, faPenSquare, faLock, faRepeat } from '@fortawesome/free-solid-svg-icons';
-import { format } from 'date-fns';
 import { AgridataAccordionComponent } from '@widgets/agridata-accordion/agridata-accordion.component';
 import { ConsentRequestService } from '@shared/services/consent-request.service';
-import { ToastService } from '@/shared/services/toast.service';
+import { ToastService } from '@shared/services/toast.service';
 import {
   getToastMessage,
   getToastTitle,
   getToastType,
 } from '@pages/consent-request-producer/ui/consent-request-producer.page';
-import { ConsentRequestStateEnum } from '@/shared/api/openapi/model/consentRequestStateEnum';
+import { ConsentRequestStateEnum } from '@shared/api/openapi/model/consentRequestStateEnum';
+import { RequestStateBadgeComponent } from '@features/request-state-badge/request-state-badge.component';
+import { formatDate } from '@/shared/lib/date-utils';
+import { BadgeSize } from '@/shared/ui/badge/badge.component';
 
 @Component({
   selector: 'app-consent-request-details',
-  imports: [FontAwesomeModule, AgridataAccordionComponent],
+  imports: [FontAwesomeModule, AgridataAccordionComponent, RequestStateBadgeComponent],
   templateUrl: './consent-request-details.component.html',
   styleUrl: './consent-request-details.component.css',
 })
@@ -46,16 +49,15 @@ export class ConsentRequestDetailsComponent {
   readonly editIcon = faPenSquare;
   readonly lockIcon = faLock;
   readonly repeatIcon = faRepeat;
+  readonly badgeSize = BadgeSize;
   readonly consentRequestStateEnum = ConsentRequestStateEnum;
-  readonly formattedRequestDate = computed(() => {
-    const requestDate = this._requestSignal()?.requestDate;
-    return requestDate ? format(requestDate, 'dd.MM.yyyy') : '';
-  });
+  readonly formattedRequestDate = computed(() => formatDate(this._requestSignal()?.requestDate));
   readonly showDetails = signal(false);
   readonly dataConsumerName = computed(
     () => this._requestSignal()?.dataRequest?.dataConsumer?.name,
   );
   readonly requestTitle = computed(() => this._requestSignal()?.dataRequest?.titleDe);
+  readonly requestStatus: Signal<string> = computed(() => String(this._requestSignal()?.stateCode));
   readonly privacySections = computed(() => [
     {
       icon: this.editIcon,

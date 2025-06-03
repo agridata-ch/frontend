@@ -56,18 +56,6 @@ describe('ConsentRequestDetailsComponent', () => {
     expect(component.showDetails()).toBe(true);
   });
 
-  it('formattedRequestDate returns an empty string if no date', () => {
-    const req = {
-      requestDate: null,
-      dataRequest: { dataConsumer: { name: 'John' } },
-    } as unknown as ConsentRequestDto;
-
-    component.request = req;
-    fixture.detectChanges();
-
-    expect(component.formattedRequestDate()).toBe('');
-  });
-
   it('handleCloseDetails hides the details and emits onCloseDetail', () => {
     const req = {
       requestDate: new Date(),

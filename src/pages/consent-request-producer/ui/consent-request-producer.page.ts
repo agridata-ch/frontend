@@ -25,6 +25,7 @@ import { ActionDTO } from '@widgets/agridata-table/table-actions/table-actions.c
 import { ConsentRequestDetailsComponent } from '@widgets/consent-request-details/consent-request-details.component';
 
 import { ConsentRequestFilterComponent } from './consent-request-filter/consent-request-filter.component';
+import { RequestStateBadgeComponent } from '@features/request-state-badge/request-state-badge.component';
 
 export function getToastTitle(stateCode: string): string {
   switch (stateCode) {
@@ -68,6 +69,7 @@ export function getToastType(stateCode: string): ToastType {
     ConsentRequestFilterComponent,
     AgridataTableComponent,
     ConsentRequestDetailsComponent,
+    RequestStateBadgeComponent,
   ],
   templateUrl: './consent-request-producer.page.html',
   styleUrl: './consent-request-producer.page.css',
@@ -84,9 +86,6 @@ export class ConsentRequestProducerPage {
   readonly checkIcon = faCheck;
   readonly banIcon = faBan;
   readonly consentRequestResult!: Resource<ConsentRequestDto[]>;
-  readonly dateFormatter = Intl.DateTimeFormat('de-DE', {
-    dateStyle: 'medium',
-  });
   readonly stateFilter = signal<string | null>(null);
   readonly requests: Signal<AgridataTableData[]> = computed(() => {
     const filter = this.stateFilter();
@@ -177,19 +176,6 @@ export class ConsentRequestProducerPage {
   getCellValue(row: AgridataTableData, header: string): string {
     const cell = row.data.find((c) => c.header === header);
     return cell ? cell.value : '';
-  }
-
-  getStateClasses(stateCode: string): string {
-    switch (stateCode) {
-      case ConsentRequestStateEnum.Opened:
-        return 'bg-cyan-100 text-cyan-700';
-      case ConsentRequestStateEnum.Granted:
-        return 'bg-green-100 text-green-700';
-      case ConsentRequestStateEnum.Declined:
-        return 'bg-red-100 text-red-700';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
   }
 
   setStateFilter(state: string | null) {

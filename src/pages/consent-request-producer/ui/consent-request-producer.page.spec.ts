@@ -150,29 +150,6 @@ describe('ConsentRequestProducerPage Component', () => {
     });
   });
 
-  describe('getStateClasses()', () => {
-    it('returns cyan classes for OPENED', () => {
-      const classes = component.getStateClasses('OPENED');
-      expect(classes).toContain('bg-cyan-100');
-      expect(classes).toContain('text-cyan-700');
-    });
-    it('returns green classes for GRANTED', () => {
-      const classes = component.getStateClasses('GRANTED');
-      expect(classes).toContain('bg-green-100');
-      expect(classes).toContain('text-green-700');
-    });
-    it('returns red classes for DECLINED', () => {
-      const classes = component.getStateClasses('DECLINED');
-      expect(classes).toContain('bg-red-100');
-      expect(classes).toContain('text-red-700');
-    });
-    it('returns gray classes for unknown state', () => {
-      const classes = component.getStateClasses('XYZ');
-      expect(classes).toContain('bg-gray-100');
-      expect(classes).toContain('text-gray-800');
-    });
-  });
-
   describe('signals: requests and totalOpenRequests', () => {
     const sampleData: ConsentRequestDto[] = [
       {
