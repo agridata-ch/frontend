@@ -26,8 +26,6 @@ export class FooterWidgetComponent {
   // remove this method for production
   // it is only for testing purposes to reset the test data
   resetData = () => {
-    this.testDataService
-      .resetTestData()
-      .then(() => this.consentRequestService.fetchConsentRequests());
+    this.testDataService.resetTestData().then(() => window.location.reload());
   };
 }
