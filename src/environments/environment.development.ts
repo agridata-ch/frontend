@@ -5,7 +5,7 @@ export const environment = {
     authority: 'https://idp-rf.agate.ch/auth/realms/agate',
     clientId: 'agridata-rf',
     redirectUrl: 'https://dev.agridata.ch/auth-response',
-    postLogoutRedirectUri: 'https://dev.agridata.ch/auth-response',
+    postLogoutRedirectUri: 'https://dev.agridata.ch',
     scope: 'openid',
     responseType: 'code',
   },
