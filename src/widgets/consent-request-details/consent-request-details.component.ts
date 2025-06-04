@@ -106,7 +106,7 @@ export class ConsentRequestDetailsComponent {
     this.consentRequestService
       .updateConsentRequestStatus(this.requestId(), ConsentRequestStateEnum.Granted)
       .then(() => {
-        this.consentRequestService.reload();
+        this.consentRequestService.fetchConsentRequests();
       });
   }
 
@@ -120,7 +120,7 @@ export class ConsentRequestDetailsComponent {
     this.consentRequestService
       .updateConsentRequestStatus(this.requestId(), ConsentRequestStateEnum.Declined)
       .then(() => {
-        this.consentRequestService.reload();
+        this.consentRequestService.fetchConsentRequests();
       });
   }
 }

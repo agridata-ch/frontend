@@ -8,5 +8,8 @@ export const environment = {
     postLogoutRedirectUri: 'https://dev.agridata.ch',
     scope: 'openid',
     responseType: 'code',
+    silentRenew: true,
+    useRefreshToken: true,
+    secureRoutes: ['https://api.dev.agridata.ch'],
   },
 };

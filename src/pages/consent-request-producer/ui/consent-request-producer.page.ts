@@ -4,7 +4,7 @@ import {
   effect,
   inject,
   input,
-  Resource,
+  resource,
   Signal,
   signal,
 } from '@angular/core';
@@ -85,8 +85,12 @@ export class ConsentRequestProducerPage {
   readonly eyeIcon = faEye;
   readonly checkIcon = faCheck;
   readonly banIcon = faBan;
-  readonly consentRequestResult!: Resource<ConsentRequestDto[]>;
   readonly stateFilter = signal<string | null>(null);
+  readonly consentRequestResult = resource<ConsentRequestDto[], unknown>({
+    request: () => true,
+    loader: async () => this.consentRequestService.fetchConsentRequests(),
+    defaultValue: [],
+  });
   readonly requests: Signal<AgridataTableData[]> = computed(() => {
     const filter = this.stateFilter();
     return this.consentRequestResult
@@ -115,16 +119,10 @@ export class ConsentRequestProducerPage {
   readonly selectedRequest = signal<ConsentRequestDto | null>(null);
 
   constructor(private readonly consentRequestService: ConsentRequestService) {
-    this.consentRequestResult = this.consentRequestService.consentRequests;
-
     // effect to open the details view if we visit the page with a consentRequestId in the URL directly
     effect(() => {
       this.handleOpenDetails();
     });
-  }
-
-  ngOnInit() {
-    this.consentRequestResult.reload();
   }
 
   handleOpenDetails = () => {

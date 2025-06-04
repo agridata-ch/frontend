@@ -1,41 +1,32 @@
 import { TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 
 import { ConsentRequestService } from '@shared/services/consent-request.service';
 import { DataConsentResourceService } from '@shared/api/openapi/api/dataConsentResource.service';
 import { ConsentRequestDto } from '@shared/api/openapi/model/models';
 
-function flushPromises(): Promise<void> {
-  return new Promise((r) => setTimeout(r, 0));
-}
-
 describe('ConsentRequestService', () => {
   let service: ConsentRequestService;
-  let apiMock: Partial<DataConsentResourceService>;
+  let apiMock: Pick<
+    DataConsentResourceService,
+    'getConsentRequests' | 'updateConsentRequestStatus'
+  >;
 
   beforeEach(() => {
     apiMock = {
       getConsentRequests: jest.fn(),
       updateConsentRequestStatus: jest.fn(),
     };
-
     TestBed.configureTestingModule({
       providers: [
         ConsentRequestService,
         { provide: DataConsentResourceService, useValue: apiMock },
       ],
     });
-
     service = TestBed.inject(ConsentRequestService);
   });
 
-  it('starts with empty value', () => {
-    expect(service.consentRequests.value()).toEqual([]);
-    expect(service.consentRequests.hasValue()).toBe(true);
-    expect(service.consentRequests.isLoading()).toBe(true);
-  });
-
-  it('reload() loads data on success', async () => {
+  it('fetchConsentRequests() loads data on success', async () => {
     const mockData: ConsentRequestDto[] = [
       {
         id: '1',
@@ -54,25 +45,10 @@ describe('ConsentRequestService', () => {
     ];
     (apiMock.getConsentRequests as jest.Mock).mockReturnValue(of(mockData));
 
-    service.reload();
-    await flushPromises();
+    const result = await service.fetchConsentRequests();
 
     expect(apiMock.getConsentRequests).toHaveBeenCalledTimes(1);
-    expect(service.consentRequests.value()).toEqual(mockData);
-    expect(service.consentRequests.error()).toBeUndefined();
-    expect(service.consentRequests.isLoading()).toBe(false);
-  });
-
-  it('reload() surfaces API errors', async () => {
-    const err = new Error('oops');
-    (apiMock.getConsentRequests as jest.Mock).mockReturnValue(throwError(() => err));
-
-    service.reload();
-    await flushPromises();
-
-    expect(apiMock.getConsentRequests).toHaveBeenCalledTimes(1);
-    expect(service.consentRequests.error()).toBe(err);
-    expect(service.consentRequests.value()).toEqual([]);
+    expect(result).toEqual(mockData);
   });
 
   it('updateConsentRequestStatus() calls API with quoted stateCode and resolves to DTO', async () => {

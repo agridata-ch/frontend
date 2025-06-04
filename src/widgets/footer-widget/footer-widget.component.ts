@@ -20,13 +20,14 @@ export class FooterWidgetComponent {
     private readonly testDataService: TestDataApiService,
     private readonly consentRequestService: ConsentRequestService,
   ) {
-    this.consentRequestResult = this.consentRequestService.consentRequests;
     this.version = version;
   }
 
   // remove this method for production
   // it is only for testing purposes to reset the test data
   resetData = () => {
-    this.testDataService.resetTestData().then(() => this.consentRequestResult.reload());
+    this.testDataService
+      .resetTestData()
+      .then(() => this.consentRequestService.fetchConsentRequests());
   };
 }

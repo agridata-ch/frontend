@@ -8,5 +8,8 @@ export const environment = {
     postLogoutRedirectUri: window.location.origin,
     scope: 'openid',
     responseType: 'code',
+    silentRenew: true,
+    useRefreshToken: true,
+    secureRoutes: ['http://localhost:8060'],
   },
 };
