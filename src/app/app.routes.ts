@@ -2,9 +2,9 @@ import { Routes } from '@angular/router';
 import { DefaultLayoutComponent } from '@app/layout/ui/default-layout.component';
 import { ConsentRequestProducerPage } from '@pages/consent-request-producer/ui/consent-request-producer.page';
 import { NotFoundPage } from '@pages/not-found/not-found.page';
-import { LoginPage } from '@pages/login/login.page';
 import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 import { AuthorizationGuard } from './guards/auth.guard';
+import { LoginAuthGuard } from './guards/login.guard';
 
 export const routes: Routes = [
   // #### public pages without authentication ####
@@ -14,17 +14,20 @@ export const routes: Routes = [
     path: 'auth-response',
     component: DefaultLayoutComponent,
     pathMatch: 'full',
-    children: [{ path: '', component: LoginPage }],
   },
   {
     path: '',
-    canActivate: [AuthorizationGuard],
     component: DefaultLayoutComponent,
     pathMatch: 'full',
-    children: [{ path: '', component: LoginPage }],
   },
 
   // #### protected pages with authentication ####
+  {
+    // login page to get redirected from the auth provider which uses a specific guard that is only for this route
+    path: 'login',
+    component: DefaultLayoutComponent,
+    canActivate: [autoLoginPartialRoutesGuard, LoginAuthGuard],
+  },
   {
     // producer routes
     path: '',
