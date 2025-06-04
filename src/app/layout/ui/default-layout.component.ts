@@ -35,4 +35,8 @@ export class DefaultLayoutComponent {
       prev = curr;
     });
   }
+
+  ngOnInit() {
+    this.authService.checkAuth();
+  }
 }

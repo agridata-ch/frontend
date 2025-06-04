@@ -19,17 +19,28 @@ export class AuthService {
     private readonly oidc: OidcSecurityService,
     private readonly router: Router,
   ) {
-    this.setUserDataAndRoles(true);
+    this.checkAuth(true);
 
     // Listen for “storage” events so other tabs’ logins/logouts propagate here
     window.addEventListener('storage', (event: StorageEvent) => {
       if (event.key?.startsWith('oidc.')) {
-        this.setUserDataAndRoles();
+        this.checkAuth();
       }
     });
   }
 
-  private setUserDataAndRoles(updateLocalStorage = false) {
+  private decodeJwt(token: string) {
+    try {
+      const payloadBase64 = token.split('.')[1];
+      const normalized = payloadBase64.replace(/-/g, '+').replace(/_/g, '/');
+      const json = atob(normalized);
+      return JSON.parse(json);
+    } catch {
+      return {};
+    }
+  }
+
+  checkAuth = (updateLocalStorage = false) => {
     this.oidc.checkAuth().subscribe(({ isAuthenticated, userData, accessToken }) => {
       this.isAuthenticated.set(isAuthenticated);
       if (isAuthenticated) {
@@ -50,7 +61,7 @@ export class AuthService {
         }
       }
     });
-  }
+  };
 
   login() {
     this.oidc.authorize();
@@ -60,16 +71,5 @@ export class AuthService {
     this.oidc.logoff().subscribe(() => {
       this.router.navigate(['/']);
     });
-  }
-
-  private decodeJwt(token: string) {
-    try {
-      const payloadBase64 = token.split('.')[1];
-      const normalized = payloadBase64.replace(/-/g, '+').replace(/_/g, '/');
-      const json = atob(normalized);
-      return JSON.parse(json);
-    } catch {
-      return {};
-    }
   }
 }
