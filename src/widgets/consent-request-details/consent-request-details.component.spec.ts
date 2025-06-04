@@ -12,14 +12,14 @@ describe('ConsentRequestDetailsComponent', () => {
   let toastService: { show: jest.Mock };
   let consentRequestService: {
     updateConsentRequestStatus: jest.Mock;
-    reload: jest.Mock;
+    fetchConsentRequests: jest.Mock;
   };
 
   beforeEach(async () => {
     toastService = { show: jest.fn() };
     consentRequestService = {
       updateConsentRequestStatus: jest.fn().mockResolvedValue({}),
-      reload: jest.fn(),
+      fetchConsentRequests: jest.fn(),
     };
 
     await TestBed.configureTestingModule({
@@ -105,7 +105,7 @@ describe('ConsentRequestDetailsComponent', () => {
     expect(toastService.show).toHaveBeenCalled();
     expect(closeSpy).toHaveBeenCalled();
     expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith('123', 'GRANTED');
-    expect(consentRequestService.reload).toHaveBeenCalled();
+    expect(consentRequestService.fetchConsentRequests).toHaveBeenCalled();
   });
 
   it('should should show toast after rejectRequest', async () => {
@@ -125,6 +125,6 @@ describe('ConsentRequestDetailsComponent', () => {
       '456',
       'DECLINED',
     );
-    expect(consentRequestService.reload).toHaveBeenCalled();
+    expect(consentRequestService.fetchConsentRequests).toHaveBeenCalled();
   });
 });

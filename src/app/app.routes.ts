@@ -5,6 +5,7 @@ import { NotFoundPage } from '@pages/not-found/not-found.page';
 import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 import { AuthorizationGuard } from './guards/auth.guard';
 import { LoginAuthGuard } from './guards/login.guard';
+import { LoginPage } from '@/pages/login/login.page';
 
 export const routes: Routes = [
   // #### public pages without authentication ####
@@ -19,6 +20,7 @@ export const routes: Routes = [
     path: '',
     component: DefaultLayoutComponent,
     pathMatch: 'full',
+    children: [{ path: '', component: LoginPage }],
   },
 
   // #### protected pages with authentication ####
