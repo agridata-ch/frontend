@@ -1,0 +1,84 @@
+<div class="rounded-xl border border-gray-200 overflow-x-auto">
+  <table class="table-auto w-full bg-white">
+    <thead class="text-left border-b border-gray-200">
+      <tr>
+        @for (header of headers(); track header) {
+          <th
+            class="py-3 px-4 select-none text-slate-500 outline-0 hover:bg-gray-50 cursor-pointer focus:bg-gray-200 text-sm font-semibold"
+            (click)="setSort($index)"
+            (keydown.enter)="setSort($index)"
+            [tabindex]="0"
+          >
+            <div class="flex items-center">
+              <span class="mr-2">{{ header }}</span>
+              <div class="min-w-4">
+                @if (sortColumnIndex() === $index) {
+                  <fa-icon [icon]="sortIcon()" class="text-agridata-primary-600" />
+                }
+              </div>
+            </div>
+          </th>
+        }
+        <th
+          class="py-3 px-4 select-none text-slate-500 outline-0 hover:bg-gray-50 cursor-pointer focus:bg-gray-200 text-sm font-semibold text-right"
+        >
+          Aktionen
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of paginated(); track row.id) {
+        <tr
+          class="hover:bg-agridata-primary-50 cursor-pointer"
+          [class.bg-sky-50]="row.highlighted"
+          (click)="onRowClick(row)"
+          (keydown.enter)="onRowClick(row)"
+        >
+          @for (column of row.data; track column.header) {
+            <td class="py-3 px-4 border-t border-gray-200">
+              @if (getTemplate(column.header)) {
+                <ng-container
+                  *ngTemplateOutlet="getTemplate(column.header); context: { $implicit: row }"
+                >
+                </ng-container>
+              } @else {
+                <div class="agridata-table-ellipsis-cell w-auto" [title]="column.value">
+                  {{ formatValue(column.value) }}
+                </div>
+              }
+            </td>
+          }
+          <td class="py-3 px-4 border-t border-gray-200">
+            <app-table-actions [actions]="row.actions" />
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  @if (showPagination()) {
+    <div class="flex justify-between items-center p-4 bg-gray-50">
+      <div class="text-sm text-slate-500">
+        Zeige {{ paginated().length }} von {{ sortedRows().length }} Einträgen
+      </div>
+      <div class="flex items-center">
+        <button
+          class="agridata-button agridata-button-secondary"
+          (click)="prevPage()"
+          [disabled]="currentPage() === 1"
+        >
+          <
+        </button>
+        <span class="mx-2 text-sm text-slate-500">
+          Seite {{ currentPage() }} von {{ totalPages() }}
+        </span>
+        <button
+          class="agridata-button agridata-button-secondary"
+          (click)="nextPage()"
+          [disabled]="currentPage() === totalPages()"
+        >
+          >
+        </button>
+      </div>
+    </div>
+  }
+</div>

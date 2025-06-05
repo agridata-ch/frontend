@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
+import { AuthService } from '@/shared/lib/auth';
+
 import { LoginAuthGuard } from './login.guard';
-import { AuthService } from '@/shared/services/auth.service';
 
 describe('LoginAuthGuard', () => {
   let guard: LoginAuthGuard;

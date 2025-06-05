@@ -8,22 +8,22 @@
       "@/*": [
         "./*"
       ],
-      "@app/*": [
+      "@/app/*": [
         "app/*"
       ],
-      "@pages/*": [
+      "@/pages/*": [
         "pages/*"
       ],
-      "@widgets/*": [
+      "@/widgets/*": [
         "widgets/*"
       ],
-      "@features/*": [
+      "@/features/*": [
         "features/*"
       ],
-      "@entities/*": [
+      "@/entities/*": [
         "entities/*"
       ],
-      "@shared/*": [
+      "@/shared/*": [
         "shared/*"
       ]
     },

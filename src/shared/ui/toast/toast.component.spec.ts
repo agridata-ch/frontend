@@ -1,8 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ToastComponent } from './toast.component';
-import { ToastService, ToastType, ToastState, Toast } from '@shared/services/toast.service';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { Toast, ToastService, ToastState, ToastType } from '@/shared/toast';
+import { ToastComponent } from '@/shared/ui/toast';
 
 describe('ToastComponent', () => {
   let component: ToastComponent;

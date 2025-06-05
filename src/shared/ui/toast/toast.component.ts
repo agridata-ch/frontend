@@ -1,14 +1,14 @@
-import { Component, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Toast, ToastService, ToastState, ToastType } from '@shared/services/toast.service';
-import { faClose, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { Component, effect, inject } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
+
+import { Toast, ToastService, ToastState, ToastType } from '@/shared/toast';
 
 @Component({
   selector: 'app-toast-container',
   imports: [CommonModule, FontAwesomeModule],
   templateUrl: './toast.component.html',
-  styleUrl: './toast.component.css',
 })
 export class ToastComponent {
   private readonly toastService = inject(ToastService);

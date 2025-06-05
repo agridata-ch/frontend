@@ -1,6 +1,7 @@
-import { AuthService } from '@/shared/services/auth.service';
-import { Component, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+
+import { AuthService } from '@/shared/lib/auth';
 
 @Component({
   selector: 'app-header-widget',
@@ -9,7 +10,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './header-widget.component.css',
 })
 export class HeaderWidgetComponent {
-  constructor(private readonly authService: AuthService) {}
+  private readonly authService = inject(AuthService);
 
   readonly isAuthenticated = computed(() => this.authService.isAuthenticated());
   readonly userData = computed(() => this.authService.userData());
