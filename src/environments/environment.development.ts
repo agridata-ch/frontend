@@ -6,7 +6,7 @@ export const environment = {
     clientId: 'agridata-rf',
     redirectUrl: 'https://dev.agridata.ch/auth-response',
     postLogoutRedirectUri: 'https://dev.agridata.ch',
-    scope: 'openid',
+    scope: 'openid offline_access',
     responseType: 'code',
     silentRenew: true,
     useRefreshToken: true,

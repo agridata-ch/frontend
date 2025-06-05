@@ -52,7 +52,7 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --force
 
       - name: Lint
         run: npx eslint src/
@@ -93,7 +93,7 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: npm install
-        run: npm install
+        run: npm install --force
 
       - name: Build
         run: npm run build -- --configuration=development
@@ -148,7 +148,7 @@ jobs:
           cache-dependency-path: package-lock.json
 
       - name: npm install
-        run: npm install
+        run: npm install --force
 
       - name: npm build
         run: npm run build -- --configuration=development
