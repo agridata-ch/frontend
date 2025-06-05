@@ -30,7 +30,7 @@ const config: Config = {
   coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
-  coveragePathIgnorePatterns: ['/node_modules/', 'shared/api/openapi'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'entities/openapi'],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: 'v8',
@@ -87,12 +87,12 @@ const config: Config = {
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-    '^@app/(.*)$': '<rootDir>/src/app/$1',
-    '^@pages/(.*)$': '<rootDir>/src/pages/$1',
-    '^@widgets/(.*)$': '<rootDir>/src/widgets/$1',
-    '^@features/(.*)$': '<rootDir>/src/features/$1',
-    '^@entities/(.*)$': '<rootDir>/src/entities/$1',
-    '^@shared/(.*)$': '<rootDir>/src/shared/$1',
+    '^@/app/(.*)$': '<rootDir>/src/app/$1',
+    '^@/pages/(.*)$': '<rootDir>/src/pages/$1',
+    '^@/widgets/(.*)$': '<rootDir>/src/widgets/$1',
+    '^@/features/(.*)$': '<rootDir>/src/features/$1',
+    '^@/entities/(.*)$': '<rootDir>/src/entities/$1',
+    '^@/shared/(.*)$': '<rootDir>/src/shared/$1',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

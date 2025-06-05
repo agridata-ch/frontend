@@ -23,4 +23,4 @@ src/assets/
 src/themes/
 src/styles/
 src/index.html
-src/shared/api/openapi
+src/entities/openapi

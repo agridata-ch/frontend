@@ -1,10 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConsentRequestDetailsComponent } from './consent-request-details.component';
-import { ConsentRequestDto } from '@/shared/api/openapi/model/models';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ToastService } from '@shared/services/toast.service';
-import { ConsentRequestService } from '@shared/services/consent-request.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ConsentRequestService } from '@/entities/api/consent-request.service';
+import { ConsentRequestDto } from '@/entities/openapi';
+import { ToastService } from '@/shared/toast';
+import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 
 describe('ConsentRequestDetailsComponent', () => {
   let component: ConsentRequestDetailsComponent;

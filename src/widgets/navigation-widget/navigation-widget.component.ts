@@ -1,19 +1,19 @@
-import { AuthService } from '@/shared/services/auth.service';
-import { Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
-import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+
+import { AuthService } from '@/shared/lib/auth';
 
 @Component({
   selector: 'app-navigation-widget',
-  standalone: true,
   imports: [RouterLink, RouterLinkActive, FontAwesomeModule],
   templateUrl: './navigation-widget.component.html',
-  styleUrl: './navigation-widget.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationWidgetComponent {
-  constructor(private readonly authService: AuthService) {}
+  private readonly authService = inject(AuthService);
 
   readonly isNavigationOpen = signal(false);
   readonly chevronIcon = computed(() => (this.isNavigationOpen() ? faChevronLeft : faChevronRight));

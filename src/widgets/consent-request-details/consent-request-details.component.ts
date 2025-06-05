@@ -1,39 +1,34 @@
-import { ConsentRequestDto } from '@/shared/api/openapi';
 import {
   Component,
-  computed,
-  effect,
   EventEmitter,
   HostListener,
-  inject,
   Input,
   Output,
   Signal,
+  computed,
+  effect,
+  inject,
   signal,
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faClose, faPenSquare, faLock, faRepeat } from '@fortawesome/free-solid-svg-icons';
-import { AgridataAccordionComponent } from '@widgets/agridata-accordion/agridata-accordion.component';
-import { ConsentRequestService } from '@shared/services/consent-request.service';
-import { ToastService } from '@shared/services/toast.service';
-import {
-  getToastMessage,
-  getToastTitle,
-  getToastType,
-} from '@pages/consent-request-producer/ui/consent-request-producer.page';
-import { ConsentRequestStateEnum } from '@shared/api/openapi/model/consentRequestStateEnum';
-import { RequestStateBadgeComponent } from '@features/request-state-badge/request-state-badge.component';
-import { formatDate } from '@/shared/lib/date-utils';
-import { BadgeSize } from '@/shared/ui/badge/badge.component';
+import { faClose, faLock, faPenSquare, faRepeat } from '@fortawesome/free-solid-svg-icons';
+
+import { ConsentRequestService } from '@/entities/api';
+import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
+import { getToastMessage, getToastTitle, getToastType } from '@/shared/consent-request';
+import { formatDate } from '@/shared/date';
+import { ToastService } from '@/shared/toast';
+import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
+import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
 
 @Component({
   selector: 'app-consent-request-details',
-  imports: [FontAwesomeModule, AgridataAccordionComponent, RequestStateBadgeComponent],
+  imports: [FontAwesomeModule, AgridataAccordionComponent, AgridataBadgeComponent],
   templateUrl: './consent-request-details.component.html',
-  styleUrl: './consent-request-details.component.css',
 })
 export class ConsentRequestDetailsComponent {
   private readonly toastService = inject(ToastService);
+  private readonly consentRequestService = inject(ConsentRequestService);
 
   @Input()
   set request(value: ConsentRequestDto | null) {
@@ -75,8 +70,28 @@ export class ConsentRequestDetailsComponent {
       description: 'Du kannst deine Einwilligung jederzeit widerrufen oder anpassen',
     },
   ]);
+  readonly badgeText = computed(() => {
+    const stateCode = this._requestSignal()?.stateCode;
+    if (stateCode === ConsentRequestStateEnum.Opened) return 'Offen';
+    if (stateCode === ConsentRequestStateEnum.Granted)
+      return this.formattedRequestDate()
+        ? `Eingewilligt am ${this.formattedRequestDate()}`
+        : 'Eingewilligt';
+    if (stateCode === ConsentRequestStateEnum.Declined)
+      return this.formattedRequestDate()
+        ? `Abgelehnt am ${this.formattedRequestDate()}`
+        : 'Abgelehnt';
+    return 'Unknown';
+  });
+  readonly badgeVariant = computed(() => {
+    const stateCode = this._requestSignal()?.stateCode;
+    if (stateCode === ConsentRequestStateEnum.Opened) return BadgeVariant.INFO;
+    if (stateCode === ConsentRequestStateEnum.Granted) return BadgeVariant.SUCCESS;
+    if (stateCode === ConsentRequestStateEnum.Declined) return BadgeVariant.ERROR;
+    return BadgeVariant.DEFAULT;
+  });
 
-  constructor(private readonly consentRequestService: ConsentRequestService) {
+  constructor() {
     effect(() => {
       if (this._requestSignal()) {
         this.showDetails.set(true);

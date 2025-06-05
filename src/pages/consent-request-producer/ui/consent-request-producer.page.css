@@ -1,7 +1,0 @@
-.request-item {
-  padding: 0.5rem 1rem;
-}
-
-.request-item:not(:last-child) {
-  border-bottom: 1px solid var(--color-gray-200);
-}

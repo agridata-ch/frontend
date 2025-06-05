@@ -1,0 +1,10 @@
+<h2 class="mb-12"><fa-icon [icon]="fileIcon" class="mr-3" />Freigaben</h2>
+<app-consent-request-table
+  [consentRequests]="consentRequestResult.value()"
+  [tableRowAction]="showConsentRequestDetails"
+  [reloadConsentRequests]="reloadConsentRequests"
+/>
+<app-consent-request-details
+  [request]="selectedRequest()"
+  (onCloseDetail)="showConsentRequestDetails()"
+/>

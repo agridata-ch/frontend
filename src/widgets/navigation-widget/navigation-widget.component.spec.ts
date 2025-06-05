@@ -1,10 +1,10 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
 
-import { NavigationWidgetComponent } from './navigation-widget.component';
-import { AuthService } from '@/shared/services/auth.service';
+import { AuthService } from '@/shared/lib/auth';
+import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
 
 describe('NavigationWidgetComponent', () => {
   let fixture: ComponentFixture<NavigationWidgetComponent>;

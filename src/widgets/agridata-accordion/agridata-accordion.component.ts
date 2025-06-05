@@ -1,12 +1,11 @@
-import { Component, computed, Input, signal } from '@angular/core';
+import { Component, Input, computed, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-agridata-accordion',
   imports: [FontAwesomeModule],
   templateUrl: './agridata-accordion.component.html',
-  styleUrl: './agridata-accordion.component.css',
 })
 export class AgridataAccordionComponent {
   readonly isExpanded = signal<boolean>(false);

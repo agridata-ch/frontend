@@ -1,13 +1,12 @@
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-
-import { routes } from '@app/app.routes';
-import { oidcConfig } from '@app/auth.config';
-import { AgridataOIDCStorage } from '@app/agridata-oidc-storage';
-import { environment } from '@/environments/environment';
-import { Configuration } from '@shared/api/openapi/configuration';
 import { AbstractSecurityStorage, authInterceptor, provideAuth } from 'angular-auth-oidc-client';
+
+import { routes } from '@/app/app.routes';
+import { Configuration } from '@/entities/openapi/configuration';
+import { environment } from '@/environments/environment';
+import { AgridataOIDCStorage, oidcConfig } from '@/shared/lib/auth';
 
 export const appConfig: ApplicationConfig = {
   providers: [

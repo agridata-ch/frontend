@@ -1,5 +1,6 @@
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+
 import { AgridataAccordionComponent } from './agridata-accordion.component';
-import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 describe('AgridataAccordionComponent', () => {
   let component: AgridataAccordionComponent;

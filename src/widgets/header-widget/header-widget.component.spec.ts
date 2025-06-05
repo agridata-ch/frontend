@@ -1,8 +1,8 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
-import { HeaderWidgetComponent } from './header-widget.component';
-import { AuthService, UserData } from '@/shared/services/auth.service';
+import { AuthService, UserData } from '@/shared/lib/auth';
+import { HeaderWidgetComponent } from '@/widgets/header-widget';
 
 describe('HeaderWidgetComponent', () => {
   let fixture: ComponentFixture<HeaderWidgetComponent>;
@@ -54,7 +54,12 @@ describe('HeaderWidgetComponent', () => {
   });
 
   it('userData signal reflects AuthService.userData()', () => {
-    const fakeUser: UserData = { name: 'Alice', email: 'alice@example.com' };
+    const fakeUser: UserData = {
+      name: 'Alice',
+      email: 'alice@example.com',
+      sub: '123',
+      preferred_username: 'alice',
+    };
     mockAuthService.userData.mockReturnValue(fakeUser);
     createComponent();
     expect(component.userData()).toBe(fakeUser);

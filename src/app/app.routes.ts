@@ -1,11 +1,13 @@
 import { Routes } from '@angular/router';
-import { DefaultLayoutComponent } from '@app/layout/ui/default-layout.component';
-import { ConsentRequestProducerPage } from '@pages/consent-request-producer/ui/consent-request-producer.page';
-import { NotFoundPage } from '@pages/not-found/not-found.page';
 import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
-import { AuthorizationGuard } from './guards/auth.guard';
+
+import { DefaultLayoutComponent } from '@/app/layout';
+import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
+import { LoginPage } from '@/pages/login';
+import { NotFoundPage } from '@/pages/not-found';
+import { AuthorizationGuard } from '@/shared/lib/auth';
+
 import { LoginAuthGuard } from './guards/login.guard';
-import { LoginPage } from '@/pages/login/login.page';
 
 export const routes: Routes = [
   // #### public pages without authentication ####
