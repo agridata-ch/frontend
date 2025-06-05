@@ -87,7 +87,6 @@ export class ConsentRequestProducerPage {
   readonly banIcon = faBan;
   readonly stateFilter = signal<string | null>(null);
   readonly consentRequestResult = resource<ConsentRequestDto[], unknown>({
-    request: () => true,
     loader: async () => this.consentRequestService.fetchConsentRequests(),
     defaultValue: [],
   });

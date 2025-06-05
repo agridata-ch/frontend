@@ -6,7 +6,7 @@ export const environment = {
     clientId: 'agridata-ui',
     redirectUrl: 'http://localhost:4200/auth-response',
     postLogoutRedirectUri: window.location.origin,
-    scope: 'openid',
+    scope: 'openid offline_access',
     responseType: 'code',
     silentRenew: true,
     useRefreshToken: true,
