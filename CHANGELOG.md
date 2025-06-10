@@ -1,3 +1,9 @@
+## [1.0.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.9...v1.0.0-rc.10) (2025-06-10)
+
+### Features
+
+- **toast:** add undo action ([116b58b](https://github.com/agridata-ch/frontend/commit/116b58bf3242723f8070dda94c6a6665eefbcd0f)), closes [DIGIB2-447](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-447)
+
 ## [1.0.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.8...v1.0.0-rc.9) (2025-06-03)
 
 ### Features
