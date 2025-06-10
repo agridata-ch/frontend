@@ -47,9 +47,9 @@ export class ConsentRequestTableComponent {
   readonly BadgeSize = BadgeSize;
   readonly BadgeVariant = BadgeVariant;
 
-  readonly stateFilter = signal<string | null>(null);
+  readonly stateCodeFilter = signal<string | null>(null);
   readonly requests: Signal<AgridataTableData[]> = computed(() => {
-    const filter = this.stateFilter();
+    const filter = this.stateCodeFilter();
     return this.consentRequests()
       .filter((request) => !filter || request.stateCode === filter)
       .map((request: ConsentRequestDto) => ({
@@ -110,8 +110,8 @@ export class ConsentRequestTableComponent {
     }
   };
 
-  setStateFilter(state: string | null) {
-    this.stateFilter.set(state);
+  setStateCodeFilter(state: string | null) {
+    this.stateCodeFilter.set(state);
   }
 
   updateConsentRequestState = async (id: string, stateCode: string, requestName?: string) => {
@@ -136,9 +136,11 @@ export class ConsentRequestTableComponent {
   };
 
   prepareUndoAction(id: string) {
-    const previousStateCode = this.consentRequests().find((r) => r.id === id)?.stateCode;
+    const previousStateCode = this.consentRequests().find(
+      (request) => request.id === id,
+    )?.stateCode;
     return getUndoAction(() => {
-      this.toastService.show(getToastTitle(''), 'Die Aktion wurde erfolgreich rückgängig gemacht.');
+      this.toastService.show(getToastTitle(''), '');
       this.consentRequestService.updateConsentRequestStatus(id, previousStateCode!).then(() => {
         this.reloadConsentRequests();
       });

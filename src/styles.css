@@ -1,60 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-@import 'tailwindcss';
-
-@theme {
-  --color-agridata-primary-50: #eaf0fa;
-  --color-agridata-primary-100: #d6e0f5;
-  --color-agridata-primary-200: #bbccee;
-  --color-agridata-primary-300: #99b3e6;
-  --color-agridata-primary-400: #7799dd;
-  --color-agridata-primary-500: #5580d5;
-  --color-agridata-primary-600: #3366cc;
-  --color-agridata-primary-700: #2b55aa;
-  --color-agridata-primary-800: #224488;
-  --color-agridata-primary-900: #1a3366;
-
-  --color-agridata-secondary-600: #00aa8d: ;
-
-  --color-agridata-primary-text: #263645;
-  --color-agridata-secondary-text: #46596b;
-  --color-agridata-tertiary-text: #62748e;
-
-  --color-agridata-stroke: #ededed;
-  --color-agridata-background-page: #ededed;
-  --color-agridata-content-gray: #f1f5f9;
-}
-
-@layer utilities {
-  /* slide-in from the right */
-  @keyframes toast-in {
-    0% {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    100% {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-  /* slide-out to the right */
-  @keyframes toast-out {
-    0% {
-      transform: translateX(0);
-      opacity: 1;
-    }
-    100% {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-  }
-  /* utility classes you can use via ngClass */
-  .animate-toast-in {
-    animation: toast-in 0.5s cubic-bezier(0.68, -0.55, 0.25, 1.35);
-  }
-  .animate-toast-out {
-    animation: toast-out 0.5s cubic-bezier(0.68, -0.55, 0.25, 1.35);
-  }
-}
+@import './styles/tailwind.css';
+@import './styles/utilities.css';
 
 /* Base font & colors for the whole app */
 body {
