@@ -1,13 +1,5 @@
 import { Location } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  input,
-  resource,
-  signal,
-} from '@angular/core';
+import { Component, effect, inject, input, resource, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
 
@@ -20,7 +12,6 @@ import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
   selector: 'app-consent-request-producer-page',
   imports: [ConsentRequestTableComponent, FontAwesomeModule, ConsentRequestDetailsComponent],
   templateUrl: './consent-request-producer.page.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConsentRequestProducerPage {
   private readonly browserLocation = inject(Location);

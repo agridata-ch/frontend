@@ -2,7 +2,7 @@
   (onClick)="setStateCodeFilter($event)"
   [requests]="consentRequests()"
 ></app-consent-request-filter>
-<app-agridata-table [data]="requests()" defaultSortColumn="Status" defaultSortDirection="desc">
+<app-agridata-table [rawData]="requests()" defaultSortColumn="Status" defaultSortDirection="desc">
   <ng-template stCell="Datenantrag" let-item>
     <span class="text-agridata-primary-600 agridata-ellipsis">
       {{ getCellValue(item, 'Datenantrag') }}

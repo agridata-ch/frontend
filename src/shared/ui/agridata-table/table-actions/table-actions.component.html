@@ -22,7 +22,7 @@
   @if (isOpen()) {
     <div class="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
       <ul>
-        @for (action of actions; track action.label) {
+        @for (action of actions(); track action.label) {
           <li
             click-stop-propagation
             class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"

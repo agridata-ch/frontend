@@ -1,5 +1,5 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { AbstractSecurityStorage, authInterceptor, provideAuth } from 'angular-auth-oidc-client';
 
@@ -10,7 +10,6 @@ import { AgridataOIDCStorage, oidcConfig } from '@/shared/lib/auth';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([authInterceptor()])),
     {
@@ -23,5 +22,6 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     { provide: AbstractSecurityStorage, useClass: AgridataOIDCStorage },
+    provideZonelessChangeDetection(),
   ],
 };

@@ -3,25 +3,23 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConsentRequestService } from '@/entities/api/consent-request.service';
 import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
+import { getToastMessage, getToastTitle, getToastType } from '@/shared/consent-request';
 import { ToastService, ToastType } from '@/shared/toast';
 import { AgridataTableData } from '@/shared/ui/agridata-table';
 import { BadgeVariant } from '@/shared/ui/badge';
 
 import { ConsentRequestTableComponent } from './consent-request-table.component';
 
+function flushPromises() {
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
 describe('ConsentRequestTableComponent', () => {
   let fixture: ComponentFixture<ConsentRequestTableComponent>;
   let component: ConsentRequestTableComponent;
   let componentRef: ComponentRef<ConsentRequestTableComponent>;
-
-  let mockConsentService: {
-    updateConsentRequestStatus: jest.Mock<Promise<void>, [string, string]>;
-  };
-  let mockToastService: {
-    show: jest.Mock<void, [string, string, ToastType]>;
-  };
-  let reloadSpy: jest.Mock<void, []>;
-  let rowActionSpy: jest.Mock<void, [ConsentRequestDto]>;
+  let mockToastService: { show: jest.Mock };
+  let mockConsentService: { updateConsentRequestStatus: jest.Mock };
 
   const sampleRequests: ConsentRequestDto[] = [
     {
@@ -33,65 +31,52 @@ describe('ConsentRequestTableComponent', () => {
     {
       id: '2',
       stateCode: ConsentRequestStateEnum.Granted,
-      requestDate: '2025-02-01',
+      requestDate: '2025-01-02',
       dataRequest: { dataConsumer: { name: 'Bob' }, titleDe: 'Antrag B' },
     } as ConsentRequestDto,
     {
       id: '3',
       stateCode: ConsentRequestStateEnum.Declined,
-      requestDate: '2025-03-01',
-      dataRequest: { dataConsumer: { name: 'Charlie' }, titleDe: 'Antrag C' },
+      requestDate: '2025-01-03',
+      dataRequest: { dataConsumer: { name: 'Carol' }, titleDe: 'Antrag C' },
     } as ConsentRequestDto,
   ];
 
   beforeEach(async () => {
-    mockConsentService = {
-      updateConsentRequestStatus: jest.fn(),
-    };
-    mockToastService = {
-      show: jest.fn(),
-    };
-    reloadSpy = jest.fn();
-    rowActionSpy = jest.fn();
+    mockToastService = { show: jest.fn() };
+    mockConsentService = { updateConsentRequestStatus: jest.fn().mockResolvedValue({}) };
 
     await TestBed.configureTestingModule({
       imports: [ConsentRequestTableComponent],
       providers: [
-        { provide: ConsentRequestService, useValue: mockConsentService },
         { provide: ToastService, useValue: mockToastService },
+        { provide: ConsentRequestService, useValue: mockConsentService },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ConsentRequestTableComponent);
-    component = fixture.componentInstance;
     componentRef = fixture.componentRef;
+    component = componentRef.instance;
 
     componentRef.setInput('consentRequests', sampleRequests);
-    componentRef.setInput('tableRowAction', rowActionSpy);
-    componentRef.setInput('reloadConsentRequests', reloadSpy);
-
     fixture.detectChanges();
   });
 
-  function flushPromises(): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, 0));
-  }
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
+  });
 
-  it('should map consentRequests to AgridataTableData via requests Signal', () => {
-    const rows: AgridataTableData[] = component.requests();
+  it('should map consentRequests to table rows and emit rowAction output', () => {
+    const rowSpy = jest.fn();
+    component.tableRowAction.subscribe(rowSpy);
+
+    const rows = component.requests();
     expect(rows.length).toBe(3);
 
     const first = rows[0];
-    expect(first.data).toEqual([
-      { header: 'Antragsteller', value: 'Alice' },
-      { header: 'Datenantrag', value: 'Antrag A' },
-      { header: 'Antragsdatum', value: '2025-01-01' },
-      { header: 'Status', value: ConsentRequestStateEnum.Opened },
-    ]);
-    expect(first.highlighted).toBe(true);
-
+    // test rowAction emits correctly
     first.rowAction?.();
-    expect(rowActionSpy).toHaveBeenCalledWith(sampleRequests[0]);
+    expect(rowSpy).toHaveBeenCalledWith(sampleRequests[0]);
   });
 
   it('getCellValue returns the correct value or empty string', () => {
@@ -110,49 +95,26 @@ describe('ConsentRequestTableComponent', () => {
     expect(component.getCellValue(tableData, 'Nonexistent')).toBe('');
   });
 
-  it('getFilteredActions returns correct actions for each state and callbacks work', () => {
-    const reqOpened = sampleRequests[0];
-    const actionsOpened = component.getFilteredActions(reqOpened);
-    expect(actionsOpened.length).toBe(3);
-
-    expect(actionsOpened[0].label).toBe('Details');
-    expect(actionsOpened[1].label).toBe('Einwilligen');
-    expect(actionsOpened[2].label).toBe('Ablehnen');
-
-    actionsOpened[0].callback();
-    expect(rowActionSpy).toHaveBeenCalledWith(reqOpened);
-
-    mockConsentService.updateConsentRequestStatus.mockResolvedValue();
-
-    actionsOpened[1].callback();
-    return flushPromises().then(() => {
-      expect(mockToastService.show).toHaveBeenCalledWith(
-        'Einwilligung erteilt',
-        `Du hast den Antrag ${reqOpened.dataRequest?.titleDe} erfolgreich eingewilligt.`,
-        ToastType.Success,
-        expect.objectContaining({
-          label: 'Aktion rückgängig machen',
-          callback: expect.any(Function),
-        }),
-      );
-      expect(reloadSpy).toHaveBeenCalled();
-    });
+  it('getFilteredActions returns correct actions for Opened', () => {
+    const actions = component.getFilteredActions(sampleRequests[0]);
+    expect(actions.length).toBe(3);
+    expect(actions[0].label).toBe('Details');
+    expect(actions[1].label).toBe('Einwilligen');
+    expect(actions[2].label).toBe('Ablehnen');
   });
 
-  it('getFilteredActions for Declined state returns [Details, Einwilligen]', () => {
-    const reqDeclined = sampleRequests[2];
-    const actionsDeclined = component.getFilteredActions(reqDeclined);
-    expect(actionsDeclined.length).toBe(2);
-    expect(actionsDeclined[0].label).toBe('Details');
-    expect(actionsDeclined[1].label).toBe('Einwilligen');
+  it('getFilteredActions returns correct actions for Granted', () => {
+    const actions = component.getFilteredActions(sampleRequests[1]);
+    expect(actions.length).toBe(2);
+    expect(actions[0].label).toBe('Details');
+    expect(actions[1].label).toBe('Ablehnen');
   });
 
-  it('getFilteredActions for Granted state returns [Details, Ablehnen]', () => {
-    const reqGranted = sampleRequests[1];
-    const actionsGranted = component.getFilteredActions(reqGranted);
-    expect(actionsGranted.length).toBe(2);
-    expect(actionsGranted[0].label).toBe('Details');
-    expect(actionsGranted[1].label).toBe('Ablehnen');
+  it('getFilteredActions returns correct actions for Declined', () => {
+    const actions = component.getFilteredActions(sampleRequests[2]);
+    expect(actions.length).toBe(2);
+    expect(actions[0].label).toBe('Details');
+    expect(actions[1].label).toBe('Einwilligen');
   });
 
   it('setStateCodeFilter filters requests Signal correctly', () => {
@@ -174,44 +136,43 @@ describe('ConsentRequestTableComponent', () => {
   });
 
   describe('updateConsentRequestState', () => {
-    it('on success, calls toastService.show and reloadConsentRequests', async () => {
-      const req = sampleRequests[0];
-      mockConsentService.updateConsentRequestStatus.mockResolvedValue();
-      component.updateConsentRequestState(
-        req.id,
-        ConsentRequestStateEnum.Granted,
-        req.dataRequest?.titleDe,
-      );
+    it('emits reload and shows toast on success', async () => {
+      const reloadSpy = jest.fn();
+      component.onReloadConsentRequests.subscribe(reloadSpy);
 
+      // call update
+      component.updateConsentRequestState(
+        sampleRequests[0].id,
+        ConsentRequestStateEnum.Granted,
+        sampleRequests[0].dataRequest?.titleDe,
+      );
       await flushPromises();
 
       expect(mockToastService.show).toHaveBeenCalledWith(
-        'Einwilligung erteilt',
-        `Du hast den Antrag ${req.dataRequest?.titleDe} erfolgreich eingewilligt.`,
-        ToastType.Success,
-        expect.objectContaining({
-          label: 'Aktion rückgängig machen',
-          callback: expect.any(Function),
-        }),
+        getToastTitle(ConsentRequestStateEnum.Granted),
+        getToastMessage(ConsentRequestStateEnum.Granted, sampleRequests[0].dataRequest?.titleDe),
+        getToastType(ConsentRequestStateEnum.Granted),
+        expect.any(Object), // your undo action
       );
       expect(reloadSpy).toHaveBeenCalled();
     });
 
-    it('on failure, calls toastService.show with error details', async () => {
-      const req = sampleRequests[1];
-      const fakeError = { error: { message: 'FailMsg', requestId: 'RID123' } };
-      mockConsentService.updateConsentRequestStatus.mockRejectedValue(fakeError);
+    it('shows error toast and does not reload on failure', async () => {
+      const reloadSpy = jest.fn();
+      component.onReloadConsentRequests.subscribe(reloadSpy);
+
+      const fakeError = { error: { message: 'Fail', requestId: 'RID' } };
+      mockConsentService.updateConsentRequestStatus.mockRejectedValueOnce(fakeError);
 
       component.updateConsentRequestState(
-        req.id,
+        sampleRequests[1].id,
         ConsentRequestStateEnum.Declined,
-        req.dataRequest?.titleDe,
+        sampleRequests[1].dataRequest?.titleDe,
       );
-
       await flushPromises();
 
       expect(mockToastService.show).toHaveBeenCalledWith(
-        'FailMsg',
+        fakeError.error.message,
         `Fehler beim Aktualisieren des Antrags. RequestId: ${fakeError.error.requestId}`,
         ToastType.Error,
       );

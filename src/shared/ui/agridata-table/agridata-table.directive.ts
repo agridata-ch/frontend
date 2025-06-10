@@ -3,15 +3,14 @@ import {
   Directive,
   DoCheck,
   ElementRef,
-  Input,
-  Renderer2,
   TemplateRef,
   inject,
+  input,
 } from '@angular/core';
 
 @Directive({ selector: '[stCell]' })
 export class CellTemplateDirective {
-  @Input('stCell') header!: string;
+  readonly header = input<string>('', { alias: 'stCell' });
   constructor(public template: TemplateRef<unknown>) {}
 }
 
@@ -21,10 +20,8 @@ export class CellTemplateDirective {
 })
 export class AgridataFlipRowDirective implements AfterViewInit, DoCheck {
   private readonly element = inject(ElementRef<HTMLElement>);
-  private readonly renderer = inject(Renderer2);
-
-  @Input() rowId!: string;
-  @Input() totalRows!: number;
+  readonly rowId = input<string>('');
+  readonly totalRows = input<number>(0);
 
   private previousTop: number | null = null;
   private previousRowId: string | null = null;
@@ -37,8 +34,8 @@ export class AgridataFlipRowDirective implements AfterViewInit, DoCheck {
 
   private setPrevState(top: number) {
     this.previousTop = top;
-    this.previousRowId = this.rowId;
-    this.previousTotalRows = this.totalRows;
+    this.previousRowId = this.rowId();
+    this.previousTotalRows = this.totalRows();
     this.firstCheck = false;
   }
 
@@ -51,8 +48,8 @@ export class AgridataFlipRowDirective implements AfterViewInit, DoCheck {
       !this.firstCheck &&
       this.previousTop !== null &&
       newTop !== this.previousTop &&
-      this.previousRowId === this.rowId &&
-      this.previousTotalRows === this.totalRows
+      this.previousRowId === this.rowId() &&
+      this.previousTotalRows === this.totalRows()
     ) {
       const delta = this.previousTop - newTop;
       if (delta !== 0) {

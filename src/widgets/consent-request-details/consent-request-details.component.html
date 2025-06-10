@@ -34,17 +34,17 @@
         <app-agridata-badge [text]="badgeText()" [size]="badgeSize.MD" [variant]="badgeVariant()" />
       </div>
       <h6 class="text-3xl text-agridata-primary-text font-semibold">
-        {{ _requestSignal()?.dataRequest?.titleDe }}
+        {{ request()?.dataRequest?.titleDe }}
       </h6>
       <span class="text-gray-800 text-lg font-semibold font-">{{ dataConsumerName() }}</span>
       <span class="text-agridata-primary-text font-normal">
-        {{ _requestSignal()?.dataRequest?.descriptionDe }}
+        {{ request()?.dataRequest?.descriptionDe }}
       </span>
       <div class="flex flex-col gap-2 px-4 py-4 rounded-lg bg-sky-100">
         <span class="text-agridata-primary-text font-semibold text-lg">Zweck</span>
         <div class="flex flex-col">
           <span class="text-agridata-primary-text font-normal">
-            {{ _requestSignal()?.dataRequest?.purposeDe }}
+            {{ request()?.dataRequest?.purposeDe }}
           </span>
         </div>
         <app-agridata-accordion
@@ -74,7 +74,7 @@
       <div class="flex gap-2">
         <button
           class="w-full agridata-button agridata-button-secondary-reject"
-          [disabled]="_requestSignal()?.stateCode === consentRequestStateEnum.Declined"
+          [disabled]="request()?.stateCode === consentRequestStateEnum.Declined"
           (click)="rejectRequest()"
           (keydown.enter)="rejectRequest()"
           tabindex="0"
@@ -83,7 +83,7 @@
         </button>
         <button
           class="w-full agridata-button agridata-button-primary-accept"
-          [disabled]="_requestSignal()?.stateCode === consentRequestStateEnum.Granted"
+          [disabled]="request()?.stateCode === consentRequestStateEnum.Granted"
           (click)="acceptRequest()"
           (keydown.enter)="acceptRequest()"
           tabindex="0"

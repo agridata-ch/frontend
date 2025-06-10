@@ -1,3 +1,4 @@
+import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -6,6 +7,7 @@ import { ActionDTO, TableActionsComponent } from './table-actions.component';
 describe('TableActionsComponent', () => {
   let fixture: ComponentFixture<TableActionsComponent>;
   let component: TableActionsComponent;
+  let componentRef: ComponentRef<TableActionsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -14,6 +16,7 @@ describe('TableActionsComponent', () => {
 
     fixture = TestBed.createComponent(TableActionsComponent);
     component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
     fixture.detectChanges();
   });
 
@@ -28,7 +31,7 @@ describe('TableActionsComponent', () => {
         { label: 'Main', callback: () => {}, isMainAction: true },
         { label: 'Other', callback: () => {}, isMainAction: false },
       ];
-      component.actions = actions;
+      componentRef.setInput('actions', actions);
       expect(component.mainAction()).toEqual(actions[1]);
     });
 
@@ -37,7 +40,7 @@ describe('TableActionsComponent', () => {
         { label: 'A', callback: () => {} },
         { label: 'B', callback: () => {} },
       ];
-      component.actions = actions;
+      componentRef.setInput('actions', actions);
       expect(component.mainAction()).toBeUndefined();
     });
   });
