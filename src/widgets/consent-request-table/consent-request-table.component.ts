@@ -1,4 +1,4 @@
-import { Component, Input, Signal, computed, inject, input, signal } from '@angular/core';
+import { Component, Signal, computed, inject, input, output, signal } from '@angular/core';
 import { faEye, faFile } from '@fortawesome/free-regular-svg-icons';
 import { faBan, faCheck } from '@fortawesome/free-solid-svg-icons';
 
@@ -37,8 +37,8 @@ export class ConsentRequestTableComponent {
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
   readonly consentRequests = input.required<ConsentRequestDto[]>();
-  @Input() tableRowAction!: (request: ConsentRequestDto) => void;
-  @Input() reloadConsentRequests!: () => void;
+  readonly tableRowAction = output<ConsentRequestDto>();
+  readonly onReloadConsentRequests = output<void>();
 
   readonly fileIcon = faFile;
   readonly eyeIcon = faEye;
@@ -65,7 +65,7 @@ export class ConsentRequestTableComponent {
         ],
         highlighted: request.stateCode === ConsentRequestStateEnum.Opened,
         actions: this.getFilteredActions(request),
-        rowAction: () => this.tableRowAction(request),
+        rowAction: () => this.tableRowAction.emit(request),
       }));
   });
 
@@ -80,7 +80,7 @@ export class ConsentRequestTableComponent {
     const details = {
       icon: this.eyeIcon,
       label: 'Details',
-      callback: () => this.tableRowAction(request),
+      callback: () => this.tableRowAction.emit(request),
     };
 
     const consent = {
@@ -123,7 +123,7 @@ export class ConsentRequestTableComponent {
         const toastType = getToastType(stateCode);
         const undoAction = this.prepareUndoAction(id);
         this.toastService.show(toastTitle, toastMessage, toastType, undoAction);
-        this.reloadConsentRequests();
+        this.onReloadConsentRequests.emit();
       })
       .catch((error) => {
         console.log(error.error);
@@ -142,7 +142,7 @@ export class ConsentRequestTableComponent {
     return getUndoAction(() => {
       this.toastService.show(getToastTitle(''), '');
       this.consentRequestService.updateConsentRequestStatus(id, previousStateCode!).then(() => {
-        this.reloadConsentRequests();
+        this.onReloadConsentRequests.emit();
       });
     });
   }

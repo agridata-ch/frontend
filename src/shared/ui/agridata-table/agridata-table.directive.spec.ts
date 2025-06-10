@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -10,6 +10,7 @@ import { AgridataFlipRowDirective } from './agridata-table.directive';
     <tr agridataFlipRow [rowId]="rowId" [rowData]="rowData" [totalRows]="totalRows"></tr>
   `,
   imports: [AgridataFlipRowDirective],
+  schemas: [NO_ERRORS_SCHEMA],
 })
 class TestHostComponent {
   @Input() rowId = '1';

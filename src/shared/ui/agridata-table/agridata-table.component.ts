@@ -1,13 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ContentChildren,
-  Input,
-  QueryList,
-  computed,
-  signal,
-} from '@angular/core';
+import { Component, computed, contentChildren, effect, input, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { compareAsc, compareDesc, isValid, parseISO } from 'date-fns';
@@ -22,34 +14,24 @@ import { TableActionsComponent } from './table-actions/table-actions.component';
   selector: 'app-agridata-table',
   imports: [CommonModule, TableActionsComponent, FontAwesomeModule, AgridataFlipRowDirective],
   templateUrl: './agridata-table.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AgridataTableComponent {
-  private readonly _data = signal<AgridataTableData[]>([]);
+  readonly rawData = input<AgridataTableData[] | null>(null);
 
-  @Input() defaultSortColumn: string = '';
-  @Input() defaultSortDirection: 'asc' | 'desc' = 'desc';
-  @Input() set data(value: AgridataTableData[] | null) {
-    const rows = value ?? [];
-    this._data.set(rows);
-    this.currentPage.set(1);
-    const headers = rows.length ? rows[0].data.map((c) => c.header) : [];
-    const idx = this.defaultSortColumn ? headers.indexOf(this.defaultSortColumn) : -1;
-    this.sortColumnIndex.set(idx >= 0 ? idx : null);
-    this.sortDirection.set(this.defaultSortDirection);
-  }
-  @Input() pageSize = 10;
-  @ContentChildren(CellTemplateDirective) cellTemplates!: QueryList<CellTemplateDirective>;
+  readonly _data = signal<AgridataTableData[]>([]);
+  readonly defaultSortColumn = input<string>('');
+  readonly defaultSortDirection = input<'asc' | 'desc'>('desc');
+  readonly pageSize = input<number>(10);
+
+  readonly cellTemplates = contentChildren(CellTemplateDirective);
 
   readonly sortColumnIndex = signal<number | null>(null);
   readonly sortDirection = signal<'asc' | 'desc'>('desc');
   readonly currentPage = signal(1);
-  readonly iconSortUp = faArrowUp;
-  readonly iconSortDown = faArrowDown;
 
   readonly sortIcon = computed(() => {
     const dir = this.sortDirection();
-    return dir === 'asc' ? this.iconSortUp : this.iconSortDown;
+    return dir === 'asc' ? faArrowUp : faArrowDown;
   });
 
   readonly headers = computed<string[]>(() => {
@@ -83,19 +65,37 @@ export class AgridataTableComponent {
   });
 
   readonly paginated = computed(() => {
-    const start = (this.currentPage() - 1) * this.pageSize;
-    return this.sortedRows().slice(start, start + this.pageSize);
+    const start = (this.currentPage() - 1) * this.pageSize();
+    return this.sortedRows().slice(start, start + this.pageSize());
   });
 
-  readonly totalPages = computed(() => Math.max(1, Math.ceil(this._data().length / this.pageSize)));
+  readonly totalPages = computed(() => {
+    if (!this.rawData() || !this.pageSize()) return 1;
+    const total = Math.ceil((this.rawData() ?? []).length / this.pageSize());
+    return total > 0 ? total : 1;
+  });
   readonly showPagination = computed(() => this.totalPages() > 1);
+
+  constructor() {
+    effect(() => {
+      const rows = this.rawData() ?? [];
+      this._data.set(rows);
+      this.currentPage.set(1);
+
+      const headers = rows.length ? rows[0].data.map((cell) => cell.header) : [];
+
+      const idx = this.defaultSortColumn ? headers.indexOf(this.defaultSortColumn()) : -1;
+      this.sortColumnIndex.set(idx >= 0 ? idx : null);
+      this.sortDirection.set(this.defaultSortDirection());
+    });
+  }
 
   setSort(colIndex: number) {
     if (this.sortColumnIndex() === colIndex) {
       this.sortDirection.update((d) => (d === 'asc' ? 'desc' : 'asc'));
     } else {
       this.sortColumnIndex.set(colIndex);
-      this.sortDirection.set('asc');
+      this.sortDirection.set('desc');
     }
     this.currentPage.set(1);
   }
@@ -109,8 +109,11 @@ export class AgridataTableComponent {
   }
 
   getTemplate(header: string) {
-    const tpl = this.cellTemplates.find((t) => t.header === header);
-    return tpl ? tpl.template : null;
+    const templates = this.cellTemplates();
+    const tpl = templates.find(
+      (t) => (typeof t.header === 'function' ? t.header() : t.header) === header,
+    );
+    return tpl?.template ?? null;
   }
 
   formatValue(value: unknown) {

@@ -1,4 +1,4 @@
-import { Component, Input, computed, signal } from '@angular/core';
+import { Component, computed, input, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,9 +10,8 @@ import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 export class AgridataAccordionComponent {
   readonly isExpanded = signal<boolean>(false);
   readonly expandIcon = computed(() => (this.isExpanded() ? faChevronUp : faChevronDown));
-
-  @Input() header: string = '';
-  @Input() content: string = '';
+  readonly header = input<string>('');
+  readonly content = input<string>('');
 
   toggleAccordion() {
     this.isExpanded.set(!this.isExpanded());

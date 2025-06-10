@@ -27,8 +27,7 @@
     "@angular/platform-browser-dynamic": "^20.0.1",
     "@angular/router": "^20.0.1",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.15.0"
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular-builders/jest": "^19.0.1",

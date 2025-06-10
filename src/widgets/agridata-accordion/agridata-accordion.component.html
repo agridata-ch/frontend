@@ -5,7 +5,7 @@
     (keydown.enter)="toggleAccordion()"
     tabindex="0"
   >
-    <span>{{ header }}</span>
+    <span>{{ header() }}</span>
     <fa-icon [icon]="expandIcon()"></fa-icon>
   </button>
   <div
@@ -15,7 +15,7 @@
     [class.pb-4]="isExpanded()"
   >
     <div class="px-4">
-      {{ content }}
+      {{ content() }}
     </div>
   </div>
 </div>

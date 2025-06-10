@@ -2,9 +2,9 @@ import {
   Component,
   ElementRef,
   HostListener,
-  Input,
   computed,
   inject,
+  input,
   signal,
 } from '@angular/core';
 import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
@@ -27,17 +27,9 @@ export interface ActionDTO {
 })
 export class TableActionsComponent {
   private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
-  private readonly _actions = signal<ActionDTO[]>([]);
+  readonly actions = input<ActionDTO[]>([]);
 
-  @Input()
-  set actions(v: ActionDTO[]) {
-    this._actions.set(v || []);
-  }
-  get actions() {
-    return this._actions();
-  }
-
-  readonly mainAction = computed(() => this._actions().find((action) => action.isMainAction));
+  readonly mainAction = computed(() => this.actions().find((action) => action.isMainAction));
   readonly isOpen = signal(false);
   readonly iconEllipsis = faEllipsisVertical;
 

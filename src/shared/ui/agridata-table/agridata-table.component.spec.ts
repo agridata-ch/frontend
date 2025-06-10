@@ -1,15 +1,13 @@
-import { QueryList, TemplateRef } from '@angular/core';
+import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  AgridataTableComponent,
-  AgridataTableData,
-  CellTemplateDirective,
-} from '@/shared/ui/agridata-table';
+import { AgridataTableComponent } from './agridata-table.component';
+import { AgridataTableData } from './agridata-table.model';
 
 describe('AgridataTableComponent', () => {
-  let component: AgridataTableComponent;
   let fixture: ComponentFixture<AgridataTableComponent>;
+  let component: AgridataTableComponent;
+  let componentRef: ComponentRef<AgridataTableComponent>;
 
   const sampleData: AgridataTableData[] = [
     {
@@ -38,62 +36,73 @@ describe('AgridataTableComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(AgridataTableComponent);
-    component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
+    component = componentRef.instance;
+    fixture.detectChanges();
   });
 
-  it('creates the component', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('infers headers from provided data', () => {
-    component.data = null;
+  it('infers empty headers when rawData is null', () => {
+    componentRef.setInput('rawData', null);
+    fixture.detectChanges();
+
     expect(component.headers()).toEqual([]);
   });
 
   it('infers headers from provided data', () => {
-    component.data = sampleData;
+    componentRef.setInput('rawData', sampleData);
+    fixture.detectChanges();
+
     expect(component.headers()).toEqual(['Name', 'Age']);
   });
 
-  it('initializes sortColumnIndex based on defaultSortColumn input', () => {
-    component.defaultSortColumn = 'Age';
-    component.defaultSortDirection = 'desc';
-    component.data = sampleData;
+  it('initializes sortColumnIndex and sortDirection from defaults', () => {
+    componentRef.setInput('defaultSortColumn', 'Age');
+    componentRef.setInput('defaultSortDirection', 'desc');
+    componentRef.setInput('rawData', sampleData);
+    fixture.detectChanges();
+
     expect(component.sortColumnIndex()).toBe(1);
     expect(component.sortDirection()).toBe('desc');
   });
 
-  it('sorts data ascending then descending on setSort', () => {
-    component.data = sampleData;
+  it('sorts data descending then ascending on setSort', () => {
+    componentRef.setInput('rawData', sampleData);
+    fixture.detectChanges();
 
-    // first click: ascending
+    // First click: set column 1, direction stays 'desc'
+    component.setSort(1);
+    expect(component.sortDirection()).toBe('desc');
+    let sorted = component.sortedRows();
+    expect(sorted[0].data[1].value).toBe('30');
+
+    // Second click: toggle to 'asc'
     component.setSort(1);
     expect(component.sortDirection()).toBe('asc');
-    let sorted = component.sortedRows();
+    sorted = component.sortedRows();
     expect(sorted[0].data[1].value).toBe('20');
 
-    // second click: descending
+    // Third click: toggle back to 'desc'
     component.setSort(1);
     expect(component.sortDirection()).toBe('desc');
     sorted = component.sortedRows();
     expect(sorted[0].data[1].value).toBe('30');
-
-    // third click: back to ascending
-    component.setSort(1);
-    expect(component.sortDirection()).toBe('asc');
-    sorted = component.sortedRows();
-    expect(sorted[0].data[1].value).toBe('20');
   });
 
   it('paginates rows correctly', () => {
-    const manyRows: AgridataTableData[] = Array.from({ length: 5 }, (_, i) => ({
+    const manyRows = Array.from({ length: 5 }, (_, i) => ({
       id: `${i + 1}`,
       data: [{ header: 'Col', value: `row${i}` }],
       highlighted: false,
       actions: [],
-    }));
-    component.pageSize = 2;
-    component.data = manyRows;
+    })) as AgridataTableData[];
+
+    componentRef.setInput('pageSize', 2);
+    componentRef.setInput('rawData', manyRows);
+    fixture.detectChanges();
 
     expect(component.totalPages()).toBe(3);
     expect(component.paginated().length).toBe(2);
@@ -108,52 +117,31 @@ describe('AgridataTableComponent', () => {
     expect(component.paginated().length).toBe(2);
   });
 
-  it('returns null for non-existing header', () => {
-    const queryList = new QueryList<CellTemplateDirective>();
-    queryList.reset([]);
-    component.cellTemplates = queryList;
-    const result = component.getTemplate('NonExistingHeader');
-    expect(result).toBeNull();
-  });
+  it('formats values correctly in formatValue()', () => {
+    expect(component.formatValue(null)).toBe('');
+    expect(component.formatValue(undefined)).toBe('');
+    expect(component.formatValue(42)).toBe(42);
+    expect(component.formatValue('hello')).toBe('hello');
 
-  it('returns template for existing header', () => {
-    const template = {
-      header: 'Name',
-      template: {} as TemplateRef<{ $implicit: AgridataTableData }>,
-    };
-
-    const queryList = new QueryList<CellTemplateDirective>();
-    queryList.reset([template]);
-    component.cellTemplates = queryList;
-
-    const result = component.getTemplate('Name');
-    expect(result).toBe(template.template);
-  });
-
-  it('should format values correctly', () => {
-    // format null
-    const nullValue = null;
-    const formattedNull = component.formatValue(nullValue);
-    expect(formattedNull).toBe('');
-
-    // format number
-    const number = 123456789;
-    const formattedNumber = component.formatValue(number);
-    expect(formattedNumber).toBe(123456789);
-
-    // format string
-    const string = 'my string';
-    const formattedString = component.formatValue(string);
-    expect(formattedString).toBe(string);
-
-    // format date
     const date = new Date('2023-10-01T12:00:00Z');
-    const formattedDate = component.formatValue(date);
-    expect(formattedDate).toBe('01.10.2023');
+    expect(component.formatValue(date)).toBe('01.10.2023');
 
-    // format iso date string
-    const isoDateString = '2023-10-01T12:00:00Z';
-    const formattedIsoDateString = component.formatValue(isoDateString);
-    expect(formattedIsoDateString).toBe('01.10.2023');
+    const iso = '2023-10-01T12:00:00Z';
+    expect(component.formatValue(iso)).toBe('01.10.2023');
+  });
+
+  it('should call rowAction if present on row', () => {
+    const action = jest.fn();
+    const row = { id: '1', data: [], rowAction: action } as unknown as AgridataTableData;
+
+    component.onRowClick(row);
+
+    expect(action).toHaveBeenCalled();
+  });
+
+  it('should not throw if rowAction is not present', () => {
+    const row = { id: '1', data: [] } as unknown as AgridataTableData;
+
+    expect(() => component.onRowClick(row)).not.toThrow();
   });
 });

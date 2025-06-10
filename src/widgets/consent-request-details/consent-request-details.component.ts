@@ -1,13 +1,12 @@
 import {
   Component,
-  EventEmitter,
   HostListener,
-  Input,
-  Output,
   Signal,
   computed,
   effect,
   inject,
+  input,
+  output,
   signal,
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -35,32 +34,24 @@ export class ConsentRequestDetailsComponent {
   private readonly toastService = inject(ToastService);
   private readonly consentRequestService = inject(ConsentRequestService);
 
-  @Input()
-  set request(value: ConsentRequestDto | null) {
-    this._requestSignal.set(value ? { ...value } : null);
-  }
-  @Input() reloadConsentRequests!: () => void;
-  @Output() onCloseDetail = new EventEmitter<string | null>();
+  readonly request = input<ConsentRequestDto | null>(null);
+  readonly onReloadConsentRequests = output<void>();
+  readonly onCloseDetail = output<string | null>();
 
   readonly showSuccessToast = signal<boolean>(false);
   readonly showErrorToast = signal<boolean>(false);
-  readonly _requestSignal = signal<ConsentRequestDto | null>(null);
-  readonly requestId = computed(() => this._requestSignal()?.id ?? '');
+  readonly requestId = computed(() => this.request()?.id ?? '');
   readonly closeIcon = faClose;
   readonly editIcon = faPenSquare;
   readonly lockIcon = faLock;
   readonly repeatIcon = faRepeat;
   readonly badgeSize = BadgeSize;
   readonly consentRequestStateEnum = ConsentRequestStateEnum;
-  readonly formattedRequestDate = computed(() => formatDate(this._requestSignal()?.requestDate));
+  readonly formattedRequestDate = computed(() => formatDate(this.request()?.requestDate));
   readonly showDetails = signal(false);
-  readonly dataConsumerName = computed(
-    () => this._requestSignal()?.dataRequest?.dataConsumer?.name,
-  );
-  readonly requestTitle = computed(() => this._requestSignal()?.dataRequest?.titleDe);
-  readonly requestStateCode: Signal<string> = computed(() =>
-    String(this._requestSignal()?.stateCode),
-  );
+  readonly dataConsumerName = computed(() => this.request()?.dataRequest?.dataConsumer?.name);
+  readonly requestTitle = computed(() => this.request()?.dataRequest?.titleDe);
+  readonly requestStateCode: Signal<string> = computed(() => String(this.request()?.stateCode));
   readonly privacySections = computed(() => [
     {
       icon: this.editIcon,
@@ -79,7 +70,7 @@ export class ConsentRequestDetailsComponent {
     },
   ]);
   readonly badgeText = computed(() => {
-    const stateCode = this._requestSignal()?.stateCode;
+    const stateCode = this.request()?.stateCode;
     if (stateCode === ConsentRequestStateEnum.Opened) return 'Offen';
     if (stateCode === ConsentRequestStateEnum.Granted)
       return this.formattedRequestDate()
@@ -92,7 +83,7 @@ export class ConsentRequestDetailsComponent {
     return 'Unknown';
   });
   readonly badgeVariant = computed(() => {
-    const stateCode = this._requestSignal()?.stateCode;
+    const stateCode = this.request()?.stateCode;
     if (stateCode === ConsentRequestStateEnum.Opened) return BadgeVariant.INFO;
     if (stateCode === ConsentRequestStateEnum.Granted) return BadgeVariant.SUCCESS;
     if (stateCode === ConsentRequestStateEnum.Declined) return BadgeVariant.ERROR;
@@ -101,7 +92,7 @@ export class ConsentRequestDetailsComponent {
 
   constructor() {
     effect(() => {
-      if (this._requestSignal()) {
+      if (this.request()) {
         this.showDetails.set(true);
       }
     });
@@ -116,7 +107,7 @@ export class ConsentRequestDetailsComponent {
 
   handleCloseDetails() {
     this.showDetails.set(false);
-    this.onCloseDetail.emit();
+    this.onCloseDetail.emit(null);
   }
 
   async acceptRequest() {
@@ -151,7 +142,7 @@ export class ConsentRequestDetailsComponent {
 
   async updateAndReloadConsentRequestState(id: string, stateCode: string) {
     this.consentRequestService.updateConsentRequestStatus(id, stateCode).then(() => {
-      this.reloadConsentRequests();
+      this.onReloadConsentRequests.emit();
     });
     this.handleCloseDetails();
   }

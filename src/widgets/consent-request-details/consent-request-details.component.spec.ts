@@ -1,5 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConsentRequestService } from '@/entities/api/consent-request.service';
@@ -8,8 +9,9 @@ import { ToastService } from '@/shared/toast';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 
 describe('ConsentRequestDetailsComponent', () => {
-  let component: ConsentRequestDetailsComponent;
   let fixture: ComponentFixture<ConsentRequestDetailsComponent>;
+  let component: ConsentRequestDetailsComponent;
+  let componentRef: ComponentRef<ConsentRequestDetailsComponent>;
   let toastService: { show: jest.Mock };
   let consentRequestService: {
     updateConsentRequestStatus: jest.Mock;
@@ -35,6 +37,7 @@ describe('ConsentRequestDetailsComponent', () => {
 
     fixture = TestBed.createComponent(ConsentRequestDetailsComponent);
     component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
     fixture.detectChanges();
   });
 
@@ -51,7 +54,7 @@ describe('ConsentRequestDetailsComponent', () => {
       dataRequest: { dataConsumer: { name: 'TestConsumer' } },
     } as unknown as ConsentRequestDto;
 
-    component.request = req;
+    componentRef.setInput('request', req);
     fixture.detectChanges(); // run the effect
 
     expect(component.showDetails()).toBe(true);
@@ -63,7 +66,7 @@ describe('ConsentRequestDetailsComponent', () => {
       dataRequest: { dataConsumer: { name: 'John' } },
     } as unknown as ConsentRequestDto;
 
-    component.request = req;
+    componentRef.setInput('request', req);
     fixture.detectChanges();
     expect(component.showDetails()).toBe(true);
 
@@ -97,7 +100,7 @@ describe('ConsentRequestDetailsComponent', () => {
       id: '123',
       dataRequest: { dataConsumer: { name: 'TestConsumer' } },
     } as unknown as ConsentRequestDto;
-    component.request = req;
+    componentRef.setInput('request', req);
     fixture.detectChanges();
 
     const closeSpy = jest.spyOn(component, 'handleCloseDetails');
@@ -113,7 +116,7 @@ describe('ConsentRequestDetailsComponent', () => {
       id: '456',
       dataRequest: { dataConsumer: { name: 'TestConsumer' } },
     } as unknown as ConsentRequestDto;
-    component.request = req;
+    componentRef.setInput('request', req);
     fixture.detectChanges();
 
     const closeSpy = jest.spyOn(component, 'handleCloseDetails');
