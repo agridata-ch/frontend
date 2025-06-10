@@ -1,3 +1,9 @@
+## [1.0.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.10...v1.0.0-rc.11) (2025-06-10)
+
+### Features
+
+- **animations:** add css animations for table ([af5f9b6](https://github.com/agridata-ch/frontend/commit/af5f9b665a97ee9707b8d807e443ea0c6533b46c))
+
 ## [1.0.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.9...v1.0.0-rc.10) (2025-06-10)
 
 ### Features
