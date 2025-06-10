@@ -47,19 +47,7 @@ describe('ToastService', () => {
     service.dismiss(id);
 
     toasts = service.toasts();
-    expect(toasts.length).toBe(1);
-    expect(toasts[0].id).toBe(id);
-    expect(toasts[0].state).toBe(ToastState.Exit);
-
-    // Advance timers by less than 200ms: toast still present
-    jest.advanceTimersByTime(199);
-    toasts = service.toasts();
-    expect(toasts.length).toBe(1);
-
-    // After 200ms total, the toast should be removed
-    jest.advanceTimersByTime(1);
-    toasts = service.toasts();
-    expect(toasts).toEqual([]);
+    expect(toasts.length).toBe(0);
   });
 
   it('clear() should remove all toasts immediately', () => {

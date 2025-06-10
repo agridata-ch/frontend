@@ -66,7 +66,6 @@ describe('ConsentRequestTableComponent', () => {
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
 
-    // Set required @Input() values before initial detectChanges
     componentRef.setInput('consentRequests', sampleRequests);
     componentRef.setInput('tableRowAction', rowActionSpy);
     componentRef.setInput('reloadConsentRequests', reloadSpy);
@@ -79,11 +78,9 @@ describe('ConsentRequestTableComponent', () => {
   }
 
   it('should map consentRequests to AgridataTableData via requests Signal', () => {
-    // Initially, no filter applied → should map all three
     const rows: AgridataTableData[] = component.requests();
     expect(rows.length).toBe(3);
 
-    // Verify mapping of first row
     const first = rows[0];
     expect(first.data).toEqual([
       { header: 'Antragsteller', value: 'Alice' },
@@ -91,10 +88,8 @@ describe('ConsentRequestTableComponent', () => {
       { header: 'Antragsdatum', value: '2025-01-01' },
       { header: 'Status', value: ConsentRequestStateEnum.Opened },
     ]);
-    // Highlighted only if stateCode is Opened
     expect(first.highlighted).toBe(true);
 
-    // The rowAction for the first entry should call rowActionSpy with that DTO
     first.rowAction?.();
     expect(rowActionSpy).toHaveBeenCalledWith(sampleRequests[0]);
   });
@@ -116,31 +111,29 @@ describe('ConsentRequestTableComponent', () => {
   });
 
   it('getFilteredActions returns correct actions for each state and callbacks work', () => {
-    // For Opened:
     const reqOpened = sampleRequests[0];
     const actionsOpened = component.getFilteredActions(reqOpened);
     expect(actionsOpened.length).toBe(3);
 
-    // labels: Details, Einwilligen, Ablehnen
     expect(actionsOpened[0].label).toBe('Details');
     expect(actionsOpened[1].label).toBe('Einwilligen');
     expect(actionsOpened[2].label).toBe('Ablehnen');
 
-    // Invoke details callback → should call rowActionSpy(reqOpened)
     actionsOpened[0].callback();
     expect(rowActionSpy).toHaveBeenCalledWith(reqOpened);
 
-    // Stub updateConsentRequestStatus to resolve for next callbacks
     mockConsentService.updateConsentRequestStatus.mockResolvedValue();
 
-    // Invoke Einwilligen callback → should call updateConsentRequestState
     actionsOpened[1].callback();
-    // After promise resolution and flushPromises, toast and reload should be called
     return flushPromises().then(() => {
       expect(mockToastService.show).toHaveBeenCalledWith(
         'Einwilligung erteilt',
         `Du hast den Antrag ${reqOpened.dataRequest?.titleDe} erfolgreich eingewilligt.`,
         ToastType.Success,
+        expect.objectContaining({
+          label: 'Aktion rückgängig machen',
+          callback: expect.any(Function),
+        }),
       );
       expect(reloadSpy).toHaveBeenCalled();
     });
@@ -163,10 +156,8 @@ describe('ConsentRequestTableComponent', () => {
   });
 
   it('setStateFilter filters requests Signal correctly', () => {
-    // Initially all 3
     expect(component.requests().length).toBe(3);
 
-    // Filter to Granted
     component.setStateFilter(ConsentRequestStateEnum.Granted);
     const filtered = component.requests();
     expect(filtered.length).toBe(1);
@@ -198,6 +189,10 @@ describe('ConsentRequestTableComponent', () => {
         'Einwilligung erteilt',
         `Du hast den Antrag ${req.dataRequest?.titleDe} erfolgreich eingewilligt.`,
         ToastType.Success,
+        expect.objectContaining({
+          label: 'Aktion rückgängig machen',
+          callback: expect.any(Function),
+        }),
       );
       expect(reloadSpy).toHaveBeenCalled();
     });
@@ -220,7 +215,6 @@ describe('ConsentRequestTableComponent', () => {
         `Fehler beim Aktualisieren des Antrags. RequestId: ${fakeError.error.requestId}`,
         ToastType.Error,
       );
-      // reloadConsentRequests should NOT be called on error
       expect(reloadSpy).not.toHaveBeenCalled();
     });
   });

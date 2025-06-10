@@ -10,9 +10,14 @@ export class ToastService {
 
   readonly toasts: Signal<Toast[]> = this._toasts.asReadonly();
 
-  show(title: string, message: string, type: Toast['type'] = ToastType.Info) {
+  show(
+    title: string,
+    message: string,
+    type: Toast['type'] = ToastType.Info,
+    undoAction?: Toast['undoAction'],
+  ) {
     const id = ++this.counter;
-    const toast: Toast = { id, title, message, type, state: ToastState.Enter };
+    const toast: Toast = { id, title, message, type, state: ToastState.Enter, undoAction };
     this._toasts.update((list) => [toast, ...list]);
     return id;
   }
@@ -21,7 +26,7 @@ export class ToastService {
     this._toasts.update((list) =>
       list.map((toast) => (toast.id === id ? { ...toast, state: ToastState.Exit } : toast)),
     );
-    setTimeout(() => this._toasts.update((list) => list.filter((toast) => toast.id !== id)), 200);
+    this._toasts.update((list) => list.filter((toast) => toast.id !== id));
   }
 
   clear() {

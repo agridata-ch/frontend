@@ -106,7 +106,6 @@ describe('ConsentRequestDetailsComponent', () => {
     expect(toastService.show).toHaveBeenCalled();
     expect(closeSpy).toHaveBeenCalled();
     expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith('123', 'GRANTED');
-    expect(consentRequestService.fetchConsentRequests).toHaveBeenCalled();
   });
 
   it('should should show toast after rejectRequest', async () => {
@@ -118,6 +117,7 @@ describe('ConsentRequestDetailsComponent', () => {
     fixture.detectChanges();
 
     const closeSpy = jest.spyOn(component, 'handleCloseDetails');
+
     await component.rejectRequest();
 
     expect(toastService.show).toHaveBeenCalled();
@@ -126,6 +126,5 @@ describe('ConsentRequestDetailsComponent', () => {
       '456',
       'DECLINED',
     );
-    expect(consentRequestService.fetchConsentRequests).toHaveBeenCalled();
   });
 });

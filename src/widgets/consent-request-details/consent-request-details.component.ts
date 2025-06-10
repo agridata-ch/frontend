@@ -15,7 +15,12 @@ import { faClose, faLock, faPenSquare, faRepeat } from '@fortawesome/free-solid-
 
 import { ConsentRequestService } from '@/entities/api';
 import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
-import { getToastMessage, getToastTitle, getToastType } from '@/shared/consent-request';
+import {
+  getToastMessage,
+  getToastTitle,
+  getToastType,
+  getUndoAction,
+} from '@/shared/consent-request';
 import { formatDate } from '@/shared/date';
 import { ToastService } from '@/shared/toast';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
@@ -34,6 +39,7 @@ export class ConsentRequestDetailsComponent {
   set request(value: ConsentRequestDto | null) {
     this._requestSignal.set(value ? { ...value } : null);
   }
+  @Input() reloadConsentRequests!: () => void;
   @Output() onCloseDetail = new EventEmitter<string | null>();
 
   readonly showSuccessToast = signal<boolean>(false);
@@ -52,7 +58,9 @@ export class ConsentRequestDetailsComponent {
     () => this._requestSignal()?.dataRequest?.dataConsumer?.name,
   );
   readonly requestTitle = computed(() => this._requestSignal()?.dataRequest?.titleDe);
-  readonly requestStatus: Signal<string> = computed(() => String(this._requestSignal()?.stateCode));
+  readonly requestStateCode: Signal<string> = computed(() =>
+    String(this._requestSignal()?.stateCode),
+  );
   readonly privacySections = computed(() => [
     {
       icon: this.editIcon,
@@ -116,26 +124,35 @@ export class ConsentRequestDetailsComponent {
       getToastTitle(ConsentRequestStateEnum.Granted),
       getToastMessage(ConsentRequestStateEnum.Granted, this.requestTitle()),
       getToastType(ConsentRequestStateEnum.Granted),
+      this.prepareUndoAction(this.requestId(), this.requestStateCode()),
     );
-    this.handleCloseDetails();
-    this.consentRequestService
-      .updateConsentRequestStatus(this.requestId(), ConsentRequestStateEnum.Granted)
-      .then(() => {
-        this.consentRequestService.fetchConsentRequests();
-      });
+    this.updateAndReloadConsentRequestState(this.requestId(), ConsentRequestStateEnum.Granted);
   }
 
   async rejectRequest() {
+    const toastTitle = getToastTitle(ConsentRequestStateEnum.Declined);
+    const toastMessage = getToastMessage(ConsentRequestStateEnum.Declined, this.requestTitle());
+    const toastType = getToastType(ConsentRequestStateEnum.Declined);
     this.toastService.show(
-      getToastTitle(ConsentRequestStateEnum.Declined),
-      getToastMessage(ConsentRequestStateEnum.Declined, this.requestTitle()),
-      getToastType(ConsentRequestStateEnum.Declined),
+      toastTitle,
+      toastMessage,
+      toastType,
+      this.prepareUndoAction(this.requestId(), this.requestStateCode()),
     );
+    this.updateAndReloadConsentRequestState(this.requestId(), ConsentRequestStateEnum.Declined);
+  }
+
+  prepareUndoAction(id: string, stateCode: string) {
+    return getUndoAction(() => {
+      this.toastService.show(getToastTitle(''), '');
+      this.updateAndReloadConsentRequestState(id, stateCode);
+    });
+  }
+
+  async updateAndReloadConsentRequestState(id: string, stateCode: string) {
+    this.consentRequestService.updateConsentRequestStatus(id, stateCode).then(() => {
+      this.reloadConsentRequests();
+    });
     this.handleCloseDetails();
-    this.consentRequestService
-      .updateConsentRequestStatus(this.requestId(), ConsentRequestStateEnum.Declined)
-      .then(() => {
-        this.consentRequestService.fetchConsentRequests();
-      });
   }
 }

@@ -83,4 +83,32 @@ describe('ToastComponent', () => {
     expect(toastService.dismiss).toHaveBeenCalledWith(mockToasts[0].id);
     jest.useRealTimers();
   });
+
+  it('should call undoAction callback when handleUndoAction is called', () => {
+    const mockCallback = jest.fn();
+    const toastWithUndo: Toast = {
+      id: 5,
+      title: 'Undo Test',
+      message: 'This can be undone',
+      type: ToastType.Info,
+      state: ToastState.Enter,
+      undoAction: { label: 'Undo', callback: mockCallback },
+    };
+
+    component.handleUndoAction(toastWithUndo);
+    expect(mockCallback).toHaveBeenCalled();
+    expect(toastService.dismiss).toHaveBeenCalledWith(toastWithUndo.id);
+  });
+  it('should not call undoAction callback if no undoAction is present', () => {
+    const toastWithoutUndo: Toast = {
+      id: 6,
+      title: 'No Undo',
+      message: 'This cannot be undone',
+      type: ToastType.Warning,
+      state: ToastState.Enter,
+    };
+
+    component.handleUndoAction(toastWithoutUndo);
+    expect(toastService.dismiss).toHaveBeenCalledWith(toastWithoutUndo.id);
+  });
 });
