@@ -155,10 +155,10 @@ describe('ConsentRequestTableComponent', () => {
     expect(actionsGranted[1].label).toBe('Ablehnen');
   });
 
-  it('setStateFilter filters requests Signal correctly', () => {
+  it('setStateCodeFilter filters requests Signal correctly', () => {
     expect(component.requests().length).toBe(3);
 
-    component.setStateFilter(ConsentRequestStateEnum.Granted);
+    component.setStateCodeFilter(ConsentRequestStateEnum.Granted);
     const filtered = component.requests();
     expect(filtered.length).toBe(1);
     expect(filtered[0].data.find((c) => c.header === 'Status')?.value).toBe(

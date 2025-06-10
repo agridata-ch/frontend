@@ -29,6 +29,9 @@
     <tbody>
       @for (row of paginated(); track row.id) {
         <tr
+          agridataFlipRow
+          [rowId]="row.id"
+          [totalRows]="paginated().length"
           class="hover:bg-agridata-primary-50 cursor-pointer"
           [class.bg-sky-50]="row.highlighted"
           (click)="onRowClick(row)"
@@ -42,7 +45,7 @@
                 >
                 </ng-container>
               } @else {
-                <div class="agridata-table-ellipsis-cell w-auto" [title]="column.value">
+                <div class="agridata-ellipsis w-auto" [title]="column.value">
                   {{ formatValue(column.value) }}
                 </div>
               }

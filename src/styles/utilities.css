@@ -1,0 +1,41 @@
+
+@layer utilities {
+  /* slide-in from the right */
+  @keyframes toast-in {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  /* slide-out to the right */
+  @keyframes toast-out {
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+  .animate-toast-in {
+    animation: toast-in 0.5s cubic-bezier(0.68, -0.55, 0.25, 1.35);
+  }
+  .animate-toast-out {
+    animation: toast-out 0.5s cubic-bezier(0.68, -0.55, 0.25, 1.35);
+  }
+}
+
+.agridata-ellipsis {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}

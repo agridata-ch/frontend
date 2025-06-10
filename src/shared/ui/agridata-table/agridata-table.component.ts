@@ -14,15 +14,14 @@ import { compareAsc, compareDesc, isValid, parseISO } from 'date-fns';
 
 import { formatDate } from '@/shared/date';
 
-import { CellTemplateDirective } from './agridata-table.directive';
+import { AgridataFlipRowDirective, CellTemplateDirective } from './agridata-table.directive';
 import { AgridataTableData } from './agridata-table.model';
 import { TableActionsComponent } from './table-actions/table-actions.component';
 
 @Component({
   selector: 'app-agridata-table',
-  imports: [CommonModule, TableActionsComponent, FontAwesomeModule],
+  imports: [CommonModule, TableActionsComponent, FontAwesomeModule, AgridataFlipRowDirective],
   templateUrl: './agridata-table.component.html',
-  styleUrl: './agridata-table.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AgridataTableComponent {
