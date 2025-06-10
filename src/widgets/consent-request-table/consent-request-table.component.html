@@ -1,14 +1,12 @@
 <app-consent-request-filter
-  (onClick)="setStateFilter($event)"
+  (onClick)="setStateCodeFilter($event)"
   [requests]="consentRequests()"
 ></app-consent-request-filter>
-<app-agridata-table
-  [data]="requests()"
-  defaultSortColumn="Antragsdatum"
-  defaultSortDirection="desc"
->
+<app-agridata-table [data]="requests()" defaultSortColumn="Status" defaultSortDirection="desc">
   <ng-template stCell="Datenantrag" let-item>
-    <span class="text-agridata-primary-600"> {{ getCellValue(item, 'Datenantrag') }} </span>
+    <span class="text-agridata-primary-600 agridata-ellipsis">
+      {{ getCellValue(item, 'Datenantrag') }}
+    </span>
   </ng-template>
   <ng-template stCell="Status" let-item>
     <app-agridata-badge
