@@ -1,7 +1,7 @@
 import { ConsentRequestStateEnum } from '@/entities/openapi';
 import { ToastType } from '@/shared/toast';
 
-export function getToastTitle(stateCode: string): string {
+export function getToastTitle(stateCode: string) {
   switch (stateCode) {
     case ConsentRequestStateEnum.Granted:
       return 'Einwilligung erteilt';
@@ -12,7 +12,7 @@ export function getToastTitle(stateCode: string): string {
   }
 }
 
-export function getToastMessage(stateCode: string, requestName?: string): string {
+export function getToastMessage(stateCode: string, requestName?: string) {
   switch (stateCode) {
     case ConsentRequestStateEnum.Granted:
       return `Du hast den Antrag ${requestName ?? ''} erfolgreich eingewilligt.`;
@@ -23,7 +23,7 @@ export function getToastMessage(stateCode: string, requestName?: string): string
   }
 }
 
-export function getToastType(stateCode: string): ToastType {
+export function getToastType(stateCode: string) {
   switch (stateCode) {
     case ConsentRequestStateEnum.Granted:
       return ToastType.Success;
@@ -32,4 +32,11 @@ export function getToastType(stateCode: string): ToastType {
     default:
       return ToastType.Info;
   }
+}
+
+export function getUndoAction(undoAction: () => void) {
+  return {
+    label: 'Aktion rückgängig machen',
+    callback: undoAction,
+  };
 }

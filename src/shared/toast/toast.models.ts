@@ -17,4 +17,8 @@ export type Toast = {
   message: string;
   type: ToastType;
   state: ToastState;
+  undoAction?: {
+    label: string;
+    callback: () => void;
+  };
 };

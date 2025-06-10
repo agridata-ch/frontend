@@ -45,4 +45,11 @@ export class ToastComponent {
   dismiss(id: number) {
     this.toastService.dismiss(id);
   }
+
+  handleUndoAction(toast: Toast) {
+    if (toast.undoAction) {
+      toast.undoAction.callback();
+    }
+    this.toastService.dismiss(toast.id);
+  }
 }

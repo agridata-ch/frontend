@@ -4,7 +4,12 @@ import { faBan, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { ConsentRequestService } from '@/entities/api';
 import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
-import { getToastMessage, getToastTitle, getToastType } from '@/shared/consent-request';
+import {
+  getToastMessage,
+  getToastTitle,
+  getToastType,
+  getUndoAction,
+} from '@/shared/consent-request';
 import { ToastService, ToastType } from '@/shared/toast';
 import {
   ActionDTO,
@@ -116,7 +121,8 @@ export class ConsentRequestTableComponent {
         const toastTitle = getToastTitle(stateCode);
         const toastMessage = getToastMessage(stateCode, requestName);
         const toastType = getToastType(stateCode);
-        this.toastService.show(toastTitle, toastMessage, toastType);
+        const undoAction = this.prepareUndoAction(id);
+        this.toastService.show(toastTitle, toastMessage, toastType, undoAction);
         this.reloadConsentRequests();
       })
       .catch((error) => {
@@ -128,6 +134,16 @@ export class ConsentRequestTableComponent {
         );
       });
   };
+
+  prepareUndoAction(id: string) {
+    const previousStateCode = this.consentRequests().find((r) => r.id === id)?.stateCode;
+    return getUndoAction(() => {
+      this.toastService.show(getToastTitle(''), 'Die Aktion wurde erfolgreich rückgängig gemacht.');
+      this.consentRequestService.updateConsentRequestStatus(id, previousStateCode!).then(() => {
+        this.reloadConsentRequests();
+      });
+    });
+  }
 
   getBadgeVariant = (stateCode: string) => {
     if (stateCode === ConsentRequestStateEnum.Opened) return BadgeVariant.INFO;
