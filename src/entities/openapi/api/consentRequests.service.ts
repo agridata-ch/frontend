@@ -40,7 +40,7 @@ export class ConsentRequestsService extends BaseService {
     }
 
     /**
-     * Get Consent Requests
+     * Get Consent Requests For Current Data Producer
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -50,6 +50,8 @@ export class ConsentRequestsService extends BaseService {
     public getConsentRequests(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
+
+        // authentication (SecurityScheme) required
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
             'application/json'
@@ -90,7 +92,7 @@ export class ConsentRequestsService extends BaseService {
     }
 
     /**
-     * Update Consent Request Status
+     * Update Consent Request State For Current Data Producer
      * @param id ID of the consent request
      * @param body New status of the consent request
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -108,6 +110,8 @@ export class ConsentRequestsService extends BaseService {
         }
 
         let localVarHeaders = this.defaultHeaders;
+
+        // authentication (SecurityScheme) required
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
             'application/json'

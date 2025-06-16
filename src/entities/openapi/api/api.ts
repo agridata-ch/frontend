@@ -1,3 +1,5 @@
+export * from './agisTestController.service';
+import { AgisTestControllerService } from './agisTestController.service';
 export * from './consentRequests.service';
 import { ConsentRequestsService } from './consentRequests.service';
 export * from './dataRequests.service';
@@ -6,4 +8,4 @@ export * from './infoResource.service';
 import { InfoResourceService } from './infoResource.service';
 export * from './testData.service';
 import { TestDataService } from './testData.service';
-export const APIS = [ConsentRequestsService, DataRequestsService, InfoResourceService, TestDataService];
+export const APIS = [AgisTestControllerService, ConsentRequestsService, DataRequestsService, InfoResourceService, TestDataService];

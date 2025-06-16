@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { ConsentRequestDtoDataRequestDataConsumer } from './consentRequestDtoDataRequestDataConsumer';
+import { TranslationDto } from './translationDto';
 
 
 /**
@@ -16,41 +17,17 @@ import { ConsentRequestDtoDataRequestDataConsumer } from './consentRequestDtoDat
 export interface ConsentRequestDtoDataRequest { 
     id: string;
     /**
-     * Title of the data request in German
+     * Title of the data request
      */
-    titleDe?: string;
+    title?: TranslationDto;
     /**
-     * Title of the data request in French
+     * Description of the data request 
      */
-    titleFr?: string;
+    description?: TranslationDto;
     /**
-     * Title of the data request in Italian
+     * Purpose of the data request
      */
-    titleIt?: string;
-    /**
-     * Description of the data request in German
-     */
-    descriptionDe?: string;
-    /**
-     * Description of the data request in French
-     */
-    descriptionFr?: string;
-    /**
-     * Description of the data request in Italian
-     */
-    descriptionIt?: string;
-    /**
-     * Purpose of the data request in German
-     */
-    purposeDe?: string;
-    /**
-     * Purpose of the data request in French
-     */
-    purposeFr?: string;
-    /**
-     * Purpose of the data request in Italian
-     */
-    purposeIt?: string;
+    purpose?: TranslationDto;
     dataConsumer?: ConsentRequestDtoDataRequestDataConsumer;
 }
 

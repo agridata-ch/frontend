@@ -2,6 +2,11 @@
 openapi: 3.1.0
 components:
   schemas:
+    AgisSearchParameters:
+      type: object
+      properties:
+        personSearchParameters:
+          $ref: "#/components/schemas/PersonSearchParameter"
     ConsentRequestDto:
       type: object
       required:
@@ -49,58 +54,26 @@ components:
               examples:
               - 3fa85f64-5717-4562-b3fc-2c963f66afb7
               description: Unique identifier of the data request
-            titleDe:
-              type: string
+            title:
+              $ref: "#/components/schemas/TranslationDto"
+              type: object
               examples:
               - Anfrage zu Bodentypen und Bodenqualitaetsdaten
-              description: Title of the data request in German
-            titleFr:
-              type: string
-              examples:
-              - Demande de types de sol et de donnees sur la qualite du sol
-              description: Title of the data request in French
-            titleIt:
-              type: string
-              examples:
-              - Richiesta di tipi di suolo e dati sulla qualita del suolo
-              description: Title of the data request in Italian
-            descriptionDe:
-              type: string
+              description: Title of the data request
+            description:
+              $ref: "#/components/schemas/TranslationDto"
+              type: object
               examples:
               - "Ziel der Anfrage ist es, Informationen über Bodentypen und deren\
                 \ Qualität zu erhalten, um fundierte Entscheidungen zur Fruchtfolge,\
                 \ Düngung und nachhaltigen Bewirtschaftung treffen zu können."
-              description: Description of the data request in German
-            descriptionFr:
-              type: string
+              description: 'Description of the data request '
+            purpose:
+              $ref: "#/components/schemas/TranslationDto"
+              type: object
               examples:
-              - "L’objectif de cette demande est de recueillir des informations sur\
-                \ les types de sols et leur qualité afin de pouvoir prendre des dé\
-                cisions éclairées concernant la rotation des cultures, la fertilisation\
-                \ et une gestion durable."
-              description: Description of the data request in French
-            descriptionIt:
-              type: string
-              examples:
-              - "L’obiettivo della richiesta è ottenere informazioni sui tipi di suolo\
-                \ e sulla loro qualità per prendere decisioni consapevoli sulla rotazione\
-                \ delle colture, la fertilizzazione e una gestione sostenibile."
-              description: Description of the data request in Italian
-            purposeDe:
-              type: string
-              examples:
-              - Bewertung der Bodenqualitaet
-              description: Purpose of the data request in German
-            purposeFr:
-              type: string
-              examples:
-              - Evaluation de la qualite du sol
-              description: Purpose of the data request in French
-            purposeIt:
-              type: string
-              examples:
-              - Valutazione della qualita del suolo
-              description: Purpose of the data request in Italian
+              - Bewertung der Bodenqualität
+              description: Purpose of the data request
             dataConsumer:
               type: object
               description: Details of the data consumer making the request
@@ -138,58 +111,26 @@ components:
           examples:
           - 3fa85f64-5717-4562-b3fc-2c963f66afb7
           description: Unique identifier of the data request
-        titleDe:
-          type: string
+        title:
+          $ref: "#/components/schemas/TranslationDto"
+          type: object
           examples:
           - Anfrage zu Bodentypen und Bodenqualitaetsdaten
-          description: Title of the data request in German
-        titleFr:
-          type: string
-          examples:
-          - Demande de types de sol et de donnees sur la qualite du sol
-          description: Title of the data request in French
-        titleIt:
-          type: string
-          examples:
-          - Richiesta di tipi di suolo e dati sulla qualita del suolo
-          description: Title of the data request in Italian
-        descriptionDe:
-          type: string
+          description: Title of the data request
+        description:
+          $ref: "#/components/schemas/TranslationDto"
+          type: object
           examples:
           - "Ziel der Anfrage ist es, Informationen über Bodentypen und deren Qualitä\
             t zu erhalten, um fundierte Entscheidungen zur Fruchtfolge, Düngung und\
             \ nachhaltigen Bewirtschaftung treffen zu können."
-          description: Description of the data request in German
-        descriptionFr:
-          type: string
+          description: 'Description of the data request '
+        purpose:
+          $ref: "#/components/schemas/TranslationDto"
+          type: object
           examples:
-          - "L’objectif de cette demande est de recueillir des informations sur les\
-            \ types de sols et leur qualité afin de pouvoir prendre des décisions\
-            \ éclairées concernant la rotation des cultures, la fertilisation et une\
-            \ gestion durable."
-          description: Description of the data request in French
-        descriptionIt:
-          type: string
-          examples:
-          - "L’obiettivo della richiesta è ottenere informazioni sui tipi di suolo\
-            \ e sulla loro qualità per prendere decisioni consapevoli sulla rotazione\
-            \ delle colture, la fertilizzazione e una gestione sostenibile."
-          description: Description of the data request in Italian
-        purposeDe:
-          type: string
-          examples:
-          - Bewertung der Bodenqualitaet
-          description: Purpose of the data request in German
-        purposeFr:
-          type: string
-          examples:
-          - Evaluation de la qualite du sol
-          description: Purpose of the data request in French
-        purposeIt:
-          type: string
-          examples:
-          - Valutazione della qualita del suolo
-          description: Purpose of the data request in Italian
+          - Bewertung der Bodenqualität
+          description: Purpose of the data request
         dataConsumer:
           type: object
           description: Details of the data consumer making the request
@@ -219,6 +160,22 @@ components:
       format: date
       examples:
       - 2022-03-10
+    PersonSearchParameter:
+      type: object
+      properties:
+        ktIdP:
+          type: string
+          examples:
+          - TG113657
+    TranslationDto:
+      type: object
+      properties:
+        de:
+          type: string
+        fr:
+          type: string
+        it:
+          type: string
     UUID:
       type: string
       format: uuid
@@ -229,13 +186,54 @@ components:
       description: Authentication
       openIdConnectUrl: http://localhost:6999/realms/agate/.well-known/openid-configuration
 tags:
+- name: Agis Test controller
+  description: Used to test the Agis service integration
 - name: Consent Requests
   description: "Handles creation, retrieval, and updates of consent requests by the\
     \ data producer"
 - name: Data Requests
-  description: "Handles creation, retrieval, and updates of consent requests"
+  description: "Handles creation, retrieval, and updates of data requests"
 - name: Test Data
 paths:
+  /api/agis/v1/data-requests:
+    post:
+      operationId: findRegisterData
+      tags:
+      - Agis Test controller
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgisSearchParameters"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Find Register Data
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
   /api/agreement/v1/consent-requests:
     get:
       operationId: getConsentRequests
@@ -250,6 +248,10 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/ConsentRequestDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
         "404":
           description: The resource or element was not found
           content:
@@ -262,7 +264,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-      summary: Get Consent Requests
+      summary: Get Consent Requests For Current Data Producer
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
   /api/agreement/v1/consent-requests/{id}/status:
     put:
       operationId: updateConsentRequestStatus
@@ -285,6 +290,10 @@ paths:
       responses:
         "204":
           description: No Content
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
         "404":
           description: The resource or element was not found
           content:
@@ -297,7 +306,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-      summary: Update Consent Request Status
+      summary: Update Consent Request State For Current Data Producer
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
   /api/agreement/v1/data-requests:
     get:
       operationId: getDataRequests
@@ -381,5 +393,5 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: dev
+  version: 1.0.0-rc.31
   description: This API handles data and consent requests for agridata.ch.

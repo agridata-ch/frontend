@@ -10,6 +10,7 @@ import {
   getToastType,
   getUndoAction,
 } from '@/shared/consent-request';
+import { I18nService } from '@/shared/i18n/i18n.service';
 import { ToastService, ToastType } from '@/shared/toast';
 import {
   ActionDTO,
@@ -33,6 +34,7 @@ import { ConsentRequestFilterComponent } from '@/widgets/consent-request-table/c
 export class ConsentRequestTableComponent {
   private readonly toastService = inject(ToastService);
   private readonly consentRequestService = inject(ConsentRequestService);
+  private readonly i18nService = inject(I18nService);
 
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
@@ -56,7 +58,10 @@ export class ConsentRequestTableComponent {
         id: request.id,
         data: [
           { header: 'Antragsteller', value: request.dataRequest?.dataConsumer?.name ?? '' },
-          { header: 'Datenantrag', value: request.dataRequest?.titleDe ?? '' },
+          {
+            header: 'Datenantrag',
+            value: this.i18nService.useObjectTranslation(request.dataRequest?.title),
+          },
           {
             header: 'Antragsdatum',
             value: request.requestDate ?? '',
@@ -76,7 +81,7 @@ export class ConsentRequestTableComponent {
 
   getFilteredActions = (request?: ConsentRequestDto): ActionDTO[] => {
     if (!request) return [];
-    const requestTitle = request.dataRequest?.titleDe;
+    const requestTitle = this.i18nService.useObjectTranslation(request.dataRequest?.title);
     const details = {
       icon: this.eyeIcon,
       label: 'Details',

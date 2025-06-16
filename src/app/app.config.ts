@@ -1,27 +1,42 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { ApplicationConfig, provideZonelessChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
+} from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideTransloco } from '@jsverse/transloco';
 import { AbstractSecurityStorage, authInterceptor, provideAuth } from 'angular-auth-oidc-client';
 
-import { routes } from '@/app/app.routes';
-import { Configuration } from '@/entities/openapi/configuration';
+import { Configuration } from '@/entities/openapi';
 import { environment } from '@/environments/environment';
 import { AgridataOIDCStorage, oidcConfig } from '@/shared/lib/auth';
 
+import { routes } from './app.routes';
+import { i18nConfig } from './i18n.config';
+import { TranslocoHttpLoader } from './transloco-loader';
+
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([authInterceptor()])),
     {
       provide: Configuration,
       useValue: new Configuration({ basePath: environment.apiBaseUrl }),
     },
+    provideTransloco({
+      config: {
+        ...i18nConfig,
+      },
+      loader: TranslocoHttpLoader,
+    }),
     provideAuth({
       config: {
         ...oidcConfig,
       },
     }),
     { provide: AbstractSecurityStorage, useClass: AgridataOIDCStorage },
-    provideZonelessChangeDetection(),
   ],
 };

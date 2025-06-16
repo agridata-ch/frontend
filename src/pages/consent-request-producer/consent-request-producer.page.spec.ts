@@ -21,19 +21,19 @@ describe('ConsentRequestProducerPage - component behavior', () => {
       id: '1',
       stateCode: ConsentRequestStateEnum.Opened,
       requestDate: '2025-05-01',
-      dataRequest: { dataConsumer: { name: 'Alice' }, titleDe: 'Antrag A' },
+      dataRequest: { dataConsumer: { name: 'Alice' }, title: { de: 'Antrag A' } },
     } as ConsentRequestDto,
     {
       id: '2',
       stateCode: ConsentRequestStateEnum.Granted,
       requestDate: '2025-05-02',
-      dataRequest: { dataConsumer: { name: 'Bob' }, titleDe: 'Antrag B' },
+      dataRequest: { dataConsumer: { name: 'Bob' }, title: { de: 'Antrag B' } },
     } as ConsentRequestDto,
     {
       id: '3',
       stateCode: ConsentRequestStateEnum.Declined,
       requestDate: '2025-05-03',
-      dataRequest: { dataConsumer: { name: 'Charlie' }, titleDe: 'Antrag C' },
+      dataRequest: { dataConsumer: { name: 'Charlie' }, title: { de: 'Antrag C' } },
     } as ConsentRequestDto,
   ];
 

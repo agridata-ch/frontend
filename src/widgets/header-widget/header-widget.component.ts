@@ -1,11 +1,12 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { LanguageSelectComponent } from '@/features/language-select/language-select.component';
 import { AuthService } from '@/shared/lib/auth';
 
 @Component({
   selector: 'app-header-widget',
-  imports: [RouterLink],
+  imports: [RouterLink, LanguageSelectComponent],
   templateUrl: './header-widget.component.html',
   styleUrl: './header-widget.component.css',
 })

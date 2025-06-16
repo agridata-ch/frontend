@@ -21,6 +21,7 @@ import {
   getUndoAction,
 } from '@/shared/consent-request';
 import { formatDate } from '@/shared/date';
+import { I18nService } from '@/shared/i18n/i18n.service';
 import { ToastService } from '@/shared/toast';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
@@ -33,25 +34,35 @@ import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
 export class ConsentRequestDetailsComponent {
   private readonly toastService = inject(ToastService);
   private readonly consentRequestService = inject(ConsentRequestService);
+  private readonly i18nService = inject(I18nService);
 
   readonly request = input<ConsentRequestDto | null>(null);
   readonly onReloadConsentRequests = output<void>();
   readonly onCloseDetail = output<string | null>();
 
-  readonly showSuccessToast = signal<boolean>(false);
-  readonly showErrorToast = signal<boolean>(false);
-  readonly requestId = computed(() => this.request()?.id ?? '');
   readonly closeIcon = faClose;
   readonly editIcon = faPenSquare;
   readonly lockIcon = faLock;
   readonly repeatIcon = faRepeat;
   readonly badgeSize = BadgeSize;
   readonly consentRequestStateEnum = ConsentRequestStateEnum;
-  readonly formattedRequestDate = computed(() => formatDate(this.request()?.requestDate));
+
+  readonly showSuccessToast = signal<boolean>(false);
+  readonly showErrorToast = signal<boolean>(false);
   readonly showDetails = signal(false);
-  readonly dataConsumerName = computed(() => this.request()?.dataRequest?.dataConsumer?.name);
-  readonly requestTitle = computed(() => this.request()?.dataRequest?.titleDe);
   readonly requestStateCode: Signal<string> = computed(() => String(this.request()?.stateCode));
+  readonly requestId = computed(() => this.request()?.id ?? '');
+  readonly formattedRequestDate = computed(() => formatDate(this.request()?.requestDate));
+  readonly dataConsumerName = computed(() => this.request()?.dataRequest?.dataConsumer?.name);
+  readonly requestTitle = computed(() =>
+    this.i18nService.useObjectTranslation(this.request()?.dataRequest?.title),
+  );
+  readonly requestDescription = computed(() =>
+    this.i18nService.useObjectTranslation(this.request()?.dataRequest?.description),
+  );
+  readonly requestPurpose = computed(() =>
+    this.i18nService.useObjectTranslation(this.request()?.dataRequest?.purpose),
+  );
   readonly privacySections = computed(() => [
     {
       icon: this.editIcon,

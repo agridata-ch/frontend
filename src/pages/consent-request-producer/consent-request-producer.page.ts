@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, effect, inject, input, resource, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 import { ConsentRequestService } from '@/entities/api';
 import { ConsentRequestDto } from '@/entities/openapi';
@@ -10,7 +11,12 @@ import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 
 @Component({
   selector: 'app-consent-request-producer-page',
-  imports: [ConsentRequestTableComponent, FontAwesomeModule, ConsentRequestDetailsComponent],
+  imports: [
+    ConsentRequestTableComponent,
+    FontAwesomeModule,
+    ConsentRequestDetailsComponent,
+    TranslocoDirective,
+  ],
   templateUrl: './consent-request-producer.page.html',
 })
 export class ConsentRequestProducerPage {
