@@ -1,0 +1,28 @@
+<div class="relative inline-block w-full">
+  <button
+    class="w-full flex justify-between items-center px-4 py-2 rounded focus:outline-none"
+    (click)="handleToggle()"
+    type="button"
+  >
+    <span>
+      {{ selectedLanguage().toUpperCase() }}
+    </span>
+    <fa-icon [icon]="dropdownIcon()" class="ml-2" />
+  </button>
+  @if (open()) {
+    <ul
+      class="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden left-2.5"
+    >
+      @for (option of languageOptions(); track option) {
+        <li
+          click-stop-propagation
+          class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+          (click)="changeLanguage(option)"
+          (keydown.enter)="changeLanguage(option)"
+        >
+          {{ option.toUpperCase() }}
+        </li>
+      }
+    </ul>
+  }
+</div>

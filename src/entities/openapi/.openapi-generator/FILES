@@ -1,8 +1,8 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.base.service.ts
 api.module.ts
+api/agisTestController.service.ts
 api/api.ts
 api/consentRequests.service.ts
 api/dataRequests.service.ts
@@ -12,6 +12,7 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/agisSearchParameters.ts
 model/consentRequestDto.ts
 model/consentRequestDtoDataRequest.ts
 model/consentRequestDtoDataRequestDataConsumer.ts
@@ -21,5 +22,7 @@ model/dataRequestDto.ts
 model/exceptionDto.ts
 model/exceptionEnum.ts
 model/models.ts
+model/personSearchParameter.ts
+model/translationDto.ts
 param.ts
 variables.ts

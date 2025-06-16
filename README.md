@@ -47,3 +47,42 @@ npm run generate:api
 ```
 The generated API client is located in the `src/app/shared/services` and the models are located in the `src/app/shared/models` folder.
 You can then import the API client in your component-services and use it to make API calls.
+
+# Translation
+## Transloco
+We use [transloco](https://jsverse.gitbook.io/transloco) for translations. The translation files are located in the `src/assets/i18n` folder. The translation files are in JSON format and can be edited directly. 
+
+## I18nService | I18nPipe
+We have our custom I18n Service and Pipe to use the translations in the application. The I18nService is a wrapper around the Transloco service and provides a simple interface to get the translations. The I18nPipe is a wrapper around the Transloco pipe and can be used in the templates to get the translations.
+You can use the I18nPipe in your templates like this:
+```html
+<p>{{ 'hello' | i18n }}</p>
+```
+in the json file:
+```json
+{
+  "hello": "Hello World"
+}
+```
+or use it with a prefix
+```html
+<ng-container *transloco="let t; prefix: 'agridata'">
+  <p>{{ t('title') }}</p>
+</ng-container>
+```
+this is useful if don't want to add the namespace to every translation key. In the json file this will then be like this:
+```json
+{
+  "agridata": {
+    "title": "Agridata Title"
+  }
+}
+```
+## Transloco Key Manager
+We use the [Transloco Key Manager](https://jsverse.gitbook.io/transloco/advanced/key-manager) to manage the translation keys. The key manager is a command line tool that scans the code for translation keys and generates a report of missing keys. You can run the key manager with the following command:
+```bash
+npm run transloco:keys
+```
+This will add all the missing keys to the translation files. 
+
+> [!WARNING] The actual version of transloco (v.14) won't work with Angular 20 because the transloco dependency is not updated fully to Angular 20 yet.

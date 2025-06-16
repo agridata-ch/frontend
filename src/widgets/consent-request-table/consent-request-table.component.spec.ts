@@ -26,19 +26,19 @@ describe('ConsentRequestTableComponent', () => {
       id: '1',
       stateCode: ConsentRequestStateEnum.Opened,
       requestDate: '2025-01-01',
-      dataRequest: { dataConsumer: { name: 'Alice' }, titleDe: 'Antrag A' },
+      dataRequest: { dataConsumer: { name: 'Alice' }, title: { de: 'Antrag A' } },
     } as ConsentRequestDto,
     {
       id: '2',
       stateCode: ConsentRequestStateEnum.Granted,
       requestDate: '2025-01-02',
-      dataRequest: { dataConsumer: { name: 'Bob' }, titleDe: 'Antrag B' },
+      dataRequest: { dataConsumer: { name: 'Bob' }, title: { de: 'Antrag B' } },
     } as ConsentRequestDto,
     {
       id: '3',
       stateCode: ConsentRequestStateEnum.Declined,
       requestDate: '2025-01-03',
-      dataRequest: { dataConsumer: { name: 'Carol' }, titleDe: 'Antrag C' },
+      dataRequest: { dataConsumer: { name: 'Carol' }, title: { de: 'Antrag C' } },
     } as ConsentRequestDto,
   ];
 
@@ -144,13 +144,13 @@ describe('ConsentRequestTableComponent', () => {
       component.updateConsentRequestState(
         sampleRequests[0].id,
         ConsentRequestStateEnum.Granted,
-        sampleRequests[0].dataRequest?.titleDe,
+        sampleRequests[0].dataRequest?.title?.de,
       );
       await flushPromises();
 
       expect(mockToastService.show).toHaveBeenCalledWith(
         getToastTitle(ConsentRequestStateEnum.Granted),
-        getToastMessage(ConsentRequestStateEnum.Granted, sampleRequests[0].dataRequest?.titleDe),
+        getToastMessage(ConsentRequestStateEnum.Granted, sampleRequests[0].dataRequest?.title?.de),
         getToastType(ConsentRequestStateEnum.Granted),
         expect.any(Object), // your undo action
       );
@@ -167,7 +167,7 @@ describe('ConsentRequestTableComponent', () => {
       component.updateConsentRequestState(
         sampleRequests[1].id,
         ConsentRequestStateEnum.Declined,
-        sampleRequests[1].dataRequest?.titleDe,
+        sampleRequests[1].dataRequest?.title?.de,
       );
       await flushPromises();
 
