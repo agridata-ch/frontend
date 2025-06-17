@@ -1,3 +1,9 @@
+## [1.0.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.11...v1.0.0-rc.12) (2025-06-17)
+
+### Features
+
+- **i18n:** add translation support ([9ea385e](https://github.com/agridata-ch/frontend/commit/9ea385e20dca4787ba91791e2ba906883bc006f8)), closes [DIGIB2-467](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-467)
+
 ## [1.0.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.10...v1.0.0-rc.11) (2025-06-10)
 
 ### Features
