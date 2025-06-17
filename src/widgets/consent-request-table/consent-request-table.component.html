@@ -2,16 +2,20 @@
   (onClick)="setStateCodeFilter($event)"
   [requests]="consentRequests()"
 ></app-consent-request-filter>
-<app-agridata-table [rawData]="requests()" defaultSortColumn="Status" defaultSortDirection="desc">
-  <ng-template stCell="Datenantrag" let-item>
+<app-agridata-table
+  [rawData]="requests()"
+  [defaultSortColumn]="dataRequestStateHeader"
+  [defaultSortDirection]="SortDirections.DESC"
+>
+  <ng-template [stCell]="dataRequestTitleHeader" let-item>
     <span class="text-agridata-primary-600 agridata-ellipsis">
-      {{ getCellValue(item, 'Datenantrag') }}
+      {{ getCellValue(item, dataRequestTitleHeader) }}
     </span>
   </ng-template>
-  <ng-template stCell="Status" let-item>
+  <ng-template [stCell]="dataRequestStateHeader" let-item>
     <app-agridata-badge
-      [text]="getCellValue(item, 'Status')"
-      [variant]="getBadgeVariant(getCellValue(item, 'Status'))"
+      [text]="getTranslatedStateValue(item, dataRequestStateHeader)"
+      [variant]="getBadgeVariant(getCellValue(item, dataRequestStateHeader))"
       [size]="BadgeSize.SM"
     />
   </ng-template>

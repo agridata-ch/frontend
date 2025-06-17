@@ -2,7 +2,88 @@
   "consent-request-producer": {
     "pageTitle": "Freigaben"
   },
+  "consent-request-table": {
+    "dataRequest": {
+      "consumerName": "Antragsteller",
+      "title": "Datenantrag",
+      "date": "Antragsdatum",
+      "state": {
+        "title": "Status",
+        "GRANTED": "Eingewilligt",
+        "DECLINED": "Abgelehnt",
+        "OPENED": "Offen"
+      }
+    },
+    "filter": {
+      "ALL": "Alle",
+      "OPENED": "Offen",
+      "DECLINED": "Abgelehnt",
+      "GRANTED": "Eingewilligt"
+    },
+    "tableActions": {
+      "title": "Aktionen",
+      "details": "Details",
+      "consent": "Einwilligen",
+      "decline": "Ablehnen"
+    },
+    "error": "Fehler beim Aktualisieren des Antrags. RequestId: {{requestId}}"
+  },
+  "consent-request-details": {
+    "title": "Detailansicht",
+    "requestDate": "Anfrage vom {{ date }}",
+    "purpose": {
+      "title": "Zweck",
+      "description": "Folgende Daten werden übermittelt"
+    },
+    "privacySection": {
+      "consent": {
+        "title": "Einwilligung",
+        "description": "Mit deiner Zustimmung erlaubst du, dass die Daten gemäss Liste deiner zugeordneten Betriebe an den Antragsteller {{ consumerName }} übermittelt werden"
+      },
+      "dataProtection": {
+        "title": "Datenschutz",
+        "description": "{{ consumerName }} ist für den datenschutzkonformen Umgang mit diesen Informationen verantwortlich. Wende dich direkt an {{ consumerName }}, wenn du möchtest, dass deine Daten gelöscht werden."
+      },
+      "revocation": {
+        "title": "Wiederrufsmöglichkeit",
+        "description": "Du kannst deine Einwilligung jederzeit widerrufen oder anpassen"
+      }
+    },
+    "actions": {
+      "accept": "Einwilligen",
+      "reject": "Ablehnen"
+    },
+    "footerInformation": "Du kannst deine Einwilligung jederzeit ändern.",
+    "dataRequest": {
+      "state": {
+        "GRANTED": "Eingewilligt am {{ date }}",
+        "DECLINED": "Abgelehnt am {{ date }}",
+        "OPENED": "Offen",
+        "UNKNOWN": "Unbekannt"
+      }
+    }
+  },
+  "consent-request-toast": {
+    "title": {
+      "GRANTED": "Einwilligung erteilt",
+      "DECLINED": "Einwilligung abgelehnt",
+      "DEFAULT": "Antrag aktualisiert"
+    },
+    "message": {
+      "GRANTED": "Du hast den Antrag {{ name }} erfolgreich eingewilligt.",
+      "DECLINED": "Du hast den Antrag {{ name }} erfolgreich abgelehnt.",
+      "DEFAULT": "Der Antrag wurde aktualisiert."
+    },
+    "undo": "Aktion rückgängig machen"
+  },
   "navigation": {
-    "consent-requests": "Freigaben"
+    "consentRequests": "Freigaben"
+  },
+  "account": {
+    "login": "Anmelden",
+    "logout": "Abmelden"
+  },
+  "agridata-table": {
+    "actions": "Aktionen"
   }
 }

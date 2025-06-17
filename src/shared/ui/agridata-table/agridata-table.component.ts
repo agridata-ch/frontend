@@ -5,14 +5,21 @@ import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { compareAsc, compareDesc, isValid, parseISO } from 'date-fns';
 
 import { formatDate } from '@/shared/date';
+import { I18nPipe } from '@/shared/i18n';
 
 import { AgridataFlipRowDirective, CellTemplateDirective } from './agridata-table.directive';
-import { AgridataTableData } from './agridata-table.model';
+import { AgridataTableData, SortDirections } from './agridata-table.model';
 import { TableActionsComponent } from './table-actions/table-actions.component';
 
 @Component({
   selector: 'app-agridata-table',
-  imports: [CommonModule, TableActionsComponent, FontAwesomeModule, AgridataFlipRowDirective],
+  imports: [
+    CommonModule,
+    TableActionsComponent,
+    FontAwesomeModule,
+    AgridataFlipRowDirective,
+    I18nPipe,
+  ],
   templateUrl: './agridata-table.component.html',
 })
 export class AgridataTableComponent {
@@ -20,18 +27,20 @@ export class AgridataTableComponent {
 
   readonly _data = signal<AgridataTableData[]>([]);
   readonly defaultSortColumn = input<string>('');
-  readonly defaultSortDirection = input<'asc' | 'desc'>('desc');
+  readonly defaultSortDirection = input<SortDirections.ASC | SortDirections.DESC>(
+    SortDirections.DESC,
+  );
   readonly pageSize = input<number>(10);
 
   readonly cellTemplates = contentChildren(CellTemplateDirective);
 
   readonly sortColumnIndex = signal<number | null>(null);
-  readonly sortDirection = signal<'asc' | 'desc'>('desc');
+  readonly sortDirection = signal<SortDirections.ASC | SortDirections.DESC>(SortDirections.DESC);
   readonly currentPage = signal(1);
 
   readonly sortIcon = computed(() => {
     const dir = this.sortDirection();
-    return dir === 'asc' ? faArrowUp : faArrowDown;
+    return dir === SortDirections.ASC ? faArrowUp : faArrowDown;
   });
 
   readonly headers = computed<string[]>(() => {
@@ -56,11 +65,11 @@ export class AgridataTableComponent {
 
       if (bothDates) {
         // compareAsc/compareDesc return negative/positive/zero
-        return dir === 'asc' ? compareAsc(dateA, dateB) : compareDesc(dateA, dateB);
+        return dir === SortDirections.ASC ? compareAsc(dateA, dateB) : compareDesc(dateA, dateB);
       }
 
       // Fallback to string comparison
-      return dir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+      return dir === SortDirections.ASC ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
     });
   });
 
@@ -92,10 +101,12 @@ export class AgridataTableComponent {
 
   setSort(colIndex: number) {
     if (this.sortColumnIndex() === colIndex) {
-      this.sortDirection.update((d) => (d === 'asc' ? 'desc' : 'asc'));
+      this.sortDirection.update((d) =>
+        d === SortDirections.ASC ? SortDirections.DESC : SortDirections.ASC,
+      );
     } else {
       this.sortColumnIndex.set(colIndex);
-      this.sortDirection.set('desc');
+      this.sortDirection.set(SortDirections.DESC);
     }
     this.currentPage.set(1);
   }

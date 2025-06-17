@@ -3,11 +3,12 @@ import { Component, effect, inject } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
 
+import { I18nPipe } from '@/shared/i18n';
 import { Toast, ToastService, ToastState, ToastType } from '@/shared/toast';
 
 @Component({
   selector: 'app-toast-container',
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, I18nPipe],
   templateUrl: './toast.component.html',
 })
 export class ToastComponent {

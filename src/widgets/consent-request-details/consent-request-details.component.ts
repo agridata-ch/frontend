@@ -21,6 +21,7 @@ import {
   getUndoAction,
 } from '@/shared/consent-request';
 import { formatDate } from '@/shared/date';
+import { I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
 import { ToastService } from '@/shared/toast';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
@@ -28,7 +29,7 @@ import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
 
 @Component({
   selector: 'app-consent-request-details',
-  imports: [FontAwesomeModule, AgridataAccordionComponent, AgridataBadgeComponent],
+  imports: [FontAwesomeModule, AgridataAccordionComponent, AgridataBadgeComponent, I18nPipe],
   templateUrl: './consent-request-details.component.html',
 })
 export class ConsentRequestDetailsComponent {
@@ -53,6 +54,9 @@ export class ConsentRequestDetailsComponent {
   readonly requestStateCode: Signal<string> = computed(() => String(this.request()?.stateCode));
   readonly requestId = computed(() => this.request()?.id ?? '');
   readonly formattedRequestDate = computed(() => formatDate(this.request()?.requestDate));
+  readonly formattedLastStateChangeDate = computed(() =>
+    formatDate(this.request()?.lastStateChangeDate),
+  );
   readonly dataConsumerName = computed(() => this.request()?.dataRequest?.dataConsumer?.name);
   readonly requestTitle = computed(() =>
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.title),
@@ -66,32 +70,41 @@ export class ConsentRequestDetailsComponent {
   readonly privacySections = computed(() => [
     {
       icon: this.editIcon,
-      title: 'Einwilligung',
-      description: `Mit deiner Zustimmung erlaubst du, dass die Daten gemäss Liste deiner zugeordneten Betriebe an den Antragsteller ${this.dataConsumerName()}  übermittelt werden`,
+      title: 'consent-request-details.privacySection.consent.title',
+      description: this.i18nService.translate(
+        `consent-request-details.privacySection.consent.description`,
+      ),
     },
     {
       icon: this.lockIcon,
-      title: 'Datenschutz',
-      description: `${this.dataConsumerName()} ist für den datenschutzkonformen Umgang mit diesen Informationen verantwortlich. Wende dich direkt an ${this.dataConsumerName()}, wenn du möchtest, dass deine Daten gelöscht werden.`,
+      title: 'consent-request-details.privacySection.dataProtection.title',
+      description: this.i18nService.translate(
+        `consent-request-details.privacySection.dataProtection.description`,
+        { consumerName: this.dataConsumerName() },
+      ),
     },
     {
       icon: this.repeatIcon,
-      title: 'Wiederrufsmöglichkeit',
-      description: 'Du kannst deine Einwilligung jederzeit widerrufen oder anpassen',
+      title: 'consent-request-details.privacySection.revocation.title',
+      description: this.i18nService.translate(
+        `consent-request-details.privacySection.revocation.description`,
+      ),
     },
   ]);
   readonly badgeText = computed(() => {
     const stateCode = this.request()?.stateCode;
-    if (stateCode === ConsentRequestStateEnum.Opened) return 'Offen';
+    if (stateCode === ConsentRequestStateEnum.Opened)
+      return this.i18nService.translate('consent-request-details.dataRequest.state.OPENED');
     if (stateCode === ConsentRequestStateEnum.Granted)
-      return this.formattedRequestDate()
-        ? `Eingewilligt am ${this.formattedRequestDate()}`
-        : 'Eingewilligt';
+      return this.i18nService.translate('consent-request-details.dataRequest.state.GRANTED', {
+        date: this.formattedLastStateChangeDate(),
+      });
     if (stateCode === ConsentRequestStateEnum.Declined)
-      return this.formattedRequestDate()
-        ? `Abgelehnt am ${this.formattedRequestDate()}`
-        : 'Abgelehnt';
-    return 'Unknown';
+      return this.i18nService.translate('consent-request-details.dataRequest.state.DECLINED', {
+        date: this.formattedLastStateChangeDate(),
+      });
+
+    return this.i18nService.translate('consent-request-details.dataRequest.state.UNKNOWN');
   });
   readonly badgeVariant = computed(() => {
     const stateCode = this.request()?.stateCode;
@@ -123,8 +136,10 @@ export class ConsentRequestDetailsComponent {
 
   async acceptRequest() {
     this.toastService.show(
-      getToastTitle(ConsentRequestStateEnum.Granted),
-      getToastMessage(ConsentRequestStateEnum.Granted, this.requestTitle()),
+      this.i18nService.translate(getToastTitle(ConsentRequestStateEnum.Granted)),
+      this.i18nService.translate(getToastMessage(ConsentRequestStateEnum.Granted), {
+        name: this.requestTitle(),
+      }),
       getToastType(ConsentRequestStateEnum.Granted),
       this.prepareUndoAction(this.requestId(), this.requestStateCode()),
     );
@@ -132,8 +147,11 @@ export class ConsentRequestDetailsComponent {
   }
 
   async rejectRequest() {
-    const toastTitle = getToastTitle(ConsentRequestStateEnum.Declined);
-    const toastMessage = getToastMessage(ConsentRequestStateEnum.Declined, this.requestTitle());
+    const toastTitle = this.i18nService.translate(getToastTitle(ConsentRequestStateEnum.Declined));
+    const toastMessage = this.i18nService.translate(
+      getToastMessage(ConsentRequestStateEnum.Declined),
+      { name: this.requestTitle() },
+    );
     const toastType = getToastType(ConsentRequestStateEnum.Declined);
     this.toastService.show(
       toastTitle,
@@ -146,7 +164,7 @@ export class ConsentRequestDetailsComponent {
 
   prepareUndoAction(id: string, stateCode: string) {
     return getUndoAction(() => {
-      this.toastService.show(getToastTitle(''), '');
+      this.toastService.show(this.i18nService.translate(getToastTitle('')), '');
       this.updateAndReloadConsentRequestState(id, stateCode);
     });
   }

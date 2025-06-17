@@ -10,7 +10,7 @@
             [tabindex]="0"
           >
             <div class="flex items-center">
-              <span class="mr-2">{{ header }}</span>
+              <span class="mr-2">{{ header | i18n }}</span>
               <div class="min-w-4">
                 @if (sortColumnIndex() === $index) {
                   <fa-icon [icon]="sortIcon()" class="text-agridata-primary-600" />
@@ -22,7 +22,7 @@
         <th
           class="py-3 px-4 select-none text-slate-500 outline-0 hover:bg-gray-50 cursor-pointer focus:bg-gray-200 text-sm font-semibold text-right"
         >
-          Aktionen
+          {{ 'agridata-table.actions' | i18n }}
         </th>
       </tr>
     </thead>

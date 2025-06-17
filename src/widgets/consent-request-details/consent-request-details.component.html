@@ -16,7 +16,9 @@
     [class.opacity-100]="showDetails()"
   >
     <div class="flex items-center justify-between sticky top-0">
-      <span class="text-lg text-agridata-secondary-text font-semibold">Detailansicht</span>
+      <span class="text-lg text-agridata-secondary-text font-semibold">
+        {{ 'consent-request-details.title' | i18n }}
+      </span>
       <fa-icon
         size="3x"
         [icon]="closeIcon"
@@ -29,7 +31,7 @@
     <div class="overflow-y-auto flex flex-col gap-6 grow">
       <div>
         <span class="text-agridata-tertiary-text text-sm font-normal">
-          Anfrage vom {{ formattedRequestDate() }} |
+          {{ 'consent-request-details.requestDate' | i18n: { date: formattedRequestDate() } }} |
         </span>
         <app-agridata-badge [text]="badgeText()" [size]="badgeSize.MD" [variant]="badgeVariant()" />
       </div>
@@ -41,15 +43,17 @@
         {{ requestDescription() }}
       </span>
       <div class="flex flex-col gap-2 px-4 py-4 rounded-lg bg-sky-100">
-        <span class="text-agridata-primary-text font-semibold text-lg">Zweck</span>
+        <span class="text-agridata-primary-text font-semibold text-lg">
+          {{ 'consent-request-details.purpose.title' | i18n }}
+        </span>
         <div class="flex flex-col">
           <span class="text-agridata-primary-text font-normal">
             {{ requestPurpose() }}
           </span>
         </div>
         <app-agridata-accordion
-          [header]="'Folgende Daten werden übermittelt'"
-          [content]="'Inhalt fehlt noch'"
+          [header]="'consent-request-details.purpose.description' | i18n"
+          [content]="'No content available yet'"
         />
       </div>
       @for (privacySection of privacySections(); track privacySection.description) {
@@ -61,7 +65,7 @@
           />
           <div class="flex flex-col">
             <span class="text-agridata-secondary-text font-semibold">
-              {{ privacySection.title }}
+              {{ privacySection.title | i18n }}
             </span>
             <span class="text-agridata-secondary-text font-normal">
               {{ privacySection.description }}
@@ -79,7 +83,7 @@
           (keydown.enter)="rejectRequest()"
           tabindex="0"
         >
-          Ablehnen
+          {{ 'consent-request-details.actions.reject' | i18n }}
         </button>
         <button
           class="w-full agridata-button agridata-button-primary-accept"
@@ -88,11 +92,11 @@
           (keydown.enter)="acceptRequest()"
           tabindex="0"
         >
-          Einwilligen
+          {{ 'consent-request-details.actions.accept' | i18n }}
         </button>
       </div>
       <span class="w-full flex justify-center text-agridata-tertiary-text text-xs">
-        Du kannst deine Einwilligung jederzeit ändern.
+        {{ 'consent-request-details.footerInformation' | i18n }}
       </span>
     </div>
   </div>

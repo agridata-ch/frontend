@@ -2,10 +2,10 @@ import { Location } from '@angular/common';
 import { Component, effect, inject, input, resource, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
-import { TranslocoDirective } from '@jsverse/transloco';
 
 import { ConsentRequestService } from '@/entities/api';
 import { ConsentRequestDto } from '@/entities/openapi';
+import { I18nDirective } from '@/shared/i18n';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 
@@ -15,7 +15,7 @@ import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
     ConsentRequestTableComponent,
     FontAwesomeModule,
     ConsentRequestDetailsComponent,
-    TranslocoDirective,
+    I18nDirective,
   ],
   templateUrl: './consent-request-producer.page.html',
 })

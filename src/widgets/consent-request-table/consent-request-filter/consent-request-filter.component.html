@@ -9,7 +9,7 @@
       tabindex="0"
     >
       <span>
-        {{ filter.label }}
+        {{ filter.label | i18n }}
         @if (filter.value === consentRequestStateEnum.Opened) {
           <span
             class="text-agridata-secondary-text bg-agridata-content-gray size-3 rounded-full px-2"

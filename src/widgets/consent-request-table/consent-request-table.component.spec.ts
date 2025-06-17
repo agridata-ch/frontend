@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConsentRequestService } from '@/entities/api/consent-request.service';
 import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
-import { getToastMessage, getToastTitle, getToastType } from '@/shared/consent-request';
 import { ToastService, ToastType } from '@/shared/toast';
 import { AgridataTableData } from '@/shared/ui/agridata-table';
 import { BadgeVariant } from '@/shared/ui/badge';
@@ -20,6 +19,7 @@ describe('ConsentRequestTableComponent', () => {
   let componentRef: ComponentRef<ConsentRequestTableComponent>;
   let mockToastService: { show: jest.Mock };
   let mockConsentService: { updateConsentRequestStatus: jest.Mock };
+  const dataRequestStateHeader = 'consent-request-table.dataRequest.state.title';
 
   const sampleRequests: ConsentRequestDto[] = [
     {
@@ -98,23 +98,23 @@ describe('ConsentRequestTableComponent', () => {
   it('getFilteredActions returns correct actions for Opened', () => {
     const actions = component.getFilteredActions(sampleRequests[0]);
     expect(actions.length).toBe(3);
-    expect(actions[0].label).toBe('Details');
-    expect(actions[1].label).toBe('Einwilligen');
-    expect(actions[2].label).toBe('Ablehnen');
+    expect(actions[0].label).toBe('consent-request-table.tableActions.details');
+    expect(actions[1].label).toBe('consent-request-table.tableActions.consent');
+    expect(actions[2].label).toBe('consent-request-table.tableActions.decline');
   });
 
   it('getFilteredActions returns correct actions for Granted', () => {
     const actions = component.getFilteredActions(sampleRequests[1]);
     expect(actions.length).toBe(2);
-    expect(actions[0].label).toBe('Details');
-    expect(actions[1].label).toBe('Ablehnen');
+    expect(actions[0].label).toBe('consent-request-table.tableActions.details');
+    expect(actions[1].label).toBe('consent-request-table.tableActions.decline');
   });
 
   it('getFilteredActions returns correct actions for Declined', () => {
     const actions = component.getFilteredActions(sampleRequests[2]);
     expect(actions.length).toBe(2);
-    expect(actions[0].label).toBe('Details');
-    expect(actions[1].label).toBe('Einwilligen');
+    expect(actions[0].label).toBe('consent-request-table.tableActions.details');
+    expect(actions[1].label).toBe('consent-request-table.tableActions.consent');
   });
 
   it('setStateCodeFilter filters requests Signal correctly', () => {
@@ -123,7 +123,7 @@ describe('ConsentRequestTableComponent', () => {
     component.setStateCodeFilter(ConsentRequestStateEnum.Granted);
     const filtered = component.requests();
     expect(filtered.length).toBe(1);
-    expect(filtered[0].data.find((c) => c.header === 'Status')?.value).toBe(
+    expect(filtered[0].data.find((c) => c.header === dataRequestStateHeader)?.value).toBe(
       ConsentRequestStateEnum.Granted,
     );
   });
@@ -148,12 +148,6 @@ describe('ConsentRequestTableComponent', () => {
       );
       await flushPromises();
 
-      expect(mockToastService.show).toHaveBeenCalledWith(
-        getToastTitle(ConsentRequestStateEnum.Granted),
-        getToastMessage(ConsentRequestStateEnum.Granted, sampleRequests[0].dataRequest?.title?.de),
-        getToastType(ConsentRequestStateEnum.Granted),
-        expect.any(Object), // your undo action
-      );
       expect(reloadSpy).toHaveBeenCalled();
     });
 

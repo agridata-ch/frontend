@@ -2,7 +2,88 @@
   "consent-request-producer": {
     "pageTitle": "Demandes"
   },
+  "consent-request-table": {
+    "dataRequest": {
+      "consumerName": "Demandeur",
+      "title": "Demande de données",
+      "date": "Date de la demande",
+      "state": {
+        "title": "Statut",
+        "GRANTED": "Accordé",
+        "DECLINED": "Refusé",
+        "OPENED": "Ouvert"
+      }
+    },
+    "filter": {
+      "ALL": "Tous",
+      "OPENED": "Ouvert",
+      "DECLINED": "Refusé",
+      "GRANTED": "Accordé"
+    },
+    "tableActions": {
+      "title": "Actions",
+      "details": "Détails",
+      "consent": "Consentir",
+      "decline": "Refuser"
+    },
+    "error": "Erreur lors de la mise à jour de la demande. RequestId: {{requestId}}"
+  },
+  "consent-request-details": {
+    "title": "Vue détaillée",
+    "requestDate": "Demande du {{ date }}",
+    "purpose": {
+      "title": "But",
+      "description": "Les données suivantes seront transmises"
+    },
+    "privacySection": {
+      "consent": {
+        "title": "Consentement",
+        "description": "En donnant votre accord, vous autorisez la transmission des données de la liste de vos exploitations associées au demandeur {{ consumerName }}"
+      },
+      "dataProtection": {
+        "title": "Protection des données",
+        "description": "{{ consumerName }} est responsable du traitement conforme à la protection des données de ces informations. Contactez directement {{ consumerName }} si vous souhaitez que vos données soient supprimées."
+      },
+      "revocation": {
+        "title": "Possibilité de révocation",
+        "description": "Vous pouvez révoquer ou modifier votre consentement à tout moment"
+      }
+    },
+    "actions": {
+      "accept": "Consentir",
+      "reject": "Refuser"
+    },
+    "footerInformation": "Vous pouvez modifier votre consentement à tout moment.",
+    "dataRequest": {
+      "state": {
+        "GRANTED": "Accepté le {{ date }}",
+        "DECLINED": "Refusé le {{ date }}",
+        "OPENED": "Ouvert",
+        "UNKNOWN": "Inconnu"
+      }
+    }
+  },
+  "consent-request-toast": {
+    "title": {
+      "GRANTED": "Consentement accordé",
+      "DECLINED": "Consentement refusé",
+      "DEFAULT": "Demande mise à jour"
+    },
+    "message": {
+      "GRANTED": "Vous avez consenti avec succès à la demande {{ name }}.",
+      "DECLINED": "Vous avez refusé avec succès la demande {{ name }}.",
+      "DEFAULT": "La demande a été mise à jour."
+    },
+    "undo": "Annuler l'action"
+  },
   "navigation": {
-    "consent-requests": "Demandes"
+    "consentRequests": "Demandes"
+  },
+  "account": {
+    "login": "Se connecter",
+    "logout": "Se déconnecter"
+  },
+  "agridata-table": {
+    "actions": "Actions"
   }
 }

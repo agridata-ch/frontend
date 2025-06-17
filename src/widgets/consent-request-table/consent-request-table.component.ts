@@ -17,6 +17,7 @@ import {
   AgridataTableComponent,
   AgridataTableData,
   CellTemplateDirective,
+  SortDirections,
 } from '@/shared/ui/agridata-table';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ConsentRequestFilterComponent } from '@/widgets/consent-request-table/consent-request-filter/consent-request-filter.component';
@@ -48,6 +49,10 @@ export class ConsentRequestTableComponent {
   readonly banIcon = faBan;
   readonly BadgeSize = BadgeSize;
   readonly BadgeVariant = BadgeVariant;
+  readonly SortDirections = SortDirections;
+
+  readonly dataRequestTitleHeader = 'consent-request-table.dataRequest.title';
+  readonly dataRequestStateHeader = 'consent-request-table.dataRequest.state.title';
 
   readonly stateCodeFilter = signal<string | null>(null);
   readonly requests: Signal<AgridataTableData[]> = computed(() => {
@@ -57,16 +62,19 @@ export class ConsentRequestTableComponent {
       .map((request: ConsentRequestDto) => ({
         id: request.id,
         data: [
-          { header: 'Antragsteller', value: request.dataRequest?.dataConsumer?.name ?? '' },
           {
-            header: 'Datenantrag',
+            header: 'consent-request-table.dataRequest.consumerName',
+            value: request.dataRequest?.dataConsumer?.name ?? '',
+          },
+          {
+            header: this.dataRequestTitleHeader,
             value: this.i18nService.useObjectTranslation(request.dataRequest?.title),
           },
           {
-            header: 'Antragsdatum',
+            header: 'consent-request-table.dataRequest.date',
             value: request.requestDate ?? '',
           },
-          { header: 'Status', value: request.stateCode ?? '' },
+          { header: this.dataRequestStateHeader, value: request.stateCode ?? '' },
         ],
         highlighted: request.stateCode === ConsentRequestStateEnum.Opened,
         actions: this.getFilteredActions(request),
@@ -79,18 +87,23 @@ export class ConsentRequestTableComponent {
     return cell ? cell.value : '';
   }
 
+  getTranslatedStateValue(row: AgridataTableData, header: string) {
+    const value = this.getCellValue(row, header);
+    return this.i18nService.translate(`consent-request-table.dataRequest.state.${value}`);
+  }
+
   getFilteredActions = (request?: ConsentRequestDto): ActionDTO[] => {
     if (!request) return [];
     const requestTitle = this.i18nService.useObjectTranslation(request.dataRequest?.title);
     const details = {
       icon: this.eyeIcon,
-      label: 'Details',
+      label: 'consent-request-table.tableActions.details',
       callback: () => this.tableRowAction.emit(request),
     };
 
     const consent = {
       icon: this.checkIcon,
-      label: 'Einwilligen',
+      label: 'consent-request-table.tableActions.consent',
       callback: () =>
         this.updateConsentRequestState(request.id, ConsentRequestStateEnum.Granted, requestTitle),
       isMainAction: request.stateCode === ConsentRequestStateEnum.Opened,
@@ -98,7 +111,7 @@ export class ConsentRequestTableComponent {
 
     const decline = {
       icon: this.banIcon,
-      label: 'Ablehnen',
+      label: 'consent-request-table.tableActions.decline',
       callback: () =>
         this.updateConsentRequestState(request.id, ConsentRequestStateEnum.Declined, requestTitle),
     };
@@ -123,20 +136,23 @@ export class ConsentRequestTableComponent {
     this.consentRequestService
       .updateConsentRequestStatus(id, stateCode)
       .then(() => {
-        const toastTitle = getToastTitle(stateCode);
-        const toastMessage = getToastMessage(stateCode, requestName);
+        const toastTitle = this.i18nService.translate(getToastTitle(stateCode), {
+          name: requestName,
+        });
+        const toastMessage = this.i18nService.translate(getToastMessage(stateCode), {
+          name: requestName,
+        });
         const toastType = getToastType(stateCode);
         const undoAction = this.prepareUndoAction(id);
         this.toastService.show(toastTitle, toastMessage, toastType, undoAction);
         this.onReloadConsentRequests.emit();
       })
       .catch((error) => {
+        const errorMessage = this.i18nService.translate('consent-request-table.error', {
+          requestId: error.error?.requestId ?? '',
+        });
         console.log(error.error);
-        this.toastService.show(
-          error.error.message,
-          `Fehler beim Aktualisieren des Antrags. RequestId: ${error.error.requestId}`,
-          ToastType.Error,
-        );
+        this.toastService.show(error.error.message, errorMessage, ToastType.Error);
       });
   };
 
@@ -145,7 +161,7 @@ export class ConsentRequestTableComponent {
       (request) => request.id === id,
     )?.stateCode;
     return getUndoAction(() => {
-      this.toastService.show(getToastTitle(''), '');
+      this.toastService.show(this.i18nService.translate(getToastTitle('')), '');
       this.consentRequestService.updateConsentRequestStatus(id, previousStateCode!).then(() => {
         this.onReloadConsentRequests.emit();
       });
