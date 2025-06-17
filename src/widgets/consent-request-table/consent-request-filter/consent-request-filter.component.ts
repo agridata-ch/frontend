@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Output, computed, input, signal } from '@angular/core';
 
 import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
+import { I18nPipe } from '@/shared/i18n';
 
 @Component({
   selector: 'app-consent-request-filter',
-  imports: [],
+  imports: [I18nPipe],
   templateUrl: './consent-request-filter.component.html',
   styleUrl: './consent-request-filter.component.css',
 })
@@ -16,10 +17,19 @@ export class ConsentRequestFilterComponent {
 
   readonly consentRequestStateEnum = ConsentRequestStateEnum;
   readonly filterOptions = [
-    { label: 'Alle', value: null },
-    { label: 'Offen', value: this.consentRequestStateEnum.Opened },
-    { label: 'Abgelehnt', value: this.consentRequestStateEnum.Declined },
-    { label: 'Genehmigt', value: this.consentRequestStateEnum.Granted },
+    { label: 'consent-request-table.filter.ALL', value: null },
+    {
+      label: 'consent-request-table.filter.OPENED',
+      value: this.consentRequestStateEnum.Opened,
+    },
+    {
+      label: 'consent-request-table.filter.DECLINED',
+      value: this.consentRequestStateEnum.Declined,
+    },
+    {
+      label: 'consent-request-table.filter.GRANTED',
+      value: this.consentRequestStateEnum.Granted,
+    },
   ];
   readonly selectedValue = signal<string | null>(null);
   readonly totalOpenRequests = computed(() => {

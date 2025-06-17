@@ -24,7 +24,7 @@ export class NavigationWidgetComponent {
 
   readonly navigationItems = computed(() => [
     this.userRoles()?.includes('agridata.ch.Agridata_Einwilliger') && {
-      label: 'navigation.consent-requests',
+      label: 'navigation.consentRequests',
       icon: faFile,
       route: '/consent-requests',
     },

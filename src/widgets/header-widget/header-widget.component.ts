@@ -2,11 +2,12 @@ import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { LanguageSelectComponent } from '@/features/language-select/language-select.component';
+import { I18nPipe } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 
 @Component({
   selector: 'app-header-widget',
-  imports: [RouterLink, LanguageSelectComponent],
+  imports: [RouterLink, LanguageSelectComponent, I18nPipe],
   templateUrl: './header-widget.component.html',
   styleUrl: './header-widget.component.css',
 })

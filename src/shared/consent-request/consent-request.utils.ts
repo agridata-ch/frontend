@@ -4,22 +4,22 @@ import { ToastType } from '@/shared/toast';
 export function getToastTitle(stateCode: string) {
   switch (stateCode) {
     case ConsentRequestStateEnum.Granted:
-      return 'Einwilligung erteilt';
+      return 'consent-request-toast.title.GRANTED';
     case ConsentRequestStateEnum.Declined:
-      return 'Einwilligung abgelehnt';
+      return 'consent-request-toast.title.DECLINED';
     default:
-      return 'Antrag aktualisiert';
+      return 'consent-request-toast.title.DEFAULT';
   }
 }
 
-export function getToastMessage(stateCode: string, requestName?: string) {
+export function getToastMessage(stateCode: string) {
   switch (stateCode) {
     case ConsentRequestStateEnum.Granted:
-      return `Du hast den Antrag ${requestName ?? ''} erfolgreich eingewilligt.`;
+      return 'consent-request-toast.message.GRANTED';
     case ConsentRequestStateEnum.Declined:
-      return `Du hast den Antrag ${requestName ?? ''} erfolgreich abgelehnt.`;
+      return 'consent-request-toast.message.DECLINED';
     default:
-      return 'Der Antrag wurde aktualisiert.';
+      return 'consent-request-toast.message.DEFAULT';
   }
 }
 
@@ -36,7 +36,7 @@ export function getToastType(stateCode: string) {
 
 export function getUndoAction(undoAction: () => void) {
   return {
-    label: 'Aktion rückgängig machen',
+    label: 'consent-request-toast.undo',
     callback: undoAction,
   };
 }

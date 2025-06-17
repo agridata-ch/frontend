@@ -12,3 +12,8 @@ export type AgridataTableData = {
   rowAction?: () => void;
   id: string;
 };
+
+export enum SortDirections {
+  ASC = 'asc',
+  DESC = 'desc',
+}

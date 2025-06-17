@@ -25,7 +25,7 @@ export class I18nService {
   }
 
   translate(key: string, params?: Record<string, unknown>) {
-    return this.translocoService.translate(key, params, this.lang());
+    return this.translocoService.translate(key, params);
   }
 
   useObjectTranslation(obj: TranslationDto | undefined | null) {

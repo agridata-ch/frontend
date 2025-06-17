@@ -16,7 +16,6 @@ export const i18nConfig = {
   availableLangs,
   defaultLang,
   fallbackLang,
-  // Remove this option if your application doesn't support changing language in runtime.
   reRenderOnLangChange: true,
   prodMode: !isDevMode(),
   keysManager: {

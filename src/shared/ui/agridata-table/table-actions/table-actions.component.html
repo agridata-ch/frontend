@@ -6,7 +6,7 @@
       (click)="handleClick(mainAction()!)"
       class="agridata-button agridata-button-primary-accept"
     >
-      {{ mainAction()?.label }}
+      {{ mainAction()?.label | i18n }}
     </button>
   }
   <button
@@ -32,7 +32,7 @@
             @if (action.icon) {
               <fa-icon [icon]="action.icon" class="mr-2" />
             }
-            {{ action.label }}
+            {{ action.label | i18n }}
           </li>
         }
       </ul>

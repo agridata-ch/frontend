@@ -82,7 +82,7 @@ describe('I18nService', () => {
     const key = 'greeting';
     const params = { name: 'John' };
     const result = service.translate(key, params);
-    expect(mockTransloco.translate).toHaveBeenCalledWith(key, params, 'de');
+    expect(mockTransloco.translate).toHaveBeenCalledWith(key, params);
     expect(result).toBe('translated-value');
   });
 
