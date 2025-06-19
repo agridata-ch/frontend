@@ -2,6 +2,9 @@
   "consent-request-producer": {
     "pageTitle": "Demandes"
   },
+  "data-requests-consumer": {
+    "pageTitle": "Demande de données"
+  },
   "consent-request-table": {
     "dataRequest": {
       "consumerName": "Demandeur",
@@ -76,14 +79,15 @@
     },
     "undo": "Annuler l'action"
   },
-  "navigation": {
-    "consentRequests": "Demandes"
-  },
   "account": {
     "login": "Se connecter",
     "logout": "Se déconnecter"
   },
   "agridata-table": {
     "actions": "Actions"
+  },
+  "navigation": {
+    "open": "Navigation Ouverte",
+    "close": "Navigation Fermée"
   }
 }

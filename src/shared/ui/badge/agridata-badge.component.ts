@@ -1,7 +1,5 @@
 import { Component, Signal, computed, input } from '@angular/core';
 
-import { I18nPipe } from '@/shared/i18n';
-
 export enum BadgeVariant {
   DEFAULT = 'default',
   SUCCESS = 'success',
@@ -19,7 +17,7 @@ export enum BadgeSize {
 @Component({
   selector: 'app-agridata-badge',
   templateUrl: './agridata-badge.component.html',
-  imports: [I18nPipe],
+  imports: [],
 })
 export class AgridataBadgeComponent {
   readonly text = input<string>('');

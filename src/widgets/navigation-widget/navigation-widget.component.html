@@ -3,7 +3,7 @@
     <nav
       class="bg-white border-r border-agridata-stroke px-2 py-15 gap-2 h-full overflow-hidden transition-[width] duration-300 ease-in-out will-change-[width]"
       [class.w-20]="!isNavigationOpen()"
-      [class.w-48]="isNavigationOpen()"
+      [class.w-56]="isNavigationOpen()"
     >
       <ul class="flex flex-col gap-2">
         @for (navigationItem of navigationItems(); track navigationItem) {
@@ -15,8 +15,9 @@
               <a [routerLink]="navigationItem.route" class="w-full flex items-center px-6 py-6">
                 <fa-icon [icon]="navigationItem.icon" />
                 <span
-                  class="ml-3 transition-opacity duration-300 ease-in-out will-change-[opacity] opacity-0"
-                  [class.opacity-100]="isNavigationOpen()"
+                  class="absolute left-12 ml-3 w-fit transition-opacity duration-100 ease h-full max-h-[3em] flex items-center"
+                  [class.opacity-0]="!isNavigationOpen() || isAnimating()"
+                  [class.opacity-100]="!isAnimating() && isNavigationOpen()"
                 >
                   {{ navigationItem.label | i18n }}
                 </span>
@@ -29,9 +30,11 @@
     <button
       (click)="toggleNavigation()"
       class="absolute bottom-14 -right-3 w-6 h-6 border rounded-full bg-white hover:bg-agridata-background-page z-10"
-      aria-label="Toggle navigation"
+      [attr.aria-label]="
+        isNavigationOpen() ? ('navigation.open' | i18n) : ('navigation.close' | i18n)
+      "
     >
-      <fa-icon size="xs" [icon]="chevronIcon()" class="text-agridata-secondary-text"></fa-icon>
+      <fa-icon size="xs" [icon]="chevronIcon()" class="text-agridata-secondary-text" />
     </button>
   </div>
 }

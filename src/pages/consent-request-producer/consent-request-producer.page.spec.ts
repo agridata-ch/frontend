@@ -5,6 +5,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConsentRequestService } from '@/entities/api';
 import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 
 describe('ConsentRequestProducerPage - component behavior', () => {
   let fixture: ComponentFixture<ConsentRequestProducerPage>;
@@ -66,7 +67,9 @@ describe('ConsentRequestProducerPage - component behavior', () => {
 
     component.showConsentRequestDetails(req, true);
     expect(component.selectedRequest()).toBe(req);
-    expect(mockLocation.go).toHaveBeenCalledWith(`/consent-requests/${req.id}`);
+    expect(mockLocation.go).toHaveBeenCalledWith(
+      `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}${req.id}`,
+    );
   });
 
   it('showConsentRequestDetails does not call location.go when pushUrl=false', () => {
@@ -86,7 +89,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   it('showConsentRequestDetails calls location.go with empty id if called with undefined and pushUrl=true', () => {
     component.showConsentRequestDetails(undefined, true);
     expect(component.selectedRequest()).toBeNull();
-    expect(mockLocation.go).toHaveBeenCalledWith('/consent-requests/');
+    expect(mockLocation.go).toHaveBeenCalledWith(`${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`);
   });
 
   it('reloadConsentRequests calls consentRequestResult.reload', () => {
