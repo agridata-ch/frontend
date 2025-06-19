@@ -3,8 +3,10 @@ import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 
 import { DefaultLayoutComponent } from '@/app/layout';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
+import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
 import { LoginPage } from '@/pages/login';
 import { NotFoundPage } from '@/pages/not-found';
+import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
 
 import { LoginAuthGuard } from './guards/login.guard';
@@ -38,30 +40,36 @@ export const routes: Routes = [
     component: DefaultLayoutComponent,
     runGuardsAndResolvers: 'paramsChange',
     canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
-    data: { roles: ['agridata.ch.Agridata_Einwilliger'] },
+    data: { roles: [USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER] },
     children: [
       {
-        path: 'consent-requests',
+        path: ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
         component: ConsentRequestProducerPage,
       },
-      { path: 'consent-requests/:consentRequestId', component: ConsentRequestProducerPage },
+      {
+        path: `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/:consentRequestId`,
+        component: ConsentRequestProducerPage,
+      },
     ],
   },
-  // {
-  //   // consumer routes
-  //   path: '',
-  //   component: DefaultLayoutComponent,
-  //   runGuardsAndResolvers: 'paramsChange',
-  //   canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
-  //   data: { roles: ['agridata.ch.Agridata_Datenbezueger'] },
-  //   children: [
-  //     {
-  //       path: 'consent-requests',
-  //       component: ConsentRequestConsumerPage,
-  //     },
-  //     { path: 'consent-requests/:consentRequestId', component: ConsentRequestProducerPage },
-  //   ],
-  // },
+  {
+    // consumer routes
+    path: '',
+    component: DefaultLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
+    data: { roles: [USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER] },
+    children: [
+      {
+        path: ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH,
+        component: DataRequestsConsumerPage,
+      },
+      {
+        path: `${ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH}/:dataRequestId`,
+        component: DataRequestsConsumerPage,
+      },
+    ],
+  },
   // #### general routes ####
   {
     path: '',

@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
 
+import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
 
@@ -73,19 +74,18 @@ describe('NavigationWidgetComponent', () => {
   });
 
   describe('navigationItems', () => {
-    it('returns [false] when userRoles does not include the specific role', () => {
+    it('returns empty array when userRoles does not include the specific role', () => {
       mockAuthService.userRoles.mockReturnValue(['some.other.role']);
       createComponent();
 
       const items = component.navigationItems();
       expect(Array.isArray(items)).toBe(true);
-      expect(items.length).toBe(1);
-      expect(items[0]).toBe(false);
+      expect(items.length).toBe(0);
     });
 
     it('returns the navigation object when userRoles includes "agridata.ch.Agridata_Einwilliger"', () => {
       mockAuthService.userRoles.mockReturnValue([
-        'agridata.ch.Agridata_Einwilliger',
+        USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER,
         'another.role',
       ]);
       createComponent();
@@ -100,7 +100,7 @@ describe('NavigationWidgetComponent', () => {
         route: string;
       };
       expect(navItem).not.toBe(false);
-      expect(navItem.route).toBe('/consent-requests');
+      expect(navItem.route).toBe(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH);
     });
   });
 });

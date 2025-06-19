@@ -5,6 +5,7 @@ import { faFile } from '@fortawesome/free-regular-svg-icons';
 
 import { ConsentRequestService } from '@/entities/api';
 import { ConsentRequestDto } from '@/entities/openapi';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nDirective } from '@/shared/i18n';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
@@ -51,7 +52,7 @@ export class ConsentRequestProducerPage {
 
     // update the URL without triggering the router so the transition animation works
     if (pushUrl) {
-      this.browserLocation.go(`/consent-requests/${request?.id ?? ''}`);
+      this.browserLocation.go(`${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}${request?.id ?? ''}`);
     }
   };
 

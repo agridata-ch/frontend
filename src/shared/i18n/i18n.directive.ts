@@ -7,11 +7,7 @@ import { TranslocoDirective } from '@jsverse/transloco';
   hostDirectives: [
     {
       directive: TranslocoDirective,
-      inputs: [
-        'transloco      : i18n',
-        'translocoParams: i18nParams',
-        'translocoPrefix: i18nPrefix',
-      ],
+      inputs: ['transloco: i18n', 'translocoParams: i18nParams', 'translocoPrefix: i18nPrefix'],
     },
   ],
 })
