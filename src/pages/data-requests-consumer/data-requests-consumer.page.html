@@ -1,3 +1,7 @@
 <ng-container *i18n="let t; prefix: 'data-requests-consumer'">
-  <h2 class="mb-12"><fa-icon [icon]="icon" class="mr-3" />{{ t('pageTitle') }}</h2>
+  <div class="flex justify-between">
+    <h2 class="mb-12"><fa-icon [icon]="icon" class="mr-3" />{{ t('pageTitle') }}</h2>
+    <app-data-request-new />
+  </div>
 </ng-container>
+<div class="flex justify-end"></div>

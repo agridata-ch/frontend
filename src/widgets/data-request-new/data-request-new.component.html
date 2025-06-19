@@ -1,0 +1,63 @@
+<app-agridata-button
+  (onClick)="handleOpen()"
+  (keydown.enter)="handleOpen()"
+  [variant]="ButtonVariants.Primary"
+>
+  <fa-icon [icon]="buttonIcon" class="mr-2" />
+  <span>{{ 'data-request-new.createNew' | i18n }}</span>
+</app-agridata-button>
+<app-sidepanel
+  [title]="'data-request-new.sidePanelTitle' | i18n"
+  [isOpen]="showPanel()"
+  (onClose)="handleClose()"
+  [maxWidth]="'75%'"
+  [backgroundColor]="'#efefef'"
+>
+  <app-agridata-wizard [steps]="formControlSteps()" #wizard class="flex flex-col h-full">
+    <div class="relative flex-1 flex flex-col min-h-0">
+      <div class="flex flex-col grow overflow-y-auto gap-2 mb-14">
+        <span>content goes here</span>
+      </div>
+      <div
+        class="sticky bottom-0 flex justify-between px-6 py-4 pt-8 -mx-6 -mb-2 bg-linear-to-t from-white to transparent from-80%"
+      >
+        @if (wizard.currentStep() !== formControlSteps().length - 1) {
+          <app-agridata-button [variant]="ButtonVariants.Secondary" (onClick)="handleSave()">
+            {{ 'data-request-new.saveDraft' | i18n }}
+          </app-agridata-button>
+          <div class="flex gap-4">
+            <app-agridata-button
+              [variant]="ButtonVariants.Secondary"
+              (onClick)="wizard.previousStep()"
+              [disabled]="wizard.currentStep() === 0"
+            >
+              <fa-icon [icon]="previousIcon" class="mr-2" />
+              {{ 'data-request-new.previous' | i18n }}
+            </app-agridata-button>
+            <app-agridata-button (onClick)="wizard.nextStep()">
+              {{ 'data-request-new.next' | i18n }}
+              <fa-icon [icon]="nextIcon" class="ml-2" />
+            </app-agridata-button>
+          </div>
+        } @else {
+          <app-agridata-button
+            [variant]="ButtonVariants.Secondary"
+            (onClick)="wizard.previousStep()"
+            [disabled]="wizard.currentStep() === 0"
+          >
+            <fa-icon [icon]="previousIcon" class="mr-2" />
+            {{ 'data-request-new.previous' | i18n }}
+          </app-agridata-button>
+          <div class="flex gap-4">
+            <app-agridata-button (onClick)="handleSave()" [variant]="ButtonVariants.Secondary">
+              {{ 'data-request-new.saveDraft' | i18n }}
+            </app-agridata-button>
+            <app-agridata-button (onClick)="handleSaveAndComplete()">
+              {{ 'data-request-new.saveAndComplete' | i18n }}
+            </app-agridata-button>
+          </div>
+        }
+      </div>
+    </div>
+  </app-agridata-wizard>
+</app-sidepanel>

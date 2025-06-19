@@ -13,13 +13,13 @@
           <span>{{ toast.message }}</span>
         </div>
         @if (toast.undoAction) {
-          <button
-            class="ml-6 text-agridata-primary-600 font-semibold hover:underline"
-            (click)="handleUndoAction(toast)"
-            (keydown.enter)="handleUndoAction(toast)"
+          <app-agridata-button
+            class="ml-6"
+            [variant]="ButtonVariants.Link"
+            (onClick)="handleUndoAction(toast)"
           >
             {{ toast.undoAction.label | i18n }}
-          </button>
+          </app-agridata-button>
         }
       </div>
       <fa-icon

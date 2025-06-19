@@ -5,10 +5,11 @@ import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
 
 import { I18nPipe } from '@/shared/i18n';
 import { Toast, ToastService, ToastState, ToastType } from '@/shared/toast';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 @Component({
   selector: 'app-toast-container',
-  imports: [CommonModule, FontAwesomeModule, I18nPipe],
+  imports: [CommonModule, FontAwesomeModule, I18nPipe, ButtonComponent],
   templateUrl: './toast.component.html',
 })
 export class ToastComponent {
@@ -19,6 +20,7 @@ export class ToastComponent {
   readonly toasts = this.toastService.toasts;
   readonly ToastState = ToastState;
   readonly ToastType = ToastType;
+  readonly ButtonVariants = ButtonVariants;
 
   constructor() {
     effect(() => {

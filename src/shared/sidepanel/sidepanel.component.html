@@ -1,0 +1,35 @@
+@if (isOpen()) {
+  <div
+    class="absolute right-0 top-0 bottom-0 z-10 w-full bg-gray-900 opacity-20"
+    (click)="handleClose()"
+    (keydown.enter)="handleClose()"
+  ></div>
+}
+<div
+  class="absolute right-0 top-0 bottom-0 z-10 bg-white overflow-hidden backdrop-brightness-75 shadow-2xl transition-[width] duration-300 ease-in-out"
+  [class.w-0]="!isOpen()"
+  [class.w-full]="isOpen()"
+  [style.maxWidth]="maxWidth()"
+  [style.backgroundColor]="backgroundColor()"
+>
+  <div
+    class="flex flex-col gap-6 h-full py-2 px-6 transition-opacity duration-100 ease-in-out relative"
+    [class.opacity-0]="!isOpen()"
+    [class.opacity-100]="isOpen()"
+  >
+    <div class="flex items-center justify-between sticky top-0">
+      <span class="text-lg text-agridata-secondary-text font-semibold">
+        {{ title() }}
+      </span>
+      <fa-icon
+        size="3x"
+        [icon]="closeIcon"
+        class="text-agridata-primary-600 cursor-pointer hover:text-agridata-primary-500"
+        (click)="handleClose()"
+        (keydown.enter)="handleClose()"
+        tabindex="0"
+      />
+    </div>
+    <ng-content></ng-content>
+  </div>
+</div>

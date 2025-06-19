@@ -12,6 +12,7 @@ import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
 import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import { I18nPipe } from '@/shared/i18n';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 export interface ActionDTO {
   icon?: IconDefinition;
@@ -22,7 +23,7 @@ export interface ActionDTO {
 
 @Component({
   selector: 'app-table-actions',
-  imports: [FontAwesomeModule, ClickStopPropagationDirective, I18nPipe],
+  imports: [FontAwesomeModule, ClickStopPropagationDirective, I18nPipe, ButtonComponent],
   templateUrl: './table-actions.component.html',
   styleUrl: './table-actions.component.css',
 })
@@ -33,6 +34,7 @@ export class TableActionsComponent {
   readonly mainAction = computed(() => this.actions().find((action) => action.isMainAction));
   readonly isOpen = signal(false);
   readonly iconEllipsis = faEllipsisVertical;
+  readonly ButtonVariants = ButtonVariants;
 
   handleToggle() {
     this.isOpen.update((v) => !v);

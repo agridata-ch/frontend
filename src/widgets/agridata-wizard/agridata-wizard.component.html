@@ -1,0 +1,6 @@
+<app-agridata-wizard-stepper
+  [steps]="steps()"
+  [currentStep]="currentStep()"
+  (onStepChange)="handleChangeStep($event)"
+/>
+<ng-content></ng-content>

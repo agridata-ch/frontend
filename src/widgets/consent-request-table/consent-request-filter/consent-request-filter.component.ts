@@ -1,19 +1,21 @@
-import { Component, EventEmitter, Output, computed, input, signal } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 
 import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
 import { I18nPipe } from '@/shared/i18n';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 @Component({
   selector: 'app-consent-request-filter',
-  imports: [I18nPipe],
+  imports: [I18nPipe, ButtonComponent],
   templateUrl: './consent-request-filter.component.html',
   styleUrl: './consent-request-filter.component.css',
 })
 export class ConsentRequestFilterComponent {
   readonly requests = input.required<ConsentRequestDto[]>();
-  @Output() onClick = new EventEmitter<string | null>();
+  onClick = output<string | null>();
 
   readonly requestsSignal = signal<ConsentRequestDto[]>([]);
+  readonly ButtonVariants = ButtonVariants;
 
   readonly consentRequestStateEnum = ConsentRequestStateEnum;
   readonly filterOptions = [

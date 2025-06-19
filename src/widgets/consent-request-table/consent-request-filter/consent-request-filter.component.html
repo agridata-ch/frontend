@@ -1,12 +1,10 @@
 <div class="mb-4 flex justify-start gap-4">
   @for (filter of filterOptions; track filter) {
-    <button
-      (click)="handleClick(filter.value)"
-      (keydown.enter)="handleClick(filter.value)"
-      class="agridata-button agridata-button-secondary consent-filter-button {{
-        isSelected(filter.value) && 'selected'
-      }}"
-      tabindex="0"
+    <!-- normally you don't use ! for classes but here it's neccessary because of tailwind and angular -->
+    <app-agridata-button
+      [variant]="ButtonVariants.Filter"
+      (onClick)="handleClick(filter.value)"
+      [selected]="isSelected(filter.value)"
     >
       <span>
         {{ filter.label | i18n }}
@@ -18,6 +16,6 @@
           </span>
         }
       </span>
-    </button>
+    </app-agridata-button>
   }
 </div>
