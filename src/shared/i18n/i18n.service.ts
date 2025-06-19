@@ -1,4 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoService } from '@jsverse/transloco';
 
 import { TranslationDto } from '@/entities/openapi';
@@ -26,6 +27,10 @@ export class I18nService {
 
   translate(key: string, params?: Record<string, unknown>) {
     return this.translocoService.translate(key, params);
+  }
+
+  translateSignal(key: string, params?: Record<string, unknown>) {
+    return toSignal(this.translocoService.selectTranslate(key, params));
   }
 
   useObjectTranslation(obj: TranslationDto | undefined | null) {

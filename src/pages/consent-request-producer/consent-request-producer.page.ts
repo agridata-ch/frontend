@@ -52,7 +52,7 @@ export class ConsentRequestProducerPage {
 
     // update the URL without triggering the router so the transition animation works
     if (pushUrl) {
-      this.browserLocation.go(`${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}${request?.id ?? ''}`);
+      this.browserLocation.go(`${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${request?.id ?? ''}`);
     }
   };
 

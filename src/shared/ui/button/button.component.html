@@ -1,0 +1,11 @@
+<button
+  [type]="type()"
+  [disabled]="disabled()"
+  [tabindex]="tabindex()"
+  [attr.aria-label]="ariaLabel()"
+  (click)="handleClick($event)"
+  (keydown.enter)="handleClick($event)"
+  [class]="`agridata-button agridata-button-${variant()} w-full ${ selected() && 'selected'}`"
+>
+  <ng-content></ng-content>
+</button>

@@ -1,7 +1,4 @@
-<app-consent-request-filter
-  (onClick)="setStateCodeFilter($event)"
-  [requests]="consentRequests()"
-></app-consent-request-filter>
+<app-consent-request-filter (onClick)="setStateCodeFilter($event)" [requests]="consentRequests()" />
 <app-agridata-table
   [rawData]="requests()"
   [defaultSortColumn]="dataRequestStateHeader"

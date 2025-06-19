@@ -64,23 +64,23 @@
         Zeige {{ paginated().length }} von {{ sortedRows().length }} Einträgen
       </div>
       <div class="flex items-center">
-        <button
-          class="agridata-button agridata-button-secondary"
-          (click)="prevPage()"
+        <app-agridata-button
+          [variant]="ButtonVariants.Secondary"
+          (onClick)="prevPage()"
           [disabled]="currentPage() === 1"
         >
           <
-        </button>
+        </app-agridata-button>
         <span class="mx-2 text-sm text-slate-500">
           Seite {{ currentPage() }} von {{ totalPages() }}
         </span>
-        <button
-          class="agridata-button agridata-button-secondary"
-          (click)="nextPage()"
+        <app-agridata-button
+          [variant]="ButtonVariants.Secondary"
+          (onClick)="nextPage()"
           [disabled]="currentPage() === totalPages()"
         >
           >
-        </button>
+        </app-agridata-button>
       </div>
     </div>
   }

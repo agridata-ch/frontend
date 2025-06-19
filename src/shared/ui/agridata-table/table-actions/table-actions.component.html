@@ -1,24 +1,20 @@
 <div class="flex flex-row gap-4 justify-end">
   @if (mainAction()) {
-    <button
+    <app-agridata-button
       click-stop-propagation
-      type="button"
-      (click)="handleClick(mainAction()!)"
-      class="agridata-button agridata-button-primary-accept"
+      [variant]="ButtonVariants.PrimaryAccept"
+      (onClick)="handleClick(mainAction()!)"
     >
       {{ mainAction()?.label | i18n }}
-    </button>
+    </app-agridata-button>
   }
-  <button
+  <app-agridata-button
     click-stop-propagation
-    type="button"
-    (click)="handleToggle()"
-    [attr.aria-expanded]="isOpen()"
-    aria-haspopup="menu"
-    class="agridata-button agridata-button-secondary table-action-button"
+    [variant]="ButtonVariants.Icon"
+    (onClick)="handleToggle()"
   >
     <fa-icon [icon]="iconEllipsis" />
-  </button>
+  </app-agridata-button>
   @if (isOpen()) {
     <div class="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
       <ul>

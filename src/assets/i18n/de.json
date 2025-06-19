@@ -2,9 +2,6 @@
   "consent-request-producer": {
     "pageTitle": "Freigaben"
   },
-  "data-requests-consumer": {
-    "pageTitle": "Datenanträge"
-  },
   "consent-request-table": {
     "dataRequest": {
       "consumerName": "Antragsteller",
@@ -78,6 +75,25 @@
       "DEFAULT": "Der Antrag wurde aktualisiert."
     },
     "undo": "Aktion rückgängig machen"
+  },
+  "data-requests-consumer": {
+    "pageTitle": "Datenanträge"
+  },
+  "data-request-new": {
+    "createNew": "Neuer Antrag",
+    "sidePanelTitle": "Neuer Datenantrag erfassen",
+    "steps": {
+      "consumer": "Datenbezüger",
+      "dataRequest": "Datenanfrage",
+      "preview": "Vorschau",
+      "producer": "Datenanbieter",
+      "contract": "Vertrag",
+      "completion": "Abschluss"
+    },
+    "saveDraft": "Speichern",
+    "saveAndComplete": "Speichern und Einreichen",
+    "next": "Weiter",
+    "previous": "Zurück"
   },
   "account": {
     "login": "Anmelden",

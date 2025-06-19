@@ -68,7 +68,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     component.showConsentRequestDetails(req, true);
     expect(component.selectedRequest()).toBe(req);
     expect(mockLocation.go).toHaveBeenCalledWith(
-      `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}${req.id}`,
+      `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${req.id}`,
     );
   });
 
@@ -89,7 +89,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   it('showConsentRequestDetails calls location.go with empty id if called with undefined and pushUrl=true', () => {
     component.showConsentRequestDetails(undefined, true);
     expect(component.selectedRequest()).toBeNull();
-    expect(mockLocation.go).toHaveBeenCalledWith(`${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`);
+    expect(mockLocation.go).toHaveBeenCalledWith(`${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/`);
   });
 
   it('reloadConsentRequests calls consentRequestResult.reload', () => {

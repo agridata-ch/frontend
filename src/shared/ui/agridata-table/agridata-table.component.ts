@@ -6,6 +6,7 @@ import { compareAsc, compareDesc, isValid, parseISO } from 'date-fns';
 
 import { formatDate } from '@/shared/date';
 import { I18nPipe } from '@/shared/i18n';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 import { AgridataFlipRowDirective, CellTemplateDirective } from './agridata-table.directive';
 import { AgridataTableData, SortDirections } from './agridata-table.model';
@@ -19,6 +20,7 @@ import { TableActionsComponent } from './table-actions/table-actions.component';
     FontAwesomeModule,
     AgridataFlipRowDirective,
     I18nPipe,
+    ButtonComponent,
   ],
   templateUrl: './agridata-table.component.html',
 })
@@ -31,6 +33,7 @@ export class AgridataTableComponent {
     SortDirections.DESC,
   );
   readonly pageSize = input<number>(10);
+  readonly ButtonVariants = ButtonVariants;
 
   readonly cellTemplates = contentChildren(CellTemplateDirective);
 

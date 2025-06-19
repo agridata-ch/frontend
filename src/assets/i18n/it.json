@@ -2,9 +2,6 @@
   "consent-request-producer": {
     "pageTitle": "Richieste"
   },
-  "data-requests-consumer": {
-    "pageTitle": "Richiesta dati"
-  },
   "consent-request-table": {
     "dataRequest": {
       "consumerName": "Richiedente",
@@ -78,6 +75,25 @@
       "DEFAULT": "La richiesta è stata aggiornata."
     },
     "undo": "Annulla azione"
+  },
+  "data-requests-consumer": {
+    "pageTitle": "Richieste di dati"
+  },
+  "data-request-new": {
+    "createNew": "Nuova richiesta",
+    "sidePanelTitle": "Creare una nuova richiesta di dati",
+    "steps": {
+      "consumer": "Richiedente di dati",
+      "dataRequest": "Richiesta di dati",
+      "preview": "Anteprima",
+      "producer": "Fornitore di dati",
+      "contract": "Contratto",
+      "completion": "Completamento"
+    },
+    "saveDraft": "Salva bozza",
+    "saveAndComplete": "Salva e completa",
+    "next": "Avanti",
+    "previous": "Indietro"
   },
   "account": {
     "login": "Accedi",
