@@ -1,3 +1,9 @@
+## [1.0.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.12...v1.0.0-rc.13) (2025-06-19)
+
+### Features
+
+- **page:** new page data-requests ([ad4e2d1](https://github.com/agridata-ch/frontend/commit/ad4e2d1e0bdf4feaa7b4e4655a6ce76392864ee5)), closes [DIGIB2-486](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-486)
+
 ## [1.0.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.11...v1.0.0-rc.12) (2025-06-17)
 
 ### Features
