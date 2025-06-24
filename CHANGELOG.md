@@ -1,3 +1,9 @@
+## [1.0.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.13...v1.0.0-rc.14) (2025-06-24)
+
+### Features
+
+- **data-request:** add data-request-new component ([0a70384](https://github.com/agridata-ch/frontend/commit/0a70384f8050a52a781764892e3d975eb5f6e534)), closes [DIGIB2-208](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-208)
+
 ## [1.0.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.12...v1.0.0-rc.13) (2025-06-19)
 
 ### Features
