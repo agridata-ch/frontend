@@ -19,4 +19,14 @@ describe('DataRequestsConsumerPage - component behavior', () => {
   it('should create the component', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should handleOpen', () => {
+    component.handleOpen();
+    expect(component.showPanel()).toBe(true);
+  });
+
+  it('should handleClose', () => {
+    component.handleClose();
+    expect(component.showPanel()).toBe(false);
+  });
 });

@@ -1,0 +1,94 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "object",
+      "properties": {
+        "de": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 255
+        },
+        "fr": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 255
+        },
+        "it": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 255
+        }
+      },
+      "required": [
+        "de",
+        "fr",
+        "it"
+      ]
+    },
+    "description": {
+      "type": "object",
+      "properties": {
+        "de": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 1000
+        },
+        "fr": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 1000
+        },
+        "it": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "de",
+        "fr",
+        "it"
+      ]
+    },
+    "purpose": {
+      "type": "object",
+      "properties": {
+        "de": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 1000
+        },
+        "fr": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 1000
+        },
+        "it": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "de",
+        "fr",
+        "it"
+      ]
+    },
+    "products": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "minItems": 2
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "purpose",
+    "products"
+  ]
+}

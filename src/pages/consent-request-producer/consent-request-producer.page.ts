@@ -1,5 +1,5 @@
-import { Location } from '@angular/common';
 import { Component, effect, inject, input, resource, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
 
@@ -21,8 +21,8 @@ import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
   templateUrl: './consent-request-producer.page.html',
 })
 export class ConsentRequestProducerPage {
-  private readonly browserLocation = inject(Location);
   private readonly consentRequestService = inject(ConsentRequestService);
+  private readonly router = inject(Router);
 
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
@@ -43,17 +43,14 @@ export class ConsentRequestProducerPage {
         .value()
         .find((request) => request.id === this.consentRequestId());
 
-      this.showConsentRequestDetails(request, false);
+      this.showConsentRequestDetails(request);
     });
   }
 
-  showConsentRequestDetails = (request?: ConsentRequestDto, pushUrl: boolean = true) => {
+  showConsentRequestDetails = (request?: ConsentRequestDto) => {
     this.selectedRequest.set(request ?? null);
 
-    // update the URL without triggering the router so the transition animation works
-    if (pushUrl) {
-      this.browserLocation.go(`${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${request?.id ?? ''}`);
-    }
+    this.router.navigate([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, request?.id ?? '']);
   };
 
   reloadConsentRequests = () => {

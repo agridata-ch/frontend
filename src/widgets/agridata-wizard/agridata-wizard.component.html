@@ -2,5 +2,14 @@
   [steps]="steps()"
   [currentStep]="currentStep()"
   (onStepChange)="handleChangeStep($event)"
-/>
-<ng-content></ng-content>
+></app-agridata-wizard-stepper>
+
+<div class="overflow-y-auto flex flex-col gap-6 grow bg-white p-6 mb-14">
+  <ng-content select="[wizardContent]"></ng-content>
+</div>
+
+<div
+  class="absolute bottom-0 right-0 left-0 flex justify-between px-6 py-4 pt-6 -mx-6 -mb-2 bg-linear-to-t from-white to transparent from-90%"
+>
+  <ng-content select="[wizardFooter]"></ng-content>
+</div>

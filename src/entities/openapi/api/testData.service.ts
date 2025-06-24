@@ -47,6 +47,8 @@ export class TestDataService extends BaseService {
 
         let localVarHeaders = this.defaultHeaders;
 
+        // authentication (SecurityScheme) required
+
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
             'application/json'
         ]);

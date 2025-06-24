@@ -7,27 +7,36 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DataRequestPurposeDto } from './dataRequestPurposeDto';
 import { ConsentRequestDtoDataRequestDataConsumer } from './consentRequestDtoDataRequestDataConsumer';
-import { TranslationDto } from './translationDto';
+import { DataRequestTitleDto } from './dataRequestTitleDto';
+import { ConsentRequestDtoDataRequestStateCode } from './consentRequestDtoDataRequestStateCode';
+import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
+import { ConsentRequestDtoDataRequestProducts } from './consentRequestDtoDataRequestProducts';
 
 
 /**
  * Details of the underlying data request
  */
 export interface ConsentRequestDtoDataRequest { 
-    id: string;
+    id?: string;
     /**
      * Title of the data request
      */
-    title?: TranslationDto;
+    title?: DataRequestTitleDto;
     /**
      * Description of the data request 
      */
-    description?: TranslationDto;
+    description?: DataRequestDescriptionDto;
     /**
      * Purpose of the data request
      */
-    purpose?: TranslationDto;
+    purpose?: DataRequestPurposeDto;
     dataConsumer?: ConsentRequestDtoDataRequestDataConsumer;
+    products?: ConsentRequestDtoDataRequestProducts;
+    stateCode: ConsentRequestDtoDataRequestStateCode;
 }
+export namespace ConsentRequestDtoDataRequest {
+}
+
 

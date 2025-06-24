@@ -1,6 +1,6 @@
-import { Location } from '@angular/common';
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 
 import { ConsentRequestService } from '@/entities/api';
 import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
@@ -15,7 +15,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     fetchConsentRequests: jest.Mock<Promise<ConsentRequestDto[]>, []>;
     updateConsentRequestStatus: jest.Mock<Promise<void>, [string, string]>;
   };
-  let mockLocation: { go: jest.Mock<void, [string]> };
+  let mockRouter: { navigate: jest.Mock<void, [string[], { replaceUrl: boolean }]> };
 
   const sampleRequests: ConsentRequestDto[] = [
     {
@@ -43,15 +43,15 @@ describe('ConsentRequestProducerPage - component behavior', () => {
       fetchConsentRequests: jest.fn().mockResolvedValue(sampleRequests),
       updateConsentRequestStatus: jest.fn(),
     };
-    mockLocation = {
-      go: jest.fn(),
+    mockRouter = {
+      navigate: jest.fn(),
     };
 
     await TestBed.configureTestingModule({
       providers: [
         ConsentRequestProducerPage,
         { provide: ConsentRequestService, useValue: mockConsentService },
-        { provide: Location, useValue: mockLocation },
+        { provide: Router, useValue: mockRouter },
       ],
     }).compileComponents();
 
@@ -61,35 +61,22 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     fixture.detectChanges();
   });
 
-  it('showConsentRequestDetails sets selectedRequest and calls location.go when pushUrl=true', () => {
+  it('showConsentRequestDetails sets selectedRequest and calls router.navigate', () => {
     const req = sampleRequests[0];
     expect(component.selectedRequest()).toBeNull();
 
-    component.showConsentRequestDetails(req, true);
+    component.showConsentRequestDetails(req);
     expect(component.selectedRequest()).toBe(req);
-    expect(mockLocation.go).toHaveBeenCalledWith(
-      `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${req.id}`,
-    );
-  });
-
-  it('showConsentRequestDetails does not call location.go when pushUrl=false', () => {
-    const req = sampleRequests[1];
-    component.showConsentRequestDetails(req, false);
-    expect(component.selectedRequest()).toBe(req);
-    expect(mockLocation.go).not.toHaveBeenCalled();
+    expect(mockRouter.navigate).toHaveBeenCalledWith([
+      ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
+      req.id,
+    ]);
   });
 
   it('showConsentRequestDetails sets selectedRequest to null if called with undefined', () => {
     component.selectedRequest.set(sampleRequests[0]);
-    component.showConsentRequestDetails(undefined, false);
+    component.showConsentRequestDetails();
     expect(component.selectedRequest()).toBeNull();
-    expect(mockLocation.go).not.toHaveBeenCalled();
-  });
-
-  it('showConsentRequestDetails calls location.go with empty id if called with undefined and pushUrl=true', () => {
-    component.showConsentRequestDetails(undefined, true);
-    expect(component.selectedRequest()).toBeNull();
-    expect(mockLocation.go).toHaveBeenCalledWith(`${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/`);
   });
 
   it('reloadConsentRequests calls consentRequestResult.reload', () => {
@@ -114,7 +101,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
       const showSpy = jest.spyOn(component, 'showConsentRequestDetails');
       componentRef.setInput('consentRequestId', '2');
       fixture.detectChanges();
-      expect(showSpy).toHaveBeenCalledWith(sampleRequests[1], false);
+      expect(showSpy).toHaveBeenCalledWith(sampleRequests[1]);
     });
 
     it('does not call showConsentRequestDetails if consentRequestId is not set', () => {

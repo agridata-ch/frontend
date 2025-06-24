@@ -84,13 +84,72 @@
     "sidePanelTitle": "Inserire una nuova richiesta di dati",
     "steps": {
       "consumer": "Destinatario dei dati",
-      "dataRequest": "Richiesta di dati",
+      "request": "Richiesta di dati",
       "preview": "Anteprima",
       "producer": "Fornitore di dati",
       "contract": "Contratto",
       "completion": "Conclusione"
     },
-    "saveDraft": "Salva",
+    "form": {
+      "request": {
+        "headline": "Informazioni sulla richiesta di dati",
+        "provider": {
+          "label": "Fornitore di dati",
+          "sublabel": "Attualmente è disponibile solo un fornitore di dati. Altri fornitori vengono continuamente collegati."
+        },
+        "products": {
+          "label": "Quale prodotto di dati desiderate?",
+          "placeholder": "Seleziona i prodotti per i quali desideri richiedere dati."
+        },
+        "title": {
+          "label": "Nome della richiesta Richiesta di dati",
+          "sublabel": "Il nome viene visualizzato da tutti i produttori di dati nella loro lingua preferita quando decidono se condividere i vostri dati.",
+          "de": {
+            "label": "Nome della richiesta Richiesta di dati DE",
+            "placeholder": "Anfrage von [...] zum Bezug von [...]-Daten"
+          },
+          "fr": {
+            "label": "Nome della richiesta Richiesta di dati FR",
+            "placeholder": "Demande de [...] pour obtenir des données [...]"
+          },
+          "it": {
+            "label": "Nome della richiesta Richiesta di dati IT",
+            "placeholder": "Richiesta di [...] per ottenere [...] dati"
+          }
+        },
+        "description": {
+          "label": "Descrizione dell'applicazione",
+          "de": {
+            "label": "Descrizione dell'applicazione DE",
+            "placeholder": "Mit der Einwilligung zur Datenweitergabe an [...] vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
+          },
+          "fr": {
+            "label": "Descrizione dell'applicazione FR",
+            "placeholder": "En autorisant la transmission de données à [...], vous simplifiez votre travail quotidien, réduisez les saisies multiples de données et accélérez les processus."
+          },
+          "it": {
+            "label": "Descrizione dell'applicazione IT",
+            "placeholder": "Con il consenso all'inoltro dei dati a [...] si semplifica il lavoro quotidiano, si riducono gli inserimenti multipli di dati e si velocizzano i processi."
+          }
+        },
+        "purpose": {
+          "label": "Scopo dei dati",
+          "de": {
+            "label": "Scopo dei dati DE",
+            "placeholder": "[...] nutzt die angefragten Daten für ... (Beschreibung durch Datenbezüger). Die Daten werden (nicht) an Dritte weitergegeben. [...] verpflichtet sich, im Umgang mit den Daten geltende Vorschriften einzuhalten."
+          },
+          "fr": {
+            "label": "Scopo dei dati FR",
+            "placeholder": "[...] utilise les données demandées pour ... (description par le bénéficiaire des données). Les données sont (non) transmises à des tiers. [...] s'engage à respecter la réglementation en vigueur en matière de traitement des données."
+          },
+          "it": {
+            "label": "Scopo dei dati IT",
+            "placeholder": "[...] utilizza i dati richiesti per ... (descrizione del destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
+          }
+        }
+      }
+    },
+    "saveDraft": "Cache",
     "saveAndComplete": "Salva e invia",
     "next": "Avanti",
     "previous": "Indietro"
@@ -105,5 +164,14 @@
   "navigation": {
     "open": "Navigazione Aperta",
     "close": "Navigazione Chiusa"
+  },
+  "forms": {
+    "error": {
+      "required": "Questo campo è obbligatorio.",
+      "minlength": "Minimo {{min}} caratteri richiesti.",
+      "maxlength": "Massimo {{max}} caratteri consentiti.",
+      "minItems": "Minimo {{min}} elementi richiesti.",
+      "maxItems": "Massimo {{max}} elementi consentiti."
+    }
   }
 }

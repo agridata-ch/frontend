@@ -83,14 +83,73 @@
     "createNew": "Neuer Antrag",
     "sidePanelTitle": "Neuer Datenantrag erfassen",
     "steps": {
-      "consumer": "Datenbezüger",
-      "dataRequest": "Datenanfrage",
+      "consumer": "Bezüger",
+      "request": "Anfrage",
       "preview": "Vorschau",
-      "producer": "Datenanbieter",
+      "producer": "Produzent",
       "contract": "Vertrag",
       "completion": "Abschluss"
     },
-    "saveDraft": "Speichern",
+    "form": {
+      "request": {
+        "headline": "Angaben zum Datenbezug",
+        "provider": {
+          "label": "Datenanbieter",
+          "sublabel": "Aktuell stehen nur ein Datenabieter zur Verfügung. Es werden kontinuierlich weitere Anbieter angebunden."
+        },
+        "products": {
+          "label": "Welches Datenprodukt möchten Sie?",
+          "placeholder": "Wählen Sie die Produkte aus, für die Sie Daten anfordern möchten."
+        },
+        "title": {
+          "label": "Antragname Datenanfrage",
+          "sublabel": "Der Name wird allen Datenproduzenten in ihrer bevorzugten Sprache angezeigt, wenn sie über die Freigabe Ihrer Daten entscheiden. ",
+          "de": {
+            "label": "Antragname Datenanfrage DE",
+            "placeholder": "Anfrage von [...] zum Bezug von [...]-Daten"
+          },
+          "fr": {
+            "label": "Antragname Datenanfrage FR",
+            "placeholder": "Demande de [...] pour obtenir des données [...]"
+          },
+          "it": {
+            "label": "Antragname Datenanfrage IT",
+            "placeholder": "Richiesta di [...] per ottenere [...] dati"
+          }
+        },
+        "description": {
+          "label": "Beschreibung des Antrags",
+          "de": {
+            "label": "Beschreibung des Antrags DE",
+            "placeholder": "Mit der Einwilligung zur Datenweitergabe an [...] vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
+          },
+          "fr": {
+            "label": "Beschreibung des Antrags FR",
+            "placeholder": "En autorisant la transmission de données à [...], vous simplifiez votre travail quotidien, réduisez les saisies multiples de données et accélérez les processus."
+          },
+          "it": {
+            "label": "Beschreibung des Antrags IT",
+            "placeholder": "Con il consenso all'inoltro dei dati a [...] si semplifica il lavoro quotidiano, si riducono gli inserimenti multipli di dati e si velocizzano i processi."
+          }
+        },
+        "purpose": {
+          "label": "Nutzungszweck der Daten",
+          "de": {
+            "label": "Nutzungszweck der Daten DE",
+            "placeholder": "[...] nutzt die angefragten Daten für ... (Beschreibung durch Datenbezüger). Die Daten werden (nicht) an Dritte weitergegeben. [...] verpflichtet sich, im Umgang mit den Daten geltende Vorschriften einzuhalten."
+          },
+          "fr": {
+            "label": "Nutzungszweck der Daten FR",
+            "placeholder": "[...] utilise les données demandées pour ... (description par le bénéficiaire des données). Les données sont (non) transmises à des tiers. [...] s'engage à respecter la réglementation en vigueur en matière de traitement des données."
+          },
+          "it": {
+            "label": "Nutzungszweck der Daten IT",
+            "placeholder": "[...] utilizza i dati richiesti per ... (descrizione del destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
+          }
+        }
+      }
+    },
+    "saveDraft": "Zwischenspeichern",
     "saveAndComplete": "Speichern und Einreichen",
     "next": "Weiter",
     "previous": "Zurück"
@@ -105,5 +164,14 @@
   "navigation": {
     "open": "Navigation Öffnen",
     "close": "Navigation Schließen"
+  },
+  "forms": {
+    "error": {
+      "required": "Dieses Feld ist erforderlich.",
+      "minlength": "Mindestens {{min}} Zeichen erforderlich.",
+      "maxlength": "Maximal {{max}} Zeichen erlaubt.",
+      "minItems": "Mindestens {{min}} Einträge erforderlich.",
+      "maxItems": "Maximal {{max}} Einträge erlaubt."
+    }
   }
 }

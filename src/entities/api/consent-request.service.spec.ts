@@ -24,14 +24,22 @@ describe('ConsentRequestService', () => {
       {
         id: '1',
         dataProducerId: 'u1',
-        dataRequest: { id: '0', descriptionDe: 'D1' },
+        dataRequest: {
+          id: '0',
+          description: { de: 'D1' },
+          stateCode: 'DRAFT',
+        },
         requestDate: '2025-05-10',
         stateCode: 'OPENED',
       },
       {
         id: '2',
         dataProducerId: 'u2',
-        dataRequest: { id: '1', descriptionDe: 'D2' },
+        dataRequest: {
+          id: '1',
+          description: { de: 'D2' },
+          stateCode: 'DRAFT',
+        },
         requestDate: '2025-05-11',
         stateCode: 'DECLINED',
       },

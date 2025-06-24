@@ -1,0 +1,43 @@
+<div class="relative w-full">
+  <button
+    type="button"
+    class="w-full bg-white border border-gray-300 rounded-md px-5 py-3 text-left flex justify-between items-center"
+    (click)="toggleDropdown()"
+  >
+    @if (selectedOptions().length > 0) {
+      <div class="flex flex-wrap gap-2">
+        @for (option of selectedOptions(); track option) {
+          <span
+            (click)="onOptionToggle(option.value, $event)"
+            (keydown.enter)="onOptionToggle(option.value, $event)"
+            class="bg-gray-300 rounded-sm text-xs px-2 py-1 hover:bg-gray-400 hover:text-gray-100 group"
+          >
+            {{ option.label }}
+            <fa-icon [icon]="iconClose" class="ml-1 text-gray-500 group-hover:text-gray-100" />
+          </span>
+        }
+      </div>
+    } @else {
+      <span class="truncate">{{ displayText }}</span>
+    }
+    <fa-icon [icon]="dropdownIcon()" class="ml-2 text-gray-500" />
+  </button>
+
+  @if (isDropdownOpen()) {
+    <div
+      class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
+    >
+      @for (option of options(); track option.value) {
+        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
+          <input
+            type="checkbox"
+            [checked]="isSelected(option.value)"
+            (change)="onOptionToggle(option.value, $event)"
+            class="form-checkbox h-4 w-4 text-blue-600"
+          />
+          <span class="ml-2">{{ option.label }}</span>
+        </label>
+      }
+    </div>
+  }
+</div>

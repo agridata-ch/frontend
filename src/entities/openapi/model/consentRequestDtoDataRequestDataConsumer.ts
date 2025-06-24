@@ -13,6 +13,7 @@
  * Details of the data consumer making the request
  */
 export interface ConsentRequestDtoDataRequestDataConsumer { 
+    id?: string;
     /**
      * Name of the data consumer organization or individual
      */

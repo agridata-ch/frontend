@@ -24,6 +24,9 @@ export interface ConsentRequestDto {
      * Current state of the consent request
      */
     stateCode?: ConsentRequestStateEnum;
+    /**
+     * Date and time when the state was changed last
+     */
     lastStateChangeDate?: string;
     requestDate?: string;
     dataRequest?: ConsentRequestDtoDataRequest;
