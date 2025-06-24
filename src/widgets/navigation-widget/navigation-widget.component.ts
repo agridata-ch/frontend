@@ -8,18 +8,15 @@ import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { I18nPipe } from '@/shared/i18n/i18n.pipe';
 import { AuthService } from '@/shared/lib/auth';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 @Component({
   selector: 'app-navigation-widget',
-  imports: [RouterLink, RouterLinkActive, FontAwesomeModule, I18nPipe, ButtonComponent],
+  imports: [RouterLink, RouterLinkActive, FontAwesomeModule, I18nPipe],
   templateUrl: './navigation-widget.component.html',
 })
 export class NavigationWidgetComponent {
   private readonly authService = inject(AuthService);
   readonly i18nService = inject(I18nService);
-
-  readonly ButtonVariants = ButtonVariants;
 
   readonly isNavigationOpen = signal(false);
   readonly chevronIcon = computed(() => (this.isNavigationOpen() ? faChevronLeft : faChevronRight));

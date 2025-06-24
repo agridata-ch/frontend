@@ -5,6 +5,7 @@ api.module.ts
 api/agisTestController.service.ts
 api/api.ts
 api/consentRequests.service.ts
+api/dataProducts.service.ts
 api/dataRequests.service.ts
 api/infoResource.service.ts
 api/testData.service.ts
@@ -16,9 +17,17 @@ model/agisSearchParameters.ts
 model/consentRequestDto.ts
 model/consentRequestDtoDataRequest.ts
 model/consentRequestDtoDataRequestDataConsumer.ts
+model/consentRequestDtoDataRequestProducts.ts
+model/consentRequestDtoDataRequestStateCode.ts
 model/consentRequestStateEnum.ts
 model/dataConsumerDto.ts
+model/dataProductDto.ts
+model/dataRequestDescriptionDto.ts
 model/dataRequestDto.ts
+model/dataRequestPurposeDto.ts
+model/dataRequestTitleDto.ts
+model/dataRequestUpdateDto.ts
+model/dataSourceSystemEnum.ts
 model/exceptionDto.ts
 model/exceptionEnum.ts
 model/models.ts

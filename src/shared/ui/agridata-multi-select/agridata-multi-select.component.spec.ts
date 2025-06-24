@@ -1,0 +1,119 @@
+import { ComponentRef } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { AgridataMultiSelectComponent } from './agridata-multi-select.component';
+
+describe('AgridataMultiSelectComponent', () => {
+  let fixture: ComponentFixture<AgridataMultiSelectComponent>;
+  let component: AgridataMultiSelectComponent;
+  let componentRef: ComponentRef<AgridataMultiSelectComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [AgridataMultiSelectComponent, ReactiveFormsModule, FontAwesomeModule],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(AgridataMultiSelectComponent);
+    component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should toggle the dropdown open and closed', () => {
+    expect(component.isDropdownOpen()).toBe(false);
+
+    component.toggleDropdown();
+    expect(component.isDropdownOpen()).toBe(true);
+
+    component.toggleDropdown();
+    expect(component.isDropdownOpen()).toBe(false);
+  });
+
+  it('should set the options and placeholder inputs', () => {
+    const options = [
+      { value: '1', label: 'Option 1' },
+      { value: '2', label: 'Option 2' },
+    ];
+    const placeholder = 'Select options';
+
+    componentRef.setInput('options', options);
+    componentRef.setInput('placeholder', placeholder);
+
+    expect(component.options()).toEqual(options);
+    expect(component.placeholder()).toBe(placeholder);
+  });
+
+  it('should display the selected options as a comma-separated string', () => {
+    const options = [
+      { value: '1', label: 'Option 1' },
+      { value: '2', label: 'Option 2' },
+    ];
+    const control = new FormControl(['1']);
+
+    componentRef.setInput('options', options);
+    componentRef.setInput('control', control);
+
+    expect(component.displayText).toBe('Option 1');
+  });
+
+  it('should handle selecting and deselecting options', () => {
+    const options = [
+      { value: '1', label: 'Option 1' },
+      { value: '2', label: 'Option 2' },
+    ];
+    const control = new FormControl([]);
+
+    componentRef.setInput('options', options);
+    componentRef.setInput('control', control);
+
+    // Select an option
+    const event = { target: { checked: true }, stopPropagation: () => {} } as unknown as Event;
+    component.onOptionToggle('1', event);
+    expect(control.value).toEqual(['1']);
+    expect(component.selectedOptions()).toEqual([{ value: '1', label: 'Option 1' }]);
+
+    // Deselect the option
+    const eventDeselect = {
+      target: { checked: false },
+      stopPropagation: () => {},
+    } as unknown as Event;
+    component.onOptionToggle('1', eventDeselect);
+    expect(control.value).toEqual([]);
+    expect(component.selectedOptions()).toEqual([]);
+  });
+
+  it('should correctly determine if an option is selected', () => {
+    const options = [
+      { value: '1', label: 'Option 1' },
+      { value: '2', label: 'Option 2' },
+    ];
+    const control = new FormControl(['1']);
+
+    componentRef.setInput('options', options);
+    componentRef.setInput('control', control);
+
+    expect(component.isSelected('1')).toBe(true);
+    expect(component.isSelected('2')).toBe(false);
+  });
+
+  describe('click outside behavior', () => {
+    it('should close the dropdown when clicking outside', () => {
+      component.isDropdownOpen.set(true);
+      const outside = document.createElement('div');
+      component.onClickOutside(outside);
+      expect(component.isDropdownOpen()).toBeFalsy();
+    });
+
+    it('should not close when clicking inside host element', () => {
+      component.isDropdownOpen.set(true);
+      const hostElement: HTMLElement = fixture.nativeElement;
+      component.onClickOutside(hostElement);
+      expect(component.isDropdownOpen()).toBeTruthy();
+    });
+  });
+});

@@ -13,6 +13,7 @@
  * Details of the data consumer making the request
  */
 export interface DataConsumerDto { 
+    id?: string;
     /**
      * Name of the data consumer organization or individual
      */

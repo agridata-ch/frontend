@@ -1,0 +1,40 @@
+<div class="flex flex-col">
+  <label [for]="id()" class="mb-2 font-medium leading-[130%]" [class.text-red-500]="hasError()">{{
+    label()
+  }}</label>
+  @if (controlType() === ControlTypes.INPUT) {
+    <input
+      [id]="id()"
+      [name]="id()"
+      [formControl]="control()!"
+      [type]="type()"
+      [placeholder]="placeholder()"
+      (blur)="onBlur.emit()"
+      class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400"
+      [class.border-red-500]="hasError()"
+    />
+  }
+  @if (controlType() === ControlTypes.MULTI_SELECT) {
+    <app-agridata-multi-select
+      [control]="control()!"
+      [options]="options()"
+      [placeholder]="placeholder()"
+    />
+  }
+  @if (controlType() === ControlTypes.TEXT_AREA) {
+    <textarea
+      [id]="id()"
+      [name]="id()"
+      [formControl]="control()!"
+      [placeholder]="placeholder()"
+      (blur)="onBlur.emit()"
+      class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 h-[120px]"
+      [class.border-red-500]="hasError()"
+    ></textarea>
+  }
+  <span class="min-h-[1.5em] text-red-500 block">
+    @if (hasError()) {
+      <span class="text-sm">{{ errorMessage() }}</span>
+    }
+  </span>
+</div>

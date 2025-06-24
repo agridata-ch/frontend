@@ -23,3 +23,14 @@
   border-color: var(--color-agridata-secondary-600);
   color: white;
 }
+
+.step-bubble.invalid {
+  border-color: var(--color-red-500);
+  background-color: var(--color-red-500);
+  color: white;
+}
+
+.step-bubble.active.invalid {
+  background-color: white;
+  color: var(--color-agridata-secondary-text);
+}

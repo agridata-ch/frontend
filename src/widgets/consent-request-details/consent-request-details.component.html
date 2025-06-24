@@ -1,10 +1,10 @@
-@if (showDetails()) {
-  <app-sidepanel
-    [isOpen]="showDetails()"
-    (onClose)="handleCloseDetails()"
-    [title]="'consent-request-details.title' | i18n"
-    maxWidth="650px"
-  >
+<app-sidepanel
+  [isOpen]="showDetails()"
+  (onClose)="handleCloseDetails()"
+  [title]="'consent-request-details.title' | i18n"
+  maxWidth="650px"
+>
+  @if (showDetails()) {
     <div class="overflow-y-auto flex flex-col gap-6 grow">
       <div>
         <span class="text-agridata-tertiary-text text-sm font-normal">
@@ -78,5 +78,5 @@
         {{ 'consent-request-details.footerInformation' | i18n }}
       </span>
     </div>
-  </app-sidepanel>
-}
+  }
+</app-sidepanel>
