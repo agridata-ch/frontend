@@ -80,20 +80,20 @@
     "pageTitle": "Demandes de données"
   },
   "data-request-new": {
-    "createNew": "Nouvelle demande",
-    "sidePanelTitle": "Créer une nouvelle demande de données",
+    "createNew": "Nouvelle demande de données",
+    "sidePanelTitle": "Saisir une nouvelle demande de données",
     "steps": {
-      "consumer": "Demandeur de données",
+      "consumer": "Bénéficiaire des données",
       "dataRequest": "Demande de données",
       "preview": "Aperçu",
       "producer": "Fournisseur de données",
       "contract": "Contrat",
-      "completion": "Achèvement"
+      "completion": "Conclusion"
     },
-    "saveDraft": "Enregistrer le brouillon",
+    "saveDraft": "Enregistrer",
     "saveAndComplete": "Enregistrer et soumettre",
     "next": "Suivant",
-    "previous": "Précédent"
+    "previous": "Retour"
   },
   "account": {
     "login": "Se connecter",
