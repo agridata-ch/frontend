@@ -1,3 +1,9 @@
+## [1.0.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.15...v1.0.0-rc.16) (2025-07-08)
+
+### Bug Fixes
+
+- **api:** adapt new structure of api ([0b017fe](https://github.com/agridata-ch/frontend/commit/0b017fef2c13c8f5327bd1ff21eca2faf35ae8c0)), closes [DIGIB2-237](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-237)
+
 ## [1.0.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.14...v1.0.0-rc.15) (2025-07-04)
 
 ### Features
