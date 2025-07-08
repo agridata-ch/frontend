@@ -29,6 +29,26 @@ export interface DataRequestUpdateDto {
      */
     purpose?: DataRequestPurposeDto;
     /**
+     * Shorter name of the data consumer defined by the data consumer used when displaying the request to the producer
+     */
+    dataConsumerDisplayName?: string;
+    /**
+     * City of the data consumer
+     */
+    dataConsumerCity?: string;
+    /**
+     * Zip code of the data consumer
+     */
+    dataConsumerZip?: string;
+    /**
+     * Street of the data consumer
+     */
+    dataConsumerStreet?: string;
+    /**
+     * 2 letter country code of the data consumer
+     */
+    dataConsumerCountry?: string;
+    /**
      * List of data products requested
      */
     products?: Array<string>;

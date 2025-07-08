@@ -9,6 +9,7 @@ api/dataProducts.service.ts
 api/dataRequests.service.ts
 api/infoResource.service.ts
 api/testData.service.ts
+api/uidRegisterSearch.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -16,7 +17,6 @@ index.ts
 model/agisSearchParameters.ts
 model/consentRequestDto.ts
 model/consentRequestDtoDataRequest.ts
-model/consentRequestDtoDataRequestDataConsumer.ts
 model/consentRequestDtoDataRequestProducts.ts
 model/consentRequestDtoDataRequestStateCode.ts
 model/consentRequestStateEnum.ts
@@ -33,5 +33,7 @@ model/exceptionEnum.ts
 model/models.ts
 model/personSearchParameter.ts
 model/translationDto.ts
+model/uidRegisterAddressDto.ts
+model/uidRegisterOrganisationDto.ts
 param.ts
 variables.ts

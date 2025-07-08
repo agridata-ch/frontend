@@ -30,6 +30,14 @@ h6 {
 /* Your “default” h2 style */
 h2 {
   font-size: 1.5rem; /* ~24px at base 16px font */
+  color: var(--color-agridata-primary-text);
+}
+
+h4 {
+  font-weight: 700;
+  font-size: 1.125rem; /* ~18px at base 16px font */
+  line-height: 130%;
+  color: var(--color-agridata-primary-text);
 }
 
 button {
@@ -38,6 +46,8 @@ button {
   outline-offset: 0.125rem;
 }
 
-input {
+input,
+textarea,
+select {
   outline-color: var(--color-gray-900);
 }

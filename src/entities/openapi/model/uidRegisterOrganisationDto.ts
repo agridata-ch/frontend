@@ -7,16 +7,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UidRegisterAddressDto } from './uidRegisterAddressDto';
 
 
-/**
- * Data transfer object representing the consumer of requested data
- */
-export interface DataConsumerDto { 
-    id?: string;
-    /**
-     * Name of the data consumer organization or individual
-     */
+export interface UidRegisterOrganisationDto { 
     name?: string;
+    legalName?: string;
+    uid?: number;
+    address?: UidRegisterAddressDto;
 }
 

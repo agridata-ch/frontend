@@ -1,7 +1,6 @@
 export * from './agisSearchParameters';
 export * from './consentRequestDto';
 export * from './consentRequestDtoDataRequest';
-export * from './consentRequestDtoDataRequestDataConsumer';
 export * from './consentRequestDtoDataRequestProducts';
 export * from './consentRequestDtoDataRequestStateCode';
 export * from './consentRequestStateEnum';
@@ -17,3 +16,5 @@ export * from './exceptionDto';
 export * from './exceptionEnum';
 export * from './personSearchParameter';
 export * from './translationDto';
+export * from './uidRegisterAddressDto';
+export * from './uidRegisterOrganisationDto';

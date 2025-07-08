@@ -56,7 +56,7 @@ export class ConsentRequestDetailsComponent {
   readonly formattedLastStateChangeDate = computed(() =>
     formatDate(this.request()?.lastStateChangeDate),
   );
-  readonly dataConsumerName = computed(() => this.request()?.dataRequest?.dataConsumer?.name);
+  readonly dataConsumerName = computed(() => this.request()?.dataRequest?.dataConsumerDisplayName);
   readonly requestTitle = computed(() =>
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.title),
   );

@@ -22,15 +22,13 @@
     />
   }
   @if (controlType() === ControlTypes.TEXT_AREA) {
-    <textarea
-      [id]="id()"
-      [name]="id()"
-      [formControl]="control()!"
+    <app-agridata-textarea
+      [control]="control()!"
+      [id]="id()!"
       [placeholder]="placeholder()"
-      (blur)="onBlur.emit()"
-      class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 h-[120px]"
-      [class.border-red-500]="hasError()"
-    ></textarea>
+      (onBlur)="onBlur.emit()"
+      [maxCharacters]="getMaxCharacters()"
+    />
   }
   <span class="min-h-[1.5em] text-red-500 block">
     @if (hasError()) {

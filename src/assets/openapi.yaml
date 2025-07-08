@@ -1,3 +1,4 @@
+---
 openapi: 3.1.0
 components:
   schemas:
@@ -56,8 +57,6 @@ components:
             title:
               $ref: "#/components/schemas/DataRequestTitleDto"
               type: object
-              examples:
-              - Anfrage zu Bodentypen und Bodenqualitaetsdaten
               description: Title of the data request
             description:
               $ref: "#/components/schemas/DataRequestDescriptionDto"
@@ -66,24 +65,7 @@ components:
             purpose:
               $ref: "#/components/schemas/DataRequestPurposeDto"
               type: object
-              examples:
-              - Bewertung der Bodenqualität
               description: Purpose of the data request
-            dataConsumer:
-              type: object
-              description: Details of the data consumer making the request
-              properties:
-                id:
-                  $ref: "#/components/schemas/UUID"
-                  type: string
-                  examples:
-                  - a4479dd8-1c59-496a-a7ee-75be69bc1f7f
-                  description: id of the data consumer organization or individual
-                name:
-                  type: string
-                  examples:
-                  - LabelOrganisation A
-                  description: Name of the data consumer organization or individual
             products:
               type: object
               required:
@@ -120,6 +102,49 @@ components:
               - DRAFT
               - SUBMITTED
               description: State of the data request
+            dataConsumerLegalName:
+              type: string
+              examples:
+              - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
+              maxLength: 255
+              description: LegalName of the data consumer taken from the uid register
+            dataConsumerDisplayName:
+              type: string
+              examples:
+              - Bio Suisse
+              maxLength: 255
+              description: Shorter name of the data consumer defined by the data consumer
+                used when displaying the request to the producer
+            dataConsumerUid:
+              type: integer
+              examples:
+              - 106506215
+              description: Uid of the data consumer
+              maximum: 16
+            dataConsumerCity:
+              type: string
+              examples:
+              - Basel
+              maxLength: 120
+              description: City of the data consumer
+            dataConsumerZip:
+              type: string
+              examples:
+              - "4052"
+              maxLength: 10
+              description: Zip code of the data consumer
+            dataConsumerStreet:
+              type: string
+              examples:
+              - Peter Merian-Str. 34
+              maxLength: 255
+              description: Street of the data consumer
+            dataConsumerCountry:
+              type: string
+              examples:
+              - CH
+              maxLength: 2
+              description: 2 letter country code of the data consumer
     ConsentRequestStateEnum:
       type: string
       enum:
@@ -129,7 +154,7 @@ components:
       description: Possible states of a consent request
     DataConsumerDto:
       type: object
-      description: Details of the data consumer making the request
+      description: Data transfer object representing the consumer of requested data
       properties:
         id:
           $ref: "#/components/schemas/UUID"
@@ -208,8 +233,6 @@ components:
         title:
           $ref: "#/components/schemas/DataRequestTitleDto"
           type: object
-          examples:
-          - Anfrage zu Bodentypen und Bodenqualitaetsdaten
           description: Title of the data request
         description:
           $ref: "#/components/schemas/DataRequestDescriptionDto"
@@ -218,24 +241,7 @@ components:
         purpose:
           $ref: "#/components/schemas/DataRequestPurposeDto"
           type: object
-          examples:
-          - Bewertung der Bodenqualität
           description: Purpose of the data request
-        dataConsumer:
-          type: object
-          description: Details of the data consumer making the request
-          properties:
-            id:
-              $ref: "#/components/schemas/UUID"
-              type: string
-              examples:
-              - a4479dd8-1c59-496a-a7ee-75be69bc1f7f
-              description: id of the data consumer organization or individual
-            name:
-              type: string
-              examples:
-              - LabelOrganisation A
-              description: Name of the data consumer organization or individual
         products:
           type: object
           required:
@@ -272,6 +278,49 @@ components:
           - DRAFT
           - SUBMITTED
           description: State of the data request
+        dataConsumerLegalName:
+          type: string
+          examples:
+          - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
+          maxLength: 255
+          description: LegalName of the data consumer taken from the uid register
+        dataConsumerDisplayName:
+          type: string
+          examples:
+          - Bio Suisse
+          maxLength: 255
+          description: Shorter name of the data consumer defined by the data consumer
+            used when displaying the request to the producer
+        dataConsumerUid:
+          type: integer
+          examples:
+          - 106506215
+          description: Uid of the data consumer
+          maximum: 16
+        dataConsumerCity:
+          type: string
+          examples:
+          - Basel
+          maxLength: 120
+          description: City of the data consumer
+        dataConsumerZip:
+          type: string
+          examples:
+          - "4052"
+          maxLength: 10
+          description: Zip code of the data consumer
+        dataConsumerStreet:
+          type: string
+          examples:
+          - Peter Merian-Str. 34
+          maxLength: 255
+          description: Street of the data consumer
+        dataConsumerCountry:
+          type: string
+          examples:
+          - CH
+          maxLength: 2
+          description: 2 letter country code of the data consumer
     DataRequestPurposeDto:
       type: object
       properties:
@@ -318,6 +367,42 @@ components:
           $ref: "#/components/schemas/DataRequestPurposeDto"
           type: object
           description: Purpose of the data request
+        dataConsumerDisplayName:
+          type: string
+          minLength: 3
+          examples:
+          - Bio Suisse
+          maxLength: 255
+          description: Shorter name of the data consumer defined by the data consumer
+            used when displaying the request to the producer
+        dataConsumerCity:
+          type: string
+          minLength: 2
+          examples:
+          - Basel
+          maxLength: 120
+          description: City of the data consumer
+        dataConsumerZip:
+          type: string
+          minLength: 4
+          examples:
+          - "4052"
+          maxLength: 10
+          description: Zip code of the data consumer
+        dataConsumerStreet:
+          type: string
+          minLength: 2
+          examples:
+          - Peter Merian-Str. 34
+          maxLength: 120
+          description: Street of the data consumer
+        dataConsumerCountry:
+          type: string
+          minLength: 2
+          examples:
+          - CH
+          maxLength: 2
+          description: 2 letter country code of the data consumer
         products:
           type: array
           examples:
@@ -346,6 +431,7 @@ components:
       type: string
       enum:
       - GENERIC
+      - UID_MISSING
     LocalDate:
       type: string
       format: date
@@ -379,6 +465,28 @@ components:
       type: string
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+    UidRegisterAddressDto:
+      type: object
+      properties:
+        street:
+          type: string
+        zip:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+    UidRegisterOrganisationDto:
+      type: object
+      properties:
+        name:
+          type: string
+        legalName:
+          type: string
+        uid:
+          type: integer
+        address:
+          $ref: "#/components/schemas/UidRegisterAddressDto"
   securitySchemes:
     SecurityScheme:
       type: openIdConnect
@@ -396,6 +504,8 @@ tags:
   description: "Handles creation, retrieval, and updates of data products by the data\
     \ producer"
 - name: Test Data
+- name: Uid register search
+  description: Enables searching for organisations in the UID register
 paths:
   /api/agis/v1/data-requests:
     post:
@@ -783,6 +893,76 @@ paths:
       summary: Reset Test Data
       security:
       - SecurityScheme: []
+  /api/uid-register/v1/search:
+    get:
+      operationId: getByUidOfCurrentUser
+      tags:
+      - Uid register search
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UidRegisterOrganisationDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get By Uid Of Current User
+      security:
+      - SecurityScheme: []
+  /api/uid-register/v1/search/{uid}:
+    get:
+      operationId: getByUid
+      tags:
+      - Uid register search
+      parameters:
+      - description: UID of the organisation
+        example: 106506215
+        required: true
+        name: uid
+        in: path
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UidRegisterOrganisationDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get By Uid
+      security:
+      - SecurityScheme: []
   /q/info:
     get:
       responses:
@@ -835,5 +1015,5 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.0.0-rc.33
+  version: 1.0.0-rc.38
   description: This API handles data and consent requests for agridata.ch.

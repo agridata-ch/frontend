@@ -10,4 +10,6 @@ export * from './infoResource.service';
 import { InfoResourceService } from './infoResource.service';
 export * from './testData.service';
 import { TestDataService } from './testData.service';
-export const APIS = [AgisTestControllerService, ConsentRequestsService, DataProductsService, DataRequestsService, InfoResourceService, TestDataService];
+export * from './uidRegisterSearch.service';
+import { UidRegisterSearchService } from './uidRegisterSearch.service';
+export const APIS = [AgisTestControllerService, ConsentRequestsService, DataProductsService, DataRequestsService, InfoResourceService, TestDataService, UidRegisterSearchService];

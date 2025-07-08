@@ -2,7 +2,7 @@
 
 This API handles data and consent requests for agridata.ch.
 
-The version of the OpenAPI document: 1.0.0-rc.33
+The version of the OpenAPI document: 1.0.0-rc.38
 
 ## Building
 

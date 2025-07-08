@@ -8,7 +8,6 @@
  * Do not edit the class manually.
  */
 import { DataRequestPurposeDto } from './dataRequestPurposeDto';
-import { ConsentRequestDtoDataRequestDataConsumer } from './consentRequestDtoDataRequestDataConsumer';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { ConsentRequestDtoDataRequestStateCode } from './consentRequestDtoDataRequestStateCode';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
@@ -32,9 +31,36 @@ export interface DataRequestDto {
      * Purpose of the data request
      */
     purpose?: DataRequestPurposeDto;
-    dataConsumer?: ConsentRequestDtoDataRequestDataConsumer;
     products?: ConsentRequestDtoDataRequestProducts;
     stateCode: ConsentRequestDtoDataRequestStateCode;
+    /**
+     * LegalName of the data consumer taken from the uid register
+     */
+    dataConsumerLegalName?: string;
+    /**
+     * Shorter name of the data consumer defined by the data consumer used when displaying the request to the producer
+     */
+    dataConsumerDisplayName?: string;
+    /**
+     * Uid of the data consumer
+     */
+    dataConsumerUid?: number;
+    /**
+     * City of the data consumer
+     */
+    dataConsumerCity?: string;
+    /**
+     * Zip code of the data consumer
+     */
+    dataConsumerZip?: string;
+    /**
+     * Street of the data consumer
+     */
+    dataConsumerStreet?: string;
+    /**
+     * 2 letter country code of the data consumer
+     */
+    dataConsumerCountry?: string;
 }
 export namespace DataRequestDto {
 }
