@@ -1,18 +1,19 @@
 import { Component, input, output } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import { getErrorMessage } from '@/shared/lib/form.helper';
+import { FormControlWithMessages, getErrorMessage } from '@/shared/lib/form.helper';
 import { AgridataMultiSelectComponent, MultiSelectOption } from '@/shared/ui/agridata-multi-select';
 
 import { ControlTypes } from './form-control.model';
+import { AgridataTextareaComponent } from '../agridata-textarea/agridata-textarea.component';
 
 @Component({
   selector: 'app-form-control',
-  imports: [ReactiveFormsModule, AgridataMultiSelectComponent],
+  imports: [ReactiveFormsModule, AgridataMultiSelectComponent, AgridataTextareaComponent],
   templateUrl: './form-control.component.html',
 })
 export class FormControlComponent {
-  readonly control = input<FormControl>();
+  readonly control = input<FormControlWithMessages>();
   readonly label = input<string>();
   readonly id = input<string>();
   readonly type = input<'text' | 'number' | 'email' | 'password'>('text');
@@ -37,5 +38,9 @@ export class FormControlComponent {
       }
     }
     return null;
+  }
+
+  getMaxCharacters() {
+    return this.control()?.maxLength ?? null;
   }
 }

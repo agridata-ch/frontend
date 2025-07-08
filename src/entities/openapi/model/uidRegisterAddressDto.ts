@@ -9,9 +9,10 @@
  */
 
 
-export const ExceptionEnum = {
-    Generic: 'GENERIC',
-    UidMissing: 'UID_MISSING'
-} as const;
-export type ExceptionEnum = typeof ExceptionEnum[keyof typeof ExceptionEnum];
+export interface UidRegisterAddressDto { 
+    street?: string;
+    zip?: string;
+    city?: string;
+    country?: string;
+}
 

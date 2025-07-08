@@ -25,6 +25,11 @@ export type Dto = Record<string, unknown>;
 // Extension of FormControl to carry translated error message generators
 export interface FormControlWithMessages extends FormControl {
   errorMessages?: Record<string, () => string>;
+  maxLength?: number;
+  minLength?: number;
+  minItems?: number;
+  maxItems?: number;
+  pattern?: string;
 }
 
 /**
@@ -203,6 +208,12 @@ export function buildReactiveForm(
         lastSegment,
         i18nService,
       );
+
+      control.maxLength = schemaNode.maxLength;
+      control.minLength = schemaNode.minLength;
+      control.minItems = schemaNode.minItems;
+      control.maxItems = schemaNode.maxItems;
+      control.pattern = schemaNode.pattern;
 
       // Mark as touched if pre-filled to show validation state immediately
 

@@ -47,6 +47,15 @@ export class DataRequestNewComponent {
   readonly contractLabel = this.i18nService.translateSignal('data-request-new.steps.contract');
   readonly completionLabel = this.i18nService.translateSignal('data-request-new.steps.completion');
 
+  readonly titlePlaceholderDe = this.i18nService.translateSignal(
+    'data-request-new.form.request.title.de.placeholder',
+  );
+  readonly titlePlaceholderFr = this.i18nService.translateSignal(
+    'data-request-new.form.request.title.fr.placeholder',
+  );
+  readonly titlePlaceholderIt = this.i18nService.translateSignal(
+    'data-request-new.form.request.title.it.placeholder',
+  );
   readonly descriptionPlaceholderDe = this.i18nService.translateSignal(
     'data-request-new.form.request.description.de.placeholder',
   );
@@ -119,6 +128,11 @@ export class DataRequestNewComponent {
   readonly dtoFromBE = {} as DataRequestUpdateDto;
 
   readonly initialValues = computed(() => ({
+    title: {
+      de: this.titlePlaceholderDe(),
+      fr: this.titlePlaceholderFr(),
+      it: this.titlePlaceholderIt(),
+    },
     description: {
       de: this.descriptionPlaceholderDe(),
       fr: this.descriptionPlaceholderFr(),

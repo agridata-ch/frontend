@@ -64,7 +64,7 @@ export class ConsentRequestTableComponent {
         data: [
           {
             header: 'consent-request-table.dataRequest.consumerName',
-            value: request.dataRequest?.dataConsumer?.name ?? '',
+            value: request.dataRequest?.dataConsumerDisplayName ?? '',
           },
           {
             header: this.dataRequestTitleHeader,

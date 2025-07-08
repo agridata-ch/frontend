@@ -1,27 +1,39 @@
-<div class="flex flex-col gap-6" *i18n="let t; prefix: 'data-request-new.form'">
+<form
+  [formGroup]="form()!"
+  class="flex flex-col gap-10"
+  *i18n="let t; prefix: 'data-request-new.form'"
+>
   <h2>{{ t('request.headline') }}</h2>
-  <div class="flex flex-col bg-slate-50 py-6 px-4 rounded-sm">
-    <div class="mb-2">
-      <h3 class="mb-2">{{ t('request.provider.label') }}</h3>
+  <div class="flex flex-col bg-gray-100 py-6 px-4 rounded-lg gap-6">
+    <div>
+      <h4 class="mb-2">{{ t('request.provider.label') }}</h4>
       <span class="text-agridata-tertiary-text">{{ t('request.provider.sublabel') }}</span>
     </div>
-    <input
-      class="border rounded-md border-gray-300 px-5 py-3 placeholder-gray-400 w-full mb-6"
-      value="AGIS"
-      disabled
-    />
-    <app-form-control
-      [control]="getFormControl(this.form()!, 'request.products')"
-      id="requestProducts"
-      [label]="t('request.products.label')"
-      [placeholder]="t('request.products.placeholder')"
-      [controlType]="ControlTypes.MULTI_SELECT"
-      [options]="products()"
-    />
+    <div class="grid gap-6 grid-cols-2">
+      <div class="flex flex-col w-full">
+        <label class="mb-2 font-medium leading-[130%]" for="requestProvider">
+          {{ t('request.provider.label') }}
+        </label>
+        <input
+          class="border rounded-md border-gray-300 px-5 py-3 placeholder-gray-400 w-full mb-6"
+          value="AGIS"
+          disabled
+          name="requestProvider"
+        />
+      </div>
+      <app-form-control
+        [control]="getFormControl(this.form()!, 'request.products')"
+        id="requestProducts"
+        [label]="t('request.products.label')"
+        [placeholder]="t('request.products.placeholder')"
+        [controlType]="ControlTypes.MULTI_SELECT"
+        [options]="products()"
+      />
+    </div>
   </div>
-  <form [formGroup]="form()!" class="flex flex-col gap-2">
-    <div class="mb-2">
-      <h3 class="text-agridata-primary-text mb-2">{{ t('request.title.label') }}</h3>
+  <div>
+    <div class="mb-6">
+      <h4 class="text-agridata-primary-text mb-2">{{ t('request.title.label') }}</h4>
       <span class="text-agridata-tertiary-text">{{ t('request.title.sublabel') }}</span>
     </div>
     <app-form-control
@@ -42,7 +54,12 @@
       [label]="t('request.title.it.label')"
       [placeholder]="t('request.title.it.placeholder')"
     />
-    <h3 class="text-agridata-primary-text mb-2">{{ t('request.description.label') }}</h3>
+  </div>
+  <div>
+    <div class="mb-6">
+      <h4 class="text-agridata-primary-text mb-2">{{ t('request.description.label') }}</h4>
+      <span class="text-agridata-tertiary-text">{{ t('request.description.sublabel') }}</span>
+    </div>
     <app-form-control
       [control]="getFormControl(this.form()!, 'request.description.de')"
       id="requestDescriptionDe"
@@ -64,7 +81,12 @@
       [placeholder]="t('request.description.it.placeholder')"
       [controlType]="ControlTypes.TEXT_AREA"
     />
-    <h3 class="text-agridata-primary-text mb-2">{{ t('request.purpose.label') }}</h3>
+  </div>
+  <div>
+    <div class="mb-6">
+      <h4 class="text-agridata-primary-text mb-2">{{ t('request.purpose.label') }}</h4>
+      <span class="text-agridata-tertiary-text">{{ t('request.purpose.sublabel') }}</span>
+    </div>
     <app-form-control
       [control]="getFormControl(this.form()!, 'request.purpose.de')"
       id="requestPurposeDe"
@@ -86,5 +108,5 @@
       [placeholder]="t('request.purpose.it.placeholder')"
       [controlType]="ControlTypes.TEXT_AREA"
     />
-  </form>
-</div>
+  </div>
+</form>
