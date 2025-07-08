@@ -24,7 +24,7 @@ export class DataRequestService {
     return firstValueFrom(this.apiService.createDataRequestDraft(dataRequest));
   }
 
-  updateDataRequestDraft(dataRequestId: string, dataRequest: DataRequestUpdateDto) {
-    return firstValueFrom(this.apiService.updateDataRequestDraft(dataRequestId, dataRequest));
+  updateDataRequestDetails(dataRequestId: string, dataRequest: DataRequestUpdateDto) {
+    return firstValueFrom(this.apiService.updateDataRequestDetails(dataRequestId, dataRequest));
   }
 }

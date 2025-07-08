@@ -101,6 +101,16 @@
       "minLength": 2,
       "maxLength": 2
     },
+    "contactPhoneNumber": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 50
+    },
+    "contactEmailAddress": {
+      "type": "string",
+      "minLength": 0,
+      "maxLength": 255
+    },
     "products": {
       "type": "array",
       "items": {
@@ -119,6 +129,8 @@
     "dataConsumerZip",
     "dataConsumerStreet",
     "dataConsumerCountry",
+    "contactPhoneNumber",
+    "contactEmailAddress",
     "products"
   ]
 }

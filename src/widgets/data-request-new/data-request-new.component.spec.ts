@@ -17,7 +17,7 @@ describe('DataRequestNewComponent', () => {
     const newDto: DataRequestDto = { id: 'ABC123', stateCode: 'DRAFT' };
     mockDataRequestService = {
       createDataRequest: jest.fn().mockResolvedValue(newDto),
-      updateDataRequestDraft: jest.fn().mockResolvedValue(undefined),
+      updateDataRequestDetails: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<DataRequestService>;
 
     const mockI18nService = {
@@ -57,22 +57,22 @@ describe('DataRequestNewComponent', () => {
     expect(component.dataRequestId()).toBe('ABC123');
   });
 
-  it('should call updateDataRequestDraft when saving an existing draft', async () => {
+  it('should call updateDataRequestDetails when saving an existing draft', async () => {
     component.dataRequestId.set('EXISTING');
     fixture.detectChanges();
 
     component.handleSave('request', false);
 
-    expect(mockDataRequestService.updateDataRequestDraft).toHaveBeenCalledTimes(1);
+    expect(mockDataRequestService.updateDataRequestDetails).toHaveBeenCalledTimes(1);
   });
 
-  it('should advance wizard when nextStep=true', () => {
+  it('should advance wizard when nextStep=true', async () => {
     fixture.detectChanges();
 
     const wizard: AgridataWizardComponent = component.wizard;
     const spy = jest.spyOn(wizard, 'nextStep');
 
-    component.handleSave('request', true);
+    await component.handleSave('request', true);
 
     expect(spy).toHaveBeenCalled();
   });

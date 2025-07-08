@@ -44,8 +44,6 @@ describe('AgridataAccordionComponent', () => {
 
   it('should set header and content via setInput', async () => {
     componentRef.setInput('header', 'Test Header');
-    componentRef.setInput('content', 'Test Content');
     expect(component.header()).toBe('Test Header');
-    expect(component.content()).toBe('Test Content');
   });
 });

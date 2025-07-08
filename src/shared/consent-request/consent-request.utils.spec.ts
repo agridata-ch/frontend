@@ -5,42 +5,42 @@ import { getToastMessage, getToastTitle, getToastType } from './consent-request.
 
 describe('Toast Utilities', () => {
   describe('getToastTitle()', () => {
-    it('returns "consent-request-toast.title.GRANTED" for Granted', () => {
+    it('returns "consent-request.toast.title.GRANTED" for Granted', () => {
       const title = getToastTitle(ConsentRequestStateEnum.Granted);
-      expect(title).toBe('consent-request-toast.title.GRANTED');
+      expect(title).toBe('consent-request.toast.title.GRANTED');
     });
 
-    it('returns "consent-request-toast.title.DECLINED" for Declined', () => {
+    it('returns "consent-request.toast.title.DECLINED" for Declined', () => {
       const title = getToastTitle(ConsentRequestStateEnum.Declined);
-      expect(title).toBe('consent-request-toast.title.DECLINED');
+      expect(title).toBe('consent-request.toast.title.DECLINED');
     });
 
     it('returns default title for any other state', () => {
       const title1 = getToastTitle('SomeOtherState');
-      expect(title1).toBe('consent-request-toast.title.DEFAULT');
+      expect(title1).toBe('consent-request.toast.title.DEFAULT');
 
       const title2 = getToastTitle('');
-      expect(title2).toBe('consent-request-toast.title.DEFAULT');
+      expect(title2).toBe('consent-request.toast.title.DEFAULT');
     });
   });
 
   describe('getToastMessage()', () => {
     it('returns Granted key', () => {
       const msg = getToastMessage(ConsentRequestStateEnum.Granted);
-      expect(msg).toBe('consent-request-toast.message.GRANTED');
+      expect(msg).toBe('consent-request.toast.message.GRANTED');
     });
 
     it('returns Declined key', () => {
       const msg = getToastMessage(ConsentRequestStateEnum.Declined);
-      expect(msg).toBe('consent-request-toast.message.DECLINED');
+      expect(msg).toBe('consent-request.toast.message.DECLINED');
     });
 
     it('returns default message for any other state', () => {
       const msg1 = getToastMessage('UnknownState');
-      expect(msg1).toBe('consent-request-toast.message.DEFAULT');
+      expect(msg1).toBe('consent-request.toast.message.DEFAULT');
 
       const msg2 = getToastMessage('');
-      expect(msg2).toBe('consent-request-toast.message.DEFAULT');
+      expect(msg2).toBe('consent-request.toast.message.DEFAULT');
     });
   });
 

@@ -20,7 +20,6 @@ model/consentRequestDtoDataRequest.ts
 model/consentRequestDtoDataRequestProducts.ts
 model/consentRequestDtoDataRequestStateCode.ts
 model/consentRequestStateEnum.ts
-model/dataConsumerDto.ts
 model/dataProductDto.ts
 model/dataRequestDescriptionDto.ts
 model/dataRequestDto.ts

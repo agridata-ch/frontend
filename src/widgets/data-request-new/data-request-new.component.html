@@ -13,7 +13,7 @@
         <app-data-request-form-request [form]="form" />
       }
       @case (FORM_GROUP_NAMES.PREVIEW) {
-        <span>step 3</span>
+        <app-data-request-preview [dataRequest]="dataRequest()!" />
       }
       @case (FORM_GROUP_NAMES.PRODUCER) {
         <span>step 4</span>
@@ -26,13 +26,13 @@
       }
     }
   </div>
-  <div wizardFooter class="contents">
+  <div wizardFooter class="contents" *i18n="let t; prefix: 'data-request.wizard'">
     @if (wizard.currentStep() !== formControlSteps().length - 1) {
       <app-agridata-button
         [variant]="ButtonVariants.Secondary"
         (onClick)="handleSave(wizard.currentStepId())"
       >
-        {{ 'data-request-new.saveDraft' | i18n }}
+        {{ t('saveDraft') }}
       </app-agridata-button>
       <div class="flex gap-4">
         <app-agridata-button
@@ -40,10 +40,10 @@
           (onClick)="wizard.previousStep()"
           [disabled]="wizard.currentStep() === 0"
         >
-          {{ 'data-request-new.previous' | i18n }}
+          {{ t('previous') }}
         </app-agridata-button>
         <app-agridata-button (onClick)="handleSave(wizard.currentStepId(), true)">
-          {{ 'data-request-new.next' | i18n }}
+          {{ t('next') }}
         </app-agridata-button>
       </div>
     } @else {
@@ -52,17 +52,17 @@
         (onClick)="wizard.previousStep()"
         [disabled]="wizard.currentStep() === 0"
       >
-        {{ 'data-request-new.previous' | i18n }}
+        {{ t('previous') }}
       </app-agridata-button>
       <div class="flex gap-4">
         <app-agridata-button
           [variant]="ButtonVariants.Secondary"
           (onClick)="handleSave(wizard.currentStepId())"
         >
-          {{ 'data-request-new.saveDraft' | i18n }}
+          {{ t('saveDraft') }}
         </app-agridata-button>
         <app-agridata-button (onClick)="handleSaveAndComplete()">
-          {{ 'data-request-new.saveAndComplete' | i18n }}
+          {{ t('saveAndComplete') }}
         </app-agridata-button>
       </div>
     }

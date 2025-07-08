@@ -19,17 +19,17 @@ export class ConsentRequestFilterComponent {
 
   readonly consentRequestStateEnum = ConsentRequestStateEnum;
   readonly filterOptions = [
-    { label: 'consent-request-table.filter.ALL', value: null },
+    { label: 'consent-request.filter.ALL', value: null },
     {
-      label: 'consent-request-table.filter.OPENED',
+      label: 'consent-request.filter.OPENED',
       value: this.consentRequestStateEnum.Opened,
     },
     {
-      label: 'consent-request-table.filter.DECLINED',
+      label: 'consent-request.filter.DECLINED',
       value: this.consentRequestStateEnum.Declined,
     },
     {
-      label: 'consent-request-table.filter.GRANTED',
+      label: 'consent-request.filter.GRANTED',
       value: this.consentRequestStateEnum.Granted,
     },
   ];

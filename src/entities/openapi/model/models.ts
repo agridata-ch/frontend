@@ -4,7 +4,6 @@ export * from './consentRequestDtoDataRequest';
 export * from './consentRequestDtoDataRequestProducts';
 export * from './consentRequestDtoDataRequestStateCode';
 export * from './consentRequestStateEnum';
-export * from './dataConsumerDto';
 export * from './dataProductDto';
 export * from './dataRequestDescriptionDto';
 export * from './dataRequestDto';
