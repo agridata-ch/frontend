@@ -78,17 +78,17 @@ describe('ConsentRequestFilterComponent', () => {
     const opts = component.filterOptions;
     expect(opts.length).toBe(4);
 
-    expect(opts[0]).toEqual({ label: 'consent-request-table.filter.ALL', value: null });
+    expect(opts[0]).toEqual({ label: 'consent-request.filter.ALL', value: null });
     expect(opts[1]).toEqual({
-      label: 'consent-request-table.filter.OPENED',
+      label: 'consent-request.filter.OPENED',
       value: ConsentRequestStateEnum.Opened,
     });
     expect(opts[2]).toEqual({
-      label: 'consent-request-table.filter.DECLINED',
+      label: 'consent-request.filter.DECLINED',
       value: ConsentRequestStateEnum.Declined,
     });
     expect(opts[3]).toEqual({
-      label: 'consent-request-table.filter.GRANTED',
+      label: 'consent-request.filter.GRANTED',
       value: ConsentRequestStateEnum.Granted,
     });
   });

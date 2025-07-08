@@ -7,24 +7,25 @@ import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import DataRequestDtoSchema from '@/assets/formSchemas/DataRequestUpdateDto.json';
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestUpdateDto } from '@/entities/openapi';
-import { I18nPipe, I18nService } from '@/shared/i18n';
+import { I18nDirective, I18nService } from '@/shared/i18n';
 import { Dto, buildReactiveForm, flattenFormGroup } from '@/shared/lib/form.helper';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 import { DataRequestFormRequestComponent } from '@/widgets/data-request-form';
 import { FORM_GROUP_NAMES } from '@/widgets/data-request-new';
+import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
 
 @Component({
   selector: 'app-data-request-new',
   imports: [
-    I18nPipe,
+    I18nDirective,
     ButtonComponent,
     FontAwesomeModule,
-    I18nPipe,
     AgridataWizardComponent,
     ReactiveFormsModule,
     CommonModule,
     DataRequestFormRequestComponent,
+    DataRequestPreviewComponent,
   ],
   templateUrl: './data-request-new.component.html',
 })
@@ -32,6 +33,7 @@ export class DataRequestNewComponent {
   readonly i18nService = inject(I18nService);
   readonly dataRequestService = inject(DataRequestService);
   readonly dataRequestId = signal<string>('');
+  readonly dataRequest = signal<DataRequestDto | null>(null);
   readonly ButtonVariants = ButtonVariants;
   readonly nextIcon = faArrowRight;
   readonly previousIcon = faArrowLeft;
@@ -40,39 +42,41 @@ export class DataRequestNewComponent {
   @ViewChild(AgridataWizardComponent)
   readonly wizard!: AgridataWizardComponent;
 
-  readonly consumerLabel = this.i18nService.translateSignal('data-request-new.steps.consumer');
-  readonly requestLabel = this.i18nService.translateSignal('data-request-new.steps.request');
-  readonly previewLabel = this.i18nService.translateSignal('data-request-new.steps.preview');
-  readonly producerLabel = this.i18nService.translateSignal('data-request-new.steps.producer');
-  readonly contractLabel = this.i18nService.translateSignal('data-request-new.steps.contract');
-  readonly completionLabel = this.i18nService.translateSignal('data-request-new.steps.completion');
+  readonly consumerLabel = this.i18nService.translateSignal('data-request.wizard.steps.consumer');
+  readonly requestLabel = this.i18nService.translateSignal('data-request.wizard.steps.request');
+  readonly previewLabel = this.i18nService.translateSignal('data-request.wizard.steps.preview');
+  readonly producerLabel = this.i18nService.translateSignal('data-request.wizard.steps.producer');
+  readonly contractLabel = this.i18nService.translateSignal('data-request.wizard.steps.contract');
+  readonly completionLabel = this.i18nService.translateSignal(
+    'data-request.wizard.steps.completion',
+  );
 
   readonly titlePlaceholderDe = this.i18nService.translateSignal(
-    'data-request-new.form.request.title.de.placeholder',
+    'data-request.form.request.title.de.placeholder',
   );
   readonly titlePlaceholderFr = this.i18nService.translateSignal(
-    'data-request-new.form.request.title.fr.placeholder',
+    'data-request.form.request.title.fr.placeholder',
   );
   readonly titlePlaceholderIt = this.i18nService.translateSignal(
-    'data-request-new.form.request.title.it.placeholder',
+    'data-request.form.request.title.it.placeholder',
   );
   readonly descriptionPlaceholderDe = this.i18nService.translateSignal(
-    'data-request-new.form.request.description.de.placeholder',
+    'data-request.form.request.description.de.placeholder',
   );
   readonly descriptionPlaceholderFr = this.i18nService.translateSignal(
-    'data-request-new.form.request.description.fr.placeholder',
+    'data-request.form.request.description.fr.placeholder',
   );
   readonly descriptionPlaceholderIt = this.i18nService.translateSignal(
-    'data-request-new.form.request.description.it.placeholder',
+    'data-request.form.request.description.it.placeholder',
   );
   readonly purposePlaceholderDe = this.i18nService.translateSignal(
-    'data-request-new.form.request.purpose.de.placeholder',
+    'data-request.form.request.purpose.de.placeholder',
   );
   readonly purposePlaceholderFr = this.i18nService.translateSignal(
-    'data-request-new.form.request.purpose.fr.placeholder',
+    'data-request.form.request.purpose.fr.placeholder',
   );
   readonly purposePlaceholderIt = this.i18nService.translateSignal(
-    'data-request-new.form.request.purpose.it.placeholder',
+    'data-request.form.request.purpose.it.placeholder',
   );
 
   readonly formMap = signal([
@@ -172,10 +176,10 @@ export class DataRequestNewComponent {
     this.handleSave(this.wizard.currentStepId());
   }
 
-  handleSave(id: string, nextStep: boolean = false) {
+  async handleSave(id: string, nextStep: boolean = false) {
     this.form.get(id)?.markAllAsTouched();
     this.updateFormSteps(id, this.form.get(id)?.valid ?? false);
-    this.createOrSaveDataRequest();
+    await this.createOrSaveDataRequest();
 
     if (nextStep) {
       this.wizard.nextStep();
@@ -192,15 +196,22 @@ export class DataRequestNewComponent {
     console.log('Data request saved and completed');
   }
 
-  createOrSaveDataRequest() {
+  async createOrSaveDataRequest() {
     const flattenForm = flattenFormGroup(this.form) as DataRequestUpdateDto;
 
     if (this.dataRequestId()) {
-      this.dataRequestService.updateDataRequestDraft(this.dataRequestId(), flattenForm);
+      await this.dataRequestService
+        .updateDataRequestDetails(this.dataRequestId(), flattenForm)
+        .then((dataRequest: DataRequestDto) => {
+          this.dataRequest.set(dataRequest);
+        });
     } else {
-      this.dataRequestService.createDataRequest(flattenForm).then((dataRequest: DataRequestDto) => {
-        this.dataRequestId.set(dataRequest.id!);
-      });
+      await this.dataRequestService
+        .createDataRequest(flattenForm)
+        .then((dataRequest: DataRequestDto) => {
+          this.dataRequestId.set(dataRequest.id!);
+          this.dataRequest.set(dataRequest);
+        });
     }
   }
 

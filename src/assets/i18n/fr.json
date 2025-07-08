@@ -1,18 +1,20 @@
 {
-  "consent-request-producer": {
-    "pageTitle": "Demandes"
+  "account": {
+    "login": "Se connecter",
+    "logout": "Se déconnecter"
   },
-  "consent-request-table": {
-    "dataRequest": {
-      "consumerName": "Demandeur",
-      "title": "Demande de données",
-      "date": "Date de la demande",
-      "state": {
-        "title": "Statut",
-        "GRANTED": "Accordé",
-        "DECLINED": "Refusé",
-        "OPENED": "Ouvert"
-      }
+  "agridata-table": {
+    "actions": "Actions"
+  },
+  "consent-request": {
+    "table": {
+      "tableActions": {
+        "title": "Actions",
+        "details": "Détails",
+        "consent": "Consentir",
+        "decline": "Refuser"
+      },
+      "error": "Erreur lors de la mise à jour de la demande. RequestId: {{requestId}}"
     },
     "filter": {
       "ALL": "Tous",
@@ -20,75 +22,55 @@
       "DECLINED": "Refusé",
       "GRANTED": "Accordé"
     },
-    "tableActions": {
-      "title": "Actions",
-      "details": "Détails",
-      "consent": "Consentir",
-      "decline": "Refuser"
-    },
-    "error": "Erreur lors de la mise à jour de la demande. RequestId: {{requestId}}"
-  },
-  "consent-request-details": {
-    "title": "Vue détaillée",
-    "requestDate": "Demande du {{ date }}",
-    "purpose": {
-      "title": "But",
-      "description": "Les données suivantes seront transmises"
-    },
-    "privacySection": {
-      "consent": {
-        "title": "Consentement",
-        "description": "En donnant votre accord, vous autorisez la transmission des données de la liste de vos exploitations associées au demandeur {{ consumerName }}"
+    "details": {
+      "actions": {
+        "accept": "Consentir",
+        "reject": "Refuser"
       },
-      "dataProtection": {
-        "title": "Protection des données",
-        "description": "{{ consumerName }} est responsable du traitement conforme à la protection des données de ces informations. Contactez directement {{ consumerName }} si vous souhaitez que vos données soient supprimées."
-      },
-      "revocation": {
-        "title": "Possibilité de révocation",
-        "description": "Vous pouvez révoquer ou modifier votre consentement à tout moment"
-      }
-    },
-    "actions": {
-      "accept": "Consentir",
-      "reject": "Refuser"
-    },
-    "footerInformation": "Vous pouvez modifier votre consentement à tout moment.",
-    "dataRequest": {
-      "state": {
+      "stateCode": {
         "GRANTED": "Accepté le {{ date }}",
         "DECLINED": "Refusé le {{ date }}",
         "OPENED": "Ouvert",
         "UNKNOWN": "Inconnu"
+      },
+      "footerInformation": "Vous pouvez modifier votre consentement à tout moment.",
+      "requestDate": "Demande du {{ date }}",
+      "sidepanel": {
+        "title": "Vue détaillée"
       }
+    },
+    "toast": {
+      "title": {
+        "GRANTED": "Consentement accordé",
+        "DECLINED": "Consentement refusé",
+        "DEFAULT": "Demande mise à jour"
+      },
+      "message": {
+        "GRANTED": "Vous avez consenti avec succès à la demande {{ name }}.",
+        "DECLINED": "Vous avez refusé avec succès la demande {{ name }}.",
+        "DEFAULT": "La demande a été mise à jour."
+      },
+      "undo": "Annuler l'action"
     }
   },
-  "consent-request-toast": {
-    "title": {
-      "GRANTED": "Consentement accordé",
-      "DECLINED": "Consentement refusé",
-      "DEFAULT": "Demande mise à jour"
-    },
-    "message": {
-      "GRANTED": "Vous avez consenti avec succès à la demande {{ name }}.",
-      "DECLINED": "Vous avez refusé avec succès la demande {{ name }}.",
-      "DEFAULT": "La demande a été mise à jour."
-    },
-    "undo": "Annuler l'action"
+  "consumer": {
+    "pageTitle": "Demandes de données",
+    "createNewDataRequest": "Nouvelle demande de données",
+    "sidePanelTitle": "Saisir une nouvelle demande de données"
   },
-  "data-requests-consumer": {
-    "pageTitle": "Demandes de données"
-  },
-  "data-request-new": {
-    "createNew": "Nouvelle demande de données",
-    "sidePanelTitle": "Saisir une nouvelle demande de données",
-    "steps": {
-      "consumer": "Bénéficiaire des données",
-      "request": "Demande de données",
-      "preview": "Aperçu",
-      "producer": "Fournisseur de données",
-      "contract": "Contrat",
-      "completion": "Conclusion"
+  "data-request": {
+    "consumerName": "Demandeur",
+    "title": "Demande de données",
+    "date": "Date de la demande",
+    "state": "Statut",
+    "stateCode": {
+      "GRANTED": "Accordé",
+      "DECLINED": "Refusé",
+      "OPENED": "Ouvert"
+    },
+    "contact": {
+      "title": "Coordonnées",
+      "description": "Pour toute question ou clarification concernant la demande de données, veuillez contacter l'organisation à l'adresse suivante:"
     },
     "form": {
       "request": {
@@ -149,21 +131,41 @@
         }
       }
     },
-    "saveDraft": "Mise en cache",
-    "saveAndComplete": "Enregistrer et soumettre",
-    "next": "Suivant",
-    "previous": "Retour"
-  },
-  "account": {
-    "login": "Se connecter",
-    "logout": "Se déconnecter"
-  },
-  "agridata-table": {
-    "actions": "Actions"
-  },
-  "navigation": {
-    "open": "Navigation Ouverte",
-    "close": "Navigation Fermée"
+    "preview": {
+      "title": "Aperçu"
+    },
+    "privacy": {
+      "consent": {
+        "title": "Consentement",
+        "description": "En donnant votre accord, vous autorisez la transmission des données de la liste de vos exploitations associées au demandeur {{ consumerName }}"
+      },
+      "dataProtection": {
+        "title": "Protection des données",
+        "description": "{{ consumerName }} est responsable du traitement conforme à la protection des données de ces informations. Contactez directement {{ consumerName }} si vous souhaitez que vos données soient supprimées."
+      },
+      "revocation": {
+        "title": "Possibilité de révocation",
+        "description": "Vous pouvez révoquer ou modifier votre consentement à tout moment"
+      }
+    },
+    "purpose": {
+      "title": "But",
+      "description": "Les données suivantes seront transmises"
+    },
+    "wizard": {
+      "steps": {
+        "consumer": "Bénéficiaire des données",
+        "request": "Demande de données",
+        "preview": "Aperçu",
+        "producer": "Fournisseur de données",
+        "contract": "Contrat",
+        "completion": "Conclusion"
+      },
+      "saveDraft": "Mise en cache",
+      "saveAndComplete": "Enregistrer et soumettre",
+      "next": "Suivant",
+      "previous": "Retour"
+    }
   },
   "forms": {
     "error": {
@@ -173,5 +175,12 @@
       "minItems": "Minimum {{min}} éléments requis.",
       "maxItems": "Maximum {{max}} éléments autorisés."
     }
+  },
+  "navigation": {
+    "open": "Navigation Ouverte",
+    "close": "Navigation Fermée"
+  },
+  "producer": {
+    "pageTitle": "Demandes"
   }
 }

@@ -51,8 +51,8 @@ export class ConsentRequestTableComponent {
   readonly BadgeVariant = BadgeVariant;
   readonly SortDirections = SortDirections;
 
-  readonly dataRequestTitleHeader = 'consent-request-table.dataRequest.title';
-  readonly dataRequestStateHeader = 'consent-request-table.dataRequest.state.title';
+  readonly dataRequestTitleHeader = 'data-request.title';
+  readonly dataRequestStateHeader = 'data-request.state';
 
   readonly stateCodeFilter = signal<string | null>(null);
   readonly requests: Signal<AgridataTableData[]> = computed(() => {
@@ -63,7 +63,7 @@ export class ConsentRequestTableComponent {
         id: request.id,
         data: [
           {
-            header: 'consent-request-table.dataRequest.consumerName',
+            header: 'data-request.consumerName',
             value: request.dataRequest?.dataConsumerDisplayName ?? '',
           },
           {
@@ -71,7 +71,7 @@ export class ConsentRequestTableComponent {
             value: this.i18nService.useObjectTranslation(request.dataRequest?.title),
           },
           {
-            header: 'consent-request-table.dataRequest.date',
+            header: 'data-request.date',
             value: request.requestDate ?? '',
           },
           { header: this.dataRequestStateHeader, value: request.stateCode ?? '' },
@@ -89,7 +89,7 @@ export class ConsentRequestTableComponent {
 
   getTranslatedStateValue(row: AgridataTableData, header: string) {
     const value = this.getCellValue(row, header);
-    return this.i18nService.translate(`consent-request-table.dataRequest.state.${value}`);
+    return this.i18nService.translate(`data-request.stateCode.${value}`);
   }
 
   getFilteredActions = (request?: ConsentRequestDto): ActionDTO[] => {
@@ -97,13 +97,13 @@ export class ConsentRequestTableComponent {
     const requestTitle = this.i18nService.useObjectTranslation(request.dataRequest?.title);
     const details = {
       icon: this.eyeIcon,
-      label: 'consent-request-table.tableActions.details',
+      label: 'consent-request.table.tableActions.details',
       callback: () => this.tableRowAction.emit(request),
     };
 
     const consent = {
       icon: this.checkIcon,
-      label: 'consent-request-table.tableActions.consent',
+      label: 'consent-request.table.tableActions.consent',
       callback: () =>
         this.updateConsentRequestState(request.id, ConsentRequestStateEnum.Granted, requestTitle),
       isMainAction: request.stateCode === ConsentRequestStateEnum.Opened,
@@ -111,7 +111,7 @@ export class ConsentRequestTableComponent {
 
     const decline = {
       icon: this.banIcon,
-      label: 'consent-request-table.tableActions.decline',
+      label: 'consent-request.table.tableActions.decline',
       callback: () =>
         this.updateConsentRequestState(request.id, ConsentRequestStateEnum.Declined, requestTitle),
     };
@@ -148,7 +148,7 @@ export class ConsentRequestTableComponent {
         this.onReloadConsentRequests.emit();
       })
       .catch((error) => {
-        const errorMessage = this.i18nService.translate('consent-request-table.error', {
+        const errorMessage = this.i18nService.translate('consent-request.table.error', {
           requestId: error.error?.requestId ?? '',
         });
         console.log(error.error);

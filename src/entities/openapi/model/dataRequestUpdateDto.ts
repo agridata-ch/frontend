@@ -49,6 +49,14 @@ export interface DataRequestUpdateDto {
      */
     dataConsumerCountry?: string;
     /**
+     * Contact phone number for the data request
+     */
+    contactPhoneNumber?: string;
+    /**
+     * Contact email address for the data request
+     */
+    contactEmailAddress?: string;
+    /**
      * List of data products requested
      */
     products?: Array<string>;

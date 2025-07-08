@@ -1,18 +1,20 @@
 {
-  "consent-request-producer": {
-    "pageTitle": "Richieste"
+  "account": {
+    "login": "Accedi",
+    "logout": "Disconnetti"
   },
-  "consent-request-table": {
-    "dataRequest": {
-      "consumerName": "Richiedente",
-      "title": "Richiesta dati",
-      "date": "Data richiesta",
-      "state": {
-        "title": "Stato",
-        "GRANTED": "Concesso",
-        "DECLINED": "Rifiutato",
-        "OPENED": "Aperto"
-      }
+  "agridata-table": {
+    "actions": "Azioni"
+  },
+  "consent-request": {
+    "table": {
+      "tableActions": {
+        "title": "Azioni",
+        "details": "Dettagli",
+        "consent": "Acconsenti",
+        "decline": "Rifiuta"
+      },
+      "error": "Errore durante l'aggiornamento della richiesta. RequestId: {{requestId}}"
     },
     "filter": {
       "ALL": "Tutti",
@@ -20,75 +22,55 @@
       "DECLINED": "Rifiutato",
       "GRANTED": "Concesso"
     },
-    "tableActions": {
-      "title": "Azioni",
-      "details": "Dettagli",
-      "consent": "Acconsenti",
-      "decline": "Rifiuta"
-    },
-    "error": "Errore durante l'aggiornamento della richiesta. RequestId: {{requestId}}"
-  },
-  "consent-request-details": {
-    "title": "Vista dettagliata",
-    "requestDate": "Richiesta del {{ date }}",
-    "purpose": {
-      "title": "Scopo",
-      "description": "I seguenti dati saranno trasmessi"
-    },
-    "privacySection": {
-      "consent": {
-        "title": "Consenso",
-        "description": "Con il tuo consenso, autorizzi la trasmissione dei dati secondo l'elenco delle tue aziende associate al richiedente {{ consumerName }}"
+    "details": {
+      "actions": {
+        "accept": "Acconsenti",
+        "reject": "Rifiuta"
       },
-      "dataProtection": {
-        "title": "Protezione dei dati",
-        "description": "{{ consumerName }} è responsabile del trattamento conforme alla protezione dei dati di queste informazioni. Contatta direttamente {{ consumerName }} se desideri che i tuoi dati vengano cancellati."
-      },
-      "revocation": {
-        "title": "Possibilità di revoca",
-        "description": "Puoi revocare o modificare il tuo consenso in qualsiasi momento"
-      }
-    },
-    "actions": {
-      "accept": "Acconsenti",
-      "reject": "Rifiuta"
-    },
-    "footerInformation": "Puoi modificare il tuo consenso in qualsiasi momento.",
-    "dataRequest": {
-      "state": {
+      "stateCode": {
         "GRANTED": "Acconsentito il {{ date }}",
         "DECLINED": "Rifiutato il {{ date }}",
         "OPENED": "Aperto",
         "UNKNOWN": "Sconosciuto"
+      },
+      "footerInformation": "Puoi modificare il tuo consenso in qualsiasi momento.",
+      "requestDate": "Richiesta del {{ date }}",
+      "sidepanel": {
+        "title": "Vista dettagliata"
       }
+    },
+    "toast": {
+      "title": {
+        "GRANTED": "Consenso concesso",
+        "DECLINED": "Consenso rifiutato",
+        "DEFAULT": "Richiesta aggiornata"
+      },
+      "message": {
+        "GRANTED": "Hai acconsentito con successo alla richiesta {{ name }}.",
+        "DECLINED": "Hai rifiutato con successo la richiesta {{ name }}.",
+        "DEFAULT": "La richiesta è stata aggiornata."
+      },
+      "undo": "Annulla azione"
     }
   },
-  "consent-request-toast": {
-    "title": {
-      "GRANTED": "Consenso concesso",
-      "DECLINED": "Consenso rifiutato",
-      "DEFAULT": "Richiesta aggiornata"
-    },
-    "message": {
-      "GRANTED": "Hai acconsentito con successo alla richiesta {{ name }}.",
-      "DECLINED": "Hai rifiutato con successo la richiesta {{ name }}.",
-      "DEFAULT": "La richiesta è stata aggiornata."
-    },
-    "undo": "Annulla azione"
+  "consumer": {
+    "pageTitle": "Richieste di dati",
+    "createNewDataRequest": "Richiesta di nuovi dati",
+    "sidePanelTitle": "Inserire una nuova richiesta di dati"
   },
-  "data-requests-consumer": {
-    "pageTitle": "Richieste di dati"
-  },
-  "data-request-new": {
-    "createNew": "Richiesta di nuovi dati",
-    "sidePanelTitle": "Inserire una nuova richiesta di dati",
-    "steps": {
-      "consumer": "Destinatario dei dati",
-      "request": "Richiesta di dati",
-      "preview": "Anteprima",
-      "producer": "Fornitore di dati",
-      "contract": "Contratto",
-      "completion": "Conclusione"
+  "data-request": {
+    "consumerName": "Richiedente",
+    "title": "Richiesta dati",
+    "date": "Data richiesta",
+    "state": "Stato",
+    "stateCode": {
+      "GRANTED": "Concesso",
+      "DECLINED": "Rifiutato",
+      "OPENED": "Aperto"
+    },
+    "contact": {
+      "title": "Contatti",
+      "description": "Per qualsiasi domanda o chiarimento sulla richiesta di dati, contattare l'organizzazione all'indirizzo seguente:"
     },
     "form": {
       "request": {
@@ -149,21 +131,41 @@
         }
       }
     },
-    "saveDraft": "Cache",
-    "saveAndComplete": "Salva e invia",
-    "next": "Avanti",
-    "previous": "Indietro"
-  },
-  "account": {
-    "login": "Accedi",
-    "logout": "Disconnetti"
-  },
-  "agridata-table": {
-    "actions": "Azioni"
-  },
-  "navigation": {
-    "open": "Navigazione Aperta",
-    "close": "Navigazione Chiusa"
+    "preview": {
+      "title": "Anteprima"
+    },
+    "privacy": {
+      "consent": {
+        "title": "Consenso",
+        "description": "Con il tuo consenso, autorizzi la trasmissione dei dati secondo l'elenco delle tue aziende associate al richiedente {{ consumerName }}"
+      },
+      "dataProtection": {
+        "title": "Protezione dei dati",
+        "description": "{{ consumerName }} è responsabile del trattamento conforme alla protezione dei dati di queste informazioni. Contatta direttamente {{ consumerName }} se desideri che i tuoi dati vengano cancellati."
+      },
+      "revocation": {
+        "title": "Possibilità di revoca",
+        "description": "Puoi revocare o modificare il tuo consenso in qualsiasi momento"
+      }
+    },
+    "purpose": {
+      "title": "Scopo",
+      "description": "I seguenti dati saranno trasmessi"
+    },
+    "wizard": {
+      "steps": {
+        "consumer": "Destinatario dei dati",
+        "request": "Richiesta di dati",
+        "preview": "Anteprima",
+        "producer": "Fornitore di dati",
+        "contract": "Contratto",
+        "completion": "Conclusione"
+      },
+      "saveDraft": "Cache",
+      "saveAndComplete": "Salva e invia",
+      "next": "Avanti",
+      "previous": "Indietro"
+    }
   },
   "forms": {
     "error": {
@@ -173,5 +175,12 @@
       "minItems": "Minimo {{min}} elementi richiesti.",
       "maxItems": "Massimo {{max}} elementi consentiti."
     }
+  },
+  "navigation": {
+    "open": "Navigazione Aperta",
+    "close": "Navigazione Chiusa"
+  },
+  "producer": {
+    "pageTitle": "Richieste"
   }
 }

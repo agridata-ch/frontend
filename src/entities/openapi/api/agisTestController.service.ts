@@ -87,7 +87,7 @@ export class AgisTestControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/agis/v1/data-requests`;
+        let localVarPath = `/api/agis/v1/find-register-data`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('post', `${basePath}${localVarPath}`,
             {

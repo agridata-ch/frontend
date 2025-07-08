@@ -2,7 +2,7 @@ import { Component, input, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faDatabase, faPlus } from '@fortawesome/free-solid-svg-icons';
 
-import { I18nDirective, I18nPipe } from '@/shared/i18n';
+import { I18nDirective } from '@/shared/i18n';
 import { SidepanelComponent } from '@/shared/sidepanel/sidepanel.component';
 import { ButtonVariants } from '@/shared/ui/button';
 import { ButtonComponent } from '@/shared/ui/button/button.component';
@@ -15,7 +15,6 @@ import { DataRequestNewComponent } from '@/widgets/data-request-new/data-request
     I18nDirective,
     DataRequestNewComponent,
     ButtonComponent,
-    I18nPipe,
     SidepanelComponent,
   ],
   templateUrl: './data-requests-consumer.page.html',

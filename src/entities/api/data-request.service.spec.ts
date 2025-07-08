@@ -14,14 +14,14 @@ describe('DataRequestService', () => {
   let mockDataRequestService: {
     getDataRequests: jest.Mock;
     createDataRequestDraft: jest.Mock;
-    updateDataRequestDraft: jest.Mock;
+    updateDataRequestDetails: jest.Mock;
   };
 
   beforeEach(() => {
     mockDataRequestService = {
       getDataRequests: jest.fn(),
       createDataRequestDraft: jest.fn(),
-      updateDataRequestDraft: jest.fn(),
+      updateDataRequestDetails: jest.fn(),
     };
     TestBed.configureTestingModule({
       providers: [
@@ -71,11 +71,11 @@ describe('DataRequestService', () => {
       id: 'abc-123',
       stateCode: 'DRAFT',
     } as DataRequestUpdateDto;
-    mockDataRequestService.updateDataRequestDraft.mockReturnValue(of(updatedDto));
+    mockDataRequestService.updateDataRequestDetails.mockReturnValue(of(updatedDto));
 
-    const promise = service.updateDataRequestDraft('abc-123', updatedDto);
+    const promise = service.updateDataRequestDetails('abc-123', updatedDto);
 
-    expect(mockDataRequestService.updateDataRequestDraft).toHaveBeenCalledWith(
+    expect(mockDataRequestService.updateDataRequestDetails).toHaveBeenCalledWith(
       'abc-123',
       updatedDto,
     );

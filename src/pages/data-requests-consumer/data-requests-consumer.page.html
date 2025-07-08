@@ -1,4 +1,4 @@
-<ng-container *i18n="let t; prefix: 'data-requests-consumer'">
+<ng-container *i18n="let t; prefix: 'consumer'">
   <div class="flex justify-between">
     <h2 class="mb-12"><fa-icon [icon]="icon" class="mr-3" />{{ t('pageTitle') }}</h2>
     <div>
@@ -8,11 +8,11 @@
         [variant]="ButtonVariants.Primary"
       >
         <fa-icon [icon]="buttonIcon" class="mr-2" />
-        <span>{{ 'data-request-new.createNew' | i18n }}</span>
+        <span>{{ t('createNewDataRequest') }}</span>
       </app-agridata-button>
       <!-- TODO: add skin variable -->
       <app-sidepanel
-        [title]="'data-request-new.sidePanelTitle' | i18n"
+        [title]="t('sidePanelTitle')"
         [isOpen]="showPanel()"
         (onClose)="handleClose()"
         [maxWidth]="'75%'"
@@ -20,7 +20,6 @@
       >
         @if(showPanel()) {
         <app-data-request-new class="contents" />
-
         }
       </app-sidepanel>
     </div>

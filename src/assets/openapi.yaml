@@ -145,6 +145,23 @@ components:
               - CH
               maxLength: 2
               description: 2 letter country code of the data consumer
+            contactPhoneNumber:
+              type: string
+              examples:
+              - +41 79 123 45 67
+              maxLength: 50
+              description: Contact phone number for the data request
+            contactEmailAddress:
+              type: string
+              examples:
+              - example@labelorganisation.ch
+              maxLength: 255
+              description: Contact email address for the data request
+            dataConsumerLogoBase64:
+              type: string
+              examples:
+              - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+              description: Base64-encoded logo of the data consumer
     ConsentRequestStateEnum:
       type: string
       enum:
@@ -152,21 +169,6 @@ components:
       - OPENED
       - DECLINED
       description: Possible states of a consent request
-    DataConsumerDto:
-      type: object
-      description: Data transfer object representing the consumer of requested data
-      properties:
-        id:
-          $ref: "#/components/schemas/UUID"
-          type: string
-          examples:
-          - a4479dd8-1c59-496a-a7ee-75be69bc1f7f
-          description: id of the data consumer organization or individual
-        name:
-          type: string
-          examples:
-          - LabelOrganisation A
-          description: Name of the data consumer organization or individual
     DataProductDto:
       type: object
       required:
@@ -321,6 +323,23 @@ components:
           - CH
           maxLength: 2
           description: 2 letter country code of the data consumer
+        contactPhoneNumber:
+          type: string
+          examples:
+          - +41 79 123 45 67
+          maxLength: 50
+          description: Contact phone number for the data request
+        contactEmailAddress:
+          type: string
+          examples:
+          - example@labelorganisation.ch
+          maxLength: 255
+          description: Contact email address for the data request
+        dataConsumerLogoBase64:
+          type: string
+          examples:
+          - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+          description: Base64-encoded logo of the data consumer
     DataRequestPurposeDto:
       type: object
       properties:
@@ -403,6 +422,18 @@ components:
           - CH
           maxLength: 2
           description: 2 letter country code of the data consumer
+        contactPhoneNumber:
+          type: string
+          examples:
+          - +41 79 123 45 67
+          maxLength: 50
+          description: Contact phone number for the data request
+        contactEmailAddress:
+          type: string
+          examples:
+          - example@labelorganisation.ch
+          maxLength: 255
+          description: Contact email address for the data request
         products:
           type: array
           examples:
@@ -493,25 +524,25 @@ components:
       description: Authentication
       openIdConnectUrl: http://localhost:6999/realms/agate/.well-known/openid-configuration
 tags:
-- name: Agis Test controller
+- name: Agis Test Controller
   description: Used to test the Agis service integration
 - name: Consent Requests
   description: "Handles creation, retrieval, and updates of consent requests by the\
     \ data producer"
 - name: Data Requests
-  description: "Handles creation, retrieval, and updates of data requests"
+  description: "Handles creation, retrieval, and updates of data requests by the data\
+    \ consumer"
 - name: Data products
-  description: "Handles creation, retrieval, and updates of data products by the data\
-    \ producer"
+  description: "Handles creation, retrieval, and updates of data products"
 - name: Test Data
 - name: Uid register search
   description: Enables searching for organisations in the UID register
 paths:
-  /api/agis/v1/data-requests:
+  /api/agis/v1/find-register-data:
     post:
       operationId: findRegisterData
       tags:
-      - Agis Test controller
+      - Agis Test Controller
       requestBody:
         content:
           application/json:
@@ -624,6 +655,8 @@ paths:
         - agridata.ch.Agridata_Einwilliger
   /api/agreement/v1/data-requests:
     get:
+      description: "Retrieves all data requests if logged in as admin, or all data\
+        \ requests of the current consumer if logged in as consumer."
       operationId: getDataRequests
       tags:
       - Data Requests
@@ -655,9 +688,10 @@ paths:
       summary: Get Data Requests
       security:
       - SecurityScheme:
-        - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
     post:
+      description: Creates a new data request draft. Only available for consumers.
       operationId: createDataRequestDraft
       tags:
       - Data Requests
@@ -695,11 +729,12 @@ paths:
       summary: Create Data Request Draft
       security:
       - SecurityScheme:
-        - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenbezueger
   /api/agreement/v1/data-requests/{id}:
     put:
-      operationId: updateDataRequestDraft
+      description: Updates the details of an existing data request. Only available
+        for consumers.
+      operationId: updateDataRequestDetails
       tags:
       - Data Requests
       parameters:
@@ -739,12 +774,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-      summary: Update Data Request Draft
+      summary: Update Data Request Details
       security:
       - SecurityScheme:
-        - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenbezueger
     get:
+      description: Retrieves data request if the user has the admin role or the request
+        has the same uid as the current consumer.
       operationId: getDataRequest
       tags:
       - Data Requests
@@ -780,10 +816,56 @@ paths:
       summary: Get Data Request
       security:
       - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
+  /api/agreement/v1/data-requests/{id}/logo:
+    put:
+      description: Updates the logo of a data request. Only available for consumers.
+      operationId: updateDataRequestLogo
+      tags:
+      - Data Requests
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                logo:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Update Data Request Logo
+      security:
+      - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
   /api/agreement/v1/data-requests/{id}/submit:
     post:
+      description: Submits a data request. Only available for consumers.
       operationId: submitDataRequest
       tags:
       - Data Requests
@@ -827,7 +909,6 @@ paths:
       summary: Submit Data Request
       security:
       - SecurityScheme:
-        - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenbezueger
   /api/products/v1:
     get:
@@ -1015,5 +1096,5 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.0.0-rc.38
+  version: 1.0.0-rc.37
   description: This API handles data and consent requests for agridata.ch.

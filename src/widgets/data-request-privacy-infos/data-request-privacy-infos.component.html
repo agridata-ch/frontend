@@ -1,0 +1,15 @@
+<div class="flex flex-col gap-6">
+  @for (privacySection of privacySections(); track privacySection.description) {
+    <div class="flex">
+      <fa-icon size="xl" [icon]="privacySection.icon" class="text-agridata-secondary-text mr-2" />
+      <div class="flex flex-col">
+        <span class="text-agridata-secondary-text font-semibold">
+          {{ privacySection.title | i18n }}
+        </span>
+        <span class="text-agridata-secondary-text text-sm">
+          {{ privacySection.description | i18n: privacySection.translationParams }}
+        </span>
+      </div>
+    </div>
+  }
+</div>

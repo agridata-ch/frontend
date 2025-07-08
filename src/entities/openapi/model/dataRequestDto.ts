@@ -61,6 +61,18 @@ export interface DataRequestDto {
      * 2 letter country code of the data consumer
      */
     dataConsumerCountry?: string;
+    /**
+     * Contact phone number for the data request
+     */
+    contactPhoneNumber?: string;
+    /**
+     * Contact email address for the data request
+     */
+    contactEmailAddress?: string;
+    /**
+     * Base64-encoded logo of the data consumer
+     */
+    dataConsumerLogoBase64?: string;
 }
 export namespace DataRequestDto {
 }

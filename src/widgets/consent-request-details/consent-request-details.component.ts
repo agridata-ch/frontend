@@ -1,6 +1,5 @@
 import { Component, Signal, computed, effect, inject, input, output, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faLock, faPenSquare, faRepeat } from '@fortawesome/free-solid-svg-icons';
 
 import { ConsentRequestService } from '@/entities/api';
 import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
@@ -11,23 +10,26 @@ import {
   getUndoAction,
 } from '@/shared/consent-request';
 import { formatDate } from '@/shared/date';
-import { I18nPipe } from '@/shared/i18n';
+import { I18nDirective, I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService } from '@/shared/toast';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
-import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
+import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
+import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
 
 @Component({
   selector: 'app-consent-request-details',
   imports: [
     FontAwesomeModule,
-    AgridataAccordionComponent,
+    DataRequestPurposeAccordionComponent,
     AgridataBadgeComponent,
     I18nPipe,
+    I18nDirective,
     SidepanelComponent,
     ButtonComponent,
+    DataRequestPrivacyInfosComponent,
   ],
   templateUrl: './consent-request-details.component.html',
 })
@@ -40,9 +42,6 @@ export class ConsentRequestDetailsComponent {
   readonly onReloadConsentRequests = output<void>();
   readonly onCloseDetail = output<string | null>();
 
-  readonly editIcon = faPenSquare;
-  readonly lockIcon = faLock;
-  readonly repeatIcon = faRepeat;
   readonly badgeSize = BadgeSize;
   readonly consentRequestStateEnum = ConsentRequestStateEnum;
   readonly ButtonVariants = ButtonVariants;
@@ -63,45 +62,22 @@ export class ConsentRequestDetailsComponent {
   readonly requestDescription = computed(() =>
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.description),
   );
-  readonly requestPurpose = computed(() =>
-    this.i18nService.useObjectTranslation(this.request()?.dataRequest?.purpose),
-  );
-  readonly privacySections = computed(() => {
-    return [
-      {
-        icon: this.editIcon,
-        title: 'consent-request-details.privacySection.consent.title',
-        description: 'consent-request-details.privacySection.consent.description',
-      },
-      {
-        icon: this.lockIcon,
-        title: 'consent-request-details.privacySection.dataProtection.title',
-        description: 'consent-request-details.privacySection.dataProtection.description',
-        translationParams: { consumerName: this.dataConsumerName() },
-      },
-      {
-        icon: this.repeatIcon,
-        title: 'consent-request-details.privacySection.revocation.title',
-        description: 'consent-request-details.privacySection.revocation.description',
-      },
-    ];
-  });
   readonly badgeText = computed(() => {
     const stateCode = this.request()?.stateCode;
     if (stateCode === ConsentRequestStateEnum.Opened)
-      return { key: 'consent-request-details.dataRequest.state.OPENED' };
+      return { key: 'consent-request.details.stateCode.OPENED' };
     if (stateCode === ConsentRequestStateEnum.Granted)
       return {
-        key: 'consent-request-details.dataRequest.state.GRANTED',
+        key: 'consent-request.details.stateCode.GRANTED',
         params: { date: this.formattedLastStateChangeDate() },
       };
     if (stateCode === ConsentRequestStateEnum.Declined)
       return {
-        key: 'consent-request-details.dataRequest.state.DECLINED',
+        key: 'consent-request.details.stateCode.DECLINED',
         params: { date: this.formattedLastStateChangeDate() },
       };
 
-    return { key: 'consent-request-details.dataRequest.state.UNKNOWN' };
+    return { key: 'consent-request.details.stateCode.UNKNOWN' };
   });
   readonly badgeVariant = computed(() => {
     const stateCode = this.request()?.stateCode;

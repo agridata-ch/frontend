@@ -11,7 +11,6 @@ export class AgridataAccordionComponent {
   readonly isExpanded = signal<boolean>(false);
   readonly expandIcon = computed(() => (this.isExpanded() ? faChevronUp : faChevronDown));
   readonly header = input<string>('');
-  readonly content = input<string>('');
 
   toggleAccordion() {
     this.isExpanded.set(!this.isExpanded());

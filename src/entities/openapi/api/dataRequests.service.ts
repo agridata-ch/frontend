@@ -41,6 +41,7 @@ export class DataRequestsService extends BaseService {
 
     /**
      * Create Data Request Draft
+     * Creates a new data request draft. Only available for consumers.
      * @param dataRequestUpdateDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -107,6 +108,7 @@ export class DataRequestsService extends BaseService {
 
     /**
      * Get Data Request
+     * Retrieves data request if the user has the admin role or the request has the same uid as the current consumer.
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -163,6 +165,7 @@ export class DataRequestsService extends BaseService {
 
     /**
      * Get Data Requests
+     * Retrieves all data requests if logged in as admin, or all data requests of the current consumer if logged in as consumer.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -215,6 +218,7 @@ export class DataRequestsService extends BaseService {
 
     /**
      * Submit Data Request
+     * Submits a data request. Only available for consumers.
      * @param id 
      * @param dataRequestUpdateDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -284,21 +288,22 @@ export class DataRequestsService extends BaseService {
     }
 
     /**
-     * Update Data Request Draft
+     * Update Data Request Details
+     * Updates the details of an existing data request. Only available for consumers.
      * @param id 
      * @param dataRequestUpdateDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateDataRequestDraft(id: string, dataRequestUpdateDto: DataRequestUpdateDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<DataRequestDto>;
-    public updateDataRequestDraft(id: string, dataRequestUpdateDto: DataRequestUpdateDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DataRequestDto>>;
-    public updateDataRequestDraft(id: string, dataRequestUpdateDto: DataRequestUpdateDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DataRequestDto>>;
-    public updateDataRequestDraft(id: string, dataRequestUpdateDto: DataRequestUpdateDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public updateDataRequestDetails(id: string, dataRequestUpdateDto: DataRequestUpdateDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<DataRequestDto>;
+    public updateDataRequestDetails(id: string, dataRequestUpdateDto: DataRequestUpdateDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DataRequestDto>>;
+    public updateDataRequestDetails(id: string, dataRequestUpdateDto: DataRequestUpdateDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DataRequestDto>>;
+    public updateDataRequestDetails(id: string, dataRequestUpdateDto: DataRequestUpdateDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling updateDataRequestDraft.');
+            throw new Error('Required parameter id was null or undefined when calling updateDataRequestDetails.');
         }
         if (dataRequestUpdateDto === null || dataRequestUpdateDto === undefined) {
-            throw new Error('Required parameter dataRequestUpdateDto was null or undefined when calling updateDataRequestDraft.');
+            throw new Error('Required parameter dataRequestUpdateDto was null or undefined when calling updateDataRequestDetails.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -343,6 +348,87 @@ export class DataRequestsService extends BaseService {
             {
                 context: localVarHttpContext,
                 body: dataRequestUpdateDto,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Update Data Request Logo
+     * Updates the logo of a data request. Only available for consumers.
+     * @param id 
+     * @param logo 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateDataRequestLogo(id: string, logo?: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public updateDataRequestLogo(id: string, logo?: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public updateDataRequestLogo(id: string, logo?: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public updateDataRequestLogo(id: string, logo?: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling updateDataRequestLogo.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (SecurityScheme) required
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'multipart/form-data'
+        ];
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (logo !== undefined) {
+            localVarFormParams = localVarFormParams.append('logo', <any>logo) as any || localVarFormParams;
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/agreement/v1/data-requests/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/logo`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<any>('put', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

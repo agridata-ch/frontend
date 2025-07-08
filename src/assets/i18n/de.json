@@ -1,18 +1,20 @@
 {
-  "consent-request-producer": {
-    "pageTitle": "Freigaben"
+  "account": {
+    "login": "Anmelden",
+    "logout": "Abmelden"
   },
-  "consent-request-table": {
-    "dataRequest": {
-      "consumerName": "Antragsteller",
-      "title": "Datenantrag",
-      "date": "Antragsdatum",
-      "state": {
-        "title": "Status",
-        "GRANTED": "Eingewilligt",
-        "DECLINED": "Abgelehnt",
-        "OPENED": "Offen"
-      }
+  "agridata-table": {
+    "actions": "Aktionen"
+  },
+  "consent-request": {
+    "table": {
+      "tableActions": {
+        "title": "Aktionen",
+        "details": "Details",
+        "consent": "Einwilligen",
+        "decline": "Ablehnen"
+      },
+      "error": "Fehler beim Aktualisieren des Antrags. RequestId: {{requestId}}"
     },
     "filter": {
       "ALL": "Alle",
@@ -20,75 +22,55 @@
       "DECLINED": "Abgelehnt",
       "GRANTED": "Eingewilligt"
     },
-    "tableActions": {
-      "title": "Aktionen",
-      "details": "Details",
-      "consent": "Einwilligen",
-      "decline": "Ablehnen"
-    },
-    "error": "Fehler beim Aktualisieren des Antrags. RequestId: {{requestId}}"
-  },
-  "consent-request-details": {
-    "title": "Detailansicht",
-    "requestDate": "Anfrage vom {{ date }}",
-    "purpose": {
-      "title": "Zweck",
-      "description": "Folgende Daten werden übermittelt"
-    },
-    "privacySection": {
-      "consent": {
-        "title": "Einwilligung",
-        "description": "Mit deiner Zustimmung erlaubst du, dass die Daten gemäss Liste deiner zugeordneten Betriebe an den Antragsteller {{ consumerName }} übermittelt werden"
+    "details": {
+      "actions": {
+        "accept": "Einwilligen",
+        "reject": "Ablehnen"
       },
-      "dataProtection": {
-        "title": "Datenschutz",
-        "description": "{{ consumerName }} ist für den datenschutzkonformen Umgang mit diesen Informationen verantwortlich. Wende dich direkt an {{ consumerName }}, wenn du möchtest, dass deine Daten gelöscht werden."
-      },
-      "revocation": {
-        "title": "Wiederrufsmöglichkeit",
-        "description": "Du kannst deine Einwilligung jederzeit widerrufen oder anpassen"
-      }
-    },
-    "actions": {
-      "accept": "Einwilligen",
-      "reject": "Ablehnen"
-    },
-    "footerInformation": "Du kannst deine Einwilligung jederzeit ändern.",
-    "dataRequest": {
-      "state": {
+      "stateCode": {
         "GRANTED": "Eingewilligt am {{ date }}",
         "DECLINED": "Abgelehnt am {{ date }}",
         "OPENED": "Offen",
         "UNKNOWN": "Unbekannt"
+      },
+      "footerInformation": "Du kannst deine Einwilligung jederzeit ändern.",
+      "requestDate": "Anfrage vom {{ date }}",
+      "sidepanel": {
+        "title": "Detailansicht"
       }
+    },
+    "toast": {
+      "title": {
+        "GRANTED": "Einwilligung erteilt",
+        "DECLINED": "Einwilligung abgelehnt",
+        "DEFAULT": "Antrag aktualisiert"
+      },
+      "message": {
+        "GRANTED": "Du hast den Antrag {{ name }} erfolgreich eingewilligt.",
+        "DECLINED": "Du hast den Antrag {{ name }} erfolgreich abgelehnt.",
+        "DEFAULT": "Der Antrag wurde aktualisiert."
+      },
+      "undo": "Aktion rückgängig machen"
     }
   },
-  "consent-request-toast": {
-    "title": {
-      "GRANTED": "Einwilligung erteilt",
-      "DECLINED": "Einwilligung abgelehnt",
-      "DEFAULT": "Antrag aktualisiert"
-    },
-    "message": {
-      "GRANTED": "Du hast den Antrag {{ name }} erfolgreich eingewilligt.",
-      "DECLINED": "Du hast den Antrag {{ name }} erfolgreich abgelehnt.",
-      "DEFAULT": "Der Antrag wurde aktualisiert."
-    },
-    "undo": "Aktion rückgängig machen"
+  "consumer": {
+    "pageTitle": "Datenanträge",
+    "createNewDataRequest": "Neuer Antrag",
+    "sidePanelTitle": "Neuer Datenantrag erfassen"
   },
-  "data-requests-consumer": {
-    "pageTitle": "Datenanträge"
-  },
-  "data-request-new": {
-    "createNew": "Neuer Antrag",
-    "sidePanelTitle": "Neuer Datenantrag erfassen",
-    "steps": {
-      "consumer": "Bezüger",
-      "request": "Anfrage",
-      "preview": "Vorschau",
-      "producer": "Produzent",
-      "contract": "Vertrag",
-      "completion": "Abschluss"
+  "data-request": {
+    "consumerName": "Antragsteller",
+    "title": "Datenantrag",
+    "date": "Antragsdatum",
+    "state": "Status",
+    "stateCode": {
+      "GRANTED": "Eingewilligt",
+      "DECLINED": "Abgelehnt",
+      "OPENED": "Offen"
+    },
+    "contact": {
+      "title": "Kontaktdaten",
+      "description": "Bei Fragen oder Unklarheiten zum Datenantrag kontaktiere die Organisation unter:"
     },
     "form": {
       "request": {
@@ -151,21 +133,41 @@
         }
       }
     },
-    "saveDraft": "Zwischenspeichern",
-    "saveAndComplete": "Speichern und Einreichen",
-    "next": "Weiter",
-    "previous": "Zurück"
-  },
-  "account": {
-    "login": "Anmelden",
-    "logout": "Abmelden"
-  },
-  "agridata-table": {
-    "actions": "Aktionen"
-  },
-  "navigation": {
-    "open": "Navigation Öffnen",
-    "close": "Navigation Schließen"
+    "preview": {
+      "title": "Vorschau"
+    },
+    "privacy": {
+      "consent": {
+        "title": "Einwilligung",
+        "description": "Mit deiner Zustimmung erlaubst du, dass die Daten gemäss Liste deiner zugeordneten Betriebe an den Antragsteller {{ consumerName }} übermittelt werden"
+      },
+      "dataProtection": {
+        "title": "Datenschutz",
+        "description": "{{ consumerName }} ist für den datenschutzkonformen Umgang mit diesen Informationen verantwortlich. Wende dich direkt an {{ consumerName }}, wenn du möchtest, dass deine Daten gelöscht werden."
+      },
+      "revocation": {
+        "title": "Wiederrufsmöglichkeit",
+        "description": "Du kannst deine Einwilligung jederzeit widerrufen oder anpassen"
+      }
+    },
+    "purpose": {
+      "title": "Zweck",
+      "description": "Folgende Daten werden übermittelt"
+    },
+    "wizard": {
+      "steps": {
+        "consumer": "Bezüger",
+        "request": "Anfrage",
+        "preview": "Vorschau",
+        "producer": "Produzent",
+        "contract": "Vertrag",
+        "completion": "Abschluss"
+      },
+      "saveDraft": "Zwischenspeichern",
+      "saveAndComplete": "Speichern und Einreichen",
+      "next": "Weiter",
+      "previous": "Zurück"
+    }
   },
   "forms": {
     "error": {
@@ -175,5 +177,12 @@
       "minItems": "Mindestens {{min}} Einträge erforderlich.",
       "maxItems": "Maximal {{max}} Einträge erlaubt."
     }
+  },
+  "navigation": {
+    "open": "Navigation Öffnen",
+    "close": "Navigation Schließen"
+  },
+  "producer": {
+    "pageTitle": "Freigaben"
   }
 }

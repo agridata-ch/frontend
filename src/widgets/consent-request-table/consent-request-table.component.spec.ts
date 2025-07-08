@@ -2,7 +2,11 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConsentRequestService } from '@/entities/api/consent-request.service';
-import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
+import {
+  ConsentRequestDto,
+  ConsentRequestDtoDataRequestStateCode,
+  ConsentRequestStateEnum,
+} from '@/entities/openapi';
 import { ToastService, ToastType } from '@/shared/toast';
 import { AgridataTableData } from '@/shared/ui/agridata-table';
 import { BadgeVariant } from '@/shared/ui/badge';
@@ -19,26 +23,38 @@ describe('ConsentRequestTableComponent', () => {
   let componentRef: ComponentRef<ConsentRequestTableComponent>;
   let mockToastService: { show: jest.Mock };
   let mockConsentService: { updateConsentRequestStatus: jest.Mock };
-  const dataRequestStateHeader = 'consent-request-table.dataRequest.state.title';
+  const dataRequestStateHeader = 'data-request.state';
 
   const sampleRequests: ConsentRequestDto[] = [
     {
       id: '1',
       stateCode: ConsentRequestStateEnum.Opened,
       requestDate: '2025-01-01',
-      dataRequest: { dataConsumer: { name: 'Alice' }, title: { de: 'Antrag A' } },
+      dataRequest: {
+        dataConsumer: { name: 'Alice' },
+        title: { de: 'Antrag A' },
+        stateCode: ConsentRequestDtoDataRequestStateCode.Draft,
+      },
     } as ConsentRequestDto,
     {
       id: '2',
       stateCode: ConsentRequestStateEnum.Granted,
       requestDate: '2025-01-02',
-      dataRequest: { dataConsumer: { name: 'Bob' }, title: { de: 'Antrag B' } },
+      dataRequest: {
+        dataConsumer: { name: 'Bob' },
+        title: { de: 'Antrag B' },
+        stateCode: ConsentRequestDtoDataRequestStateCode.Draft,
+      },
     } as ConsentRequestDto,
     {
       id: '3',
       stateCode: ConsentRequestStateEnum.Declined,
       requestDate: '2025-01-03',
-      dataRequest: { dataConsumer: { name: 'Carol' }, title: { de: 'Antrag C' } },
+      dataRequest: {
+        dataConsumer: { name: 'Carol' },
+        title: { de: 'Antrag C' },
+        stateCode: ConsentRequestDtoDataRequestStateCode.Draft,
+      },
     } as ConsentRequestDto,
   ];
 
@@ -98,23 +114,23 @@ describe('ConsentRequestTableComponent', () => {
   it('getFilteredActions returns correct actions for Opened', () => {
     const actions = component.getFilteredActions(sampleRequests[0]);
     expect(actions.length).toBe(3);
-    expect(actions[0].label).toBe('consent-request-table.tableActions.details');
-    expect(actions[1].label).toBe('consent-request-table.tableActions.consent');
-    expect(actions[2].label).toBe('consent-request-table.tableActions.decline');
+    expect(actions[0].label).toBe('consent-request.table.tableActions.details');
+    expect(actions[1].label).toBe('consent-request.table.tableActions.consent');
+    expect(actions[2].label).toBe('consent-request.table.tableActions.decline');
   });
 
   it('getFilteredActions returns correct actions for Granted', () => {
     const actions = component.getFilteredActions(sampleRequests[1]);
     expect(actions.length).toBe(2);
-    expect(actions[0].label).toBe('consent-request-table.tableActions.details');
-    expect(actions[1].label).toBe('consent-request-table.tableActions.decline');
+    expect(actions[0].label).toBe('consent-request.table.tableActions.details');
+    expect(actions[1].label).toBe('consent-request.table.tableActions.decline');
   });
 
   it('getFilteredActions returns correct actions for Declined', () => {
     const actions = component.getFilteredActions(sampleRequests[2]);
     expect(actions.length).toBe(2);
-    expect(actions[0].label).toBe('consent-request-table.tableActions.details');
-    expect(actions[1].label).toBe('consent-request-table.tableActions.consent');
+    expect(actions[0].label).toBe('consent-request.table.tableActions.details');
+    expect(actions[1].label).toBe('consent-request.table.tableActions.consent');
   });
 
   it('setStateCodeFilter filters requests Signal correctly', () => {
