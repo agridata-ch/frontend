@@ -1,3 +1,9 @@
+## [1.0.0-rc.17](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.16...v1.0.0-rc.17) (2025-07-09)
+
+### Features
+
+- **data-request:** add preview, purpose component ([6156d96](https://github.com/agridata-ch/frontend/commit/6156d96f51a624a7df8f75e3b6deccbc9b0e9526)), closes [DIGIB2-545](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-545)
+
 ## [1.0.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.15...v1.0.0-rc.16) (2025-07-08)
 
 ### Bug Fixes
