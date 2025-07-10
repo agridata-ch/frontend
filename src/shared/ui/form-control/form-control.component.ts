@@ -3,9 +3,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { FormControlWithMessages, getErrorMessage } from '@/shared/lib/form.helper';
 import { AgridataMultiSelectComponent, MultiSelectOption } from '@/shared/ui/agridata-multi-select';
+import { AgridataTextareaComponent } from '@/shared/ui/agridata-textarea';
 
 import { ControlTypes } from './form-control.model';
-import { AgridataTextareaComponent } from '../agridata-textarea/agridata-textarea.component';
 
 @Component({
   selector: 'app-form-control',
@@ -24,7 +24,7 @@ export class FormControlComponent {
   readonly ControlTypes = ControlTypes;
 
   hasError() {
-    return this.control()?.touched && this.control()?.invalid;
+    return (this.control()?.touched && this.control()?.invalid) ?? false;
   }
 
   errorMessage() {
@@ -33,7 +33,6 @@ export class FormControlComponent {
       const errors = control.errors;
       if (errors) {
         const errorKey = Object.keys(errors)[0];
-        // Use the helper to get the error message from the control
         return getErrorMessage(control, errorKey);
       }
     }

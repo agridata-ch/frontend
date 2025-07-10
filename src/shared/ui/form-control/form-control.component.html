@@ -16,18 +16,20 @@
   }
   @if (controlType() === ControlTypes.MULTI_SELECT) {
     <app-agridata-multi-select
-      [control]="control()!"
+      [control]="control()"
       [options]="options()"
       [placeholder]="placeholder()"
+      [hasError]="hasError()"
     />
   }
   @if (controlType() === ControlTypes.TEXT_AREA) {
     <app-agridata-textarea
-      [control]="control()!"
+      [control]="control()"
       [id]="id()!"
       [placeholder]="placeholder()"
       (onBlur)="onBlur.emit()"
       [maxCharacters]="getMaxCharacters()"
+      [hasError]="hasError()"
     />
   }
   <span class="min-h-[1.5em] text-red-500 block">

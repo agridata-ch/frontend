@@ -48,17 +48,38 @@ describe('AgridataMultiSelectComponent', () => {
     expect(component.placeholder()).toBe(placeholder);
   });
 
-  it('should display the selected options as a comma-separated string', () => {
+  it('should initialize selected options based on control value', () => {
     const options = [
       { value: '1', label: 'Option 1' },
       { value: '2', label: 'Option 2' },
+      { value: '3', label: 'Option 3' },
     ];
-    const control = new FormControl(['1']);
+    const control = new FormControl(['1', '3']);
 
     componentRef.setInput('options', options);
     componentRef.setInput('control', control);
 
-    expect(component.displayText).toBe('Option 1');
+    component.ngOnInit();
+
+    expect(component.selectedOptions()).toEqual([
+      { value: '1', label: 'Option 1' },
+      { value: '3', label: 'Option 3' },
+    ]);
+  });
+
+  it('should handle empty control value', () => {
+    const options = [
+      { value: '1', label: 'Option 1' },
+      { value: '2', label: 'Option 2' },
+    ];
+    const control = new FormControl(null);
+
+    componentRef.setInput('options', options);
+    componentRef.setInput('control', control);
+
+    component.ngOnInit();
+
+    expect(component.selectedOptions()).toEqual([]);
   });
 
   it('should handle selecting and deselecting options', () => {

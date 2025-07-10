@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { DataRequestService } from '@/entities/api';
@@ -13,24 +13,30 @@ import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
   imports: [ReactiveFormsModule, FormControlComponent, I18nDirective],
   templateUrl: './data-request-form-request.component.html',
 })
-export class DataRequestFormRequestComponent implements OnInit {
+export class DataRequestFormRequestComponent {
   readonly dataRequestService = inject(DataRequestService);
   readonly i18nService = inject(I18nService);
   readonly form = input<FormGroup>();
 
   readonly products = signal<MultiSelectOption[]>([]);
+  readonly productsLoading = signal<boolean>(false);
 
   readonly ControlTypes = ControlTypes;
   readonly getFormControl = getFormControl;
 
-  ngOnInit(): void {
-    this.dataRequestService.fetchDataProducts().then((products) => {
-      this.products.set(
-        products.map((p) => ({
-          value: p.id,
-          label: p.name?.[this.i18nService.lang() as keyof typeof p.name] ?? '',
-        })),
-      );
-    });
+  constructor() {
+    this.loadProducts();
+  }
+
+  async loadProducts() {
+    this.productsLoading.set(true);
+    const products = await this.dataRequestService.fetchDataProducts();
+    this.products.set(
+      products.map((p) => ({
+        value: p.id,
+        label: p.name?.[this.i18nService.lang() as keyof typeof p.name] ?? '',
+      })),
+    );
+    this.productsLoading.set(false);
   }
 }

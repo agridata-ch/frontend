@@ -2,6 +2,7 @@
   <button
     type="button"
     class="w-full bg-white border border-gray-300 rounded-md px-5 py-3 text-left flex justify-between items-center"
+    [class.border-red-500]="hasError()"
     (click)="toggleDropdown()"
   >
     @if (selectedOptions().length > 0) {
@@ -18,7 +19,7 @@
         }
       </div>
     } @else {
-      <span class="truncate">{{ displayText }}</span>
+      <span class="truncate">{{ placeholder() }}</span>
     }
     <fa-icon [icon]="dropdownIcon()" class="ml-2 text-gray-500" />
   </button>
