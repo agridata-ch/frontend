@@ -7,10 +7,11 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown, faChevronUp, faTimes } from '@fortawesome/free-solid-svg-icons';
 
+import { FormControlWithMessages } from '@/shared/lib/form.helper';
 import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
 
 @Component({
@@ -20,9 +21,10 @@ import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
 })
 export class AgridataMultiSelectComponent {
   private readonly elementRef: ElementRef<HTMLElement> = inject(ElementRef);
-  readonly control = input<FormControl>();
+  readonly control = input<FormControlWithMessages>();
   readonly options = input<MultiSelectOption[]>([]);
   readonly placeholder = input<string>('');
+  readonly hasError = input<boolean>(false);
 
   readonly isDropdownOpen = signal<boolean>(false);
   readonly selectedOptions = signal<MultiSelectOption[]>([]);
@@ -33,17 +35,25 @@ export class AgridataMultiSelectComponent {
     this.isDropdownOpen() ? this.chevronUp : this.chevronDown,
   );
 
+  ngOnInit() {
+    // Initialize selected options based on the control's value
+    const currentValue = this.control()?.value || [];
+    this.selectedOptions.set(
+      this.options().filter((o) => {
+        return currentValue.includes(o.value);
+      }),
+    );
+  }
+
   toggleDropdown(): void {
     this.isDropdownOpen.update((o) => !o);
   }
 
-  /** Whether a given option is selected */
-  isSelected(id: string): boolean {
+  isSelected(id: string) {
     return this.control()?.value.includes(id);
   }
 
-  /** Called when a checkbox changes */
-  onOptionToggle(value: string, event: Event): void {
+  onOptionToggle(value: string, event: Event) {
     event.stopPropagation();
     const checked = (event.target as HTMLInputElement).checked;
     const current = Array.isArray(this.control()?.value) ? [...this.control()!.value] : [];
@@ -59,15 +69,6 @@ export class AgridataMultiSelectComponent {
         .filter(Boolean) as MultiSelectOption[],
     );
     this.control()?.setValue(current);
-  }
-
-  get displayText(): string {
-    const sel = this.control()?.value ?? '';
-    if (sel.length === 0) return this.placeholder();
-    return this.options()
-      .filter((o) => sel.includes(o.value))
-      .map((o) => o.label)
-      .join(', ');
   }
 
   @HostListener('document:click', ['$event.target'])
