@@ -1,3 +1,9 @@
+## [1.0.0-rc.18](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.17...v1.0.0-rc.18) (2025-07-11)
+
+### Features
+
+- **form-consumer:** add consumer form, add select component ([a8b0b53](https://github.com/agridata-ch/frontend/commit/a8b0b538bcc2ae6d4d0d54e2b52e83ae598bbe7e)), closes [DIGIB2-514](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-514)
+
 ## [1.0.0-rc.17](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.16...v1.0.0-rc.17) (2025-07-09)
 
 ### Features
