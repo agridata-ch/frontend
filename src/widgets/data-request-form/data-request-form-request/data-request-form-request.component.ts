@@ -24,7 +24,7 @@ export class DataRequestFormRequestComponent {
   readonly ControlTypes = ControlTypes;
   readonly getFormControl = getFormControl;
 
-  constructor() {
+  ngOnInit() {
     this.loadProducts();
   }
 

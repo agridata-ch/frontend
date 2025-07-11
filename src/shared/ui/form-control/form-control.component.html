@@ -10,8 +10,16 @@
       [type]="type()"
       [placeholder]="placeholder()"
       (blur)="onBlur.emit()"
-      class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400"
+      class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 bg-white"
       [class.border-red-500]="hasError()"
+    />
+  }
+  @if (controlType() === ControlTypes.SELECT) {
+    <app-agridata-select
+      [control]="control()"
+      [options]="options()"
+      [placeholder]="placeholder()"
+      [hasError]="hasError()"
     />
   }
   @if (controlType() === ControlTypes.MULTI_SELECT) {

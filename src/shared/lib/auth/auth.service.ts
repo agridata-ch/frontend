@@ -3,10 +3,14 @@ import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 export type UserData = {
-  sub: string;
+  email: string;
+  family_name: string;
+  given_name: string;
+  loginid: string;
   name: string;
   preferred_username: string;
-  email: string;
+  sub: string;
+  uid: string;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -71,5 +75,9 @@ export class AuthService {
     this.oidcService.logoff().subscribe(() => {
       this.router.navigate(['/']);
     });
+  }
+
+  getUid() {
+    return this.userData()?.uid;
   }
 }

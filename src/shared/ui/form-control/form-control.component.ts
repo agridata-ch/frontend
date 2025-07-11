@@ -6,10 +6,16 @@ import { AgridataMultiSelectComponent, MultiSelectOption } from '@/shared/ui/agr
 import { AgridataTextareaComponent } from '@/shared/ui/agridata-textarea';
 
 import { ControlTypes } from './form-control.model';
+import { AgridataSelectComponent } from '../agridata-select';
 
 @Component({
   selector: 'app-form-control',
-  imports: [ReactiveFormsModule, AgridataMultiSelectComponent, AgridataTextareaComponent],
+  imports: [
+    ReactiveFormsModule,
+    AgridataMultiSelectComponent,
+    AgridataTextareaComponent,
+    AgridataSelectComponent,
+  ],
   templateUrl: './form-control.component.html',
 })
 export class FormControlComponent {

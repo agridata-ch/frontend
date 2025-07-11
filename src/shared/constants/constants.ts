@@ -7,3 +7,8 @@ export const USER_ROLES = {
   AGRIDATA_CONSENT_REQUESTS_PRODUCER: 'agridata.ch.Agridata_Einwilliger',
   AGRIDATA_DATA_REQUESTS_CONSUMER: 'agridata.ch.Agridata_Datenbezueger',
 };
+
+export const COUNTRIES = {
+  CH: 'CH',
+  DE: 'DE',
+};

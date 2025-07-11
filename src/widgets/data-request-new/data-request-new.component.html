@@ -6,8 +6,8 @@
 >
   <div wizardContent>
     @switch (wizard.currentStepId()) {
-      @case (FORM_GROUP_NAMES.DATA_CONSUMER) {
-        <span>step 1</span>
+      @case (FORM_GROUP_NAMES.CONSUMER) {
+        <app-data-request-form-consumer [form]="form" />
       }
       @case (FORM_GROUP_NAMES.REQUEST) {
         <app-data-request-form-request [form]="form" />

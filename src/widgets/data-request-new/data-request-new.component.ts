@@ -11,7 +11,10 @@ import { I18nDirective, I18nService } from '@/shared/i18n';
 import { Dto, buildReactiveForm, flattenFormGroup } from '@/shared/lib/form.helper';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
-import { DataRequestFormRequestComponent } from '@/widgets/data-request-form';
+import {
+  DataRequestFormConsumerComponent,
+  DataRequestFormRequestComponent,
+} from '@/widgets/data-request-form';
 import { FORM_GROUP_NAMES } from '@/widgets/data-request-new';
 import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
 
@@ -26,6 +29,7 @@ import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
     CommonModule,
     DataRequestFormRequestComponent,
     DataRequestPreviewComponent,
+    DataRequestFormConsumerComponent,
   ],
   templateUrl: './data-request-new.component.html',
 })
@@ -80,7 +84,18 @@ export class DataRequestNewComponent {
   );
 
   readonly formMap = signal([
-    { formGroupName: FORM_GROUP_NAMES.DATA_CONSUMER, fields: [] },
+    {
+      formGroupName: FORM_GROUP_NAMES.CONSUMER,
+      fields: [
+        'dataConsumerDisplayName',
+        'dataConsumerCity',
+        'dataConsumerZip',
+        'dataConsumerStreet',
+        'dataConsumerCountry',
+        'contactPhoneNumber',
+        'contactEmailAddress',
+      ],
+    },
     {
       formGroupName: FORM_GROUP_NAMES.REQUEST,
       fields: [
@@ -114,7 +129,7 @@ export class DataRequestNewComponent {
 
   private getStepLabelSignal(formGroupName: string) {
     switch (formGroupName) {
-      case FORM_GROUP_NAMES.DATA_CONSUMER:
+      case FORM_GROUP_NAMES.CONSUMER:
         return this.consumerLabel();
       case FORM_GROUP_NAMES.REQUEST:
         return this.requestLabel();
