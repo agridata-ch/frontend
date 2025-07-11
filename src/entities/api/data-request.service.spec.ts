@@ -3,6 +3,7 @@ import { of } from 'rxjs';
 
 import { DataRequestService } from '@/entities/api';
 import {
+  DataProductDto,
   DataProductsService,
   DataRequestDto,
   DataRequestUpdateDto,
@@ -16,6 +17,9 @@ describe('DataRequestService', () => {
     createDataRequestDraft: jest.Mock;
     updateDataRequestDetails: jest.Mock;
   };
+  let mockDataProductsService: {
+    getDataProducts: jest.Mock;
+  };
 
   beforeEach(() => {
     mockDataRequestService = {
@@ -23,11 +27,14 @@ describe('DataRequestService', () => {
       createDataRequestDraft: jest.fn(),
       updateDataRequestDetails: jest.fn(),
     };
+    mockDataProductsService = {
+      getDataProducts: jest.fn(),
+    };
     TestBed.configureTestingModule({
       providers: [
         DataRequestService,
         { provide: DataRequestsService, useValue: mockDataRequestService },
-        { provide: DataProductsService, useValue: {} },
+        { provide: DataProductsService, useValue: mockDataProductsService },
       ],
     });
     service = TestBed.inject(DataRequestService);
@@ -49,6 +56,27 @@ describe('DataRequestService', () => {
     const result = await service.fetchDataRequests();
 
     expect(mockDataRequestService.getDataRequests).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(mockData);
+  });
+
+  it('fetchDataProducts() loads data on success', async () => {
+    const mockData: DataProductDto[] = [
+      {
+        id: '1',
+        name: { de: 'name de', fr: 'name fr', it: 'name it' },
+        description: { de: 'Beschreibung', fr: 'Description', it: 'Descrizione' },
+      },
+      {
+        id: '2',
+        name: { de: 'name de 2', fr: 'name fr 2', it: 'name it 2' },
+        description: { de: 'Beschreibung 2', fr: 'Description 2', it: 'Descrizione 2' },
+      },
+    ];
+    mockDataProductsService.getDataProducts.mockReturnValue(of(mockData));
+
+    const result = await service.fetchDataProducts();
+
+    expect(mockDataProductsService.getDataProducts).toHaveBeenCalledTimes(1);
     expect(result).toEqual(mockData);
   });
 

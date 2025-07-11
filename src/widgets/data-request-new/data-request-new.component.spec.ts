@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
+import { AuthService } from '@/shared/lib/auth';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 
 import { DataRequestNewComponent } from './data-request-new.component';
@@ -27,11 +28,16 @@ describe('DataRequestNewComponent', () => {
       lang: jest.fn(() => 'de'),
     } as unknown as jest.Mocked<I18nService>;
 
+    const mockAuthService = {
+      userData: jest.fn(),
+    };
+
     await TestBed.configureTestingModule({
       imports: [DataRequestNewComponent, ReactiveFormsModule, AgridataWizardComponent],
       providers: [
         { provide: DataRequestService, useValue: mockDataRequestService },
         { provide: I18nService, useValue: mockI18nService },
+        { provide: AuthService, useValue: mockAuthService },
       ],
     }).compileComponents();
 

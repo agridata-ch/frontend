@@ -131,6 +131,54 @@
             "placeholder": "[...] utilizza i dati richiesti per ... (descrizione del destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
           }
         }
+      },
+      "consumer": {
+        "headline": "Angaben zum Datenbezüger",
+        "name": {
+          "label": "Name",
+          "placeholder": "Name"
+        },
+        "uid": {
+          "label": "UID",
+          "placeholder": "CHEXXXXXXXXX"
+        },
+        "dataConsumerStreet": {
+          "label": "Strasse",
+          "placeholder": "Strasse"
+        },
+        "dataConsumerZip": {
+          "label": "PLZ",
+          "placeholder": "PLZ"
+        },
+        "dataConsumerCity": {
+          "label": "Ort",
+          "placeholder": "Ort"
+        },
+        "dataConsumerCountry": {
+          "label": "Land",
+          "placeholder": "Land"
+        },
+        "producer": {
+          "label": "Ihre Anzeige beim Produzenten",
+          "sublabel": "Diese Angaben werden den Datenproduzent:innen bei der Einverständnis-Anfrage angezeigt.",
+          "logo": "Logo"
+        },
+        "contact": {
+          "label": "Ihre Kontaktangaben",
+          "sublabel": "Telefon oder E-Mail für Rückfragen zu Ihrem Antrag."
+        },
+        "contactPhoneNumber": {
+          "label": "Telefon Nr.",
+          "placeholder": "+41 .. ... ..."
+        },
+        "contactEmailAddress": {
+          "label": "E-Mail-Adresse",
+          "placeholder": "...@......."
+        },
+        "dataConsumerDisplayName": {
+          "label": "Anzeigename/Kurzform",
+          "placeholder": "Anzeigename/Kurzform"
+        }
       }
     },
     "preview": {
@@ -184,5 +232,9 @@
   },
   "producer": {
     "pageTitle": "Freigaben"
+  },
+  "countries": {
+    "CH": "Schweiz",
+    "DE": "Deutschland"
   }
 }

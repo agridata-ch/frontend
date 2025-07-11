@@ -129,6 +129,54 @@
             "placeholder": "[...] utilizza i dati richiesti per ... (descrizione del destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
           }
         }
+      },
+      "consumer": {
+        "headline": "Dettagli del destinatario dei dati",
+        "name": {
+          "label": "Nome",
+          "placeholder": "Nome"
+        },
+        "uid": {
+          "label": "UID",
+          "placeholder": "CHEXXXXXXXXX"
+        },
+        "dataConsumerStreet": {
+          "label": "Via",
+          "placeholder": "Via"
+        },
+        "dataConsumerZip": {
+          "label": "CAP",
+          "placeholder": "CAP"
+        },
+        "dataConsumerCity": {
+          "label": "Città",
+          "placeholder": "Città"
+        },
+        "dataConsumerCountry": {
+          "label": "Paese",
+          "placeholder": "Paese"
+        },
+        "producer": {
+          "label": "La tua pubblicità presso il produttore",
+          "sublabel": "Queste informazioni verranno visualizzate ai produttori di dati durante la richiesta di consenso.",
+          "logo": "Logo"
+        },
+        "contact": {
+          "label": "Le tue informazioni di contatto",
+          "sublabel": "Telefono o e-mail per eventuali domande sulla tua richiesta."
+        },
+        "contactPhoneNumber": {
+          "label": "Numero di telefono",
+          "placeholder": "+41 .. ... ..."
+        },
+        "contactEmailAddress": {
+          "label": "Indirizzo e-mail",
+          "placeholder": "...@......."
+        },
+        "dataConsumerDisplayName": {
+          "label": "Nome d'affichage/Abréviation",
+          "placeholder": "Nome d'affichage/Abréviation"
+        }
       }
     },
     "preview": {
@@ -182,5 +230,9 @@
   },
   "producer": {
     "pageTitle": "Richieste"
+  },
+  "countries": {
+    "CH": "Svizzera",
+    "DE": "Germania"
   }
 }
