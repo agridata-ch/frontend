@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test:unit": "jest",
-    "test:coverage": "jest --coverage",
+    "test:coverage": "jest --coverage --no-cache",
     "test:watch": "jest --watch",
     "cm": "cz",
     "prettier:staged": "npx pretty-quick --staged --restage",

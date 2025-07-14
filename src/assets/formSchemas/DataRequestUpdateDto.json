@@ -109,7 +109,8 @@
     "contactEmailAddress": {
       "type": "string",
       "minLength": 0,
-      "maxLength": 255
+      "maxLength": 255,
+      "pattern": "^.*@.*$"
     },
     "products": {
       "type": "array",

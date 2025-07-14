@@ -7,21 +7,43 @@ import { I18nService } from '@/shared/i18n';
 
 import { DataRequestFormRequestComponent } from './data-request-form-request.component';
 
-describe('DataRequestFormRequestComponent', () => {
-  let fixture: ComponentFixture<DataRequestFormRequestComponent>;
-  let component: DataRequestFormRequestComponent;
-  let componentRef: ComponentRef<DataRequestFormRequestComponent>;
-  let mockDataRequestService: jest.Mocked<DataRequestService>;
-  let mockI18nService: jest.Mocked<I18nService>;
-  let mockForm: FormGroup;
+const mockForm = new FormGroup({
+  request: new FormGroup({
+    products: new FormControl([]),
+    title: new FormGroup({
+      de: new FormControl(''),
+      fr: new FormControl(''),
+      it: new FormControl(''),
+    }),
+    description: new FormGroup({
+      de: new FormControl(''),
+      fr: new FormControl(''),
+      it: new FormControl(''),
+    }),
+    purpose: new FormGroup({
+      de: new FormControl(''),
+      fr: new FormControl(''),
+      it: new FormControl(''),
+    }),
+  }),
+});
 
+let fixture: ComponentFixture<DataRequestFormRequestComponent>;
+let component: DataRequestFormRequestComponent;
+let componentRef: ComponentRef<DataRequestFormRequestComponent>;
+let mockDataRequestService: jest.Mocked<DataRequestService>;
+let mockI18nService: jest.Mocked<I18nService>;
+
+describe('DataRequestFormRequestComponent', () => {
   beforeEach(async () => {
     mockDataRequestService = {
       fetchDataProducts: {
-        value: jest.fn().mockReturnValue([
-          { id: '1', name: { en: 'Product 1', de: 'Produkt 1' } },
-          { id: '2', name: { en: 'Product 2', de: 'Produkt 2' } },
-        ]),
+        value: jest
+          .fn()
+          .mockReturnValue([
+            { id: 'productWithName', name: { en: 'Product 1', de: 'Produkt 1' } },
+            { id: 'productWithoutName' },
+          ]),
       },
     } as unknown as jest.Mocked<DataRequestService>;
 
@@ -37,27 +59,6 @@ describe('DataRequestFormRequestComponent', () => {
       ],
     }).compileComponents();
 
-    mockForm = new FormGroup({
-      request: new FormGroup({
-        products: new FormControl([]), // <-- Fix: should be FormControl with array value
-        title: new FormGroup({
-          de: new FormControl(''),
-          fr: new FormControl(''),
-          it: new FormControl(''),
-        }),
-        description: new FormGroup({
-          de: new FormControl(''),
-          fr: new FormControl(''),
-          it: new FormControl(''),
-        }),
-        purpose: new FormGroup({
-          de: new FormControl(''),
-          fr: new FormControl(''),
-          it: new FormControl(''),
-        }),
-      }),
-    });
-
     fixture = TestBed.createComponent(DataRequestFormRequestComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
@@ -67,5 +68,37 @@ describe('DataRequestFormRequestComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+});
+
+describe('DataRequestFormRequestComponent with empty products', () => {
+  beforeEach(async () => {
+    mockDataRequestService = {
+      fetchDataProducts: {
+        value: jest.fn(),
+      },
+    } as unknown as jest.Mocked<DataRequestService>;
+
+    mockI18nService = {
+      lang: jest.fn().mockReturnValue('en'),
+    } as unknown as jest.Mocked<I18nService>;
+
+    await TestBed.configureTestingModule({
+      imports: [DataRequestFormRequestComponent],
+      providers: [
+        { provide: I18nService, useValue: mockI18nService },
+        { provide: DataRequestService, useValue: mockDataRequestService },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(DataRequestFormRequestComponent);
+    component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
+    componentRef.setInput('form', mockForm);
+    fixture.detectChanges();
+  });
+
+  it('sets products to empty array if dataProductsResource is empty', () => {
+    expect(component.products()).toEqual([]);
   });
 });
