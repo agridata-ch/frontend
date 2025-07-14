@@ -15,7 +15,7 @@
           name="dataConsumerName"
           type="text"
           disabled
-          [value]="userData()?.name"
+          [value]="userData()?.name ?? ''"
           placeholder="{{ t('name.placeholder') }}"
           class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 bg-gray-100"
         />

@@ -3,9 +3,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
 import { ConsentRequestService } from '@/entities/api';
-import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
+import {
+  ConsentRequestDto,
+  ConsentRequestDtoDataRequestStateCode,
+  ConsentRequestStateEnum,
+} from '@/entities/openapi';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { I18nService } from '@/shared/i18n';
 
 describe('ConsentRequestProducerPage - component behavior', () => {
   let fixture: ComponentFixture<ConsentRequestProducerPage>;
@@ -16,25 +21,43 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     updateConsentRequestStatus: jest.Mock<Promise<void>, [string, string]>;
   };
   let mockRouter: { navigate: jest.Mock<void, [string[], { replaceUrl: boolean }]> };
+  let mockI18n: {
+    currentLanguage: jest.Mock<string, []>;
+    useObjectTranslation: jest.Mock<void, [string]>;
+    translate: jest.Mock<string, [string]>;
+    lang: jest.Mock<string, []>;
+  };
 
   const sampleRequests: ConsentRequestDto[] = [
     {
       id: '1',
       stateCode: ConsentRequestStateEnum.Opened,
       requestDate: '2025-05-01',
-      dataRequest: { dataConsumer: { name: 'Alice' }, title: { de: 'Antrag A' } },
+      dataRequest: {
+        dataConsumer: { name: 'Alice' },
+        title: { de: 'Antrag A' },
+        stateCode: ConsentRequestDtoDataRequestStateCode.Draft,
+      },
     } as ConsentRequestDto,
     {
       id: '2',
       stateCode: ConsentRequestStateEnum.Granted,
       requestDate: '2025-05-02',
-      dataRequest: { dataConsumer: { name: 'Bob' }, title: { de: 'Antrag B' } },
+      dataRequest: {
+        dataConsumer: { name: 'Bob' },
+        title: { de: 'Antrag B' },
+        stateCode: ConsentRequestDtoDataRequestStateCode.Draft,
+      },
     } as ConsentRequestDto,
     {
       id: '3',
       stateCode: ConsentRequestStateEnum.Declined,
       requestDate: '2025-05-03',
-      dataRequest: { dataConsumer: { name: 'Charlie' }, title: { de: 'Antrag C' } },
+      dataRequest: {
+        dataConsumer: { name: 'Charlie' },
+        title: { de: 'Antrag C' },
+        stateCode: ConsentRequestDtoDataRequestStateCode.Draft,
+      },
     } as ConsentRequestDto,
   ];
 
@@ -46,12 +69,19 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     mockRouter = {
       navigate: jest.fn(),
     };
+    mockI18n = {
+      currentLanguage: jest.fn().mockReturnValue('de'),
+      useObjectTranslation: jest.fn().mockImplementation((key) => key),
+      translate: jest.fn().mockImplementation((key) => key),
+      lang: jest.fn().mockReturnValue('de'),
+    };
 
     await TestBed.configureTestingModule({
       providers: [
         ConsentRequestProducerPage,
         { provide: ConsentRequestService, useValue: mockConsentService },
         { provide: Router, useValue: mockRouter },
+        { provide: I18nService, useValue: mockI18n },
       ],
     }).compileComponents();
 

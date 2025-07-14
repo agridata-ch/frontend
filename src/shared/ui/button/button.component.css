@@ -65,6 +65,21 @@
   cursor: not-allowed;
 }
 
+.agridata-button.agridata-button-tertiary {
+  color: var(--color-agridata-primary-600);
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.agridata-button.agridata-button-tertiary:hover {
+  color: var(--color-agridata-primary-600);
+  background-color: var(--color-agridata-primary-50);
+}
+
+.agridata-button.agridata-button-tertiary:disabled {
+  color: var(--color-agridata-primary-300);
+}
+
 .agridata-button.agridata-button-icon {
   color: var(--color-agridata-primary-600);
   border-color: var(--color-agridata-primary-600);

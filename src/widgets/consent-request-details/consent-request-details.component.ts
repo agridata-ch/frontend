@@ -2,7 +2,11 @@ import { Component, Signal, computed, effect, inject, input, output, signal } fr
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ConsentRequestService } from '@/entities/api';
-import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
+import {
+  ConsentRequestDto,
+  ConsentRequestStateEnum,
+  DataRequestPurposeDto,
+} from '@/entities/openapi';
 import {
   getToastMessage,
   getToastTitle,
@@ -50,6 +54,8 @@ export class ConsentRequestDetailsComponent {
   readonly showErrorToast = signal<boolean>(false);
   readonly showDetails = signal(false);
   readonly requestStateCode: Signal<string> = computed(() => String(this.request()?.stateCode));
+
+  readonly currentLanguage = computed(() => this.i18nService.lang());
   readonly requestId = computed(() => this.request()?.id ?? '');
   readonly formattedRequestDate = computed(() => formatDate(this.request()?.requestDate));
   readonly formattedLastStateChangeDate = computed(() =>
@@ -62,6 +68,13 @@ export class ConsentRequestDetailsComponent {
   readonly requestDescription = computed(() =>
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.description),
   );
+  readonly requestPurpose = computed(() => {
+    const purpose = this.request()?.dataRequest?.purpose;
+    return (
+      (purpose as Record<string, string>)?.[this.currentLanguage()] ?? ('' as DataRequestPurposeDto)
+    );
+  });
+  readonly requestProducts = computed(() => this.request()?.dataRequest?.products);
   readonly badgeText = computed(() => {
     const stateCode = this.request()?.stateCode;
     if (stateCode === ConsentRequestStateEnum.Opened)
