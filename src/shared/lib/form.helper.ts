@@ -95,6 +95,10 @@ function buildValidatorFunctions(
     }
   }
 
+  if (schemaNode.pattern != null) {
+    validators.push(Validators.pattern(schemaNode.pattern));
+  }
+
   if (schemaNode.minItems != null) {
     validators.push(minItems(schemaNode.minItems));
   }
@@ -155,6 +159,12 @@ function buildErrorMessages(
     messages['maxItems'] = () =>
       i18n.translate('forms.error.maxItems', {
         max: schemaNode.maxItems,
+      });
+  }
+  if (schemaNode.pattern != null) {
+    messages['pattern'] = () =>
+      i18n.translate('forms.error.pattern', {
+        pattern: schemaNode.pattern,
       });
   }
 

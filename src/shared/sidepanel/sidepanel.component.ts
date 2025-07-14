@@ -6,7 +6,6 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
   selector: 'app-sidepanel',
   imports: [FontAwesomeModule],
   templateUrl: './sidepanel.component.html',
-  styleUrl: './sidepanel.component.css',
 })
 export class SidepanelComponent {
   title = input<string>('');
@@ -20,7 +19,7 @@ export class SidepanelComponent {
   @HostListener('document:keydown', ['$event'])
   handleGlobalKeydown(event: KeyboardEvent) {
     if (event.key === 'Escape' && this.isOpen()) {
-      this.handleClose();
+      this.onClose.emit();
     }
   }
 

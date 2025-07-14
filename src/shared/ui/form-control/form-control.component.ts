@@ -3,10 +3,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { FormControlWithMessages, getErrorMessage } from '@/shared/lib/form.helper';
 import { AgridataMultiSelectComponent, MultiSelectOption } from '@/shared/ui/agridata-multi-select';
+import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
 import { AgridataTextareaComponent } from '@/shared/ui/agridata-textarea';
 
 import { ControlTypes } from './form-control.model';
-import { AgridataSelectComponent } from '../agridata-select';
 
 @Component({
   selector: 'app-form-control',
@@ -22,7 +22,7 @@ export class FormControlComponent {
   readonly control = input<FormControlWithMessages>();
   readonly label = input<string>();
   readonly id = input<string>();
-  readonly type = input<'text' | 'number' | 'email' | 'password'>('text');
+  readonly type = input<'text' | 'number'>('text');
   readonly placeholder = input<string>('');
   readonly options = input<MultiSelectOption[]>([]);
   readonly controlType = input<ControlTypes>(ControlTypes.INPUT);

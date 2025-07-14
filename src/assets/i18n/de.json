@@ -223,7 +223,8 @@
       "minlength": "Mindestens {{min}} Zeichen erforderlich.",
       "maxlength": "Maximal {{max}} Zeichen erlaubt.",
       "minItems": "Mindestens {{min}} Einträge erforderlich.",
-      "maxItems": "Maximal {{max}} Einträge erlaubt."
+      "maxItems": "Maximal {{max}} Einträge erlaubt.",
+      "pattern": "Ungültiges Format."
     }
   },
   "navigation": {
