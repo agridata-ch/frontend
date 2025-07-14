@@ -29,7 +29,7 @@
   <div wizardFooter class="contents" *i18n="let t; prefix: 'data-request.wizard'">
     @if (wizard.currentStep() !== formControlSteps().length - 1) {
       <app-agridata-button
-        [variant]="ButtonVariants.Secondary"
+        [variant]="ButtonVariants.Tertiary"
         (onClick)="handleSave(wizard.currentStepId())"
       >
         {{ t('saveDraft') }}
@@ -40,10 +40,12 @@
           (onClick)="wizard.previousStep()"
           [disabled]="wizard.currentStep() === 0"
         >
-          {{ t('previous') }}
+          <fa-icon [icon]="previousIcon"></fa-icon>
+          <span class="ml-2">{{ t('previous') }}</span>
         </app-agridata-button>
         <app-agridata-button (onClick)="handleSave(wizard.currentStepId(), true)">
-          {{ t('next') }}
+          <span class="mr-2">{{ t('next') }}</span>
+          <fa-icon [icon]="nextIcon"></fa-icon>
         </app-agridata-button>
       </div>
     } @else {

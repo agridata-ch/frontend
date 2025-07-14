@@ -28,6 +28,7 @@ export class FormControlComponent {
   readonly controlType = input<ControlTypes>(ControlTypes.INPUT);
   readonly onBlur = output<void>();
   readonly ControlTypes = ControlTypes;
+  readonly pattern = input<string | RegExp>('');
 
   hasError() {
     return (this.control()?.touched && this.control()?.invalid) ?? false;

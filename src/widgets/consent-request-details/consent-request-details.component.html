@@ -24,7 +24,10 @@
       <span class="text-agridata-primary-text font-normal">
         {{ requestDescription() }}
       </span>
-      <app-data-request-purpose-accordion />
+      <app-data-request-purpose-accordion
+        [purpose]="requestPurpose()"
+        [products]="requestProducts()"
+      />
       <app-data-request-privacy-infos [dataConsumerName]="dataConsumerName()" />
     </div>
     <div class="justify-center flex flex-col gap-1.5">

@@ -5,8 +5,8 @@ import { ConsentRequestDtoDataRequestProducts } from '@/entities/openapi';
 import { DataRequestPurposeAccordionComponent } from './data-request-purpose-accordion.component';
 
 describe('DataRequestPurposeAccordionComponent', () => {
-  let component: DataRequestPurposeAccordionComponent;
   let fixture: ComponentFixture<DataRequestPurposeAccordionComponent>;
+  let component: DataRequestPurposeAccordionComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -81,7 +81,7 @@ describe('DataRequestPurposeAccordionComponent', () => {
     });
   });
 
-  it('should return the correct lang field from field', () => {
+  it('should return the correct lang field from products', () => {
     const mockProduct: ConsentRequestDtoDataRequestProducts = {
       id: '123',
       name: {
