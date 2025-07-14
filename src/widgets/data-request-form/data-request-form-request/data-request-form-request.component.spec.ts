@@ -17,10 +17,12 @@ describe('DataRequestFormRequestComponent', () => {
 
   beforeEach(async () => {
     mockDataRequestService = {
-      fetchDataProducts: jest.fn().mockResolvedValue([
-        { id: '1', name: { en: 'Product 1', de: 'Produkt 1' } },
-        { id: '2', name: { en: 'Product 2', de: 'Produkt 2' } },
-      ]),
+      fetchDataProducts: {
+        value: jest.fn().mockReturnValue([
+          { id: '1', name: { en: 'Product 1', de: 'Produkt 1' } },
+          { id: '2', name: { en: 'Product 2', de: 'Produkt 2' } },
+        ]),
+      },
     } as unknown as jest.Mocked<DataRequestService>;
 
     mockI18nService = {
@@ -37,7 +39,7 @@ describe('DataRequestFormRequestComponent', () => {
 
     mockForm = new FormGroup({
       request: new FormGroup({
-        products: new FormGroup({}),
+        products: new FormControl([]), // <-- Fix: should be FormControl with array value
         title: new FormGroup({
           de: new FormControl(''),
           fr: new FormControl(''),

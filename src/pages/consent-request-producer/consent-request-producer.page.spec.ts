@@ -1,6 +1,6 @@
+import { Location } from '@angular/common';
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 
 import { ConsentRequestService } from '@/entities/api';
 import {
@@ -16,17 +16,9 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   let fixture: ComponentFixture<ConsentRequestProducerPage>;
   let component: ConsentRequestProducerPage;
   let componentRef: ComponentRef<ConsentRequestProducerPage>;
-  let mockConsentService: {
-    fetchConsentRequests: jest.Mock<Promise<ConsentRequestDto[]>, []>;
-    updateConsentRequestStatus: jest.Mock<Promise<void>, [string, string]>;
-  };
-  let mockRouter: { navigate: jest.Mock<void, [string[], { replaceUrl: boolean }]> };
-  let mockI18n: {
-    currentLanguage: jest.Mock<string, []>;
-    useObjectTranslation: jest.Mock<void, [string]>;
-    translate: jest.Mock<string, [string]>;
-    lang: jest.Mock<string, []>;
-  };
+  let mockConsentService: jest.Mocked<ConsentRequestService>;
+  let mockLocation: jest.Mocked<Location>;
+  let mockI18n: jest.Mocked<I18nService>;
 
   const sampleRequests: ConsentRequestDto[] = [
     {
@@ -63,24 +55,27 @@ describe('ConsentRequestProducerPage - component behavior', () => {
 
   beforeEach(async () => {
     mockConsentService = {
-      fetchConsentRequests: jest.fn().mockResolvedValue(sampleRequests),
-      updateConsentRequestStatus: jest.fn(),
-    };
-    mockRouter = {
-      navigate: jest.fn(),
-    };
+      fetchConsentRequests: {
+        value: jest.fn().mockReturnValue(sampleRequests),
+        isLoading: jest.fn(),
+        reload: jest.fn(),
+      },
+    } as unknown as jest.Mocked<ConsentRequestService>;
+    mockLocation = {
+      go: jest.fn(),
+    } as unknown as jest.Mocked<Location>;
     mockI18n = {
       currentLanguage: jest.fn().mockReturnValue('de'),
       useObjectTranslation: jest.fn().mockImplementation((key) => key),
       translate: jest.fn().mockImplementation((key) => key),
       lang: jest.fn().mockReturnValue('de'),
-    };
+    } as unknown as jest.Mocked<I18nService>;
 
     await TestBed.configureTestingModule({
       providers: [
         ConsentRequestProducerPage,
         { provide: ConsentRequestService, useValue: mockConsentService },
-        { provide: Router, useValue: mockRouter },
+        { provide: Location, useValue: mockLocation },
         { provide: I18nService, useValue: mockI18n },
       ],
     }).compileComponents();
@@ -91,53 +86,52 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     fixture.detectChanges();
   });
 
-  it('showConsentRequestDetails sets selectedRequest and calls router.navigate', () => {
+  it('setSelectedRequest sets selectedRequest and calls router.navigate', () => {
     const req = sampleRequests[0];
     expect(component.selectedRequest()).toBeNull();
 
-    component.showConsentRequestDetails(req);
+    component.setSelectedRequest(req);
     expect(component.selectedRequest()).toBe(req);
-    expect(mockRouter.navigate).toHaveBeenCalledWith([
-      ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
-      req.id,
-    ]);
+    expect(mockLocation.go).toHaveBeenCalledWith(
+      `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${req.id}`,
+    );
   });
 
-  it('showConsentRequestDetails sets selectedRequest to null if called with undefined', () => {
+  it('setSelectedRequest sets selectedRequest to null if called with undefined', () => {
     component.selectedRequest.set(sampleRequests[0]);
-    component.showConsentRequestDetails();
+    component.setSelectedRequest();
     expect(component.selectedRequest()).toBeNull();
   });
 
-  it('reloadConsentRequests calls consentRequestResult.reload', () => {
-    const reloadSpy = jest.spyOn(component.consentRequestResult, 'reload');
+  it('reloadConsentRequests calls consentRequests.reload', () => {
+    const reloadSpy = jest.spyOn(component.consentRequests, 'reload');
     component.reloadConsentRequests();
     expect(reloadSpy).toHaveBeenCalled();
   });
 
   describe('effect for consentRequestId', () => {
-    it('does not call showConsentRequestDetails if consentRequestResult is loading', () => {
-      jest.spyOn(component.consentRequestResult, 'isLoading').mockReturnValue(true);
-      const showSpy = jest.spyOn(component, 'showConsentRequestDetails');
+    it('does not call setSelectedRequest if consentRequests is loading', () => {
+      jest.spyOn(component.consentRequests, 'isLoading').mockReturnValue(true);
+      const showSpy = jest.spyOn(component, 'setSelectedRequest');
       // Set input using componentRef
       componentRef.setInput('consentRequestId', '1');
       fixture.detectChanges();
       expect(showSpy).not.toHaveBeenCalled();
     });
 
-    it('calls showConsentRequestDetails with correct request if consentRequestId is set and not loading', () => {
-      jest.spyOn(component.consentRequestResult, 'isLoading').mockReturnValue(false);
-      jest.spyOn(component.consentRequestResult, 'value').mockReturnValue(sampleRequests);
-      const showSpy = jest.spyOn(component, 'showConsentRequestDetails');
+    it('calls setSelectedRequest with correct request if consentRequestId is set and not loading', () => {
+      jest.spyOn(mockConsentService.fetchConsentRequests, 'isLoading').mockReturnValue(false);
+      jest.spyOn(mockConsentService.fetchConsentRequests, 'value').mockReturnValue(sampleRequests);
+
       componentRef.setInput('consentRequestId', '2');
       fixture.detectChanges();
-      expect(showSpy).toHaveBeenCalledWith(sampleRequests[1]);
+      expect(component.selectedRequest()).toEqual(sampleRequests[1]);
     });
 
-    it('does not call showConsentRequestDetails if consentRequestId is not set', () => {
-      jest.spyOn(component.consentRequestResult, 'isLoading').mockReturnValue(false);
-      jest.spyOn(component.consentRequestResult, 'value').mockReturnValue(sampleRequests);
-      const showSpy = jest.spyOn(component, 'showConsentRequestDetails');
+    it('does not call setSelectedRequest if consentRequestId is not set', () => {
+      jest.spyOn(component.consentRequests, 'isLoading').mockReturnValue(false);
+      jest.spyOn(component.consentRequests, 'value').mockReturnValue(sampleRequests);
+      const showSpy = jest.spyOn(component, 'setSelectedRequest');
       componentRef.setInput('consentRequestId', '');
       fixture.detectChanges();
       expect(showSpy).not.toHaveBeenCalled();

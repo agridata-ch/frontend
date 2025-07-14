@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, resource } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { DataRequestsService } from '@/entities/openapi/api/dataRequests.service';
@@ -12,19 +12,19 @@ export class DataRequestService {
   private readonly apiService = inject(DataRequestsService);
   private readonly dataProductService = inject(DataProductsService);
 
-  async fetchDataRequests() {
-    return (await firstValueFrom(this.apiService.getDataRequests())).slice();
-  }
+  readonly fetchDataRequests = resource({
+    loader: () => firstValueFrom(this.apiService.getDataRequests()),
+  });
 
-  async fetchDataProducts() {
-    return firstValueFrom(this.dataProductService.getDataProducts());
-  }
+  readonly fetchDataProducts = resource({
+    loader: () => firstValueFrom(this.dataProductService.getDataProducts()),
+  });
 
-  createDataRequest(dataRequest: DataRequestUpdateDto): Promise<DataRequestDto> {
+  async createDataRequest(dataRequest: DataRequestUpdateDto): Promise<DataRequestDto> {
     return firstValueFrom(this.apiService.createDataRequestDraft(dataRequest));
   }
 
-  updateDataRequestDetails(dataRequestId: string, dataRequest: DataRequestUpdateDto) {
+  async updateDataRequestDetails(dataRequestId: string, dataRequest: DataRequestUpdateDto) {
     return firstValueFrom(this.apiService.updateDataRequestDetails(dataRequestId, dataRequest));
   }
 }

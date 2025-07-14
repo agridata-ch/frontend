@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { DataRequestService } from '@/entities/api';
+import { DataRequestService, UidRegisterService } from '@/entities/api';
 import { DataRequestDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
@@ -13,6 +13,7 @@ describe('DataRequestNewComponent', () => {
   let fixture: ComponentFixture<DataRequestNewComponent>;
   let component: DataRequestNewComponent;
   let mockDataRequestService: jest.Mocked<DataRequestService>;
+  let mockUidRegisterService: jest.Mocked<UidRegisterService>;
 
   beforeEach(async () => {
     const newDto: DataRequestDto = { id: 'ABC123', stateCode: 'DRAFT' };
@@ -20,6 +21,20 @@ describe('DataRequestNewComponent', () => {
       createDataRequest: jest.fn().mockResolvedValue(newDto),
       updateDataRequestDetails: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<DataRequestService>;
+
+    mockUidRegisterService = {
+      uidInfosOfCurrentUser: {
+        value: jest.fn().mockReturnValue({
+          uid: 'UID123',
+          firstName: 'Max',
+          lastName: 'Mustermann',
+          email: 'max.mustermann@example.com',
+        }),
+        isLoading: jest.fn().mockReturnValue(false),
+        reload: jest.fn(),
+      },
+      searchByUidResource: jest.fn(),
+    } as unknown as jest.Mocked<UidRegisterService>;
 
     const mockI18nService = {
       translateSignal: jest.fn((key: string) => jest.fn(() => `Translated: ${key}`)),
@@ -38,6 +53,7 @@ describe('DataRequestNewComponent', () => {
         { provide: DataRequestService, useValue: mockDataRequestService },
         { provide: I18nService, useValue: mockI18nService },
         { provide: AuthService, useValue: mockAuthService },
+        { provide: UidRegisterService, useValue: mockUidRegisterService },
       ],
     }).compileComponents();
 

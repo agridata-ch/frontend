@@ -1,66 +1,63 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { ConsentRequestService } from '@/entities/api';
-import { ConsentRequestDto, ConsentRequestsService } from '@/entities/openapi';
+import { ConsentRequestDto } from '@/entities/openapi';
+import { ConsentRequestsService } from '@/entities/openapi/api/consentRequests.service';
+
+import { ConsentRequestService } from './consent-request.service';
 
 describe('ConsentRequestService', () => {
   let service: ConsentRequestService;
-  let apiMock: Pick<ConsentRequestsService, 'getConsentRequests' | 'updateConsentRequestStatus'>;
+  let mockConsentRequestsService: {
+    getConsentRequests: jest.Mock;
+    updateConsentRequestStatus: jest.Mock;
+  };
 
   beforeEach(() => {
-    apiMock = {
+    mockConsentRequestsService = {
       getConsentRequests: jest.fn(),
       updateConsentRequestStatus: jest.fn(),
     };
+
     TestBed.configureTestingModule({
-      providers: [ConsentRequestService, { provide: ConsentRequestsService, useValue: apiMock }],
+      providers: [
+        ConsentRequestService,
+        { provide: ConsentRequestsService, useValue: mockConsentRequestsService },
+      ],
     });
+
     service = TestBed.inject(ConsentRequestService);
   });
 
-  it('fetchConsentRequests() loads data on success', async () => {
+  it('fetchConsentRequests resource loads data on success', (done) => {
     const mockData: ConsentRequestDto[] = [
-      {
-        id: '1',
-        dataProducerId: 'u1',
-        dataRequest: {
-          id: '0',
-          description: { de: 'D1' },
-          stateCode: 'DRAFT',
-        },
-        requestDate: '2025-05-10',
-        stateCode: 'OPENED',
-      },
-      {
-        id: '2',
-        dataProducerId: 'u2',
-        dataRequest: {
-          id: '1',
-          description: { de: 'D2' },
-          stateCode: 'DRAFT',
-        },
-        requestDate: '2025-05-11',
-        stateCode: 'DECLINED',
-      },
+      { id: 'r1' } as ConsentRequestDto,
+      { id: 'r2' } as ConsentRequestDto,
     ];
-    (apiMock.getConsentRequests as jest.Mock).mockReturnValue(of(mockData));
+    mockConsentRequestsService.getConsentRequests.mockReturnValue(of(mockData));
 
-    const result = await service.fetchConsentRequests();
+    // Initially loading
+    expect(service.fetchConsentRequests.isLoading()).toBe(true);
 
-    expect(apiMock.getConsentRequests).toHaveBeenCalledTimes(1);
-    expect(result).toEqual(mockData);
+    // Wait for the resource to resolve
+    setTimeout(() => {
+      expect(service.fetchConsentRequests.value()).toEqual(mockData);
+      expect(service.fetchConsentRequests.isLoading()).toBe(false);
+      done();
+    }, 0);
   });
 
-  it('updateConsentRequestStatus() calls API with quoted stateCode and resolves to DTO', async () => {
-    const updatedDto: ConsentRequestDto = { id: '1' } as ConsentRequestDto;
-    (apiMock.updateConsentRequestStatus as jest.Mock).mockReturnValue(of(updatedDto));
+  it('updateConsentRequestStatus calls API with quoted stateCode and returns response', async () => {
+    const updateResp = { success: true };
+    mockConsentRequestsService.updateConsentRequestStatus.mockReturnValue(of(updateResp));
 
-    const promise = service.updateConsentRequestStatus('abc-123', 'GRANTED');
-
-    expect(apiMock.updateConsentRequestStatus).toHaveBeenCalledWith('abc-123', '"GRANTED"');
-
+    const promise = service.updateConsentRequestStatus('123', 'APPROVED');
     const result = await promise;
-    expect(result).toEqual(updatedDto);
+
+    expect(mockConsentRequestsService.updateConsentRequestStatus).toHaveBeenCalledWith(
+      '123',
+      '"APPROVED"',
+    );
+    expect(result).toEqual(updateResp);
   });
 });

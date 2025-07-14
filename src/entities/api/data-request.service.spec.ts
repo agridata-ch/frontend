@@ -40,26 +40,22 @@ describe('DataRequestService', () => {
     service = TestBed.inject(DataRequestService);
   });
 
-  it('fetchDataRequests() loads data on success', async () => {
+  it('fetchDataRequests resource loads data on success', () => {
     const mockData: DataRequestDto[] = [
-      {
-        id: '1',
-        stateCode: 'DRAFT',
-      },
-      {
-        id: '2',
-        stateCode: 'DRAFT',
-      },
+      { id: '1', stateCode: 'DRAFT' },
+      { id: '2', stateCode: 'DRAFT' },
     ];
     mockDataRequestService.getDataRequests.mockReturnValue(of(mockData));
 
-    const result = await service.fetchDataRequests();
+    expect(service.fetchDataRequests.isLoading()).toBe(true);
 
-    expect(mockDataRequestService.getDataRequests).toHaveBeenCalledTimes(1);
-    expect(result).toEqual(mockData);
+    setTimeout(() => {
+      expect(service.fetchDataRequests.value()).toEqual(mockData);
+      expect(service.fetchDataRequests.isLoading()).toBe(false);
+    }, 0);
   });
 
-  it('fetchDataProducts() loads data on success', async () => {
+  it('fetchDataProducts resource loads data on success', () => {
     const mockData: DataProductDto[] = [
       {
         id: '1',
@@ -74,10 +70,11 @@ describe('DataRequestService', () => {
     ];
     mockDataProductsService.getDataProducts.mockReturnValue(of(mockData));
 
-    const result = await service.fetchDataProducts();
-
-    expect(mockDataProductsService.getDataProducts).toHaveBeenCalledTimes(1);
-    expect(result).toEqual(mockData);
+    expect(service.fetchDataProducts.isLoading()).toBe(true);
+    setTimeout(() => {
+      expect(service.fetchDataProducts.value()).toEqual(mockData);
+      expect(service.fetchDataProducts.isLoading()).toBe(false);
+    }, 0);
   });
 
   it('createDataRequest() calls API with quoted stateCode and resolves to DTO', async () => {

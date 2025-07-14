@@ -6,27 +6,25 @@
       <span class="text-agridata-tertiary-text">{{ t('request.provider.sublabel') }}</span>
     </div>
     <div class="grid gap-6 grid-cols-2">
-      @if (!productsLoading()) {
-        <div class="flex flex-col w-full">
-          <label class="mb-2 font-medium leading-[130%]" for="requestProvider">
-            {{ t('request.provider.label') }}
-          </label>
-          <input
-            class="border rounded-md border-gray-300 px-5 py-3 placeholder-gray-400 w-full mb-6"
-            value="AGIS"
-            disabled
-            name="requestProvider"
-          />
-        </div>
-        <app-form-control
-          [control]="getFormControl(this.form()!, 'request.products')"
-          id="requestProducts"
-          [label]="t('request.products.label')"
-          [placeholder]="t('request.products.placeholder')"
-          [controlType]="ControlTypes.MULTI_SELECT"
-          [options]="products()"
+      <div class="flex flex-col w-full">
+        <label class="mb-2 font-medium leading-[130%]" for="requestProvider">
+          {{ t('request.provider.label') }}
+        </label>
+        <input
+          class="border rounded-md border-gray-300 px-5 py-3 placeholder-gray-400 w-full mb-6"
+          value="AGIS"
+          disabled
+          name="requestProvider"
         />
-      }
+      </div>
+      <app-form-control
+        [control]="getFormControl(this.form()!, 'request.products')"
+        id="requestProducts"
+        [label]="t('request.products.label')"
+        [placeholder]="t('request.products.placeholder')"
+        [controlType]="ControlTypes.MULTI_SELECT"
+        [options]="products()"
+      />
     </div>
   </div>
   <div>
