@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { DataRequestService } from '@/entities/api';
@@ -18,25 +18,19 @@ export class DataRequestFormRequestComponent {
   readonly i18nService = inject(I18nService);
   readonly form = input<FormGroup>();
 
+  readonly dataProductsResource = this.dataRequestService.fetchDataProducts;
   readonly products = signal<MultiSelectOption[]>([]);
-  readonly productsLoading = signal<boolean>(false);
 
   readonly ControlTypes = ControlTypes;
   readonly getFormControl = getFormControl;
 
-  ngOnInit() {
-    this.loadProducts();
-  }
-
-  async loadProducts() {
-    this.productsLoading.set(true);
-    const products = await this.dataRequestService.fetchDataProducts();
+  readonly updateProductsEffect = effect(() => {
+    const products = this.dataProductsResource.value() ?? [];
     this.products.set(
       products.map((p) => ({
         value: p.id,
         label: p.name?.[this.i18nService.lang() as keyof typeof p.name] ?? '',
       })),
     );
-    this.productsLoading.set(false);
-  }
+  });
 }

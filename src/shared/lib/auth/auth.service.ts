@@ -10,7 +10,7 @@ export type UserData = {
   name: string;
   preferred_username: string;
   sub: string;
-  uid: string;
+  uid: number;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -75,9 +75,5 @@ export class AuthService {
     this.oidcService.logoff().subscribe(() => {
       this.router.navigate(['/']);
     });
-  }
-
-  getUid() {
-    return this.userData()?.uid;
   }
 }

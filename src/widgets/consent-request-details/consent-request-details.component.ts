@@ -100,13 +100,14 @@ export class ConsentRequestDetailsComponent {
     return BadgeVariant.DEFAULT;
   });
 
-  constructor() {
-    effect(() => {
-      if (this.request()) {
-        this.showDetails.set(true);
-      }
-    });
-  }
+  readonly showDetailsEffect = effect(() => {
+    const request = this.request();
+    if (request) {
+      this.showDetails.set(true);
+    } else {
+      this.showDetails.set(false);
+    }
+  });
 
   handleCloseDetails() {
     this.showDetails.set(false);

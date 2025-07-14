@@ -2,12 +2,12 @@
   <h2 class="mb-12"><fa-icon [icon]="fileIcon" class="mr-3" />{{ t('pageTitle') }}</h2>
 </ng-container>
 <app-consent-request-table
-  [consentRequests]="consentRequestResult.value()"
-  (tableRowAction)="showConsentRequestDetails($event)"
+  [consentRequests]="consentRequests.value()"
+  (tableRowAction)="setSelectedRequest($event)"
   (onReloadConsentRequests)="reloadConsentRequests()"
 />
 <app-consent-request-details
   [request]="selectedRequest()"
-  (onCloseDetail)="showConsentRequestDetails()"
+  (onCloseDetail)="setSelectedRequest()"
   (onReloadConsentRequests)="reloadConsentRequests()"
 />

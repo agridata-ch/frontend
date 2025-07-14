@@ -38,6 +38,7 @@ export class AgridataSelectComponent {
     // Initialize selected option based on the control's value
     const currentValue = this.control()?.value ?? null;
     const selected = this.options().find((o) => o.value === currentValue) ?? null;
+
     this.selectedOption.set(selected);
   }
 

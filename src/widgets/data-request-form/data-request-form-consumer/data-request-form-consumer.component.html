@@ -1,114 +1,120 @@
-<form
-  [formGroup]="form()!"
-  class="flex flex-col gap-6"
-  *i18n="let t; prefix: 'data-request.form.consumer'"
->
-  <h2>{{ t('headline') }}</h2>
-  <div class="flex flex-col gap-6">
-    <div class="flex gap-6">
-      <div class="flex flex-col">
-        <label for="dataConsumerName" class="mb-2 font-medium leading-[130%]">{{
-          t('name.label')
-        }}</label>
-        <input
-          id="dataConsumerName"
-          name="dataConsumerName"
-          type="text"
-          disabled
-          [value]="userData()?.name ?? ''"
-          placeholder="{{ t('name.placeholder') }}"
-          class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 bg-gray-100"
-        />
-      </div>
-      <div class="flex flex-col max-w-[180px]">
-        <label for="dataConsumerUID" class="mb-2 font-medium leading-[130%]">{{
-          t('uid.label')
-        }}</label>
-        <input
-          id="dataConsumerUID"
-          name="dataConsumerUID"
-          type="text"
-          disabled
-          [value]="userData()?.uid"
-          placeholder="{{ t('uid.placeholder') }}"
-          class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 bg-gray-100"
-        />
-      </div>
-    </div>
-    <app-form-control
-      [control]="getFormControl(this.form()!, 'consumer.dataConsumerStreet')"
-      id="dataConsumerStreet"
-      [label]="t('dataConsumerStreet.label')"
-      [placeholder]="t('dataConsumerStreet.placeholder')"
-    />
-    <div class="flex gap-6">
-      <app-form-control
-        [control]="getFormControl(this.form()!, 'consumer.dataConsumerZip')"
-        id="dataConsumerZip"
-        [label]="t('dataConsumerZip.label')"
-        [placeholder]="t('dataConsumerZip.placeholder')"
-        class="max-w-[200px]"
-      />
-      <app-form-control
-        [control]="getFormControl(this.form()!, 'consumer.dataConsumerCity')"
-        id="dataConsumerCity"
-        [label]="t('dataConsumerCity.label')"
-        [placeholder]="t('dataConsumerCity.placeholder')"
-        class="grow"
-      />
-    </div>
-    <app-form-control
-      [control]="getFormControl(this.form()!, 'consumer.dataConsumerCountry')"
-      id="dataConsumerCountry"
-      [label]="t('dataConsumerCountry.label')"
-      [placeholder]="t('dataConsumerCountry.placeholder')"
-      [controlType]="ControlTypes.SELECT"
-      [options]="countries()"
-      class="max-w-[200px]"
-    />
-    <div class="flex flex-col gap-6 bg-agridata-content-gray p-6 rounded-lg">
-      <div class="flex flex-col">
-        <h4>{{ t('producer.label') }}</h4>
-        <span class="text-agridata-secondary-text">
-          {{ t('producer.sublabel') }}
-        </span>
-      </div>
+@if (uidInfoResource.isLoading()) {
+  <div class="flex items-center justify-center h-full">
+    <span class="text-gray-500">loading</span>
+  </div>
+} @else {
+  <form
+    [formGroup]="form()!"
+    class="flex flex-col gap-6"
+    *i18n="let t; prefix: 'data-request.form.consumer'"
+  >
+    <h2>{{ t('headline') }}</h2>
+    <div class="flex flex-col gap-6">
       <div class="flex gap-6">
-        <div class="w-[100px]">
-          <span>{{ t('producer.logo') }}</span>
+        <div class="flex flex-col grow">
+          <label for="dataConsumerName" class="mb-2 font-medium leading-[130%]">{{
+            t('name.label')
+          }}</label>
+          <input
+            id="dataConsumerName"
+            name="dataConsumerName"
+            type="text"
+            disabled
+            [value]="userData()?.name ?? ''"
+            placeholder="{{ t('name.placeholder') }}"
+            class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 bg-gray-100"
+          />
         </div>
-        <app-form-control
-          [control]="getFormControl(this.form()!, 'consumer.dataConsumerDisplayName')"
-          id="dataConsumerDisplayName"
-          [label]="t('dataConsumerDisplayName.label')"
-          [placeholder]="t('dataConsumerDisplayName.placeholder')"
-          class="grow"
-        />
+        <div class="flex flex-col max-w-[180px]">
+          <label for="dataConsumerUID" class="mb-2 font-medium leading-[130%]">{{
+            t('uid.label')
+          }}</label>
+          <input
+            id="dataConsumerUID"
+            name="dataConsumerUID"
+            type="text"
+            disabled
+            [value]="userData()?.uid"
+            placeholder="{{ t('uid.placeholder') }}"
+            class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 bg-gray-100"
+          />
+        </div>
       </div>
-    </div>
-    <div class="flex flex-col gap-6 bg-agridata-content-gray p-6 rounded-lg">
-      <div class="flex flex-col">
-        <h4>{{ t('contact.label') }}</h4>
-        <span class="text-agridata-secondary-text">
-          {{ t('contact.sublabel') }}
-        </span>
-      </div>
+      <app-form-control
+        [control]="getFormControl(this.form()!, 'consumer.dataConsumerStreet')"
+        id="dataConsumerStreet"
+        [label]="t('dataConsumerStreet.label')"
+        [placeholder]="t('dataConsumerStreet.placeholder')"
+      />
       <div class="flex gap-6">
         <app-form-control
-          [control]="getFormControl(this.form()!, 'consumer.contactPhoneNumber')"
-          id="contactPhoneNumber"
-          [label]="t('contactPhoneNumber.label')"
-          [placeholder]="t('contactPhoneNumber.placeholder')"
+          [control]="getFormControl(this.form()!, 'consumer.dataConsumerZip')"
+          id="dataConsumerZip"
+          [label]="t('dataConsumerZip.label')"
+          [placeholder]="t('dataConsumerZip.placeholder')"
           class="max-w-[200px]"
         />
         <app-form-control
-          [control]="getFormControl(this.form()!, 'consumer.contactEmailAddress')"
-          id="contactEmailAddress"
-          [label]="t('contactEmailAddress.label')"
-          [placeholder]="t('contactEmailAddress.placeholder')"
+          [control]="getFormControl(this.form()!, 'consumer.dataConsumerCity')"
+          id="dataConsumerCity"
+          [label]="t('dataConsumerCity.label')"
+          [placeholder]="t('dataConsumerCity.placeholder')"
           class="grow"
         />
       </div>
+      <app-form-control
+        [control]="getFormControl(this.form()!, 'consumer.dataConsumerCountry')"
+        id="dataConsumerCountry"
+        [label]="t('dataConsumerCountry.label')"
+        [placeholder]="t('dataConsumerCountry.placeholder')"
+        [controlType]="ControlTypes.SELECT"
+        [options]="countries()"
+        class="max-w-[200px]"
+      />
+      <div class="flex flex-col gap-6 bg-agridata-content-gray p-6 rounded-lg">
+        <div class="flex flex-col">
+          <h4>{{ t('producer.label') }}</h4>
+          <span class="text-agridata-secondary-text">
+            {{ t('producer.sublabel') }}
+          </span>
+        </div>
+        <div class="flex gap-6">
+          <div class="w-[100px]">
+            <span>{{ t('producer.logo') }}</span>
+          </div>
+          <app-form-control
+            [control]="getFormControl(this.form()!, 'consumer.dataConsumerDisplayName')"
+            id="dataConsumerDisplayName"
+            [label]="t('dataConsumerDisplayName.label')"
+            [placeholder]="t('dataConsumerDisplayName.placeholder')"
+            class="grow"
+          />
+        </div>
+      </div>
+      <div class="flex flex-col gap-6 bg-agridata-content-gray p-6 rounded-lg">
+        <div class="flex flex-col">
+          <h4>{{ t('contact.label') }}</h4>
+          <span class="text-agridata-secondary-text">
+            {{ t('contact.sublabel') }}
+          </span>
+        </div>
+        <div class="flex gap-6">
+          <app-form-control
+            [control]="getFormControl(this.form()!, 'consumer.contactPhoneNumber')"
+            id="contactPhoneNumber"
+            [label]="t('contactPhoneNumber.label')"
+            [placeholder]="t('contactPhoneNumber.placeholder')"
+            class="max-w-[200px]"
+          />
+          <app-form-control
+            [control]="getFormControl(this.form()!, 'consumer.contactEmailAddress')"
+            id="contactEmailAddress"
+            [label]="t('contactEmailAddress.label')"
+            [placeholder]="t('contactEmailAddress.placeholder')"
+            class="grow"
+          />
+        </div>
+      </div>
     </div>
-  </div>
-</form>
+  </form>
+}

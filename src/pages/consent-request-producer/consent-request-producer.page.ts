@@ -1,5 +1,5 @@
-import { Component, effect, inject, input, resource, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
 
@@ -22,38 +22,36 @@ import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 })
 export class ConsentRequestProducerPage {
   private readonly consentRequestService = inject(ConsentRequestService);
-  private readonly router = inject(Router);
+  private readonly location = inject(Location);
 
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
   readonly fileIcon = faFile;
 
-  readonly consentRequestResult = resource<ConsentRequestDto[], unknown>({
-    loader: async () => this.consentRequestService.fetchConsentRequests(),
-    defaultValue: [],
-  });
+  readonly consentRequests = this.consentRequestService.fetchConsentRequests;
 
   readonly selectedRequest = signal<ConsentRequestDto | null>(null);
 
   constructor() {
-    // effect to open the details view if we visit the page with a consentRequestId in the URL directly
     effect(() => {
-      if (this.consentRequestResult.isLoading() || !this.consentRequestId()) return;
-      const request = this.consentRequestResult
-        .value()
-        .find((request) => request.id === this.consentRequestId());
+      const id = this.consentRequestId();
+      if (!id || this.consentRequests.isLoading()) return;
 
-      this.showConsentRequestDetails(request);
+      const request = this.consentRequests.value().find((r) => r.id === id) ?? null;
+
+      this.selectedRequest.set(request);
     });
   }
 
-  showConsentRequestDetails = (request?: ConsentRequestDto) => {
+  setSelectedRequest = (request?: ConsentRequestDto | null) => {
     this.selectedRequest.set(request ?? null);
 
-    this.router.navigate([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, request?.id ?? '']);
+    const base = ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH;
+    const newUrl = request?.id ? `${base}/${request.id}` : base;
+    this.location.go(newUrl);
   };
 
   reloadConsentRequests = () => {
-    this.consentRequestResult.reload();
+    this.consentRequests.reload();
   };
 }

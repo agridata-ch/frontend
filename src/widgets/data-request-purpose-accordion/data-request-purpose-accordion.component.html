@@ -9,7 +9,7 @@
   </div>
   <app-agridata-accordion [header]="'data-request.purpose.description' | i18n">
     <div class="flex flex-col gap-3">
-      @for (product of productsList(); track product) {
+      @for (product of productsList(); track product.id) {
         <div class="flex flex-col gap-1">
           <span class="text-agridata-tertiary-text font-medium">
             {{ getFieldFromLang(product, 'name') }}
