@@ -1,3 +1,9 @@
+## [1.0.0-rc.19](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.18...v1.0.0-rc.19) (2025-07-15)
+
+### Features
+
+- **uid:** use uid register ([5a5016b](https://github.com/agridata-ch/frontend/commit/5a5016bada3a356d6c04ecd2ed6c4443839720bd)), closes [DIGIB2-514](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-514)
+
 ## [1.0.0-rc.18](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.17...v1.0.0-rc.18) (2025-07-11)
 
 ### Features
