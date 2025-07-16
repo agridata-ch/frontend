@@ -12,6 +12,7 @@
       (blur)="onBlur.emit()"
       class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 bg-white"
       [class.border-red-500]="hasError()"
+      [attr.maxlength]="getMaxCharacters()"
     />
   }
   @if (controlType() === ControlTypes.SELECT) {
