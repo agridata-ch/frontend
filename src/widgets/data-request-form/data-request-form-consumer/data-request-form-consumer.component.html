@@ -15,28 +15,25 @@
           <label for="dataConsumerName" class="mb-2 font-medium leading-[130%]">{{
             t('name.label')
           }}</label>
-          <input
+          <app-agridata-input
             id="dataConsumerName"
-            name="dataConsumerName"
             type="text"
-            disabled
+            [disabled]="true"
             [value]="userData()?.name ?? ''"
             placeholder="{{ t('name.placeholder') }}"
-            class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 bg-gray-100"
           />
         </div>
         <div class="flex flex-col max-w-[180px]">
           <label for="dataConsumerUID" class="mb-2 font-medium leading-[130%]">{{
             t('uid.label')
           }}</label>
-          <input
+          <app-agridata-input
             id="dataConsumerUID"
-            name="dataConsumerUID"
             type="text"
-            disabled
+            [disabled]="true"
             [value]="userData()?.uid"
             placeholder="{{ t('uid.placeholder') }}"
-            class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 bg-gray-100"
+            [inputPrefix]="t('uid.prefix')"
           />
         </div>
       </div>

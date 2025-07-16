@@ -1,0 +1,62 @@
+<div class="flex items-center focus-within:outline-2 rounded-md">
+  @if (inputPrefix()) {
+    <span
+      aria-hidden="true"
+      class="h-full py-3 pl-5 border border-gray-300 rounded-l-md border-r-0 text-base"
+      [class.bg-white]="!disabled()"
+      [class.bg-gray-100]="disabled()"
+      [class.cursor-not-allowed]="disabled()"
+    >
+      {{ `${inputPrefix()}-` }}
+    </span>
+  }
+  @if (control()) {
+    <input
+      [id]="id()"
+      [name]="id()"
+      [formControl]="control()!"
+      [type]="type()"
+      [placeholder]="placeholder()"
+      class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 w-full outline-none"
+      [class.border-red-500]="hasError()"
+      [class.bg-white]="!disabled()"
+      [class.bg-gray-100]="disabled()"
+      [class.pl-15]="inputPrefix()"
+      [class.cursor-not-allowed]="disabled()"
+      [attr.maxlength]="maxCharacters()"
+      [attr.aria-label]="
+        inputPrefix() ? inputPrefix() + '-' + (placeholder() || '') : placeholder()
+      "
+      (blur)="onBlur.emit()"
+    />
+  } @else {
+    <!-- 
+      This input is for non-form controls and we have to handle some stuff other than with the ReactiveForms
+      for example the disable state will be calculated in the component for the input with form control but the normal input have to have the property disabled set manually
+      and the value is set manually as well.
+    -->
+    <input
+      [id]="id()"
+      [name]="id()"
+      [type]="type()"
+      [placeholder]="placeholder()"
+      [disabled]="disabled()"
+      [attr.maxlength]="maxCharacters()"
+      [attr.aria-label]="
+        inputPrefix() ? inputPrefix() + '-' + (placeholder() || '') : placeholder()
+      "
+      [value]="value()"
+      class="border border-gray-300 py-3 pr-4 placeholder-gray-400 w-full outline-none"
+      [class.border-red-500]="hasError()"
+      [class.bg-white]="!disabled()"
+      [class.bg-gray-100]="disabled()"
+      [class.pl-5]="!inputPrefix()"
+      [class.rounded-md]="!inputPrefix()"
+      [class.rounded-r-md]="inputPrefix()"
+      [class.border-l-0]="inputPrefix()"
+      [class.cursor-not-allowed]="disabled()"
+      (input)="handleInputChange($event)"
+      (blur)="onBlur.emit()"
+    />
+  }
+</div>

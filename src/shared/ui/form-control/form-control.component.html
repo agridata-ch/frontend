@@ -3,16 +3,16 @@
     label()
   }}</label>
   @if (controlType() === ControlTypes.INPUT) {
-    <input
-      [id]="id()"
-      [name]="id()"
-      [formControl]="control()!"
+    <app-agridata-input
+      [control]="control()"
+      [id]="id()!"
       [type]="type()"
       [placeholder]="placeholder()"
-      (blur)="onBlur.emit()"
-      class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 bg-white"
-      [class.border-red-500]="hasError()"
-      [attr.maxlength]="getMaxCharacters()"
+      (onBlur)="onBlur.emit()"
+      [maxCharacters]="getMaxCharacters()"
+      [hasError]="hasError()"
+      [inputPrefix]="inputPrefix()"
+      [disabled]="disabled()"
     />
   }
   @if (controlType() === ControlTypes.SELECT) {
@@ -21,6 +21,7 @@
       [options]="options()"
       [placeholder]="placeholder()"
       [hasError]="hasError()"
+      [disabled]="disabled()"
     />
   }
   @if (controlType() === ControlTypes.MULTI_SELECT) {
@@ -29,6 +30,7 @@
       [options]="options()"
       [placeholder]="placeholder()"
       [hasError]="hasError()"
+      [disabled]="disabled()"
     />
   }
   @if (controlType() === ControlTypes.TEXT_AREA) {
@@ -39,6 +41,7 @@
       (onBlur)="onBlur.emit()"
       [maxCharacters]="getMaxCharacters()"
       [hasError]="hasError()"
+      [disabled]="disabled()"
     />
   }
   <span class="min-h-[1.5em] text-red-500 block">

@@ -6,12 +6,13 @@ import { COUNTRIES } from '@/shared/constants/constants';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AuthService, UserData } from '@/shared/lib/auth';
 import { getFormControl } from '@/shared/lib/form.helper';
+import { AgridataInputComponent } from '@/shared/ui/agridata-input';
 import { FormControlComponent } from '@/shared/ui/form-control';
 import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
 
 @Component({
   selector: 'app-data-request-form-consumer',
-  imports: [ReactiveFormsModule, I18nDirective, FormControlComponent],
+  imports: [ReactiveFormsModule, I18nDirective, FormControlComponent, AgridataInputComponent],
   templateUrl: './data-request-form-consumer.component.html',
 })
 export class DataRequestFormConsumerComponent {

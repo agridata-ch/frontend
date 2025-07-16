@@ -10,5 +10,5 @@ export const USER_ROLES = {
 
 export const COUNTRIES = {
   CH: 'CH',
-  DE: 'DE',
+  LI: 'LI',
 };
