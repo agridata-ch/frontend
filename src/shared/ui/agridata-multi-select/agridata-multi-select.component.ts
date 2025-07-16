@@ -25,6 +25,7 @@ export class AgridataMultiSelectComponent {
   readonly options = input<MultiSelectOption[]>([]);
   readonly placeholder = input<string>('');
   readonly hasError = input<boolean>(false);
+  readonly disabled = input<boolean>(false);
 
   readonly isDropdownOpen = signal<boolean>(false);
   readonly selectedOptions = signal<MultiSelectOption[]>([]);

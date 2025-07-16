@@ -2,6 +2,7 @@ import { Component, input, output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { FormControlWithMessages, getErrorMessage } from '@/shared/lib/form.helper';
+import { AgridataInputComponent } from '@/shared/ui/agridata-input';
 import { AgridataMultiSelectComponent, MultiSelectOption } from '@/shared/ui/agridata-multi-select';
 import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
 import { AgridataTextareaComponent } from '@/shared/ui/agridata-textarea';
@@ -15,6 +16,7 @@ import { ControlTypes } from './form-control.model';
     AgridataMultiSelectComponent,
     AgridataTextareaComponent,
     AgridataSelectComponent,
+    AgridataInputComponent,
   ],
   templateUrl: './form-control.component.html',
 })
@@ -26,9 +28,13 @@ export class FormControlComponent {
   readonly placeholder = input<string>('');
   readonly options = input<MultiSelectOption[]>([]);
   readonly controlType = input<ControlTypes>(ControlTypes.INPUT);
-  readonly onBlur = output<void>();
-  readonly ControlTypes = ControlTypes;
+  readonly inputPrefix = input<string>('');
   readonly pattern = input<string | RegExp>('');
+  readonly disabled = input<boolean>(false);
+
+  readonly onBlur = output<void>();
+
+  readonly ControlTypes = ControlTypes;
 
   hasError() {
     return (this.control()?.touched && this.control()?.invalid) ?? false;

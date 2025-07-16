@@ -192,7 +192,6 @@ export class DataRequestNewComponent {
   }
 
   async handleSave(id: string, nextStep: boolean = false) {
-    console.log('form', this.form);
     this.form.get(id)?.markAllAsTouched();
     this.updateFormSteps(id, this.form.get(id)?.valid ?? false);
     await this.createOrSaveDataRequest();

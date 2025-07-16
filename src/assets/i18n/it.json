@@ -138,7 +138,8 @@
         },
         "uid": {
           "label": "UID",
-          "placeholder": "CHEXXXXXXXXX"
+          "placeholder": "CHEXXXXXXXXX",
+          "prefix": "CHE"
         },
         "dataConsumerStreet": {
           "label": "Via",
@@ -221,7 +222,8 @@
       "minlength": "Minimo {{min}} caratteri richiesti.",
       "maxlength": "Massimo {{max}} caratteri consentiti.",
       "minItems": "Minimo {{min}} elementi richiesti.",
-      "maxItems": "Massimo {{max}} elementi consentiti."
+      "maxItems": "Massimo {{max}} elementi consentiti.",
+      "pattern": "Formato non valido."
     }
   },
   "navigation": {
@@ -233,6 +235,6 @@
   },
   "countries": {
     "CH": "Svizzera",
-    "DE": "Germania"
+    "LI": "Liechtenstein"
   }
 }

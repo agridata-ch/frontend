@@ -138,7 +138,8 @@
         },
         "uid": {
           "label": "UID",
-          "placeholder": "CHEXXXXXXXXX"
+          "placeholder": "CHEXXXXXXXXX",
+          "prefix": "CHE"
         },
         "dataConsumerStreet": {
           "label": "Rue",
@@ -221,7 +222,8 @@
       "minlength": "Minimum {{min}} caractères requis.",
       "maxlength": "Maximum {{max}} caractères autorisés.",
       "minItems": "Minimum {{min}} éléments requis.",
-      "maxItems": "Maximum {{max}} éléments autorisés."
+      "maxItems": "Maximum {{max}} éléments autorisés.",
+      "pattern": "Format invalide."
     }
   },
   "navigation": {
@@ -233,6 +235,6 @@
   },
   "countries": {
     "CH": "Suisse",
-    "DE": "Allemagne"
+    "LI": "Liechtenstein"
   }
 }

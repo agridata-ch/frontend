@@ -140,7 +140,8 @@
         },
         "uid": {
           "label": "UID",
-          "placeholder": "CHEXXXXXXXXX"
+          "placeholder": "CHEXXXXXXXXX",
+          "prefix": "CHE"
         },
         "dataConsumerStreet": {
           "label": "Strasse",
@@ -236,6 +237,6 @@
   },
   "countries": {
     "CH": "Schweiz",
-    "DE": "Deutschland"
+    "LI": "Liechtenstein"
   }
 }

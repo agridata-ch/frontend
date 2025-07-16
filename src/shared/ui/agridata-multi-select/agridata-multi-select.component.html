@@ -3,6 +3,7 @@
     type="button"
     class="w-full bg-white border border-gray-300 rounded-md px-5 py-3 text-left flex justify-between items-center"
     [class.border-red-500]="hasError()"
+    [class.bg-gray-100]="disabled()"
     (click)="toggleDropdown()"
   >
     @if (selectedOptions().length > 0) {
