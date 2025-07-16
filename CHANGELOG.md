@@ -1,3 +1,9 @@
+## [1.0.0-rc.20](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.19...v1.0.0-rc.20) (2025-07-16)
+
+### Features
+
+- **ui:** add input component ([c07be20](https://github.com/agridata-ch/frontend/commit/c07be2060bbfb051591cca839ee265eecfae6a49))
+
 ## [1.0.0-rc.19](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.18...v1.0.0-rc.19) (2025-07-15)
 
 ### Features
