@@ -116,6 +116,7 @@ export class DataRequestNewComponent {
     { formGroupName: FORM_GROUP_NAMES.CONTRACT, fields: [] },
     { formGroupName: FORM_GROUP_NAMES.COMPLETION, fields: [] },
   ]);
+  readonly logoFile = signal<File | null>(null);
 
   readonly initialFormControlSteps = computed(() =>
     this.formMap().map((step) => ({
@@ -215,6 +216,13 @@ export class DataRequestNewComponent {
     const flattenForm = flattenFormGroup(this.form) as DataRequestUpdateDto;
 
     if (this.dataRequestId()) {
+      if (this.logoFile()) {
+        await this.dataRequestService
+          .uploadLogo(this.dataRequestId(), this.logoFile()!)
+          .then(() => {
+            this.logoFile.set(null);
+          });
+      }
       await this.dataRequestService
         .updateDataRequestDetails(this.dataRequestId(), flattenForm)
         .then((dataRequest: DataRequestDto) => {
@@ -223,9 +231,16 @@ export class DataRequestNewComponent {
     } else {
       await this.dataRequestService
         .createDataRequest(flattenForm)
-        .then((dataRequest: DataRequestDto) => {
+        .then(async (dataRequest: DataRequestDto) => {
           this.dataRequestId.set(dataRequest.id!);
           this.dataRequest.set(dataRequest);
+          if (this.logoFile()) {
+            await this.dataRequestService
+              .uploadLogo(this.dataRequestId(), this.logoFile()!)
+              .then(() => {
+                this.logoFile.set(null);
+              });
+          }
         });
     }
   }
@@ -248,5 +263,15 @@ export class DataRequestNewComponent {
         };
       }),
     );
+  }
+
+  handleSaveLogo(logo: File) {
+    this.logoFile.set(logo);
+
+    if (this.dataRequestId()) {
+      this.dataRequestService.uploadLogo(this.dataRequestId(), logo).then(() => {
+        this.logoFile.set(null);
+      });
+    }
   }
 }

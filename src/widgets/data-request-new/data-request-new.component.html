@@ -7,7 +7,11 @@
   <div wizardContent>
     @switch (wizard.currentStepId()) {
       @case (FORM_GROUP_NAMES.CONSUMER) {
-        <app-data-request-form-consumer [form]="form" />
+        <app-data-request-form-consumer
+          [form]="form"
+          (saveLogo)="handleSaveLogo($event)"
+          [dataRequestLogo]="dataRequest()?.dataConsumerLogoBase64"
+        />
       }
       @case (FORM_GROUP_NAMES.REQUEST) {
         <app-data-request-form-request [form]="form" />

@@ -179,6 +179,14 @@
         "dataConsumerDisplayName": {
           "label": "Anzeigename/Kurzform",
           "placeholder": "Anzeigename/Kurzform"
+        },
+        "logo": {
+          "label": "Logo",
+          "upload": "Bild hochladen",
+          "error": {
+            "invalidFileType": "Ungültiger Dateityp. Bitte laden Sie eine PNG- oder JPG-Datei hoch.",
+            "size": "Die Datei ist zu gross. Max. erlaubte Grösse: {{ maxSize }}"
+          }
         }
       }
     },
