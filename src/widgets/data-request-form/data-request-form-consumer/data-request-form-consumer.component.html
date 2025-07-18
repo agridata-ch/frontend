@@ -76,14 +76,51 @@
           </span>
         </div>
         <div class="flex gap-6">
-          <div class="w-[100px]">
-            <span>{{ t('producer.logo') }}</span>
+          <div class="flex flex-col gap-1 justify-end min-w-[120px]">
+            <div class="flex items-center gap-4">
+              <div
+                class="w-[60px] h-[60px] flex items-center justify-center bg-white border rounded-full border-agridata-stroke overflow-hidden"
+              >
+                @if (this.logoPreviewUrl()) {
+                  <img
+                    [src]="logoPreviewUrl()"
+                    alt="Logo preview"
+                    class="max-w-[60px] max-h-[60px]"
+                  />
+                } @else {
+                  <span class="text-agridata-primary-text text-2xl">{{ consumerInitials() }}</span>
+                }
+              </div>
+              <div class="flex flex-col gap-2">
+                <span class="text-agridata-primary-text font-medium">{{ t('logo.label') }}</span>
+                <app-agridata-button
+                  [variant]="ButtonVariants.Link"
+                  (onClick)="fileInput.click()"
+                  (keydown.enter)="fileInput.click()"
+                >
+                  {{ t('logo.upload') }}
+                </app-agridata-button>
+                <input
+                  #fileInput
+                  type="file"
+                  accept=".jpg, .jpeg, .png"
+                  class="hidden"
+                  (change)="onFileSelected($event)"
+                />
+              </div>
+            </div>
+            <span class="min-h-[1.5em] text-red-500 block">
+              @if (logoErrorMessage()) {
+                <span class="text-sm">{{ logoErrorMessage() }}</span>
+              }
+            </span>
           </div>
           <app-form-control
             [control]="getFormControl(this.form()!, 'consumer.dataConsumerDisplayName')"
             id="dataConsumerDisplayName"
             [label]="t('dataConsumerDisplayName.label')"
             [placeholder]="t('dataConsumerDisplayName.placeholder')"
+            (input)="handleChangeConsumerInitials($event)"
             class="grow"
           />
         </div>

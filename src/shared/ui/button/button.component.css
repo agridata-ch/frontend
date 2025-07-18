@@ -95,6 +95,7 @@
   border: 0;
   color: var(--color-agridata-primary-600);
   font-weight: 600;
+  padding: 0;
 }
 
 .agridata-button.agridata-button-link:hover {

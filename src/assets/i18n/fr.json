@@ -177,6 +177,14 @@
         "dataConsumerDisplayName": {
           "label": "Nom d'affichage / Abréviation",
           "placeholder": "Nom d'affichage / Abréviation"
+        },
+        "logo": {
+          "label": "Logo",
+          "upload": "Télécharger une image",
+          "error": {
+            "invalidFileType": "Type de fichier invalide. Veuillez télécharger un fichier PNG ou JPG.",
+            "size": "Le fichier est trop volumineux. Taille maximale autorisée: {{ maxSize }}"
+          }
         }
       }
     },

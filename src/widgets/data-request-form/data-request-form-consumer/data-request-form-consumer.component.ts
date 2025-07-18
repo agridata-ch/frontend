@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { UidRegisterService } from '@/entities/api/uid-register.service';
@@ -7,12 +7,19 @@ import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AuthService, UserData } from '@/shared/lib/auth';
 import { getFormControl } from '@/shared/lib/form.helper';
 import { AgridataInputComponent } from '@/shared/ui/agridata-input';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
 import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
 
 @Component({
   selector: 'app-data-request-form-consumer',
-  imports: [ReactiveFormsModule, I18nDirective, FormControlComponent, AgridataInputComponent],
+  imports: [
+    ReactiveFormsModule,
+    I18nDirective,
+    FormControlComponent,
+    AgridataInputComponent,
+    ButtonComponent,
+  ],
   templateUrl: './data-request-form-consumer.component.html',
 })
 export class DataRequestFormConsumerComponent {
@@ -21,11 +28,18 @@ export class DataRequestFormConsumerComponent {
   readonly uidSearchService = inject(UidRegisterService);
 
   readonly form = input<FormGroup>();
-  readonly ControlTypes = ControlTypes;
-  readonly getFormControl = getFormControl;
+  readonly dataRequestLogo = input<string>();
+  readonly saveLogo = output<File>();
 
+  readonly ControlTypes = ControlTypes;
+  readonly ButtonVariants = ButtonVariants;
+  readonly getFormControl = getFormControl;
   readonly uidInfoResource = this.uidSearchService.uidInfosOfCurrentUser;
+
   readonly userData = signal<UserData | null>(this.authService.userData());
+  readonly consumerInitials = signal<string>('');
+  readonly logoFile = signal<File | null>(null);
+  readonly logoErrorMessage = signal<string | null>(null);
 
   readonly countries = computed(() => {
     return Object.entries(COUNTRIES).map(([key, value]) => {
@@ -34,6 +48,14 @@ export class DataRequestFormConsumerComponent {
         value: value,
       };
     });
+  });
+
+  readonly logoPreviewUrl = computed(() => {
+    const file = this.logoFile();
+    if (file) {
+      return URL.createObjectURL(file);
+    }
+    return this.dataRequestLogo();
   });
 
   readonly updateFormEffect = effect(() => {
@@ -47,6 +69,7 @@ export class DataRequestFormConsumerComponent {
         name: uidSearchResult.legalName || currentUserData.name,
       };
       this.userData.set(newUserData);
+      this.setConsumerInitials(newUserData.name);
 
       this.form()?.patchValue({
         consumer: {
@@ -59,4 +82,43 @@ export class DataRequestFormConsumerComponent {
       });
     }
   });
+
+  handleChangeConsumerInitials(event: Event) {
+    const name = (event.target as HTMLInputElement).value;
+    this.setConsumerInitials(name);
+  }
+
+  setConsumerInitials(name: string) {
+    this.consumerInitials.set(
+      name
+        .split(' ')
+        .slice(0, 2)
+        .map((namePart: string) => namePart.charAt(0).toUpperCase())
+        .join(''),
+    );
+  }
+
+  onFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) {
+      return;
+    }
+    const MAX_SIZE = 100 * 1024; // 100kB
+    if (file.size > MAX_SIZE) {
+      this.logoErrorMessage.set(
+        this.i18nService.translate('data-request.form.consumer.logo.error.size', {
+          maxSize: this.formatBytes(MAX_SIZE),
+        }),
+      );
+      return;
+    }
+    this.logoFile.set(file);
+    this.saveLogo.emit(file);
+  }
+
+  private formatBytes(bytes: number): string {
+    if (bytes < 1024) return `${bytes}B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)}kB`;
+    return `${(bytes / (1024 * 1024)).toFixed(2)}MB`;
+  }
 }
