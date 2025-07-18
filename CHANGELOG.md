@@ -1,3 +1,9 @@
+## [1.0.0-rc.21](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.20...v1.0.0-rc.21) (2025-07-18)
+
+### Features
+
+- **form-consumer:** add logo upload ([55a9512](https://github.com/agridata-ch/frontend/commit/55a9512927844124236e8f05ffcc11ef056da884)), closes [DIGIB2-403](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-403)
+
 ## [1.0.0-rc.20](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.19...v1.0.0-rc.20) (2025-07-16)
 
 ### Features
