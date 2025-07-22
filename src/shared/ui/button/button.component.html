@@ -5,7 +5,8 @@
   [attr.aria-label]="ariaLabel()"
   (click)="handleClick($event)"
   (keydown.enter)="handleClick($event)"
-  [class]="`agridata-button agridata-button-${variant()} w-full ${ selected() && 'selected'}`"
+  class="agridata-button"
+  [ngClass]="['agridata-button',`agridata-button-${variant()}` ,selected() ? 'selected' : '', buttonClass]"
 >
   <ng-content></ng-content>
 </button>

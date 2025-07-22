@@ -1,0 +1,48 @@
+<div class="relative inline-block">
+  <button
+    class="flex items-center hover:bg-agridata-hover-on-dark p-2 rounded-md"
+    [ngClass]="{ 'bg-agridata-hover-on-dark': overlayOpen() }"
+    (click)="toggleOverlay()"
+  >
+    <div class="avatar bg-agridata-icon-on-dark">
+      <span class="">{{ initials() }}</span>
+    </div>
+    <span class="ml-3">{{ userData()?.name }}</span>
+    <fa-icon [icon]="dropdownIcon()" class="ml-2" />
+  </button>
+
+  <app-popover [open]="overlayOpen()" class="right-0 p-4">
+    <div class="flex items-center">
+      <div class="avatar border border-agridata-icon-on-dark">
+        <span> {{ initials() }} </span>
+      </div>
+      <div class="ml-3">
+        <div class="text-lg font-semibold">{{ userData()?.name }}</div>
+        <div class="text-sm text-agridata-secondary-text">{{ userData()?.email }}</div>
+      </div>
+    </div>
+    <app-agridata-button
+      [variant]="ButtonVariants.Secondary"
+      class="w-full mt-4"
+      (onClick)="logout()"
+      >{{ 'account.logout' | i18n }}
+    </app-agridata-button>
+    <!--
+    // out of scope for story: DIGIB2-330
+    <h3 class="mt-6">{{ 'account.settings' | i18n }}</h3>
+     <ul class="mt-2">
+       <li>
+         <a>
+           <fa-icon [icon]="keyHoleIcon" />
+           {{ 'account.passwordAndSecurity' | i18n }}
+         </a>
+       </li>
+       <li>
+         <a>
+           <fa-icon [icon]="gearIcon" />
+           {{ 'account.settings' | i18n }}
+         </a>
+       </li>
+     </ul>-->
+  </app-popover>
+</div>

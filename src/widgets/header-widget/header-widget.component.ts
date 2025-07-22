@@ -4,10 +4,11 @@ import { RouterLink } from '@angular/router';
 import { LanguageSelectComponent } from '@/features/language-select/language-select.component';
 import { I18nPipe } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
+import { AccountOverlayComponent } from '@/widgets/account-overlay/account-overlay.component';
 
 @Component({
   selector: 'app-header-widget',
-  imports: [RouterLink, LanguageSelectComponent, I18nPipe],
+  imports: [RouterLink, LanguageSelectComponent, I18nPipe, AccountOverlayComponent],
   templateUrl: './header-widget.component.html',
   styleUrl: './header-widget.component.css',
 })
@@ -19,9 +20,5 @@ export class HeaderWidgetComponent {
 
   login = () => {
     this.authService.login();
-  };
-
-  logout = () => {
-    this.authService.logout();
   };
 }

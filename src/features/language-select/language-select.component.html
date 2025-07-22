@@ -9,10 +9,8 @@
     </span>
     <fa-icon [icon]="dropdownIcon()" class="ml-2" />
   </button>
-  @if (open()) {
-    <ul
-      class="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden left-2.5"
-    >
+  <app-popover [open]="open()" class="left-2.5 overflow-hidden">
+    <ul>
       @for (option of languageOptions(); track option) {
         <li
           click-stop-propagation
@@ -24,5 +22,5 @@
         </li>
       }
     </ul>
-  }
+  </app-popover>
 </div>

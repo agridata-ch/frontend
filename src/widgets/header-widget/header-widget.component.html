@@ -3,11 +3,7 @@
   <div class="flex flex-row gap-10 items-center">
     <agridata-language-select />
     @if (isAuthenticated() && userData()) {
-      <div class="flex flex-col">
-        <span>{{ userData()?.name }}</span>
-        <span>{{ userData()?.email }}</span>
-        <button (click)="logout()">{{ 'account.logout' | i18n }}</button>
-      </div>
+      <app-account-overlay [userData]="userData()"></app-account-overlay>
     } @else {
       <button (click)="login()">{{ 'account.login' | i18n }}</button>
     }

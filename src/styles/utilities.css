@@ -1,4 +1,3 @@
-
 @layer utilities {
   /* slide-in from the right */
   @keyframes toast-in {
@@ -25,6 +24,7 @@
   .animate-toast-in {
     animation: toast-in 0.5s cubic-bezier(0.68, -0.55, 0.25, 1.35);
   }
+
   .animate-toast-out {
     animation: toast-out 0.5s cubic-bezier(0.68, -0.55, 0.25, 1.35);
   }
@@ -38,4 +38,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
+}
+
+.avatar {
+  @apply w-10 h-10 rounded-full  flex items-center justify-center flex-shrink-0;
+}
+
+.popover {
+  @apply absolute text-agridata-primary-text rounded-md shadow-lg bg-white border border-gray-200 z-10 origin-top
 }

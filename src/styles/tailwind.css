@@ -11,7 +11,6 @@
   --color-agridata-primary-700: #2b55aa;
   --color-agridata-primary-800: #224488;
   --color-agridata-primary-900: #1a3366;
-
   --color-agridata-secondary-600: #13C296;
 
   --color-agridata-primary-text: #263645;
@@ -21,4 +20,8 @@
   --color-agridata-stroke: #ededed;
   --color-agridata-background-page: #ededed;
   --color-agridata-content-gray: #f1f5f9;
+
+  /* todo is this ok in figma it is fff 25% ?*/
+  --color-agridata-hover-on-dark: #ffffff40;
+  --color-agridata-icon-on-dark: #656565;
 }
