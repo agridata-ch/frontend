@@ -1,6 +1,6 @@
 import { Component, computed, input, output, signal } from '@angular/core';
 
-import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestProducerViewDto, ConsentRequestStateEnum } from '@/entities/openapi';
 import { I18nPipe } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
@@ -11,10 +11,10 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
   styleUrl: './consent-request-filter.component.css',
 })
 export class ConsentRequestFilterComponent {
-  readonly requests = input.required<ConsentRequestDto[]>();
+  readonly requests = input.required<ConsentRequestProducerViewDto[]>();
   onClick = output<string | null>();
 
-  readonly requestsSignal = signal<ConsentRequestDto[]>([]);
+  readonly requestsSignal = signal<ConsentRequestProducerViewDto[]>([]);
   readonly ButtonVariants = ButtonVariants;
 
   readonly consentRequestStateEnum = ConsentRequestStateEnum;

@@ -17,6 +17,8 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { ConsentRequestConsumerViewDto } from '../model/consentRequestConsumerViewDto';
+// @ts-ignore
 import { DataRequestDto } from '../model/dataRequestDto';
 // @ts-ignore
 import { DataRequestUpdateDto } from '../model/dataRequestUpdateDto';
@@ -41,7 +43,7 @@ export class DataRequestsService extends BaseService {
 
     /**
      * Create Data Request Draft
-     * Creates a new data request draft. Only available for consumers.
+     * Creates a new data request in draft status. Only accessible to users with the consumer role.
      * @param dataRequestUpdateDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -107,8 +109,65 @@ export class DataRequestsService extends BaseService {
     }
 
     /**
+     * Get Consent Requests Of Data Request
+     * Retrieves all consent requests associated with a specific data request. Accessible to admin users or the consumer who owns the data request.
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getConsentRequestsOfDataRequest(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ConsentRequestConsumerViewDto>>;
+    public getConsentRequestsOfDataRequest(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ConsentRequestConsumerViewDto>>>;
+    public getConsentRequestsOfDataRequest(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ConsentRequestConsumerViewDto>>>;
+    public getConsentRequestsOfDataRequest(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getConsentRequestsOfDataRequest.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (SecurityScheme) required
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/agreement/v1/data-requests/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/consent-requests`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<Array<ConsentRequestConsumerViewDto>>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get Data Request
-     * Retrieves data request if the user has the admin role or the request has the same uid as the current consumer.
+     * Retrieves a specific data request by its ID. Accessible to admin users or the consumer who owns the data request. 
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -165,7 +224,7 @@ export class DataRequestsService extends BaseService {
 
     /**
      * Get Data Requests
-     * Retrieves all data requests if logged in as admin, or all data requests of the current consumer if logged in as consumer.
+     * Retrieves a list of data requests. Admin users receive all data requests, while consumers receive only the data requests they own.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -218,7 +277,7 @@ export class DataRequestsService extends BaseService {
 
     /**
      * Submit Data Request
-     * Submits a data request. Only available for consumers.
+     * Submits a completed data request for review. Only accessible to the consumer who owns the data request.
      * @param id 
      * @param dataRequestUpdateDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -289,7 +348,7 @@ export class DataRequestsService extends BaseService {
 
     /**
      * Update Data Request Details
-     * Updates the details of an existing data request. Only available for consumers.
+     * Updates the details of an existing data request. Only accessible to the consumer who owns the data request.
      * @param id 
      * @param dataRequestUpdateDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -360,7 +419,7 @@ export class DataRequestsService extends BaseService {
 
     /**
      * Update Data Request Logo
-     * Updates the logo of a data request. Only available for consumers.
+     * Updates the logo of a specific data request. Only accessible to the consumer who owns the data request.
      * @param id 
      * @param logo 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

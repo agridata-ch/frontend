@@ -12,3 +12,5 @@ export const COUNTRIES = {
   CH: 'CH',
   LI: 'LI',
 };
+
+export const ACTIVE_UID_FIELD = 'activeUid';

@@ -17,13 +17,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { ConsentRequestDetailViewDto } from '../model/consentRequestDetailViewDto';
-// @ts-ignore
-import { ConsentRequestProducerViewDto } from '../model/consentRequestProducerViewDto';
-// @ts-ignore
-import { ConsentRequestStateEnum } from '../model/consentRequestStateEnum';
+import { BurDto } from '../model/burDto';
 // @ts-ignore
 import { ExceptionDto } from '../model/exceptionDto';
+// @ts-ignore
+import { UidDto } from '../model/uidDto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -35,25 +33,25 @@ import { BaseService } from '../api.base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ConsentRequestsService extends BaseService {
+export class ParticipantsService extends BaseService {
 
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
         super(basePath, configuration);
     }
 
     /**
-     * Get Consent Request
-     * Retrieves a specific consent request by its ID. Accessible to admin users or to the consumer who owns the associated data request.
-     * @param id 
+     * Get Authorized Burs By Uid
+     * Retrieves all BURs authorized for the given UID. Only accessible to admin users.
+     * @param uid 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getConsentRequest(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ConsentRequestDetailViewDto>;
-    public getConsentRequest(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ConsentRequestDetailViewDto>>;
-    public getConsentRequest(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ConsentRequestDetailViewDto>>;
-    public getConsentRequest(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getConsentRequest.');
+    public getAuthorizedBursByUid(uid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<BurDto>>;
+    public getAuthorizedBursByUid(uid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<BurDto>>>;
+    public getAuthorizedBursByUid(uid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<BurDto>>>;
+    public getAuthorizedBursByUid(uid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (uid === null || uid === undefined) {
+            throw new Error('Required parameter uid was null or undefined when calling getAuthorizedBursByUid.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -83,9 +81,9 @@ export class ConsentRequestsService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/agreement/v1/consent-requests/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
+        let localVarPath = `/api/participant/v1/uid/${this.configuration.encodeParam({name: "uid", value: uid, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/authorized-burs`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<ConsentRequestDetailViewDto>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<Array<BurDto>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -99,20 +97,15 @@ export class ConsentRequestsService extends BaseService {
     }
 
     /**
-     * Get Consent Requests For Current Data Producer
-     * Retrieves all consent requests assigned to the currently authenticated data producer. Only accessible to users with the producer role.
-     * @param dataProducerUid Optional filter to retrieve consent requests for a specific producer UID. If not provided, all requests for the currently authenticated producer are returned.
+     * Get Authorized Uids
+     * Retrieves all UIDs authorized for the currently authenticated data producer.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getConsentRequests(dataProducerUid?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ConsentRequestProducerViewDto>>;
-    public getConsentRequests(dataProducerUid?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ConsentRequestProducerViewDto>>>;
-    public getConsentRequests(dataProducerUid?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ConsentRequestProducerViewDto>>>;
-    public getConsentRequests(dataProducerUid?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>dataProducerUid, 'dataProducerUid');
+    public getAuthorizedUids(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<UidDto>>;
+    public getAuthorizedUids(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<UidDto>>>;
+    public getAuthorizedUids(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<UidDto>>>;
+    public getAuthorizedUids(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -141,12 +134,11 @@ export class ConsentRequestsService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/agreement/v1/consent-requests`;
+        let localVarPath = `/api/participant/v1/authorized-uids`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<ConsentRequestProducerViewDto>>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<Array<UidDto>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -158,22 +150,18 @@ export class ConsentRequestsService extends BaseService {
     }
 
     /**
-     * Update Consent Request State For Current Data Producer
-     * Updates the status of a specific consent request. Only accessible to the data producer assigned to the consent request.
-     * @param id ID of the consent request
-     * @param body New status of the consent request
+     * Get Authorized Uids By Kt Id P
+     * Retrieves all UIDs authorized for the specified ktIdP. Only accessible to admin users.
+     * @param ktIdP 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateConsentRequestStatus(id: string, body: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public updateConsentRequestStatus(id: string, body: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public updateConsentRequestStatus(id: string, body: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public updateConsentRequestStatus(id: string, body: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling updateConsentRequestStatus.');
-        }
-        if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling updateConsentRequestStatus.');
+    public getAuthorizedUidsByKtIdP(ktIdP: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<UidDto>>;
+    public getAuthorizedUidsByKtIdP(ktIdP: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<UidDto>>>;
+    public getAuthorizedUidsByKtIdP(ktIdP: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<UidDto>>>;
+    public getAuthorizedUidsByKtIdP(ktIdP: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (ktIdP === null || ktIdP === undefined) {
+            throw new Error('Required parameter ktIdP was null or undefined when calling getAuthorizedUidsByKtIdP.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -192,15 +180,6 @@ export class ConsentRequestsService extends BaseService {
         const localVarTransferCache: boolean = options?.transferCache ?? true;
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -212,12 +191,11 @@ export class ConsentRequestsService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/agreement/v1/consent-requests/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/status`;
+        let localVarPath = `/api/participant/v1/ktIdP/${this.configuration.encodeParam({name: "ktIdP", value: ktIdP, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/authorized-uids`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<any>('put', `${basePath}${localVarPath}`,
+        return this.httpClient.request<Array<UidDto>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: body,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

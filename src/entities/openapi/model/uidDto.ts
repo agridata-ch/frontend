@@ -7,16 +7,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LegalFormEnum } from './legalFormEnum';
 
 
 /**
- * Data transfer object representing the consumer of requested data
+ * Data transfer object representing an uid
  */
-export interface DataConsumerDto { 
-    id?: string;
-    /**
-     * Name of the data consumer organization or individual
-     */
+export interface UidDto { 
+    uid?: string;
     name?: string;
+    legalFormCode?: LegalFormEnum;
 }
+export namespace UidDto {
+}
+
 

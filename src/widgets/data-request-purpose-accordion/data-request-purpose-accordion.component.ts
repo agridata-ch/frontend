@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
 
-import { ConsentRequestDtoDataRequestProducts } from '@/entities/openapi';
+import { ConsentRequestDetailViewDtoDataRequestProducts } from '@/entities/openapi';
 import { I18nPipe, I18nService } from '@/shared/i18n';
 import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
 
@@ -13,18 +13,18 @@ import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
 export class DataRequestPurposeAccordionComponent {
   readonly i18nService = inject(I18nService);
   readonly purpose = input<string>();
-  readonly products = input<ConsentRequestDtoDataRequestProducts>();
+  readonly products = input<ConsentRequestDetailViewDtoDataRequestProducts>();
   readonly currentLanguage = computed(() => this.i18nService.lang());
 
-  readonly productsList = computed<ConsentRequestDtoDataRequestProducts[]>(() => {
+  readonly productsList = computed<ConsentRequestDetailViewDtoDataRequestProducts[]>(() => {
     const productsValue = this.products();
     if (!productsValue) return [];
     return Array.isArray(productsValue) ? productsValue : [];
   });
 
   getFieldFromLang = (
-    product: ConsentRequestDtoDataRequestProducts,
-    field: keyof ConsentRequestDtoDataRequestProducts,
+    product: ConsentRequestDetailViewDtoDataRequestProducts,
+    field: keyof ConsentRequestDetailViewDtoDataRequestProducts,
   ) => {
     const fieldValue = product?.[field];
     return (fieldValue as Record<string, string>)?.[this.currentLanguage()] ?? '';

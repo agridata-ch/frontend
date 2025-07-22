@@ -1,0 +1,9 @@
+<div
+  class="absolute scale-y-0 opacity-0 text-agridata-primary-text shadow-lg border bg-white origin-top border-gray-200 rounded-md z-10 transition-all duration-300 overflow-hidden"
+  [class.scale-y-100]="isOpen()"
+  [class.opacity-100]="isOpen()"
+  [class.popup-animate-in]="isOpen()"
+  [class]="class()"
+>
+  <ng-content></ng-content>
+</div>

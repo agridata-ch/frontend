@@ -21,12 +21,12 @@ describe('LanguageSelectComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should toggle open state when handleToggle is called', () => {
-    expect(component.open()).toBe(false);
+  it('should toggle isOpen state when handleToggle is called', () => {
+    expect(component.isOpen()).toBe(false);
     component.handleToggle();
-    expect(component.open()).toBe(true);
+    expect(component.isOpen()).toBe(true);
     component.handleToggle();
-    expect(component.open()).toBe(false);
+    expect(component.isOpen()).toBe(false);
   });
 
   it('should set selectedLanguage and call TranslocoService.setActiveLang on changeLanguage', () => {
@@ -34,13 +34,13 @@ describe('LanguageSelectComponent', () => {
     component.changeLanguage(lang);
     expect(component.selectedLanguage()).toBe(lang);
     fixture.detectChanges();
-    expect(component.open()).toBe(false);
+    expect(component.isOpen()).toBe(false);
   });
 
   it('should return correct icon from dropdownIcon computed', () => {
-    component.open.set(false);
+    component.isOpen.set(false);
     expect(component.dropdownIcon()).toBeDefined();
-    component.open.set(true);
+    component.isOpen.set(true);
     expect(component.dropdownIcon()).toBeDefined();
   });
 

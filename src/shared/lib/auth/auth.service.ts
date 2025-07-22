@@ -1,6 +1,9 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { Subject, takeUntil } from 'rxjs';
+
+import { USER_ROLES } from '@/shared/constants/constants';
 
 export type UserData = {
   email: string;
@@ -17,10 +20,14 @@ export type UserData = {
 export class AuthService {
   private readonly oidcService = inject(OidcSecurityService);
   private readonly router = inject(Router);
+  private readonly destroy$ = new Subject<void>();
 
   readonly isAuthenticated = signal<boolean>(false);
   readonly userData = signal<UserData | null>(null);
   readonly userRoles = signal<string[] | null>(null);
+  readonly isProducer = computed(
+    () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) ?? false,
+  );
 
   constructor() {
     this.checkAuth(true);
@@ -45,26 +52,29 @@ export class AuthService {
   }
 
   checkAuth(updateLocalStorage = false) {
-    this.oidcService.checkAuth().subscribe(({ isAuthenticated, userData, accessToken }) => {
-      this.isAuthenticated.set(isAuthenticated);
-      if (isAuthenticated) {
-        this.userData.set(userData);
-        const decoded = this.decodeJwt(accessToken);
-        const roles =
-          decoded?.realm_access?.roles && Array.isArray(decoded.realm_access.roles)
-            ? decoded.realm_access.roles
-            : [];
-        this.userRoles.set(roles);
-        if (updateLocalStorage) {
-          localStorage.setItem('oidc.user', JSON.stringify(userData));
+    this.oidcService
+      .checkAuth()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(({ isAuthenticated, userData, accessToken }) => {
+        this.isAuthenticated.set(isAuthenticated);
+        if (isAuthenticated) {
+          this.userData.set(userData);
+          const decoded = this.decodeJwt(accessToken);
+          const roles =
+            decoded?.realm_access?.roles && Array.isArray(decoded.realm_access.roles)
+              ? decoded.realm_access.roles
+              : [];
+          this.userRoles.set(roles);
+          if (updateLocalStorage) {
+            localStorage.setItem('oidc.user', JSON.stringify(userData));
+          }
+        } else {
+          this.userData.set(null);
+          if (updateLocalStorage) {
+            localStorage.removeItem('oidc.user');
+          }
         }
-      } else {
-        this.userData.set(null);
-        if (updateLocalStorage) {
-          localStorage.removeItem('oidc.user');
-        }
-      }
-    });
+      });
   }
 
   login() {
@@ -72,8 +82,16 @@ export class AuthService {
   }
 
   logout() {
-    this.oidcService.logoff().subscribe(() => {
-      this.router.navigate(['/']);
-    });
+    this.oidcService
+      .logoff()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.router.navigate(['/']);
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

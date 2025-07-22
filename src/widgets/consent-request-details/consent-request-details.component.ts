@@ -3,7 +3,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ConsentRequestService } from '@/entities/api';
 import {
-  ConsentRequestDto,
+  ConsentRequestProducerViewDto,
   ConsentRequestStateEnum,
   DataRequestPurposeDto,
 } from '@/entities/openapi';
@@ -42,7 +42,7 @@ export class ConsentRequestDetailsComponent {
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly i18nService = inject(I18nService);
 
-  readonly request = input<ConsentRequestDto | null>(null);
+  readonly request = input<ConsentRequestProducerViewDto | null>(null);
   readonly onReloadConsentRequests = output<void>();
   readonly onCloseDetail = output<string | null>();
 

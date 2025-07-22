@@ -69,16 +69,8 @@ describe('TableActionsComponent', () => {
   describe('click outside behavior', () => {
     it('should close the menu when clicking outside', () => {
       component.isOpen.set(true);
-      const outside = document.createElement('div');
-      component.onClickOutside(outside);
+      component.handleClickOutside();
       expect(component.isOpen()).toBeFalsy();
-    });
-
-    it('should not close when clicking inside host element', () => {
-      component.isOpen.set(true);
-      const hostElement: HTMLElement = fixture.nativeElement;
-      component.onClickOutside(hostElement);
-      expect(component.isOpen()).toBeTruthy();
     });
   });
 });

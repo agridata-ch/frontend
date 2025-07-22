@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { UidRegisterService } from '@/entities/api';
-import { UidRegisterOrganisationDto, UidRegisterSearchService } from '@/entities/openapi';
+import { UIDRegisterSearchService, UidRegisterOrganisationDto } from '@/entities/openapi';
 
 describe('DataRequestService', () => {
   let service: UidRegisterService;
@@ -19,7 +19,7 @@ describe('DataRequestService', () => {
     TestBed.configureTestingModule({
       providers: [
         UidRegisterService,
-        { provide: UidRegisterSearchService, useValue: mockUidRegisterService },
+        { provide: UIDRegisterSearchService, useValue: mockUidRegisterService },
       ],
     });
     service = TestBed.inject(UidRegisterService);

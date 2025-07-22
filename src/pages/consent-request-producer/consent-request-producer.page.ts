@@ -1,11 +1,12 @@
 import { Location } from '@angular/common';
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { Component, OnDestroy, effect, inject, input, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
 
 import { ConsentRequestService } from '@/entities/api';
-import { ConsentRequestDto } from '@/entities/openapi';
-import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { ConsentRequestProducerViewDto } from '@/entities/openapi';
+import { ACTIVE_UID_FIELD, ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nDirective } from '@/shared/i18n';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
@@ -20,8 +21,9 @@ import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
   ],
   templateUrl: './consent-request-producer.page.html',
 })
-export class ConsentRequestProducerPage {
+export class ConsentRequestProducerPage implements OnDestroy {
   private readonly consentRequestService = inject(ConsentRequestService);
+  private readonly agridataStateService = inject(AgridataStateService);
   private readonly location = inject(Location);
 
   // binds to the route parameter :consentRequestId
@@ -30,7 +32,13 @@ export class ConsentRequestProducerPage {
 
   readonly consentRequests = this.consentRequestService.fetchConsentRequests;
 
-  readonly selectedRequest = signal<ConsentRequestDto | null>(null);
+  readonly selectedRequest = signal<ConsentRequestProducerViewDto | null>(null);
+
+  private readonly storageEventListener = (event: StorageEvent) => {
+    if (event.key === ACTIVE_UID_FIELD) {
+      this.agridataStateService.uidSignal.set(event.newValue);
+    }
+  };
 
   constructor() {
     effect(() => {
@@ -41,9 +49,15 @@ export class ConsentRequestProducerPage {
 
       this.selectedRequest.set(request);
     });
+
+    window.addEventListener('storage', this.storageEventListener);
   }
 
-  setSelectedRequest = (request?: ConsentRequestDto | null) => {
+  ngOnDestroy() {
+    window.removeEventListener('storage', this.storageEventListener);
+  }
+
+  setSelectedRequest = (request?: ConsentRequestProducerViewDto | null) => {
     this.selectedRequest.set(request ?? null);
 
     const base = ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH;

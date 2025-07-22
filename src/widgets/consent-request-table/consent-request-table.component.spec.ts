@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConsentRequestService } from '@/entities/api/consent-request.service';
 import {
-  ConsentRequestDto,
-  ConsentRequestDtoDataRequestStateCode,
+  ConsentRequestDetailViewDto,
+  ConsentRequestDetailViewDtoDataRequestStateCode,
   ConsentRequestStateEnum,
 } from '@/entities/openapi';
 import { ToastService, ToastType } from '@/shared/toast';
@@ -25,7 +25,7 @@ describe('ConsentRequestTableComponent', () => {
   let mockConsentService: { updateConsentRequestStatus: jest.Mock };
   const dataRequestStateHeader = 'data-request.state';
 
-  const sampleRequests: ConsentRequestDto[] = [
+  const sampleRequests: ConsentRequestDetailViewDto[] = [
     {
       id: '1',
       stateCode: ConsentRequestStateEnum.Opened,
@@ -33,9 +33,9 @@ describe('ConsentRequestTableComponent', () => {
       dataRequest: {
         dataConsumer: { name: 'Alice' },
         title: { de: 'Antrag A' },
-        stateCode: ConsentRequestDtoDataRequestStateCode.Draft,
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
       },
-    } as ConsentRequestDto,
+    } as ConsentRequestDetailViewDto,
     {
       id: '2',
       stateCode: ConsentRequestStateEnum.Granted,
@@ -43,9 +43,9 @@ describe('ConsentRequestTableComponent', () => {
       dataRequest: {
         dataConsumer: { name: 'Bob' },
         title: { de: 'Antrag B' },
-        stateCode: ConsentRequestDtoDataRequestStateCode.Draft,
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
       },
-    } as ConsentRequestDto,
+    } as ConsentRequestDetailViewDto,
     {
       id: '3',
       stateCode: ConsentRequestStateEnum.Declined,
@@ -53,9 +53,9 @@ describe('ConsentRequestTableComponent', () => {
       dataRequest: {
         dataConsumer: { name: 'Carol' },
         title: { de: 'Antrag C' },
-        stateCode: ConsentRequestDtoDataRequestStateCode.Draft,
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
       },
-    } as ConsentRequestDto,
+    } as ConsentRequestDetailViewDto,
   ];
 
   beforeEach(async () => {

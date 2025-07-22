@@ -3,7 +3,7 @@ import { faEye, faFile } from '@fortawesome/free-regular-svg-icons';
 import { faBan, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { ConsentRequestService } from '@/entities/api';
-import { ConsentRequestDto, ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestProducerViewDto, ConsentRequestStateEnum } from '@/entities/openapi';
 import {
   getToastMessage,
   getToastTitle,
@@ -39,8 +39,8 @@ export class ConsentRequestTableComponent {
 
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
-  readonly consentRequests = input.required<ConsentRequestDto[]>();
-  readonly tableRowAction = output<ConsentRequestDto>();
+  readonly consentRequests = input.required<ConsentRequestProducerViewDto[]>();
+  readonly tableRowAction = output<ConsentRequestProducerViewDto>();
   readonly onReloadConsentRequests = output<void>();
 
   readonly fileIcon = faFile;
@@ -59,7 +59,7 @@ export class ConsentRequestTableComponent {
     const filter = this.stateCodeFilter();
     return this.consentRequests()
       .filter((request) => !filter || request.stateCode === filter)
-      .map((request: ConsentRequestDto) => ({
+      .map((request: ConsentRequestProducerViewDto) => ({
         id: request.id,
         data: [
           {
@@ -92,7 +92,7 @@ export class ConsentRequestTableComponent {
     return this.i18nService.translate(`data-request.stateCode.${value}`);
   }
 
-  getFilteredActions = (request?: ConsentRequestDto): ActionDTO[] => {
+  getFilteredActions = (request?: ConsentRequestProducerViewDto): ActionDTO[] => {
     if (!request) return [];
     const requestTitle = this.i18nService.useObjectTranslation(request.dataRequest?.title);
     const details = {

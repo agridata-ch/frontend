@@ -14,7 +14,7 @@ import { TranslationDto } from './translationDto';
 /**
  * List of data products requested
  */
-export interface ConsentRequestDtoDataRequestProducts { 
+export interface ConsentRequestDetailViewDtoDataRequestProducts { 
     id: string;
     /**
      * From which data source system this product originates
@@ -29,7 +29,7 @@ export interface ConsentRequestDtoDataRequestProducts {
      */
     description?: TranslationDto;
 }
-export namespace ConsentRequestDtoDataRequestProducts {
+export namespace ConsentRequestDetailViewDtoDataRequestProducts {
 }
 
 
