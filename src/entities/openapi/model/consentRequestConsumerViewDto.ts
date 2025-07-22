@@ -8,30 +8,23 @@
  * Do not edit the class manually.
  */
 import { ConsentRequestStateEnum } from './consentRequestStateEnum';
-import { ConsentRequestDtoDataRequest } from './consentRequestDtoDataRequest';
 
 
 /**
  * Data transfer object representing a consent request
  */
-export interface ConsentRequestDto { 
+export interface ConsentRequestConsumerViewDto { 
     id: string;
     /**
-     * Unique identifier of the data producer
+     * UID of the data producer
      */
-    dataProducerId?: string;
+    dataProducerUid?: string;
     /**
      * Current state of the consent request
      */
     stateCode?: ConsentRequestStateEnum;
-    /**
-     * Date and time when the state was changed last
-     */
-    lastStateChangeDate?: string;
-    requestDate?: string;
-    dataRequest?: ConsentRequestDtoDataRequest;
 }
-export namespace ConsentRequestDto {
+export namespace ConsentRequestConsumerViewDto {
 }
 
 

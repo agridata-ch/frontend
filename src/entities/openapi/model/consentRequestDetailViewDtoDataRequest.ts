@@ -8,16 +8,16 @@
  * Do not edit the class manually.
  */
 import { DataRequestPurposeDto } from './dataRequestPurposeDto';
+import { ConsentRequestDetailViewDtoDataRequestProducts } from './consentRequestDetailViewDtoDataRequestProducts';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
-import { ConsentRequestDtoDataRequestStateCode } from './consentRequestDtoDataRequestStateCode';
+import { ConsentRequestDetailViewDtoDataRequestStateCode } from './consentRequestDetailViewDtoDataRequestStateCode';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
-import { ConsentRequestDtoDataRequestProducts } from './consentRequestDtoDataRequestProducts';
 
 
 /**
  * Details of the underlying data request
  */
-export interface ConsentRequestDtoDataRequest { 
+export interface ConsentRequestDetailViewDtoDataRequest { 
     id?: string;
     /**
      * Title of the data request
@@ -31,8 +31,8 @@ export interface ConsentRequestDtoDataRequest {
      * Purpose of the data request
      */
     purpose?: DataRequestPurposeDto;
-    products?: ConsentRequestDtoDataRequestProducts;
-    stateCode: ConsentRequestDtoDataRequestStateCode;
+    products?: ConsentRequestDetailViewDtoDataRequestProducts;
+    stateCode: ConsentRequestDetailViewDtoDataRequestStateCode;
     /**
      * LegalName of the data consumer taken from the uid register
      */
@@ -74,7 +74,7 @@ export interface ConsentRequestDtoDataRequest {
      */
     dataConsumerLogoBase64?: string;
 }
-export namespace ConsentRequestDtoDataRequest {
+export namespace ConsentRequestDetailViewDtoDataRequest {
 }
 
 

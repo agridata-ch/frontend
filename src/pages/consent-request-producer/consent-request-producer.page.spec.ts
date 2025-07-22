@@ -4,8 +4,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConsentRequestService } from '@/entities/api';
 import {
-  ConsentRequestDto,
-  ConsentRequestDtoDataRequestStateCode,
+  ConsentRequestDetailViewDto,
+  ConsentRequestDetailViewDtoDataRequestStateCode,
   ConsentRequestStateEnum,
 } from '@/entities/openapi';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
@@ -20,7 +20,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   let mockLocation: jest.Mocked<Location>;
   let mockI18n: jest.Mocked<I18nService>;
 
-  const sampleRequests: ConsentRequestDto[] = [
+  const sampleRequests: ConsentRequestDetailViewDto[] = [
     {
       id: '1',
       stateCode: ConsentRequestStateEnum.Opened,
@@ -28,9 +28,9 @@ describe('ConsentRequestProducerPage - component behavior', () => {
       dataRequest: {
         dataConsumer: { name: 'Alice' },
         title: { de: 'Antrag A' },
-        stateCode: ConsentRequestDtoDataRequestStateCode.Draft,
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
       },
-    } as ConsentRequestDto,
+    } as ConsentRequestDetailViewDto,
     {
       id: '2',
       stateCode: ConsentRequestStateEnum.Granted,
@@ -38,9 +38,9 @@ describe('ConsentRequestProducerPage - component behavior', () => {
       dataRequest: {
         dataConsumer: { name: 'Bob' },
         title: { de: 'Antrag B' },
-        stateCode: ConsentRequestDtoDataRequestStateCode.Draft,
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
       },
-    } as ConsentRequestDto,
+    } as ConsentRequestDetailViewDto,
     {
       id: '3',
       stateCode: ConsentRequestStateEnum.Declined,
@@ -48,9 +48,9 @@ describe('ConsentRequestProducerPage - component behavior', () => {
       dataRequest: {
         dataConsumer: { name: 'Charlie' },
         title: { de: 'Antrag C' },
-        stateCode: ConsentRequestDtoDataRequestStateCode.Draft,
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
       },
-    } as ConsentRequestDto,
+    } as ConsentRequestDetailViewDto,
   ];
 
   beforeEach(async () => {

@@ -1,7 +1,9 @@
 {
   "account": {
     "login": "Accedi",
-    "logout": "Disconnetti"
+    "logout": "Disconnetti",
+    "settings": "Impostazioni",
+    "passwordAndSecurity": "Password e sicurezza"
   },
   "agridata-table": {
     "actions": "Azioni"

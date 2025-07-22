@@ -1,7 +1,9 @@
 {
   "account": {
     "login": "Se connecter",
-    "logout": "Se déconnecter"
+    "logout": "Se déconnecter",
+    "settings": "Paramètres",
+    "passwordAndSecurity": "Mot de passe et sécurité"
   },
   "agridata-table": {
     "actions": "Actions"

@@ -2,12 +2,19 @@
 openapi: 3.1.0
 components:
   schemas:
-    AgisSearchParameters:
+    BurDto:
       type: object
+      description: Data transfer object representing a bur
       properties:
-        personSearchParameters:
-          $ref: "#/components/schemas/PersonSearchParameter"
-    ConsentRequestDto:
+        bur:
+          type: string
+        farmTypeCode:
+          $ref: "#/components/schemas/FarmTypeEnum"
+        subBurs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BurDto"
+    ConsentRequestConsumerViewDto:
       type: object
       required:
       - id
@@ -19,11 +26,194 @@ components:
           examples:
           - 3fa85f64-5717-4562-b3fc-2c963f66afa6
           description: Unique identifier of the consent request
-        dataProducerId:
+        dataProducerUid:
           type: string
           examples:
-          - eb034f30-511b-4888-9b73-5572dd7d846c
-          description: Unique identifier of the data producer
+          - CHE123456789
+          description: UID of the data producer
+        stateCode:
+          $ref: "#/components/schemas/ConsentRequestStateEnum"
+          type: string
+          examples:
+          - PENDING
+          description: Current state of the consent request
+    ConsentRequestDetailViewDto:
+      type: object
+      required:
+      - id
+      description: Data transfer object representing a consent request
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          description: Unique identifier of the consent request
+        dataProducerUid:
+          type: string
+          examples:
+          - CHE123456789
+          description: UID of the data producer
+        stateCode:
+          $ref: "#/components/schemas/ConsentRequestStateEnum"
+          type: string
+          examples:
+          - PENDING
+          description: Current state of the consent request
+        lastStateChangeDate:
+          type: string
+          format: date
+          examples:
+          - 2025-06-16T11:04:51.823889
+          description: Date and time when the state was changed last
+        requestDate:
+          $ref: "#/components/schemas/LocalDate"
+          type: string
+          examples:
+          - 2025-05-19
+          description: Date when the request was made
+        burs:
+          type: array
+          items:
+            $ref: "#/components/schemas/BurDto"
+          description: BURs that belong to the consent request
+        dataRequest:
+          type: object
+          required:
+          - stateCode
+          description: Details of the underlying data request
+          properties:
+            id:
+              $ref: "#/components/schemas/UUID"
+              type: string
+              examples:
+              - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+              description: Unique identifier of the data request
+            title:
+              $ref: "#/components/schemas/DataRequestTitleDto"
+              type: object
+              description: Title of the data request
+            description:
+              $ref: "#/components/schemas/DataRequestDescriptionDto"
+              type: object
+              description: 'Description of the data request '
+            purpose:
+              $ref: "#/components/schemas/DataRequestPurposeDto"
+              type: object
+              description: Purpose of the data request
+            products:
+              type: object
+              required:
+              - id
+              description: List of data products requested
+              properties:
+                id:
+                  $ref: "#/components/schemas/UUID"
+                  type: string
+                  examples:
+                  - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+                  description: Unique identifier of the product
+                dataSourceSystemCode:
+                  $ref: "#/components/schemas/DataSourceSystemEnum"
+                  type: string
+                  examples:
+                  - AGIS
+                  description: From which data source system this product originates
+                name:
+                  $ref: "#/components/schemas/TranslationDto"
+                  type: object
+                  examples:
+                  - R01
+                  description: How this product is categorized
+                description:
+                  $ref: "#/components/schemas/TranslationDto"
+                  type: object
+                  description: Description of the product
+            stateCode:
+              type:
+              - string
+              - object
+              enum:
+              - DRAFT
+              - SUBMITTED
+              description: State of the data request
+            dataConsumerLegalName:
+              type: string
+              examples:
+              - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
+              maxLength: 255
+              description: LegalName of the data consumer taken from the uid register
+            dataConsumerDisplayName:
+              type: string
+              examples:
+              - Bio Suisse
+              maxLength: 255
+              description: Shorter name of the data consumer defined by the data consumer
+                used when displaying the request to the producer
+            dataConsumerUid:
+              type: integer
+              examples:
+              - 106506215
+              description: Uid of the data consumer
+              maximum: 16
+            dataConsumerCity:
+              type: string
+              examples:
+              - Basel
+              maxLength: 120
+              description: City of the data consumer
+            dataConsumerZip:
+              type: string
+              examples:
+              - "4052"
+              maxLength: 10
+              description: Zip code of the data consumer
+            dataConsumerStreet:
+              type: string
+              examples:
+              - Peter Merian-Str. 34
+              maxLength: 255
+              description: Street of the data consumer
+            dataConsumerCountry:
+              type: string
+              examples:
+              - CH
+              maxLength: 2
+              description: 2 letter country code of the data consumer
+            contactPhoneNumber:
+              type: string
+              examples:
+              - +41 79 123 45 67
+              maxLength: 50
+              description: Contact phone number for the data request
+            contactEmailAddress:
+              type: string
+              examples:
+              - example@labelorganisation.ch
+              maxLength: 255
+              description: Contact email address for the data request
+            dataConsumerLogoBase64:
+              type: string
+              examples:
+              - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+              description: Base64-encoded logo of the data consumer
+    ConsentRequestProducerViewDto:
+      type: object
+      required:
+      - id
+      description: Data transfer object representing a consent request
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          description: Unique identifier of the consent request
+        dataProducerUid:
+          type: string
+          examples:
+          - CHE123456789
+          description: UID of the data producer
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
           type: string
@@ -388,39 +578,29 @@ components:
           description: Purpose of the data request
         dataConsumerDisplayName:
           type: string
-          minLength: 3
           examples:
           - Bio Suisse
-          maxLength: 255
           description: Shorter name of the data consumer defined by the data consumer
             used when displaying the request to the producer
         dataConsumerCity:
           type: string
-          minLength: 2
           examples:
           - Basel
-          maxLength: 120
           description: City of the data consumer
         dataConsumerZip:
           type: string
-          minLength: 4
           examples:
           - "4052"
-          maxLength: 10
           description: Zip code of the data consumer
         dataConsumerStreet:
           type: string
-          minLength: 2
           examples:
           - Peter Merian-Str. 34
-          maxLength: 120
           description: Street of the data consumer
         dataConsumerCountry:
           type: string
-          minLength: 2
           examples:
           - CH
-          maxLength: 2
           description: 2 letter country code of the data consumer
         contactPhoneNumber:
           type: string
@@ -463,6 +643,47 @@ components:
       enum:
       - GENERIC
       - UID_MISSING
+    FarmTypeEnum:
+      type: string
+      enum:
+      - GANZJAHRESBETRIEB
+      - PRODUKTIONSSTAETTE
+      - GEMEINSCHAFTSWEIDEBETRIEB
+      - SOEMMERUNGSBETRIEB
+      - BETRIEBSGEMEINSCHAFT
+      - VIEHHANDESUNTERNEHMEN
+      - WANDERHERDE
+      - TIERKLINIK
+      - SCHLACHTBETRIEB
+      - VIEHMAERKTE_UND_VERANSTALTUNGEN
+      - BETRIEBSZWEIGGEMEINSCHAFT
+      - NICHTKOMMERZIELLE_TIERHALTUNG
+      - OELN_GEMEINSCHAFT
+      - VERGAERUNG_KOMPOSTIERUNG_NAEHRSTOFFPOOL
+      - TIERHALTUNG
+      - NICHT_ZUGETEILT
+      - UNKNOWN
+    LegalFormEnum:
+      type: string
+      enum:
+      - NATUERLICHE_PERSON
+      - EINFACHE_GESELLSCHAFT
+      - KOLLEKTIVGESELLSCHAFT
+      - KOMMANDITGESELLSCHAFT
+      - KOMMANDITAKTIENGESELLSCHAFT
+      - AKTIENGESELLSCHAFT
+      - GMBH
+      - GENOSSENSCHAFT
+      - VEREIN
+      - STIFTUNG
+      - OEFF_RECHT_KOERPERSCHAFT_VERWALTUNG
+      - LANDESKIRCHE
+      - BUND
+      - KANTON
+      - BEZIRK
+      - GEMEINDE
+      - OEFF_RECHT_KOERPERSCHAFT_BETRIEB
+      - UNKNOWN
     LocalDate:
       type: string
       format: date
@@ -473,13 +694,6 @@ components:
       format: date-time
       examples:
       - 2022-03-10T12:15:50
-    PersonSearchParameter:
-      type: object
-      properties:
-        ktIdP:
-          type: string
-          examples:
-          - TG113657
     TranslationDto:
       type: object
       properties:
@@ -496,6 +710,16 @@ components:
       type: string
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+    UidDto:
+      type: object
+      description: Data transfer object representing an uid
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        legalFormCode:
+          $ref: "#/components/schemas/LegalFormEnum"
     UidRegisterAddressDto:
       type: object
       properties:
@@ -524,64 +748,42 @@ components:
       description: Authentication
       openIdConnectUrl: http://localhost:6999/realms/agate/.well-known/openid-configuration
 tags:
-- name: Agis Test Controller
-  description: Used to test the Agis service integration
 - name: Consent Requests
-  description: "Handles creation, retrieval, and updates of consent requests by the\
-    \ data producer"
+  description: "Provides access to consent requests for data producers, consumers,\
+    \ and admins. Data producers can retrieve and update consent requests assigned\
+    \ to them, consumers can access consent requests linked to their data requests,\
+    \ and admins have full access to all consent requests."
+- name: Data Products
+  description: Enables retrieval of available data products that can be requested
+    and used by participants in the data sharing process.
 - name: Data Requests
-  description: "Handles creation, retrieval, and updates of data requests by the data\
-    \ consumer"
-- name: Data products
-  description: "Handles creation, retrieval, and updates of data products"
+  description: "Provides access to data requests for consumers and admins. Consumers\
+    \ can create, update, submit, and retrieve their own data requests, while admins\
+    \ have full access to all data requests and their associated consent requests."
+- name: Participants
+  description: "Provides access to UIDs and BURs authorized for specific data producers,\
+    \ based on their ktIdP or UID."
 - name: Test Data
-- name: Uid register search
-  description: Enables searching for organisations in the UID register
+- name: UID Register Search
+  description: Provides access to organisation details retrieved from the official
+    UID register.
 paths:
-  /api/agis/v1/find-register-data:
-    post:
-      operationId: findRegisterData
-      tags:
-      - Agis Test Controller
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AgisSearchParameters"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema: {}
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-        "400":
-          description: Bad Request
-        "404":
-          description: The resource or element was not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-      summary: Find Register Data
-      security:
-      - SecurityScheme:
-        - agridata.ch.Agridata_Admin
   /api/agreement/v1/consent-requests:
     get:
+      description: Retrieves all consent requests assigned to the currently authenticated
+        data producer. Only accessible to users with the producer role.
       operationId: getConsentRequests
       tags:
       - Consent Requests
+      parameters:
+      - description: "Optional filter to retrieve consent requests for a specific\
+          \ producer UID. If not provided, all requests for the currently authenticated\
+          \ producer are returned."
+        example: CHE123456789
+        name: dataProducerUid
+        in: query
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -590,7 +792,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ConsentRequestDto"
+                  $ref: "#/components/schemas/ConsentRequestProducerViewDto"
         "401":
           description: Not Authorized
         "403":
@@ -611,8 +813,51 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Einwilliger
+  /api/agreement/v1/consent-requests/{id}:
+    get:
+      description: Retrieves a specific consent request by its ID. Accessible to admin
+        users or to the consumer who owns the associated data request.
+      operationId: getConsentRequest
+      tags:
+      - Consent Requests
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentRequestDetailViewDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Consent Request
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
   /api/agreement/v1/consent-requests/{id}/status:
     put:
+      description: Updates the status of a specific consent request. Only accessible
+        to the data producer assigned to the consent request.
       operationId: updateConsentRequestStatus
       tags:
       - Consent Requests
@@ -655,8 +900,8 @@ paths:
         - agridata.ch.Agridata_Einwilliger
   /api/agreement/v1/data-requests:
     get:
-      description: "Retrieves all data requests if logged in as admin, or all data\
-        \ requests of the current consumer if logged in as consumer."
+      description: "Retrieves a list of data requests. Admin users receive all data\
+        \ requests, while consumers receive only the data requests they own."
       operationId: getDataRequests
       tags:
       - Data Requests
@@ -691,7 +936,8 @@ paths:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
     post:
-      description: Creates a new data request draft. Only available for consumers.
+      description: Creates a new data request in draft status. Only accessible to
+        users with the consumer role.
       operationId: createDataRequestDraft
       tags:
       - Data Requests
@@ -732,8 +978,8 @@ paths:
         - agridata.ch.Agridata_Datenbezueger
   /api/agreement/v1/data-requests/{id}:
     put:
-      description: Updates the details of an existing data request. Only available
-        for consumers.
+      description: Updates the details of an existing data request. Only accessible
+        to the consumer who owns the data request.
       operationId: updateDataRequestDetails
       tags:
       - Data Requests
@@ -779,8 +1025,8 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
     get:
-      description: Retrieves data request if the user has the admin role or the request
-        has the same uid as the current consumer.
+      description: 'Retrieves a specific data request by its ID. Accessible to admin
+        users or the consumer who owns the data request. '
       operationId: getDataRequest
       tags:
       - Data Requests
@@ -818,9 +1064,53 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
+  /api/agreement/v1/data-requests/{id}/consent-requests:
+    get:
+      description: Retrieves all consent requests associated with a specific data
+        request. Accessible to admin users or the consumer who owns the data request.
+      operationId: getConsentRequestsOfDataRequest
+      tags:
+      - Data Requests
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConsentRequestConsumerViewDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Consent Requests Of Data Request
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
   /api/agreement/v1/data-requests/{id}/logo:
     put:
-      description: Updates the logo of a data request. Only available for consumers.
+      description: Updates the logo of a specific data request. Only accessible to
+        the consumer who owns the data request.
       operationId: updateDataRequestLogo
       tags:
       - Data Requests
@@ -865,7 +1155,8 @@ paths:
         - agridata.ch.Agridata_Datenbezueger
   /api/agreement/v1/data-requests/{id}/submit:
     post:
-      description: Submits a data request. Only available for consumers.
+      description: Submits a completed data request for review. Only accessible to
+        the consumer who owns the data request.
       operationId: submitDataRequest
       tags:
       - Data Requests
@@ -910,11 +1201,133 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
+  /api/participant/v1/authorized-uids:
+    get:
+      description: Retrieves all UIDs authorized for the currently authenticated data
+        producer.
+      operationId: getAuthorizedUids
+      tags:
+      - Participants
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UidDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Authorized Uids
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+  /api/participant/v1/ktIdP/{ktIdP}/authorized-uids:
+    get:
+      description: Retrieves all UIDs authorized for the specified ktIdP. Only accessible
+        to admin users.
+      operationId: getAuthorizedUidsByKtIdP
+      tags:
+      - Participants
+      parameters:
+      - name: ktIdP
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UidDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Authorized Uids By Kt Id P
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+  /api/participant/v1/uid/{uid}/authorized-burs:
+    get:
+      description: Retrieves all BURs authorized for the given UID. Only accessible
+        to admin users.
+      operationId: getAuthorizedBursByUid
+      tags:
+      - Participants
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BurDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Authorized Burs By Uid
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
   /api/products/v1:
     get:
+      description: "Retrieves the list of all available data products. Accessible\
+        \ to users with the producer, consumer, admin, or provider role."
       operationId: getDataProducts
       tags:
-      - Data products
+      - Data Products
       responses:
         "200":
           description: OK
@@ -976,9 +1389,12 @@ paths:
       - SecurityScheme: []
   /api/uid-register/v1/search:
     get:
+      description: Retrieves organisation details from the UID register for the UID
+        associated with the currently authenticated consumer. Only accessible to users
+        with the consumer role.
       operationId: getByUidOfCurrentUser
       tags:
-      - Uid register search
+      - UID Register Search
       responses:
         "200":
           description: OK
@@ -1004,12 +1420,15 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get By Uid Of Current User
       security:
-      - SecurityScheme: []
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
   /api/uid-register/v1/search/{uid}:
     get:
+      description: Retrieves organisation details from the UID register using the
+        specified UID. Accessible to users with the consumer or admin role.
       operationId: getByUid
       tags:
-      - Uid register search
+      - UID Register Search
       parameters:
       - description: UID of the organisation
         example: 106506215
@@ -1043,7 +1462,9 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get By Uid
       security:
-      - SecurityScheme: []
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
   /q/info:
     get:
       responses:
@@ -1096,5 +1517,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.0.0-rc.37
-  description: This API handles data and consent requests for agridata.ch.
+  version: 1.0.0-rc.51
+  description: "This API provides access to the agridata.ch data exchange platform,\
+    \ enabling participants to discover, request, approve, and manage data sharing\
+    \ agreements."

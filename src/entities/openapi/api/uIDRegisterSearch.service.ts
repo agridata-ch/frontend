@@ -31,7 +31,7 @@ import { BaseService } from '../api.base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class UidRegisterSearchService extends BaseService {
+export class UIDRegisterSearchService extends BaseService {
 
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
         super(basePath, configuration);
@@ -39,6 +39,7 @@ export class UidRegisterSearchService extends BaseService {
 
     /**
      * Get By Uid
+     * Retrieves organisation details from the UID register using the specified UID. Accessible to users with the consumer or admin role.
      * @param uid UID of the organisation
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -95,6 +96,7 @@ export class UidRegisterSearchService extends BaseService {
 
     /**
      * Get By Uid Of Current User
+     * Retrieves organisation details from the UID register for the UID associated with the currently authenticated consumer. Only accessible to users with the consumer role.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

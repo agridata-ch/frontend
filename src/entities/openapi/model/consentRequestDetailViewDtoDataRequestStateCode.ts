@@ -12,9 +12,9 @@
 /**
  * State of the data request
  */
-export const ConsentRequestDtoDataRequestStateCode = {
+export const ConsentRequestDetailViewDtoDataRequestStateCode = {
     Draft: 'DRAFT',
     Submitted: 'SUBMITTED'
 } as const;
-export type ConsentRequestDtoDataRequestStateCode = typeof ConsentRequestDtoDataRequestStateCode[keyof typeof ConsentRequestDtoDataRequestStateCode];
+export type ConsentRequestDetailViewDtoDataRequestStateCode = typeof ConsentRequestDetailViewDtoDataRequestStateCode[keyof typeof ConsentRequestDetailViewDtoDataRequestStateCode];
 

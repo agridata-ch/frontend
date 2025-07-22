@@ -74,10 +74,4 @@ describe('HeaderWidgetComponent', () => {
     component.login();
     expect(mockAuthService.login).toHaveBeenCalled();
   });
-
-  it('logout() calls AuthService.logout()', () => {
-    createComponent();
-    component.logout();
-    expect(mockAuthService.logout).toHaveBeenCalled();
-  });
 });

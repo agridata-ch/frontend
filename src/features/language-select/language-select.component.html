@@ -1,6 +1,6 @@
-<div class="relative inline-block w-full">
+<div class="relative inline-block" (appClickOutside)="handleClose()">
   <button
-    class="w-full flex justify-between items-center px-4 py-2 rounded focus:outline-none"
+    class="flex justify-between items-center px-4 py-2 rounded focus:outline-none"
     (click)="handleToggle()"
     type="button"
   >
@@ -9,10 +9,8 @@
     </span>
     <fa-icon [icon]="dropdownIcon()" class="ml-2" />
   </button>
-  @if (open()) {
-    <ul
-      class="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden left-2.5"
-    >
+  <app-popover [isOpen]="isOpen()" class="left-2.5">
+    <ul>
       @for (option of languageOptions(); track option) {
         <li
           click-stop-propagation
@@ -24,5 +22,5 @@
         </li>
       }
     </ul>
-  }
+  </app-popover>
 </div>

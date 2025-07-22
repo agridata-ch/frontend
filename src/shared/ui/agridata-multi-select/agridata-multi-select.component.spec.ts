@@ -1,7 +1,6 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormControl } from '@angular/forms';
 
 import { AgridataMultiSelectComponent } from './agridata-multi-select.component';
 
@@ -12,7 +11,7 @@ describe('AgridataMultiSelectComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AgridataMultiSelectComponent, ReactiveFormsModule, FontAwesomeModule],
+      imports: [AgridataMultiSelectComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AgridataMultiSelectComponent);
@@ -125,16 +124,8 @@ describe('AgridataMultiSelectComponent', () => {
   describe('click outside behavior', () => {
     it('should close the dropdown when clicking outside', () => {
       component.isDropdownOpen.set(true);
-      const outside = document.createElement('div');
-      component.onClickOutside(outside);
+      component.handleClickOutside();
       expect(component.isDropdownOpen()).toBeFalsy();
-    });
-
-    it('should not close when clicking inside host element', () => {
-      component.isDropdownOpen.set(true);
-      const hostElement: HTMLElement = fixture.nativeElement;
-      component.onClickOutside(hostElement);
-      expect(component.isDropdownOpen()).toBeTruthy();
     });
   });
 });
