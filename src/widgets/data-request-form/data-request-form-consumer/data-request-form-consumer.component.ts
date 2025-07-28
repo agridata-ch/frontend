@@ -111,6 +111,8 @@ export class DataRequestFormConsumerComponent {
         }),
       );
       return;
+    } else {
+      this.logoErrorMessage.set(null);
     }
     this.logoFile.set(file);
     this.saveLogo.emit(file);
