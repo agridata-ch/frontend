@@ -20,6 +20,7 @@ describe('DataRequestNewComponent', () => {
     mockDataRequestService = {
       createDataRequest: jest.fn().mockResolvedValue(newDto),
       updateDataRequestDetails: jest.fn().mockResolvedValue(undefined),
+      uploadLogo: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<DataRequestService>;
 
     mockUidRegisterService = {
@@ -71,7 +72,7 @@ describe('DataRequestNewComponent', () => {
     const returned: DataRequestDto = { id: 'ABC123', stateCode: 'DRAFT' };
     mockDataRequestService.createDataRequest.mockResolvedValue(returned);
 
-    component.handleSave('request', false);
+    component.handleSave();
 
     expect(mockDataRequestService.createDataRequest).toHaveBeenCalledTimes(1);
 
@@ -83,20 +84,9 @@ describe('DataRequestNewComponent', () => {
     component.dataRequestId.set('EXISTING');
     fixture.detectChanges();
 
-    component.handleSave('request', false);
+    component.handleSave();
 
     expect(mockDataRequestService.updateDataRequestDetails).toHaveBeenCalledTimes(1);
-  });
-
-  it('should advance wizard when nextStep=true', async () => {
-    fixture.detectChanges();
-
-    const wizard: AgridataWizardComponent = component.wizard;
-    const spy = jest.spyOn(wizard, 'nextStep');
-
-    await component.handleSave('request', true);
-
-    expect(spy).toHaveBeenCalled();
   });
 
   it('initially all formControlSteps are valid', () => {
@@ -111,5 +101,66 @@ describe('DataRequestNewComponent', () => {
     const steps = component.formControlSteps();
     const consumerStep = steps.find((step) => step.id === 'request')!;
     expect(consumerStep.isValid).toBe(false);
+  });
+
+  it('should create request on createOrSetDataRequestId without logo', async () => {
+    const newDto: DataRequestDto = { id: 'NEW123', stateCode: 'DRAFT' };
+    mockDataRequestService.createDataRequest.mockResolvedValue(newDto);
+    await component.createOrSaveDataRequest();
+    expect(mockDataRequestService.createDataRequest).toHaveBeenCalled();
+    expect(component.dataRequestId()).toBe('NEW123');
+    expect(mockDataRequestService.uploadLogo).not.toHaveBeenCalled();
+  });
+
+  it('should create request on createOrSetDataRequestId with logo', async () => {
+    const newDto: DataRequestDto = { id: 'NEW123', stateCode: 'DRAFT' };
+    mockDataRequestService.createDataRequest.mockResolvedValue(newDto);
+    const file = new File([''], 'logo.png', { type: 'image/png' });
+    component.handleSaveLogo(file);
+    await component.createOrSaveDataRequest();
+    expect(mockDataRequestService.createDataRequest).toHaveBeenCalled();
+    expect(component.dataRequestId()).toBe('NEW123');
+    expect(mockDataRequestService.uploadLogo).toHaveBeenCalled();
+  });
+
+  it('should update request on createOrSetDataRequestId without logo', async () => {
+    component.dataRequestId.set('123');
+    await component.createOrSaveDataRequest();
+    expect(mockDataRequestService.uploadLogo).not.toHaveBeenCalled();
+    expect(mockDataRequestService.updateDataRequestDetails).toHaveBeenCalled();
+  });
+
+  it('should update request on createOrSetDataRequestId with logo', async () => {
+    component.dataRequestId.set('123');
+    const file = new File([''], 'logo.png', { type: 'image/png' });
+    component.handleSaveLogo(file);
+    await component.createOrSaveDataRequest();
+    expect(mockDataRequestService.uploadLogo).toHaveBeenCalled();
+    expect(mockDataRequestService.updateDataRequestDetails).toHaveBeenCalled();
+  });
+
+  it('should handle next step correctly', () => {
+    const spy = jest.spyOn(component, 'handleSave');
+    component.handleNextStep();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should handle previous step correctly', () => {
+    const spy = jest.spyOn(component, 'handleSave');
+    component.handlePreviousStep();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should handleSaveLogo', () => {
+    const file = new File([''], 'logo.png', { type: 'image/png' });
+    component.handleSaveLogo(file);
+    expect(component.logoFile()).toBe(file);
+  });
+
+  it('should handleSaveLogo with dataRequestId', () => {
+    component.dataRequestId.set('123');
+    const file = new File([''], 'logo.png', { type: 'image/png' });
+    component.handleSaveLogo(file);
+    expect(mockDataRequestService.uploadLogo).toHaveBeenCalledWith('123', file);
   });
 });

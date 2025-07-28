@@ -189,17 +189,24 @@ export class DataRequestNewComponent {
   }
 
   handleStepChange() {
-    this.handleSave(this.wizard.currentStepId());
+    this.handleSave();
   }
 
-  async handleSave(id: string, nextStep: boolean = false) {
+  handlePreviousStep() {
+    this.handleSave();
+    this.wizard.previousStep();
+  }
+
+  handleNextStep() {
+    this.handleSave();
+    this.wizard.nextStep();
+  }
+
+  async handleSave() {
+    const id = this.wizard.currentStepId();
     this.form.get(id)?.markAllAsTouched();
     this.updateFormSteps(id, this.form.get(id)?.valid ?? false);
     await this.createOrSaveDataRequest();
-
-    if (nextStep) {
-      this.wizard.nextStep();
-    }
   }
 
   handleSaveAndComplete() {
