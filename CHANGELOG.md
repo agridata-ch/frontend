@@ -1,3 +1,9 @@
+## [1.0.0-rc.22](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.21...v1.0.0-rc.22) (2025-07-29)
+
+### Features
+
+- **accont-overlay:** adds account overlay widget ([61a556b](https://github.com/agridata-ch/frontend/commit/61a556ba28e723ba056a48533ccdcffa7f1b7667)), closes [DIGIB2-330](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-330) [DIGIB2-330](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-330) [DIGIB2-485](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-485)
+
 ## [1.0.0-rc.21](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.20...v1.0.0-rc.21) (2025-07-18)
 
 ### Features
