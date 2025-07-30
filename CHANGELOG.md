@@ -1,3 +1,9 @@
+## [1.0.0-rc.23](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.22...v1.0.0-rc.23) (2025-07-30)
+
+### Features
+
+- **poeditor:** add sync script for poeditor ([10ec17b](https://github.com/agridata-ch/frontend/commit/10ec17ba65fe059afffddf2182d3f1955a02d4c9)), closes [DIGIB2-636](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-636)
+
 ## [1.0.0-rc.22](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.21...v1.0.0-rc.22) (2025-07-29)
 
 ### Features
