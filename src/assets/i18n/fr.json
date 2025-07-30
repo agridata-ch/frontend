@@ -119,6 +119,7 @@
         },
         "purpose": {
           "label": "Objectif d'utilisation des données",
+          "sublabel": "La finalité de l'utilisation est indiquée à tous les producteurs de données dans leur langue préférée afin de garantir une transparence maximale quant à l'utilisation de leurs données.",
           "de": {
             "label": "Objectif d'utilisation des données DE",
             "placeholder": "[...] nutzt die angefragten Daten für ... (Beschreibung durch Datenbezüger). Die Daten werden (nicht) an Dritte weitergegeben. [...] verpflichtet sich, im Umgang mit den Daten geltende Vorschriften einzuhalten."

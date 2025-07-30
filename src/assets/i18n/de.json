@@ -119,7 +119,7 @@
         },
         "purpose": {
           "label": "Nutzungszweck der Daten",
-          "sublabel": "Der Nutzungszweck  wird allen Datenproduzent:innen in ihrer bevorzugten Sprache angezeigt, um maximale Transparenz über die Verwendung ihrer Daten zu gewährleisten.",
+          "sublabel": "Der Nutzungszweck wird allen Datenproduzent:innen in ihrer bevorzugten Sprache angezeigt, um maximale Transparenz über die Verwendung ihrer Daten zu gewährleisten.",
           "de": {
             "label": "Nutzungszweck der Daten DE",
             "placeholder": "[...] nutzt die angefragten Daten für ... (Beschreibung durch Datenbezüger). Die Daten werden (nicht) an Dritte weitergegeben. [...] verpflichtet sich, im Umgang mit den Daten geltende Vorschriften einzuhalten."
