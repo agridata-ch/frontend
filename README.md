@@ -78,11 +78,46 @@ this is useful if don't want to add the namespace to every translation key. In t
   }
 }
 ```
-## Transloco Key Manager
-We use the [Transloco Key Manager](https://jsverse.gitbook.io/transloco/advanced/key-manager) to manage the translation keys. The key manager is a command line tool that scans the code for translation keys and generates a report of missing keys. You can run the key manager with the following command:
-```bash
-npm run transloco:keys
-```
-This will add all the missing keys to the translation files. 
 
-> [!WARNING] The actual version of transloco (v.14) won't work with Angular 20 because the transloco dependency is not updated fully to Angular 20 yet.
+# POEditor Translation Sync
+
+This script syncs translations from POEditor with your Angular project.
+
+## Setup
+
+1. Configure your POEditor credentials in `.env` file at the project root:
+
+```bash
+POEDITOR_API_TOKEN=your_api_token
+POEDITOR_PROJECT_ID=your_project_id
+```
+
+You can refer to `.env.example` for the required format.
+
+2. Make sure you have the right language codes set up in POEditor, matching the ones you use in your project.
+
+## Usage
+
+Run the sync command:
+
+```bash
+npm run i18n:sync
+```
+
+This will:
+1. Fetch all available languages from your POEditor project
+2. Download the translations for each language
+3. Save them to your `src/assets/i18n` directory
+
+## Getting POEditor API Token
+
+1. Log in to your POEditor account
+2. Go to your account settings
+3. Navigate to the API Access section
+4. Generate a new API token or use an existing one
+
+## Getting POEditor Project ID
+
+The project ID can be found in the URL when you're viewing a project:
+https://poeditor.com/projects/view?id=YOUR_PROJECT_ID
+
