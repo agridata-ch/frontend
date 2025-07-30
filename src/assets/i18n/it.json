@@ -103,6 +103,7 @@
         },
         "description": {
           "label": "Descrizione dell'applicazione",
+          "sublabel": "La descrizione viene mostrata a tutti i produttori di dati nella loro lingua preferita, così possono prendere una decisione informata.",
           "de": {
             "label": "Descrizione dell'applicazione DE",
             "placeholder": "Mit der Einwilligung zur Datenweitergabe an [...] vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."

@@ -103,6 +103,7 @@
         },
         "description": {
           "label": "Description de la demande",
+          "sublabel": "La description s'affiche dans la langue préférée de tous les producteurs de données afin qu'ils puissent prendre une décision éclairée.",
           "de": {
             "label": "Description de la demande DE",
             "placeholder": "Mit der Einwilligung zur Datenweitergabe an [...] vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
