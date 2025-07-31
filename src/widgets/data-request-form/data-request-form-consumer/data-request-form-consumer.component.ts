@@ -6,6 +6,7 @@ import { COUNTRIES } from '@/shared/constants/constants';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AuthService, UserData } from '@/shared/lib/auth';
 import { getFormControl } from '@/shared/lib/form.helper';
+import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataInputComponent } from '@/shared/ui/agridata-input';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
@@ -19,6 +20,7 @@ import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
     FormControlComponent,
     AgridataInputComponent,
     ButtonComponent,
+    AgridataAvatarComponent,
   ],
   templateUrl: './data-request-form-consumer.component.html',
 })
@@ -33,11 +35,13 @@ export class DataRequestFormConsumerComponent {
 
   readonly ControlTypes = ControlTypes;
   readonly ButtonVariants = ButtonVariants;
+  readonly AvatarSize = AvatarSize;
+  readonly AvatarSkin = AvatarSkin;
   readonly getFormControl = getFormControl;
   readonly uidInfoResource = this.uidSearchService.uidInfosOfCurrentUser;
 
   readonly userData = signal<UserData | null>(this.authService.userData());
-  readonly consumerInitials = signal<string>('');
+  readonly consumerName = signal<string>('');
   readonly logoFile = signal<File | null>(null);
   readonly logoErrorMessage = signal<string | null>(null);
 
@@ -69,7 +73,7 @@ export class DataRequestFormConsumerComponent {
         name: uidSearchResult.legalName || currentUserData.name,
       };
       this.userData.set(newUserData);
-      this.setConsumerInitials(newUserData.name);
+      this.consumerName.set(newUserData.name);
 
       this.form()?.patchValue({
         consumer: {
@@ -85,17 +89,7 @@ export class DataRequestFormConsumerComponent {
 
   handleChangeConsumerInitials(event: Event) {
     const name = (event.target as HTMLInputElement).value;
-    this.setConsumerInitials(name);
-  }
-
-  setConsumerInitials(name: string) {
-    this.consumerInitials.set(
-      name
-        .split(' ')
-        .slice(0, 2)
-        .map((namePart: string) => namePart.charAt(0).toUpperCase())
-        .join(''),
-    );
+    this.consumerName.set(name);
   }
 
   onFileSelected(event: Event) {

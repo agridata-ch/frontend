@@ -193,6 +193,9 @@ export function buildReactiveForm(
 
     for (const fieldPath of fields) {
       const pathSegments = fieldPath.split('.');
+      if (pathSegments.length === 0) {
+        continue;
+      }
       let containerGroup = topGroup;
 
       // Build nested FormGroups for pathSegments except the last
@@ -204,7 +207,10 @@ export function buildReactiveForm(
         containerGroup = containerGroup.get(segment) as FormGroup;
       }
 
-      const lastSegment = pathSegments[pathSegments.length - 1];
+      const lastSegment = pathSegments.at(-1);
+      if (!lastSegment) {
+        continue; // Skip if no last segment
+      }
       const { schemaNode, parentRequiredList } = getSchemaNode(jsonSchema, pathSegments);
       const defaultValue = schemaNode.type === 'array' ? [] : '';
       const initialValue = getDtoValue(dto, pathSegments, defaultValue);

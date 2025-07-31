@@ -1,0 +1,11 @@
+<div [class]="`agridata-avatar agridata-avatar-${size()} agridata-avatar-${skin()}`">
+  @if (this.imageUrl()) {
+    <img
+      [src]="imageUrl()"
+      alt="Avatar preview"
+      [class]="`agridata-avatar-image agridata-avatar-image-${size()}`"
+    />
+  } @else {
+    <span>{{ initials() }}</span>
+  }
+</div>

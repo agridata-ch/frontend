@@ -111,30 +111,11 @@ describe('DataRequestFormConsumerComponent', () => {
     });
   });
 
-  describe('setConsumerInitials', () => {
-    it('should set initials for a two-part name', () => {
-      component.setConsumerInitials('John Doe');
-      expect(component.consumerInitials()).toBe('JD');
-    });
-    it('should set initials for a single-part name', () => {
-      component.setConsumerInitials('Alice');
-      expect(component.consumerInitials()).toBe('A');
-    });
-    it('should set initials for a three-part name (first two only)', () => {
-      component.setConsumerInitials('Jane Mary Doe');
-      expect(component.consumerInitials()).toBe('JM');
-    });
-    it('should set empty initials for empty string', () => {
-      component.setConsumerInitials('');
-      expect(component.consumerInitials()).toBe('');
-    });
-  });
-
   describe('handleChangeConsumerInitials', () => {
     it('should update initials from event', () => {
       const event = { target: { value: 'Bob Marley' } } as unknown as Event;
       component.handleChangeConsumerInitials(event);
-      expect(component.consumerInitials()).toBe('BM');
+      expect(component.consumerName()).toBe('Bob Marley');
     });
   });
 });

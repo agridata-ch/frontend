@@ -8,12 +8,20 @@ import { UidDto } from '@/entities/openapi';
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
 import { I18nPipe } from '@/shared/i18n';
 import { AuthService, UserData } from '@/shared/lib/auth';
+import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { PopoverComponent } from '@/shared/ui/popover/popover.component';
 
 @Component({
   selector: 'app-account-overlay',
-  imports: [I18nPipe, ButtonComponent, FaIconComponent, PopoverComponent, ClickOutsideDirective],
+  imports: [
+    I18nPipe,
+    ButtonComponent,
+    FaIconComponent,
+    PopoverComponent,
+    ClickOutsideDirective,
+    AgridataAvatarComponent,
+  ],
   templateUrl: './account-overlay.component.html',
 })
 export class AccountOverlayComponent {
@@ -23,6 +31,8 @@ export class AccountOverlayComponent {
 
   readonly userData = input<UserData | null>(null);
   readonly ButtonVariants = ButtonVariants;
+  readonly AvatarSize = AvatarSize;
+  readonly AvatarSkin = AvatarSkin;
 
   readonly isOverlayOpen = signal(false);
   readonly selectedUid = signal<string | null>(null);
@@ -71,11 +81,7 @@ export class AccountOverlayComponent {
     if (storedUid && uids.some((uid) => uid.uid === storedUid)) {
       return storedUid;
     }
-    if (uids.length > 0 && uids[0].uid) {
-      return uids[0].uid;
-    } else {
-      return null;
-    }
+    return uids.length > 0 && uids[0].uid ? uids[0].uid : null;
   }
 
   logout = () => {
@@ -87,7 +93,7 @@ export class AccountOverlayComponent {
     const tokens = fullName.trim().split(/\s+/);
     if (tokens.length === 0) return '';
     const first = tokens[0][0] || '';
-    const last = tokens.length > 1 ? tokens[tokens.length - 1][0] : '';
+    const last = tokens.length > 1 ? tokens.at(-1)?.[0] : '';
     return (first + last).toUpperCase();
   }
 
