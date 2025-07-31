@@ -1,3 +1,9 @@
+## [1.0.0-rc.24](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.23...v1.0.0-rc.24) (2025-07-31)
+
+### Features
+
+- **logo:** show logo of consumer ([1650016](https://github.com/agridata-ch/frontend/commit/1650016a3a48d55b686417b329c58024e4dbf230)), closes [DIGIB2-470](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-470)
+
 ## [1.0.0-rc.23](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.22...v1.0.0-rc.23) (2025-07-30)
 
 ### Features
