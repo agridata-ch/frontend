@@ -4,9 +4,17 @@
       <h2>{{ `${t('title')} ${lang.toUpperCase()}` }}</h2>
       <div class="flex flex-col gap-6 border border-agridata-stroke rounded-lg p-6">
         <h3>{{ getFieldFromLang('title', lang) }}</h3>
-        <span class="text-agridata-primary-text font-medium">
-          {{ dataRequest()?.dataConsumerDisplayName }}
-        </span>
+        <div class="flex items-center gap-2">
+          <app-agridata-avatar
+            [name]="dataRequest()?.dataConsumerDisplayName ?? null"
+            [imageUrl]="dataRequest()?.dataConsumerLogoBase64 ?? null"
+            [size]="AvatarSize.MEDIUM"
+            [skin]="AvatarSkin.LIGHT"
+          />
+          <span class="text-agridata-primary-text font-medium">
+            {{ dataRequest()?.dataConsumerDisplayName }}
+          </span>
+        </div>
         <span class="text-agridata-secondary-text">
           {{ getFieldFromLang('description', lang) }}
         </span>

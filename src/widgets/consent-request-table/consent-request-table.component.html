@@ -4,6 +4,19 @@
   [defaultSortColumn]="dataRequestStateHeader"
   [defaultSortDirection]="SortDirections.DESC"
 >
+  <ng-template [stCell]="dataRequestConsumerHeader" let-item>
+    <div class="flex items-center gap-2">
+      <app-agridata-avatar
+        [imageUrl]="getConsumerLogo(item)"
+        [name]="getCellValue(item, dataRequestConsumerHeader)"
+        [size]="AvatarSize.MEDIUM"
+        [skin]="AvatarSkin.LIGHT"
+      />
+      <span class="agridata-ellipsis">
+        {{ getCellValue(item, dataRequestConsumerHeader) }}
+      </span>
+    </div>
+  </ng-template>
   <ng-template [stCell]="dataRequestTitleHeader" let-item>
     <span class="text-agridata-primary-600 agridata-ellipsis">
       {{ getCellValue(item, dataRequestTitleHeader) }}
