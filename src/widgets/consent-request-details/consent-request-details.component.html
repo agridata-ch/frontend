@@ -20,7 +20,16 @@
       <h6 class="text-3xl text-agridata-primary-text font-semibold">
         {{ requestTitle() }}
       </h6>
-      <span class="text-gray-800 text-lg font-semibold">{{ dataConsumerName() }}</span>
+      <div class="flex items-center gap-2">
+        <app-agridata-avatar
+          [imageUrl]="requestConsumerLogo()"
+          [name]="dataConsumerName()"
+          [size]="AvatarSize.MEDIUM"
+          [skin]="AvatarSkin.LIGHT"
+        />
+        <span class="text-gray-800 text-lg font-semibold">{{ dataConsumerName() }}</span>
+      </div>
+
       <span class="text-agridata-primary-text font-normal">
         {{ requestDescription() }}
       </span>

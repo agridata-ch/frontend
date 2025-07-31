@@ -12,6 +12,7 @@ import {
 } from '@/shared/consent-request';
 import { I18nService } from '@/shared/i18n/i18n.service';
 import { ToastService, ToastType } from '@/shared/toast';
+import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import {
   ActionDTO,
   AgridataTableComponent,
@@ -29,6 +30,7 @@ import { ConsentRequestFilterComponent } from '@/widgets/consent-request-table/c
     AgridataTableComponent,
     AgridataBadgeComponent,
     CellTemplateDirective,
+    AgridataAvatarComponent,
   ],
   templateUrl: './consent-request-table.component.html',
 })
@@ -50,9 +52,12 @@ export class ConsentRequestTableComponent {
   readonly BadgeSize = BadgeSize;
   readonly BadgeVariant = BadgeVariant;
   readonly SortDirections = SortDirections;
+  readonly AvatarSize = AvatarSize;
+  readonly AvatarSkin = AvatarSkin;
 
   readonly dataRequestTitleHeader = 'consent-request.dataRequest.title';
   readonly dataRequestStateHeader = 'consent-request.dataRequest.state';
+  readonly dataRequestConsumerHeader = 'consent-request.dataRequest.consumerName';
 
   readonly stateCodeFilter = signal<string | null>(null);
   readonly requests: Signal<AgridataTableData[]> = computed(() => {
@@ -63,7 +68,7 @@ export class ConsentRequestTableComponent {
         id: request.id,
         data: [
           {
-            header: 'consent-request.dataRequest.consumerName',
+            header: this.dataRequestConsumerHeader,
             value: request.dataRequest?.dataConsumerDisplayName ?? '',
           },
           {
@@ -127,6 +132,13 @@ export class ConsentRequestTableComponent {
         return [];
     }
   };
+
+  getConsumerLogo(row: AgridataTableData) {
+    return (
+      this.consentRequests().find((request) => request.id === row.id)?.dataRequest
+        ?.dataConsumerLogoBase64 ?? null
+    );
+  }
 
   setStateCodeFilter(state: string | null) {
     this.stateCodeFilter.set(state);

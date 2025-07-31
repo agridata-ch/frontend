@@ -11,7 +11,7 @@ import { AvatarSize, AvatarSkin } from './agridata-avatar.model';
 export class AgridataAvatarComponent {
   readonly name = input<string | null>(null);
   readonly imageUrl = input<string | null>(null);
-  readonly size = input<AvatarSize>(AvatarSize.MEDIUM);
+  readonly size = input<AvatarSize>(AvatarSize.LARGE);
   readonly skin = input<AvatarSkin>(AvatarSkin.DEFAULT);
 
   readonly initials = signal<string>('');

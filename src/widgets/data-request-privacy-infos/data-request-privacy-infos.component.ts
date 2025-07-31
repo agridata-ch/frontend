@@ -10,7 +10,7 @@ import { I18nPipe } from '@/shared/i18n';
   templateUrl: './data-request-privacy-infos.component.html',
 })
 export class DataRequestPrivacyInfosComponent {
-  readonly dataConsumerName = input<string>();
+  readonly dataConsumerName = input<string | null>();
 
   readonly editIcon = faPenSquare;
   readonly lockIcon = faLock;

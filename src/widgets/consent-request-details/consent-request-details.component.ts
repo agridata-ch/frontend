@@ -18,6 +18,7 @@ import { I18nDirective, I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService } from '@/shared/toast';
+import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
@@ -34,6 +35,7 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
     SidepanelComponent,
     ButtonComponent,
     DataRequestPrivacyInfosComponent,
+    AgridataAvatarComponent,
   ],
   templateUrl: './consent-request-details.component.html',
 })
@@ -49,6 +51,8 @@ export class ConsentRequestDetailsComponent {
   readonly badgeSize = BadgeSize;
   readonly consentRequestStateEnum = ConsentRequestStateEnum;
   readonly ButtonVariants = ButtonVariants;
+  readonly AvatarSize = AvatarSize;
+  readonly AvatarSkin = AvatarSkin;
 
   readonly showSuccessToast = signal<boolean>(false);
   readonly showErrorToast = signal<boolean>(false);
@@ -61,7 +65,13 @@ export class ConsentRequestDetailsComponent {
   readonly formattedLastStateChangeDate = computed(() =>
     formatDate(this.request()?.lastStateChangeDate),
   );
-  readonly dataConsumerName = computed(() => this.request()?.dataRequest?.dataConsumerDisplayName);
+  readonly dataConsumerName = computed(
+    () => this.request()?.dataRequest?.dataConsumerDisplayName ?? null,
+  );
+  readonly requestConsumerLogo = computed(
+    () => this.request()?.dataRequest?.dataConsumerLogoBase64 ?? null,
+  );
+
   readonly requestTitle = computed(() =>
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.title),
   );
