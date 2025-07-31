@@ -78,19 +78,12 @@
         <div class="flex gap-6">
           <div class="flex flex-col gap-1 justify-end min-w-[120px]">
             <div class="flex items-center gap-4">
-              <div
-                class="w-[60px] h-[60px] flex items-center justify-center bg-white border rounded-full border-agridata-stroke overflow-hidden"
-              >
-                @if (this.logoPreviewUrl()) {
-                  <img
-                    [src]="logoPreviewUrl()"
-                    alt="Logo preview"
-                    class="max-w-[60px] max-h-[60px]"
-                  />
-                } @else {
-                  <span class="text-agridata-primary-text text-2xl">{{ consumerInitials() }}</span>
-                }
-              </div>
+              <app-agridata-avatar
+                [name]="consumerName()"
+                [imageUrl]="logoPreviewUrl() ?? null"
+                [size]="AvatarSize.MEDIUM"
+                [skin]="AvatarSkin.LIGHT"
+              />
               <div class="flex flex-col gap-2">
                 <span class="text-agridata-primary-text font-medium">{{ t('logo.label') }}</span>
                 <app-agridata-button

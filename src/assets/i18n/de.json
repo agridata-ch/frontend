@@ -13,7 +13,7 @@
       "tableActions": {
         "title": "Aktionen",
         "details": "Details",
-        "consent": "Einwilligen",
+        "consent": "Zustimmen",
         "decline": "Ablehnen"
       },
       "error": "Fehler beim Aktualisieren des Antrags. RequestId: {{requestId}}"
@@ -22,20 +22,20 @@
       "ALL": "Alle",
       "OPENED": "Offen",
       "DECLINED": "Abgelehnt",
-      "GRANTED": "Eingewilligt"
+      "GRANTED": "Zugestimmt"
     },
     "details": {
       "actions": {
-        "accept": "Einwilligen",
+        "accept": "Zustimmen",
         "reject": "Ablehnen"
       },
       "stateCode": {
-        "GRANTED": "Eingewilligt am {{ date }}",
+        "GRANTED": "Zugestimmt am {{ date }}",
         "DECLINED": "Abgelehnt am {{ date }}",
         "OPENED": "Offen",
         "UNKNOWN": "Unbekannt"
       },
-      "footerInformation": "Du kannst deine Einwilligung jederzeit ändern.",
+      "footerInformation": "Du kannst deine Zustimmung jederzeit ändern.",
       "requestDate": "Anfrage vom {{ date }}",
       "sidepanel": {
         "title": "Detailansicht"
@@ -43,16 +43,27 @@
     },
     "toast": {
       "title": {
-        "GRANTED": "Einwilligung erteilt",
-        "DECLINED": "Einwilligung abgelehnt",
-        "DEFAULT": "Antrag aktualisiert"
+        "GRANTED": "Zustimmung erteilt",
+        "DECLINED": "Anfrage abgelehnt",
+        "DEFAULT": "Anfrage aktualisiert"
       },
       "message": {
-        "GRANTED": "Du hast den Antrag {{ name }} erfolgreich eingewilligt.",
-        "DECLINED": "Du hast den Antrag {{ name }} erfolgreich abgelehnt.",
-        "DEFAULT": "Der Antrag wurde aktualisiert."
+        "GRANTED": "Du hast der Anfrage {{ name }} erfolgreich zugestimmt.",
+        "DECLINED": "Du hast die Anfrage {{ name }} erfolgreich abgelehnt.",
+        "DEFAULT": "Die Anfrage wurde aktualisiert."
       },
       "undo": "Aktion rückgängig machen"
+    },
+    "dataRequest": {
+      "title": "Datenantrag",
+      "state": "Status",
+      "consumerName": "Datenbezüger",
+      "date": "Antragsdatum",
+      "stateCode": {
+        "OPENED": "Offen",
+        "GRANTED": "Eingewilligt",
+        "DECLINED": "Abgelehnt"
+      }
     }
   },
   "consumer": {
@@ -61,7 +72,7 @@
     "sidePanelTitle": "Neuer Datenantrag erfassen"
   },
   "data-request": {
-    "consumerName": "Antragsteller",
+    "consumerName": "Datenbezüger",
     "title": "Datenantrag",
     "date": "Antragsdatum",
     "state": "Status",
@@ -79,7 +90,7 @@
         "headline": "Angaben zum Datenbezug",
         "provider": {
           "label": "Datenanbieter",
-          "sublabel": "Aktuell stehen nur ein Datenabieter zur Verfügung. Es werden kontinuierlich weitere Anbieter angebunden."
+          "sublabel": "Aktuell steht nur ein Datenabieter zur Verfügung. Es werden kontinuierlich weitere Anbieter angebunden."
         },
         "products": {
           "label": "Welches Datenprodukt möchten Sie?",
@@ -106,7 +117,7 @@
           "sublabel": "Die Beschreibung wird allen Datenproduzent:innen in ihrer bevorzugten Sprache angezeigt, damit sie eine informierte Entscheidung treffen können.",
           "de": {
             "label": "Beschreibung des Antrags DE",
-            "placeholder": "Mit der Einwilligung zur Datenweitergabe an [...] vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
+            "placeholder": "Mit der Zustimmung zur Datenweitergabe an [...] vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
           },
           "fr": {
             "label": "Beschreibung des Antrags FR",
@@ -197,16 +208,16 @@
     },
     "privacy": {
       "consent": {
-        "title": "Einwilligung",
-        "description": "Mit deiner Zustimmung erlaubst du, dass die Daten gemäss Liste deiner zugeordneten Betriebe an den Antragsteller {{ consumerName }} übermittelt werden"
+        "title": "Zustimmung",
+        "description": "Mit deiner Zustimmung erlaubst du, dass die Daten den Datenbezüger {{ consumerName }} übermittelt werden"
       },
       "dataProtection": {
         "title": "Datenschutz",
         "description": "{{ consumerName }} ist für den datenschutzkonformen Umgang mit diesen Informationen verantwortlich. Wende dich direkt an {{ consumerName }}, wenn du möchtest, dass deine Daten gelöscht werden."
       },
       "revocation": {
-        "title": "Wiederrufsmöglichkeit",
-        "description": "Du kannst deine Einwilligung jederzeit widerrufen oder anpassen"
+        "title": "Widerrufsmöglichkeit",
+        "description": "Du kannst deine Zustimmung jederzeit anpassen."
       }
     },
     "purpose": {
@@ -243,7 +254,7 @@
     "close": "Navigation Schließen"
   },
   "producer": {
-    "pageTitle": "Freigaben"
+    "pageTitle": "Anfragen"
   },
   "countries": {
     "CH": "Schweiz",

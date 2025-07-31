@@ -23,7 +23,7 @@ describe('ConsentRequestTableComponent', () => {
   let componentRef: ComponentRef<ConsentRequestTableComponent>;
   let mockToastService: { show: jest.Mock };
   let mockConsentService: { updateConsentRequestStatus: jest.Mock };
-  const dataRequestStateHeader = 'data-request.state';
+  const dataRequestStateHeader = 'consent-request.dataRequest.state';
 
   const sampleRequests: ConsentRequestDetailViewDto[] = [
     {

@@ -51,8 +51,8 @@ export class ConsentRequestTableComponent {
   readonly BadgeVariant = BadgeVariant;
   readonly SortDirections = SortDirections;
 
-  readonly dataRequestTitleHeader = 'data-request.title';
-  readonly dataRequestStateHeader = 'data-request.state';
+  readonly dataRequestTitleHeader = 'consent-request.dataRequest.title';
+  readonly dataRequestStateHeader = 'consent-request.dataRequest.state';
 
   readonly stateCodeFilter = signal<string | null>(null);
   readonly requests: Signal<AgridataTableData[]> = computed(() => {
@@ -63,7 +63,7 @@ export class ConsentRequestTableComponent {
         id: request.id,
         data: [
           {
-            header: 'data-request.consumerName',
+            header: 'consent-request.dataRequest.consumerName',
             value: request.dataRequest?.dataConsumerDisplayName ?? '',
           },
           {
@@ -71,7 +71,7 @@ export class ConsentRequestTableComponent {
             value: this.i18nService.useObjectTranslation(request.dataRequest?.title),
           },
           {
-            header: 'data-request.date',
+            header: 'consent-request.dataRequest.date',
             value: request.requestDate ?? '',
           },
           { header: this.dataRequestStateHeader, value: request.stateCode ?? '' },
@@ -89,7 +89,7 @@ export class ConsentRequestTableComponent {
 
   getTranslatedStateValue(row: AgridataTableData, header: string) {
     const value = this.getCellValue(row, header);
-    return this.i18nService.translate(`data-request.stateCode.${value}`);
+    return this.i18nService.translate(`consent-request.dataRequest.stateCode.${value}`);
   }
 
   getFilteredActions = (request?: ConsentRequestProducerViewDto): ActionDTO[] => {

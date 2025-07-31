@@ -59,6 +59,10 @@ describe('HeaderWidgetComponent', () => {
       email: 'alice@example.com',
       sub: '123',
       preferred_username: 'alice',
+      given_name: 'Alice',
+      family_name: 'Smith',
+      uid: 123,
+      loginid: 'alice123',
     };
     mockAuthService.userData.mockReturnValue(fakeUser);
     createComponent();

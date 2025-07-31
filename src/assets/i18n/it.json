@@ -53,6 +53,17 @@
         "DEFAULT": "La richiesta è stata aggiornata."
       },
       "undo": "Annulla azione"
+    },
+    "dataRequest": {
+      "title": "Richiesta dati",
+      "state": "Stato",
+      "consumerName": "Richiedente",
+      "date": "Data richiesta",
+      "stateCode": {
+        "OPENED": "Aperto",
+        "GRANTED": "Concesso",
+        "DECLINED": "Rifiutato"
+      }
     }
   },
   "consumer": {

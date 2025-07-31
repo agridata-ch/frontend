@@ -53,6 +53,17 @@
         "DEFAULT": "La demande a été mise à jour."
       },
       "undo": "Annuler l'action"
+    },
+    "dataRequest": {
+      "title": "Demande de données",
+      "state": "Statut",
+      "consumerName": "Demandeur",
+      "date": "Date de la demande",
+      "stateCode": {
+        "OPENED": "Ouvert",
+        "GRANTED": "Accordé",
+        "DECLINED": "Refusé"
+      }
     }
   },
   "consumer": {

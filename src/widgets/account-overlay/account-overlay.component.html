@@ -4,9 +4,7 @@
     [class.bg-agridata-hover-on-dark]="isOverlayOpen()"
     (click)="toggleOverlay()"
   >
-    <div class="avatar bg-agridata-icon-on-dark">
-      <span>{{ initials() }}</span>
-    </div>
+    <app-agridata-avatar [name]="this.userData()?.name ?? null" [size]="AvatarSize.SMALL" />
     <div class="text-left">
       <div>{{ userData()?.name }}</div>
       <div class="text-sm text-gray-400">{{ activeUid() }}</div>
@@ -17,9 +15,11 @@
   <app-popover [isOpen]="isOverlayOpen()" class="right-0">
     <div class="p-4">
       <div class="flex items-center mb-4 gap-3">
-        <div class="avatar bg-black text-white">
-          <span> {{ initials() }} </span>
-        </div>
+        <app-agridata-avatar
+          [name]="this.userData()?.name ?? null"
+          [size]="AvatarSize.SMALL"
+          [skin]="AvatarSkin.DARK"
+        />
         <div>
           <div class="text-lg font-semibold">{{ userData()?.name }}</div>
           <div class="text-sm text-agridata-secondary-text whitespace-nowrap">
@@ -47,9 +47,11 @@
               >
               </span>
               <div class="flex items-center gap-1.5">
-                <div class="avatar bg-black text-white">
-                  <span> {{ getInitials(uid.name) }} </span>
-                </div>
+                <app-agridata-avatar
+                  [name]="uid.name ?? null"
+                  [size]="AvatarSize.SMALL"
+                  [skin]="AvatarSkin.DARK"
+                />
                 <div class="text-left">
                   <div class="text-l font-semibold">{{ uid.name }}</div>
                   <div class="text-sm text-agridata-secondary-text">{{ uid.uid }}</div>
