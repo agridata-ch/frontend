@@ -4,9 +4,9 @@
     [class.bg-agridata-hover-on-dark]="isOverlayOpen()"
     (click)="toggleOverlay()"
   >
-    <app-agridata-avatar [name]="this.userData()?.name ?? null" [size]="AvatarSize.SMALL" />
+    <app-agridata-avatar [name]="overlayName() ?? null" [size]="AvatarSize.SMALL" />
     <div class="text-left">
-      <div>{{ userData()?.name }}</div>
+      <div>{{ overlayName() }}</div>
       <div class="text-sm text-gray-400">{{ activeUid() }}</div>
     </div>
     <fa-icon [icon]="dropdownIcon()" />
@@ -16,12 +16,12 @@
     <div class="p-4">
       <div class="flex items-center mb-4 gap-3">
         <app-agridata-avatar
-          [name]="this.userData()?.name ?? null"
+          [name]="overlayName() ?? null"
           [size]="AvatarSize.SMALL"
           [skin]="AvatarSkin.DARK"
         />
         <div>
-          <div class="text-lg font-semibold">{{ userData()?.name }}</div>
+          <div class="text-lg font-semibold">{{ overlayName() }}</div>
           <div class="text-sm text-agridata-secondary-text whitespace-nowrap">
             {{ userData()?.email }}
           </div>
