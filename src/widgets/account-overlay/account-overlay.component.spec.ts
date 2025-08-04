@@ -55,26 +55,6 @@ describe('AccountOverlayComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should return initials from full name', () => {
-    fixture.componentRef.setInput('userData', { name: 'John Doe' });
-    expect(component.initials()).toBe('JD');
-    fixture.componentRef.setInput('userData', { name: 'Alice' });
-    expect(component.initials()).toBe('A');
-    fixture.componentRef.setInput('userData', { name: '' });
-    expect(component.initials()).toBe('');
-    fixture.componentRef.setInput('userData', null);
-    expect(component.initials()).toBe('');
-    fixture.componentRef.setInput('userData', { name: '  Bob   Smith  ' });
-    expect(component.initials()).toBe('BS');
-  });
-
-  it('should compute initials via computed property', () => {
-    fixture.componentRef.setInput('userData', userDataMock);
-    // You need to call detectChanges to update signals/computed in template
-    fixture.detectChanges();
-    expect(component.initials()).toBe('JD');
-  });
-
   it('should toggle isOverlayOpen', () => {
     expect(component.isOverlayOpen()).toBe(false);
     component.toggleOverlay();
@@ -142,14 +122,6 @@ describe('AccountOverlayComponent - Additional', () => {
     component.isOverlayOpen.set(true);
     component.handleClickOutside();
     expect(component.isOverlayOpen()).toBe(false);
-  });
-
-  it('should handle getInitials edge cases', () => {
-    expect(component.getInitials('   ')).toBe('');
-    expect(component.getInitials('A')).toBe('A');
-    expect(component.getInitials('A   B   C')).toBe('AC');
-    expect(component.getInitials('Élodie Durand')).toBe('ÉD');
-    expect(component.getInitials(undefined)).toBe('');
   });
 
   it('should compute activeUid from selectedUid and authorizedUids', () => {

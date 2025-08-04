@@ -30,6 +30,10 @@ export class AccountOverlayComponent {
   readonly agridataStateService = inject(AgridataStateService);
 
   readonly userData = input<UserData | null>(null);
+  readonly overlayName = computed(() => {
+    return `${this.userData()?.given_name ?? ''} ${this.userData()?.family_name ?? ''}`;
+  });
+
   readonly ButtonVariants = ButtonVariants;
   readonly AvatarSize = AvatarSize;
   readonly AvatarSkin = AvatarSkin;
@@ -37,7 +41,6 @@ export class AccountOverlayComponent {
   readonly isOverlayOpen = signal(false);
   readonly selectedUid = signal<string | null>(null);
 
-  readonly initials = computed(() => this.getInitials(this.userData()?.name));
   readonly dropdownIcon = computed(() => {
     return this.isOverlayOpen() ? faChevronUp : faChevronDown;
   });
@@ -87,15 +90,6 @@ export class AccountOverlayComponent {
   logout = () => {
     this.authService.logout();
   };
-
-  getInitials(fullName: string | undefined) {
-    if (!fullName) return '';
-    const tokens = fullName.trim().split(/\s+/);
-    if (tokens.length === 0) return '';
-    const first = tokens[0][0] || '';
-    const last = tokens.length > 1 ? tokens.at(-1)?.[0] : '';
-    return (first + last).toUpperCase();
-  }
 
   toggleOverlay() {
     this.isOverlayOpen.set(!this.isOverlayOpen());
