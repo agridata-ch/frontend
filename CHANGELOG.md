@@ -1,3 +1,9 @@
+## [1.0.0-rc.25](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.24...v1.0.0-rc.25) (2025-08-05)
+
+### Bug Fixes
+
+- **avatar:** use userdata.given_name and userdata.family_name for avatar ([dfe26c4](https://github.com/agridata-ch/frontend/commit/dfe26c43e6604b888698dc3e5a5dd0d8246e93d1))
+
 ## [1.0.0-rc.24](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.23...v1.0.0-rc.24) (2025-07-31)
 
 ### Features
