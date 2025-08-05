@@ -15,7 +15,7 @@ export class ButtonComponent {
   ariaLabel = input<string>('');
   selected = input<boolean>(false);
   onClick = output<Event>();
-  class = input<string>('');
+  additionalClass = input<string>('');
 
   handleClick(event: Event) {
     this.onClick.emit(event);

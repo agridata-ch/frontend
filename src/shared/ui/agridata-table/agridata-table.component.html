@@ -19,11 +19,7 @@
             </div>
           </th>
         }
-        <th
-          class="py-3 px-4 select-none text-slate-500 outline-0 hover:bg-gray-50 cursor-pointer focus:bg-gray-200 text-sm font-semibold text-right"
-        >
-          {{ 'agridata-table.actions' | i18n }}
-        </th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -36,6 +32,8 @@
           [class.bg-sky-50]="row.highlighted"
           (click)="onRowClick(row)"
           (keydown.enter)="onRowClick(row)"
+          (mouseenter)="setHoveredRow(row.id)"
+          (mouseleave)="setHoveredRow(null)"
         >
           @for (column of row.data; track column.header) {
             <td class="py-3 px-4 border-t border-gray-200">
@@ -52,7 +50,11 @@
             </td>
           }
           <td class="py-3 px-4 border-t border-gray-200">
-            <app-table-actions [actions]="row.actions" />
+            <app-table-actions
+              [actions]="row.actions"
+              [isRowHovered]="hoveredRowId() === row.id"
+              (rowAction)="onRowClick(row)"
+            />
           </td>
         </tr>
       }

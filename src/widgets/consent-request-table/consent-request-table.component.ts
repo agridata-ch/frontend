@@ -43,7 +43,6 @@ export class ConsentRequestTableComponent {
   readonly consentRequestId = input<string>();
   readonly consentRequests = input.required<ConsentRequestProducerViewDto[]>();
   readonly tableRowAction = output<ConsentRequestProducerViewDto>();
-  readonly onReloadConsentRequests = output<void>();
 
   readonly fileIcon = faFile;
   readonly eyeIcon = faEye;
@@ -100,37 +99,16 @@ export class ConsentRequestTableComponent {
   getFilteredActions = (request?: ConsentRequestProducerViewDto): ActionDTO[] => {
     if (!request) return [];
     const requestTitle = this.i18nService.useObjectTranslation(request.dataRequest?.title);
-    const details = {
-      icon: this.eyeIcon,
-      label: 'consent-request.table.tableActions.details',
-      callback: () => this.tableRowAction.emit(request),
-    };
 
     const consent = {
       icon: this.checkIcon,
       label: 'consent-request.table.tableActions.consent',
       callback: () =>
         this.updateConsentRequestState(request.id, ConsentRequestStateEnum.Granted, requestTitle),
-      isMainAction: request.stateCode === ConsentRequestStateEnum.Opened,
+      isMainAction: true,
     };
 
-    const decline = {
-      icon: this.banIcon,
-      label: 'consent-request.table.tableActions.decline',
-      callback: () =>
-        this.updateConsentRequestState(request.id, ConsentRequestStateEnum.Declined, requestTitle),
-    };
-
-    switch (request.stateCode) {
-      case ConsentRequestStateEnum.Opened:
-        return [details, consent, decline];
-      case ConsentRequestStateEnum.Declined:
-        return [details, consent];
-      case ConsentRequestStateEnum.Granted:
-        return [details, decline];
-      default:
-        return [];
-    }
+    return request.stateCode === ConsentRequestStateEnum.Opened ? [consent] : [];
   };
 
   getConsumerLogo(row: AgridataTableData) {
@@ -157,7 +135,7 @@ export class ConsentRequestTableComponent {
         const toastType = getToastType(stateCode);
         const undoAction = this.prepareUndoAction(id);
         this.toastService.show(toastTitle, toastMessage, toastType, undoAction);
-        this.onReloadConsentRequests.emit();
+        this.consentRequestService.fetchConsentRequests.reload();
       })
       .catch((error) => {
         const errorMessage = this.i18nService.translate('consent-request.table.error', {
@@ -175,7 +153,7 @@ export class ConsentRequestTableComponent {
     return getUndoAction(() => {
       this.toastService.show(this.i18nService.translate(getToastTitle('')), '');
       this.consentRequestService.updateConsentRequestStatus(id, previousStateCode!).then(() => {
-        this.onReloadConsentRequests.emit();
+        this.consentRequestService.fetchConsentRequests.reload();
       });
     });
   }

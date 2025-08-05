@@ -82,13 +82,18 @@
 
 .agridata-button.agridata-button-icon {
   color: var(--color-agridata-primary-600);
-  border-color: var(--color-agridata-primary-600);
+  border-color: transparent;
   background-color: transparent;
 }
 
 .agridata-button.agridata-button-icon:hover {
-  background-color: var(--color-blue-50);
-  border-color: var(--color-blue-50);
+  background-color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
+}
+
+.agridata-button.agridata-button-icon:focus {
+  background-color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
 }
 
 .agridata-button.agridata-button-link {
