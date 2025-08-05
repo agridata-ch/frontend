@@ -19,4 +19,10 @@ describe('SidepanelComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should emit onClose when handleClose is called', () => {
+    const closeSpy = jest.spyOn(component.onClose, 'emit');
+    component.handleClose();
+    expect(closeSpy).toHaveBeenCalled();
+  });
 });

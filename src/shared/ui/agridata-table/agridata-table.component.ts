@@ -26,20 +26,21 @@ import { TableActionsComponent } from './table-actions/table-actions.component';
 })
 export class AgridataTableComponent {
   readonly rawData = input<AgridataTableData[] | null>(null);
-
-  readonly _data = signal<AgridataTableData[]>([]);
   readonly defaultSortColumn = input<string>('');
   readonly defaultSortDirection = input<SortDirections.ASC | SortDirections.DESC>(
     SortDirections.DESC,
   );
   readonly pageSize = input<number>(10);
+
   readonly ButtonVariants = ButtonVariants;
 
   readonly cellTemplates = contentChildren(CellTemplateDirective);
 
+  readonly _data = signal<AgridataTableData[]>([]);
   readonly sortColumnIndex = signal<number | null>(null);
   readonly sortDirection = signal<SortDirections.ASC | SortDirections.DESC>(SortDirections.DESC);
   readonly currentPage = signal(1);
+  readonly hoveredRowId = signal<string | null>(null);
 
   readonly sortIcon = computed(() => {
     const dir = this.sortDirection();
@@ -150,5 +151,13 @@ export class AgridataTableComponent {
     if (row.rowAction) {
       row.rowAction();
     }
+  }
+
+  getRowActionCallback(row: AgridataTableData): () => void {
+    return () => this.onRowClick(row);
+  }
+
+  setHoveredRow(rowId: string | null) {
+    this.hoveredRowId.set(rowId);
   }
 }

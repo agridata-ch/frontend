@@ -22,7 +22,10 @@ describe('ConsentRequestTableComponent', () => {
   let component: ConsentRequestTableComponent;
   let componentRef: ComponentRef<ConsentRequestTableComponent>;
   let mockToastService: { show: jest.Mock };
-  let mockConsentService: { updateConsentRequestStatus: jest.Mock };
+  let mockConsentService: {
+    updateConsentRequestStatus: jest.Mock;
+    fetchConsentRequests: { reload: jest.Mock };
+  };
   const dataRequestStateHeader = 'consent-request.dataRequest.state';
 
   const sampleRequests: ConsentRequestDetailViewDto[] = [
@@ -60,7 +63,10 @@ describe('ConsentRequestTableComponent', () => {
 
   beforeEach(async () => {
     mockToastService = { show: jest.fn() };
-    mockConsentService = { updateConsentRequestStatus: jest.fn().mockResolvedValue({}) };
+    mockConsentService = {
+      updateConsentRequestStatus: jest.fn().mockResolvedValue({}),
+      fetchConsentRequests: { reload: jest.fn() },
+    };
 
     await TestBed.configureTestingModule({
       imports: [ConsentRequestTableComponent],
@@ -90,7 +96,6 @@ describe('ConsentRequestTableComponent', () => {
     expect(rows.length).toBe(3);
 
     const first = rows[0];
-    // test rowAction emits correctly
     first.rowAction?.();
     expect(rowSpy).toHaveBeenCalledWith(sampleRequests[0]);
   });
@@ -113,24 +118,13 @@ describe('ConsentRequestTableComponent', () => {
 
   it('getFilteredActions returns correct actions for Opened', () => {
     const actions = component.getFilteredActions(sampleRequests[0]);
-    expect(actions.length).toBe(3);
-    expect(actions[0].label).toBe('consent-request.table.tableActions.details');
-    expect(actions[1].label).toBe('consent-request.table.tableActions.consent');
-    expect(actions[2].label).toBe('consent-request.table.tableActions.decline');
+    expect(actions.length).toBe(1);
+    expect(actions[0].label).toBe('consent-request.table.tableActions.consent');
   });
 
   it('getFilteredActions returns correct actions for Granted', () => {
     const actions = component.getFilteredActions(sampleRequests[1]);
-    expect(actions.length).toBe(2);
-    expect(actions[0].label).toBe('consent-request.table.tableActions.details');
-    expect(actions[1].label).toBe('consent-request.table.tableActions.decline');
-  });
-
-  it('getFilteredActions returns correct actions for Declined', () => {
-    const actions = component.getFilteredActions(sampleRequests[2]);
-    expect(actions.length).toBe(2);
-    expect(actions[0].label).toBe('consent-request.table.tableActions.details');
-    expect(actions[1].label).toBe('consent-request.table.tableActions.consent');
+    expect(actions.length).toBe(0);
   });
 
   it('setStateCodeFilter filters requests Signal correctly', () => {
@@ -154,7 +148,7 @@ describe('ConsentRequestTableComponent', () => {
   describe('updateConsentRequestState', () => {
     it('emits reload and shows toast on success', async () => {
       const reloadSpy = jest.fn();
-      component.onReloadConsentRequests.subscribe(reloadSpy);
+      mockConsentService.fetchConsentRequests.reload.mockImplementation(reloadSpy);
 
       // call update
       component.updateConsentRequestState(
@@ -169,7 +163,7 @@ describe('ConsentRequestTableComponent', () => {
 
     it('shows error toast and does not reload on failure', async () => {
       const reloadSpy = jest.fn();
-      component.onReloadConsentRequests.subscribe(reloadSpy);
+      mockConsentService.fetchConsentRequests.reload.mockImplementation(reloadSpy);
 
       const fakeError = { error: { message: 'Fail', requestId: 'RID' } };
       mockConsentService.updateConsentRequestStatus.mockRejectedValueOnce(fakeError);

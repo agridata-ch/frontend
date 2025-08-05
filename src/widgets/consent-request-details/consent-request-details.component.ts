@@ -45,7 +45,6 @@ export class ConsentRequestDetailsComponent {
   private readonly i18nService = inject(I18nService);
 
   readonly request = input<ConsentRequestProducerViewDto | null>(null);
-  readonly onReloadConsentRequests = output<void>();
   readonly onCloseDetail = output<string | null>();
 
   readonly badgeSize = BadgeSize;
@@ -160,9 +159,12 @@ export class ConsentRequestDetailsComponent {
   }
 
   async updateAndReloadConsentRequestState(id: string, stateCode: string) {
-    this.consentRequestService.updateConsentRequestStatus(id, stateCode).then(() => {
-      this.onReloadConsentRequests.emit();
-    });
-    this.handleCloseDetails();
+    try {
+      await this.consentRequestService.updateConsentRequestStatus(id, stateCode);
+      this.consentRequestService.fetchConsentRequests.reload();
+      this.handleCloseDetails();
+    } catch (error) {
+      console.error('Error updating consent request status:', error);
+    }
   }
 }

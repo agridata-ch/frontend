@@ -55,10 +55,10 @@
       "undo": "Aktion rückgängig machen"
     },
     "dataRequest": {
-      "title": "Datenantrag",
+      "title": "Anfrage",
       "state": "Status",
       "consumerName": "Datenbezüger",
-      "date": "Antragsdatum",
+      "date": "Anfragedatum",
       "stateCode": {
         "OPENED": "Offen",
         "GRANTED": "Eingewilligt",

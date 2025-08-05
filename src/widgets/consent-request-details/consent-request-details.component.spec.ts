@@ -1,10 +1,11 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentRef } from '@angular/core';
+import { ComponentRef, ResourceRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConsentRequestService } from '@/entities/api/consent-request.service';
-import { ConsentRequestDto } from '@/entities/openapi';
+import { ConsentRequestProducerViewDto } from '@/entities/openapi';
+import { MockResources } from '@/shared/testing/mocks/mock-resources';
 import { ToastService } from '@/shared/toast';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 
@@ -15,14 +16,14 @@ describe('ConsentRequestDetailsComponent', () => {
   let toastService: { show: jest.Mock };
   let consentRequestService: {
     updateConsentRequestStatus: jest.Mock;
-    fetchConsentRequests: jest.Mock;
+    fetchConsentRequests: ResourceRef<ConsentRequestProducerViewDto[]>;
   };
 
   beforeEach(async () => {
     toastService = { show: jest.fn() };
     consentRequestService = {
       updateConsentRequestStatus: jest.fn().mockResolvedValue({}),
-      fetchConsentRequests: jest.fn(),
+      fetchConsentRequests: MockResources.createMockResourceRef([]),
     };
 
     await TestBed.configureTestingModule({
@@ -52,7 +53,7 @@ describe('ConsentRequestDetailsComponent', () => {
   it('setting request should open details', () => {
     const req = {
       dataRequest: { dataConsumer: { name: 'TestConsumer' } },
-    } as unknown as ConsentRequestDto;
+    } as unknown as ConsentRequestProducerViewDto;
 
     componentRef.setInput('request', req);
     fixture.detectChanges(); // run the effect
@@ -64,7 +65,7 @@ describe('ConsentRequestDetailsComponent', () => {
     const req = {
       requestDate: new Date(),
       dataRequest: { dataConsumer: { name: 'John' } },
-    } as unknown as ConsentRequestDto;
+    } as unknown as ConsentRequestProducerViewDto;
 
     componentRef.setInput('request', req);
     fixture.detectChanges();
@@ -99,35 +100,44 @@ describe('ConsentRequestDetailsComponent', () => {
     const req = {
       id: '123',
       dataRequest: { dataConsumer: { name: 'TestConsumer' } },
-    } as unknown as ConsentRequestDto;
+    } as unknown as ConsentRequestProducerViewDto;
     componentRef.setInput('request', req);
     fixture.detectChanges();
+
+    consentRequestService.updateConsentRequestStatus.mockResolvedValue({});
 
     const closeSpy = jest.spyOn(component, 'handleCloseDetails');
     await component.acceptRequest();
 
+    await Promise.resolve();
+
     expect(toastService.show).toHaveBeenCalled();
-    expect(closeSpy).toHaveBeenCalled();
     expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith('123', 'GRANTED');
+    expect(consentRequestService.fetchConsentRequests.reload).toHaveBeenCalled();
+    expect(closeSpy).toHaveBeenCalled();
   });
 
   it('should should show toast after rejectRequest', async () => {
     const req = {
       id: '456',
       dataRequest: { dataConsumer: { name: 'TestConsumer' } },
-    } as unknown as ConsentRequestDto;
+    } as unknown as ConsentRequestProducerViewDto;
     componentRef.setInput('request', req);
     fixture.detectChanges();
 
-    const closeSpy = jest.spyOn(component, 'handleCloseDetails');
+    consentRequestService.updateConsentRequestStatus.mockResolvedValue({});
 
+    const closeSpy = jest.spyOn(component, 'handleCloseDetails');
     await component.rejectRequest();
 
+    await Promise.resolve();
+
     expect(toastService.show).toHaveBeenCalled();
-    expect(closeSpy).toHaveBeenCalled();
     expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith(
       '456',
       'DECLINED',
     );
+    expect(consentRequestService.fetchConsentRequests.reload).toHaveBeenCalled();
+    expect(closeSpy).toHaveBeenCalled();
   });
 });

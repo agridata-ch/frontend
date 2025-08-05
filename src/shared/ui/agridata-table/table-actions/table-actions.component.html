@@ -1,37 +1,19 @@
-<div class="flex flex-row gap-4 justify-end" (appClickOutside)="handleClickOutside()">
-  @if (mainAction()) {
+<div class="flex flex-row gap-4 justify-end" [class.is-hovered]="isRowHovered()">
+  @for (action of sortedActions(); track action.label) {
     <app-agridata-button
       click-stop-propagation
-      [variant]="ButtonVariants.PrimaryAccept"
-      (onClick)="handleClick(mainAction()!)"
+      [variant]="action.isMainAction ? ButtonVariants.PrimaryAccept : ButtonVariants.Secondary"
+      (onClick)="handleActionClick(action)"
     >
-      {{ mainAction()?.label | i18n }}
+      {{ action.label | i18n }}
     </app-agridata-button>
   }
   <app-agridata-button
     click-stop-propagation
     [variant]="ButtonVariants.Icon"
-    (onClick)="handleToggle()"
+    (onClick)="handleRowAction()"
+    class="action-button"
   >
-    <fa-icon [icon]="iconEllipsis" />
+    <fa-icon size="xl" [icon]="iconRowAction" />
   </app-agridata-button>
-  @if (isOpen()) {
-    <div class="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
-      <ul>
-        @for (action of actions(); track action.label) {
-          <li
-            click-stop-propagation
-            class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-            (click)="handleClick(action)"
-            (keydown.enter)="handleClick(action)"
-          >
-            @if (action.icon) {
-              <fa-icon [icon]="action.icon" class="mr-2" />
-            }
-            {{ action.label | i18n }}
-          </li>
-        }
-      </ul>
-    </div>
-  }
 </div>

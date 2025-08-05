@@ -1,6 +1,7 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import { ActionDTO, TableActionsComponent } from './table-actions.component';
 
@@ -24,53 +25,38 @@ describe('TableActionsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('mainAction computed', () => {
-    it('should return the action marked as mainAction', () => {
-      const actions: ActionDTO[] = [
-        { label: 'First', callback: () => {}, isMainAction: false },
-        { label: 'Main', callback: () => {}, isMainAction: true },
-        { label: 'Other', callback: () => {}, isMainAction: false },
-      ];
-      componentRef.setInput('actions', actions);
-      expect(component.mainAction()).toEqual(actions[1]);
-    });
+  it('should correctly sort actions with main actions appearing after non-main actions', () => {
+    const action1: ActionDTO = { label: 'B Action', callback: jest.fn(), isMainAction: false };
+    const action2: ActionDTO = { label: 'A Action', callback: jest.fn(), isMainAction: true };
+    const action3: ActionDTO = { label: 'C Action', callback: jest.fn(), isMainAction: false };
 
-    it('should return undefined if no mainAction is marked', () => {
-      const actions: ActionDTO[] = [
-        { label: 'A', callback: () => {} },
-        { label: 'B', callback: () => {} },
-      ];
-      componentRef.setInput('actions', actions);
-      expect(component.mainAction()).toBeUndefined();
-    });
+    componentRef.setInput('actions', [action1, action2, action3]);
+
+    const sortedActions = component.sortedActions();
+
+    expect(sortedActions[0].label).toBe('B Action');
+    expect(sortedActions[1].label).toBe('C Action');
+    expect(sortedActions[2].label).toBe('A Action');
   });
 
-  describe('toggle and click handlers', () => {
-    it('handleToggle should open and close the menu', () => {
-      expect(component.isOpen()).toBeFalsy();
-      component.handleToggle();
-      expect(component.isOpen()).toBeTruthy();
-      component.handleToggle();
-      expect(component.isOpen()).toBeFalsy();
-    });
+  it('should call the action callback when handleActionClick is triggered', () => {
+    const mockCallback = jest.fn();
+    const action: ActionDTO = {
+      label: 'Test Action',
+      callback: mockCallback,
+      icon: faEdit,
+    };
 
-    it('handleClick should call callback and close menu', () => {
-      const spy = jest.fn();
-      const action: ActionDTO = { label: 'Act', callback: spy };
+    component.handleActionClick(action);
 
-      component.isOpen.set(true);
-      component.handleClick(action);
-
-      expect(spy).toHaveBeenCalled();
-      expect(component.isOpen()).toBeFalsy();
-    });
+    expect(mockCallback).toHaveBeenCalledTimes(1);
   });
 
-  describe('click outside behavior', () => {
-    it('should close the menu when clicking outside', () => {
-      component.isOpen.set(true);
-      component.handleClickOutside();
-      expect(component.isOpen()).toBeFalsy();
-    });
+  it('should emit row action event when handleRowAction is called', () => {
+    const rowActionSpy = jest.spyOn(component.rowAction, 'emit');
+
+    component.handleRowAction();
+
+    expect(rowActionSpy).toHaveBeenCalledTimes(1);
   });
 });

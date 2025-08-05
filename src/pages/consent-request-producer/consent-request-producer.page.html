@@ -7,11 +7,6 @@
 <app-consent-request-table
   [consentRequests]="consentRequests.value()"
   (tableRowAction)="setSelectedRequest($event)"
-  (onReloadConsentRequests)="reloadConsentRequests()"
 />
-<app-consent-request-details
-  [request]="selectedRequest()"
-  (onCloseDetail)="setSelectedRequest()"
-  (onReloadConsentRequests)="reloadConsentRequests()"
-/>
+<app-consent-request-details [request]="selectedRequest()" (onCloseDetail)="setSelectedRequest()" />
 }
