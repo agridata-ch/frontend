@@ -2,6 +2,906 @@
 openapi: 3.1.0
 components:
   schemas:
+    AgisAddressInformationType:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+        addressLine3:
+          type: string
+        street:
+          type: string
+        houseNumber:
+          type: string
+        town:
+          type: string
+        swissZipCode:
+          type: integer
+          format: int32
+          maximum: 9999
+          minimum: 1000
+        foreignZipCode:
+          type: string
+    AgisAnimalDataType:
+      type: object
+      required:
+      - animalStock
+      properties:
+        animalStock:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisAnimalStock"
+    AgisAnimalStock:
+      type: object
+      required:
+      - surveyKtIdB
+      - animalCategory
+      properties:
+        creationDate:
+          $ref: "#/components/schemas/LocalDate"
+        surveyKtIdB:
+          type: string
+        ber:
+          type: string
+        animalCategory:
+          type: string
+        atdData:
+          $ref: "#/components/schemas/AgisAtdDataType"
+        selfreportedData:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisSelfReportedDataType"
+        BTSRAUS:
+          type: integer
+          format: int32
+    AgisAnimalSummeringDataType:
+      type: object
+      required:
+      - animalStock
+      properties:
+        animalStock:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisAnimalSummeringStock"
+    AgisAnimalSummeringStock:
+      type: object
+      required:
+      - animalCategory
+      properties:
+        creationDate:
+          $ref: "#/components/schemas/LocalDate"
+        animalCategory:
+          type: string
+        atdData:
+          $ref: "#/components/schemas/AgisAtdSummeringDataType"
+        selfreportedData:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisSelfReportedSummeringDataType"
+    AgisApicultureDataType:
+      type: object
+      required:
+      - farmApicultureData
+      properties:
+        farmApicultureData:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisFarmApicultureData"
+    AgisAquacultureDataType:
+      type: object
+      required:
+      - aquaticAnimalData
+      properties:
+        aquaticAnimalData:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisAquaticAnimalData"
+    AgisAquaticAnimalData:
+      type: object
+      required:
+      - surveyKtIdB
+      properties:
+        creationDate:
+          $ref: "#/components/schemas/LocalDate"
+        surveyKtIdB:
+          type: string
+        ber:
+          type: string
+        aquaticAnimalTypes:
+          $ref: "#/components/schemas/AgisAquaticAnimalTypes"
+        breedingTypes:
+          $ref: "#/components/schemas/AgisBreedingTypes"
+        productionForms:
+          $ref: "#/components/schemas/AgisProductionForms"
+        waterSupplyTypes:
+          $ref: "#/components/schemas/AgisWaterSupplyTypes"
+        waterDrainTypes:
+          $ref: "#/components/schemas/AgisWaterDrainTypes"
+    AgisAquaticAnimalPerCategory:
+      type: object
+      required:
+      - aquaticAnimalType
+      properties:
+        aquaticAnimalType:
+          type: string
+        productionQuantity:
+          type: integer
+          format: int32
+    AgisAquaticAnimalTypes:
+      type: object
+      required:
+      - aquaticAnimalPerCategory
+      properties:
+        aquaticAnimalPerCategory:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisAquaticAnimalPerCategory"
+    AgisAtdDataFinalType:
+      type: object
+      required:
+      - surveyFarmDetails
+      properties:
+        quantityTotal:
+          type: number
+        livestockUnitTotal:
+          type: number
+        surveyFarmDetails:
+          $ref: "#/components/schemas/AgisSurveyFarmDetails"
+        summeringInlandDetails:
+          $ref: "#/components/schemas/AgisSummeringInlandDetails"
+        summeringAbroadDetails:
+          $ref: "#/components/schemas/AgisSummeringAbroadDetails"
+    AgisAtdDataType:
+      type: object
+      required:
+      - atdDataFinal
+      properties:
+        atdDataFinal:
+          $ref: "#/components/schemas/AgisAtdDataFinalType"
+    AgisAtdSummeringDataFinalType:
+      type: object
+      properties:
+        quantityTotal:
+          type: number
+        livestockUnit:
+          type: number
+        normedLivestockUnit:
+          type: number
+        averageAnimalDurationSum:
+          type: integer
+          format: int32
+    AgisAtdSummeringDataType:
+      type: object
+      required:
+      - atdDataFinal
+      properties:
+        atdDataFinal:
+          $ref: "#/components/schemas/AgisAtdSummeringDataFinalType"
+    AgisBiodiversitySurface:
+      type: object
+      required:
+      - surveyKtIdB
+      - cultivationType
+      - areaNet
+      properties:
+        creationDate:
+          $ref: "#/components/schemas/LocalDate"
+        surveyKtIdB:
+          type: string
+        ber:
+          type: string
+        surfaceId:
+          type: string
+        cultureId:
+          type: string
+        locality:
+          type: string
+        municipalityId:
+          type: integer
+          format: int32
+          maximum: 9999
+          minimum: 1
+        agriculturalZone:
+          type: string
+        cultivationType:
+          type: string
+        cultivationTypeAttribute:
+          type: string
+        areaGross:
+          type: integer
+          format: int32
+        areaNet:
+          type: integer
+          format: int32
+        biodiversityCategory:
+          type: string
+        biodiversityCommitmentStart:
+          type: integer
+          format: int32
+        natureProtectionSurface:
+          type: boolean
+        natureProtectionCommitmentStart:
+          type: integer
+          format: int32
+        cultivated:
+          type: boolean
+        contributionAuthorization:
+          type: boolean
+    AgisBiodiversitySurfaceDataType:
+      type: object
+      required:
+      - biodiversitySurface
+      properties:
+        biodiversitySurface:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisBiodiversitySurface"
+    AgisBreedingTypes:
+      type: object
+      required:
+      - breedingType
+      properties:
+        breedingType:
+          type: array
+          items:
+            type: string
+    AgisCantonFlAbbreviationType:
+      type: string
+      enum:
+      - ZH
+      - BE
+      - LU
+      - UR
+      - SZ
+      - OW
+      - NW
+      - GL
+      - ZG
+      - FR
+      - SO
+      - BS
+      - BL
+      - SH
+      - AR
+      - AI
+      - SG
+      - GR
+      - AG
+      - TG
+      - TI
+      - VD
+      - VS
+      - NE
+      - GE
+      - JU
+      - FL
+    AgisCountrysideQualityDataType:
+      type: object
+      required:
+      - countrysideQualityProject
+      properties:
+        countrysideQualityProject:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisCountrysideQualityProject"
+    AgisCountrysideQualityProject:
+      type: object
+      required:
+      - surveyKtIdB
+      - projectName
+      - projectElements
+      properties:
+        creationDate:
+          $ref: "#/components/schemas/LocalDate"
+        surveyKtIdB:
+          type: string
+        ber:
+          type: string
+        surfaceId:
+          type: string
+        locality:
+          type: string
+        municipalityId:
+          type: integer
+          format: int32
+          maximum: 9999
+          minimum: 1
+        projectName:
+          type: string
+        projectElements:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisProjectElementsType"
+    AgisDataRequestTypeType:
+      type: object
+      properties:
+        aggregatedResults:
+          type: boolean
+        finalData:
+          type: boolean
+    AgisFarmApicultureData:
+      type: object
+      required:
+      - surveyKtIdB
+      - colonyCount
+      properties:
+        creationDate:
+          $ref: "#/components/schemas/LocalDate"
+        surveyKtIdB:
+          type: string
+        ber:
+          type: string
+        colonyCount:
+          type: integer
+          format: int32
+    AgisFarmCharacteristicsType:
+      type: object
+      required:
+      - ZATypology
+      - surface
+      - livestockUnit
+      - structure
+      - summeringStructure
+      - surveyNorm
+      - bioContribution
+      - achieveOeln
+      - directPayment
+      - individualCultureContribution
+      - summeringContribution
+      - insituContribution
+      - cerealsContribution
+      - validSince
+      properties:
+        ZATypology:
+          type: string
+        surface:
+          type: integer
+          format: int32
+        livestockUnit:
+          type: number
+          minimum: 0
+        structure:
+          type: boolean
+        summeringStructure:
+          type: boolean
+        surveyNorm:
+          type: boolean
+        bioContribution:
+          type: boolean
+        achieveOeln:
+          type: boolean
+        directPayment:
+          type: boolean
+        individualCultureContribution:
+          type: boolean
+        summeringContribution:
+          type: boolean
+        insituContribution:
+          type: boolean
+        cerealsContribution:
+          type: boolean
+        validSince:
+          $ref: "#/components/schemas/OffsetDateTime"
+    AgisFarmDetailsType:
+      type: object
+      required:
+      - farmType
+      properties:
+        farmType:
+          type: string
+        localMunicipality:
+          $ref: "#/components/schemas/AgisMunicipalityType"
+        coordinatesEast:
+          type: integer
+          format: int32
+          maximum: 2844000
+          minimum: 2460000
+        coordinatesNorth:
+          type: integer
+          format: int32
+          maximum: 1306000
+          minimum: 1063000
+        altitude:
+          type: integer
+          format: int32
+          minimum: 0
+        agriculturalZone:
+          type: string
+        agriculturalArea:
+          type: string
+        EGID:
+          type: integer
+          format: int32
+        EGAID:
+          type: integer
+          format: int32
+    AgisFarmGeneralData:
+      type: object
+      required:
+      - code
+      - quantity
+      properties:
+        creationDate:
+          $ref: "#/components/schemas/LocalDate"
+        code:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+    AgisFarmGeneralDataDeclaration:
+      type: object
+      required:
+      - code
+      properties:
+        creationDate:
+          $ref: "#/components/schemas/LocalDate"
+        code:
+          type: string
+        relevant:
+          type: boolean
+    AgisFarmPersonDetailsType:
+      type: object
+      required:
+      - farmDetails
+      - personDetails
+      - farmCharacteristics
+      properties:
+        farmDetails:
+          $ref: "#/components/schemas/AgisFarmDetailsType"
+        personDetails:
+          $ref: "#/components/schemas/AgisPersonDetailsType"
+        farmCharacteristics:
+          $ref: "#/components/schemas/AgisFarmCharacteristicsType"
+    AgisGeneralDataType:
+      type: object
+      properties:
+        farmGeneralData:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisFarmGeneralData"
+        farmGeneralDataDeclaration:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisFarmGeneralDataDeclaration"
+    AgisGeneralSurfaceDataType:
+      type: object
+      required:
+      - surface
+      properties:
+        surface:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisSurface"
+    AgisGrapeSurface:
+      type: object
+      required:
+      - surveyKtIdB
+      - cultivationType
+      properties:
+        creationDate:
+          $ref: "#/components/schemas/LocalDate"
+        surveyKtIdB:
+          type: string
+        ber:
+          type: string
+        surfaceId:
+          type: string
+        cultureId:
+          type: string
+        locality:
+          type: string
+        municipalityId:
+          type: integer
+          format: int32
+          maximum: 9999
+          minimum: 1
+        agriculturalZone:
+          type: string
+        cultivationType:
+          type: string
+        slopeGrape30To50Area:
+          type: integer
+          format: int32
+        slopeGrape50PlusArea:
+          type: integer
+          format: int32
+        slopeGrapeTerrace:
+          type: integer
+          format: int32
+        bioContribution:
+          type: boolean
+        contributionAuthorization:
+          type: boolean
+    AgisGrapeSurfaceDataType:
+      type: object
+      required:
+      - grapeSurface
+      properties:
+        grapeSurface:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisGrapeSurface"
+    AgisMunicipalityType:
+      type: object
+      properties:
+        municipalityName:
+          type: string
+          maxLength: 40
+        municipalityId:
+          type: integer
+          format: int32
+          maximum: 9999
+          minimum: 1
+        cantonFlAbbreviation:
+          $ref: "#/components/schemas/AgisCantonFlAbbreviationType"
+    AgisNetworkContribution:
+      type: object
+      required:
+      - organization
+      properties:
+        organization:
+          type: string
+        organizationName:
+          type: string
+        federalAmountUsed:
+          type: boolean
+        contributionAmount:
+          type: number
+    AgisNetworkSurface:
+      type: object
+      required:
+      - surveyKtIdB
+      - cultivationType
+      - areaNet
+      properties:
+        creationDate:
+          $ref: "#/components/schemas/LocalDate"
+        surveyKtIdB:
+          type: string
+        ber:
+          type: string
+        surfaceId:
+          type: string
+        cultureId:
+          type: string
+        locality:
+          type: string
+        municipalityId:
+          type: integer
+          format: int32
+          maximum: 9999
+          minimum: 1
+        agriculturalZone:
+          type: string
+        cultivationType:
+          type: string
+        cultivationTypeAttribute:
+          type: string
+        areaGross:
+          type: integer
+          format: int32
+        areaNet:
+          type: integer
+          format: int32
+        networkCommitmentStart:
+          type: integer
+          format: int32
+        networkContribution:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisNetworkContribution"
+        contributionAuthorization:
+          type: boolean
+    AgisNetworkSurfaceDataType:
+      type: object
+      required:
+      - networkSurface
+      properties:
+        networkSurface:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisNetworkSurface"
+    AgisPersonDetailsType:
+      type: object
+      required:
+      - legalForm
+      properties:
+        legalForm:
+          type: string
+        dateOfBirth:
+          $ref: "#/components/schemas/LocalDate"
+        foundationYear:
+          type: integer
+          format: int32
+        languageOfCorrespondance:
+          type: string
+        postalAddress:
+          $ref: "#/components/schemas/AgisPersonMailAddressType"
+        residenceMunicipality:
+          $ref: "#/components/schemas/AgisMunicipalityType"
+        EGAID:
+          type: integer
+          format: int32
+    AgisPersonMailAddressInfoType:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+    AgisPersonMailAddressType:
+      type: object
+      properties:
+        person:
+          $ref: "#/components/schemas/AgisPersonMailAddressInfoType"
+        addressInformation:
+          $ref: "#/components/schemas/AgisAddressInformationType"
+    AgisProductionForms:
+      type: object
+      required:
+      - productionForm
+      properties:
+        productionForm:
+          type: array
+          items:
+            type: string
+    AgisProjectElementsType:
+      type: object
+      required:
+      - measureId
+      - quantity
+      - contributionAmount
+      properties:
+        measureId:
+          type: string
+        category:
+          type: string
+        quantity:
+          type: number
+        contributionAmount:
+          type: number
+        contributionAuthorization:
+          type: boolean
+    AgisSelfReportedDataType:
+      type: object
+      properties:
+        declarationDayQuantity:
+          type: integer
+          format: int32
+        averageQuantity:
+          type: integer
+          format: int32
+        keepingType:
+          type: string
+        summeringQuantity:
+          type: integer
+          format: int32
+        summeringDuration:
+          type: integer
+          format: int32
+    AgisSelfReportedSummeringDataType:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          format: int32
+        summeringDuration:
+          type: integer
+          format: int32
+    AgisSlopeSurface:
+      type: object
+      required:
+      - surveyKtIdB
+      - cultivationType
+      properties:
+        creationDate:
+          $ref: "#/components/schemas/LocalDate"
+        surveyKtIdB:
+          type: string
+        ber:
+          type: string
+        surfaceId:
+          type: string
+        cultureId:
+          type: string
+        locality:
+          type: string
+        municipalityId:
+          type: integer
+          format: int32
+          maximum: 9999
+          minimum: 1
+        agriculturalZone:
+          type: string
+        cultivationType:
+          type: string
+        slope18To35Area:
+          type: integer
+          format: int32
+        slope35To50Area:
+          type: integer
+          format: int32
+        slope50PlusArea:
+          type: integer
+          format: int32
+        cultivated:
+          type: boolean
+        contributionAuthorization:
+          type: boolean
+    AgisSlopeSurfaceDataType:
+      type: object
+      required:
+      - slopeSurface
+      properties:
+        slopeSurface:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisSlopeSurface"
+    AgisStructuralDataRootType:
+      type: object
+      properties:
+        generalData:
+          $ref: "#/components/schemas/AgisGeneralDataType"
+        animalData:
+          $ref: "#/components/schemas/AgisAnimalDataType"
+        animalSummeringData:
+          $ref: "#/components/schemas/AgisAnimalSummeringDataType"
+        generalSurfaceData:
+          $ref: "#/components/schemas/AgisGeneralSurfaceDataType"
+        slopeSurfaceData:
+          $ref: "#/components/schemas/AgisSlopeSurfaceDataType"
+        grapeSurfaceData:
+          $ref: "#/components/schemas/AgisGrapeSurfaceDataType"
+        biodiversitySurfaceData:
+          $ref: "#/components/schemas/AgisBiodiversitySurfaceDataType"
+        networkSurfaceData:
+          $ref: "#/components/schemas/AgisNetworkSurfaceDataType"
+        countrysideQualityData:
+          $ref: "#/components/schemas/AgisCountrysideQualityDataType"
+        aquacultureData:
+          $ref: "#/components/schemas/AgisAquacultureDataType"
+        apicultureData:
+          $ref: "#/components/schemas/AgisApicultureDataType"
+    AgisStructuralDataType:
+      type: object
+      required:
+      - ktIdB
+      - ktIdP
+      - farmPersonDetails
+      properties:
+        ktIdB:
+          type: string
+          maxLength: 20
+        ber:
+          type: string
+          pattern: "^[A-B][1-9][0-9]{7}$"
+        ktIdP:
+          type: string
+          maxLength: 20
+        uid:
+          type: string
+          pattern: "^CHE[1-9][0-9]{8}$"
+        farmPersonDetails:
+          $ref: "#/components/schemas/AgisFarmPersonDetailsType"
+        structuralDataRoot:
+          $ref: "#/components/schemas/AgisStructuralDataRootType"
+    AgisStructureResponseType:
+      type: object
+      required:
+      - cantonFlAbbreviation
+      - surveyYear
+      - dataRequestType
+      - structuralData
+      properties:
+        cantonFlAbbreviation:
+          $ref: "#/components/schemas/AgisCantonFlAbbreviationType"
+        surveyYear:
+          type: integer
+          format: int32
+        dataRequestType:
+          $ref: "#/components/schemas/AgisDataRequestTypeType"
+        structuralData:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgisStructuralDataType"
+    AgisSummeringAbroadDetails:
+      type: object
+      properties:
+        livestockUnit:
+          type: number
+    AgisSummeringInlandDetails:
+      type: object
+      properties:
+        livestockUnit:
+          type: number
+        normedLivestockUnit:
+          type: number
+    AgisSurface:
+      type: object
+      required:
+      - surveyKtIdB
+      - cultivationType
+      - areaNet
+      properties:
+        creationDate:
+          $ref: "#/components/schemas/LocalDate"
+        surveyKtIdB:
+          type: string
+        ber:
+          type: string
+        surfaceId:
+          type: string
+        cultureId:
+          type: string
+        locality:
+          type: string
+        municipalityId:
+          type: integer
+          format: int32
+          maximum: 9999
+          minimum: 1
+        agriculturalZone:
+          type: string
+        cultivationType:
+          type: string
+        cultivationTypeAttribute:
+          type: string
+        areaGross:
+          type: integer
+          format: int32
+        areaNet:
+          type: integer
+          format: int32
+        cultivated:
+          type: boolean
+        natureProtectionSurface:
+          type: boolean
+        psSoilMildTreatment:
+          type: boolean
+        psmArableFarming:
+          type: boolean
+        psmVegetablesBerries:
+          type: boolean
+        psmPerennialCulture:
+          type: boolean
+        psmBioAids:
+          type: boolean
+        psmHerbicide:
+          type: boolean
+        bio:
+          type: boolean
+        culturalLandscapeContribution:
+          type: boolean
+        individualCultureContribution:
+          type: boolean
+    AgisSurveyFarmDetails:
+      type: object
+      properties:
+        declarationDayQuantity:
+          type: integer
+          format: int32
+        quantity:
+          type: number
+        livestockUnit:
+          type: number
+    AgisWaterDrainTypes:
+      type: object
+      required:
+      - waterDrainType
+      properties:
+        waterDrainType:
+          type: array
+          items:
+            type: string
+    AgisWaterSupplyTypes:
+      type: object
+      required:
+      - waterSupplyType
+      properties:
+        waterSupplyType:
+          type: array
+          items:
+            type: string
     BurDto:
       type: object
       description: Data transfer object representing a bur
@@ -105,6 +1005,7 @@ components:
               type: object
               required:
               - id
+              - dataSourceProductId
               description: List of data products requested
               properties:
                 id:
@@ -129,13 +1030,20 @@ components:
                   $ref: "#/components/schemas/TranslationDto"
                   type: object
                   description: Description of the product
+                dataSourceProductId:
+                  type: string
+                  examples:
+                  - animalData
+                  description: The identifier of the product in the data source system
             stateCode:
               type:
               - string
               - object
               enum:
               - DRAFT
-              - SUBMITTED
+              - IN_REVIEW
+              - TO_BE_SIGNED
+              - ACTIVE
               description: State of the data request
             dataConsumerLegalName:
               type: string
@@ -260,6 +1168,7 @@ components:
               type: object
               required:
               - id
+              - dataSourceProductId
               description: List of data products requested
               properties:
                 id:
@@ -284,13 +1193,20 @@ components:
                   $ref: "#/components/schemas/TranslationDto"
                   type: object
                   description: Description of the product
+                dataSourceProductId:
+                  type: string
+                  examples:
+                  - animalData
+                  description: The identifier of the product in the data source system
             stateCode:
               type:
               - string
               - object
               enum:
               - DRAFT
-              - SUBMITTED
+              - IN_REVIEW
+              - TO_BE_SIGNED
+              - ACTIVE
               description: State of the data request
             dataConsumerLegalName:
               type: string
@@ -363,6 +1279,7 @@ components:
       type: object
       required:
       - id
+      - dataSourceProductId
       properties:
         id:
           $ref: "#/components/schemas/UUID"
@@ -386,6 +1303,11 @@ components:
           $ref: "#/components/schemas/TranslationDto"
           type: object
           description: Description of the product
+        dataSourceProductId:
+          type: string
+          examples:
+          - animalData
+          description: The identifier of the product in the data source system
     DataRequestDescriptionDto:
       type: object
       properties:
@@ -438,6 +1360,7 @@ components:
           type: object
           required:
           - id
+          - dataSourceProductId
           description: List of data products requested
           properties:
             id:
@@ -462,13 +1385,20 @@ components:
               $ref: "#/components/schemas/TranslationDto"
               type: object
               description: Description of the product
+            dataSourceProductId:
+              type: string
+              examples:
+              - animalData
+              description: The identifier of the product in the data source system
         stateCode:
           type:
           - string
           - object
           enum:
           - DRAFT
-          - SUBMITTED
+          - IN_REVIEW
+          - TO_BE_SIGNED
+          - ACTIVE
           description: State of the data request
         dataConsumerLegalName:
           type: string
@@ -545,6 +1475,13 @@ components:
           type: string
           examples:
           - Valutazione della qualità del suolo
+    DataRequestStateEnum:
+      type: string
+      enum:
+      - DRAFT
+      - IN_REVIEW
+      - TO_BE_SIGNED
+      - ACTIVE
     DataRequestTitleDto:
       type: object
       properties:
@@ -614,6 +1551,11 @@ components:
           - example@labelorganisation.ch
           maxLength: 255
           description: Contact email address for the data request
+        targetGroup:
+          type: string
+          examples:
+          - von allen Bio Suisse Mitgliedern
+          description: Target group of the data request
         products:
           type: array
           examples:
@@ -694,6 +1636,11 @@ components:
       format: date-time
       examples:
       - 2022-03-10T12:15:50
+    OffsetDateTime:
+      type: string
+      format: date-time
+      examples:
+      - 2022-03-10T12:15:50-04:00
     TranslationDto:
       type: object
       properties:
@@ -760,6 +1707,11 @@ tags:
   description: "Provides access to data requests for consumers and admins. Consumers\
     \ can create, update, submit, and retrieve their own data requests, while admins\
     \ have full access to all data requests and their associated consent requests."
+- name: Data Transfer
+  description: "Relays data products that belong to a producer, identified by a specific\
+    \ UID or local BUR local unit Id. Before any data is transferred, the producer\
+    \ must have accepted an active data request that includes the requested product.\
+    \ This endpoint simply forwards the payload from the source system to the consumer."
 - name: Participants
   description: "Provides access to UIDs and BURs authorized for specific data producers,\
     \ based on their ktIdP or UID."
@@ -784,6 +1736,7 @@ paths:
         in: query
         schema:
           type: string
+          pattern: "^CHE[A-Za-z0-9*]{1,9}$"
       responses:
         "200":
           description: OK
@@ -1153,10 +2106,10 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
-  /api/agreement/v1/data-requests/{id}/submit:
-    post:
-      description: Submits a completed data request for review. Only accessible to
-        the consumer who owns the data request.
+  /api/agreement/v1/data-requests/{id}/status:
+    put:
+      description: sets status of data request. Only accessible to the consumer who
+        owns the data request and to admins. Only specific transitions are allowed.
       operationId: submitDataRequest
       tags:
       - Data Requests
@@ -1170,7 +2123,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DataRequestUpdateDto"
+              $ref: "#/components/schemas/DataRequestStateEnum"
         required: true
       responses:
         "200":
@@ -1183,8 +2136,6 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "400":
-          description: Bad Request
         "404":
           description: The resource or element was not found
           content:
@@ -1197,7 +2148,72 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-      summary: Submit Data Request
+      summary: Set Status
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+  /api/data-transfer/v1/data:
+    get:
+      description: Retrieves data defined by productId of organisation identified
+        bi uid or bur local unit.
+      operationId: dataTransfer
+      tags:
+      - Data Transfer
+      parameters:
+      - description: Optional filter to retrieve data of a producer identified by
+          a id of a local bur unit
+        example: A123456
+        name: bur
+        in: query
+        schema:
+          type: string
+      - description: productId for which the data is requested
+        example: 085e4b72-964d-4bd5-a3c9-224d8c5585a
+        name: productId
+        in: query
+        schema:
+          $ref: "#/components/schemas/UUID"
+        required: true
+      - description: year of the survey for which the data is requested
+        example: 2024
+        name: surveyYear
+        in: query
+        schema:
+          type: integer
+          format: int32
+        required: true
+      - description: Optional filter to retrieve data of a producer identified by
+          the uid
+        example: CHE123456789
+        name: uid
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgisStructureResponseType"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Data Transfer
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
@@ -1517,7 +2533,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.0.0-rc.51
+  version: 1.0.0-rc.52
   description: "This API provides access to the agridata.ch data exchange platform,\
     \ enabling participants to discover, request, approve, and manage data sharing\
     \ agreements."

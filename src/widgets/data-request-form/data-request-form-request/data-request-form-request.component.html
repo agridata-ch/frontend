@@ -15,6 +15,7 @@
           value="AGIS"
           disabled
           name="requestProvider"
+          [disabled]="formDisabled()"
         />
       </div>
       <app-form-control
@@ -24,6 +25,7 @@
         [placeholder]="t('request.products.placeholder')"
         [controlType]="ControlTypes.MULTI_SELECT"
         [options]="products()"
+        [disabled]="formDisabled()"
       />
     </div>
   </div>
@@ -37,18 +39,21 @@
       id="requestTitleDe"
       [label]="t('request.title.de.label')"
       [placeholder]="t('request.title.de.placeholder')"
+      [disabled]="formDisabled()"
     />
     <app-form-control
       [control]="getFormControl(this.form()!, 'request.title.fr')"
       id="requestTitleFr"
       [label]="t('request.title.fr.label')"
       [placeholder]="t('request.title.fr.placeholder')"
+      [disabled]="formDisabled()"
     />
     <app-form-control
       [control]="getFormControl(this.form()!, 'request.title.it')"
       id="requestTitleIt"
       [label]="t('request.title.it.label')"
       [placeholder]="t('request.title.it.placeholder')"
+      [disabled]="formDisabled()"
     />
   </div>
   <div>
@@ -62,6 +67,7 @@
       [label]="t('request.description.de.label')"
       [placeholder]="t('request.description.de.placeholder')"
       [controlType]="ControlTypes.TEXT_AREA"
+      [disabled]="formDisabled()"
     />
     <app-form-control
       [control]="getFormControl(this.form()!, 'request.description.fr')"
@@ -69,6 +75,7 @@
       [label]="t('request.description.fr.label')"
       [placeholder]="t('request.description.fr.placeholder')"
       [controlType]="ControlTypes.TEXT_AREA"
+      [disabled]="formDisabled()"
     />
     <app-form-control
       [control]="getFormControl(this.form()!, 'request.description.it')"
@@ -76,9 +83,10 @@
       [label]="t('request.description.it.label')"
       [placeholder]="t('request.description.it.placeholder')"
       [controlType]="ControlTypes.TEXT_AREA"
+      [disabled]="formDisabled()"
     />
   </div>
-  <div>
+  <div class="mb-6">
     <div class="mb-6">
       <h4 class="text-agridata-primary-text mb-2">{{ t('request.purpose.label') }}</h4>
       <span class="text-agridata-tertiary-text">{{ t('request.purpose.sublabel') }}</span>
@@ -89,6 +97,7 @@
       [label]="t('request.purpose.de.label')"
       [placeholder]="t('request.purpose.de.placeholder')"
       [controlType]="ControlTypes.TEXT_AREA"
+      [disabled]="formDisabled()"
     />
     <app-form-control
       [control]="getFormControl(this.form()!, 'request.purpose.fr')"
@@ -96,6 +105,7 @@
       [label]="t('request.purpose.fr.label')"
       [placeholder]="t('request.purpose.fr.placeholder')"
       [controlType]="ControlTypes.TEXT_AREA"
+      [disabled]="formDisabled()"
     />
     <app-form-control
       [control]="getFormControl(this.form()!, 'request.purpose.it')"
@@ -103,6 +113,7 @@
       [label]="t('request.purpose.it.label')"
       [placeholder]="t('request.purpose.it.placeholder')"
       [controlType]="ControlTypes.TEXT_AREA"
+      [disabled]="formDisabled()"
     />
   </div>
 </form>

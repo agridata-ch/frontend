@@ -21,6 +21,7 @@
             [disabled]="true"
             [value]="userData()?.name ?? ''"
             placeholder="{{ t('name.placeholder') }}"
+            [disabled]="formDisabled()"
           />
         </div>
         <div class="flex flex-col max-w-[180px]">
@@ -34,6 +35,7 @@
             [value]="userData()?.uid"
             placeholder="{{ t('uid.placeholder') }}"
             [inputPrefix]="t('uid.prefix')"
+            [disabled]="formDisabled()"
           />
         </div>
       </div>
@@ -42,6 +44,7 @@
         id="dataConsumerStreet"
         [label]="t('dataConsumerStreet.label')"
         [placeholder]="t('dataConsumerStreet.placeholder')"
+        [disabled]="formDisabled()"
       />
       <div class="flex gap-6">
         <app-form-control
@@ -50,6 +53,7 @@
           [label]="t('dataConsumerZip.label')"
           [placeholder]="t('dataConsumerZip.placeholder')"
           class="max-w-[200px]"
+          [disabled]="formDisabled()"
         />
         <app-form-control
           [control]="getFormControl(this.form()!, 'consumer.dataConsumerCity')"
@@ -57,6 +61,7 @@
           [label]="t('dataConsumerCity.label')"
           [placeholder]="t('dataConsumerCity.placeholder')"
           class="grow"
+          [disabled]="formDisabled()"
         />
       </div>
       <app-form-control
@@ -67,6 +72,7 @@
         [controlType]="ControlTypes.SELECT"
         [options]="countries()"
         class="max-w-[200px]"
+        [disabled]="formDisabled()"
       />
       <div class="flex flex-col gap-6 bg-agridata-content-gray p-6 rounded-lg">
         <div class="flex flex-col">
@@ -86,13 +92,15 @@
               />
               <div class="flex flex-col gap-2">
                 <span class="text-agridata-primary-text font-medium">{{ t('logo.label') }}</span>
-                <app-agridata-button
-                  [variant]="ButtonVariants.Link"
-                  (onClick)="fileInput.click()"
-                  (keydown.enter)="fileInput.click()"
-                >
-                  {{ t('logo.upload') }}
-                </app-agridata-button>
+                @if (!formDisabled()) {
+                  <app-agridata-button
+                    [variant]="ButtonVariants.Link"
+                    (onClick)="fileInput.click()"
+                    (keydown.enter)="fileInput.click()"
+                  >
+                    {{ t('logo.upload') }}
+                  </app-agridata-button>
+                }
                 <input
                   #fileInput
                   type="file"
@@ -115,6 +123,7 @@
             [placeholder]="t('dataConsumerDisplayName.placeholder')"
             (input)="handleChangeConsumerInitials($event)"
             class="grow"
+            [disabled]="formDisabled()"
           />
         </div>
       </div>
@@ -132,6 +141,7 @@
             [label]="t('contactPhoneNumber.label')"
             [placeholder]="t('contactPhoneNumber.placeholder')"
             class="max-w-[200px]"
+            [disabled]="formDisabled()"
           />
           <app-form-control
             [control]="getFormControl(this.form()!, 'consumer.contactEmailAddress')"
@@ -139,6 +149,7 @@
             [label]="t('contactEmailAddress.label')"
             [placeholder]="t('contactEmailAddress.placeholder')"
             class="grow"
+            [disabled]="formDisabled()"
           />
         </div>
       </div>

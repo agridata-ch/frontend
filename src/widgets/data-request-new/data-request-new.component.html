@@ -11,16 +11,17 @@
           [form]="form"
           (saveLogo)="handleSaveLogo($event)"
           [dataRequestLogo]="dataRequest()?.dataConsumerLogoBase64"
+          [formDisabled]="formDisabled()"
         />
       }
       @case (FORM_GROUP_NAMES.REQUEST) {
-        <app-data-request-form-request [form]="form" />
+        <app-data-request-form-request [form]="form" [formDisabled]="formDisabled()" />
       }
       @case (FORM_GROUP_NAMES.PREVIEW) {
         <app-data-request-preview [dataRequest]="dataRequest()!" />
       }
       @case (FORM_GROUP_NAMES.PRODUCER) {
-        <span>step 4</span>
+        <app-data-request-form-producer [form]="form" [formDisabled]="formDisabled()" />
       }
       @case (FORM_GROUP_NAMES.CONTRACT) {
         <span>step 5</span>
@@ -32,7 +33,11 @@
   </div>
   <div wizardFooter class="contents" *i18n="let t; prefix: 'data-request.wizard'">
     @if (wizard.currentStep() !== formControlSteps().length - 1) {
-      <app-agridata-button [variant]="ButtonVariants.Tertiary" (onClick)="handleSave()">
+      <app-agridata-button
+        [variant]="ButtonVariants.Tertiary"
+        (onClick)="handleSave()"
+        [disabled]="formDisabled()"
+      >
         {{ t('saveDraft') }}
       </app-agridata-button>
       <div class="flex gap-4">
@@ -44,10 +49,17 @@
           <fa-icon [icon]="previousIcon"></fa-icon>
           <span class="ml-2">{{ t('previous') }}</span>
         </app-agridata-button>
-        <app-agridata-button (onClick)="handleNextStep()">
-          <span class="mr-2">{{ t('next') }}</span>
-          <fa-icon [icon]="nextIcon"></fa-icon>
-        </app-agridata-button>
+        @if (wizard.currentStepId() === FORM_GROUP_NAMES.PRODUCER && !formDisabled()) {
+          <app-agridata-button (onClick)="handleSubmitAndContinue()">
+            {{ t('submitAndContinue') }}
+            <fa-icon [icon]="nextIcon"></fa-icon>
+          </app-agridata-button>
+        } @else {
+          <app-agridata-button (onClick)="handleNextStep()">
+            <span class="mr-2">{{ t('next') }}</span>
+            <fa-icon [icon]="nextIcon"></fa-icon>
+          </app-agridata-button>
+        }
       </div>
     } @else {
       <app-agridata-button

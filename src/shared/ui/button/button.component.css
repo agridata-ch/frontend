@@ -4,6 +4,11 @@
   padding: 0.5rem 1rem; /* ~8px top/bottom, ~16px left/right */
 }
 
+.agridata-button:disabled {
+  pointer-events: filled;
+  cursor: not-allowed;
+}
+
 .agridata-button.agridata-button-primary {
   color: white;
   border-color: var(--color-agridata-primary-600);
@@ -13,6 +18,12 @@
 .agridata-button.agridata-button-primary:hover {
   background-color: var(--color-agridata-primary-400);
   border-color: var(--color-agridata-primary-400);
+}
+
+.agridata-button.agridata-button-primary:disabled {
+  background-color: var(--color-gray-200);
+  border-color: var(--color-gray-200);
+  cursor: not-allowed;
 }
 
 .agridata-button.agridata-button-primary-accept {
@@ -78,6 +89,8 @@
 
 .agridata-button.agridata-button-tertiary:disabled {
   color: var(--color-agridata-primary-300);
+  background-color: transparent;
+  cursor: not-allowed;
 }
 
 .agridata-button.agridata-button-icon {

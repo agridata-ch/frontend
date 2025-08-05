@@ -1,3 +1,5 @@
+/// <reference types="jest" />
+
 import { TranslationDto } from '@/entities/openapi';
 
 export class MockI18nService {
@@ -12,5 +14,9 @@ export class MockI18nService {
   }
   lang() {
     return 'de';
+  }
+
+  setActiveLang() {
+    return jest.fn();
   }
 }

@@ -25,6 +25,10 @@ export interface DataProductDto {
      * Description of the product
      */
     description?: TranslationDto;
+    /**
+     * The identifier of the product in the data source system
+     */
+    dataSourceProductId: string;
 }
 export namespace DataProductDto {
 }

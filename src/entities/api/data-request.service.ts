@@ -3,7 +3,12 @@ import { firstValueFrom } from 'rxjs';
 
 import { DataRequestsService } from '@/entities/openapi/api/dataRequests.service';
 
-import { DataProductsService, DataRequestDto, DataRequestUpdateDto } from '../openapi';
+import {
+  ConsentRequestDetailViewDtoDataRequestStateCode,
+  DataProductsService,
+  DataRequestDto,
+  DataRequestUpdateDto,
+} from '../openapi';
 
 @Injectable({
   providedIn: 'root',
@@ -31,5 +36,14 @@ export class DataRequestService {
   async uploadLogo(dataRequestId: string, logo: File) {
     const logoBlob = new Blob([logo], { type: logo.type });
     return firstValueFrom(this.apiService.updateDataRequestLogo(dataRequestId, logoBlob));
+  }
+
+  async submitDataRequest(dataRequestId: string) {
+    return firstValueFrom(
+      this.apiService.submitDataRequest(
+        dataRequestId,
+        JSON.stringify(ConsentRequestDetailViewDtoDataRequestStateCode.InReview),
+      ),
+    );
   }
 }

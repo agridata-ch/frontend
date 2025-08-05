@@ -26,9 +26,11 @@ describe('AgridataSelectComponent', () => {
 
   it('should toggle the dropdown open and closed', () => {
     expect(component.isDropdownOpen()).toBe(false);
+    expect(component.dropdownIcon()).toBe(component.chevronDown);
 
     component.toggleDropdown();
     expect(component.isDropdownOpen()).toBe(true);
+    expect(component.dropdownIcon()).toBe(component.chevronUp);
 
     component.toggleDropdown();
     expect(component.isDropdownOpen()).toBe(false);
@@ -46,22 +48,6 @@ describe('AgridataSelectComponent', () => {
 
     expect(component.options()).toEqual(options);
     expect(component.placeholder()).toBe(placeholder);
-  });
-
-  describe('click outside behavior', () => {
-    it('should close the dropdown when clicking outside', () => {
-      component.isDropdownOpen.set(true);
-      const outside = document.createElement('div');
-      component.onClickOutside(outside);
-      expect(component.isDropdownOpen()).toBeFalsy();
-    });
-
-    it('should not close when clicking inside host element', () => {
-      component.isDropdownOpen.set(true);
-      const hostElement: HTMLElement = fixture.nativeElement;
-      component.onClickOutside(hostElement);
-      expect(component.isDropdownOpen()).toBeTruthy();
-    });
   });
 
   describe('selection logic', () => {
@@ -97,6 +83,14 @@ describe('AgridataSelectComponent', () => {
       componentRef.setInput('control', { value: 'abc' });
       expect(component.isSelected('abc')).toBe(true);
       expect(component.isSelected('def')).toBe(false);
+    });
+  });
+
+  describe('click outside behavior', () => {
+    it('should close the dropdown when clicking outside', () => {
+      component.isDropdownOpen.set(true);
+      component.handleClickOutside();
+      expect(component.isDropdownOpen()).toBeFalsy();
     });
   });
 });

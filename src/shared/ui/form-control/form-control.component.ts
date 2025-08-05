@@ -31,6 +31,7 @@ export class FormControlComponent {
   readonly inputPrefix = input<string>('');
   readonly pattern = input<string | RegExp>('');
   readonly disabled = input<boolean>(false);
+  readonly helperText = input<string>('');
 
   readonly onBlur = output<void>();
 

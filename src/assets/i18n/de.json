@@ -201,6 +201,16 @@
             "size": "Die Datei ist zu gross. Max. erlaubte Grösse: {{ maxSize }}"
           }
         }
+      },
+      "producer": {
+        "info": "Nachdem der Vertrag von allen Vertragspartner unterzeichnet wurde, erhalten Sie eine E-Mail-Einladungs-Vorlage. Diese Vorlage wird einen für Ihren Antrag spezifischen Link enthalten. Damit können Sie danach gezielt Ihre Datenproduzenten einladen.",
+        "title": "Datenproduzenten bestimmen",
+        "description": "Bestimmen Sie, welche Gruppe von Datenproduzenten Sie mit Ihrem Antrag ansprechen möchten.",
+        "targetGroup": {
+          "label": "Gruppe von Datenproduzenten",
+          "placeholder": "Gruppe von Datenproduzenten",
+          "helperText": "Beispiel: alle Bio-Landwirte"
+        }
       }
     },
     "preview": {
@@ -236,7 +246,11 @@
       "saveDraft": "Zwischenspeichern",
       "saveAndComplete": "Speichern und Einreichen",
       "next": "Weiter",
-      "previous": "Zurück"
+      "previous": "Zurück",
+      "submitAndContinue": "Antrag einreichen & weiter"
+    },
+    "submit": {
+      "error": "Fehler beim Einreichen des Antrags"
     }
   },
   "forms": {

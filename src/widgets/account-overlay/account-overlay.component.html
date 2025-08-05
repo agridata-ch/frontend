@@ -4,7 +4,7 @@
     [class.bg-agridata-hover-on-dark]="isOverlayOpen()"
     (click)="toggleOverlay()"
   >
-    <app-agridata-avatar [name]="overlayName() ?? null" [size]="AvatarSize.SMALL" />
+    <app-agridata-avatar [name]="overlayName()" [size]="AvatarSize.SMALL" />
     <div class="text-left">
       <div>{{ overlayName() }}</div>
       <div class="text-sm text-gray-400">{{ activeUid() }}</div>
@@ -16,7 +16,7 @@
     <div class="p-4">
       <div class="flex items-center mb-4 gap-3">
         <app-agridata-avatar
-          [name]="overlayName() ?? null"
+          [name]="overlayName()"
           [size]="AvatarSize.SMALL"
           [skin]="AvatarSkin.DARK"
         />

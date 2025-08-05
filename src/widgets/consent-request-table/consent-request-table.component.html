@@ -18,7 +18,10 @@
     </div>
   </ng-template>
   <ng-template [stCell]="dataRequestTitleHeader" let-item>
-    <span class="text-agridata-primary-600 agridata-ellipsis">
+    <span
+      class="text-agridata-primary-600 agridata-ellipsis"
+      [title]="getCellValue(item, dataRequestTitleHeader)"
+    >
       {{ getCellValue(item, dataRequestTitleHeader) }}
     </span>
   </ng-template>

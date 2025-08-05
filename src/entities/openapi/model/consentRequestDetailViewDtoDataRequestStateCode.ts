@@ -14,7 +14,9 @@
  */
 export const ConsentRequestDetailViewDtoDataRequestStateCode = {
     Draft: 'DRAFT',
-    Submitted: 'SUBMITTED'
+    InReview: 'IN_REVIEW',
+    ToBeSigned: 'TO_BE_SIGNED',
+    Active: 'ACTIVE'
 } as const;
 export type ConsentRequestDetailViewDtoDataRequestStateCode = typeof ConsentRequestDetailViewDtoDataRequestStateCode[keyof typeof ConsentRequestDetailViewDtoDataRequestStateCode];
 
