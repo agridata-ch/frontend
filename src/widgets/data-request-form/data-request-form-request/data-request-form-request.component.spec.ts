@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 
 import { DataRequestService } from '@/entities/api';
 import { I18nService } from '@/shared/i18n';
+import { MockI18nService } from '@/shared/testing/mocks';
 
 import { DataRequestFormRequestComponent } from './data-request-form-request.component';
 
@@ -32,7 +33,6 @@ let fixture: ComponentFixture<DataRequestFormRequestComponent>;
 let component: DataRequestFormRequestComponent;
 let componentRef: ComponentRef<DataRequestFormRequestComponent>;
 let mockDataRequestService: jest.Mocked<DataRequestService>;
-let mockI18nService: jest.Mocked<I18nService>;
 
 describe('DataRequestFormRequestComponent', () => {
   beforeEach(async () => {
@@ -47,14 +47,10 @@ describe('DataRequestFormRequestComponent', () => {
       },
     } as unknown as jest.Mocked<DataRequestService>;
 
-    mockI18nService = {
-      lang: jest.fn().mockReturnValue('en'),
-    } as unknown as jest.Mocked<I18nService>;
-
     await TestBed.configureTestingModule({
       imports: [DataRequestFormRequestComponent],
       providers: [
-        { provide: I18nService, useValue: mockI18nService },
+        { provide: I18nService, useClass: MockI18nService },
         { provide: DataRequestService, useValue: mockDataRequestService },
       ],
     }).compileComponents();
@@ -79,14 +75,10 @@ describe('DataRequestFormRequestComponent with empty products', () => {
       },
     } as unknown as jest.Mocked<DataRequestService>;
 
-    mockI18nService = {
-      lang: jest.fn().mockReturnValue('en'),
-    } as unknown as jest.Mocked<I18nService>;
-
     await TestBed.configureTestingModule({
       imports: [DataRequestFormRequestComponent],
       providers: [
-        { provide: I18nService, useValue: mockI18nService },
+        { provide: I18nService, useClass: MockI18nService },
         { provide: DataRequestService, useValue: mockDataRequestService },
       ],
     }).compileComponents();

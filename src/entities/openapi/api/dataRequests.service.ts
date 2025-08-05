@@ -21,6 +21,8 @@ import { ConsentRequestConsumerViewDto } from '../model/consentRequestConsumerVi
 // @ts-ignore
 import { DataRequestDto } from '../model/dataRequestDto';
 // @ts-ignore
+import { DataRequestStateEnum } from '../model/dataRequestStateEnum';
+// @ts-ignore
 import { DataRequestUpdateDto } from '../model/dataRequestUpdateDto';
 // @ts-ignore
 import { ExceptionDto } from '../model/exceptionDto';
@@ -276,22 +278,22 @@ export class DataRequestsService extends BaseService {
     }
 
     /**
-     * Submit Data Request
-     * Submits a completed data request for review. Only accessible to the consumer who owns the data request.
+     * Set Status
+     * sets status of data request. Only accessible to the consumer who owns the data request and to admins. Only specific transitions are allowed.
      * @param id 
-     * @param dataRequestUpdateDto 
+     * @param body 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public submitDataRequest(id: string, dataRequestUpdateDto: DataRequestUpdateDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<DataRequestDto>;
-    public submitDataRequest(id: string, dataRequestUpdateDto: DataRequestUpdateDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DataRequestDto>>;
-    public submitDataRequest(id: string, dataRequestUpdateDto: DataRequestUpdateDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DataRequestDto>>;
-    public submitDataRequest(id: string, dataRequestUpdateDto: DataRequestUpdateDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public submitDataRequest(id: string, body: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<DataRequestDto>;
+    public submitDataRequest(id: string, body: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DataRequestDto>>;
+    public submitDataRequest(id: string, body: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DataRequestDto>>;
+    public submitDataRequest(id: string, body: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling submitDataRequest.');
         }
-        if (dataRequestUpdateDto === null || dataRequestUpdateDto === undefined) {
-            throw new Error('Required parameter dataRequestUpdateDto was null or undefined when calling submitDataRequest.');
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling submitDataRequest.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -330,12 +332,12 @@ export class DataRequestsService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/agreement/v1/data-requests/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/submit`;
+        let localVarPath = `/api/agreement/v1/data-requests/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/status`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<DataRequestDto>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<DataRequestDto>('put', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: dataRequestUpdateDto,
+                body: body,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

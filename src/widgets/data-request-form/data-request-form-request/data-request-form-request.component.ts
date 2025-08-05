@@ -17,6 +17,7 @@ export class DataRequestFormRequestComponent {
   readonly dataRequestService = inject(DataRequestService);
   readonly i18nService = inject(I18nService);
   readonly form = input<FormGroup>();
+  readonly formDisabled = input<boolean>(false);
 
   readonly dataProductsResource = this.dataRequestService.fetchDataProducts;
   readonly products = signal<MultiSelectOption[]>([]);

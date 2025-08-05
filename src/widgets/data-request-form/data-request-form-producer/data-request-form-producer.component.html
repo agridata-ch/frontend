@@ -1,0 +1,13 @@
+<div class="flex flex-col gap-10" *i18n="let t; prefix: 'data-request.form.producer'">
+  <h3>{{ t('title') }}</h3>
+  <span>{{ t('description') }}</span>
+  <app-form-control
+    [control]="getFormControl(this.form()!, 'producer.targetGroup')"
+    id="targetGroup"
+    [label]="t('targetGroup.label')"
+    [placeholder]="t('targetGroup.placeholder')"
+    [helperText]="t('targetGroup.helperText')"
+    [disabled]="formDisabled()"
+  />
+  <app-alert class="mt-10" [message]="t('info')" />
+</div>

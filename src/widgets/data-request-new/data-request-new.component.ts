@@ -1,18 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, computed, inject, signal } from '@angular/core';
+import { Component, ViewChild, computed, effect, inject, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import DataRequestDtoSchema from '@/assets/formSchemas/DataRequestUpdateDto.json';
 import { DataRequestService } from '@/entities/api';
-import { DataRequestDto, DataRequestUpdateDto } from '@/entities/openapi';
+import {
+  ConsentRequestDetailViewDtoDataRequestStateCode,
+  DataRequestDto,
+  DataRequestUpdateDto,
+} from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { Dto, buildReactiveForm, flattenFormGroup } from '@/shared/lib/form.helper';
+import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 import {
   DataRequestFormConsumerComponent,
+  DataRequestFormProducerComponent,
   DataRequestFormRequestComponent,
 } from '@/widgets/data-request-form';
 import { FORM_GROUP_NAMES } from '@/widgets/data-request-new';
@@ -30,15 +36,18 @@ import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
     DataRequestFormRequestComponent,
     DataRequestPreviewComponent,
     DataRequestFormConsumerComponent,
+    DataRequestFormProducerComponent,
   ],
   templateUrl: './data-request-new.component.html',
 })
 export class DataRequestNewComponent {
   readonly i18nService = inject(I18nService);
   readonly dataRequestService = inject(DataRequestService);
+  readonly toastService = inject(ToastService);
   readonly dataRequestId = signal<string>('');
   readonly dataRequest = signal<DataRequestDto | null>(null);
   readonly ButtonVariants = ButtonVariants;
+  readonly ToastType = ToastType;
   readonly nextIcon = faArrowRight;
   readonly previousIcon = faArrowLeft;
   readonly FORM_GROUP_NAMES = FORM_GROUP_NAMES;
@@ -112,7 +121,7 @@ export class DataRequestNewComponent {
       ],
     },
     { formGroupName: FORM_GROUP_NAMES.PREVIEW, fields: [] },
-    { formGroupName: FORM_GROUP_NAMES.PRODUCER, fields: [] },
+    { formGroupName: FORM_GROUP_NAMES.PRODUCER, fields: ['targetGroup'] },
     { formGroupName: FORM_GROUP_NAMES.CONTRACT, fields: [] },
     { formGroupName: FORM_GROUP_NAMES.COMPLETION, fields: [] },
   ]);
@@ -169,6 +178,21 @@ export class DataRequestNewComponent {
     Object.keys(this.dtoFromBE).length ? (this.dtoFromBE as Dto) : (this.initialValues() as Dto),
   );
 
+  readonly formDisabled = computed(() => {
+    return (
+      !!this.dataRequest()?.stateCode &&
+      this.dataRequest()?.stateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Draft
+    );
+  });
+
+  formDisabledEffect = effect(() => {
+    const disabled = this.formDisabled();
+    this.form?.disable({ emitEvent: false });
+    if (!disabled) {
+      this.form?.enable({ emitEvent: false });
+    }
+  });
+
   readonly form = buildReactiveForm(
     DataRequestDtoSchema,
     this.formMap(),
@@ -189,24 +213,48 @@ export class DataRequestNewComponent {
   }
 
   handleStepChange() {
-    this.handleSave();
+    if (!this.formDisabled()) this.handleSave();
   }
 
   handlePreviousStep() {
-    this.handleSave();
+    if (!this.formDisabled()) this.handleSave();
     this.wizard.previousStep();
   }
 
   handleNextStep() {
-    this.handleSave();
+    if (!this.formDisabled()) this.handleSave();
     this.wizard.nextStep();
   }
 
   async handleSave() {
+    if (this.formDisabled()) return;
+
     const id = this.wizard.currentStepId();
     this.form.get(id)?.markAllAsTouched();
     this.updateFormSteps(id, this.form.get(id)?.valid ?? false);
     await this.createOrSaveDataRequest();
+  }
+
+  async handleSubmitAndContinue() {
+    this.handleSave().then(async () => {
+      this.form.markAllAsTouched();
+      this.updateFormSteps();
+      if (this.form.valid) {
+        await this.dataRequestService
+          .submitDataRequest(this.dataRequestId())
+          .then((dataRequest: DataRequestDto) => {
+            this.dataRequest.set(dataRequest);
+            this.wizard.nextStep();
+          })
+          .catch((error) => {
+            console.error('Error submitting data request:', error);
+            const errorMessage = this.i18nService.translate('data-request.submit.error');
+            this.toastService.show(error.message, errorMessage, ToastType.Error);
+          });
+      } else {
+        console.error('Form is invalid, cannot submit data request');
+      }
+    });
   }
 
   handleSaveAndComplete() {
@@ -220,7 +268,7 @@ export class DataRequestNewComponent {
   }
 
   async createOrSaveDataRequest() {
-    const flattenForm = flattenFormGroup(this.form) as DataRequestUpdateDto;
+    const flattenForm = flattenFormGroup(this.form);
 
     if (this.dataRequestId()) {
       if (this.logoFile()) {

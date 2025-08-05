@@ -47,6 +47,7 @@ export class AgridataMultiSelectComponent {
   }
 
   onOptionToggle(value: string, event: Event) {
+    if (this.disabled()) return;
     event.stopPropagation();
     const checked = (event.target as HTMLInputElement).checked;
     const current = Array.isArray(this.control()?.value) ? [...this.control()!.value] : [];

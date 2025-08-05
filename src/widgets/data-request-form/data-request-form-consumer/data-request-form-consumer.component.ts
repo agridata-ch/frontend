@@ -30,7 +30,9 @@ export class DataRequestFormConsumerComponent {
   readonly uidSearchService = inject(UidRegisterService);
 
   readonly form = input<FormGroup>();
+  readonly formDisabled = input<boolean>(false);
   readonly dataRequestLogo = input<string>();
+
   readonly saveLogo = output<File>();
 
   readonly ControlTypes = ControlTypes;

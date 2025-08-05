@@ -1,4 +1,4 @@
-import { Component, effect, input, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
@@ -29,12 +29,4 @@ export class AgridataInputComponent {
       this.onInput.emit(value);
     }
   }
-
-  formDisabledEffect = effect(() => {
-    const disabled = this.disabled();
-    this.control()?.disable({ emitEvent: false });
-    if (!disabled) {
-      this.control()?.enable({ emitEvent: false });
-    }
-  });
 }

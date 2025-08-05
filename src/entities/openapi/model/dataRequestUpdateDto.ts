@@ -57,6 +57,10 @@ export interface DataRequestUpdateDto {
      */
     contactEmailAddress?: string;
     /**
+     * Target group of the data request
+     */
+    targetGroup?: string;
+    /**
      * List of data products requested
      */
     products?: Array<string>;

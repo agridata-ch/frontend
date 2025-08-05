@@ -201,6 +201,16 @@
             "size": "Il file è troppo grande. Dimensione massima consentita: {{ maxSize }}"
           }
         }
+      },
+      "producer": {
+        "info": "Dopo che il contratto è stato firmato da tutte le parti contraenti, riceverete un modello di invito via e-mail. Questo modello conterrà un link specifico per la vostra richiesta. In questo modo potrete invitare in modo mirato i vostri produttori di dati.",
+        "title": "Determinare i produttori di dati",
+        "description": "Decidete a quale gruppo di produttori di dati desiderate rivolgervi con la vostra richiesta.",
+        "targetGroup": {
+          "label": "Gruppo di produttori di dati",
+          "placeholder": "Gruppo di produttori di dati",
+          "helperText": "Esempio: tutti gli agricoltori bio"
+        }
       }
     },
     "preview": {
@@ -236,7 +246,11 @@
       "saveDraft": "Cache",
       "saveAndComplete": "Salva e invia",
       "next": "Avanti",
-      "previous": "Indietro"
+      "previous": "Indietro",
+      "submitAndContinue": "Invia la richiesta e continua"
+    },
+    "submit": {
+      "error": "Errore durante l'invio della richiesta"
     }
   },
   "forms": {

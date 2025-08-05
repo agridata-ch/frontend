@@ -112,6 +112,11 @@
       "maxLength": 255,
       "pattern": "^.*@.*$"
     },
+    "targetGroup": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 150
+    },
     "products": {
       "type": "array",
       "items": {
@@ -132,6 +137,7 @@
     "dataConsumerCountry",
     "contactPhoneNumber",
     "contactEmailAddress",
+    "targetGroup",
     "products"
   ]
 }

@@ -2,9 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { DataRequestService, UidRegisterService } from '@/entities/api';
-import { DataRequestDto } from '@/entities/openapi';
+import {
+  ConsentRequestDetailViewDtoDataRequestStateCode,
+  DataRequestDto,
+} from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
+import { MockI18nService, MockUidRegisterService } from '@/shared/testing/mocks';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 
 import { DataRequestNewComponent } from './data-request-new.component';
@@ -13,36 +17,18 @@ describe('DataRequestNewComponent', () => {
   let fixture: ComponentFixture<DataRequestNewComponent>;
   let component: DataRequestNewComponent;
   let mockDataRequestService: jest.Mocked<DataRequestService>;
-  let mockUidRegisterService: jest.Mocked<UidRegisterService>;
 
   beforeEach(async () => {
-    const newDto: DataRequestDto = { id: 'ABC123', stateCode: 'DRAFT' };
+    const newDto: DataRequestDto = {
+      id: 'ABC123',
+      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+    };
     mockDataRequestService = {
       createDataRequest: jest.fn().mockResolvedValue(newDto),
       updateDataRequestDetails: jest.fn().mockResolvedValue(undefined),
       uploadLogo: jest.fn().mockResolvedValue(undefined),
+      submitDataRequest: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<DataRequestService>;
-
-    mockUidRegisterService = {
-      uidInfosOfCurrentUser: {
-        value: jest.fn().mockReturnValue({
-          uid: 'UID123',
-          firstName: 'Max',
-          lastName: 'Mustermann',
-          email: 'max.mustermann@example.com',
-        }),
-        isLoading: jest.fn().mockReturnValue(false),
-        reload: jest.fn(),
-      },
-      searchByUidResource: jest.fn(),
-    } as unknown as jest.Mocked<UidRegisterService>;
-
-    const mockI18nService = {
-      translateSignal: jest.fn((key: string) => jest.fn(() => `Translated: ${key}`)),
-      translate: jest.fn((key: string) => `Translated: ${key}`),
-      useObjectTranslation: jest.fn((obj) => obj?.de ?? ''),
-      lang: jest.fn(() => 'de'),
-    } as unknown as jest.Mocked<I18nService>;
 
     const mockAuthService = {
       userData: jest.fn(),
@@ -52,9 +38,9 @@ describe('DataRequestNewComponent', () => {
       imports: [DataRequestNewComponent, ReactiveFormsModule, AgridataWizardComponent],
       providers: [
         { provide: DataRequestService, useValue: mockDataRequestService },
-        { provide: I18nService, useValue: mockI18nService },
+        { provide: I18nService, useClass: MockI18nService },
         { provide: AuthService, useValue: mockAuthService },
-        { provide: UidRegisterService, useValue: mockUidRegisterService },
+        { provide: UidRegisterService, useClass: MockUidRegisterService },
       ],
     }).compileComponents();
 
@@ -69,7 +55,10 @@ describe('DataRequestNewComponent', () => {
   });
 
   it('should call createDataRequest when saving a new draft', async () => {
-    const returned: DataRequestDto = { id: 'ABC123', stateCode: 'DRAFT' };
+    const returned: DataRequestDto = {
+      id: 'ABC123',
+      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+    };
     mockDataRequestService.createDataRequest.mockResolvedValue(returned);
 
     component.handleSave();
@@ -104,7 +93,10 @@ describe('DataRequestNewComponent', () => {
   });
 
   it('should create request on createOrSetDataRequestId without logo', async () => {
-    const newDto: DataRequestDto = { id: 'NEW123', stateCode: 'DRAFT' };
+    const newDto: DataRequestDto = {
+      id: 'NEW123',
+      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+    };
     mockDataRequestService.createDataRequest.mockResolvedValue(newDto);
     await component.createOrSaveDataRequest();
     expect(mockDataRequestService.createDataRequest).toHaveBeenCalled();
@@ -113,7 +105,10 @@ describe('DataRequestNewComponent', () => {
   });
 
   it('should create request on createOrSetDataRequestId with logo', async () => {
-    const newDto: DataRequestDto = { id: 'NEW123', stateCode: 'DRAFT' };
+    const newDto: DataRequestDto = {
+      id: 'NEW123',
+      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+    };
     mockDataRequestService.createDataRequest.mockResolvedValue(newDto);
     const file = new File([''], 'logo.png', { type: 'image/png' });
     component.handleSaveLogo(file);
@@ -162,5 +157,43 @@ describe('DataRequestNewComponent', () => {
     const file = new File([''], 'logo.png', { type: 'image/png' });
     component.handleSaveLogo(file);
     expect(mockDataRequestService.uploadLogo).toHaveBeenCalledWith('123', file);
+  });
+
+  describe('handleSubmitAndContinue', () => {
+    beforeEach(() => {
+      jest.spyOn(component.wizard, 'nextStep').mockImplementation();
+      jest.spyOn(console, 'error').mockImplementation();
+      jest.spyOn(component, 'handleSave').mockImplementation(() => Promise.resolve());
+      jest.spyOn(component.form, 'markAllAsTouched').mockImplementation();
+      jest.spyOn(component, 'updateFormSteps').mockImplementation();
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    it('should not call submitDataRequest when form is invalid', async () => {
+      Object.defineProperty(component.form, 'valid', { get: () => false });
+
+      await component.handleSubmitAndContinue();
+
+      expect(component.handleSave).toHaveBeenCalled();
+      expect(mockDataRequestService.submitDataRequest).not.toHaveBeenCalled();
+    });
+
+    it('should call submitDataRequest and advance to next step when form is valid', async () => {
+      const mockResponse = {
+        id: 'test-id',
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Submitted,
+      };
+
+      Object.defineProperty(component.form, 'valid', { get: () => true });
+      mockDataRequestService.submitDataRequest.mockResolvedValue(mockResponse);
+
+      await component.handleSubmitAndContinue();
+
+      expect(component.handleSave).toHaveBeenCalled();
+      expect(mockDataRequestService.submitDataRequest).toHaveBeenCalled();
+    });
   });
 });

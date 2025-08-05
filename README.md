@@ -114,7 +114,7 @@ This will:
 1. Log in to your POEditor account
 2. Go to your account settings
 3. Navigate to the API Access section
-4. Generate a new API token or use an existing one
+4. Generate a new readonly API token or use an existing one
 
 ## Getting POEditor Project ID
 

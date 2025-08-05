@@ -11,6 +11,7 @@ import {
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
+import { MockI18nService } from '@/shared/testing/mocks';
 
 describe('ConsentRequestProducerPage - component behavior', () => {
   let fixture: ComponentFixture<ConsentRequestProducerPage>;
@@ -18,7 +19,6 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   let componentRef: ComponentRef<ConsentRequestProducerPage>;
   let mockConsentService: jest.Mocked<ConsentRequestService>;
   let mockLocation: jest.Mocked<Location>;
-  let mockI18n: jest.Mocked<I18nService>;
 
   const sampleRequests: ConsentRequestDetailViewDto[] = [
     {
@@ -64,19 +64,13 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     mockLocation = {
       go: jest.fn(),
     } as unknown as jest.Mocked<Location>;
-    mockI18n = {
-      currentLanguage: jest.fn().mockReturnValue('de'),
-      useObjectTranslation: jest.fn().mockImplementation((key) => key),
-      translate: jest.fn().mockImplementation((key) => key),
-      lang: jest.fn().mockReturnValue('de'),
-    } as unknown as jest.Mocked<I18nService>;
 
     await TestBed.configureTestingModule({
       providers: [
         ConsentRequestProducerPage,
         { provide: ConsentRequestService, useValue: mockConsentService },
         { provide: Location, useValue: mockLocation },
-        { provide: I18nService, useValue: mockI18n },
+        { provide: I18nService, useClass: MockI18nService },
       ],
     }).compileComponents();
 

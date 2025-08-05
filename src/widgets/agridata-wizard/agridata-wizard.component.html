@@ -4,12 +4,14 @@
   (onStepChange)="handleChangeStep($event)"
 ></app-agridata-wizard-stepper>
 
-<div class="overflow-y-auto flex flex-col gap-6 grow bg-white p-6 mb-14">
+<div
+  class="overflow-y-auto flex flex-col gap-6 grow bg-white p-6 mb-14 rounded-lg border border-agridata-stroke"
+>
   <ng-content select="[wizardContent]"></ng-content>
 </div>
 
 <div
-  class="absolute bottom-0 right-0 left-0 flex justify-between px-6 py-4 pt-6 -mx-6 -mb-2 bg-linear-to-t from-white to transparent from-90%"
+  class="absolute bottom-6 right-0 left-0 flex justify-between px-6 py-4 pt-6 -mb-2 bg-linear-to-t from-white to transparent from-90% rounded-b-xl border border-t-0 border-agridata-stroke"
 >
   <ng-content select="[wizardFooter]"></ng-content>
 </div>

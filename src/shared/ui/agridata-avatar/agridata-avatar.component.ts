@@ -22,6 +22,7 @@ export class AgridataAvatarComponent {
       this.initials.set(
         name
           .split(' ')
+          .filter(Boolean)
           .slice(0, 2)
           .map((namePart: string) => namePart.charAt(0).toUpperCase())
           .join(''),

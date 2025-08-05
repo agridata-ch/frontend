@@ -256,10 +256,7 @@ export function getErrorMessage(control: AbstractControl, errorKey: string) {
  * @param skipTopLevel Whether to skip the top-level group.
  * @returns A nested object representing the form's values.
  */
-export function flattenFormGroup(
-  formGroup: FormGroup,
-  skipTopLevel = true,
-): Record<string, unknown> {
+export function flattenFormGroup(formGroup: FormGroup, skipTopLevel = true) {
   const result: Record<string, unknown> = {};
 
   Object.keys(formGroup.controls).forEach((key) => {
