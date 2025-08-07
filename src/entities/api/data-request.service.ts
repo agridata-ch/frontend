@@ -40,9 +40,18 @@ export class DataRequestService {
 
   async submitDataRequest(dataRequestId: string) {
     return firstValueFrom(
-      this.apiService.submitDataRequest(
+      this.apiService.setDataRequestStatus(
         dataRequestId,
         JSON.stringify(ConsentRequestDetailViewDtoDataRequestStateCode.InReview),
+      ),
+    );
+  }
+
+  async retreatDataRequest(dataRequestId: string) {
+    return firstValueFrom(
+      this.apiService.setDataRequestStatus(
+        dataRequestId,
+        JSON.stringify(ConsentRequestDetailViewDtoDataRequestStateCode.Draft),
       ),
     );
   }

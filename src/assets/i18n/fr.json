@@ -76,11 +76,6 @@
     "title": "Demande de données",
     "date": "Date de la demande",
     "state": "Statut",
-    "stateCode": {
-      "GRANTED": "Accordé",
-      "DECLINED": "Refusé",
-      "OPENED": "Ouvert"
-    },
     "contact": {
       "title": "Coordonnées",
       "description": "Pour toute question ou clarification concernant la demande de données, veuillez contacter l'organisation à l'adresse suivante:"
@@ -251,7 +246,22 @@
     },
     "submit": {
       "error": "Erreur lors de la soumission de la demande"
-    }
+    },
+    "stateCode": {
+      "IN_REVIEW": "En cours d'examen",
+      "DRAFT": "Projet",
+      "TO_BE_SIGNED": "Signature ouverte",
+      "ACTIVE": "Actif"
+    },
+    "table": {
+      "tableActions": {
+        "details": "Afficher",
+        "retreat": "Retrait"
+      }
+    },
+    "provider": "Fournisseur de données",
+    "submissionDate": "Date de dépôt",
+    "humanFriendlyId": "ID"
   },
   "forms": {
     "error": {

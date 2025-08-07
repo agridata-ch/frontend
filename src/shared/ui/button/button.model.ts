@@ -5,6 +5,7 @@ export enum ButtonVariants {
   SecondaryReject = 'secondary-reject',
   Tertiary = 'tertiary',
   Icon = 'icon',
+  IconOutline = 'icon-outline',
   Link = 'link',
   Filter = 'filter',
 }

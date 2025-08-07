@@ -20,6 +20,14 @@ import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
 export interface ConsentRequestDetailViewDtoDataRequest { 
     id?: string;
     /**
+     * Human friendly id of the data request
+     */
+    humanFriendlyId?: string;
+    /**
+     * Date and time when the data request was submitted
+     */
+    submissionDate?: string;
+    /**
      * Title of the data request
      */
     title?: DataRequestTitleDto;

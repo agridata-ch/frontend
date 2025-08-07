@@ -98,6 +98,17 @@ export default defineConfig([
       'unicorn/no-empty-file': 'warn',
     },
   },
+  // Relax rules for test files
+  {
+    files: ['**/*.spec.ts'],
+    rules: {
+      // Allow using 'any' type in tests for accessing protected members
+      '@typescript-eslint/no-explicit-any': 'off',
+      // Disable other rules that might be too restrictive for tests
+      '@typescript-eslint/no-non-null-assertion': 'off',
+    },
+  },
+
   // Add Angular template accessibility rules
   {
     files: ['**/*.html'],

@@ -11,11 +11,11 @@
           {{ t('request.provider.label') }}
         </label>
         <input
-          class="border rounded-md border-gray-300 px-5 py-3 placeholder-gray-400 w-full mb-6"
+          class="border rounded-md border-gray-300 px-5 py-3 placeholder-gray-400 w-full mb-6 cursor-not-allowed"
           value="AGIS"
           disabled
           name="requestProvider"
-          [disabled]="formDisabled()"
+          [disabled]="true"
         />
       </div>
       <app-form-control

@@ -278,22 +278,22 @@ export class DataRequestsService extends BaseService {
     }
 
     /**
-     * Set Status
+     * Set Data Request Status
      * sets status of data request. Only accessible to the consumer who owns the data request and to admins. Only specific transitions are allowed.
      * @param id 
      * @param body 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public submitDataRequest(id: string, body: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<DataRequestDto>;
-    public submitDataRequest(id: string, body: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DataRequestDto>>;
-    public submitDataRequest(id: string, body: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DataRequestDto>>;
-    public submitDataRequest(id: string, body: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public setDataRequestStatus(id: string, body: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<DataRequestDto>;
+    public setDataRequestStatus(id: string, body: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DataRequestDto>>;
+    public setDataRequestStatus(id: string, body: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DataRequestDto>>;
+    public setDataRequestStatus(id: string, body: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling submitDataRequest.');
+            throw new Error('Required parameter id was null or undefined when calling setDataRequestStatus.');
         }
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling submitDataRequest.');
+            throw new Error('Required parameter body was null or undefined when calling setDataRequestStatus.');
         }
 
         let localVarHeaders = this.defaultHeaders;

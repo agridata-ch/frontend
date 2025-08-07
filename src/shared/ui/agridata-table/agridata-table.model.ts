@@ -17,3 +17,10 @@ export enum SortDirections {
   ASC = 'asc',
   DESC = 'desc',
 }
+
+export const AgridataTableUtils = {
+  getCellValue(row: AgridataTableData, header: string): string {
+    const cell = row.data.find((c) => c.header === header);
+    return cell ? cell.value : '';
+  },
+};

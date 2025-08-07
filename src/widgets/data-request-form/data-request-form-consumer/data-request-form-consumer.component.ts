@@ -65,6 +65,8 @@ export class DataRequestFormConsumerComponent {
   });
 
   readonly updateFormEffect = effect(() => {
+    if (this.formDisabled()) return;
+
     const uidSearchResult = this.uidInfoResource.value();
     const currentUserData = this.userData();
 
