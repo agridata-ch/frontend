@@ -1,3 +1,9 @@
+## [1.0.0-rc.26](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.25...v1.0.0-rc.26) (2025-08-07)
+
+### Features
+
+- **form-producer:** add form-producer ([f8f1f78](https://github.com/agridata-ch/frontend/commit/f8f1f785a7804327fc5ee1b47ba66f724b397fa4)), closes [DIGIB2-309](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-309)
+
 ## [1.0.0-rc.25](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.24...v1.0.0-rc.25) (2025-08-05)
 
 ### Bug Fixes
