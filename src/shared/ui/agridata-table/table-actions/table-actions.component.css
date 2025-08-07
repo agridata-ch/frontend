@@ -1,5 +1,4 @@
 .is-hovered .action-button {
   background-color: var(--color-blue-100);
   border-color: var(--color-blue-100);
-  border-radius: 0.375rem; /* ~6px */
 }

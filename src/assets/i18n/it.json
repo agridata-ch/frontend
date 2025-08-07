@@ -76,11 +76,6 @@
     "title": "Richiesta dati",
     "date": "Data richiesta",
     "state": "Stato",
-    "stateCode": {
-      "GRANTED": "Concesso",
-      "DECLINED": "Rifiutato",
-      "OPENED": "Aperto"
-    },
     "contact": {
       "title": "Contatti",
       "description": "Per qualsiasi domanda o chiarimento sulla richiesta di dati, contattare l'organizzazione all'indirizzo seguente:"
@@ -251,7 +246,22 @@
     },
     "submit": {
       "error": "Errore durante l'invio della richiesta"
-    }
+    },
+    "stateCode": {
+      "IN_REVIEW": "In fase di verifica",
+      "DRAFT": "Progetto",
+      "TO_BE_SIGNED": "Firma aperta",
+      "ACTIVE": "Attivo"
+    },
+    "table": {
+      "tableActions": {
+        "details": "Mostra",
+        "retreat": "Ritirarsi"
+      }
+    },
+    "provider": "Fornitore di dati",
+    "submissionDate": "Data di presentazione",
+    "humanFriendlyId": "ID"
   },
   "forms": {
     "error": {

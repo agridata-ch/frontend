@@ -76,11 +76,6 @@
     "title": "Datenantrag",
     "date": "Antragsdatum",
     "state": "Status",
-    "stateCode": {
-      "GRANTED": "Eingewilligt",
-      "DECLINED": "Abgelehnt",
-      "OPENED": "Offen"
-    },
     "contact": {
       "title": "Kontaktdaten",
       "description": "Bei Fragen oder Unklarheiten zum Datenantrag kontaktiere die Organisation unter:"
@@ -251,7 +246,22 @@
     },
     "submit": {
       "error": "Fehler beim Einreichen des Antrags"
-    }
+    },
+    "stateCode": {
+      "IN_REVIEW": "In Prüfung",
+      "DRAFT": "Entwurf",
+      "TO_BE_SIGNED": "Unterzeichnung offen",
+      "ACTIVE": "Aktiv"
+    },
+    "table": {
+      "tableActions": {
+        "details": "Anzeigen",
+        "retreat": "Zurückziehen"
+      }
+    },
+    "provider": "Datenanbieter",
+    "submissionDate": "Datum der Einreichung",
+    "humanFriendlyId": "ID"
   },
   "forms": {
     "error": {

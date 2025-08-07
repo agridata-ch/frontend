@@ -18,10 +18,19 @@
         [backgroundColor]="'#efefef'"
       >
         @if(showPanel()) {
+        <!-- @if (selectedDataRequest().stateCode === ) -->
         <app-data-request-new class="contents" />
         }
       </app-sidepanel>
     </div>
   </div>
+  @if (dataRequests.isLoading()){
+  <p>Loading...</p>
+  } @else {
+  <app-data-request-table
+    [dataRequests]="dataRequests.value()"
+    (tableRowAction)="setSelectedRequest($event)"
+  />
+  }
 </ng-container>
 <div class="flex justify-end"></div>

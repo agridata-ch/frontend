@@ -1,0 +1,29 @@
+<app-agridata-table
+  [rawData]="requests()"
+  [defaultSortColumn]="dataRequestTitleHeader"
+  [defaultSortDirection]="SortDirections.DESC"
+>
+  <ng-template [stCell]="dataRequestHumanFriendlyIdHeader" let-item>
+    <span
+      class="text-agridata-primary-text font-medium"
+      [title]="getCellValue(item, dataRequestHumanFriendlyIdHeader)"
+    >
+      {{ getCellValue(item, dataRequestHumanFriendlyIdHeader) }}
+    </span>
+  </ng-template>
+  <ng-template [stCell]="dataRequestTitleHeader" let-item>
+    <span
+      class="text-agridata-primary-600 agridata-ellipsis"
+      [title]="getCellValue(item, dataRequestTitleHeader)"
+    >
+      {{ getCellValue(item, dataRequestTitleHeader) }}
+    </span>
+  </ng-template>
+  <ng-template [stCell]="dataRequestStateHeader" let-item>
+    <app-agridata-badge
+      [text]="getTranslatedStateValue(item, dataRequestStateHeader)"
+      [variant]="getBadgeVariant(getCellValue(item, dataRequestStateHeader))"
+      [size]="BadgeSize.SM"
+    />
+  </ng-template>
+</app-agridata-table>

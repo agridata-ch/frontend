@@ -1,5 +1,4 @@
 import { Component, Signal, computed, inject, input, output, signal } from '@angular/core';
-import { faEye, faFile } from '@fortawesome/free-regular-svg-icons';
 import { faBan, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { ConsentRequestService } from '@/entities/api';
@@ -17,6 +16,7 @@ import {
   ActionDTO,
   AgridataTableComponent,
   AgridataTableData,
+  AgridataTableUtils,
   CellTemplateDirective,
   SortDirections,
 } from '@/shared/ui/agridata-table';
@@ -44,22 +44,21 @@ export class ConsentRequestTableComponent {
   readonly consentRequests = input.required<ConsentRequestProducerViewDto[]>();
   readonly tableRowAction = output<ConsentRequestProducerViewDto>();
 
-  readonly fileIcon = faFile;
-  readonly eyeIcon = faEye;
-  readonly checkIcon = faCheck;
-  readonly banIcon = faBan;
-  readonly BadgeSize = BadgeSize;
-  readonly BadgeVariant = BadgeVariant;
-  readonly SortDirections = SortDirections;
-  readonly AvatarSize = AvatarSize;
-  readonly AvatarSkin = AvatarSkin;
+  protected readonly checkIcon = faCheck;
+  protected readonly banIcon = faBan;
+  protected readonly BadgeSize = BadgeSize;
+  protected readonly BadgeVariant = BadgeVariant;
+  protected readonly SortDirections = SortDirections;
+  protected readonly AvatarSize = AvatarSize;
+  protected readonly AvatarSkin = AvatarSkin;
+  protected readonly getCellValue = AgridataTableUtils.getCellValue;
 
-  readonly dataRequestTitleHeader = 'consent-request.dataRequest.title';
-  readonly dataRequestStateHeader = 'consent-request.dataRequest.state';
-  readonly dataRequestConsumerHeader = 'consent-request.dataRequest.consumerName';
+  protected readonly dataRequestTitleHeader = 'consent-request.dataRequest.title';
+  protected readonly dataRequestStateHeader = 'consent-request.dataRequest.state';
+  protected readonly dataRequestConsumerHeader = 'consent-request.dataRequest.consumerName';
 
-  readonly stateCodeFilter = signal<string | null>(null);
-  readonly requests: Signal<AgridataTableData[]> = computed(() => {
+  protected readonly stateCodeFilter = signal<string | null>(null);
+  protected readonly requests: Signal<AgridataTableData[]> = computed(() => {
     const filter = this.stateCodeFilter();
     return this.consentRequests()
       .filter((request) => !filter || request.stateCode === filter)
@@ -85,11 +84,6 @@ export class ConsentRequestTableComponent {
         rowAction: () => this.tableRowAction.emit(request),
       }));
   });
-
-  getCellValue(row: AgridataTableData, header: string) {
-    const cell = row.data.find((c) => c.header === header);
-    return cell ? cell.value : '';
-  }
 
   getTranslatedStateValue(row: AgridataTableData, header: string) {
     const value = this.getCellValue(row, header);

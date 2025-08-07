@@ -989,6 +989,17 @@ components:
               examples:
               - 3fa85f64-5717-4562-b3fc-2c963f66afb7
               description: Unique identifier of the data request
+            humanFriendlyId:
+              type: string
+              examples:
+              - GL56
+              description: Human friendly id of the data request
+            submissionDate:
+              type: string
+              format: date
+              examples:
+              - 2025-06-16T11:04:51.823889
+              description: Date and time when the data request was submitted
             title:
               $ref: "#/components/schemas/DataRequestTitleDto"
               type: object
@@ -1152,6 +1163,17 @@ components:
               examples:
               - 3fa85f64-5717-4562-b3fc-2c963f66afb7
               description: Unique identifier of the data request
+            humanFriendlyId:
+              type: string
+              examples:
+              - GL56
+              description: Human friendly id of the data request
+            submissionDate:
+              type: string
+              format: date
+              examples:
+              - 2025-06-16T11:04:51.823889
+              description: Date and time when the data request was submitted
             title:
               $ref: "#/components/schemas/DataRequestTitleDto"
               type: object
@@ -1344,6 +1366,17 @@ components:
           examples:
           - 3fa85f64-5717-4562-b3fc-2c963f66afb7
           description: Unique identifier of the data request
+        humanFriendlyId:
+          type: string
+          examples:
+          - GL56
+          description: Human friendly id of the data request
+        submissionDate:
+          type: string
+          format: date
+          examples:
+          - 2025-06-16T11:04:51.823889
+          description: Date and time when the data request was submitted
         title:
           $ref: "#/components/schemas/DataRequestTitleDto"
           type: object
@@ -2110,7 +2143,7 @@ paths:
     put:
       description: sets status of data request. Only accessible to the consumer who
         owns the data request and to admins. Only specific transitions are allowed.
-      operationId: submitDataRequest
+      operationId: setDataRequestStatus
       tags:
       - Data Requests
       parameters:
@@ -2148,7 +2181,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-      summary: Set Status
+      summary: Set Data Request Status
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
@@ -2533,7 +2566,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.0.0-rc.52
+  version: 1.0.0-rc.53
   description: "This API provides access to the agridata.ch data exchange platform,\
     \ enabling participants to discover, request, approve, and manage data sharing\
     \ agreements."
