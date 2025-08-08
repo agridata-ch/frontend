@@ -44,7 +44,7 @@ export class AgridataTableComponent {
 
   readonly sortIcon = computed(() => {
     const dir = this.sortDirection();
-    return dir === SortDirections.ASC ? faArrowUp : faArrowDown;
+    return dir === SortDirections.DESC ? faArrowUp : faArrowDown;
   });
 
   readonly headers = computed<string[]>(() => {
