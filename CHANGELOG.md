@@ -1,3 +1,9 @@
+## [1.0.0-rc.27](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.26...v1.0.0-rc.27) (2025-08-08)
+
+### Features
+
+- **data-request:** add data-request overview ([a702bb3](https://github.com/agridata-ch/frontend/commit/a702bb3884351ff2420b5063040719ba7309c8a9)), closes [DIGIB2-307](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-307)
+
 ## [1.0.0-rc.26](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.25...v1.0.0-rc.26) (2025-08-07)
 
 ### Features
