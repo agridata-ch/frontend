@@ -5,10 +5,15 @@ import { DataRequestService, UidRegisterService } from '@/entities/api';
 import {
   ConsentRequestDetailViewDtoDataRequestStateCode,
   DataRequestDto,
+  DataRequestStateEnum,
 } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
-import { MockI18nService, MockUidRegisterService } from '@/shared/testing/mocks';
+import {
+  MockDataRequestService,
+  MockI18nService,
+  MockUidRegisterService,
+} from '@/shared/testing/mocks';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 
 import { DataRequestNewComponent } from './data-request-new.component';
@@ -16,20 +21,9 @@ import { DataRequestNewComponent } from './data-request-new.component';
 describe('DataRequestNewComponent', () => {
   let fixture: ComponentFixture<DataRequestNewComponent>;
   let component: DataRequestNewComponent;
-  let mockDataRequestService: jest.Mocked<DataRequestService>;
+  let mockDataRequestService: MockDataRequestService;
 
   beforeEach(async () => {
-    const newDto: DataRequestDto = {
-      id: 'ABC123',
-      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
-    };
-    mockDataRequestService = {
-      createDataRequest: jest.fn().mockResolvedValue(newDto),
-      updateDataRequestDetails: jest.fn().mockResolvedValue(undefined),
-      uploadLogo: jest.fn().mockResolvedValue(undefined),
-      submitDataRequest: jest.fn().mockResolvedValue(undefined),
-    } as unknown as jest.Mocked<DataRequestService>;
-
     const mockAuthService = {
       userData: jest.fn(),
     };
@@ -37,7 +31,7 @@ describe('DataRequestNewComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestNewComponent, ReactiveFormsModule, AgridataWizardComponent],
       providers: [
-        { provide: DataRequestService, useValue: mockDataRequestService },
+        { provide: DataRequestService, useClass: MockDataRequestService },
         { provide: I18nService, useClass: MockI18nService },
         { provide: AuthService, useValue: mockAuthService },
         { provide: UidRegisterService, useClass: MockUidRegisterService },
@@ -46,6 +40,9 @@ describe('DataRequestNewComponent', () => {
 
     fixture = TestBed.createComponent(DataRequestNewComponent);
     component = fixture.componentInstance;
+    mockDataRequestService = TestBed.inject(
+      DataRequestService,
+    ) as unknown as MockDataRequestService;
 
     fixture.detectChanges();
   });
@@ -184,7 +181,7 @@ describe('DataRequestNewComponent', () => {
     it('should call submitDataRequest and advance to next step when form is valid', async () => {
       const mockResponse = {
         id: 'test-id',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Submitted,
+        stateCode: DataRequestStateEnum.InReview,
       };
 
       Object.defineProperty(component.form, 'valid', { get: () => true });

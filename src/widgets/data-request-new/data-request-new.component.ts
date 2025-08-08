@@ -243,6 +243,7 @@ export class DataRequestNewComponent {
         await this.dataRequestService
           .submitDataRequest(this.dataRequestId())
           .then((dataRequest: DataRequestDto) => {
+            this.dataRequestService.fetchDataRequests.reload();
             this.dataRequest.set(dataRequest);
             this.wizard.nextStep();
           })
@@ -296,6 +297,7 @@ export class DataRequestNewComponent {
                 this.logoFile.set(null);
               });
           }
+          this.dataRequestService.fetchDataRequests.reload();
         });
     }
   }

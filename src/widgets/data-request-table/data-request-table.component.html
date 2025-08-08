@@ -1,7 +1,7 @@
 <app-agridata-table
   [rawData]="requests()"
   [defaultSortColumn]="dataRequestTitleHeader"
-  [defaultSortDirection]="SortDirections.DESC"
+  [defaultSortDirection]="SortDirections.ASC"
 >
   <ng-template [stCell]="dataRequestHumanFriendlyIdHeader" let-item>
     <span

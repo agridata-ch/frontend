@@ -35,7 +35,7 @@
             [value]="userData()?.uid"
             placeholder="{{ t('uid.placeholder') }}"
             [inputPrefix]="t('uid.prefix')"
-            [disabled]="formDisabled()"
+            [disabled]="userData()?.uid != null || formDisabled()"
           />
         </div>
       </div>
