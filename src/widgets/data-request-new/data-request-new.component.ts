@@ -283,6 +283,7 @@ export class DataRequestNewComponent {
         .updateDataRequestDetails(this.dataRequestId(), flattenForm)
         .then((dataRequest: DataRequestDto) => {
           this.dataRequest.set(dataRequest);
+          this.dataRequestService.fetchDataRequests.reload();
         });
     } else {
       await this.dataRequestService

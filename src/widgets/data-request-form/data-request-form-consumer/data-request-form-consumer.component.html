@@ -21,7 +21,7 @@
             [disabled]="true"
             [value]="userData()?.name ?? ''"
             placeholder="{{ t('name.placeholder') }}"
-            [disabled]="formDisabled()"
+            [disabled]="userData()?.name != null || formDisabled()"
           />
         </div>
         <div class="flex flex-col max-w-[180px]">
