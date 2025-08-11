@@ -88,7 +88,6 @@ export class DataRequestFormConsumerComponent {
         typeof newUserData.uid === 'string' ? Number(newUserData.uid) : newUserData.uid,
       );
       this.consumerName.set(newUserData.name);
-      this.consumerDisplayName.set(newUserData.name);
 
       // check for value in form, if no values exist, patch the form with the request stuff
       const currentFormData = this.form()?.get('consumer')?.value;
@@ -103,6 +102,7 @@ export class DataRequestFormConsumerComponent {
           },
         });
       }
+      this.consumerDisplayName.set(currentFormData.dataConsumerDisplayName || newUserData.name);
     }
   });
 
