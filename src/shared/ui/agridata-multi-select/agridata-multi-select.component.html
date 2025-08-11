@@ -1,11 +1,8 @@
 <div class="relative w-full" (appClickOutside)="handleClickOutside()">
   <button
     type="button"
-    class="w-full border border-gray-300 rounded-md px-5 py-3 text-left flex justify-between items-center"
+    class="w-full border border-gray-300 rounded-md px-5 py-3 text-left flex justify-between items-center bg-white"
     [class.border-red-500]="hasError()"
-    [class.bg-white]="!disabled()"
-    [class.bg-gray-100]="disabled()"
-    [class.cursor-not-allowed]="disabled()"
     (click)="toggleDropdown()"
     [disabled]="disabled()"
   >
@@ -16,10 +13,10 @@
             (click)="onOptionToggle(option.value, $event)"
             (keydown.enter)="onOptionToggle(option.value, $event)"
             class="bg-gray-300 rounded-sm text-xs px-2 py-1 group"
-            [class.cursor-not-allowed]="!disabled()"
+            [class.cursor-not-allowed]="disabled()"
             [class.hover:bg-gray-400]="!disabled()"
             [class.hover:text-gray-100]="!disabled()"
-            [attr.aria-disabled]="!disabled()"
+            [attr.aria-disabled]="disabled()"
           >
             {{ option.label }}
             <fa-icon
