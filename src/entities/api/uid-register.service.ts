@@ -9,7 +9,7 @@ import { UIDRegisterSearchService } from '@/entities/openapi';
 export class UidRegisterService {
   private readonly apiService = inject(UIDRegisterSearchService);
 
-  readonly uidInfosOfCurrentUser = resource({
+  readonly fetchUidInfosOfCurrentUser = resource({
     loader: () => firstValueFrom(this.apiService.getByUidOfCurrentUser()),
   });
 

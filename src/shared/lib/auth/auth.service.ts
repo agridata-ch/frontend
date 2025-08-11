@@ -13,7 +13,7 @@ export type UserData = {
   name: string;
   preferred_username: string;
   sub: string;
-  uid: number;
+  uid: number | string;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -58,7 +58,13 @@ export class AuthService {
       .subscribe(({ isAuthenticated, userData, accessToken }) => {
         this.isAuthenticated.set(isAuthenticated);
         if (isAuthenticated) {
-          this.userData.set(userData);
+          this.userData.set({
+            ...userData,
+            uid:
+              typeof userData.uid === 'string'
+                ? Number(userData.uid?.replace('CHE', ''))
+                : userData.uid,
+          });
           const decoded = this.decodeJwt(accessToken);
           const roles =
             decoded?.realm_access?.roles && Array.isArray(decoded.realm_access.roles)
@@ -88,6 +94,13 @@ export class AuthService {
       .subscribe(() => {
         this.router.navigate(['/']);
       });
+  }
+
+  getUserFullName() {
+    if (!this.userData()) {
+      return '';
+    }
+    return `${this.userData()?.given_name ?? ''} ${this.userData()?.family_name ?? ''}`;
   }
 
   ngOnDestroy() {

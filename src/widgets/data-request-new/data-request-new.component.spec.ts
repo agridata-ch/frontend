@@ -10,6 +10,7 @@ import {
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
+  MockAuthService,
   MockDataRequestService,
   MockI18nService,
   MockUidRegisterService,
@@ -22,18 +23,15 @@ describe('DataRequestNewComponent', () => {
   let fixture: ComponentFixture<DataRequestNewComponent>;
   let component: DataRequestNewComponent;
   let mockDataRequestService: MockDataRequestService;
+  let authService: AuthService;
 
   beforeEach(async () => {
-    const mockAuthService = {
-      userData: jest.fn(),
-    };
-
     await TestBed.configureTestingModule({
       imports: [DataRequestNewComponent, ReactiveFormsModule, AgridataWizardComponent],
       providers: [
         { provide: DataRequestService, useClass: MockDataRequestService },
         { provide: I18nService, useClass: MockI18nService },
-        { provide: AuthService, useValue: mockAuthService },
+        { provide: AuthService, useClass: MockAuthService },
         { provide: UidRegisterService, useClass: MockUidRegisterService },
       ],
     }).compileComponents();
@@ -43,6 +41,8 @@ describe('DataRequestNewComponent', () => {
     mockDataRequestService = TestBed.inject(
       DataRequestService,
     ) as unknown as MockDataRequestService;
+    authService = TestBed.inject(AuthService);
+    jest.spyOn(authService, 'getUserFullName').mockReturnValue('Test User');
 
     fixture.detectChanges();
   });
@@ -76,6 +76,8 @@ describe('DataRequestNewComponent', () => {
   });
 
   it('initially all formControlSteps are valid', () => {
+    // Mock the form validity
+    component.formControlSteps.update((steps) => steps.map((step) => ({ ...step, isValid: true })));
     const steps = component.formControlSteps();
     expect(steps.every((step) => step.isValid)).toBe(true);
   });

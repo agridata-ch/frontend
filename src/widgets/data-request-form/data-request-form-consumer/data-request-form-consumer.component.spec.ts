@@ -5,8 +5,8 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UidRegisterService } from '@/entities/api/uid-register.service';
 import { COUNTRIES } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
-import { AuthService, UserData } from '@/shared/lib/auth';
-import { MockI18nService, MockUidRegisterService } from '@/shared/testing/mocks';
+import { AuthService } from '@/shared/lib/auth';
+import { MockAuthService, MockI18nService, MockUidRegisterService } from '@/shared/testing/mocks';
 
 import { DataRequestFormConsumerComponent } from './data-request-form-consumer.component';
 
@@ -16,27 +16,12 @@ describe('DataRequestFormConsumerComponent', () => {
   let componentRef: ComponentRef<DataRequestFormConsumerComponent>;
   let form: FormGroup;
 
-  const initialUserData: UserData = {
-    name: 'Test User',
-    uid: 123,
-    email: '',
-    family_name: '',
-    given_name: '',
-    loginid: '',
-    preferred_username: '',
-    sub: '',
-  };
-
   beforeEach(async () => {
-    const mockAuthService = {
-      userData: jest.fn().mockReturnValue(initialUserData),
-    };
-
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, DataRequestFormConsumerComponent],
       providers: [
         { provide: I18nService, useClass: MockI18nService },
-        { provide: AuthService, useValue: mockAuthService },
+        { provide: AuthService, useClass: MockAuthService },
         { provide: UidRegisterService, useClass: MockUidRegisterService },
       ],
     }).compileComponents();

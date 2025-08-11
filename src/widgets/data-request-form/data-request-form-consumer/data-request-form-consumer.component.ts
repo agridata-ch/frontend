@@ -40,10 +40,11 @@ export class DataRequestFormConsumerComponent {
   readonly AvatarSize = AvatarSize;
   readonly AvatarSkin = AvatarSkin;
   readonly getFormControl = getFormControl;
-  readonly uidInfoResource = this.uidSearchService.uidInfosOfCurrentUser;
+  readonly uidInfoResource = this.uidSearchService.fetchUidInfosOfCurrentUser;
 
   readonly userData = signal<UserData | null>(this.authService.userData());
   readonly consumerName = signal<string>('');
+  readonly consumerUid = signal<number | undefined>(undefined);
   readonly logoFile = signal<File | null>(null);
   readonly logoErrorMessage = signal<string | null>(null);
 
@@ -64,30 +65,42 @@ export class DataRequestFormConsumerComponent {
     return this.dataRequestLogo();
   });
 
-  readonly updateFormEffect = effect(() => {
-    if (this.formDisabled()) return;
+  protected readonly userFullName = computed(() => {
+    return this.authService.getUserFullName();
+  });
+
+  readonly updateFormEffect = effect(async () => {
+    if (this.uidInfoResource.isLoading()) return;
 
     const uidSearchResult = this.uidInfoResource.value();
     const currentUserData = this.userData();
 
-    if (uidSearchResult && currentUserData && uidSearchResult.legalName !== currentUserData.name) {
+    if (uidSearchResult || currentUserData) {
+      if (uidSearchResult?.legalName === this.userFullName()) return;
+
       const newUserData = {
         ...currentUserData,
-        uid: uidSearchResult.uid || currentUserData.uid,
-        name: uidSearchResult.legalName || currentUserData.name,
+        uid: uidSearchResult?.uid || currentUserData?.uid,
+        name: uidSearchResult?.legalName || this.userFullName(),
       };
-      this.userData.set(newUserData);
+      this.consumerUid.set(
+        typeof newUserData.uid === 'string' ? Number(newUserData.uid) : newUserData.uid,
+      );
       this.consumerName.set(newUserData.name);
 
-      this.form()?.patchValue({
-        consumer: {
-          dataConsumerDisplayName: uidSearchResult.legalName,
-          dataConsumerCity: uidSearchResult.address?.city,
-          dataConsumerZip: uidSearchResult.address?.zip,
-          dataConsumerStreet: uidSearchResult.address?.street,
-          dataConsumerCountry: uidSearchResult.address?.country,
-        },
-      });
+      // check for value in form, if no values exist, patch the form with the request stuff
+      const currentFormData = this.form()?.get('consumer')?.value;
+      if (!Object.values(currentFormData).some(Boolean)) {
+        this.form()?.patchValue({
+          consumer: {
+            dataConsumerDisplayName: uidSearchResult?.legalName,
+            dataConsumerCity: uidSearchResult?.address?.city,
+            dataConsumerZip: uidSearchResult?.address?.zip,
+            dataConsumerStreet: uidSearchResult?.address?.street,
+            dataConsumerCountry: uidSearchResult?.address?.country,
+          },
+        });
+      }
     }
   });
 

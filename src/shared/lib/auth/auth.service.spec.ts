@@ -21,6 +21,10 @@ describe('AuthService', () => {
     name: 'Alice',
     preferred_username: 'alice123',
     email: 'alice@example.com',
+    family_name: 'Smith',
+    given_name: 'Alice',
+    uid: 123,
+    loginid: 'alice123',
   };
 
   /**
@@ -64,9 +68,8 @@ describe('AuthService', () => {
   it('should set signals and localStorage when checkAuth emits authenticated=true', (done) => {
     const roles = ['role1', 'role2'];
     const accessToken = makeJwtWithRoles(roles);
-    mockOidc.checkAuth.mockReturnValue(
-      of({ isAuthenticated: true, userData: fakeUserData, accessToken }),
-    );
+    const userData = { ...fakeUserData, uid: 'CHE123' }; // Simulate the raw UID from the auth response
+    mockOidc.checkAuth.mockReturnValue(of({ isAuthenticated: true, userData, accessToken }));
 
     service = TestBed.inject(AuthService);
 
@@ -75,7 +78,9 @@ describe('AuthService', () => {
       expect(service.userData()).toEqual(fakeUserData);
       expect(service.userRoles()).toEqual(roles);
 
-      expect(setItemSpy).toHaveBeenCalledWith('oidc.user', JSON.stringify(fakeUserData));
+      // We need to check that localStorage is called with the raw userData
+      const rawUserData = { ...fakeUserData, uid: 'CHE123' };
+      expect(setItemSpy).toHaveBeenCalledWith('oidc.user', JSON.stringify(rawUserData));
       expect(removeItemSpy).not.toHaveBeenCalled();
 
       done();
@@ -141,8 +146,9 @@ describe('AuthService', () => {
 
       const roles = ['admin'];
       const token = makeJwtWithRoles(roles);
+      const userData = { ...fakeUserData, uid: 'CHE123' }; // Simulate the raw UID from the auth response
       mockOidc.checkAuth.mockReturnValue(
-        of({ isAuthenticated: true, userData: fakeUserData, accessToken: token }),
+        of({ isAuthenticated: true, userData, accessToken: token }),
       );
 
       service.checkAuth(false);

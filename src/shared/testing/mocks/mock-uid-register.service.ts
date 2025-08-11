@@ -1,5 +1,5 @@
 export class MockUidRegisterService {
-  uidInfosOfCurrentUser = {
+  fetchUidInfosOfCurrentUser = {
     value: () => ({
       uid: 123,
       legalName: 'Test User',

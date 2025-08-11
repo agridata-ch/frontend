@@ -36,11 +36,11 @@ describe('DataRequestService', () => {
     ];
     mockUidRegisterService.getByUidOfCurrentUser.mockReturnValue(of(mockData));
 
-    expect(service.uidInfosOfCurrentUser.isLoading()).toBe(true);
+    expect(service.fetchUidInfosOfCurrentUser.isLoading()).toBe(true);
 
     setTimeout(() => {
-      expect(service.uidInfosOfCurrentUser.value()).toEqual(mockData);
-      expect(service.uidInfosOfCurrentUser.isLoading()).toBe(false);
+      expect(service.fetchUidInfosOfCurrentUser.value()).toEqual(mockData);
+      expect(service.fetchUidInfosOfCurrentUser.isLoading()).toBe(false);
     }, 0);
   });
 
