@@ -5,7 +5,7 @@
     @if (isAuthenticated() && userData()) {
       <app-account-overlay [userData]="userData()"></app-account-overlay>
     } @else {
-      <button (click)="login()">{{ 'account.login' | i18n }}</button>
+      <button class="cursor-pointer" (click)="login()">{{ 'account.login' | i18n }}</button>
     }
   </div>
 </div>

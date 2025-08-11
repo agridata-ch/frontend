@@ -1,6 +1,6 @@
 <div class="relative inline-block" (appClickOutside)="handleClickOutside()">
   <button
-    class="flex gap-3 items-center hover:bg-agridata-hover-on-dark p-2 rounded-md"
+    class="flex gap-3 items-center hover:bg-agridata-hover-on-dark p-2 rounded-md cursor-pointer"
     [class.bg-agridata-hover-on-dark]="isOverlayOpen()"
     (click)="toggleOverlay()"
   >
@@ -36,7 +36,7 @@
         >
           @for (uid of authorizedUids(); track uid.uid) {
             <button
-              class="flex items-center gap-4 py-2 px-4 hover:bg-agridata-primary-50"
+              class="flex items-center gap-4 py-2 px-4 hover:bg-agridata-primary-50 cursor-pointer"
               [class.bg-agridata-stroke]="activeUid() === uid.uid"
               (click)="selectUid(uid.uid)"
             >
