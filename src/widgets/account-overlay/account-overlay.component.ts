@@ -31,7 +31,7 @@ export class AccountOverlayComponent {
 
   readonly userData = input<UserData | null>(null);
   readonly overlayName = computed(() => {
-    return `${this.userData()?.given_name ?? ''} ${this.userData()?.family_name ?? ''}`;
+    return this.authService.getUserFullName();
   });
 
   readonly ButtonVariants = ButtonVariants;

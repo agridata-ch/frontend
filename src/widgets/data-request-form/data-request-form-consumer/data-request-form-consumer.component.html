@@ -19,9 +19,9 @@
             id="dataConsumerName"
             type="text"
             [disabled]="true"
-            [value]="userData()?.name ?? ''"
+            [value]="consumerName()"
             placeholder="{{ t('name.placeholder') }}"
-            [disabled]="userData()?.name != null || formDisabled()"
+            [disabled]="consumerName() != null || formDisabled()"
           />
         </div>
         <div class="flex flex-col max-w-[180px]">
@@ -32,10 +32,10 @@
             id="dataConsumerUID"
             type="text"
             [disabled]="true"
-            [value]="userData()?.uid"
+            [value]="consumerUid()"
             placeholder="{{ t('uid.placeholder') }}"
             [inputPrefix]="t('uid.prefix')"
-            [disabled]="userData()?.uid != null || formDisabled()"
+            [disabled]="consumerUid() != null || formDisabled()"
           />
         </div>
       </div>

@@ -3,13 +3,10 @@ import { By } from '@angular/platform-browser';
 
 import { ParticipantService } from '@/entities/api/participant.service';
 import { AuthService } from '@/shared/lib/auth';
-import { MockResources } from '@/shared/testing/mocks/mock-resources';
+import { MockAuthService, MockResources } from '@/shared/testing/mocks';
 
 import { AccountOverlayComponent } from './account-overlay.component';
 
-const mockAuthService: Partial<AuthService> = {
-  logout: jest.fn(),
-};
 const mockParticipantService: Partial<ParticipantService> = {
   getAuthorizedUids: MockResources.createMockResourceRef([
     {
@@ -41,7 +38,7 @@ describe('AccountOverlayComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AccountOverlayComponent],
       providers: [
-        { provide: AuthService, useValue: mockAuthService },
+        { provide: AuthService, useClass: MockAuthService },
         { provide: ParticipantService, useValue: mockParticipantService },
       ],
     }).compileComponents();

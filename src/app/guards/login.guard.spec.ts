@@ -2,18 +2,16 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
 import { AuthService } from '@/shared/lib/auth';
+import { MockAuthService } from '@/shared/testing/mocks';
 
 import { LoginAuthGuard } from './login.guard';
 
 describe('LoginAuthGuard', () => {
   let guard: LoginAuthGuard;
-  let mockAuthService: { isAuthenticated: jest.Mock<boolean, []> };
   let mockRouter: { navigate: jest.Mock<Promise<boolean>, [unknown[]]> };
+  let authService: AuthService;
 
   beforeEach(() => {
-    mockAuthService = {
-      isAuthenticated: jest.fn(),
-    };
     mockRouter = {
       navigate: jest.fn().mockResolvedValue(true),
     };
@@ -21,12 +19,13 @@ describe('LoginAuthGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         LoginAuthGuard,
-        { provide: AuthService, useValue: mockAuthService },
+        { provide: AuthService, useClass: MockAuthService },
         { provide: Router, useValue: mockRouter },
       ],
     });
 
     guard = TestBed.inject(LoginAuthGuard);
+    authService = TestBed.inject(AuthService);
   });
 
   afterEach(() => {
@@ -34,7 +33,7 @@ describe('LoginAuthGuard', () => {
   });
 
   it('should navigate to "/" and return true when user is authenticated', () => {
-    mockAuthService.isAuthenticated.mockReturnValue(true);
+    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
 
     const result = guard.canActivate();
 
@@ -43,7 +42,7 @@ describe('LoginAuthGuard', () => {
   });
 
   it('should return false and not navigate when user is not authenticated', () => {
-    mockAuthService.isAuthenticated.mockReturnValue(false);
+    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(false);
 
     const result = guard.canActivate();
 
