@@ -44,6 +44,7 @@ export class DataRequestFormConsumerComponent {
 
   readonly userData = signal<UserData | null>(this.authService.userData());
   readonly consumerName = signal<string>('');
+  readonly consumerDisplayName = signal<string>('');
   readonly consumerUid = signal<number | undefined>(undefined);
   readonly logoFile = signal<File | null>(null);
   readonly logoErrorMessage = signal<string | null>(null);
@@ -87,6 +88,7 @@ export class DataRequestFormConsumerComponent {
         typeof newUserData.uid === 'string' ? Number(newUserData.uid) : newUserData.uid,
       );
       this.consumerName.set(newUserData.name);
+      this.consumerDisplayName.set(newUserData.name);
 
       // check for value in form, if no values exist, patch the form with the request stuff
       const currentFormData = this.form()?.get('consumer')?.value;
@@ -106,7 +108,7 @@ export class DataRequestFormConsumerComponent {
 
   handleChangeConsumerInitials(event: Event) {
     const name = (event.target as HTMLInputElement).value;
-    this.consumerName.set(name);
+    this.consumerDisplayName.set(name);
   }
 
   onFileSelected(event: Event) {

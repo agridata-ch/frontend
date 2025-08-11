@@ -100,7 +100,7 @@ describe('DataRequestFormConsumerComponent', () => {
     it('should update initials from event', () => {
       const event = { target: { value: 'Bob Marley' } } as unknown as Event;
       component.handleChangeConsumerInitials(event);
-      expect(component.consumerName()).toBe('Bob Marley');
+      expect(component.consumerDisplayName()).toBe('Bob Marley');
     });
   });
 });
