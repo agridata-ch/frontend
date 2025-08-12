@@ -11,7 +11,8 @@
 
 export const ExceptionEnum = {
     Generic: 'GENERIC',
-    UidMissing: 'UID_MISSING'
+    UidMissing: 'UID_MISSING',
+    ExternalServiceError: 'EXTERNAL_SERVICE_ERROR'
 } as const;
 export type ExceptionEnum = typeof ExceptionEnum[keyof typeof ExceptionEnum];
 

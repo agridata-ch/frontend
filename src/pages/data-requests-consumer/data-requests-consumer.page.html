@@ -18,8 +18,7 @@
         [backgroundColor]="'#efefef'"
       >
         @if(showPanel()) {
-        <!-- @if (selectedDataRequest().stateCode === ) -->
-        <app-data-request-new class="contents" />
+        <app-data-request-new class="contents" [selectedRequest]="selectedRequest()" />
         }
       </app-sidepanel>
     </div>

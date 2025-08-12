@@ -20,7 +20,7 @@
         </span>
         <app-data-request-purpose-accordion
           [purpose]="getFieldFromLang('purpose', lang)"
-          [products]="dataRequest()?.products"
+          [products]="productsList()"
         />
         <app-data-request-contact
           [phoneNumber]="dataRequest()?.contactPhoneNumber"

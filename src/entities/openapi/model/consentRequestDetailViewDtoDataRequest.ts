@@ -8,7 +8,6 @@
  * Do not edit the class manually.
  */
 import { DataRequestPurposeDto } from './dataRequestPurposeDto';
-import { ConsentRequestDetailViewDtoDataRequestProducts } from './consentRequestDetailViewDtoDataRequestProducts';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { ConsentRequestDetailViewDtoDataRequestStateCode } from './consentRequestDetailViewDtoDataRequestStateCode';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
@@ -39,7 +38,10 @@ export interface ConsentRequestDetailViewDtoDataRequest {
      * Purpose of the data request
      */
     purpose?: DataRequestPurposeDto;
-    products?: ConsentRequestDetailViewDtoDataRequestProducts;
+    /**
+     * List of data products requested
+     */
+    products?: Array<string>;
     stateCode: ConsentRequestDetailViewDtoDataRequestStateCode;
     /**
      * LegalName of the data consumer taken from the uid register

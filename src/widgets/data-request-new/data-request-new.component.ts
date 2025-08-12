@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, computed, effect, inject, signal } from '@angular/core';
+import { Component, ViewChild, computed, effect, inject, input, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -9,7 +9,6 @@ import { DataRequestService } from '@/entities/api';
 import {
   ConsentRequestDetailViewDtoDataRequestStateCode,
   DataRequestDto,
-  DataRequestUpdateDto,
 } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { Dto, buildReactiveForm, flattenFormGroup } from '@/shared/lib/form.helper';
@@ -44,8 +43,12 @@ export class DataRequestNewComponent {
   readonly i18nService = inject(I18nService);
   readonly dataRequestService = inject(DataRequestService);
   readonly toastService = inject(ToastService);
-  readonly dataRequestId = signal<string>('');
-  readonly dataRequest = signal<DataRequestDto | null>(null);
+
+  readonly selectedRequest = input<DataRequestDto | null>(null);
+
+  readonly dataRequestId = signal<string>(this.selectedRequest()?.id ?? '');
+  readonly dataRequest = signal<DataRequestDto | null>(this.selectedRequest());
+
   readonly ButtonVariants = ButtonVariants;
   readonly ToastType = ToastType;
   readonly nextIcon = faArrowRight;
@@ -154,8 +157,6 @@ export class DataRequestNewComponent {
     }
   }
 
-  readonly dtoFromBE = {} as DataRequestUpdateDto;
-
   readonly initialValues = computed(() => ({
     title: {
       de: this.titlePlaceholderDe(),
@@ -174,43 +175,61 @@ export class DataRequestNewComponent {
     },
   }));
 
-  readonly initialData = computed(() =>
-    Object.keys(this.dtoFromBE).length ? (this.dtoFromBE as Dto) : (this.initialValues() as Dto),
-  );
+  readonly initialData = computed(() => {
+    return this.selectedRequest() ?? this.initialValues();
+  });
 
   readonly formDisabled = computed(() => {
+    const request = this.selectedRequest() || this.dataRequest();
     return (
-      !!this.dataRequest()?.stateCode &&
-      this.dataRequest()?.stateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Draft
+      !!request?.stateCode &&
+      request.stateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Draft
     );
   });
 
-  formDisabledEffect = effect(() => {
-    const disabled = this.formDisabled();
-    this.form?.disable({ emitEvent: false });
-    if (!disabled) {
-      this.form?.enable({ emitEvent: false });
-    }
-  });
+  readonly form = computed(() => {
+    // Create the form with the current initialData
+    const newForm = buildReactiveForm(
+      DataRequestDtoSchema,
+      this.formMap(),
+      this.i18nService,
+      this.initialData() as Dto,
+    );
 
-  readonly form = buildReactiveForm(
-    DataRequestDtoSchema,
-    this.formMap(),
-    this.i18nService,
-    this.initialData(),
-  );
-
-  constructor() {
-    if (Object.keys(this.dtoFromBE).length) {
-      this.updateFormSteps();
-    }
+    // Set up form event handlers
     this.formMap().forEach(({ formGroupName }) => {
-      const fg = this.form.get(formGroupName) as unknown as FormGroup;
+      const fg = newForm.get(formGroupName) as unknown as FormGroup;
       fg.statusChanges.subscribe(() => {
         this.updateFormSteps(formGroupName, fg.valid);
       });
     });
-  }
+
+    return newForm;
+  });
+
+  formDisabledEffect = effect(() => {
+    const disabled = this.formDisabled();
+    const form = this.form();
+
+    if (form) {
+      form.disable({ emitEvent: false });
+      if (!disabled) {
+        form.enable({ emitEvent: false });
+      }
+    }
+  });
+
+  selectedRequestEffect = effect(() => {
+    const selected = this.selectedRequest();
+
+    if (selected) {
+      // Since initialData is a computed based on selectedRequest,
+      // the form will automatically be rebuilt by the computed signal
+      this.dataRequestId.set(selected.id ?? '');
+      this.dataRequest.set(selected);
+      this.updateFormSteps();
+    }
+  });
 
   handleStepChange() {
     if (!this.formDisabled()) this.handleSave();
@@ -230,20 +249,20 @@ export class DataRequestNewComponent {
     if (this.formDisabled()) return;
 
     const id = this.wizard.currentStepId();
-    this.form.get(id)?.markAllAsTouched();
-    this.updateFormSteps(id, this.form.get(id)?.valid ?? false);
+    const form = this.form();
+    form.get(id)?.markAllAsTouched();
+    this.updateFormSteps(id, form.get(id)?.valid ?? false);
     await this.createOrSaveDataRequest();
   }
 
   async handleSubmitAndContinue() {
     this.handleSave().then(async () => {
-      this.form.markAllAsTouched();
-      this.updateFormSteps();
-      if (this.form.valid) {
+      const form = this.form();
+      form.markAllAsTouched();
+      if (form.valid) {
         await this.dataRequestService
           .submitDataRequest(this.dataRequestId())
           .then((dataRequest: DataRequestDto) => {
-            this.dataRequestService.fetchDataRequests.reload();
             this.dataRequest.set(dataRequest);
             this.wizard.nextStep();
           })
@@ -259,9 +278,9 @@ export class DataRequestNewComponent {
   }
 
   handleSaveAndComplete() {
-    this.form.markAllAsTouched();
-    this.updateFormSteps();
-    if (this.form.invalid) {
+    const form = this.form();
+    form.markAllAsTouched();
+    if (form.invalid) {
       console.error('Form is invalid, cannot save data request');
       return;
     }
@@ -269,7 +288,8 @@ export class DataRequestNewComponent {
   }
 
   async createOrSaveDataRequest() {
-    const flattenForm = flattenFormGroup(this.form);
+    const form = this.form();
+    const flattenForm = flattenFormGroup(form);
 
     if (this.dataRequestId()) {
       if (this.logoFile()) {
@@ -283,7 +303,6 @@ export class DataRequestNewComponent {
         .updateDataRequestDetails(this.dataRequestId(), flattenForm)
         .then((dataRequest: DataRequestDto) => {
           this.dataRequest.set(dataRequest);
-          this.dataRequestService.fetchDataRequests.reload();
         });
     } else {
       await this.dataRequestService
@@ -298,7 +317,6 @@ export class DataRequestNewComponent {
                 this.logoFile.set(null);
               });
           }
-          this.dataRequestService.fetchDataRequests.reload();
         });
     }
   }
@@ -310,7 +328,8 @@ export class DataRequestNewComponent {
           return step;
         }
 
-        const formGroup = this.form.get(step.id) as unknown as FormGroup;
+        const form = this.form();
+        const formGroup = form.get(step.id) as unknown as FormGroup;
 
         // Update the validity state of the form group
         const isValid = valid ?? formGroup?.valid;

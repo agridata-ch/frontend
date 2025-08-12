@@ -1,6 +1,9 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { DataRequestService } from '@/entities/api';
+import { MockDataRequestService } from '@/shared/testing/mocks';
+
 import { DataRequestPreviewComponent } from './data-request-preview.component';
 
 describe('DataRequestPreviewComponent', () => {
@@ -11,6 +14,7 @@ describe('DataRequestPreviewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestPreviewComponent],
+      providers: [{ provide: DataRequestService, useClass: MockDataRequestService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataRequestPreviewComponent);

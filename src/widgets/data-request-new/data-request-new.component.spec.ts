@@ -1,3 +1,4 @@
+import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -22,6 +23,7 @@ import { DataRequestNewComponent } from './data-request-new.component';
 describe('DataRequestNewComponent', () => {
   let fixture: ComponentFixture<DataRequestNewComponent>;
   let component: DataRequestNewComponent;
+  let componentRef: ComponentRef<DataRequestNewComponent>;
   let mockDataRequestService: MockDataRequestService;
   let authService: AuthService;
 
@@ -38,6 +40,7 @@ describe('DataRequestNewComponent', () => {
 
     fixture = TestBed.createComponent(DataRequestNewComponent);
     component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
     mockDataRequestService = TestBed.inject(
       DataRequestService,
     ) as unknown as MockDataRequestService;
@@ -84,11 +87,28 @@ describe('DataRequestNewComponent', () => {
 
   it('marks a step invalid after its controls are touched but invalid', () => {
     component.updateFormSteps();
-    component.form.get('request')?.markAsTouched();
+    const form = component.form();
+    form.get('request')?.markAsTouched();
 
     const steps = component.formControlSteps();
     const consumerStep = steps.find((step) => step.id === 'request')!;
     expect(consumerStep.isValid).toBe(false);
+  });
+
+  it('should compute formDisabled with Status Draft', () => {
+    component.dataRequest.set({
+      id: '123',
+      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+    });
+    expect(component.formDisabled()).toBe(false);
+  });
+
+  it('should compute formDisabled with Status InReview', () => {
+    component.dataRequest.set({
+      id: '123',
+      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.InReview,
+    });
+    expect(component.formDisabled()).toBe(true);
   });
 
   it('should create request on createOrSetDataRequestId without logo', async () => {
@@ -145,6 +165,20 @@ describe('DataRequestNewComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  it('should call handleSave in handleStepChange with form disabled', () => {
+    jest.spyOn(component, 'formDisabled').mockReturnValue(true);
+    const handleSave = jest.spyOn(component, 'handleSave');
+    component.handleStepChange();
+    expect(handleSave).not.toHaveBeenCalled();
+  });
+
+  it('should call handleSave in handleStepChange with form disabled = false', () => {
+    jest.spyOn(component, 'formDisabled').mockReturnValue(false);
+    const handleSave = jest.spyOn(component, 'handleSave');
+    component.handleStepChange();
+    expect(handleSave).toHaveBeenCalled();
+  });
+
   it('should handleSaveLogo', () => {
     const file = new File([''], 'logo.png', { type: 'image/png' });
     component.handleSaveLogo(file);
@@ -160,10 +194,11 @@ describe('DataRequestNewComponent', () => {
 
   describe('handleSubmitAndContinue', () => {
     beforeEach(() => {
+      const form = component.form();
       jest.spyOn(component.wizard, 'nextStep').mockImplementation();
       jest.spyOn(console, 'error').mockImplementation();
       jest.spyOn(component, 'handleSave').mockImplementation(() => Promise.resolve());
-      jest.spyOn(component.form, 'markAllAsTouched').mockImplementation();
+      jest.spyOn(form, 'markAllAsTouched').mockImplementation();
       jest.spyOn(component, 'updateFormSteps').mockImplementation();
     });
 
@@ -186,13 +221,27 @@ describe('DataRequestNewComponent', () => {
         stateCode: DataRequestStateEnum.InReview,
       };
 
-      Object.defineProperty(component.form, 'valid', { get: () => true });
+      const form = component.form();
+
+      Object.defineProperty(form, 'valid', { get: () => true });
       mockDataRequestService.submitDataRequest.mockResolvedValue(mockResponse);
 
       await component.handleSubmitAndContinue();
 
       expect(component.handleSave).toHaveBeenCalled();
       expect(mockDataRequestService.submitDataRequest).toHaveBeenCalled();
+    });
+  });
+
+  describe('selectedRequestEffect', () => {
+    it('should update dataRequest when selectedRequest changes', () => {
+      const newRequest = {
+        id: '456',
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      };
+      componentRef.setInput('selectedRequest', newRequest);
+      fixture.detectChanges();
+      expect(component.dataRequest()).toEqual(newRequest);
     });
   });
 });

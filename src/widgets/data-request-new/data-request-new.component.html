@@ -8,20 +8,20 @@
     @switch (wizard.currentStepId()) {
       @case (FORM_GROUP_NAMES.CONSUMER) {
         <app-data-request-form-consumer
-          [form]="form"
+          [form]="form()"
           (saveLogo)="handleSaveLogo($event)"
           [dataRequestLogo]="dataRequest()?.dataConsumerLogoBase64"
           [formDisabled]="formDisabled()"
         />
       }
       @case (FORM_GROUP_NAMES.REQUEST) {
-        <app-data-request-form-request [form]="form" [formDisabled]="formDisabled()" />
+        <app-data-request-form-request [form]="form()" [formDisabled]="formDisabled()" />
       }
       @case (FORM_GROUP_NAMES.PREVIEW) {
         <app-data-request-preview [dataRequest]="dataRequest()!" />
       }
       @case (FORM_GROUP_NAMES.PRODUCER) {
-        <app-data-request-form-producer [form]="form" [formDisabled]="formDisabled()" />
+        <app-data-request-form-producer [form]="form()" [formDisabled]="formDisabled()" />
       }
       @case (FORM_GROUP_NAMES.CONTRACT) {
         <span>step 5</span>

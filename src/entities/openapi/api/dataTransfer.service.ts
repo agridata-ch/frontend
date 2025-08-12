@@ -17,7 +17,7 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { AgisStructureResponseType } from '../model/agisStructureResponseType';
+import { DataTransferResponse } from '../model/dataTransferResponse';
 // @ts-ignore
 import { ExceptionDto } from '../model/exceptionDto';
 
@@ -40,23 +40,17 @@ export class DataTransferService extends BaseService {
     /**
      * Data Transfer
      * Retrieves data defined by productId of organisation identified bi uid or bur local unit.
-     * @param productId productId for which the data is requested
-     * @param surveyYear year of the survey for which the data is requested
      * @param bur Optional filter to retrieve data of a producer identified by a id of a local bur unit
+     * @param productId productId for which the data is requested
      * @param uid Optional filter to retrieve data of a producer identified by the uid
+     * @param year year for which the data is requested
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public dataTransfer(productId: string, surveyYear: number, bur?: string, uid?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<AgisStructureResponseType>;
-    public dataTransfer(productId: string, surveyYear: number, bur?: string, uid?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<AgisStructureResponseType>>;
-    public dataTransfer(productId: string, surveyYear: number, bur?: string, uid?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<AgisStructureResponseType>>;
-    public dataTransfer(productId: string, surveyYear: number, bur?: string, uid?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (productId === null || productId === undefined) {
-            throw new Error('Required parameter productId was null or undefined when calling dataTransfer.');
-        }
-        if (surveyYear === null || surveyYear === undefined) {
-            throw new Error('Required parameter surveyYear was null or undefined when calling dataTransfer.');
-        }
+    public dataTransfer(bur?: string, productId?: string, uid?: string, year?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<DataTransferResponse>;
+    public dataTransfer(bur?: string, productId?: string, uid?: string, year?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DataTransferResponse>>;
+    public dataTransfer(bur?: string, productId?: string, uid?: string, year?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DataTransferResponse>>;
+    public dataTransfer(bur?: string, productId?: string, uid?: string, year?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -64,9 +58,9 @@ export class DataTransferService extends BaseService {
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>productId, 'productId');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>surveyYear, 'surveyYear');
-        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>uid, 'uid');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>year, 'year');
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -97,7 +91,7 @@ export class DataTransferService extends BaseService {
 
         let localVarPath = `/api/data-transfer/v1/data`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<AgisStructureResponseType>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<DataTransferResponse>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

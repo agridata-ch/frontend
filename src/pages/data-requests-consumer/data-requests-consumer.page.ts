@@ -45,6 +45,8 @@ export class DataRequestsConsumerPage {
   }
 
   protected handleClose() {
+    this.dataRequests.reload();
+    this.setSelectedRequest(null);
     this.showPanel.set(false);
   }
 
@@ -54,5 +56,6 @@ export class DataRequestsConsumerPage {
     const base = ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH;
     const newUrl = request?.id ? `${base}/${request.id}` : base;
     this.location.go(newUrl);
+    this.handleOpen();
   };
 }
