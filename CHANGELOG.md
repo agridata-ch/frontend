@@ -1,3 +1,9 @@
+## [1.0.0-rc.28](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.27...v1.0.0-rc.28) (2025-08-12)
+
+### Features
+
+- **data-request:** open data-request ([6433522](https://github.com/agridata-ch/frontend/commit/6433522aa0a0d9a963d79e1cc76bd81a399c452b)), closes [DIGIB2-310](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-310)
+
 ## [1.0.0-rc.27](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.26...v1.0.0-rc.27) (2025-08-08)
 
 ### Features
