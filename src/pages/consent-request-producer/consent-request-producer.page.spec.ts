@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConsentRequestService } from '@/entities/api';
+import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import {
   ConsentRequestDetailViewDto,
   ConsentRequestDetailViewDtoDataRequestStateCode,
@@ -11,7 +11,7 @@ import {
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
-import { MockI18nService } from '@/shared/testing/mocks';
+import { MockDataRequestService, MockI18nService } from '@/shared/testing/mocks';
 
 describe('ConsentRequestProducerPage - component behavior', () => {
   let fixture: ComponentFixture<ConsentRequestProducerPage>;
@@ -71,6 +71,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
         { provide: ConsentRequestService, useValue: mockConsentService },
         { provide: Location, useValue: mockLocation },
         { provide: I18nService, useClass: MockI18nService },
+        { provide: DataRequestService, useValue: MockDataRequestService },
       ],
     }).compileComponents();
 

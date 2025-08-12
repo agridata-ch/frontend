@@ -1,6 +1,7 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 
-import { DataRequestDto } from '@/entities/openapi';
+import { DataRequestService } from '@/entities/api';
+import { DataProductDto, DataRequestDto } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact/data-request-contact.component';
@@ -23,10 +24,18 @@ import { availableLangs } from '../../../transloco.config';
 export class DataRequestPreviewComponent {
   readonly i18nService = inject(I18nService);
   readonly dataRequest = input<DataRequestDto>();
+  readonly dataRequestService = inject(DataRequestService);
+  readonly products = this.dataRequestService.fetchDataProducts;
 
   readonly availableLangs = availableLangs;
   readonly AvatarSize = AvatarSize;
   readonly AvatarSkin = AvatarSkin;
+
+  readonly productsList = computed(() =>
+    this.products
+      .value()
+      ?.filter((product: DataProductDto) => this.dataRequest()?.products?.includes(product.id)),
+  );
 
   getFieldFromLang = <K extends keyof DataRequestDto>(field: K, lang: string) => {
     const dataRequest = this.dataRequest();

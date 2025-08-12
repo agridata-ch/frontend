@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { UidRegisterService } from '@/entities/api';
 import { UIDRegisterSearchService, UidRegisterOrganisationDto } from '@/entities/openapi';
 
-describe('DataRequestService', () => {
+describe('UidRegisterService', () => {
   let service: UidRegisterService;
   let mockUidRegisterService: {
     getByUidOfCurrentUser: jest.Mock;

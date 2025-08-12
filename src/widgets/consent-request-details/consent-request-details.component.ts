@@ -1,7 +1,7 @@
 import { Component, Signal, computed, effect, inject, input, output, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { ConsentRequestService } from '@/entities/api';
+import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import {
   ConsentRequestProducerViewDto,
   ConsentRequestStateEnum,
@@ -42,7 +42,9 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
 export class ConsentRequestDetailsComponent {
   private readonly toastService = inject(ToastService);
   private readonly consentRequestService = inject(ConsentRequestService);
+  private readonly dataRequestService = inject(DataRequestService);
   private readonly i18nService = inject(I18nService);
+  private readonly dataRequestProducts = this.dataRequestService.fetchDataProducts;
 
   readonly request = input<ConsentRequestProducerViewDto | null>(null);
   readonly onCloseDetail = output<string | null>();
@@ -83,7 +85,11 @@ export class ConsentRequestDetailsComponent {
       (purpose as Record<string, string>)?.[this.currentLanguage()] ?? ('' as DataRequestPurposeDto)
     );
   });
-  readonly requestProducts = computed(() => this.request()?.dataRequest?.products);
+  readonly requestProducts = computed(() =>
+    this.dataRequestProducts
+      ?.value()
+      ?.filter((product) => this.request()?.dataRequest?.products?.includes(product.id)),
+  );
   readonly badgeText = computed(() => {
     const stateCode = this.request()?.stateCode;
     if (stateCode === ConsentRequestStateEnum.Opened)

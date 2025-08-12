@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import { MockDataRequestService } from '@/shared/testing/mocks';
 
 import { DataRequestsConsumerPage } from './data-requests-consumer.page';
 
@@ -10,7 +11,6 @@ describe('DataRequestsConsumerPage - component behavior', () => {
   let fixture: ComponentFixture<DataRequestsConsumerPage>;
   let component: DataRequestsConsumerPage;
   let openComponent: any;
-  let mockDataService: jest.Mocked<DataRequestService>;
   let mockLocation: jest.Mocked<Location>;
 
   const sampleRequests: DataRequestDto[] = [
@@ -27,13 +27,6 @@ describe('DataRequestsConsumerPage - component behavior', () => {
   ];
 
   beforeEach(async () => {
-    mockDataService = {
-      fetchDataRequests: {
-        value: jest.fn().mockReturnValue(sampleRequests),
-        isLoading: jest.fn(),
-        reload: jest.fn(),
-      },
-    } as unknown as jest.Mocked<DataRequestService>;
     mockLocation = {
       go: jest.fn(),
     } as unknown as jest.Mocked<Location>;
@@ -41,7 +34,7 @@ describe('DataRequestsConsumerPage - component behavior', () => {
     await TestBed.configureTestingModule({
       providers: [
         DataRequestsConsumerPage,
-        { provide: DataRequestService, useValue: mockDataService },
+        { provide: DataRequestService, useClass: MockDataRequestService },
         { provide: Location, useValue: mockLocation },
       ],
     }).compileComponents();
