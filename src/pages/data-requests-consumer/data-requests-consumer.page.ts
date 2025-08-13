@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faDatabase, faPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -40,7 +40,23 @@ export class DataRequestsConsumerPage {
 
   protected readonly dataRequests = this.dataRequestService.fetchDataRequests;
 
+  private readonly panelManuallyClosed = signal<boolean>(false);
+
+  private readonly openPanelEffect = effect(() => {
+    const id = this.dataRequestId();
+    const requests = this.dataRequests.value();
+
+    if (id && requests && !this.panelManuallyClosed()) {
+      const matchingRequest = requests.find((req) => req.id === id);
+      if (matchingRequest) {
+        this.selectedRequest.set(matchingRequest);
+        this.showPanel.set(true);
+      }
+    }
+  });
+
   protected handleOpen() {
+    this.panelManuallyClosed.set(false);
     this.showPanel.set(true);
   }
 
@@ -48,14 +64,15 @@ export class DataRequestsConsumerPage {
     this.dataRequests.reload();
     this.setSelectedRequest(null);
     this.showPanel.set(false);
+    this.panelManuallyClosed.set(true);
   }
 
   protected setSelectedRequest = (request?: DataRequestDto | null) => {
     this.selectedRequest.set(request ?? null);
+    this.panelManuallyClosed.set(false);
 
     const base = ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH;
     const newUrl = request?.id ? `${base}/${request.id}` : base;
     this.location.go(newUrl);
-    this.handleOpen();
   };
 }
