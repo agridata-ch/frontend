@@ -30,6 +30,7 @@ export class AgridataTableComponent {
   readonly defaultSortDirection = input<SortDirections.ASC | SortDirections.DESC>(
     SortDirections.DESC,
   );
+  readonly isLoading = input<boolean>(false);
   readonly pageSize = input<number>(10);
 
   readonly ButtonVariants = ButtonVariants;
@@ -89,6 +90,8 @@ export class AgridataTableComponent {
   });
   readonly showPagination = computed(() => this.totalPages() > 1);
 
+  private readonly sortedColumnHeader = signal<string | null>(null);
+
   constructor() {
     effect(() => {
       const rows = this.rawData() ?? [];
@@ -97,10 +100,33 @@ export class AgridataTableComponent {
 
       const headers = rows.length ? rows[0].data.map((cell) => cell.header) : [];
 
-      const idx = this.defaultSortColumn ? headers.indexOf(this.defaultSortColumn()) : -1;
-      this.sortColumnIndex.set(idx >= 0 ? idx : null);
-      this.sortDirection.set(this.defaultSortDirection());
+      if (headers.length) {
+        this.updateSortingOnDataChange(headers);
+      }
     });
+  }
+
+  private updateSortingOnDataChange(headers: string[]): void {
+    if (this.sortedColumnHeader() === null && this.defaultSortColumn()) {
+      const idx = headers.indexOf(this.defaultSortColumn());
+      if (idx >= 0) {
+        this.sortColumnIndex.set(idx);
+        this.sortDirection.set(this.defaultSortDirection());
+        this.sortedColumnHeader.set(this.defaultSortColumn());
+      }
+      return;
+    }
+
+    const currentHeaderName = this.sortedColumnHeader();
+    if (currentHeaderName !== null) {
+      const newColumnIndex = headers.indexOf(currentHeaderName);
+      if (newColumnIndex >= 0) {
+        this.sortColumnIndex.set(newColumnIndex);
+      } else {
+        this.sortColumnIndex.set(null);
+        this.sortedColumnHeader.set(null);
+      }
+    }
   }
 
   setSort(colIndex: number) {
@@ -111,6 +137,11 @@ export class AgridataTableComponent {
     } else {
       this.sortColumnIndex.set(colIndex);
       this.sortDirection.set(SortDirections.DESC);
+
+      const headers = this.headers();
+      if (headers.length > colIndex) {
+        this.sortedColumnHeader.set(headers[colIndex]);
+      }
     }
     this.currentPage.set(1);
   }

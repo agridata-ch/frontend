@@ -23,13 +23,6 @@
       </app-sidepanel>
     </div>
   </div>
-  @if (dataRequests.isLoading()){
-  <p>Loading...</p>
-  } @else {
-  <app-data-request-table
-    [dataRequests]="dataRequests.value()"
-    (tableRowAction)="setSelectedRequest($event)"
-  />
-  }
+  <app-data-request-table (tableRowAction)="setSelectedRequest($event)" />
 </ng-container>
 <div class="flex justify-end"></div>

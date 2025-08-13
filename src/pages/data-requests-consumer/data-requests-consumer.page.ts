@@ -33,6 +33,7 @@ export class DataRequestsConsumerPage {
 
   protected readonly showPanel = signal<boolean>(false);
   protected readonly selectedRequest = signal<DataRequestDto | null>(null);
+  protected readonly panelOpenedAutomatically = signal<boolean>(false);
 
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly buttonIcon = faPlus;
@@ -40,23 +41,25 @@ export class DataRequestsConsumerPage {
 
   protected readonly dataRequests = this.dataRequestService.fetchDataRequests;
 
-  private readonly panelManuallyClosed = signal<boolean>(false);
-
-  private readonly openPanelEffect = effect(() => {
-    const id = this.dataRequestId();
-    const requests = this.dataRequests.value();
-
-    if (id && requests && !this.panelManuallyClosed()) {
-      const matchingRequest = requests.find((req) => req.id === id);
-      if (matchingRequest) {
-        this.selectedRequest.set(matchingRequest);
-        this.showPanel.set(true);
+  private readonly initialOpenEffect = effect(() => {
+    const requestId = this.dataRequestId();
+    if (requestId && !this.panelOpenedAutomatically()) {
+      const request = this.dataRequests.value()?.find((r) => r.id === requestId);
+      if (request) {
+        this.setSelectedRequest(request);
+        this.panelOpenedAutomatically.set(true);
       }
     }
   });
 
+  private readonly openPanelEffect = effect(() => {
+    const request = this.selectedRequest();
+    if (request) {
+      this.showPanel.set(true);
+    }
+  });
+
   protected handleOpen() {
-    this.panelManuallyClosed.set(false);
     this.showPanel.set(true);
   }
 
@@ -64,12 +67,10 @@ export class DataRequestsConsumerPage {
     this.dataRequests.reload();
     this.setSelectedRequest(null);
     this.showPanel.set(false);
-    this.panelManuallyClosed.set(true);
   }
 
   protected setSelectedRequest = (request?: DataRequestDto | null) => {
     this.selectedRequest.set(request ?? null);
-    this.panelManuallyClosed.set(false);
 
     const base = ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH;
     const newUrl = request?.id ? `${base}/${request.id}` : base;
