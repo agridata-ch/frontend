@@ -5,7 +5,7 @@
         type="button"
         class="step-bubble"
         [class.active]="currentStep() === $index"
-        [class.completed]="$index < currentStep()"
+        [class.completed]="step.completed"
         [class.invalid]="!step.isValid"
         (click)="handleClickStep($index)"
       >

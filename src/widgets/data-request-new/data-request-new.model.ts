@@ -6,3 +6,9 @@ export enum FORM_GROUP_NAMES {
   CONTRACT = 'contract',
   COMPLETION = 'completion',
 }
+
+export enum FORM_COMPLETION_STRATEGIES {
+  ALWAYS_COMPLETE = 'always-complete',
+  FORM_VALIDATION = 'form-validation',
+  EXTERNAL_DEPENDENCY = 'external-dependency',
+}

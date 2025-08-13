@@ -73,37 +73,40 @@ export class DataRequestFormConsumerComponent {
   readonly updateFormEffect = effect(async () => {
     if (this.uidInfoResource.isLoading()) return;
 
-    const uidSearchResult = this.uidInfoResource.value();
+    const uidSearchResult = this.uidInfoResource.error() ? null : this.uidInfoResource.value();
     const currentUserData = this.userData();
+    const userFullName = this.userFullName();
 
-    if (uidSearchResult || currentUserData) {
-      if (uidSearchResult?.legalName === this.userFullName()) return;
+    // Always proceed with available data - either from UID resource or user data
+    // Skip only if we already have the correct legal name
+    if (uidSearchResult?.legalName === userFullName && !this.uidInfoResource.error()) return;
 
-      const newUserData = {
-        ...currentUserData,
-        uid: uidSearchResult?.uid || currentUserData?.uid,
-        name: uidSearchResult?.legalName || this.userFullName(),
-      };
-      this.consumerUid.set(
-        typeof newUserData.uid === 'string' ? Number(newUserData.uid) : newUserData.uid,
-      );
-      this.consumerName.set(newUserData.name);
+    const newUserData = {
+      ...currentUserData,
+      uid: uidSearchResult?.uid || currentUserData?.uid,
+      name: uidSearchResult?.legalName || userFullName,
+    };
 
-      // check for value in form, if no values exist, patch the form with the request stuff
-      const currentFormData = this.form()?.get('consumer')?.value;
-      if (!Object.values(currentFormData).some(Boolean)) {
-        this.form()?.patchValue({
-          consumer: {
-            dataConsumerDisplayName: uidSearchResult?.legalName,
-            dataConsumerCity: uidSearchResult?.address?.city,
-            dataConsumerZip: uidSearchResult?.address?.zip,
-            dataConsumerStreet: uidSearchResult?.address?.street,
-            dataConsumerCountry: uidSearchResult?.address?.country,
-          },
-        });
-      }
-      this.consumerDisplayName.set(currentFormData.dataConsumerDisplayName || newUserData.name);
+    this.consumerUid.set(
+      typeof newUserData.uid === 'string' ? Number(newUserData.uid) : newUserData.uid,
+    );
+
+    this.consumerName.set(newUserData.name || '');
+
+    // check for value in form, if no values exist, patch the form with the request stuff
+    const currentFormData = this.form()?.get('consumer')?.value || {};
+    if (!Object.values(currentFormData).some(Boolean)) {
+      this.form()?.patchValue({
+        consumer: {
+          dataConsumerDisplayName: uidSearchResult?.legalName || userFullName,
+          dataConsumerCity: uidSearchResult?.address?.city,
+          dataConsumerZip: uidSearchResult?.address?.zip,
+          dataConsumerStreet: uidSearchResult?.address?.street,
+          dataConsumerCountry: uidSearchResult?.address?.country,
+        },
+      });
     }
+    this.consumerDisplayName.set(currentFormData.dataConsumerDisplayName || newUserData.name || '');
   });
 
   handleChangeConsumerInitials(event: Event) {

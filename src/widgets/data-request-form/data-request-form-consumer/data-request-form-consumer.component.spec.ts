@@ -6,7 +6,12 @@ import { UidRegisterService } from '@/entities/api/uid-register.service';
 import { COUNTRIES } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
-import { MockAuthService, MockI18nService, MockUidRegisterService } from '@/shared/testing/mocks';
+import {
+  MockAuthService,
+  MockI18nService,
+  MockUidRegisterService,
+  MockUidRegisterServiceWithError,
+} from '@/shared/testing/mocks';
 
 import { DataRequestFormConsumerComponent } from './data-request-form-consumer.component';
 
@@ -102,5 +107,44 @@ describe('DataRequestFormConsumerComponent', () => {
       component.handleChangeConsumerInitials(event);
       expect(component.consumerDisplayName()).toBe('Bob Marley');
     });
+  });
+});
+
+describe('MockUidRegisterService not available', () => {
+  let fixture: ComponentFixture<DataRequestFormConsumerComponent>;
+  let component: DataRequestFormConsumerComponent;
+  let componentRef: ComponentRef<DataRequestFormConsumerComponent>;
+  let form: FormGroup;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, DataRequestFormConsumerComponent],
+      providers: [
+        { provide: I18nService, useClass: MockI18nService },
+        { provide: AuthService, useClass: MockAuthService },
+        { provide: UidRegisterService, useClass: MockUidRegisterServiceWithError },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(DataRequestFormConsumerComponent);
+    component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
+    form = new FormGroup({
+      consumer: new FormGroup({
+        dataConsumerDisplayName: new FormControl(''),
+        dataConsumerCity: new FormControl(''),
+        dataConsumerZip: new FormControl(''),
+        dataConsumerStreet: new FormControl(''),
+        dataConsumerCountry: new FormControl(''),
+        contactPhoneNumber: new FormControl(''),
+        contactEmailAddress: new FormControl(''),
+      }),
+    });
+    componentRef.setInput('form', form);
+    fixture.detectChanges();
+  });
+
+  it('should handle missing UidRegisterService gracefully', () => {
+    expect(component).toBeTruthy();
   });
 });
