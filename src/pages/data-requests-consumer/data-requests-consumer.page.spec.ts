@@ -35,27 +35,22 @@ describe('DataRequestsConsumerPage - component behavior', () => {
     expect(openComponent).toBeTruthy();
   });
 
-  it('should handleOpen and reset manual close flag', () => {
-    openComponent.panelManuallyClosed.set(true);
+  it('should handleOpen', () => {
     openComponent.handleOpen();
     expect(openComponent.showPanel()).toBe(true);
-    expect(openComponent.panelManuallyClosed()).toBe(false);
   });
 
   it('should handleClose and set manual close flag', () => {
     openComponent.handleClose();
     expect(openComponent.showPanel()).toBe(false);
-    expect(openComponent.panelManuallyClosed()).toBe(true);
     expect(mockLocation.go).toHaveBeenCalled();
   });
 
   it('should setSelectedRequest and reset manual close flag', () => {
     const request = mockDataRequests[0];
-    openComponent.panelManuallyClosed.set(true);
     openComponent.setSelectedRequest(request);
 
     expect(openComponent.selectedRequest()).toEqual(request);
-    expect(openComponent.panelManuallyClosed()).toBe(false);
     expect(mockLocation.go).toHaveBeenCalledWith('data-requests/1');
   });
 
@@ -65,22 +60,28 @@ describe('DataRequestsConsumerPage - component behavior', () => {
     expect(mockLocation.go).toHaveBeenCalledWith('data-requests');
   });
 
-  it('should respect the panelManuallyClosed signal', () => {
-    openComponent.panelManuallyClosed.set(true);
-
+  it('should respect the panelOpenedAutomatically signal', () => {
     const id = '1';
     const request = mockDataRequests[0];
 
-    if (id && !openComponent.panelManuallyClosed()) {
+    // Initially the panel should be closed and panelOpenedAutomatically is true
+    openComponent.showPanel.set(false);
+    openComponent.panelOpenedAutomatically.set(true);
+
+    // Panel should not open when panelOpenedAutomatically is true
+    if (id && !openComponent.panelOpenedAutomatically()) {
       openComponent.selectedRequest.set(request);
       openComponent.showPanel.set(true);
     }
 
+    // Panel should remain closed
     expect(openComponent.showPanel()).toBe(false);
 
-    openComponent.panelManuallyClosed.set(false);
+    // Now set panelOpenedAutomatically to false
+    openComponent.panelOpenedAutomatically.set(false);
 
-    if (id && !openComponent.panelManuallyClosed()) {
+    // Panel should now open since panelOpenedAutomatically is false
+    if (id && !openComponent.panelOpenedAutomatically()) {
       openComponent.selectedRequest.set(request);
       openComponent.showPanel.set(true);
     }
@@ -89,107 +90,94 @@ describe('DataRequestsConsumerPage - component behavior', () => {
     expect(openComponent.selectedRequest()).toBe(request);
   });
 
-  it('should respond to manual flag when processing URL parameters', () => {
+  it('should process URL parameters correctly', () => {
     openComponent.dataRequestId = () => '1';
 
-    if (
-      openComponent.dataRequestId() &&
-      openComponent.dataRequests.value() &&
-      !openComponent.panelManuallyClosed()
-    ) {
+    // Simulate processing URL parameters - panel should open for the first time
+    if (openComponent.dataRequestId() && openComponent.dataRequests.value()) {
       const request = mockDataRequests[0];
       openComponent.selectedRequest.set(request);
       openComponent.showPanel.set(true);
+      openComponent.panelOpenedAutomatically.set(true); // This is set by initialOpenEffect
     }
 
     expect(openComponent.showPanel()).toBe(true);
 
+    // Close the panel
     openComponent.handleClose();
     expect(openComponent.showPanel()).toBe(false);
-    expect(openComponent.panelManuallyClosed()).toBe(true);
 
+    // panelOpenedAutomatically should still be true because it was already opened automatically
+    expect(openComponent.panelOpenedAutomatically()).toBe(true);
+
+    // After closing, even with the same dataRequestId, it shouldn't reopen automatically
     if (
       openComponent.dataRequestId() &&
       openComponent.dataRequests.value() &&
-      !openComponent.panelManuallyClosed()
+      !openComponent.panelOpenedAutomatically()
     ) {
       const request = mockDataRequests[0];
       openComponent.selectedRequest.set(request);
       openComponent.showPanel.set(true);
     }
 
+    // Panel should remain closed
     expect(openComponent.showPanel()).toBe(false);
   });
 
   it('should not open panel when dataRequestId has no matching request', () => {
-    // Setup the service with some mock data first
-    const mockDataService = TestBed.inject(DataRequestService);
-    (mockDataService.fetchDataRequests as any).value = () => [...mockDataRequests];
-
-    // Create a new component instance
-    const testFixture = TestBed.createComponent(DataRequestsConsumerPage);
-    const testComponent = testFixture.componentInstance as any;
-    testFixture.detectChanges(); // Initial detection
-
     // Now set a dataRequestId that won't match any request
-    testComponent.dataRequestId = () => 'non-existent-id';
+    openComponent.dataRequestId = () => 'non-existent-id';
 
     // Reset panel state to ensure clean test
-    testComponent.showPanel.set(false);
-    testComponent.selectedRequest.set(null);
-    testComponent.panelManuallyClosed.set(false);
+    openComponent.showPanel.set(false);
+    openComponent.selectedRequest.set(null);
+    openComponent.panelOpenedAutomatically.set(false);
 
     // Directly test the effect's condition by manually simulating its behavior
-    const id = testComponent.dataRequestId();
-    const requests = testComponent.dataRequests.value();
+    const id = openComponent.dataRequestId();
+    const requests = openComponent.dataRequests.value();
 
-    // This is the code we're testing (copied from the component)
-    if (id && requests && !testComponent.panelManuallyClosed()) {
+    // This is the code we're testing (similar to the initialOpenEffect in the component)
+    if (id && requests && !openComponent.panelOpenedAutomatically()) {
       const matchingRequest = requests.find((req: any) => req.id === id);
       if (matchingRequest) {
-        testComponent.selectedRequest.set(matchingRequest);
-        testComponent.showPanel.set(true);
+        openComponent.selectedRequest.set(matchingRequest);
+        openComponent.showPanel.set(true);
+        openComponent.panelOpenedAutomatically.set(true);
       }
     }
 
     // The panel should stay closed since no matching request was found
-    expect(testComponent.showPanel()).toBe(false);
-    expect(testComponent.selectedRequest()).toBeNull();
+    expect(openComponent.showPanel()).toBe(false);
+    expect(openComponent.selectedRequest()).toBeNull();
   });
 
   it('should open panel when dataRequestId matches a request', () => {
-    // Setup the service with mock data
-    const mockDataService = TestBed.inject(DataRequestService);
-    (mockDataService.fetchDataRequests as any).value = () => [...mockDataRequests];
-
-    // Create a new component instance
-    const testFixture = TestBed.createComponent(DataRequestsConsumerPage);
-    const testComponent = testFixture.componentInstance as any;
-    testFixture.detectChanges(); // Initial detection
-
     // Set a dataRequestId that will match the first mock request
-    testComponent.dataRequestId = () => '1'; // ID of first mock request
+    openComponent.dataRequestId = () => '1'; // ID of first mock request
 
     // Reset panel state to ensure clean test
-    testComponent.showPanel.set(false);
-    testComponent.selectedRequest.set(null);
-    testComponent.panelManuallyClosed.set(false);
+    openComponent.showPanel.set(false);
+    openComponent.selectedRequest.set(null);
+    openComponent.panelOpenedAutomatically.set(false);
 
     // Directly test the effect's condition by manually simulating its behavior
-    const id = testComponent.dataRequestId();
-    const requests = testComponent.dataRequests.value();
+    const id = openComponent.dataRequestId();
+    const requests = openComponent.dataRequests.value();
 
-    // This is the code we're testing (copied from the component)
-    if (id && requests && !testComponent.panelManuallyClosed()) {
+    // This is the code we're testing (similar to initialOpenEffect in component)
+    if (id && requests && !openComponent.panelOpenedAutomatically()) {
       const matchingRequest = requests.find((req: any) => req.id === id);
       if (matchingRequest) {
-        testComponent.selectedRequest.set(matchingRequest);
-        testComponent.showPanel.set(true);
+        openComponent.selectedRequest.set(matchingRequest);
+        openComponent.showPanel.set(true);
+        openComponent.panelOpenedAutomatically.set(true);
       }
     }
 
     // The panel should open and the correct request should be selected
-    expect(testComponent.showPanel()).toBe(true);
-    expect(testComponent.selectedRequest()).toEqual(mockDataRequests[0]);
+    expect(openComponent.showPanel()).toBe(true);
+    expect(openComponent.selectedRequest()).toEqual(mockDataRequests[0]);
   });
 });

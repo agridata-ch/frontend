@@ -2,6 +2,7 @@
   [rawData]="requests()"
   [defaultSortColumn]="dataRequestTitleHeader"
   [defaultSortDirection]="SortDirections.ASC"
+  [isLoading]="dataRequests.isLoading()"
 >
   <ng-template [stCell]="dataRequestHumanFriendlyIdHeader" let-item>
     <span

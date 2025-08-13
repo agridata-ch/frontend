@@ -48,7 +48,6 @@ export class DataRequestNewComponent {
 
   readonly dataRequestId = signal<string>(this.selectedRequest()?.id ?? '');
   readonly dataRequest = signal<DataRequestDto | null>(this.selectedRequest());
-  readonly formValidityState = signal<Record<string, boolean>>({});
 
   readonly ButtonVariants = ButtonVariants;
   readonly ToastType = ToastType;
@@ -177,7 +176,7 @@ export class DataRequestNewComponent {
   }));
 
   readonly initialData = computed(() => {
-    return this.selectedRequest() ?? this.initialValues();
+    return this.selectedRequest() || this.initialValues();
   });
 
   readonly formDisabled = computed(() => {
@@ -213,27 +212,10 @@ export class DataRequestNewComponent {
     const form = this.form();
 
     if (form) {
-      if (disabled) {
-        const validityState: Record<string, boolean> = {};
-
-        // Store validity for each form group
-        // we need to store them because if a reactiveForms is disabled it will be invalid.
-        // to fix this behavior we need to store the validity state and reapply them after disable the form
-        this.formMap().forEach(({ formGroupName }) => {
-          const control = form.get(formGroupName);
-          const formGroup = control as unknown as FormGroup;
-          validityState[formGroupName] = formGroup ? formGroup.valid : false;
-        });
-
-        validityState['form'] = form.valid;
-
-        this.formValidityState.set(validityState);
-        form.disable({ emitEvent: false });
-      } else {
+      form.disable({ emitEvent: false });
+      if (!disabled) {
         form.enable({ emitEvent: false });
-        this.formValidityState.set({});
       }
-      this.updateFormSteps();
     }
   });
 
@@ -245,7 +227,7 @@ export class DataRequestNewComponent {
       // the form will automatically be rebuilt by the computed signal
       this.dataRequestId.set(selected.id ?? '');
       this.dataRequest.set(selected);
-      this.form().markAllAsTouched();
+      this.updateFormSteps();
     }
   });
 
@@ -277,6 +259,7 @@ export class DataRequestNewComponent {
     this.handleSave().then(async () => {
       const form = this.form();
       form.markAllAsTouched();
+      this.updateFormSteps();
       if (form.valid) {
         await this.dataRequestService
           .submitDataRequest(this.dataRequestId())
@@ -302,7 +285,6 @@ export class DataRequestNewComponent {
       console.error('Form is invalid, cannot save data request');
       return;
     }
-    console.log('Data request saved and completed');
   }
 
   async createOrSaveDataRequest() {
@@ -347,26 +329,17 @@ export class DataRequestNewComponent {
         }
 
         const form = this.form();
-        const control = form.get(step.id);
-        // Safe type casting
-        const formGroup = control as unknown as FormGroup;
+        const formGroup = form.get(step.id) as unknown as FormGroup;
 
-        // Check if the form is disabled
-        const isDisabled = formGroup?.disabled;
-
-        let isValid: boolean;
-
-        if (valid !== undefined) {
-          // If explicit validity was provided, use it
-          isValid = valid;
-        } else if (isDisabled) {
-          // For disabled forms, use the stored validity state if available
-          const storedValidity = this.formValidityState()[step.id];
-          isValid = storedValidity ?? true;
-        } else {
-          // For enabled forms, use the current validation state
-          isValid = formGroup?.valid ?? false;
+        if (formGroup.disabled) {
+          return {
+            ...step,
+            isValid: true,
+          };
         }
+
+        // Update the validity state of the form group
+        const isValid = valid ?? formGroup?.valid;
 
         return {
           ...step,

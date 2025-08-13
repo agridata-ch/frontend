@@ -3,12 +3,13 @@ import {
   Directive,
   DoCheck,
   ElementRef,
+  OnDestroy,
   TemplateRef,
   inject,
   input,
 } from '@angular/core';
 
-@Directive({ selector: '[stCell]' })
+@Directive({ selector: '[stCell]', standalone: true })
 export class CellTemplateDirective {
   readonly header = input<string>('', { alias: 'stCell' });
   constructor(public template: TemplateRef<unknown>) {}
@@ -17,7 +18,7 @@ export class CellTemplateDirective {
 @Directive({
   selector: '[agridataFlipRow]',
 })
-export class AgridataFlipRowDirective implements AfterViewInit, DoCheck {
+export class AgridataFlipRowDirective implements AfterViewInit, DoCheck, OnDestroy {
   private readonly element = inject(ElementRef<HTMLElement>);
   readonly rowId = input<string>('');
   readonly totalRows = input<number>(0);
@@ -27,32 +28,46 @@ export class AgridataFlipRowDirective implements AfterViewInit, DoCheck {
   private previousTotalRows: number | null = null;
   private firstCheck = true;
 
-  // Position threshold to ignore small movements (in pixels)
   private readonly POSITION_THRESHOLD = 2;
 
-  // Track animation state to prevent overlapping animations
   private isAnimating = false;
 
-  // Track if user is hovering to prevent animations during hover
-  private isUserHover = false;
+  private isScrolling = false;
+  private scrollTimeout: ReturnType<typeof setTimeout> | null = null;
 
-  // Last animation timestamp to debounce frequent animations
   private lastAnimationTime = 0;
 
-  // Minimum time between animations (ms)
   private readonly ANIMATION_DEBOUNCE = 100;
+
+  private scrollListener: (() => void) | null = null;
 
   ngAfterViewInit() {
     this.setPrevState(this.element.nativeElement.getBoundingClientRect().top);
 
-    // Add event listeners to track hover state
-    this.element.nativeElement.addEventListener('mouseenter', () => {
-      this.isUserHover = true;
-    });
+    this.scrollListener = () => {
+      this.isScrolling = true;
 
-    this.element.nativeElement.addEventListener('mouseleave', () => {
-      this.isUserHover = false;
-    });
+      if (this.scrollTimeout !== null) {
+        clearTimeout(this.scrollTimeout);
+      }
+
+      this.scrollTimeout = setTimeout(() => {
+        this.isScrolling = false;
+        this.setPrevState(this.element.nativeElement.getBoundingClientRect().top);
+      }, 150);
+    };
+
+    window.addEventListener('scroll', this.scrollListener, { passive: true });
+  }
+
+  ngOnDestroy() {
+    if (this.scrollListener) {
+      window.removeEventListener('scroll', this.scrollListener);
+    }
+
+    if (this.scrollTimeout !== null) {
+      clearTimeout(this.scrollTimeout);
+    }
   }
 
   private setPrevState(top: number) {
@@ -63,8 +78,7 @@ export class AgridataFlipRowDirective implements AfterViewInit, DoCheck {
   }
 
   ngDoCheck() {
-    // Skip checks if currently animating or if user is hovering
-    if (this.isAnimating || this.isUserHover) {
+    if (this.isAnimating || this.isScrolling) {
       return;
     }
 
@@ -74,7 +88,6 @@ export class AgridataFlipRowDirective implements AfterViewInit, DoCheck {
 
     // FLIP animation for move (only if totalRows did not change to prevent unnecessary animations when filter changes)
     if (
-      !this.firstCheck &&
       this.previousTop !== null &&
       this.previousRowId === this.rowId() &&
       this.previousTotalRows === this.totalRows() &&
@@ -110,8 +123,7 @@ export class AgridataFlipRowDirective implements AfterViewInit, DoCheck {
       }
     }
 
-    // Only update the previous state when we're not hovering
-    if (!this.isUserHover) {
+    if (!this.isScrolling) {
       this.setPrevState(newTop);
     }
   }

@@ -1,4 +1,4 @@
-import { Component, Signal, computed, inject, input, output } from '@angular/core';
+import { Component, Signal, computed, inject, output } from '@angular/core';
 import { faEye, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { DataRequestService } from '@/entities/api';
@@ -23,8 +23,6 @@ export class DataRequestTableComponent {
   private readonly i18nService = inject(I18nService);
   private readonly dataRequestService = inject(DataRequestService);
 
-  readonly dataRequests = input<DataRequestDto[]>();
-
   readonly tableRowAction = output<DataRequestDto>();
   readonly realoadDataRequests = output();
 
@@ -34,6 +32,7 @@ export class DataRequestTableComponent {
   protected readonly dataRequestStateHeader = 'data-request.state';
   protected readonly dataRequestProviderHeader = 'data-request.provider';
 
+  protected readonly dataRequests = this.dataRequestService.fetchDataRequests;
   protected readonly eyeIcon = faEye;
   protected readonly retreatIcon = faRotateLeft;
   protected readonly SortDirections = SortDirections;
@@ -42,7 +41,7 @@ export class DataRequestTableComponent {
 
   protected readonly requests: Signal<AgridataTableData[]> = computed(() => {
     return (
-      this.dataRequests()?.map((request: DataRequestDto) => ({
+      this.dataRequests.value()?.map((request: DataRequestDto) => ({
         id: request.id ?? '',
         data: [
           {
