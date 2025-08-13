@@ -34,3 +34,8 @@
   background-color: white;
   color: var(--color-agridata-secondary-text);
 }
+
+.step-bubble.active.completed {
+  background-color: white;
+  color: var(--color-agridata-secondary-text);
+}

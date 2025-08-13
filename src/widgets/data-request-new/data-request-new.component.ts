@@ -20,7 +20,7 @@ import {
   DataRequestFormProducerComponent,
   DataRequestFormRequestComponent,
 } from '@/widgets/data-request-form';
-import { FORM_GROUP_NAMES } from '@/widgets/data-request-new';
+import { FORM_COMPLETION_STRATEGIES, FORM_GROUP_NAMES } from '@/widgets/data-request-new';
 import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
 
 @Component({
@@ -107,6 +107,7 @@ export class DataRequestNewComponent {
         'contactPhoneNumber',
         'contactEmailAddress',
       ],
+      completionStrategy: FORM_COMPLETION_STRATEGIES.FORM_VALIDATION,
     },
     {
       formGroupName: FORM_GROUP_NAMES.REQUEST,
@@ -122,11 +123,28 @@ export class DataRequestNewComponent {
         'purpose.fr',
         'purpose.it',
       ],
+      completionStrategy: FORM_COMPLETION_STRATEGIES.FORM_VALIDATION,
     },
-    { formGroupName: FORM_GROUP_NAMES.PREVIEW, fields: [] },
-    { formGroupName: FORM_GROUP_NAMES.PRODUCER, fields: ['targetGroup'] },
-    { formGroupName: FORM_GROUP_NAMES.CONTRACT, fields: [] },
-    { formGroupName: FORM_GROUP_NAMES.COMPLETION, fields: [] },
+    {
+      formGroupName: FORM_GROUP_NAMES.PREVIEW,
+      fields: [],
+      completionStrategy: FORM_COMPLETION_STRATEGIES.ALWAYS_COMPLETE,
+    },
+    {
+      formGroupName: FORM_GROUP_NAMES.PRODUCER,
+      fields: ['targetGroup'],
+      completionStrategy: FORM_COMPLETION_STRATEGIES.FORM_VALIDATION,
+    },
+    {
+      formGroupName: FORM_GROUP_NAMES.CONTRACT,
+      fields: [],
+      completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
+    },
+    {
+      formGroupName: FORM_GROUP_NAMES.COMPLETION,
+      fields: [],
+      completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
+    },
   ]);
   readonly logoFile = signal<File | null>(null);
 
@@ -135,6 +153,7 @@ export class DataRequestNewComponent {
       id: step.formGroupName,
       label: this.getStepLabelSignal(step.formGroupName),
       isValid: true,
+      completed: false,
     })),
   );
 
@@ -207,15 +226,19 @@ export class DataRequestNewComponent {
     return newForm;
   });
 
-  formDisabledEffect = effect(() => {
+  formGroupDisabledEffect = effect(() => {
     const disabled = this.formDisabled();
     const form = this.form();
+    form.updateValueAndValidity();
 
-    if (form) {
-      form.disable({ emitEvent: false });
-      if (!disabled) {
-        form.enable({ emitEvent: false });
-      }
+    // disable every form group where controls are available
+    if (form && disabled) {
+      this.formMap().forEach(({ formGroupName }) => {
+        const fg = form.get(formGroupName) as unknown as FormGroup;
+        if (fg && Object.keys(fg.controls).length > 0) {
+          fg.disable({ emitEvent: false });
+        }
+      });
     }
   });
 
@@ -335,6 +358,7 @@ export class DataRequestNewComponent {
           return {
             ...step,
             isValid: true,
+            completed: true,
           };
         }
 
@@ -344,9 +368,43 @@ export class DataRequestNewComponent {
         return {
           ...step,
           isValid,
+          completed: this.isStepCompleted(formGroup, step.id),
         };
       }),
     );
+  }
+
+  private isStepCompleted(formGroup: FormGroup, formGroupName: string): boolean {
+    const stepConfig = this.formMap().find((item) => item.formGroupName === formGroupName);
+
+    if (!stepConfig) return false;
+
+    switch (stepConfig.completionStrategy) {
+      case FORM_COMPLETION_STRATEGIES.ALWAYS_COMPLETE:
+        // For steps like preview that are considered complete once visited
+        return true;
+
+      case FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY:
+        // Steps 5 & 6 would use this - check external conditions
+        return this.checkExternalCompletion(formGroupName);
+
+      case FORM_COMPLETION_STRATEGIES.FORM_VALIDATION:
+      default:
+        // Default strategy - use form validation
+        return formGroup?.valid && Object.keys(formGroup.controls).length > 0;
+    }
+  }
+
+  private checkExternalCompletion(formGroupName: string): boolean {
+    // Logic for contract and completion steps
+    if (
+      formGroupName === FORM_GROUP_NAMES.CONTRACT ||
+      formGroupName === FORM_GROUP_NAMES.COMPLETION
+    ) {
+      // Example: Check if contract is signed or whatever condition you need
+      return false;
+    }
+    return true;
   }
 
   handleSaveLogo(logo: File) {

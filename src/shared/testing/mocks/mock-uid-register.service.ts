@@ -12,6 +12,7 @@ export class MockUidRegisterService {
     }),
     isLoading: () => false,
     reload: () => {},
+    error: () => null,
   };
 
   searchByUidResource = (uid: number) => ({
@@ -27,5 +28,20 @@ export class MockUidRegisterService {
     }),
     isLoading: () => false,
     reload: () => {},
+    error: () => null,
   });
+}
+
+export class MockUidRegisterServiceWithError {
+  fetchUidInfosOfCurrentUser = {
+    value: () => ({
+      message: 'An error occurred',
+      requestId: '1234',
+      type: 'GENERIC',
+      debugMessage: 'some error debug message',
+    }),
+    isLoading: () => false,
+    reload: () => {},
+    error: () => true,
+  };
 }
