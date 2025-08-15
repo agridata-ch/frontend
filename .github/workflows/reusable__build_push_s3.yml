@@ -1,0 +1,76 @@
+on:
+  workflow_call:
+    inputs:
+      account-id:
+        required: true
+        type: string
+      version:
+        required: true
+        type: string
+
+jobs:
+  resolve-inputs:
+    runs-on: ubuntu-latest
+    outputs:
+      configuration: ${{ steps.map.outputs.configuration }}
+      bucket-name: ${{ steps.map.outputs.bucket-name }}
+    steps:
+      - id: map
+        run: |
+          echo "configuration=${{ fromJSON('{
+            "development": "108782064107",
+            "integration": "863518438092",
+            "production": "183295418748"
+          }')[inputs.account-id] }}" >> "$GITHUB_OUTPUT"
+
+          echo "bucket-name=${{ fromJSON('{
+            "agridata-s3-entwicklung-frontend": "108782064107",
+            "agridata-s3-integration-frontend": "863518438092",
+            "agridata-s3-frontend": "183295418748"
+          }')[inputs.account-id] }}" >> "$GITHUB_OUTPUT"
+
+  build-push-s3:
+    name: Build and push application to S3 bucket
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [resolve-inputs]
+    env:
+      AWS_REGION: eu-central-2
+      CONFIGURATION: ${{ needs.resolve-inputs.outputs.configuration }}
+      BUCKET_NAME: ${{ needs.resolve-inputs.outputs.bucket-name }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          ref: 'v${{ inputs.version }}'
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ inputs.account-id }}:role/agridata-application-deployment-role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: npm ci
+        run: npm ci
+
+      - name: npm build
+        run: npm run build -- --configuration=${{ env.CONFIGURATION }}
+
+      - name: Deploy to S3 bucket
+        run: |
+          aws s3 sync dist/frontend/browser/ \
+            "s3://${{ env.BUCKET_NAME }}/${{ inputs.version }}/" \
+            --region "${{ env.AWS_REGION }}" \
+            --delete

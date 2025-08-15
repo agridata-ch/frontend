@@ -1,0 +1,40 @@
+on:
+  workflow_call:
+
+jobs:
+  semantic-release:
+    name: Semantic Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: npm ci
+        run: npm ci
+
+      - name: Build
+        run: npm run build -- --configuration=development
+
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        env:
+          GITHUB_APP_SEMANTIC_RELEASE_APP_ID: 1236243
+        with:
+          app-id: ${{ env.GITHUB_APP_SEMANTIC_RELEASE_APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY_GITHUB_APP_SEMANTIC_RELEASE }}
+
+      - name: Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: npx semantic-release
