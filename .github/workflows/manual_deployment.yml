@@ -1,0 +1,51 @@
+name: Manual Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select AWS Environment'
+        required: true
+        type: choice
+        options:
+          - 'develop'
+          - 'integration'
+          - 'production'
+      version:
+        description: 'Set version (e.g. 1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  resolve-inputs:
+    runs-on: ubuntu-latest
+    outputs:
+      account_id: ${{ steps.map.outputs.account_id }}
+    steps:
+      - id: map
+        run: |
+          echo "account_id=${{ fromJSON('{
+            "develop": "108782064107",
+            "integration": "863518438092",
+            "production": "183295418748"
+          }')[github.event.inputs.environment] }}" >> "$GITHUB_OUTPUT"
+
+  build-push-s3:
+    if: github.ref == 'refs/heads/develop'
+    needs: [resolve-inputs]
+    name: '.'
+    uses: ./.github/workflows/reusable__build_push_s3.yml
+    secrets: inherit
+    with:
+      account-id: ${{ needs.resolve-inputs.outputs.account_id }}
+      version: ${{ inputs.version }}
+
+  set-cloudfront-origin-path:
+    if: github.ref == 'refs/heads/develop'
+    needs: [build-push-s3, resolve-inputs]
+    name: '.'
+    uses: ./.github/workflows/reusable__set_cloudfront_origin_path.yml
+    secrets: inherit
+    with:
+      account-id: ${{ needs.resolve-inputs.outputs.account_id }}
+      cloudfront-origin-path: ${{ inputs.version }}

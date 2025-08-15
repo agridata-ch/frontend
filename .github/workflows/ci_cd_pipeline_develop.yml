@@ -10,157 +10,45 @@ on:
 
 jobs:
   check-single-commit:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check number of commits in PR
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const pr = context.payload.pull_request;
-             if (!pr) {
-                console.log("Not a pull request event. Skipping commit check.");
-                return;
-            }
-            const commits = await github.rest.pulls.listCommits({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: pr.number,
-            });
-            const count = commits.data.length;
-            if (count > 1) {
-              core.setFailed(`PR has ${count} commits. Please squash to a single commit.`);
-            } else {
-              console.log("PR has a single commit. ✅");
-            }
-  test:
-    name: Test
+    name: '.'
+    uses: ./.github/workflows/reusable__check_single_commit.yml
+    secrets: inherit
+
+  unit-test-sonarqube:
+    name: '.'
+    uses: ./.github/workflows/reusable__unit_test_sonarqube.yml
     needs: check-single-commit
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
-
-      - name: Install dependencies
-        run: npm ci --force
-
-      - name: Lint
-        run: npx eslint src/
-
-      - name: Run unit tests
-        run: npx jest --coverage --no-cache --watch=false
-
-      - name: Run SonarQube Analysis
-        uses: SonarSource/sonarqube-scan-action@v5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          projectBaseDir: .
-          args: >
-            -Dsonar.organization=agridata-ch
-            -Dsonar.projectKey=agridata-ch_frontend
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+    secrets: inherit
 
   semantic-release:
-    name: Semantic Release
     if: github.ref == 'refs/heads/develop'
-    needs: test
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
+    name: '.'
+    uses: ./.github/workflows/reusable__semantic_release.yml
+    needs: unit-test-sonarqube
+    secrets: inherit
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
-
-      - name: npm install
-        run: npm install --force
-
-      - name: Build
-        run: npm run build -- --configuration=development
-
-      - uses: actions/create-github-app-token@v1
-        id: app-token
-        env:
-          GITHUB_APP_SEMANTIC_RELEASE_APP_ID: 1236243
-        with:
-          app-id: ${{ env.GITHUB_APP_SEMANTIC_RELEASE_APP_ID }}
-          private-key: ${{ secrets.PRIVATE_KEY_GITHUB_APP_SEMANTIC_RELEASE }}
-
-      - name: Semantic Release
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: npx semantic-release
-
-  build-deploy:
-    name: Build and deploy application
-    needs: semantic-release
+  read-version:
     if: github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      IMAGE: ${{ steps.push-image.outputs.image }}
-    env:
-      AWS_REGION: eu-central-2
-      S3_BUCKET: agridata-s3-entwicklung-frontend
-      CLOUDFRONT_DISTRIBUTION_ID: EZ4QXZV5B64VV
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-          ref: refs/heads/develop
+    name: '.'
+    needs: unit-test-sonarqube
+    uses: ./.github/workflows/reusable__read_version.yml
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::108782064107:role/agridata-application-deployment-role
-          aws-region: ${{ env.AWS_REGION }}
+  build-push-s3:
+    if: github.ref == 'refs/heads/develop'
+    name: '.'
+    uses: ./.github/workflows/reusable__build_push_s3.yml
+    needs: read-version
+    secrets: inherit
+    with:
+      account-id: 108782064107 # develop
+      version: ${{needs.read-version.outputs.version}}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
-
-      - name: npm install
-        run: npm install --force
-
-      - name: npm build
-        run: npm run build -- --configuration=development
-
-      - name: Deploy to S3 bucket
-        run: |
-          aws s3 sync dist/frontend/browser/ s3://${{ env.S3_BUCKET }}/ \
-            --region ${{ env.AWS_REGION }} \
-            --delete
-
-      - name: Invalidate cloudfront cache
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ env.CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/*"
+  set-cloudfront-origin-path:
+    if: github.ref == 'refs/heads/develop'
+    name: '.'
+    uses: ./.github/workflows/reusable__set_cloudfront_origin_path.yml
+    needs: [read-version, build-push-s3]
+    secrets: inherit
+    with:
+      account-id: 108782064107 # develop
+      cloudfront-origin-path: ${{needs.read-version.outputs.version}}

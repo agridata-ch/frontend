@@ -1,0 +1,51 @@
+on:
+  workflow_call:
+
+jobs:
+  merge-main-develop:
+    name: Merge main into develop
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Generate GitHub App Token
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        env:
+          GITHUB_APP_SEMANTIC_RELEASE_APP_ID: 1236243
+        with:
+          app-id: ${{ env.GITHUB_APP_SEMANTIC_RELEASE_APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY_GITHUB_APP_SEMANTIC_RELEASE }}
+
+      - name: Set up Git user for GitHub App
+        run: |
+          git config --global user.name "semantic-release[bot]"
+          git config --global user.email "semantic-release[bot]@users.noreply.github.com"
+
+      - name: Sync main to develop
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -e
+
+          echo "🔄 Cloning repository..."
+          git clone https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} repo
+          cd repo
+
+          echo "📦 Setting up remotes..."
+          git remote add app-origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
+          git fetch app-origin
+
+          echo "🔀 Checking out 'develop' branch..."
+          git checkout develop
+
+          echo "🔁 Attempting fast-forward merge from 'main' to 'develop'..."
+          git merge --ff-only app-origin/main || echo "⚠️ Fast-forward not possible, continuing..."
+
+          echo "📊 Checking for changes after merge..."
+          if git diff --quiet app-origin/develop; then
+            echo "✅ No changes to push. Skipping push."
+            exit 0
+          fi
+
+          echo "🚀 Pushing changes to 'develop'..."
+          git push app-origin develop

@@ -1,0 +1,40 @@
+on:
+  workflow_call:
+
+jobs:
+  unit-test-sonarqube:
+    name: Unit Tests and SonarQube
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npx eslint src/
+
+      - name: Run unit tests
+        run: npx jest --coverage --no-cache --watch=false
+
+      - name: Run SonarQube Analysis
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.organization=agridata-ch
+            -Dsonar.projectKey=agridata-ch_frontend
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
