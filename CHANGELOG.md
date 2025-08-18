@@ -1,3 +1,9 @@
+## [1.0.0-rc.29](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.28...v1.0.0-rc.29) (2025-08-18)
+
+### Features
+
+- **cicd:** improve pipelines for multiple environments ([51a1ddd](https://github.com/agridata-ch/frontend/commit/51a1ddd98aa019c92e5344a4a2e7a5359d15c76c)), closes [DIGIB2-709](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-709)
+
 ## [1.0.0-rc.28](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.27...v1.0.0-rc.28) (2025-08-12)
 
 ### Features
