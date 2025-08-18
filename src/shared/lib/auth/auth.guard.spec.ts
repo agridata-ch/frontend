@@ -3,6 +3,8 @@ import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { firstValueFrom, of } from 'rxjs';
 
+import { ROUTE_PATHS } from '@/shared/constants/constants';
+
 import { AuthorizationGuard } from './auth.guard';
 
 describe('AuthorizationGuard', () => {
@@ -107,7 +109,7 @@ describe('AuthorizationGuard', () => {
 
     expect(result).toBe(fakeUrlTree);
     expect(setItemSpy).toHaveBeenCalledWith('userRoles', JSON.stringify(['admin', 'user']));
-    expect(mockRouter.parseUrl).toHaveBeenCalledWith('/forbidden');
+    expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.FORBIDDEN);
   });
 
   it('treats malformed token as having no roles (forbidden if roles required)', async () => {
@@ -122,7 +124,7 @@ describe('AuthorizationGuard', () => {
 
     expect(result).toBe(fakeUrlTree);
     expect(setItemSpy).toHaveBeenCalledWith('userRoles', JSON.stringify([]));
-    expect(mockRouter.parseUrl).toHaveBeenCalledWith('/forbidden');
+    expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.FORBIDDEN);
   });
 
   it('allows activation if malformed token but no roles required', async () => {
@@ -151,7 +153,7 @@ describe('AuthorizationGuard', () => {
 
     expect(result).toBe(fakeUrlTree);
     expect(setItemSpy).toHaveBeenCalledWith('userRoles', JSON.stringify([]));
-    expect(mockRouter.parseUrl).toHaveBeenCalledWith('/forbidden');
+    expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.FORBIDDEN);
   });
 
   it('allows activation if missing access_token but no roles required', async () => {

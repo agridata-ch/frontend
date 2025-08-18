@@ -1,8 +1,10 @@
 import { Location } from '@angular/common';
-import { ComponentRef } from '@angular/core';
+import { ComponentRef, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConsentRequestService, DataRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { MetaDataService } from '@/entities/api/meta-data-service';
 import {
   ConsentRequestDetailViewDto,
   ConsentRequestDetailViewDtoDataRequestStateCode,
@@ -12,6 +14,7 @@ import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { MockDataRequestService, MockI18nService } from '@/shared/testing/mocks';
+import { mockMetadataService } from '@/shared/testing/mocks/mock-meta-data.service';
 
 describe('ConsentRequestProducerPage - component behavior', () => {
   let fixture: ComponentFixture<ConsentRequestProducerPage>;
@@ -19,6 +22,9 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   let componentRef: ComponentRef<ConsentRequestProducerPage>;
   let mockConsentService: jest.Mocked<ConsentRequestService>;
   let mockLocation: jest.Mocked<Location>;
+  let metadataService: Partial<MetaDataService>;
+  let agridataStateService: Partial<AgridataStateService>;
+  const activeUid = '123';
 
   const sampleRequests: ConsentRequestDetailViewDto[] = [
     {
@@ -64,7 +70,11 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     mockLocation = {
       go: jest.fn(),
     } as unknown as jest.Mocked<Location>;
+    metadataService = mockMetadataService;
 
+    agridataStateService = {
+      activeUid: signal(activeUid),
+    };
     await TestBed.configureTestingModule({
       providers: [
         ConsentRequestProducerPage,
@@ -72,6 +82,8 @@ describe('ConsentRequestProducerPage - component behavior', () => {
         { provide: Location, useValue: mockLocation },
         { provide: I18nService, useClass: MockI18nService },
         { provide: DataRequestService, useValue: MockDataRequestService },
+        { provide: MetaDataService, useValue: metadataService },
+        { provide: AgridataStateService, useValue: agridataStateService },
       ],
     }).compileComponents();
 
@@ -88,7 +100,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     component.setSelectedRequest(req);
     expect(component.selectedRequest()).toBe(req);
     expect(mockLocation.go).toHaveBeenCalledWith(
-      `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${req.id}`,
+      `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${activeUid}/${req.id}`,
     );
   });
 

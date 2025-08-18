@@ -1,7 +1,8 @@
 import { Component, Signal, computed, effect, inject, input, output, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { ConsentRequestService, DataRequestService } from '@/entities/api';
+import { ConsentRequestService } from '@/entities/api';
+import { MetaDataService } from '@/entities/api/meta-data-service';
 import {
   ConsentRequestProducerViewDto,
   ConsentRequestStateEnum,
@@ -42,9 +43,10 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
 export class ConsentRequestDetailsComponent {
   private readonly toastService = inject(ToastService);
   private readonly consentRequestService = inject(ConsentRequestService);
-  private readonly dataRequestService = inject(DataRequestService);
+  readonly metaDataService = inject(MetaDataService);
+
   private readonly i18nService = inject(I18nService);
-  private readonly dataRequestProducts = this.dataRequestService.fetchDataProducts;
+  private readonly dataRequestProducts = this.metaDataService.fetchDataProducts;
 
   readonly request = input<ConsentRequestProducerViewDto | null>(null);
   readonly onCloseDetail = output<string | null>();
