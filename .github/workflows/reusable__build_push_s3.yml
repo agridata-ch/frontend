@@ -34,17 +34,17 @@ jobs:
           fi
           echo "configuration=$configuration" >> "$GITHUB_OUTPUT"
 
-          bucket-name=$(jq -r --arg id "${{ inputs.account-id }}" '.[$id] // empty' <<< '{
+          bucket_name=$(jq -r --arg id "${{ inputs.account-id }}" '.[$id] // empty' <<< '{
           "108782064107": "agridata-s3-entwicklung-frontend",
           "863518438092": "agridata-s3-integration-frontend",
           "183295418748": "agridata-s3-frontend"
           }')
 
-          if [ -z "$bucket-name" ]; then
-            echo "No mapping found for bucket-name (account-id=${{ inputs.account-id }})"
+          if [ -z "$bucket_name" ]; then
+            echo "No mapping found for bucket_name (account-id=${{ inputs.account-id }})"
             exit 1
           fi
-          echo "bucket-name=$bucket-name" >> "$GITHUB_OUTPUT"
+          echo "bucket-name=$bucket_name" >> "$GITHUB_OUTPUT"
       - name: Checkout
         uses: actions/checkout@v4
         with:
