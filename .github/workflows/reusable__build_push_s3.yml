@@ -9,13 +9,18 @@ on:
         type: string
 
 jobs:
-  resolve-inputs:
+  build-push-s3:
+    name: Build and push application to S3 bucket
     runs-on: ubuntu-latest
-    outputs:
-      configuration: ${{ steps.map.outputs.configuration }}
-      bucket-name: ${{ steps.map.outputs.bucket-name }}
+    timeout-minutes: 5
+    env:
+      AWS_REGION: eu-central-2
+    permissions:
+      id-token: write
+      contents: read
     steps:
-      - id: map
+      - name: Resolve Inputs
+        id: resolve-inputs
         run: |
           echo "configuration=${{ fromJSON('{
             "development": "108782064107",
@@ -29,19 +34,6 @@ jobs:
             "agridata-s3-frontend": "183295418748"
           }')[inputs.account-id] }}" >> "$GITHUB_OUTPUT"
 
-  build-push-s3:
-    name: Build and push application to S3 bucket
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: [resolve-inputs]
-    env:
-      AWS_REGION: eu-central-2
-      CONFIGURATION: ${{ needs.resolve-inputs.outputs.configuration }}
-      BUCKET_NAME: ${{ needs.resolve-inputs.outputs.bucket-name }}
-    permissions:
-      id-token: write
-      contents: read
-    steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -66,11 +58,11 @@ jobs:
         run: npm ci
 
       - name: npm build
-        run: npm run build -- --configuration=${{ env.CONFIGURATION }}
+        run: npm run build -- --configuration=${{ steps.resolve-inputs.outputs.configuration }}
 
       - name: Deploy to S3 bucket
         run: |
           aws s3 sync dist/frontend/browser/ \
-            "s3://${{ env.BUCKET_NAME }}/${{ inputs.version }}/" \
+            "s3://${{ steps.resolve-inputs.outputs.bucket-name }}/${{ inputs.version }}/" \
             --region "${{ env.AWS_REGION }}" \
             --delete

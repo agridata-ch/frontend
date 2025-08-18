@@ -30,7 +30,7 @@ jobs:
   read-version:
     if: github.ref == 'refs/heads/develop'
     name: '.'
-    needs: unit-test-sonarqube
+    needs: semantic-release
     uses: ./.github/workflows/reusable__read_version.yml
 
   build-push-s3:

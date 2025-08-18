@@ -18,11 +18,12 @@ on:
 
 jobs:
   resolve-inputs:
+    name: 'Resolve Inputs'
     runs-on: ubuntu-latest
     outputs:
-      account_id: ${{ steps.map.outputs.account_id }}
+      account_id: ${{ steps.resolve-inputs.outputs.account_id }}
     steps:
-      - id: map
+      - id: resolve-inputs
         run: |
           echo "account_id=${{ fromJSON('{
             "develop": "108782064107",
@@ -31,7 +32,6 @@ jobs:
           }')[github.event.inputs.environment] }}" >> "$GITHUB_OUTPUT"
 
   build-push-s3:
-    if: github.ref == 'refs/heads/develop'
     needs: [resolve-inputs]
     name: '.'
     uses: ./.github/workflows/reusable__build_push_s3.yml
@@ -41,7 +41,6 @@ jobs:
       version: ${{ inputs.version }}
 
   set-cloudfront-origin-path:
-    if: github.ref == 'refs/heads/develop'
     needs: [build-push-s3, resolve-inputs]
     name: '.'
     uses: ./.github/workflows/reusable__set_cloudfront_origin_path.yml
