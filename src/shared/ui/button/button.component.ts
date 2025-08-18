@@ -1,10 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 
-import { ButtonVariants } from './button.model';
+import { ButtonVariants, HrefTarget } from './button.model';
 
 @Component({
   selector: 'app-agridata-button',
   templateUrl: './button.component.html',
+  imports: [CommonModule],
   styleUrl: './button.component.css',
 })
 export class ButtonComponent {
@@ -16,6 +18,8 @@ export class ButtonComponent {
   selected = input<boolean>(false);
   onClick = output<Event>();
   additionalClass = input<string>('');
+  href = input<string>('');
+  target = input<HrefTarget>(HrefTarget.Self);
 
   handleClick(event: Event) {
     this.onClick.emit(event);

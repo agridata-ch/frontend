@@ -16,3 +16,12 @@ export const COUNTRIES = {
 };
 
 export const ACTIVE_UID_FIELD = 'activeUid';
+
+export const CMS_BLOCKS = {
+  HERO: 'blocks.hero',
+  SECTION_HEADING_MEDIA: 'blocks.section-heading-media',
+  SECTION_HEADING_TEXT_IMAGE: 'blocks.section-heading-text-image',
+  LIST: 'blocks.list',
+};
+
+export const VIDEO_FORMATS = ['.mp4', '.webm', '.wmv', '.avi', '.mov', '.mkv', '.flv'];
