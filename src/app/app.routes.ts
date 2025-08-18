@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 
+import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { DefaultLayoutComponent } from '@/app/layout';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
@@ -24,6 +25,7 @@ export const routes: Routes = [
     path: '',
     component: DefaultLayoutComponent,
     pathMatch: 'full',
+    canActivate: [ProducerUidGuard],
     children: [{ path: '', component: LoginPage }],
   },
 
@@ -36,36 +38,43 @@ export const routes: Routes = [
   },
   {
     // producer routes
-    path: '',
+    path: `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`,
     component: DefaultLayoutComponent,
     runGuardsAndResolvers: 'paramsChange',
     canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
     data: { roles: [USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER] },
     children: [
       {
-        path: ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
+        path: ``,
         component: ConsentRequestProducerPage,
+        canActivate: [ProducerUidGuard],
       },
       {
-        path: `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/:consentRequestId`,
+        path: `:uid`,
         component: ConsentRequestProducerPage,
+        canActivate: [ProducerUidGuard],
+      },
+      {
+        path: `:uid/:consentRequestId`,
+        component: ConsentRequestProducerPage,
+        canActivate: [ProducerUidGuard],
       },
     ],
   },
   {
     // consumer routes
-    path: '',
+    path: ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH,
     component: DefaultLayoutComponent,
     runGuardsAndResolvers: 'paramsChange',
     canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
     data: { roles: [USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER] },
     children: [
       {
-        path: ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH,
+        path: '',
         component: DataRequestsConsumerPage,
       },
       {
-        path: `${ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH}/:dataRequestId`,
+        path: `:dataRequestId`,
         component: DataRequestsConsumerPage,
       },
     ],

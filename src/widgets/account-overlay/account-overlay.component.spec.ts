@@ -1,29 +1,36 @@
+import { provideLocationMocks } from '@angular/common/testing';
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ParticipantService } from '@/entities/api/participant.service';
+import { UidDto } from '@/entities/openapi';
 import { AuthService } from '@/shared/lib/auth';
-import { MockAuthService, MockResources } from '@/shared/testing/mocks';
+import { MockAuthService } from '@/shared/testing/mocks';
 
 import { AccountOverlayComponent } from './account-overlay.component';
 
-const mockParticipantService: Partial<ParticipantService> = {
-  getAuthorizedUids: MockResources.createMockResourceRef([
-    {
-      uid: '1',
-      name: 'Alpha',
-    },
-    {
-      uid: '2',
-      name: 'Beta',
-    },
-    {
-      uid: '3',
-      name: undefined, // This will test sorting with undefined names
-    },
-  ]),
+const uidDtos: UidDto[] = [
+  {
+    uid: '1',
+    name: 'Alpha',
+  } as UidDto,
+  {
+    uid: '2',
+    name: 'Beta',
+  } as UidDto,
+  {
+    uid: '3',
+    name: undefined, // This will test sorting with undefined names
+  } as UidDto,
+];
+
+const participantService: Partial<ParticipantService> = {
+  getAuthorizedUids: jest.fn().mockReturnValue(Promise.resolve(uidDtos)),
 };
 
+let agridataStateService: Partial<AgridataStateService>;
 describe('AccountOverlayComponent', () => {
   let component: AccountOverlayComponent;
   let fixture: ComponentFixture<AccountOverlayComponent>;
@@ -39,7 +46,8 @@ describe('AccountOverlayComponent', () => {
       imports: [AccountOverlayComponent],
       providers: [
         { provide: AuthService, useClass: MockAuthService },
-        { provide: ParticipantService, useValue: mockParticipantService },
+        { provide: ParticipantService, useValue: participantService },
+        provideLocationMocks(),
       ],
     }).compileComponents();
 
@@ -93,7 +101,12 @@ describe('AccountOverlayComponent', () => {
 describe('AccountOverlayComponent - Additional', () => {
   let component: AccountOverlayComponent;
   let fixture: ComponentFixture<AccountOverlayComponent>;
-
+  const activUid = '1';
+  agridataStateService = {
+    userUids: signal(uidDtos),
+    setActiveUid: jest.fn(),
+    activeUid: signal(activUid),
+  };
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AccountOverlayComponent],
@@ -101,8 +114,13 @@ describe('AccountOverlayComponent - Additional', () => {
         { provide: AuthService, useValue: { logout: jest.fn() } },
         {
           provide: ParticipantService,
-          useValue: mockParticipantService, // Use the mock defined above
+          useValue: participantService,
         },
+        {
+          provide: AgridataStateService,
+          useValue: agridataStateService,
+        },
+        provideLocationMocks(),
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(AccountOverlayComponent);
@@ -111,8 +129,9 @@ describe('AccountOverlayComponent - Additional', () => {
 
   it('should set selectedUid when selectUid is called', () => {
     expect(component.selectedUid()).toBeNull();
-    component.selectUid('test-uid');
-    expect(component.selectedUid()).toBe('test-uid');
+    const newUid = 'test-uid';
+    component.selectUid(newUid);
+    expect(agridataStateService.setActiveUid).toHaveBeenCalledWith(newUid);
   });
 
   it('should close overlay when handleClickOutside is called', () => {
@@ -122,14 +141,15 @@ describe('AccountOverlayComponent - Additional', () => {
   });
 
   it('should compute activeUid from selectedUid and authorizedUids', () => {
+    agridataStateService.activeUid?.set(activUid);
     component.selectedUid.set('2');
     expect(component.activeUid()).toBe('2');
     component.selectedUid.set(null);
-    expect(component.activeUid()).toBe('1');
+    expect(component.activeUid()).toBe(activUid);
   });
 
   it('should return sorted authorizedUids', () => {
-    const sorted = component.authorizedUids();
+    const sorted = component.sortedUids();
     expect(sorted[0].name).toBe('Alpha');
     expect(sorted[1].name).toBe('Beta');
     expect(sorted[2].name).toBeUndefined();

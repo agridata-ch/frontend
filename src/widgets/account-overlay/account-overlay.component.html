@@ -30,11 +30,11 @@
       <app-agridata-button [variant]="ButtonVariants.Secondary" (onClick)="logout()">
         {{ 'account.logout' | i18n }}
       </app-agridata-button>
-      @if (authorizedUids().length > 0) {
+      @if (sortedUids().length > 0) {
         <div
           class="flex flex-col border border-agridata-stroke rounded-md mt-4 divide-y divide-agridata-stroke"
         >
-          @for (uid of authorizedUids(); track uid.uid) {
+          @for (uid of sortedUids(); track uid) {
             <button
               class="flex items-center gap-4 py-2 px-4 hover:bg-agridata-primary-50 cursor-pointer"
               [class.bg-agridata-stroke]="activeUid() === uid.uid"

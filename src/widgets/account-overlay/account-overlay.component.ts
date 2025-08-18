@@ -1,11 +1,12 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { ParticipantService } from '@/entities/api/participant.service';
 import { UidDto } from '@/entities/openapi';
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nPipe } from '@/shared/i18n';
 import { AuthService, UserData } from '@/shared/lib/auth';
 import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
@@ -26,9 +27,8 @@ import { PopoverComponent } from '@/shared/ui/popover/popover.component';
 })
 export class AccountOverlayComponent {
   readonly authService = inject(AuthService);
-  readonly participantService = inject(ParticipantService);
   readonly agridataStateService = inject(AgridataStateService);
-
+  readonly location = inject(Location);
   readonly userData = input<UserData | null>(null);
   readonly overlayName = computed(() => {
     return this.authService.getUserFullName();
@@ -40,6 +40,9 @@ export class AccountOverlayComponent {
 
   readonly isOverlayOpen = signal(false);
   readonly selectedUid = signal<string | null>(null);
+  readonly sortedUids = computed(() =>
+    this.agridataStateService.userUids().sort(this.sortAlphabetically),
+  );
 
   readonly dropdownIcon = computed(() => {
     return this.isOverlayOpen() ? faChevronUp : faChevronDown;
@@ -49,24 +52,7 @@ export class AccountOverlayComponent {
     if (selectedUid) {
       return selectedUid;
     }
-    return this.getDefaultUid(this.authorizedUids());
-  });
-  readonly authorizedUids = computed(() => {
-    const authorizedUids = this.participantService.getAuthorizedUids;
-
-    if (authorizedUids.isLoading() || authorizedUids.error()) {
-      return [];
-    }
-    return Array.isArray(authorizedUids.value())
-      ? authorizedUids.value().sort(this.sortAlphabetically)
-      : [];
-  });
-
-  activeUidEffect = effect(() => {
-    const activeUid = this.activeUid();
-    if (activeUid) {
-      this.agridataStateService.setActiveUid(activeUid);
-    }
+    return this.agridataStateService.activeUid();
   });
 
   sortAlphabetically(uidA: UidDto | undefined, uidB: UidDto | undefined) {
@@ -79,14 +65,6 @@ export class AccountOverlayComponent {
     return uidA.name.toLowerCase().localeCompare(uidB.name.toLowerCase());
   }
 
-  private getDefaultUid(uids: UidDto[]) {
-    const storedUid = this.agridataStateService.uidSignal();
-    if (storedUid && uids.some((uid) => uid.uid === storedUid)) {
-      return storedUid;
-    }
-    return uids.length > 0 && uids[0].uid ? uids[0].uid : null;
-  }
-
   logout = () => {
     this.authService.logout();
   };
@@ -96,7 +74,10 @@ export class AccountOverlayComponent {
   }
 
   selectUid(uid: string | undefined) {
-    if (uid) this.selectedUid.set(uid);
+    if (uid) {
+      this.agridataStateService.setActiveUid(uid);
+      this.location.go(`${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${uid}`);
+    }
   }
 
   handleClickOutside() {

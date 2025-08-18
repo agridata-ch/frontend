@@ -11,11 +11,6 @@ export class MockDataRequestService {
   updateDataRequestDetails = jest.fn().mockResolvedValue(undefined);
   uploadLogo = jest.fn().mockResolvedValue(undefined);
   submitDataRequest = jest.fn().mockResolvedValue(undefined);
-  fetchDataProducts = {
-    value: jest.fn().mockReturnValue(sampleProducts),
-    isLoading: jest.fn(),
-    reload: jest.fn(),
-  };
 }
 
 export const mockDataRequests: DataRequestDto[] = [
@@ -40,9 +35,4 @@ export const mockDataRequests: DataRequestDto[] = [
     humanFriendlyId: 'REQ-003',
     title: { de: 'Request C' },
   } as DataRequestDto,
-];
-
-export const sampleProducts = [
-  { id: 'productWithName', name: { en: 'Product 1', de: 'Produkt 1' } },
-  { id: 'productWithoutName' },
 ];

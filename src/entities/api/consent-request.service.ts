@@ -13,7 +13,7 @@ export class ConsentRequestService {
   private readonly agridataStateService = inject(AgridataStateService);
 
   readonly fetchConsentRequests = resource({
-    params: () => ({ uid: this.agridataStateService.uidSignal() }),
+    params: () => ({ uid: this.agridataStateService.activeUid() }),
     loader: ({ params }) => {
       if (!params?.uid) {
         return Promise.resolve([]);
@@ -22,6 +22,10 @@ export class ConsentRequestService {
     },
     defaultValue: [],
   });
+
+  async getConsentRequest(consentRequestId: string) {
+    return firstValueFrom(this.apiService.getConsentRequest(consentRequestId));
+  }
 
   updateConsentRequestStatus(consentRequestId: string, stateCode: string) {
     return firstValueFrom(

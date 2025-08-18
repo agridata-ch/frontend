@@ -1,6 +1,8 @@
 export const ROUTE_PATHS = {
   CONSENT_REQUEST_PRODUCER_PATH: 'consent-requests',
   DATA_REQUESTS_CONSUMER_PATH: 'data-requests',
+  FORBIDDEN: 'forbidden',
+  ERROR: 'error',
 };
 
 export const USER_ROLES = {

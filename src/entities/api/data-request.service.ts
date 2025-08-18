@@ -5,7 +5,6 @@ import { DataRequestsService } from '@/entities/openapi/api/dataRequests.service
 
 import {
   ConsentRequestDetailViewDtoDataRequestStateCode,
-  DataProductsService,
   DataRequestDto,
   DataRequestUpdateDto,
 } from '../openapi';
@@ -15,14 +14,9 @@ import {
 })
 export class DataRequestService {
   private readonly apiService = inject(DataRequestsService);
-  private readonly dataProductService = inject(DataProductsService);
 
   readonly fetchDataRequests = resource({
     loader: () => firstValueFrom(this.apiService.getDataRequests()),
-  });
-
-  readonly fetchDataProducts = resource({
-    loader: () => firstValueFrom(this.dataProductService.getDataProducts()),
   });
 
   async createDataRequest(dataRequest: DataRequestUpdateDto): Promise<DataRequestDto> {

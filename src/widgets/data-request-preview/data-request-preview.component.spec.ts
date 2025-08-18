@@ -2,7 +2,9 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataRequestService } from '@/entities/api';
+import { MetaDataService } from '@/entities/api/meta-data-service';
 import { MockDataRequestService } from '@/shared/testing/mocks';
+import { mockMetadataService } from '@/shared/testing/mocks/mock-meta-data.service';
 
 import { DataRequestPreviewComponent } from './data-request-preview.component';
 
@@ -10,11 +12,17 @@ describe('DataRequestPreviewComponent', () => {
   let component: DataRequestPreviewComponent;
   let fixture: ComponentFixture<DataRequestPreviewComponent>;
   let componentRef: ComponentRef<DataRequestPreviewComponent>;
+  let metadataService: Partial<MetaDataService>;
 
   beforeEach(async () => {
+    metadataService = mockMetadataService;
+
     await TestBed.configureTestingModule({
       imports: [DataRequestPreviewComponent],
-      providers: [{ provide: DataRequestService, useClass: MockDataRequestService }],
+      providers: [
+        { provide: DataRequestService, useClass: MockDataRequestService },
+        { provide: MetaDataService, useValue: metadataService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataRequestPreviewComponent);

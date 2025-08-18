@@ -4,6 +4,8 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { ROUTE_PATHS } from '@/shared/constants/constants';
+
 @Injectable({ providedIn: 'root' })
 export class AuthorizationGuard implements CanActivate {
   private readonly oidcSecurityService = inject(OidcSecurityService);
@@ -40,7 +42,7 @@ export class AuthorizationGuard implements CanActivate {
         const hasRole =
           requiredRoles.length === 0 || requiredRoles.some((role) => userRoles.includes(role));
         if (!hasRole) {
-          return this.router.parseUrl('/forbidden');
+          return this.router.parseUrl(ROUTE_PATHS.FORBIDDEN);
         }
         return true;
       }),
