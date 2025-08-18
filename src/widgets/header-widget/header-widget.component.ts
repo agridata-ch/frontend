@@ -1,10 +1,10 @@
 import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { LanguageSelectComponent } from '@/features/language-select/language-select.component';
+import { LanguageSelectComponent } from '@/features/language-select';
 import { I18nPipe } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
-import { AccountOverlayComponent } from '@/widgets/account-overlay/account-overlay.component';
+import { AccountOverlayComponent } from '@/widgets/account-overlay';
 
 @Component({
   selector: 'app-header-widget',

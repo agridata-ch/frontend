@@ -5,12 +5,13 @@ import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { DefaultLayoutComponent } from '@/app/layout';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
-import { LoginPage } from '@/pages/login';
+import { LandingPage } from '@/pages/landing-page';
 import { NotFoundPage } from '@/pages/not-found';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
 
 import { LoginAuthGuard } from './guards/login.guard';
+import { FullWidthLayoutComponent } from './layout/full-width-layout.component';
 
 export const routes: Routes = [
   // #### public pages without authentication ####
@@ -23,10 +24,10 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: DefaultLayoutComponent,
+    component: FullWidthLayoutComponent,
     pathMatch: 'full',
     canActivate: [ProducerUidGuard],
-    children: [{ path: '', component: LoginPage }],
+    children: [{ path: '', component: LandingPage }],
   },
 
   // #### protected pages with authentication ####

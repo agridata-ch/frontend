@@ -1,0 +1,13 @@
+<div [class.bg-white]="isOdd()">
+  @switch (block().__component) {
+    @case (CMS_BLOCKS.HERO) {
+      <app-hero-block [block]="block()" />
+    }
+    @case (CMS_BLOCKS.SECTION_HEADING_MEDIA) {
+      <app-section-heading-media-block [block]="block()" />
+    }
+    @case (CMS_BLOCKS.SECTION_HEADING_TEXT_IMAGE) {
+      <app-section-heading-text-image-block [block]="block()" />
+    }
+  }
+</div>

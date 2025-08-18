@@ -1,0 +1,35 @@
+<div
+  class="relative min-h-[500px] flex items-center bg-cover bg-center bg-no-repeat w-full"
+  [style.backgroundImage]="`url(${generateMediaUrl(cmsData().image.url)})`"
+>
+  <div
+    class="absolute inset-0 bg-gradient-to-tr from-agridata-secondary-text to-agridata-primary-text opacity-40"
+  ></div>
+
+  <div class="container mx-auto px-4 relative text-white py-16">
+    <div class="max-w-4xl flex flex-col gap-4">
+      <span class="text-4xl md:text-5xl font-bold">{{ cmsData().heading }}</span>
+      <p class="text-xl">{{ cmsData().subHeading }}</p>
+
+      @if (cmsData().cta && cmsData().cta.length > 0) {
+        <div class="flex flex-wrap gap-4 mt-4">
+          @for (btn of cmsData().cta; track btn.id) {
+            @if (btn.isButtonLink) {
+              <app-agridata-button
+                [href]="btn.href"
+                [target]="btn.isExternal ? HrefTarget.Blank : HrefTarget.Self"
+                [variant]="ButtonVariants[`${btn.type}Hero`]"
+              >
+                {{ btn.label }}
+              </app-agridata-button>
+            } @else {
+              <a [href]="btn.href" [target]="btn.isExternal ? '_blank' : '_self'">
+                {{ btn.label }}
+              </a>
+            }
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
