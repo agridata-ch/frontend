@@ -9,28 +9,28 @@ on:
     branches: [develop]
 
 jobs:
-  #  check-single-commit:
-  #    name: '.'
-  #    uses: ./.github/workflows/reusable__check_single_commit.yml
-  #    secrets: inherit
-  #
-  #  unit-test-sonarqube:
-  #    name: '.'
-  #    uses: ./.github/workflows/reusable__unit_test_sonarqube.yml
-  #    needs: check-single-commit
-  #    secrets: inherit
-  #
-  #  semantic-release:
-  #    if: github.ref == 'refs/heads/develop'
-  #    name: '.'
-  #    uses: ./.github/workflows/reusable__semantic_release.yml
-  #    needs: unit-test-sonarqube
-  #    secrets: inherit
+  check-single-commit:
+    name: '.'
+    uses: ./.github/workflows/reusable__check_single_commit.yml
+    secrets: inherit
+
+  unit-test-sonarqube:
+    name: '.'
+    uses: ./.github/workflows/reusable__unit_test_sonarqube.yml
+    needs: check-single-commit
+    secrets: inherit
+
+  semantic-release:
+    if: github.ref == 'refs/heads/develop'
+    name: '.'
+    uses: ./.github/workflows/reusable__semantic_release.yml
+    needs: unit-test-sonarqube
+    secrets: inherit
 
   read-version:
     if: github.ref == 'refs/heads/develop'
     name: '.'
-    #    needs: semantic-release
+    needs: semantic-release
     uses: ./.github/workflows/reusable__read_version.yml
 
   build-push-s3:
