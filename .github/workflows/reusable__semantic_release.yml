@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
+        run: npm run build -- --configuration=development
 
       - uses: actions/create-github-app-token@v1
         id: app-token
