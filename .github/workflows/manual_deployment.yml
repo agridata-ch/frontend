@@ -25,11 +25,18 @@ jobs:
     steps:
       - id: resolve-inputs
         run: |
-          echo "account_id=${{ fromJSON('{
+          account_id=$(jq -r --arg env "${{ github.event.inputs.environment }}" '.[$env] // empty' <<< '{
             "develop": "108782064107",
             "integration": "863518438092",
             "production": "183295418748"
-          }')[github.event.inputs.environment] }}" >> "$GITHUB_OUTPUT"
+          }')
+
+          if [ -z "$account_id" ]; then
+            echo "No mapping found for account_id (environment=${{ github.event.inputs.environment }})"
+            exit 1
+          fi
+
+          echo "account_id=$account_id" >> "$GITHUB_OUTPUT"
 
   build-push-s3:
     needs: [resolve-inputs]

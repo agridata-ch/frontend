@@ -25,4 +25,6 @@ jobs:
       - name: Read version
         id: version
         run: |
-          echo "version=$(jq -r '.version' package.json)" >> "$GITHUB_OUTPUT"
+          VERSION=$(jq -r '.version' package.json)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "version: $VERSION"
