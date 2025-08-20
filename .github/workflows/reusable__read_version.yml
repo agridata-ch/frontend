@@ -1,5 +1,9 @@
 on:
   workflow_call:
+    inputs:
+      branch-name:
+        type: string
+        required: true
     outputs:
       version:
         description: 'version from package.json'
@@ -19,7 +23,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: ${{inputs.branch-name}}
+          sparse-checkout: |
+            package.json
           persist-credentials: false
 
       - name: Read version

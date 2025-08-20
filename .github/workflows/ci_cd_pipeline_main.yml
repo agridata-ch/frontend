@@ -26,6 +26,8 @@ jobs:
     name: '.'
     needs: unit-test-sonarqube
     uses: ./.github/workflows/reusable__read_version.yml
+    with:
+      branch-name: 'main'
 
   build-push-s3:
     if: github.ref == 'refs/heads/develop'
