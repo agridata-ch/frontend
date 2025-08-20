@@ -100,7 +100,7 @@ describe('NavigationWidgetComponent', () => {
         route: string;
       };
       expect(navItem).not.toBe(false);
-      expect(navItem.route).toBe(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH);
+      expect(navItem.route).toBe(`/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`);
     });
   });
 });

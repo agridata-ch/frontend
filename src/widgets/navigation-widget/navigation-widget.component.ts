@@ -28,12 +28,12 @@ export class NavigationWidgetComponent {
       this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) && {
         label: 'producer.pageTitle',
         icon: faFile,
-        route: ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
+        route: `/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`,
       },
       this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER) && {
         label: 'consumer.pageTitle',
         icon: faDatabase,
-        route: ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH,
+        route: `/${ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH}`,
       },
     ].filter(Boolean),
   );
