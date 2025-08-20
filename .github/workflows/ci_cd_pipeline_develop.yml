@@ -32,6 +32,8 @@ jobs:
     name: '.'
     needs: semantic-release
     uses: ./.github/workflows/reusable__read_version.yml
+    with:
+      branch-name: 'develop'
 
   build-push-s3:
     if: github.ref == 'refs/heads/develop'
