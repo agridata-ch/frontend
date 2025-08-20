@@ -1,3 +1,9 @@
+## [1.0.0-rc.30](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.29...v1.0.0-rc.30) (2025-08-20)
+
+### Features
+
+- **accont-overlay:** adds deep link for consent requests including active uid ([e663be3](https://github.com/agridata-ch/frontend/commit/e663be33de278c12a08ce53a6ff92e65b16606db)), closes [DIGIB2-692](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-692)
+
 ## [1.0.0-rc.29](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.28...v1.0.0-rc.29) (2025-08-18)
 
 ### Features
