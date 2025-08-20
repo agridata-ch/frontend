@@ -1,3 +1,9 @@
+## [1.0.0-rc.33](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.32...v1.0.0-rc.33) (2025-08-20)
+
+### Features
+
+- **cms:** add cms content ([c01ca08](https://github.com/agridata-ch/frontend/commit/c01ca089b9fb2ddcba84bad439d8c9767131086a)), closes [DIGIB2-713](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-713) [DIGIB2-731](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-731) [DIGIB2-739](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-739) [DIGIB2-740](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-740) [DIGIB2-741](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-741)
+
 ## [1.0.0-rc.32](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.31...v1.0.0-rc.32) (2025-08-20)
 
 ### Bug Fixes
