@@ -1,0 +1,59 @@
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
+
+import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
+import { ConsentRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
+
+/**
+ * Guard to load the producers authorized uids and set the consent request uid parameter if not present or set active uid if parameter is provided.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
+@Injectable({
+  providedIn: 'root',
+})
+export class CreateConsentRequestGuard implements CanActivate {
+  private readonly router = inject(Router);
+  private readonly consentRequestService = inject(ConsentRequestService);
+  private readonly agridataStateService = inject(AgridataStateService);
+  private readonly producerUidGuard = inject(ProducerUidGuard);
+
+  async canActivate(route: ActivatedRouteSnapshot) {
+    const dataRequestUid = route.paramMap.get('dataRequestUid') ?? '';
+    if (!dataRequestUid) {
+      return this.fail('No dataRequestUid provided in route parameters.');
+    }
+    try {
+      const consentRequests =
+        await this.consentRequestService.createConsentRequests(dataRequestUid);
+      if (!consentRequests || consentRequests.length === 0) {
+        return this.fail('No consent requests created for dataRequestUid: ' + dataRequestUid);
+      }
+      const activeUid = this.agridataStateService.activeUid();
+
+      if (!activeUid) {
+        return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);
+      }
+
+      const consentRequestToOpen = consentRequests.find((cr) => cr.dataProducerUid === activeUid);
+      if (consentRequestToOpen) {
+        this.consentRequestService.fetchConsentRequests.reload();
+        return this.router.createUrlTree([
+          ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
+          activeUid,
+          consentRequestToOpen.id,
+        ]);
+      }
+      return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);
+    } catch (error) {
+      return this.fail('Error creating consent requests:' + error);
+    }
+  }
+
+  private fail(msg: string) {
+    console.error('[CreateConsentRequestGuard]', msg);
+    return this.router.parseUrl(ROUTE_PATHS.ERROR);
+  }
+}

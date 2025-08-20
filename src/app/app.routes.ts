@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 
+import { CreateConsentRequestGuard } from '@/app/guards/create-consent-request.guard';
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { DefaultLayoutComponent } from '@/app/layout';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
@@ -49,6 +50,11 @@ export const routes: Routes = [
         path: ``,
         component: ConsentRequestProducerPage,
         canActivate: [ProducerUidGuard],
+      },
+      {
+        path: `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_CREATE_SUBPATH}/:dataRequestUid`,
+        children: [],
+        canActivate: [CreateConsentRequestGuard],
       },
       {
         path: `:uid`,

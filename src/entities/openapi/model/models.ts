@@ -1,5 +1,6 @@
 export * from './burDto';
 export * from './consentRequestConsumerViewDto';
+export * from './consentRequestCreatedDto';
 export * from './consentRequestDetailViewDto';
 export * from './consentRequestDetailViewDtoDataRequest';
 export * from './consentRequestDetailViewDtoDataRequestStateCode';

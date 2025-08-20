@@ -10,9 +10,9 @@ import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import {
-  MockConsentRequestService,
   MockDataRequestService,
   MockI18nService,
+  mockConsentRequestService,
   mockConsentRequests,
 } from '@/shared/testing/mocks';
 import { mockMetadataService } from '@/shared/testing/mocks/mock-meta-data.service';
@@ -42,7 +42,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     await TestBed.configureTestingModule({
       providers: [
         ConsentRequestProducerPage,
-        { provide: ConsentRequestService, useClass: MockConsentRequestService },
+        { provide: ConsentRequestService, useValue: mockConsentRequestService },
         { provide: Location, useValue: mockLocation },
         { provide: Router, useValue: mockRouter },
         { provide: I18nService, useClass: MockI18nService },
@@ -92,6 +92,9 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     });
 
     it('calls setSelectedRequest with correct request if consentRequestId is set and not loading', () => {
+      jest.spyOn(component.consentRequests, 'isLoading').mockReturnValue(false);
+      jest.spyOn(component.consentRequests, 'value').mockReturnValue(mockConsentRequests);
+
       componentRef.setInput('consentRequestId', '2');
       fixture.detectChanges();
       expect(component.selectedRequest()).toEqual(mockConsentRequests[1]);

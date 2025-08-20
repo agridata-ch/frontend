@@ -1,23 +1,11 @@
+import { ConsentRequestService } from '@/entities/api';
 import {
   ConsentRequestDetailViewDto,
   ConsentRequestDetailViewDtoDataRequestStateCode,
   ConsentRequestStateEnum,
 } from '@/entities/openapi';
 
-/**
- * Mock implementation of the ConsentRequestService for testing.
- *
- * CommentLastReviewed: 2025-08-25
- */
-export class MockConsentRequestService {
-  fetchConsentRequests = {
-    value: jest.fn().mockReturnValue(mockConsentRequests),
-    isLoading: jest.fn(),
-    reload: jest.fn(),
-  };
-  getConsentRequest = jest.fn().mockResolvedValue(mockConsentRequests[0]);
-  updateConsentRequestStatus = jest.fn().mockResolvedValue(undefined);
-}
+import { MockResources } from './mock-resources';
 
 export const mockConsentRequests: ConsentRequestDetailViewDto[] = [
   {
@@ -51,3 +39,10 @@ export const mockConsentRequests: ConsentRequestDetailViewDto[] = [
     },
   } as ConsentRequestDetailViewDto,
 ];
+
+export const mockConsentRequestService: Partial<ConsentRequestService> = {
+  fetchConsentRequests: MockResources.createMockResourceRef(mockConsentRequests),
+  getConsentRequest: jest.fn().mockResolvedValue(mockConsentRequests[0]),
+  updateConsentRequestStatus: jest.fn().mockResolvedValue(undefined),
+  createConsentRequests: jest.fn().mockReturnValue({}),
+};
