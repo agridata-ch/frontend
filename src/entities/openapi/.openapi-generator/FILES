@@ -17,6 +17,7 @@ git_push.sh
 index.ts
 model/burDto.ts
 model/consentRequestConsumerViewDto.ts
+model/consentRequestCreatedDto.ts
 model/consentRequestDetailViewDto.ts
 model/consentRequestDetailViewDtoDataRequest.ts
 model/consentRequestDetailViewDtoDataRequestStateCode.ts

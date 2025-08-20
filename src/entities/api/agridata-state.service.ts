@@ -14,9 +14,13 @@ import { ACTIVE_UID_FIELD } from '@/shared/constants/constants';
   providedIn: 'root',
 })
 export class AgridataStateService {
-  readonly activeUid = signal<string | null>(localStorage.getItem(ACTIVE_UID_FIELD) || null);
+  readonly activeUid = signal<string | null>(this.getStoredUid());
   readonly userUids = signal<UidDto[]>([]);
   readonly userUidsLoaded = signal(false);
+
+  private getStoredUid(): string | null {
+    return localStorage.getItem(ACTIVE_UID_FIELD);
+  }
 
   setActiveUid(uid: string) {
     localStorage.setItem(ACTIVE_UID_FIELD, uid);

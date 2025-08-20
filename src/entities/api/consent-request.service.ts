@@ -34,9 +34,13 @@ export class ConsentRequestService {
     return firstValueFrom(this.apiService.getConsentRequest(consentRequestId));
   }
 
-  updateConsentRequestStatus(consentRequestId: string, stateCode: string) {
+  async updateConsentRequestStatus(consentRequestId: string, stateCode: string) {
     return firstValueFrom(
       this.apiService.updateConsentRequestStatus(consentRequestId, `"${stateCode}"`),
     );
+  }
+
+  async createConsentRequests(dataRequestUid: string) {
+    return firstValueFrom(this.apiService.createConsentRequests(dataRequestUid));
   }
 }
