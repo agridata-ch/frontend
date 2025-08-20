@@ -1,3 +1,9 @@
+## [1.0.0-rc.34](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.33...v1.0.0-rc.34) (2025-08-20)
+
+### Features
+
+- **styles:** add variables, overwrite full-width-layout ([e5ed8d4](https://github.com/agridata-ch/frontend/commit/e5ed8d46e26f0b609944319b202b97684ab26f2c))
+
 ## [1.0.0-rc.33](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.32...v1.0.0-rc.33) (2025-08-20)
 
 ### Features
