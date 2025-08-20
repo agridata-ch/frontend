@@ -6,9 +6,9 @@
     class="absolute inset-0 bg-gradient-to-tr from-agridata-secondary-text to-agridata-primary-text opacity-40"
   ></div>
 
-  <div class="container mx-auto px-4 relative text-white py-16">
+  <div class="container mx-auto px-4 py-16 relative text-white">
     <div class="max-w-4xl flex flex-col gap-4">
-      <span class="text-4xl md:text-5xl font-bold">{{ cmsData().heading }}</span>
+      <h1 class="text-white">{{ cmsData().heading }}</h1>
       <p class="text-xl">{{ cmsData().subHeading }}</p>
 
       @if (cmsData().cta && cmsData().cta.length > 0) {

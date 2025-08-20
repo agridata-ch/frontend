@@ -1,13 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import './styles/tailwind.css';
 @import './styles/utilities.css';
+@import './styles/variables.css';
 
 /* Base font & colors for the whole app */
 body {
   font-family: 'Inclusive Sans', sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
-  font-size: 16px;
+  font-size: var(--base-font-size);
   color: #333;
   line-height: 1.5;
   margin: 0;
@@ -27,22 +28,26 @@ h6 {
   line-height: 1.2;
 }
 
+h1 {
+  font-size: var(--heading-one-font-size);
+}
+
 /* Your “default” h2 style */
 h2 {
-  font-size: 1.5rem; /* ~24px at base 16px font */
-  color: var(--color-agridata-primary-text);
+  font-size: var(--heading-two-font-size);
+  color: var(--heading-two-color);
 }
 
 h3 {
-  font-size: 1.5rem; /* ~24px at base 16px font */
-  color: var(--color-agridata-primary-text);
+  font-size: var(--heading-three-font-size);
+  color: var(--heading-three-color);
 }
 
 h4 {
   font-weight: 700;
-  font-size: 1.125rem; /* ~18px at base 16px font */
+  font-size: var(--heading-four-font-size);
   line-height: 130%;
-  color: var(--color-agridata-primary-text);
+  color: var(--heading-four-color);
 }
 
 button {
