@@ -1,3 +1,9 @@
+## [1.0.0-rc.31](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.30...v1.0.0-rc.31) (2025-08-20)
+
+### Bug Fixes
+
+- **cicd:** fix deployment pipeline ([83605ab](https://github.com/agridata-ch/frontend/commit/83605ab47cb4cfb6749defae542dad929cdc5b9c))
+
 ## [1.0.0-rc.30](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.29...v1.0.0-rc.30) (2025-08-20)
 
 ### Features
