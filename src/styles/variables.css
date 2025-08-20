@@ -1,0 +1,15 @@
+:root {
+  --base-font-size: 16px;
+
+  --heading-one-color: var(--color-agridata-primary-text);
+  --heading-one-font-size: 1rem;  /* ~32px at base 16px font */
+
+  --heading-two-color: var(--color-agridata-primary-text);
+  --heading-two-font-size: 1.5rem;  /* ~24px at base 16px font */
+
+  --heading-three-color: var(--color-agridata-primary-text);
+  --heading-three-font-size: 1.5rem;  /* ~24px at base 16px font */
+
+  --heading-four-color: var(--color-agridata-primary-text);
+  --heading-four-font-size: 1.25rem;  /* ~18px at base 16px font */
+}

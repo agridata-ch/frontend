@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject } from '@angular/core';
+import { Component, ViewEncapsulation, effect, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AuthService } from '@/shared/lib/auth';
@@ -18,6 +18,10 @@ import { HeaderWidgetComponent } from '@/widgets/header-widget';
     ToastComponent,
   ],
   templateUrl: './full-width-layout.component.html',
+  styleUrls: ['./full-width-layout.component.css'],
+  // Disable view encapsulation for CMS content.
+  // This is neccessary because we want to overwrite global variables for every child component
+  encapsulation: ViewEncapsulation.None,
 })
 export class FullWidthLayoutComponent {
   private readonly authService = inject(AuthService);
