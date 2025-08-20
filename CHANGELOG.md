@@ -1,3 +1,9 @@
+## [1.0.0-rc.32](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.31...v1.0.0-rc.32) (2025-08-20)
+
+### Bug Fixes
+
+- **uid-guard:** fixes menu after uid-guard route changes ([bafbccd](https://github.com/agridata-ch/frontend/commit/bafbccd145859a8a2525b8edfcd7d30094ea2f12)), closes [DIGIB2-692](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-692)
+
 ## [1.0.0-rc.31](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.30...v1.0.0-rc.31) (2025-08-20)
 
 ### Bug Fixes
