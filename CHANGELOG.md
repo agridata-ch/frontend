@@ -1,3 +1,9 @@
+## [1.0.0-rc.35](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.34...v1.0.0-rc.35) (2025-08-21)
+
+### Bug Fixes
+
+- **cms:** use locale to fetch cms data ([582c0b0](https://github.com/agridata-ch/frontend/commit/582c0b0f57f2f5b1fb7e83fa0fb7992c36f97326))
+
 ## [1.0.0-rc.34](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.33...v1.0.0-rc.34) (2025-08-20)
 
 ### Features
