@@ -3,6 +3,7 @@ import { Injectable, inject, resource } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { environment } from '@/environments/environment';
+import { I18nService } from '@/shared/i18n';
 
 @Injectable({
   providedIn: 'root',
@@ -10,17 +11,22 @@ import { environment } from '@/environments/environment';
 export class CmsService {
   private readonly apiUrl = environment.cmsBaseUrl;
   private readonly http = inject(HttpClient);
+  private readonly i18nService = inject(I18nService);
 
   readonly fetchLandingPage = resource({
-    loader: () => {
-      return firstValueFrom(this.http.get(`${this.apiUrl}/api/landing-page`));
+    params: () => ({ locale: this.i18nService.lang() }),
+    loader: ({ params }) => {
+      return firstValueFrom(
+        this.http.get(`${this.apiUrl}/api/landing-page?locale=${params.locale}`),
+      );
     },
   });
 
   readonly fetchPage = (page: string) =>
     resource({
       loader: () => {
-        return firstValueFrom(this.http.get(`${this.apiUrl}/api/pages/${page}`));
+        const locale = this.i18nService.lang();
+        return firstValueFrom(this.http.get(`${this.apiUrl}/api/pages/${page}?locale=${locale}`));
       },
     });
 }
