@@ -2,11 +2,12 @@ import { Component, computed, input } from '@angular/core';
 
 import { Block, TextImageBlock } from '@/entities/cms';
 import { generateMediaUrl } from '@/shared/lib/cms';
+import { MarkdownPipe } from '@/shared/markdown/markdown.pipe';
 import { ListBlockComponent } from '@/widgets/cms-blocks/list-block/list-block.component';
 
 @Component({
   selector: 'app-text-image-block',
-  imports: [ListBlockComponent],
+  imports: [ListBlockComponent, MarkdownPipe],
   templateUrl: './text-image-block.component.html',
 })
 export class TextImageBlockComponent {

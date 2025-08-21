@@ -44,10 +44,25 @@ h3 {
 }
 
 h4 {
-  font-weight: 700;
   font-size: var(--heading-four-font-size);
   line-height: 130%;
   color: var(--heading-four-color);
+}
+
+h5 {
+  font-size: var(--heading-five-font-size);
+  line-height: 130%;
+  color: var(--heading-five-color);
+}
+
+h6 {
+  font-size: var(--heading-six-font-size);
+  line-height: 130%;
+  color: var(--heading-six-color);
+}
+
+p {
+  font-size: var(--paragraph-font-size);
 }
 
 button {

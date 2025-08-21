@@ -2,14 +2,27 @@
   --base-font-size: 16px;
 
   --heading-one-color: var(--color-agridata-primary-text);
-  --heading-one-font-size: 1rem;  /* ~32px at base 16px font */
+  --heading-one-font-size: 2rem;  /* 32px */
 
   --heading-two-color: var(--color-agridata-primary-text);
-  --heading-two-font-size: 1.5rem;  /* ~24px at base 16px font */
+  --heading-two-font-size: 1.5rem;  /* 24px */
 
   --heading-three-color: var(--color-agridata-primary-text);
-  --heading-three-font-size: 1.5rem;  /* ~24px at base 16px font */
+  --heading-three-font-size: 1.5rem;  /* 24px */
 
   --heading-four-color: var(--color-agridata-primary-text);
-  --heading-four-font-size: 1.25rem;  /* ~18px at base 16px font */
+  --heading-four-font-size: 1.25rem;  /* 18px */
+
+  --paragraph-font-size: 1.125rem;  /* 18px */
+
+  @media screen and (max-width: 768px) {
+    --heading-one-font-size: 1.5rem; /* 24px */
+    --heading-two-font-size: 1.25rem; /* 20px */
+    --heading-three-font-size: 1.25rem; /* 20px */
+    --heading-four-font-size: 1.125rem; /* 18px */
+    --heading-five-font-size: 1.125rem; /* 18px */
+    --heading-six-font-size: 1rem; /* 16px */
+
+    --paragraph-font-size: 1rem; /* 16px */
+  }
 }
