@@ -2,9 +2,9 @@
   class="flex flex-col md:flex-row items-center gap-8 py-10"
   [class.md:flex-row-reverse]="cmsData().reversed"
 >
-  <div class="md:w-1/2">
-    <h3 class="text-2xl font-bold mb-4">{{ cmsData().heading }}</h3>
-    <div class="mb-6">{{ cmsData().text }}</div>
+  <div class="flex flex-col gap-6 md:w-1/2">
+    <h3>{{ cmsData().heading }}</h3>
+    <div [innerHTML]="cmsData().text | markdown"></div>
 
     @if (cmsData().list) {
       <app-list-block [list]="cmsData().list!" />

@@ -1,5 +1,5 @@
 <div class="container mx-auto px-10 pb-10 pt-20 flex flex-col items-center">
-  <span class="text-3xl md:text-4xl font-bold">{{ cmsData().heading }}</span>
+  <h2>{{ cmsData().heading }}</h2>
   @for (block of cmsData().imageTextBlocks; track block.heading) {
     <app-text-image-block [block]="block" />
   }
