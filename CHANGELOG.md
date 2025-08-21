@@ -1,3 +1,9 @@
+## [1.0.0-rc.36](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.35...v1.0.0-rc.36) (2025-08-21)
+
+### Features
+
+- **cms:** add markdown pipe, style components ([42686f0](https://github.com/agridata-ch/frontend/commit/42686f09bce3c4c098a316c9bb818c09d6a004e9))
+
 ## [1.0.0-rc.35](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.34...v1.0.0-rc.35) (2025-08-21)
 
 ### Bug Fixes
