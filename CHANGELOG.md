@@ -1,3 +1,9 @@
+## [1.0.0-rc.37](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.36...v1.0.0-rc.37) (2025-08-22)
+
+### Features
+
+- **version:** show backend version in footer ([1eacd8f](https://github.com/agridata-ch/frontend/commit/1eacd8f9d38b59d3654dc46514c251c161025da5))
+
 ## [1.0.0-rc.36](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.35...v1.0.0-rc.36) (2025-08-21)
 
 ### Features
