@@ -1,9 +1,10 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 
+import { BackendVersionService } from '@/entities/api';
 import { environment } from '@/environments/environment';
 import { TestDataApiService } from '@/widgets/footer-widget/api/test-data.service';
 
-import { version } from '../../../../package.json'; // Adjust the path as necessary
+import { version as frontendVersion } from '../../../../package.json';
 
 @Component({
   selector: 'app-footer-widget',
@@ -12,12 +13,12 @@ import { version } from '../../../../package.json'; // Adjust the path as necess
 })
 export class FooterWidgetComponent {
   private readonly testDataService = inject(TestDataApiService);
-  public version;
-  readonly isDevMode = computed(() => !environment.production);
+  private readonly backendVersionService = inject(BackendVersionService);
 
-  constructor() {
-    this.version = version;
-  }
+  protected readonly frontendVersion = signal(frontendVersion);
+  protected readonly backendVersion = this.backendVersionService.fetchBackendVersion;
+
+  readonly isDevMode = computed(() => !environment.production);
 
   // remove this method for production
   // it is only for testing purposes to reset the test data
