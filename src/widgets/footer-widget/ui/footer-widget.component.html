@@ -7,6 +7,9 @@
     }
   </div>
   <div>
-    <span class="text-agridata-tertiary-text">agridata.ch © 2025 - {{ version }}</span>
+    <span class="text-agridata-tertiary-text">
+      agridata.ch © 2025 — FE {{ frontendVersion() }} · BE
+      {{ backendVersion.value()?.['version'] }}
+    </span>
   </div>
 </div>
