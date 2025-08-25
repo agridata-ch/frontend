@@ -1,3 +1,9 @@
+## [1.0.0-rc.40](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.39...v1.0.0-rc.40) (2025-08-25)
+
+### Bug Fixes
+
+- **hooks:** fix comment check hook ([bde5b53](https://github.com/agridata-ch/frontend/commit/bde5b53c7081286a31cea7672f179952180d4905)), closes [DIGIB2-710](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-710)
+
 ## [1.0.0-rc.39](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.38...v1.0.0-rc.39) (2025-08-25)
 
 ### Features
