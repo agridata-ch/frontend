@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, effect, inject, input, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
 
@@ -24,16 +25,8 @@ import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 export class ConsentRequestProducerPage {
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly agridataStateService = inject(AgridataStateService);
+  private readonly router = inject(Router);
   private readonly location = inject(Location);
-
-  readonly updateOpenedRequest = effect(() => {
-    const id = this.consentRequestId();
-    if (!id || this.consentRequests.isLoading()) return;
-
-    const request = this.consentRequests.value().find((r) => r.id === id) ?? null;
-
-    this.selectedRequest.set(request);
-  });
 
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
@@ -43,13 +36,35 @@ export class ConsentRequestProducerPage {
 
   readonly selectedRequest = signal<ConsentRequestProducerViewDto | null>(null);
 
+  readonly updateOpenedRequest = effect(() => {
+    const id = this.consentRequestId();
+
+    if (!id) {
+      this.selectedRequest.set(null);
+      return;
+    }
+
+    if (!id || this.consentRequests.isLoading()) return;
+
+    const request = this.consentRequests.value().find((r) => r.id === id) ?? null;
+
+    this.selectedRequest.set(request);
+  });
+
   setSelectedRequest = (request?: ConsentRequestProducerViewDto | null) => {
     this.selectedRequest.set(request ?? null);
 
     const base =
       ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH + `/${this.agridataStateService.activeUid()}`;
-    const newUrl = request?.id ? `${base}/${request.id}` : base;
-    this.location.go(newUrl);
+
+    // use location.go if a request is selected to trigger animation correctly.
+    // use router.navigate if no request is selected to also update the URL and router
+    // location.go does not update the router state so the effect is not triggering again without a consentRequestId param set
+    if (request?.id) {
+      this.location.go(`${base}/${request.id}`);
+    } else {
+      this.router.navigate([base], { replaceUrl: true });
+    }
   };
 
   reloadConsentRequests = () => {
