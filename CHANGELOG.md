@@ -1,3 +1,9 @@
+## [1.0.0-rc.39](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.38...v1.0.0-rc.39) (2025-08-25)
+
+### Features
+
+- **docu:** add code comments ([6f615d5](https://github.com/agridata-ch/frontend/commit/6f615d528565e2a05cc4ff3905711eab5577796e)), closes [DIGIB2-710](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-710)
+
 ## [1.0.0-rc.38](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.37...v1.0.0-rc.38) (2025-08-25)
 
 ### Bug Fixes
