@@ -5,6 +5,13 @@ import { ConsentRequestsService } from '@/entities/openapi/api/consentRequests.s
 
 import { AgridataStateService } from './agridata-state.service';
 
+/**
+ * Service for managing consent requests through the API. Provides methods to fetch, retrieve, and
+ * update consent requests, while integrating with the application state to scope operations to the
+ * currently active UID.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Injectable({
   providedIn: 'root',
 })

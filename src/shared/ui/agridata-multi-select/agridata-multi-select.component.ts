@@ -7,6 +7,13 @@ import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.dire
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
 import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
 
+/**
+ * Implements the multi-select logic. It manages dropdown state, tracks selected options, and
+ * synchronizes values with Angular reactive form controls. It provides user interactions such
+ * as toggling selections, removing items, and closing the dropdown when clicking outside.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-agridata-multi-select',
   imports: [ReactiveFormsModule, FontAwesomeModule, ClickOutsideDirective],

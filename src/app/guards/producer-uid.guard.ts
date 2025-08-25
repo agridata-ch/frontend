@@ -8,6 +8,9 @@ import { AuthService } from '@/shared/lib/auth';
 
 /**
  * Guard to load the producers authorized uids and set the consent request uid parameter if not present or set active uid if parameter is provided.
+ *
+ * CommentLastReviewed: 2025-08-25
+ *
  * @param route
  */
 @Injectable({

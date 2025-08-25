@@ -6,6 +6,14 @@ import { TranslationDto } from '@/entities/openapi';
 
 const LANG_STORAGE_KEY = 'lang';
 
+/**
+ * Implements a service for managing application language state. It persists the active language in
+ * local storage, synchronizes with Transloco’s active language, and exposes helper methods for
+ * translation and reactive signals. It also provides a utility for extracting localized text from
+ * translation objects.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Injectable({ providedIn: 'root' })
 export class I18nService {
   private readonly translocoService = inject(TranslocoService);

@@ -7,6 +7,13 @@ import { I18nPipe } from '@/shared/i18n';
 import { Toast, ToastService, ToastState, ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
+/**
+ * Provides the presentation and interaction logic for toast notifications. It subscribes to the
+ * toast service’s reactive state, automatically dismisses new notifications after a set timeout,
+ * and supports manual dismissal by the user.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-toast-container',
   imports: [CommonModule, FontAwesomeModule, I18nPipe, ButtonComponent],

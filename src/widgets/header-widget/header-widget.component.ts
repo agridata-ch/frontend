@@ -6,6 +6,13 @@ import { I18nPipe } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { AccountOverlayComponent } from '@/widgets/account-overlay';
 
+/**
+ * Implements the header logic. It renders the application logo, includes language selection, and
+ * conditionally shows the account overlay or login button depending on authentication state. It
+ * integrates authentication services and ensures reactive updates when user data changes.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-header-widget',
   imports: [RouterLink, LanguageSelectComponent, I18nPipe, AccountOverlayComponent],

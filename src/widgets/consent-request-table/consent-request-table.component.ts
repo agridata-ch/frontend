@@ -23,6 +23,14 @@ import {
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ConsentRequestFilterComponent } from '@/widgets/consent-request-table/consent-request-filter/consent-request-filter.component';
 
+/**
+ * Implements the main table logic. It accepts a list of consent requests, transforms them into
+ * table rows, and applies filters and sorting. The component provides row actions, state updates
+ * with undo support, and toast notifications. It highlights open requests and integrates avatars
+ * and badges for clear presentation.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-consent-request-table',
   imports: [

@@ -25,6 +25,14 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
 import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
 
+/**
+ * Implements the logic for displaying detailed consent request information. It renders metadata
+ * such as dates, state, consumer identity, description, purpose, and related products. The
+ * component supports approving or rejecting requests, provides undo actions, and displays
+ * contextual toast notifications.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-consent-request-details',
   imports: [

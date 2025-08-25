@@ -8,6 +8,13 @@ import { PopoverComponent } from '@/shared/ui/popover/popover.component';
 
 import { availableLangs } from '../../../transloco.config';
 
+/**
+ * Component for selecting the active application language.
+ * Renders a dropdown with available languages and updates the translation service
+ * when the user chooses a new option. Integrates with i18n and click-outside handling.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   imports: [FontAwesomeModule, PopoverComponent, ClickOutsideDirective],
   selector: 'agridata-language-select',

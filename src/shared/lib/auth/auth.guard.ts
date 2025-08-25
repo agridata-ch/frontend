@@ -6,6 +6,12 @@ import { map } from 'rxjs/operators';
 
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 
+/**
+ * Implements a route guard that checks authentication and required roles before allowing navigation.
+ * Redirects to a forbidden route if access is denied.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Injectable({ providedIn: 'root' })
 export class AuthorizationGuard implements CanActivate {
   private readonly oidcSecurityService = inject(OidcSecurityService);

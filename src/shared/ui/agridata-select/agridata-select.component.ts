@@ -7,6 +7,14 @@ import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.dire
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
 import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
 
+/**
+ * Implements the select field logic. It manages dropdown state, tracks the selected option, and
+ * synchronizes with reactive form controls. It provides placeholder text, error handling, and
+ * disabled states. It also supports click-outside handling to close the dropdown and displays
+ * dynamic icons for open/close state.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-agridata-select',
   imports: [ReactiveFormsModule, FontAwesomeModule, ClickOutsideDirective],

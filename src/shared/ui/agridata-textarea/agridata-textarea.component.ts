@@ -3,6 +3,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
 
+/**
+ * Implements the textarea logic. It supports binding to reactive form controls, placeholder text,
+ * maximum character limits, error states, and disabled states. It also emits blur events for
+ * external handling and displays character counters when limits are set.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-agridata-textarea',
   imports: [ReactiveFormsModule],

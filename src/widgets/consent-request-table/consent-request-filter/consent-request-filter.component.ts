@@ -4,6 +4,12 @@ import { ConsentRequestProducerViewDto, ConsentRequestStateEnum } from '@/entiti
 import { I18nPipe } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
+/**
+ * Implements filter logic for consent request states. It tracks selected filters, emits filter
+ * changes, and calculates totals for open requests.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-consent-request-filter',
   imports: [I18nPipe, ButtonComponent],

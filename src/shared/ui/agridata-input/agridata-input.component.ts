@@ -3,6 +3,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
 
+/**
+ * Implements the logic for rendering and managing input fields. It supports text and number types,
+ * configurable placeholders, prefixes, maximum character limits, and error states. It integrates
+ * with Angular reactive form controls or operates independently with manual value handling. It
+ * also emits input and blur events for external handling.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-agridata-input',
   imports: [ReactiveFormsModule],

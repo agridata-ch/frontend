@@ -1,5 +1,13 @@
 import { Directive, ElementRef, OnDestroy, OnInit, inject, output } from '@angular/core';
 
+/**
+ * Implements the directive logic. It attaches a global click listener in the capturing phase,
+ * checks whether the click occurred outside the host element, and emits an event when it does.
+ * It safely manages event binding and unbinding during component lifecycle events to avoid memory
+ * leaks.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Directive({
   selector: '[appClickOutside]',
 })

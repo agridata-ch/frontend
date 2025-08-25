@@ -14,6 +14,13 @@ export interface ActionDTO {
   isMainAction?: boolean;
 }
 
+/**
+ * Encapsulates row-level actions such as buttons, context menus, and main action triggers. It
+ * dynamically renders primary and secondary actions with icons and integrates with click-outside
+ * handling to manage dropdowns.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-table-actions',
   imports: [

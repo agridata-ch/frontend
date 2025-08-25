@@ -9,6 +9,13 @@ import {
   DataRequestUpdateDto,
 } from '../openapi';
 
+/**
+ * Service for managing data requests through the API. Provides methods to create, update, submit,
+ * and retreat data requests, as well as upload logos. It integrates with the backend service to
+ * maintain the lifecycle and details of data requests.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Injectable({
   providedIn: 'root',
 })

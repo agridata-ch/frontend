@@ -23,6 +23,14 @@ import {
 import { FORM_COMPLETION_STRATEGIES, FORM_GROUP_NAMES } from '@/widgets/data-request-new';
 import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
 
+/**
+ * Implements the wizard-driven data request creation flow. It manages multiple form groups,
+ * synchronizes validation states, handles saving and submission, and integrates services for
+ * persistence, logo uploads, and translations. It ensures smooth navigation across steps and
+ * manages draft, submission, and completion logic.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-data-request-new',
   imports: [
