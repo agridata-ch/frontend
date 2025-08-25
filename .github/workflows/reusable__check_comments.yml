@@ -16,7 +16,7 @@ jobs:
           clean: true
 
       - name: Make script executable
-        run: chmod +x ./hooks/pre-commit
+        run: chmod +x ./src/scripts/check-comments.sh
 
       - name: Run Last Reviewed check
-        run: ./hooks/pre-commit
+        run: ./src/scripts/check-comments.sh

@@ -18,7 +18,8 @@
     "typecheck": "tsc --noEmit",
     "i18n:extract": "transloco-keys-manager extract",
     "i18n:find": "transloco-keys-manager find",
-    "i18n:sync": "./src/scripts/sync-translations.sh"
+    "i18n:sync": "./src/scripts/sync-translations.sh",
+    "commentcheck": "./src/scripts/check-comments.sh"
   },
   "private": true,
   "dependencies": {
