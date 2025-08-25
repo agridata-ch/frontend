@@ -9,6 +9,14 @@ import { I18nService } from '@/shared/i18n';
 import { I18nPipe } from '@/shared/i18n/i18n.pipe';
 import { AuthService } from '@/shared/lib/auth';
 
+/**
+ * Implements the logic for navigation display and interaction. It conditionally renders items
+ * based on user roles, manages open/close state with animated transitions, and provides accessible
+ * controls for toggling visibility. It integrates authentication, routing, and internationalization
+ * services.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-navigation-widget',
   imports: [RouterLink, RouterLinkActive, FontAwesomeModule, I18nPipe],

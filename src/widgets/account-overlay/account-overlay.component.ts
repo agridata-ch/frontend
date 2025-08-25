@@ -13,6 +13,14 @@ import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agr
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { PopoverComponent } from '@/shared/ui/popover/popover.component';
 
+/**
+ * Implements the account overlay logic and presentation. It displays the authenticated user’s name,
+ * email, and available UIDs, supports UID selection with automatic navigation updates, and provides
+ * a logout action. The component manages open/close state, click-outside handling, and ensures UIDs
+ * are sorted consistently.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-account-overlay',
   imports: [

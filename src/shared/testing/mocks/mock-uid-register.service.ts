@@ -1,3 +1,8 @@
+/**
+ * Mimics the UID register service for testing identifier validation and lookups.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 export class MockUidRegisterService {
   fetchUidInfosOfCurrentUser = {
     value: () => ({
@@ -32,6 +37,11 @@ export class MockUidRegisterService {
   });
 }
 
+/**
+ * Mimics an error of the UID register service.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 export class MockUidRegisterServiceWithError {
   fetchUidInfosOfCurrentUser = {
     value: () => ({

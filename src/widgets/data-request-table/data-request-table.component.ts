@@ -14,6 +14,14 @@ import {
 } from '@/shared/ui/agridata-table';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 
+/**
+ * Implements the main table logic. It fetches data requests, maps them into table rows, and
+ * defines actions such as viewing details or retreating requests. It applies translations to
+ * state values, assigns badge variants for visual state indicators, and emits events when a
+ * row or action is triggered.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-data-request-table',
   imports: [AgridataTableComponent, AgridataBadgeComponent, CellTemplateDirective],

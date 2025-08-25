@@ -21,6 +21,12 @@ npm install
 npm run start
 ```
 
+# Add git hook folder
+
+```bash
+git config --local core.hooksPath hooks && chmod +x hooks/*
+```
+
 # Commit message convention
 In this project we use the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification for commit messages. This means that each commit message should start with a type, followed by an optional scope and a description. The type can be one of the following:
 - feat: A new feature

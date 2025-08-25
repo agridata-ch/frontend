@@ -12,6 +12,13 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
 import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
 
+/**
+ * Implements the logic for filling consumer information such as name, UID, address, and contact
+ * details. It integrates authentication data, UID registry lookups, and country lists. It supports
+ * uploading a consumer logo and patches missing information into the form dynamically.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-data-request-form-consumer',
   imports: [

@@ -7,6 +7,12 @@ import { ToastComponent } from '@/shared/ui/toast';
 import { FooterWidgetComponent } from '@/widgets/footer-widget';
 import { HeaderWidgetComponent } from '@/widgets/header-widget';
 
+/**
+ * Provides a full-width layout with header, footer, and content area. It disables view
+ * encapsulation to allow CMS-driven styling overrides.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   standalone: true,
   selector: 'app-full-width-layout',

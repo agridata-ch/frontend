@@ -3,6 +3,13 @@ import { Injectable, signal } from '@angular/core';
 import { UidDto } from '@/entities/openapi';
 import { ACTIVE_UID_FIELD } from '@/shared/constants/constants';
 
+/**
+ * Centralized state service for managing active and available UIDs. Persists the currently active
+ * UID in local storage and exposes signals for reactive updates to active UID, available UIDs,
+ * and load status.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Injectable({
   providedIn: 'root',
 })

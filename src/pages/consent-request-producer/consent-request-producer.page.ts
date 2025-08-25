@@ -11,6 +11,13 @@ import { I18nDirective } from '@/shared/i18n';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 
+/**
+ * Displays a table of consent requests and provides a detail view for individual requests. It
+ * updates the selected request based on route parameters, synchronizes state with the URL, and
+ * reloads data as needed.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-consent-request-producer-page',
   imports: [

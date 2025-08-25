@@ -1,0 +1,22 @@
+on:
+  workflow_call:
+
+jobs:
+  check-comments:
+    name: Check Comments
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          clean: true
+
+      - name: Make script executable
+        run: chmod +x ./hooks/pre-commit
+
+      - name: Run Last Reviewed check
+        run: ./hooks/pre-commit

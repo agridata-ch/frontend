@@ -9,6 +9,14 @@ import { AgridataTextareaComponent } from '@/shared/ui/agridata-textarea';
 
 import { ControlTypes } from './form-control.model';
 
+/**
+ * Implements the core logic of the form control wrapper. It dynamically renders the appropriate
+ * input type based on configuration, handles validation states, retrieves error messages, and
+ * displays helper text. It integrates with Angular reactive forms and provides hooks for blur
+ * events and accessibility attributes.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-form-control',
   imports: [

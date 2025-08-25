@@ -14,6 +14,13 @@ export enum BadgeSize {
   LG = 'lg',
 }
 
+/**
+ * Implements the badge logic. It defines enums for variant (default, success, warning, error, info)
+ * and size (small, medium, large). It computes applied styles dynamically based on inputs, ensuring
+ * flexible and consistent visual presentation.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-agridata-badge',
   templateUrl: './agridata-badge.component.html',

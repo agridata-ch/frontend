@@ -16,6 +16,12 @@ export type UserData = {
   uid: number | string;
 };
 
+/**
+ * Manages authentication state, user profile data, and role extraction from tokens. Provides login,
+ * logout, and authentication status monitoring with reactive signals.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly oidcService = inject(OidcSecurityService);

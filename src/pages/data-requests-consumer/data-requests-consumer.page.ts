@@ -12,6 +12,13 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { DataRequestNewComponent } from '@/widgets/data-request-new';
 import { DataRequestTableComponent } from '@/widgets/data-request-table';
 
+/**
+ * Displays a table of existing data requests and integrates a side panel for creating or editing
+ * requests. It synchronizes the selected request with the URL, automatically opens details for
+ * linked requests, and reloads data when changes occur.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-data-requests-consumer-page',
   imports: [

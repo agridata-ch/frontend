@@ -4,6 +4,13 @@ import { faLock, faPenSquare, faRepeat } from '@fortawesome/free-solid-svg-icons
 
 import { I18nPipe } from '@/shared/i18n';
 
+/**
+ * Implements the logic for displaying privacy sections. It defines consent, data protection,
+ * and revocation as structured items, each with an icon, title, and description. It supports
+ * localization and dynamically inserts the consumer’s name into descriptions.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-data-request-privacy-infos',
   imports: [I18nPipe, FontAwesomeModule],

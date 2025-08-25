@@ -12,6 +12,13 @@ import { AgridataFlipRowDirective, CellTemplateDirective } from './agridata-tabl
 import { AgridataTableData, SortDirections } from './agridata-table.model';
 import { TableActionsComponent } from './table-actions/table-actions.component';
 
+/**
+ * Implements the main table logic. It manages data sorting, pagination, row selection, hover
+ * states, and click interactions. It also integrates cell templates for customizable rendering
+ * and ensures accessibility and keyboard navigation.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-agridata-table',
   imports: [

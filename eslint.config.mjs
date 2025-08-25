@@ -2,6 +2,7 @@ import angularEslintTemplate from '@angular-eslint/eslint-plugin-template';
 import angularTemplateParser from '@angular-eslint/template-parser';
 import { defineConfig } from 'eslint/config';
 import importPlugin from 'eslint-plugin-import';
+import jsdocPlugin from 'eslint-plugin-jsdoc';
 import securityPlugin from 'eslint-plugin-security';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import tseslint from 'typescript-eslint';
@@ -137,6 +138,36 @@ export default defineConfig([
       '@angular-eslint/template/mouse-events-have-key-events': 'error',
       '@angular-eslint/template/no-autofocus': 'error',
       '@angular-eslint/template/no-positive-tabindex': 'error',
+    },
+  },
+  // Add comment rules
+  {
+    files: ['**/*.{js,mjs,cjs,ts}'],
+    ignores: ['**/*.spec.ts'],
+    plugins: {
+      jsdoc: jsdocPlugin,
+    },
+    rules: {
+      'jsdoc/require-jsdoc': [
+        'error',
+        {
+          require: {
+            FunctionDeclaration: false,
+            MethodDefinition: false,
+            ClassDeclaration: true,
+            ArrowFunctionExpression: false,
+            FunctionExpression: false,
+          },
+        },
+      ],
+      'jsdoc/match-description': [
+        'error',
+        {
+          matchDescription: 'CommentLastReviewed: \\d{4}-\\d{2}-\\d{2}',
+          message: "Comment must contain 'CommentLastReviewed: YYYY-MM-DD'",
+          contexts: ['ClassDeclaration'],
+        },
+      ],
     },
   },
 ]);

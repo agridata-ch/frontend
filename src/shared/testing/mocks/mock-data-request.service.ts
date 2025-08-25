@@ -1,5 +1,10 @@
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 
+/**
+ * Offers a mock implementation of the data request service, returning controlled test responses.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 export class MockDataRequestService {
   fetchDataRequests = {
     value: jest.fn().mockReturnValue(mockDataRequests),

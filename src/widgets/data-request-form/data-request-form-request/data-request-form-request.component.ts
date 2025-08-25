@@ -8,6 +8,13 @@ import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
 import { FormControlComponent } from '@/shared/ui/form-control';
 import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
 
+/**
+ * Implements the logic for managing request metadata. It fetches available products, maps them
+ * into selectable options, and provides form controls for multilingual titles, descriptions,
+ * and purposes.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-data-request-form-request',
   imports: [ReactiveFormsModule, FormControlComponent, I18nDirective],

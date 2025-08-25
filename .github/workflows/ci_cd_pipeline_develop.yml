@@ -14,10 +14,16 @@ jobs:
     uses: ./.github/workflows/reusable__check_single_commit.yml
     secrets: inherit
 
+  check-comments:
+    name: '.'
+    uses: ./.github/workflows/reusable__check_comments.yml
+    needs: check-single-commit
+    secrets: inherit
+
   unit-test-sonarqube:
     name: '.'
     uses: ./.github/workflows/reusable__unit_test_sonarqube.yml
-    needs: check-single-commit
+    needs: check-comments
     secrets: inherit
 
   semantic-release:
