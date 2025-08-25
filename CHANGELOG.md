@@ -1,3 +1,9 @@
+## [1.0.0-rc.38](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.37...v1.0.0-rc.38) (2025-08-25)
+
+### Bug Fixes
+
+- **consent-request:** fix param updating router ([514072d](https://github.com/agridata-ch/frontend/commit/514072d3c6354f1b42486be836d36fc653612c9a))
+
 ## [1.0.0-rc.37](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.36...v1.0.0-rc.37) (2025-08-22)
 
 ### Features
