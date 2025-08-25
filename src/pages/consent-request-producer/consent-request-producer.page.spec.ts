@@ -1,75 +1,39 @@
 import { Location } from '@angular/common';
 import { ComponentRef, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 
 import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MetaDataService } from '@/entities/api/meta-data-service';
-import {
-  ConsentRequestDetailViewDto,
-  ConsentRequestDetailViewDtoDataRequestStateCode,
-  ConsentRequestStateEnum,
-} from '@/entities/openapi';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
-import { MockDataRequestService, MockI18nService } from '@/shared/testing/mocks';
+import {
+  MockConsentRequestService,
+  MockDataRequestService,
+  MockI18nService,
+  mockConsentRequests,
+} from '@/shared/testing/mocks';
 import { mockMetadataService } from '@/shared/testing/mocks/mock-meta-data.service';
 
 describe('ConsentRequestProducerPage - component behavior', () => {
   let fixture: ComponentFixture<ConsentRequestProducerPage>;
   let component: ConsentRequestProducerPage;
   let componentRef: ComponentRef<ConsentRequestProducerPage>;
-  let mockConsentService: jest.Mocked<ConsentRequestService>;
   let mockLocation: jest.Mocked<Location>;
+  let mockRouter: jest.Mocked<Router>;
   let metadataService: Partial<MetaDataService>;
   let agridataStateService: Partial<AgridataStateService>;
   const activeUid = '123';
 
-  const sampleRequests: ConsentRequestDetailViewDto[] = [
-    {
-      id: '1',
-      stateCode: ConsentRequestStateEnum.Opened,
-      requestDate: '2025-05-01',
-      dataRequest: {
-        dataConsumer: { name: 'Alice' },
-        title: { de: 'Antrag A' },
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
-      },
-    } as ConsentRequestDetailViewDto,
-    {
-      id: '2',
-      stateCode: ConsentRequestStateEnum.Granted,
-      requestDate: '2025-05-02',
-      dataRequest: {
-        dataConsumer: { name: 'Bob' },
-        title: { de: 'Antrag B' },
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
-      },
-    } as ConsentRequestDetailViewDto,
-    {
-      id: '3',
-      stateCode: ConsentRequestStateEnum.Declined,
-      requestDate: '2025-05-03',
-      dataRequest: {
-        dataConsumer: { name: 'Charlie' },
-        title: { de: 'Antrag C' },
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
-      },
-    } as ConsentRequestDetailViewDto,
-  ];
-
   beforeEach(async () => {
-    mockConsentService = {
-      fetchConsentRequests: {
-        value: jest.fn().mockReturnValue(sampleRequests),
-        isLoading: jest.fn(),
-        reload: jest.fn(),
-      },
-    } as unknown as jest.Mocked<ConsentRequestService>;
     mockLocation = {
       go: jest.fn(),
     } as unknown as jest.Mocked<Location>;
+    mockRouter = {
+      navigate: jest.fn(),
+    } as unknown as jest.Mocked<Router>;
     metadataService = mockMetadataService;
 
     agridataStateService = {
@@ -78,8 +42,9 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     await TestBed.configureTestingModule({
       providers: [
         ConsentRequestProducerPage,
-        { provide: ConsentRequestService, useValue: mockConsentService },
+        { provide: ConsentRequestService, useClass: MockConsentRequestService },
         { provide: Location, useValue: mockLocation },
+        { provide: Router, useValue: mockRouter },
         { provide: I18nService, useClass: MockI18nService },
         { provide: DataRequestService, useValue: MockDataRequestService },
         { provide: MetaDataService, useValue: metadataService },
@@ -94,7 +59,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   });
 
   it('setSelectedRequest sets selectedRequest and calls router.navigate', () => {
-    const req = sampleRequests[0];
+    const req = mockConsentRequests[0];
     expect(component.selectedRequest()).toBeNull();
 
     component.setSelectedRequest(req);
@@ -105,7 +70,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   });
 
   it('setSelectedRequest sets selectedRequest to null if called with undefined', () => {
-    component.selectedRequest.set(sampleRequests[0]);
+    component.selectedRequest.set(mockConsentRequests[0]);
     component.setSelectedRequest();
     expect(component.selectedRequest()).toBeNull();
   });
@@ -127,17 +92,14 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     });
 
     it('calls setSelectedRequest with correct request if consentRequestId is set and not loading', () => {
-      jest.spyOn(mockConsentService.fetchConsentRequests, 'isLoading').mockReturnValue(false);
-      jest.spyOn(mockConsentService.fetchConsentRequests, 'value').mockReturnValue(sampleRequests);
-
       componentRef.setInput('consentRequestId', '2');
       fixture.detectChanges();
-      expect(component.selectedRequest()).toEqual(sampleRequests[1]);
+      expect(component.selectedRequest()).toEqual(mockConsentRequests[1]);
     });
 
     it('does not call setSelectedRequest if consentRequestId is not set', () => {
       jest.spyOn(component.consentRequests, 'isLoading').mockReturnValue(false);
-      jest.spyOn(component.consentRequests, 'value').mockReturnValue(sampleRequests);
+      jest.spyOn(component.consentRequests, 'value').mockReturnValue(mockConsentRequests);
       const showSpy = jest.spyOn(component, 'setSelectedRequest');
       componentRef.setInput('consentRequestId', '');
       fixture.detectChanges();
