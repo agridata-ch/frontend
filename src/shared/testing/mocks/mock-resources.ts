@@ -2,6 +2,11 @@
 
 import { ResourceRef, ResourceStatus, signal } from '@angular/core';
 
+/**
+ * Supplies mock data objects and constants used across different tests.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 export class MockResources {
   static createMockResourceRef<T>(initialValue: T): ResourceRef<T> {
     const valueSignal = signal<T>(initialValue);

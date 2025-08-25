@@ -1,5 +1,10 @@
 /// <reference types="jest" />
 
+/**
+ * Provides a fake authentication service for testing login state, roles, and user data.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 export class MockAuthService {
   isAuthenticated = jest.fn().mockReturnValue(false);
   userData = jest.fn().mockReturnValue(null);

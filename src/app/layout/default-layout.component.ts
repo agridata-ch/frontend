@@ -8,6 +8,12 @@ import { FooterWidgetComponent } from '@/widgets/footer-widget';
 import { HeaderWidgetComponent } from '@/widgets/header-widget';
 import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
 
+/**
+ * Provides a layout with header, navigation, footer, and toast notifications. It reacts to
+ * authentication state changes to refresh the application when users log out or log back in.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   standalone: true,
   selector: 'app-default-layout',

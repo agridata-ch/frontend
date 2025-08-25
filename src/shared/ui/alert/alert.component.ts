@@ -5,6 +5,13 @@ import { faCircleInfo, faClose, faWarning } from '@fortawesome/free-solid-svg-ic
 
 import { AlertType } from './alert.model';
 
+/**
+ * Implements the alert’s logic and rendering. It accepts the type and message as inputs, dynamically
+ * selects the appropriate icon, and applies consistent styling for each alert type. It leverages
+ * Angular signals and FontAwesome for responsive UI updates and icons.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-alert',
   imports: [FontAwesomeModule],

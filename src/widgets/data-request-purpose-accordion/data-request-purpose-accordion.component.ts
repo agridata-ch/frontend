@@ -5,6 +5,13 @@ import { DataProductDto } from '@/entities/openapi';
 import { I18nPipe, I18nService } from '@/shared/i18n';
 import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
 
+/**
+ * Implements the logic for rendering the purpose section. It accepts a purpose string and a list
+ * of products, computes the current language, and extracts localized fields from each product. It
+ * integrates with the accordion component to toggle visibility of detailed product information.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-data-request-purpose-accordion',
   imports: [I18nPipe, AgridataAccordionComponent, CommonModule],

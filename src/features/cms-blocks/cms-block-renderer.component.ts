@@ -9,6 +9,12 @@ import {
   SectionHeadingTextImageBlockComponent,
 } from '@/widgets/cms-blocks';
 
+/**
+ * Component for rendering CMS blocks dynamically. Selects the appropriate block component based on
+ * type and applies alternating layout logic for visual variation.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-cms-block-renderer',
   standalone: true,

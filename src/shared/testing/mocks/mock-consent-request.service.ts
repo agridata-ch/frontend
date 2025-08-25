@@ -4,6 +4,11 @@ import {
   ConsentRequestStateEnum,
 } from '@/entities/openapi';
 
+/**
+ * Mock implementation of the ConsentRequestService for testing.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 export class MockConsentRequestService {
   fetchConsentRequests = {
     value: jest.fn().mockReturnValue(mockConsentRequests),

@@ -3,6 +3,13 @@ import { Component, effect, input, output, signal } from '@angular/core';
 import { WizardStep } from '@/widgets/agridata-wizard/';
 import { AgridataWizardStepperComponent } from '@/widgets/agridata-wizard/agridata-wizard-stepper/agridata-wizard-stepper.component';
 
+/**
+ * Implements the wizard container logic. It manages the current step index, synchronizes step
+ * identifiers, and provides methods to navigate forward, backward, or directly to a chosen step.
+ * It integrates the stepper component and emits events on step changes.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-agridata-wizard',
   imports: [AgridataWizardStepperComponent],

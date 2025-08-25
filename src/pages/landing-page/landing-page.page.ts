@@ -3,6 +3,12 @@ import { Component, computed, inject } from '@angular/core';
 import { CmsService, StrapiResponse } from '@/entities/cms';
 import { BlockRendererComponent } from '@/features/cms-blocks';
 
+/**
+ * Fetches content blocks from the CMS and renders them dynamically using the CMS block renderer
+ * component. It handles loading and error states gracefully.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-landing-page',
   imports: [BlockRendererComponent],

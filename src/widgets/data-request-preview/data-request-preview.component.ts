@@ -10,6 +10,14 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
 
 import { availableLangs } from '../../../transloco.config';
 
+/**
+ * Implements the preview logic. It integrates metadata services to fetch products, dynamically
+ * resolves multilingual fields, and composes subcomponents for avatars, contact details, privacy
+ * information, and purposes. It ensures users can validate all request details across supported
+ * languages.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
 @Component({
   selector: 'app-data-request-preview',
   imports: [
