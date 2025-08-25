@@ -1,8 +1,11 @@
 import { Component, computed, input } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import { Block, TextImageBlock } from '@/entities/cms';
 import { generateMediaUrl } from '@/shared/lib/cms';
 import { MarkdownPipe } from '@/shared/markdown/markdown.pipe';
+import { ButtonComponent, ButtonVariants, HrefTarget } from '@/shared/ui/button';
 import { ListBlockComponent } from '@/widgets/cms-blocks/list-block/list-block.component';
 
 /**
@@ -13,16 +16,24 @@ import { ListBlockComponent } from '@/widgets/cms-blocks/list-block/list-block.c
  */
 @Component({
   selector: 'app-text-image-block',
-  imports: [ListBlockComponent, MarkdownPipe],
+  imports: [ListBlockComponent, MarkdownPipe, ButtonComponent, FontAwesomeModule],
   templateUrl: './text-image-block.component.html',
 })
 export class TextImageBlockComponent {
   readonly block = input.required<Block>();
 
   readonly generateMediaUrl = generateMediaUrl;
+  readonly ButtonVariants = ButtonVariants;
+  readonly HrefTarget = HrefTarget;
+
+  readonly buttonIcon = faArrowRight;
 
   protected readonly cmsData = computed(() => {
     return this.block() as TextImageBlock;
+  });
+
+  protected readonly button = computed(() => {
+    return this.cmsData().button;
   });
 
   protected readonly alternativeText = computed(() => {

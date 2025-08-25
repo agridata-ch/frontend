@@ -9,6 +9,23 @@
     @if (cmsData().list) {
       <app-list-block [list]="cmsData().list!" />
     }
+
+    @if (button()) {
+      @if (button()?.isButtonLink) {
+        <app-agridata-button
+          [href]="button()?.href!"
+          [target]="button()?.isExternal ? HrefTarget.Blank : HrefTarget.Self"
+          [variant]="ButtonVariants[`${button()?.type!}`]"
+        >
+          {{ button()?.label }}
+          <fa-icon [icon]="buttonIcon" />
+        </app-agridata-button>
+      } @else {
+        <a [href]="button()?.href" [target]="button()?.isExternal ? '_blank' : '_self'">
+          {{ button()?.label }}
+        </a>
+      }
+    }
   </div>
 
   <div class="md:w-1/2">

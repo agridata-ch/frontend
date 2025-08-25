@@ -53,6 +53,7 @@ export interface TextImageBlock {
   reversed: boolean;
   list: List | null;
   image: Image;
+  button: CTA | null;
 }
 
 export interface HeroBlock {
