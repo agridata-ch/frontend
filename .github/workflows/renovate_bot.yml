@@ -3,8 +3,7 @@ name: Renovate Bot
 on:
   workflow_dispatch: {}
   schedule:
-    # Monday morning
-    - cron: '0 5 * * 1'
+    - cron: '0 5 * * *'
 
 jobs:
   renovate-bot:
