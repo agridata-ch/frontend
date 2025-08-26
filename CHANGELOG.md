@@ -1,3 +1,9 @@
+## [1.0.0-rc.41](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.40...v1.0.0-rc.41) (2025-08-26)
+
+### Features
+
+- **cms:** add button to image-text component ([12e6b2b](https://github.com/agridata-ch/frontend/commit/12e6b2bb6f226ee7ff27b900b95456cb3a67fa6d))
+
 ## [1.0.0-rc.40](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.39...v1.0.0-rc.40) (2025-08-25)
 
 ### Bug Fixes
