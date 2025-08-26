@@ -1,3 +1,9 @@
+## [1.0.0-rc.44](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.43...v1.0.0-rc.44) (2025-08-26)
+
+### Bug Fixes
+
+- **guard:** fix loading requests after create ([5362d92](https://github.com/agridata-ch/frontend/commit/5362d92dc4f2bd9ac503b231cb7ec4f9d756aecc))
+
 ## [1.0.0-rc.43](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.42...v1.0.0-rc.43) (2025-08-26)
 
 ### Features
