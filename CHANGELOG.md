@@ -1,3 +1,9 @@
+## [1.0.0-rc.42](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.41...v1.0.0-rc.42) (2025-08-26)
+
+### Features
+
+- **renovate:** add dependency dashboard ([8a5bac6](https://github.com/agridata-ch/frontend/commit/8a5bac609d409ecfa40ca9bc7950630cde5f1d35))
+
 ## [1.0.0-rc.41](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.40...v1.0.0-rc.41) (2025-08-26)
 
 ### Features
