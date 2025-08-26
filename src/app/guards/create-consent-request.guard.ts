@@ -1,7 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 
-import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
@@ -18,7 +17,6 @@ export class CreateConsentRequestGuard implements CanActivate {
   private readonly router = inject(Router);
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly agridataStateService = inject(AgridataStateService);
-  private readonly producerUidGuard = inject(ProducerUidGuard);
 
   async canActivate(route: ActivatedRouteSnapshot) {
     const dataRequestUid = route.paramMap.get('dataRequestUid') ?? '';
@@ -31,6 +29,8 @@ export class CreateConsentRequestGuard implements CanActivate {
       if (!consentRequests || consentRequests.length === 0) {
         return this.fail('No consent requests created for dataRequestUid: ' + dataRequestUid);
       }
+      this.consentRequestService.fetchConsentRequests.reload();
+
       const activeUid = this.agridataStateService.activeUid();
 
       if (!activeUid) {
@@ -39,7 +39,6 @@ export class CreateConsentRequestGuard implements CanActivate {
 
       const consentRequestToOpen = consentRequests.find((cr) => cr.dataProducerUid === activeUid);
       if (consentRequestToOpen) {
-        this.consentRequestService.fetchConsentRequests.reload();
         return this.router.createUrlTree([
           ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
           activeUid,
