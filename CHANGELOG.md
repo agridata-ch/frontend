@@ -1,3 +1,9 @@
+## [1.0.0-rc.47](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.46...v1.0.0-rc.47) (2025-08-27)
+
+### Features
+
+- **navigation:** responsive navigation ([f6a723a](https://github.com/agridata-ch/frontend/commit/f6a723a1070b40a0c638e703d5640392f53cca7a)), closes [DIGIB2-817](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-817)
+
 ## [1.0.0-rc.46](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.45...v1.0.0-rc.46) (2025-08-27)
 
 ### Features
