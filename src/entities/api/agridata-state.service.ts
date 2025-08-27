@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 
 import { UidDto } from '@/entities/openapi';
-import { ACTIVE_UID_FIELD } from '@/shared/constants/constants';
+import { ACTIVE_UID_FIELD, NAVIGATION_STATE_OPEN } from '@/shared/constants/constants';
 
 /**
  * Centralized state service for managing active and available UIDs. Persists the currently active
@@ -17,9 +17,14 @@ export class AgridataStateService {
   readonly activeUid = signal<string | null>(this.getStoredUid());
   readonly userUids = signal<UidDto[]>([]);
   readonly userUidsLoaded = signal(false);
+  readonly isNavigationOpen = signal(this.getNavigationStateOpen());
 
   private getStoredUid(): string | null {
     return localStorage.getItem(ACTIVE_UID_FIELD);
+  }
+
+  private getNavigationStateOpen() {
+    return localStorage.getItem(NAVIGATION_STATE_OPEN) === 'true';
   }
 
   setActiveUid(uid: string) {
@@ -32,6 +37,11 @@ export class AgridataStateService {
       this.userUidsLoaded.set(true);
       this.userUids.set(uids);
     }
+  }
+
+  setNavigationState(isOpen: boolean) {
+    localStorage.setItem(NAVIGATION_STATE_OPEN, String(isOpen));
+    this.isNavigationOpen.set(isOpen);
   }
 
   getDefaultUid(uids: UidDto[]) {

@@ -34,6 +34,9 @@ export class AuthService {
   readonly isProducer = computed(
     () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) ?? false,
   );
+  readonly isConsumer = computed(
+    () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER) ?? false,
+  );
 
   constructor() {
     this.checkAuth(true);
