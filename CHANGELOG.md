@@ -1,3 +1,9 @@
+## [1.0.0-rc.46](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.45...v1.0.0-rc.46) (2025-08-27)
+
+### Features
+
+- **renovate:** add npm minimumReleaseAge 180 days ([412a383](https://github.com/agridata-ch/frontend/commit/412a383deaf65cff337cc892c6984e874056b407))
+
 ## [1.0.0-rc.45](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.44...v1.0.0-rc.45) (2025-08-27)
 
 ### Features
