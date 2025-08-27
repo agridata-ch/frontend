@@ -24,18 +24,28 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: bold;
-  line-height: 1.2;
+  font-weight: var(--font-weight-bold);
+  line-height: 130%;
+
+  @media screen and (max-width: 768px) {
+    line-height: 120%;
+  }
 }
 
 h1 {
   font-size: var(--heading-one-font-size);
+  line-height: var(--heading-one-line-height);
 }
 
 /* Your “default” h2 style */
 h2 {
   font-size: var(--heading-two-font-size);
   color: var(--heading-two-color);
+
+  &.page-title {
+    font-size: var(--heading-page-title-font-size);
+    margin-bottom: 3rem;
+  }
 }
 
 h3 {
@@ -45,19 +55,18 @@ h3 {
 
 h4 {
   font-size: var(--heading-four-font-size);
-  line-height: 130%;
+  font-weight: var(--font-weight-semibold);
   color: var(--heading-four-color);
 }
 
 h5 {
   font-size: var(--heading-five-font-size);
-  line-height: 130%;
   color: var(--heading-five-color);
 }
 
 h6 {
   font-size: var(--heading-six-font-size);
-  line-height: 130%;
+  font-weight: var(--font-weight-semibold);
   color: var(--heading-six-color);
 }
 

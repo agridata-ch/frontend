@@ -4,7 +4,9 @@ import { RouterLink } from '@angular/router';
 import { LanguageSelectComponent } from '@/features/language-select';
 import { I18nPipe } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AccountOverlayComponent } from '@/widgets/account-overlay';
+import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
 
 /**
  * Implements the header logic. It renders the application logo, includes language selection, and
@@ -15,7 +17,14 @@ import { AccountOverlayComponent } from '@/widgets/account-overlay';
  */
 @Component({
   selector: 'app-header-widget',
-  imports: [RouterLink, LanguageSelectComponent, I18nPipe, AccountOverlayComponent],
+  imports: [
+    RouterLink,
+    LanguageSelectComponent,
+    I18nPipe,
+    AccountOverlayComponent,
+    NavigationWidgetComponent,
+    ButtonComponent,
+  ],
   templateUrl: './header-widget.component.html',
   styleUrl: './header-widget.component.css',
 })
@@ -24,6 +33,8 @@ export class HeaderWidgetComponent {
 
   readonly isAuthenticated = computed(() => this.authService.isAuthenticated());
   readonly userData = computed(() => this.authService.userData());
+
+  readonly ButtonVariants = ButtonVariants;
 
   login = () => {
     this.authService.login();

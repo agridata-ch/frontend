@@ -275,7 +275,12 @@
   },
   "navigation": {
     "open": "Navigation Ouverte",
-    "close": "Navigation Fermée"
+    "close": "Navigation Fermée",
+    "menuItems": {
+      "helpAndSupport": "Aide et assistance",
+      "notifications": "Notification",
+      "home": "Accueil"
+    }
   },
   "producer": {
     "pageTitle": "Demandes"

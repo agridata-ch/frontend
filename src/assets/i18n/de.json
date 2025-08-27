@@ -275,7 +275,12 @@
   },
   "navigation": {
     "open": "Navigation Öffnen",
-    "close": "Navigation Schließen"
+    "close": "Navigation Schließen",
+    "menuItems": {
+      "helpAndSupport": "Hilfe & Support",
+      "notifications": "Benachrichtigung",
+      "home": "Home"
+    }
   },
   "producer": {
     "pageTitle": "Anfragen"

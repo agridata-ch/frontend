@@ -1,21 +1,9 @@
 :root {
   --heading-one-font-size: 4rem; /* 64px */
-  --heading-two-font-size: 3rem; /* 48px */
-  --heading-three-font-size: 2.5rem; /* 40px */
-  --heading-four-font-size: 1.125rem; /* 18px */
-  --heading-five-font-size: 1.75rem; /* 28px */
-  --heading-six-font-size: 1.5rem; /* 24px */
-
-  --paragraph-font-size: 1.125rem; /* ~18px */
+  --heading-one-line-height: 100%;
 
   @media screen and (max-width: 768px) {
-    --heading-one-font-size: 3rem; /* 48px */
-    --heading-two-font-size: 2.5rem; /* 40px */
-    --heading-three-font-size: 2rem; /* 32px */
-    --heading-four-font-size: 1.125rem; /* 18px */
-    --heading-five-font-size: 1.75rem; /* 28px */
-    --heading-six-font-size: 1.5rem; /* 24px */
-
-    --paragraph-font-size: 1rem; /* 16px */
+    --heading-one-font-size: 1.5rem; /* 24px */
+    --heading-one-line-height: 120%;
   }
 }

@@ -32,6 +32,7 @@
 .agridata-avatar-dark {
   background-color: var(--color-gray-900);
   color: white;
+  border-color: var(--color-gray-900);
 }
 
 .agridata-avatar-default {
