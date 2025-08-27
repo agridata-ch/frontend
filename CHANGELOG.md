@@ -1,3 +1,9 @@
+## [1.0.0-rc.45](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.44...v1.0.0-rc.45) (2025-08-27)
+
+### Features
+
+- **guard:** add home redirect guard ([5587697](https://github.com/agridata-ch/frontend/commit/55876974dcd897d1a4cf6004bcc070e2e5a563cb)), closes [DIGIB2-557](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-557)
+
 ## [1.0.0-rc.44](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.43...v1.0.0-rc.44) (2025-08-26)
 
 ### Bug Fixes
