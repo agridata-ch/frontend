@@ -1,0 +1,70 @@
+<button (click)="toggleNavigation()">
+  <fa-icon [icon]="menuIcon" size="2xl" class="text-white cursor-pointerself-end" />
+</button>
+<div
+  class="fixed right-0 top-0 bottom-0 z-10 overflow-hidden backdrop-brightness-75 shadow-2xl transition-[width] duration-300 ease-in-out max-w-[425px] bg-agridata-primary-text"
+  [class.w-0]="!isNavigationOpen()"
+  [class.w-full]="isNavigationOpen()"
+>
+  <div
+    class="flex flex-col gap-8 h-full py-8 px-12 transition-opacity duration-100 ease-in-out relative"
+    [class.opacity-0]="!isNavigationOpen()"
+    [class.opacity-100]="isNavigationOpen()"
+  >
+    <fa-icon
+      size="3x"
+      [icon]="closeIcon"
+      class="text-white cursor-pointer self-end"
+      (click)="toggleNavigation()"
+      (keydown.enter)="toggleNavigation()"
+      tabindex="0"
+    />
+    @if (isAuthenticated()) {
+      <div class="flex flex-col gap-4">
+        <div
+          class="flex w-full gap-3 items-center hover:bg-agridata-hover-on-dark p-2 cursor-pointer"
+        >
+          <app-agridata-avatar [name]="overlayName()" [size]="AvatarSize.SMALL" />
+          <div class="flex-1 text-left">
+            <div>{{ overlayName() }}</div>
+            <div class="text-sm text-gray-400">{{ activeUid() }}</div>
+          </div>
+        </div>
+        <app-uid-switch [variant]="UidSwitchVariant.Dark" />
+      </div>
+      <!-- TODO: DIGIB2-260 Add this -->
+      <!-- <div class="flex gap-2.5">
+        <fa-icon size="xl" [icon]="supportIcon" />
+        <span>{{ 'navigation.menuItems.helpAndSupport' | i18n }}</span>
+      </div>
+      <div class="flex gap-2.5">
+        <fa-icon size="xl" [icon]="notificationIcon" />
+        <span>{{ 'navigation.menuItems.notifications' | i18n }}</span>
+      </div> -->
+    } @else {
+      <ul>
+        <li>
+          <!-- TODO: DIGIB2-260 Add this -->
+          <!-- <a routerLink="/" class="flex gap-3">
+            <fa-icon [icon]="homeIcon" size="lg" />
+            {{ 'navigation.menuItems.home' | i18n }}
+          </a> -->
+        </li>
+      </ul>
+    }
+    <agridata-language-select />
+    <hr class="text-agridata-tertiary-text" />
+    @if (isAuthenticated()) {
+      <app-agridata-button
+        [variant]="ButtonVariants.SecondaryHero"
+        (onClick)="authService.logout()"
+      >
+        {{ 'account.logout' | i18n }}
+      </app-agridata-button>
+    } @else {
+      <app-agridata-button [variant]="ButtonVariants.SecondaryHero" (onClick)="authService.login()">
+        {{ 'account.login' | i18n }}
+      </app-agridata-button>
+    }
+  </div>
+</div>

@@ -11,16 +11,17 @@ describe('NavigationWidgetComponent', () => {
   let fixture: ComponentFixture<NavigationWidgetComponent>;
   let component: NavigationWidgetComponent;
 
-  // Minimal AuthService stub.
   let mockAuthService: {
     isAuthenticated: jest.Mock<boolean, []>;
     userRoles: jest.Mock<string[], []>;
+    getUserFullName: jest.Mock<string, []>;
   };
 
   beforeEach(async () => {
     mockAuthService = {
       isAuthenticated: jest.fn().mockReturnValue(false),
       userRoles: jest.fn().mockReturnValue([]),
+      getUserFullName: jest.fn().mockReturnValue('Test User'),
     };
 
     await TestBed.configureTestingModule({

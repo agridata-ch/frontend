@@ -1,0 +1,42 @@
+@if (sortedUids().length > 0) {
+  <div
+    class="flex flex-col border border-agridata-stroke rounded-md divide-y divide-agridata-stroke"
+  >
+    @for (uid of sortedUids(); track uid) {
+      <button
+        class="flex items-center gap-4 py-2 px-4 hover:bg-agridata-primary-50 cursor-pointer"
+        [class.bg-agridata-stroke]="variant() === UidSwitchVariant.Light && activeUid() === uid.uid"
+        [class.bg-agridata-content-gray]="
+          variant() === UidSwitchVariant.Dark && activeUid() === uid.uid
+        "
+        [class.hover:text-gray-900]="variant() === UidSwitchVariant.Dark"
+        (click)="selectUid(uid.uid)"
+      >
+        <span
+          class="w-5 h-5 border rounded-full"
+          [class.border-agridata-primary-600]="variant() === UidSwitchVariant.Light"
+          [class.border-agridata-primary-600]="activeUid() === uid.uid"
+          [class.bg-agridata-primary-600]="activeUid() === uid.uid"
+          [class.bg-transparent]="activeUid() !== uid.uid"
+        >
+        </span>
+        <div class="flex items-center gap-1.5">
+          <app-agridata-avatar
+            [name]="uid.name ?? null"
+            [size]="AvatarSize.SMALL"
+            [skin]="AvatarSkin.DARK"
+          />
+          <div class="text-left">
+            <div
+              class="text-l font-semibold"
+              [class.text-gray-900]="variant() === UidSwitchVariant.Dark && activeUid() === uid.uid"
+            >
+              {{ uid.name }}
+            </div>
+            <div class="text-sm text-agridata-secondary-text">{{ uid.uid }}</div>
+          </div>
+        </div>
+      </button>
+    }
+  </div>
+}

@@ -1,4 +1,4 @@
-<div class="relative inline-block" (appClickOutside)="handleClose()">
+<div class="relative hidden lg:inline-block" (appClickOutside)="handleClose()">
   <button
     class="flex justify-between items-center px-4 py-2 rounded focus:outline-none"
     (click)="handleToggle()"
@@ -23,4 +23,21 @@
       }
     </ul>
   </app-popover>
+</div>
+<div class="lg:hidden">
+  <ul class="flex gap-6 py-4">
+    @for (option of languageOptions(); track option) {
+      <li
+        click-stop-propagation
+        class="text-sm cursor-pointer"
+        [class.font-bold]="option === selectedLanguage()"
+        [class.underline]="option !== selectedLanguage()"
+        (click)="changeLanguage(option)"
+        (keydown.enter)="changeLanguage(option)"
+        tabindex="0"
+      >
+        {{ option.toUpperCase() }}
+      </li>
+    }
+  </ul>
 </div>

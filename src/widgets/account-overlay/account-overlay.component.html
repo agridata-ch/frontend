@@ -13,8 +13,8 @@
   </button>
 
   <app-popover [isOpen]="isOverlayOpen()" class="right-0">
-    <div class="p-4">
-      <div class="flex items-center mb-4 gap-3">
+    <div class="flex flex-col gap-4 p-4">
+      <div class="flex items-center gap-3">
         <app-agridata-avatar
           [name]="overlayName()"
           [size]="AvatarSize.SMALL"
@@ -30,37 +30,7 @@
       <app-agridata-button [variant]="ButtonVariants.Secondary" (onClick)="logout()">
         {{ 'account.logout' | i18n }}
       </app-agridata-button>
-      @if (sortedUids().length > 0) {
-        <div
-          class="flex flex-col border border-agridata-stroke rounded-md mt-4 divide-y divide-agridata-stroke"
-        >
-          @for (uid of sortedUids(); track uid) {
-            <button
-              class="flex items-center gap-4 py-2 px-4 hover:bg-agridata-primary-50 cursor-pointer"
-              [class.bg-agridata-stroke]="activeUid() === uid.uid"
-              (click)="selectUid(uid.uid)"
-            >
-              <span
-                class="w-5 h-5 border border-agridata-primary-600 rounded-full"
-                [class.bg-agridata-primary-600]="activeUid() === uid.uid"
-                [class.bg-transparent]="activeUid() !== uid.uid"
-              >
-              </span>
-              <div class="flex items-center gap-1.5">
-                <app-agridata-avatar
-                  [name]="uid.name ?? null"
-                  [size]="AvatarSize.SMALL"
-                  [skin]="AvatarSkin.DARK"
-                />
-                <div class="text-left">
-                  <div class="text-l font-semibold">{{ uid.name }}</div>
-                  <div class="text-sm text-agridata-secondary-text">{{ uid.uid }}</div>
-                </div>
-              </div>
-            </button>
-          }
-        </div>
-      }
+      <app-uid-switch />
     </div>
   </app-popover>
 </div>
