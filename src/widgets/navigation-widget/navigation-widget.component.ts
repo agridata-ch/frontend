@@ -4,6 +4,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
 import { faChevronLeft, faChevronRight, faDatabase } from '@fortawesome/free-solid-svg-icons';
 
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { I18nPipe } from '@/shared/i18n/i18n.pipe';
@@ -24,9 +25,10 @@ import { AuthService } from '@/shared/lib/auth';
 })
 export class NavigationWidgetComponent {
   private readonly authService = inject(AuthService);
+  private readonly agridataStateService = inject(AgridataStateService);
   readonly i18nService = inject(I18nService);
 
-  readonly isNavigationOpen = signal(false);
+  readonly isNavigationOpen = computed(this.agridataStateService.isNavigationOpen);
   readonly chevronIcon = computed(() => (this.isNavigationOpen() ? faChevronLeft : faChevronRight));
   readonly showNavigation = computed(() => this.authService.isAuthenticated());
   readonly userRoles = computed(() => this.authService.userRoles());
@@ -49,7 +51,7 @@ export class NavigationWidgetComponent {
   isAnimating = signal(false);
 
   toggleNavigation = () => {
-    this.isNavigationOpen.update((prev) => !prev);
+    this.agridataStateService.setNavigationState(!this.isNavigationOpen());
     this.isAnimating.set(true);
     setTimeout(() => this.isAnimating.set(false), 150);
   };

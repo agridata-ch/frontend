@@ -18,6 +18,7 @@ export const COUNTRIES = {
 };
 
 export const ACTIVE_UID_FIELD = 'activeUid';
+export const NAVIGATION_STATE_OPEN = 'navigationStateOpen';
 
 export const CMS_BLOCKS = {
   HERO: 'blocks.hero',

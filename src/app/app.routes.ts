@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 
 import { CreateConsentRequestGuard } from '@/app/guards/create-consent-request.guard';
+import { HomeRedirectGuard } from '@/app/guards/home-redirect.guard';
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { DefaultLayoutComponent } from '@/app/layout';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
@@ -26,9 +27,13 @@ export const routes: Routes = [
   {
     path: '',
     component: FullWidthLayoutComponent,
-    pathMatch: 'full',
-    canActivate: [ProducerUidGuard],
-    children: [{ path: '', component: LandingPage }],
+    canActivate: [ProducerUidGuard, HomeRedirectGuard],
+    children: [
+      {
+        path: '',
+        component: LandingPage,
+      },
+    ],
   },
 
   // #### protected pages with authentication ####
