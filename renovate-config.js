@@ -6,4 +6,10 @@ module.exports = {
   patch: {
     enabled: false,
   },
+  packageRules: [
+    {
+      matchDatasources: ['npm'],
+      minimumReleaseAge: '180 days',
+    },
+  ],
 };
