@@ -1,3 +1,9 @@
+## [1.0.0-rc.48](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.47...v1.0.0-rc.48) (2025-08-28)
+
+### Bug Fixes
+
+- **env:** add cmsBaseUrl to integration ([0ae47dd](https://github.com/agridata-ch/frontend/commit/0ae47dd4e71e85ba0e5ec0cafd1ef34055e53377))
+
 ## [1.0.0-rc.47](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.46...v1.0.0-rc.47) (2025-08-27)
 
 ### Features
