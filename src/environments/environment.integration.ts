@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
   apiBaseUrl: 'https://api.int.agridata.ch',
+  cmsBaseUrl: 'https://cms.agridata.ch',
   oidc: {
     authority: 'https://idp-rf.agate.ch/auth/realms/agate',
     clientId: 'agridata-rf',
