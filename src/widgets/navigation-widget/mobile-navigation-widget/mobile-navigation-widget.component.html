@@ -1,6 +1,14 @@
-<button (click)="toggleNavigation()">
-  <fa-icon [icon]="menuIcon" size="2xl" class="text-white cursor-pointerself-end" />
-</button>
+<app-agridata-button
+  (onClick)="toggleNavigation()"
+  [variant]="ButtonVariants.Icon"
+  [additionalClass]="'group'"
+>
+  <fa-icon
+    [icon]="menuIcon"
+    size="xl"
+    class="text-white self-end group-hover:text-agridata-primary-600"
+  />
+</app-agridata-button>
 <div
   class="fixed right-0 top-0 bottom-0 z-10 overflow-hidden backdrop-brightness-75 shadow-2xl transition-[width] duration-300 ease-in-out max-w-[425px] bg-agridata-primary-text"
   [class.w-0]="!isNavigationOpen()"
@@ -11,19 +19,20 @@
     [class.opacity-0]="!isNavigationOpen()"
     [class.opacity-100]="isNavigationOpen()"
   >
-    <fa-icon
-      size="3x"
-      [icon]="closeIcon"
-      class="text-white cursor-pointer self-end"
-      (click)="toggleNavigation()"
-      (keydown.enter)="toggleNavigation()"
-      tabindex="0"
-    />
+    <app-agridata-button
+      (onClick)="toggleNavigation()"
+      [variant]="ButtonVariants.Icon"
+      class="self-end group"
+    >
+      <fa-icon
+        [icon]="closeIcon"
+        size="xl"
+        class="text-white group-hover:text-agridata-primary-600"
+      />
+    </app-agridata-button>
     @if (isAuthenticated()) {
       <div class="flex flex-col gap-4">
-        <div
-          class="flex w-full gap-3 items-center hover:bg-agridata-hover-on-dark p-2 cursor-pointer"
-        >
+        <div class="flex w-full gap-3 items-center p-2">
           <app-agridata-avatar [name]="overlayName()" [size]="AvatarSize.SMALL" />
           <div class="flex-1 text-left">
             <div>{{ overlayName() }}</div>
@@ -58,11 +67,16 @@
       <app-agridata-button
         [variant]="ButtonVariants.SecondaryHero"
         (onClick)="authService.logout()"
+        [additionalClass]="'w-full'"
       >
         {{ 'account.logout' | i18n }}
       </app-agridata-button>
     } @else {
-      <app-agridata-button [variant]="ButtonVariants.SecondaryHero" (onClick)="authService.login()">
+      <app-agridata-button
+        [variant]="ButtonVariants.SecondaryHero"
+        (onClick)="authService.login()"
+        [additionalClass]="'w-full'"
+      >
         {{ 'account.login' | i18n }}
       </app-agridata-button>
     }

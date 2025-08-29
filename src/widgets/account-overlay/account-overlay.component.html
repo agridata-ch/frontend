@@ -27,7 +27,11 @@
           </div>
         </div>
       </div>
-      <app-agridata-button [variant]="ButtonVariants.Secondary" (onClick)="logout()">
+      <app-agridata-button
+        [variant]="ButtonVariants.Secondary"
+        (onClick)="logout()"
+        [additionalClass]="'w-full'"
+      >
         {{ 'account.logout' | i18n }}
       </app-agridata-button>
       <app-uid-switch />
