@@ -13,7 +13,7 @@ import { UidRegisterAddressDto } from './uidRegisterAddressDto';
 export interface UidRegisterOrganisationDto { 
     name?: string;
     legalName?: string;
-    uid?: number;
+    uid?: string;
     address?: UidRegisterAddressDto;
 }
 

@@ -3,29 +3,22 @@ import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { of } from 'rxjs';
 
-import { AuthService, UserData } from './auth.service';
+import { ParticipantsService } from '@/entities/openapi';
+import { mockUserData } from '@/shared/testing/mocks/mock-auth.service';
+
+import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
-  let service: AuthService;
+  let mockAuthService: AuthService;
   let mockOidc: {
     checkAuth: jest.Mock;
     authorize: jest.Mock<void, []>;
     logoff: jest.Mock;
   };
   let mockRouter: { navigate: jest.Mock<Promise<boolean>, [unknown[]]> };
+  let mockParticipantService: Partial<ParticipantsService>;
   let setItemSpy: jest.SpyInstance;
   let removeItemSpy: jest.SpyInstance;
-
-  const fakeUserData: UserData = {
-    sub: '123',
-    name: 'Alice',
-    preferred_username: 'alice123',
-    email: 'alice@example.com',
-    family_name: 'Smith',
-    given_name: 'Alice',
-    uid: 123,
-    loginid: 'alice123',
-  };
 
   /**
    * Helper to build a minimal JWT‐style string whose payload
@@ -50,12 +43,16 @@ describe('AuthService', () => {
     mockRouter = {
       navigate: jest.fn().mockResolvedValue(true),
     };
+    mockParticipantService = {
+      getUserInfo: jest.fn().mockReturnValue(of(mockUserData)),
+    };
 
     TestBed.configureTestingModule({
       providers: [
         AuthService,
         { provide: OidcSecurityService, useValue: mockOidc },
         { provide: Router, useValue: mockRouter },
+        { provide: ParticipantsService, useValue: mockParticipantService },
       ],
     });
   });
@@ -68,19 +65,15 @@ describe('AuthService', () => {
   it('should set signals and localStorage when checkAuth emits authenticated=true', (done) => {
     const roles = ['role1', 'role2'];
     const accessToken = makeJwtWithRoles(roles);
-    const userData = { ...fakeUserData, uid: 'CHE123' }; // Simulate the raw UID from the auth response
-    mockOidc.checkAuth.mockReturnValue(of({ isAuthenticated: true, userData, accessToken }));
-
-    service = TestBed.inject(AuthService);
+    mockOidc.checkAuth.mockReturnValue(of({ isAuthenticated: true, accessToken }));
+    mockAuthService = TestBed.inject(AuthService);
 
     setTimeout(() => {
-      expect(service.isAuthenticated()).toBe(true);
-      expect(service.userData()).toEqual(fakeUserData);
-      expect(service.userRoles()).toEqual(roles);
+      expect(mockAuthService.isAuthenticated()).toBe(true);
+      expect(mockAuthService.userData()).toEqual(mockUserData);
+      expect(mockAuthService.userRoles()).toEqual(roles);
 
-      // We need to check that localStorage is called with the raw userData
-      const rawUserData = { ...fakeUserData, uid: 'CHE123' };
-      expect(setItemSpy).toHaveBeenCalledWith('oidc.user', JSON.stringify(rawUserData));
+      expect(setItemSpy).toHaveBeenCalledWith('oidc.user', JSON.stringify(mockUserData));
       expect(removeItemSpy).not.toHaveBeenCalled();
 
       done();
@@ -94,12 +87,12 @@ describe('AuthService', () => {
 
     localStorage.setItem('oidc.user', JSON.stringify({ dummy: 'value' }));
 
-    service = TestBed.inject(AuthService);
+    mockAuthService = TestBed.inject(AuthService);
 
     setTimeout(() => {
-      expect(service.isAuthenticated()).toBe(false);
-      expect(service.userData()).toBeNull();
-      expect(service.userRoles()).toBeNull();
+      expect(mockAuthService.isAuthenticated()).toBe(false);
+      expect(mockAuthService.userData()).toBeNull();
+      expect(mockAuthService.userRoles()).toBeNull();
 
       expect(removeItemSpy).toHaveBeenCalledWith('oidc.user');
       done();
@@ -110,9 +103,9 @@ describe('AuthService', () => {
     mockOidc.checkAuth.mockReturnValue(
       of({ isAuthenticated: false, userData: null, accessToken: '' }),
     );
-    service = TestBed.inject(AuthService);
+    mockAuthService = TestBed.inject(AuthService);
 
-    service.login();
+    mockAuthService.login();
 
     expect(mockOidc.authorize).toHaveBeenCalled();
   });
@@ -122,9 +115,9 @@ describe('AuthService', () => {
       of({ isAuthenticated: false, userData: null, accessToken: '' }),
     );
     mockOidc.logoff.mockReturnValue(of(null));
-    service = TestBed.inject(AuthService);
+    mockAuthService = TestBed.inject(AuthService);
 
-    service.logout();
+    mockAuthService.logout();
 
     setTimeout(() => {
       expect(mockOidc.logoff).toHaveBeenCalled();
@@ -134,10 +127,8 @@ describe('AuthService', () => {
   });
 
   it('calling checkAuth(false) does not modify localStorage when unauthenticated', (done) => {
-    mockOidc.checkAuth.mockReturnValue(
-      of({ isAuthenticated: false, userData: null, accessToken: '' }),
-    );
-    service = TestBed.inject(AuthService);
+    mockOidc.checkAuth.mockReturnValue(of({ isAuthenticated: false, accessToken: '' }));
+    mockAuthService = TestBed.inject(AuthService);
 
     setTimeout(() => {
       expect(removeItemSpy).toHaveBeenCalledWith('oidc.user');
@@ -146,22 +137,74 @@ describe('AuthService', () => {
 
       const roles = ['admin'];
       const token = makeJwtWithRoles(roles);
-      const userData = { ...fakeUserData, uid: 'CHE123' }; // Simulate the raw UID from the auth response
-      mockOidc.checkAuth.mockReturnValue(
-        of({ isAuthenticated: true, userData, accessToken: token }),
-      );
+      mockOidc.checkAuth.mockReturnValue(of({ isAuthenticated: true, accessToken: token }));
 
-      service.checkAuth(false);
+      mockAuthService.checkAuth(false);
 
       setTimeout(() => {
-        expect(service.isAuthenticated()).toBe(true);
-        expect(service.userData()).toEqual(fakeUserData);
-        expect(service.userRoles()).toEqual(roles);
+        expect(mockAuthService.isAuthenticated()).toBe(true);
+        expect(mockAuthService.userData()).toEqual(mockUserData);
+        expect(mockAuthService.userRoles()).toEqual(roles);
 
         expect(setItemSpy).not.toHaveBeenCalled();
         expect(removeItemSpy).not.toHaveBeenCalled();
         done();
       }, 0);
     }, 0);
+  });
+
+  it('should return userFullName', () => {
+    mockAuthService.userData.set(mockUserData);
+
+    const fullName = mockAuthService.getUserFullName();
+
+    expect(fullName).toBe('Producer 081');
+  });
+
+  it('should return userFullName without givenName', () => {
+    mockAuthService.userData.set({ ...mockUserData, givenName: undefined });
+
+    const fullName = mockAuthService.getUserFullName();
+
+    expect(fullName).toBe(' 081');
+  });
+
+  it('should return userFullName without familyName', () => {
+    mockAuthService.userData.set({ ...mockUserData, familyName: undefined });
+
+    const fullName = mockAuthService.getUserFullName();
+
+    expect(fullName).toBe('Producer ');
+  });
+
+  it('should return userFullName without userData', () => {
+    mockAuthService.userData.set(null);
+    const fullName = mockAuthService.getUserFullName();
+
+    expect(fullName).toBe('');
+  });
+
+  it('should return userEmail', () => {
+    mockAuthService.userData.set(mockUserData);
+
+    const email = mockAuthService.getUserEmail();
+
+    expect(email).toBe('producer-081@agridata.ch');
+  });
+
+  it('should return userEmail without email', () => {
+    mockAuthService.userData.set({ ...mockUserData, email: undefined });
+
+    const email = mockAuthService.getUserEmail();
+
+    expect(email).toBe('');
+  });
+
+  it('should return userEmail without userData', () => {
+    mockAuthService.userData.set(null);
+
+    const email = mockAuthService.getUserEmail();
+
+    expect(email).toBe('');
   });
 });

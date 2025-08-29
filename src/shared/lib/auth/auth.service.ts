@@ -3,33 +3,24 @@ import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Subject, takeUntil } from 'rxjs';
 
+import { ParticipantsService, UserInfoDto } from '@/entities/openapi';
 import { USER_ROLES } from '@/shared/constants/constants';
-
-export type UserData = {
-  email: string;
-  family_name: string;
-  given_name: string;
-  loginid: string;
-  name: string;
-  preferred_username: string;
-  sub: string;
-  uid: number | string;
-};
 
 /**
  * Manages authentication state, user profile data, and role extraction from tokens. Provides login,
  * logout, and authentication status monitoring with reactive signals.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-08-29
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly oidcService = inject(OidcSecurityService);
+  private readonly participantService = inject(ParticipantsService);
   private readonly router = inject(Router);
   private readonly destroy$ = new Subject<void>();
 
   readonly isAuthenticated = signal<boolean>(false);
-  readonly userData = signal<UserData | null>(null);
+  readonly userData = signal<UserInfoDto | null>(null);
   readonly userRoles = signal<string[] | null>(null);
   readonly isProducer = computed(
     () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) ?? false,
@@ -64,15 +55,14 @@ export class AuthService {
     this.oidcService
       .checkAuth()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(({ isAuthenticated, userData, accessToken }) => {
+      .subscribe(({ isAuthenticated, accessToken }) => {
         this.isAuthenticated.set(isAuthenticated);
         if (isAuthenticated) {
-          this.userData.set({
-            ...userData,
-            uid:
-              typeof userData.uid === 'string'
-                ? Number(userData.uid?.replace('CHE', ''))
-                : userData.uid,
+          this.participantService.getUserInfo().subscribe((userData) => {
+            this.userData.set(userData);
+            if (updateLocalStorage) {
+              localStorage.setItem('oidc.user', JSON.stringify(userData));
+            }
           });
           const decoded = this.decodeJwt(accessToken);
           const roles =
@@ -80,9 +70,6 @@ export class AuthService {
               ? decoded.realm_access.roles
               : [];
           this.userRoles.set(roles);
-          if (updateLocalStorage) {
-            localStorage.setItem('oidc.user', JSON.stringify(userData));
-          }
         } else {
           this.userData.set(null);
           if (updateLocalStorage) {
@@ -109,7 +96,14 @@ export class AuthService {
     if (!this.userData()) {
       return '';
     }
-    return `${this.userData()?.given_name ?? ''} ${this.userData()?.family_name ?? ''}`;
+    return `${this.userData()?.givenName ?? ''} ${this.userData()?.familyName ?? ''}`;
+  }
+
+  getUserEmail() {
+    if (!this.userData()) {
+      return '';
+    }
+    return this.userData()?.email ?? '';
   }
 
   ngOnDestroy() {

@@ -5,29 +5,21 @@ import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
 
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
+import { MockAuthService } from '@/shared/testing/mocks';
 import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
 
 describe('NavigationWidgetComponent', () => {
   let fixture: ComponentFixture<NavigationWidgetComponent>;
   let component: NavigationWidgetComponent;
-
-  let mockAuthService: {
-    isAuthenticated: jest.Mock<boolean, []>;
-    userRoles: jest.Mock<string[], []>;
-    getUserFullName: jest.Mock<string, []>;
-  };
+  let mockAuthService: AuthService;
 
   beforeEach(async () => {
-    mockAuthService = {
-      isAuthenticated: jest.fn().mockReturnValue(false),
-      userRoles: jest.fn().mockReturnValue([]),
-      getUserFullName: jest.fn().mockReturnValue('Test User'),
-    };
-
     await TestBed.configureTestingModule({
       imports: [NavigationWidgetComponent, RouterLink, RouterLinkActive, FontAwesomeModule],
-      providers: [{ provide: AuthService, useValue: mockAuthService }],
+      providers: [{ provide: AuthService, useClass: MockAuthService }],
     }).compileComponents();
+
+    mockAuthService = TestBed.inject(AuthService);
   });
 
   function createComponent(): void {
@@ -57,26 +49,27 @@ describe('NavigationWidgetComponent', () => {
   });
 
   it('showNavigation is false when AuthService.isAuthenticated() returns false', () => {
-    mockAuthService.isAuthenticated.mockReturnValue(false);
+    jest.spyOn(mockAuthService, 'isAuthenticated').mockReturnValue(false);
     createComponent();
     expect(component.showNavigation()).toBe(false);
   });
 
   it('showNavigation is true when AuthService.isAuthenticated() returns true', () => {
-    mockAuthService.isAuthenticated.mockReturnValue(true);
+    jest.spyOn(mockAuthService, 'isAuthenticated').mockReturnValue(true);
     createComponent();
     expect(component.showNavigation()).toBe(true);
   });
 
   it('userRoles reflects AuthService.userRoles()', () => {
-    mockAuthService.userRoles.mockReturnValue(['foo', 'bar']);
+    const roles = ['foo', 'bar'];
+    jest.spyOn(mockAuthService, 'userRoles').mockReturnValue(roles);
     createComponent();
-    expect(component.userRoles()).toEqual(['foo', 'bar']);
+    expect(component.userRoles()).toEqual(roles);
   });
 
   describe('navigationItems', () => {
     it('returns empty array when userRoles does not include the specific role', () => {
-      mockAuthService.userRoles.mockReturnValue(['some.other.role']);
+      jest.spyOn(mockAuthService, 'userRoles').mockReturnValue(['some.other.role']);
       createComponent();
 
       const items = component.navigationItems();
@@ -85,10 +78,9 @@ describe('NavigationWidgetComponent', () => {
     });
 
     it('returns the navigation object when userRoles includes "agridata.ch.Agridata_Einwilliger"', () => {
-      mockAuthService.userRoles.mockReturnValue([
-        USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER,
-        'another.role',
-      ]);
+      jest
+        .spyOn(mockAuthService, 'userRoles')
+        .mockReturnValue([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER, 'another.role']);
       createComponent();
 
       const items = component.navigationItems();

@@ -38,6 +38,9 @@ export class MobileNavigationWidgetComponent {
   readonly overlayName = computed(() => {
     return this.authService.getUserFullName();
   });
+  readonly overlayEmail = computed(() => {
+    return this.authService.getUserEmail();
+  });
   readonly isAuthenticated = computed(() => this.authService.isAuthenticated());
   readonly activeUid = computed(() => {
     return this.agridataStateService.activeUid();

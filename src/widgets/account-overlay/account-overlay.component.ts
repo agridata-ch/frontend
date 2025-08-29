@@ -4,9 +4,10 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { UserInfoDto } from '@/entities/openapi';
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
 import { I18nPipe } from '@/shared/i18n';
-import { AuthService, UserData } from '@/shared/lib/auth';
+import { AuthService } from '@/shared/lib/auth';
 import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { PopoverComponent } from '@/shared/ui/popover/popover.component';
@@ -38,7 +39,7 @@ export class AccountOverlayComponent {
   readonly agridataStateService = inject(AgridataStateService);
   readonly location = inject(Location);
 
-  readonly userData = input<UserData | null>(null);
+  readonly userData = input<UserInfoDto | null>(null);
   readonly overlayName = computed(() => {
     return this.authService.getUserFullName();
   });

@@ -24,3 +24,4 @@ export * from './translationDto';
 export * from './uidDto';
 export * from './uidRegisterAddressDto';
 export * from './uidRegisterOrganisationDto';
+export * from './userInfoDto';
