@@ -42,5 +42,6 @@ model/translationDto.ts
 model/uidDto.ts
 model/uidRegisterAddressDto.ts
 model/uidRegisterOrganisationDto.ts
+model/userInfoDto.ts
 param.ts
 variables.ts

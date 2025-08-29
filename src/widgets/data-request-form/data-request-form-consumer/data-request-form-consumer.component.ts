@@ -2,9 +2,10 @@ import { Component, computed, effect, inject, input, output, signal } from '@ang
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { UidRegisterService } from '@/entities/api/uid-register.service';
+import { UserInfoDto } from '@/entities/openapi';
 import { COUNTRIES } from '@/shared/constants/constants';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { AuthService, UserData } from '@/shared/lib/auth';
+import { AuthService } from '@/shared/lib/auth';
 import { getFormControl } from '@/shared/lib/form.helper';
 import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataInputComponent } from '@/shared/ui/agridata-input';
@@ -49,10 +50,10 @@ export class DataRequestFormConsumerComponent {
   readonly getFormControl = getFormControl;
   readonly uidInfoResource = this.uidSearchService.fetchUidInfosOfCurrentUser;
 
-  readonly userData = signal<UserData | null>(this.authService.userData());
+  readonly userData = signal<UserInfoDto | null>(this.authService.userData());
   readonly consumerName = signal<string>('');
   readonly consumerDisplayName = signal<string>('');
-  readonly consumerUid = signal<number | undefined>(undefined);
+  readonly consumerUid = signal<string | undefined>(undefined);
   readonly logoFile = signal<File | null>(null);
   readonly logoErrorMessage = signal<string | null>(null);
 
@@ -94,9 +95,7 @@ export class DataRequestFormConsumerComponent {
       name: uidSearchResult?.legalName || userFullName,
     };
 
-    this.consumerUid.set(
-      typeof newUserData.uid === 'string' ? Number(newUserData.uid) : newUserData.uid,
-    );
+    this.consumerUid.set(newUserData.uid);
 
     this.consumerName.set(newUserData.name || '');
 
