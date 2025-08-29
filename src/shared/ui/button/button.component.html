@@ -10,7 +10,7 @@
     [attr.aria-label]="ariaLabel()"
     (click)="handleClick($event)"
     (keydown.enter)="handleClick($event)"
-    [class]="`agridata-button agridata-button-${variant()} w-full ${ selected() ? 'selected' : ''} ${additionalClass()}`"
+    [class]="`agridata-button agridata-button-${variant()} ${ selected() ? 'selected' : ''} ${additionalClass()}`"
   >
     <ng-container [ngTemplateOutlet]="content"></ng-container>
   </button>
@@ -20,7 +20,7 @@
     [target]="target()"
     [tabindex]="tabindex()"
     [rel]="'noopener noreferrer'"
-    [class]="`agridata-button agridata-button-${variant()} w-full ${ selected() ? 'selected' : ''} ${additionalClass()}`"
+    [class]="`agridata-button agridata-button-${variant()} ${ selected() ? 'selected' : ''} ${additionalClass()}`"
   >
     <ng-container [ngTemplateOutlet]="content"></ng-container>
   </a>
