@@ -1,3 +1,9 @@
+## [1.0.0-rc.49](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.48...v1.0.0-rc.49) (2025-08-29)
+
+### Bug Fixes
+
+- **navigation:** fix buttons on mobile-navigation ([3e25691](https://github.com/agridata-ch/frontend/commit/3e2569134b595a716e03073fa11280b78798fec9))
+
 ## [1.0.0-rc.48](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.47...v1.0.0-rc.48) (2025-08-28)
 
 ### Bug Fixes
