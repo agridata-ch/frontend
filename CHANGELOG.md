@@ -1,3 +1,9 @@
+## [1.0.0-rc.50](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.49...v1.0.0-rc.50) (2025-08-29)
+
+### Features
+
+- **userinfo:** add user info endpoint ([d879be5](https://github.com/agridata-ch/frontend/commit/d879be5e8ee9d8528f673b30cddaee0bab1c426a)), closes [DIGIB2-756](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-756)
+
 ## [1.0.0-rc.49](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.48...v1.0.0-rc.49) (2025-08-29)
 
 ### Bug Fixes
