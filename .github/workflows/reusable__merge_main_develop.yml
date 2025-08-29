@@ -8,7 +8,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Generate GitHub App Token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v2
         id: app-token
         env:
           GITHUB_APP_SEMANTIC_RELEASE_APP_ID: 1236243
