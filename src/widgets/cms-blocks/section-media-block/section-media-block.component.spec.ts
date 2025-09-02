@@ -1,19 +1,19 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SectionHeadingMediaBlockComponent } from './section-heading-media-block.component';
+import { SectionMediaBlockComponent } from './section-media-block.component';
 
-describe('SectionHeadingMediaBlockComponent', () => {
-  let component: SectionHeadingMediaBlockComponent;
-  let fixture: ComponentFixture<SectionHeadingMediaBlockComponent>;
-  let componentRef: ComponentRef<SectionHeadingMediaBlockComponent>;
+describe('SectionMediaBlockComponent', () => {
+  let component: SectionMediaBlockComponent;
+  let fixture: ComponentFixture<SectionMediaBlockComponent>;
+  let componentRef: ComponentRef<SectionMediaBlockComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SectionHeadingMediaBlockComponent],
+      imports: [SectionMediaBlockComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SectionHeadingMediaBlockComponent);
+    fixture = TestBed.createComponent(SectionMediaBlockComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
 

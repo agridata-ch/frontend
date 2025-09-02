@@ -1,0 +1,6 @@
+<div class="container mx-auto px-10 pb-10 pt-20 flex flex-col items-center">
+  <h2>{{ cmsData().heading }}</h2>
+  @for (block of cmsData().feedbackBlocks; track block.id) {
+    <app-user-feedback-block [block]="block" />
+  }
+</div>
