@@ -23,13 +23,15 @@ import {
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ConsentRequestFilterComponent } from '@/widgets/consent-request-table/consent-request-filter/consent-request-filter.component';
 
+import { ConsentRequestListComponent } from './consent-request-list';
+
 /**
  * Implements the main table logic. It accepts a list of consent requests, transforms them into
  * table rows, and applies filters and sorting. The component provides row actions, state updates
  * with undo support, and toast notifications. It highlights open requests and integrates avatars
  * and badges for clear presentation.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-09-02
  */
 @Component({
   selector: 'app-consent-request-table',
@@ -39,6 +41,7 @@ import { ConsentRequestFilterComponent } from '@/widgets/consent-request-table/c
     AgridataBadgeComponent,
     CellTemplateDirective,
     AgridataAvatarComponent,
+    ConsentRequestListComponent,
   ],
   templateUrl: './consent-request-table.component.html',
 })
@@ -89,7 +92,7 @@ export class ConsentRequestTableComponent {
         ],
         highlighted: request.stateCode === ConsentRequestStateEnum.Opened,
         actions: this.getFilteredActions(request),
-        rowAction: () => this.tableRowAction.emit(request),
+        rowAction: () => this.openDetails(request),
       }));
   });
 
@@ -166,4 +169,9 @@ export class ConsentRequestTableComponent {
     if (stateCode === ConsentRequestStateEnum.Declined) return BadgeVariant.ERROR;
     return BadgeVariant.DEFAULT;
   };
+
+  openDetails(request?: ConsentRequestProducerViewDto | null) {
+    if (!request) return;
+    this.tableRowAction.emit(request);
+  }
 }

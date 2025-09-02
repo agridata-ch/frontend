@@ -8,13 +8,12 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
  * Implements filter logic for consent request states. It tracks selected filters, emits filter
  * changes, and calculates totals for open requests.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-09-02
  */
 @Component({
   selector: 'app-consent-request-filter',
   imports: [I18nPipe, ButtonComponent],
   templateUrl: './consent-request-filter.component.html',
-  styleUrl: './consent-request-filter.component.css',
 })
 export class ConsentRequestFilterComponent {
   readonly requests = input.required<ConsentRequestProducerViewDto[]>();
