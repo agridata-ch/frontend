@@ -1,19 +1,19 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SectionHeadingTextImageBlockComponent } from './section-heading-text-image-block.component';
+import { SectionTextImageBlockComponent } from './section-text-image-block.component';
 
-describe('SectionHeadingTextImageBlockComponent', () => {
-  let component: SectionHeadingTextImageBlockComponent;
-  let fixture: ComponentFixture<SectionHeadingTextImageBlockComponent>;
-  let componentRef: ComponentRef<SectionHeadingTextImageBlockComponent>;
+describe('SectionTextImageBlockComponent', () => {
+  let component: SectionTextImageBlockComponent;
+  let fixture: ComponentFixture<SectionTextImageBlockComponent>;
+  let componentRef: ComponentRef<SectionTextImageBlockComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SectionHeadingTextImageBlockComponent],
+      imports: [SectionTextImageBlockComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SectionHeadingTextImageBlockComponent);
+    fixture = TestBed.createComponent(SectionTextImageBlockComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
 

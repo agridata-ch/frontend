@@ -22,8 +22,10 @@ export const NAVIGATION_STATE_OPEN = 'navigationStateOpen';
 
 export const CMS_BLOCKS = {
   HERO: 'blocks.hero',
-  SECTION_HEADING_MEDIA: 'blocks.section-heading-media',
-  SECTION_HEADING_TEXT_IMAGE: 'blocks.section-heading-text-image',
+  SECTION_MEDIA: 'layout.section-media',
+  SECTION_TEXT_IMAGE: 'layout.section-text-image',
+  SECTION_USER_FEEDBACK: 'layout.section-user-feedback',
+  SECTION_CARD_GRID: 'layout.section-card-grid',
   LIST: 'blocks.list',
 };
 

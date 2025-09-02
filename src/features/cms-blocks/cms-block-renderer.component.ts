@@ -5,15 +5,17 @@ import { Block } from '@/entities/cms';
 import { CMS_BLOCKS } from '@/shared/constants/constants';
 import {
   HeroBlockComponent,
-  SectionHeadingMediaBlockComponent,
-  SectionHeadingTextImageBlockComponent,
+  SectionCardGridBlockComponent,
+  SectionMediaBlockComponent,
+  SectionTextImageBlockComponent,
+  SectionUserFeedbackBlockComponent,
 } from '@/widgets/cms-blocks';
 
 /**
  * Component for rendering CMS blocks dynamically. Selects the appropriate block component based on
- * type and applies alternating layout logic for visual variation.
+ * type
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-09-02
  */
 @Component({
   selector: 'app-cms-block-renderer',
@@ -21,8 +23,10 @@ import {
   imports: [
     CommonModule,
     HeroBlockComponent,
-    SectionHeadingMediaBlockComponent,
-    SectionHeadingTextImageBlockComponent,
+    SectionMediaBlockComponent,
+    SectionTextImageBlockComponent,
+    SectionUserFeedbackBlockComponent,
+    SectionCardGridBlockComponent,
   ],
   templateUrl: './cms-block-renderer.component.html',
 })

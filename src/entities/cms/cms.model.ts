@@ -45,6 +45,13 @@ export interface List {
   items: ListItem[];
 }
 
+export interface Card {
+  id: number;
+  image: Image;
+  heading: string;
+  text: string;
+}
+
 export interface TextImageBlock {
   __component: 'block.text-image';
   id: number;
@@ -65,7 +72,15 @@ export interface HeroBlock {
   image: Image;
 }
 
-export interface SectionHeadingMediaBlock {
+export interface UserFeedbackBlock {
+  id: number;
+  image: Image;
+  name: string;
+  location: string;
+  quote: string;
+}
+
+export interface SectionMediaBlock {
   __component: 'blocks.section-heading-media';
   id: number;
   heading: string;
@@ -84,18 +99,37 @@ export interface SectionHeadingMediaBlock {
   };
 }
 
-export interface SectionHeadingTextImageBlock {
+export interface SectionTextImageBlock {
   __component: 'blocks.section-heading-text-image';
   id: number;
   heading: string;
+  subHeading: string;
   imageTextBlocks: TextImageBlock[];
+}
+
+export interface SectionUserFeedbackBlock {
+  __component: 'layout.section-heading-user-feedback';
+  id: number;
+  heading: string;
+  subHeading: string;
+  feedbackBlocks: UserFeedbackBlock[];
+}
+
+export interface SectionCardGridBlock {
+  __component: 'blocks.section-heading-card-grid';
+  id: number;
+  heading: string;
+  subHeading: string;
+  cards: Card[];
 }
 
 export type Block =
   | HeroBlock
-  | SectionHeadingMediaBlock
-  | SectionHeadingTextImageBlock
-  | TextImageBlock;
+  | SectionMediaBlock
+  | SectionTextImageBlock
+  | TextImageBlock
+  | SectionUserFeedbackBlock
+  | SectionCardGridBlock;
 
 export interface PageData {
   id: number;

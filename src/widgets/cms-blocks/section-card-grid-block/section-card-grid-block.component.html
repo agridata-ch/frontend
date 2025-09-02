@@ -1,0 +1,13 @@
+<div class="container mx-auto px-10 pb-10 pt-20 flex flex-col items-center">
+  <h2 class="mb-4">{{ cmsData().heading }}</h2>
+  <p class="mb-10">{{ cmsData().subHeading }}</p>
+
+  <div class="flex flex-wrap justify-center gap-6">
+    @for (card of cmsData().cards; track card.id) {
+      <app-card-block
+        [card]="card"
+        class="w-full md:w-[calc(calc(100%/2)-var(--spacing)*3)] lg:w-[calc(calc(100%/3)-var(--spacing)*4)] shrink-0"
+      />
+    }
+  </div>
+</div>

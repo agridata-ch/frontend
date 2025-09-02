@@ -3,11 +3,17 @@
     @case (CMS_BLOCKS.HERO) {
       <app-hero-block [block]="block()" />
     }
-    @case (CMS_BLOCKS.SECTION_HEADING_MEDIA) {
-      <app-section-heading-media-block [block]="block()" />
+    @case (CMS_BLOCKS.SECTION_MEDIA) {
+      <app-section-media-block [block]="block()" />
     }
-    @case (CMS_BLOCKS.SECTION_HEADING_TEXT_IMAGE) {
-      <app-section-heading-text-image-block [block]="block()" />
+    @case (CMS_BLOCKS.SECTION_TEXT_IMAGE) {
+      <app-section-text-image-block [block]="block()" />
+    }
+    @case (CMS_BLOCKS.SECTION_USER_FEEDBACK) {
+      <app-section-user-feedback-block [block]="block()" />
+    }
+    @case (CMS_BLOCKS.SECTION_CARD_GRID) {
+      <app-section-card-grid-block [block]="block()" />
     }
   }
 </div>
