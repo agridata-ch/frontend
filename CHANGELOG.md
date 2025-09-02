@@ -1,3 +1,9 @@
+## [1.0.0-rc.51](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.50...v1.0.0-rc.51) (2025-09-02)
+
+### Features
+
+- **consent-request:** responsive consent-request ([3f7ba8a](https://github.com/agridata-ch/frontend/commit/3f7ba8a893a9a57bd4b1dc2d01a3777f3e7ebbdf)), closes [DIGIB2-539](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-539)
+
 ## [1.0.0-rc.50](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.49...v1.0.0-rc.50) (2025-08-29)
 
 ### Features
