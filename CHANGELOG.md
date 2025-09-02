@@ -1,3 +1,9 @@
+## [1.0.0-rc.52](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.51...v1.0.0-rc.52) (2025-09-02)
+
+### Features
+
+- **cms:** add cms grid card component ([2dafec6](https://github.com/agridata-ch/frontend/commit/2dafec6426a43b233f61c24e4868aaaf3372faa1)), closes [DIGIB2-744](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-744)
+
 ## [1.0.0-rc.51](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.50...v1.0.0-rc.51) (2025-09-02)
 
 ### Features
