@@ -3,6 +3,7 @@
   [rawData]="requests()"
   [defaultSortColumn]="dataRequestStateHeader"
   [defaultSortDirection]="SortDirections.DESC"
+  class="hidden lg:block"
 >
   <ng-template [stCell]="dataRequestConsumerHeader" let-item>
     <div class="flex items-center gap-2">
@@ -33,3 +34,8 @@
     />
   </ng-template>
 </app-agridata-table>
+<app-consent-request-list
+  class="lg:hidden"
+  [consentRequests]="consentRequests()"
+  (openDetails)="openDetails($event)"
+/>
