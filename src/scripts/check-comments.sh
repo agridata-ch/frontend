@@ -3,7 +3,7 @@ set -euo pipefail
 
 changed_files=$(
   {
-    git diff --name-only --diff-filter=ACMR
+    git diff --name-only --staged
     git diff --name-only origin/develop...HEAD
   } | sort -u
 )
