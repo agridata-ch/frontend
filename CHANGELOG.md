@@ -1,3 +1,9 @@
+## [1.0.0-rc.54](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.53...v1.0.0-rc.54) (2025-09-03)
+
+### Bug Fixes
+
+- **commentcheck:** check only staged files ([2af83a6](https://github.com/agridata-ch/frontend/commit/2af83a6ac69dff34fce07ade53038bdc18bb49cc))
+
 ## [1.0.0-rc.53](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.52...v1.0.0-rc.53) (2025-09-03)
 
 ### Bug Fixes
