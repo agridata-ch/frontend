@@ -17,9 +17,9 @@
           [variant]="badgeVariant()"
         />
       </div>
-      <h6 class="text-3xl text-agridata-primary-text font-semibold">
+      <h3 class="text-agridata-primary-text">
         {{ requestTitle() }}
-      </h6>
+      </h3>
       <div class="flex items-center gap-2">
         <app-agridata-avatar
           [imageUrl]="requestConsumerLogo()"
@@ -46,6 +46,7 @@
           [variant]="ButtonVariants.SecondaryReject"
           [disabled]="request()?.stateCode === consentRequestStateEnum.Declined"
           (onClick)="rejectRequest()"
+          [additionalClass]="'w-full'"
         >
           {{ t('actions.reject') }}
         </app-agridata-button>
@@ -54,6 +55,7 @@
           [variant]="ButtonVariants.PrimaryAccept"
           [disabled]="request()?.stateCode === consentRequestStateEnum.Granted"
           (onClick)="acceptRequest()"
+          [additionalClass]="'w-full'"
         >
           {{ t('actions.accept') }}
         </app-agridata-button>
