@@ -3,8 +3,8 @@ set -euo pipefail
 
 changed_files=$(
   {
-    git diff --name-only --staged
-    git diff --name-only origin/develop...HEAD
+    git diff --name-only --diff-filter=AC --staged
+    git diff --name-only --diff-filter=AC origin/develop...HEAD
   } | sort -u
 )
 
@@ -45,7 +45,7 @@ for file in $changed_files; do
     diff_days=$(( (today - reviewed_sec) / 86400 ))
 
     if (( diff_days > 7 )); then
-        errors+=("$file: File was changed, but CommentLastReviewed ($reviewed_date) is older than 7 days. Please review the comment and update the review date.")
+        errors+=("$file: File was just created, but CommentLastReviewed ($reviewed_date) is older than 7 days. Please review the comment and update the review date.")
     fi
 done
 
