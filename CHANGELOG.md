@@ -1,3 +1,9 @@
+## [1.0.0-rc.53](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.52...v1.0.0-rc.53) (2025-09-03)
+
+### Bug Fixes
+
+- **ui:** fix styling of details panel ([ba7fe60](https://github.com/agridata-ch/frontend/commit/ba7fe605a84209987c27ef7ff1eb7d3a5900c998))
+
 ## [1.0.0-rc.52](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.51...v1.0.0-rc.52) (2025-09-02)
 
 ### Features
