@@ -20,7 +20,7 @@ jobs:
       contents: read
     steps:
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: arn:aws:iam::${{ inputs.account-id }}:role/agridata-application-deployment-role
           aws-region: ${{ env.AWS_REGION }}
