@@ -46,7 +46,7 @@ jobs:
           fi
           echo "bucket-name=$bucket_name" >> "$GITHUB_OUTPUT"
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -59,7 +59,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 20
           cache: 'npm'
