@@ -1,7 +1,7 @@
 <div>
   <h5 class="font-bold mb-4">{{ list().heading }}</h5>
   <ul class="flex flex-col gap-4">
-    @for (item of list().items; track item.id) {
+    @for (item of list().items; track `${item.label}_${item.id}`) {
       <li class="flex items-center gap-3">
         @if (item.icon) {
           <img

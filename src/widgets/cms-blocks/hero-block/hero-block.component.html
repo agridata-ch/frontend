@@ -13,7 +13,7 @@
 
       @if (cmsData().cta && cmsData().cta.length > 0) {
         <div class="flex flex-wrap gap-4 mt-4">
-          @for (btn of cmsData().cta; track btn.id) {
+          @for (btn of cmsData().cta; track `${cmsData().__component}_${btn.id}`) {
             @if (btn.isButtonLink) {
               <app-agridata-button
                 [href]="btn.href"
