@@ -1,3 +1,9 @@
+## [1.0.0-rc.60](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.59...v1.0.0-rc.60) (2025-09-05)
+
+### Features
+
+- **deps:** update dependencies ([274f889](https://github.com/agridata-ch/frontend/commit/274f8897e51bfbe0e8c7b165f31d48735ff35805))
+
 ## [1.0.0-rc.59](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.58...v1.0.0-rc.59) (2025-09-05)
 
 ### Features
