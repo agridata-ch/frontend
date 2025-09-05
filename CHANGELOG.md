@@ -1,3 +1,9 @@
+## [1.0.0-rc.57](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.56...v1.0.0-rc.57) (2025-09-05)
+
+### Features
+
+- **consent-request:** add contact ([5c9ba0e](https://github.com/agridata-ch/frontend/commit/5c9ba0e1ecf086e5274766963aa36b0acf6619f3)), closes [DIGIB2-449](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-449)
+
 ## [1.0.0-rc.56](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.55...v1.0.0-rc.56) (2025-09-05)
 
 ### Bug Fixes
