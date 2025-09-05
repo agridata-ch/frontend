@@ -40,6 +40,7 @@
       <app-data-request-contact
         [phoneNumber]="request()?.dataRequest?.contactPhoneNumber"
         [email]="request()?.dataRequest?.contactEmailAddress"
+        [organisationName]="request()?.dataRequest?.dataConsumerDisplayName"
       />
       <app-data-request-privacy-infos [dataConsumerName]="dataConsumerName()" />
     </div>

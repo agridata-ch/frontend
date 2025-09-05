@@ -78,7 +78,7 @@
     "state": "Status",
     "contact": {
       "title": "Kontaktdaten",
-      "description": "Bei Fragen oder Unklarheiten zum Datenantrag kontaktiere die Organisation unter:"
+      "description": "Bei Fragen oder Unklarheiten zum Datenantrag kontaktiere {{ organisationName }} unter:"
     },
     "form": {
       "request": {

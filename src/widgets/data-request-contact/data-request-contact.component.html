@@ -3,9 +3,9 @@
   *i18n="let t; prefix: 'data-request.contact'"
 >
   <div class="flex flex-col">
-    <h4>{{ t('title') }}</h4>
+    <span class="text-lg font-semibold">{{ t('title') }}</span>
     <span class="text-agridata-secondary-text">
-      {{ t('description') }}
+      {{ t('description', { organisationName: organisationName() }) }}
     </span>
   </div>
   <div class="flex gap-6">

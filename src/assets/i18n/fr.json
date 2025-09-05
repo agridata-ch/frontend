@@ -78,7 +78,7 @@
     "state": "Statut",
     "contact": {
       "title": "Coordonnées",
-      "description": "Pour toute question ou clarification concernant la demande de données, veuillez contacter l'organisation à l'adresse suivante:"
+      "description": "Pour toute question ou clarification concernant la demande de données, veuillez contacter {{ organisationName }} à l'adresse suivante:"
     },
     "form": {
       "request": {
