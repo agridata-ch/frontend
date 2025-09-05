@@ -1,9 +1,11 @@
 <div class="flex flex-col gap-6 bg-agridata-content-gray px-5 py-5 h-full w-full">
-  <img
-    [src]="generateMediaUrl(card().image.url)"
-    alt="{{ card().image.alternativeText }}"
-    class="w-[50px] h-[50px] object-cover rounded-full bg-white"
-  />
+  @if (card().image) {
+    <img
+      [src]="generateMediaUrl(card().image.url)"
+      alt="{{ card().image.alternativeText }}"
+      class="w-[50px] h-[50px] object-cover rounded-full bg-white"
+    />
+  }
   <div class="flex flex-col gap-2">
     <h5>{{ card().heading }}</h5>
     <span>{{ card().text }}</span>
