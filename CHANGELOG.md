@@ -1,3 +1,9 @@
+## [1.0.0-rc.59](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.58...v1.0.0-rc.59) (2025-09-05)
+
+### Features
+
+- **deps:** update aws-actions/configure-aws-credentials action to v5 ([e6aa5d6](https://github.com/agridata-ch/frontend/commit/e6aa5d6d578d9e386aa2251967951d1754c254b7))
+
 ## [1.0.0-rc.58](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.57...v1.0.0-rc.58) (2025-09-05)
 
 ### Bug Fixes
