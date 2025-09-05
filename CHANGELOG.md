@@ -1,3 +1,9 @@
+## [1.0.0-rc.56](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.55...v1.0.0-rc.56) (2025-09-05)
+
+### Bug Fixes
+
+- **cms:** fix cms card width ([0a6244f](https://github.com/agridata-ch/frontend/commit/0a6244f771f70250449fe2a6d96aeafa6aa9a0f9))
+
 ## [1.0.0-rc.55](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.54...v1.0.0-rc.55) (2025-09-03)
 
 ### Bug Fixes
