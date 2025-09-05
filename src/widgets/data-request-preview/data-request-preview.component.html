@@ -25,6 +25,7 @@
         <app-data-request-contact
           [phoneNumber]="dataRequest()?.contactPhoneNumber"
           [email]="dataRequest()?.contactEmailAddress"
+          [organisationName]="dataRequest()?.dataConsumerDisplayName"
         />
         <app-data-request-privacy-infos
           [dataConsumerName]="dataRequest()?.dataConsumerDisplayName"

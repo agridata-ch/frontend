@@ -78,7 +78,7 @@
     "state": "Stato",
     "contact": {
       "title": "Contatti",
-      "description": "Per qualsiasi domanda o chiarimento sulla richiesta di dati, contattare l'organizzazione all'indirizzo seguente:"
+      "description": "Per qualsiasi domanda o chiarimento sulla richiesta di dati, contattare {{ organisationName }} all'indirizzo seguente:"
     },
     "form": {
       "request": {

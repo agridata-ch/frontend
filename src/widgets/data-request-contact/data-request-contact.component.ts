@@ -18,6 +18,7 @@ import { I18nDirective } from '@/shared/i18n';
 export class DataRequestContactComponent {
   readonly phoneNumber = input<string>();
   readonly email = input<string>();
+  readonly organisationName = input<string>();
 
   readonly iconPhone = faPhone;
   readonly iconEmail = faEnvelope;
