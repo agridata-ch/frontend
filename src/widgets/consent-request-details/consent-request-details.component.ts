@@ -22,6 +22,7 @@ import { ToastService } from '@/shared/toast';
 import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { DataRequestContactComponent } from '@/widgets/data-request-contact';
 import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
 import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
 
@@ -31,7 +32,7 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
  * component supports approving or rejecting requests, provides undo actions, and displays
  * contextual toast notifications.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-09-05
  */
 @Component({
   selector: 'app-consent-request-details',
@@ -45,6 +46,7 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
     ButtonComponent,
     DataRequestPrivacyInfosComponent,
     AgridataAvatarComponent,
+    DataRequestContactComponent,
   ],
   templateUrl: './consent-request-details.component.html',
 })

@@ -37,6 +37,10 @@
         [purpose]="requestPurpose()"
         [products]="requestProducts()"
       />
+      <app-data-request-contact
+        [phoneNumber]="request()?.dataRequest?.contactPhoneNumber"
+        [email]="request()?.dataRequest?.contactEmailAddress"
+      />
       <app-data-request-privacy-infos [dataConsumerName]="dataConsumerName()" />
     </div>
     <div class="justify-center flex flex-col gap-1.5">
