@@ -1,3 +1,9 @@
+## [1.0.0-rc.58](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.57...v1.0.0-rc.58) (2025-09-05)
+
+### Bug Fixes
+
+- **contact:** fix styling, show organisation name ([adec035](https://github.com/agridata-ch/frontend/commit/adec03512b8fb38b8604725db6496efdd8cf4e07))
+
 ## [1.0.0-rc.57](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.56...v1.0.0-rc.57) (2025-09-05)
 
 ### Features
