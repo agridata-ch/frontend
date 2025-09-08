@@ -41,7 +41,6 @@
         </div>
         <app-uid-switch [variant]="UidSwitchVariant.Dark" />
       </div>
-      <app-contact-support-info />
     } @else {
       <ul>
         <li>
@@ -53,6 +52,7 @@
         </li>
       </ul>
     }
+    <app-contact-support-info />
     <agridata-language-select />
     <hr class="text-agridata-tertiary-text" />
     @if (isAuthenticated()) {
