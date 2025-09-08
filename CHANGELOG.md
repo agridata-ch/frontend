@@ -1,3 +1,9 @@
+## [1.0.0-rc.61](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.60...v1.0.0-rc.61) (2025-09-08)
+
+### Features
+
+- **contact:** add contact and support ([7fd9bdb](https://github.com/agridata-ch/frontend/commit/7fd9bdbdb9d8f02992d59342df84e6734de7bde8)), closes [DIGIB2-260](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-260)
+
 ## [1.0.0-rc.60](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.59...v1.0.0-rc.60) (2025-09-05)
 
 ### Features
