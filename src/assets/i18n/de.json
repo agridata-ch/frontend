@@ -288,5 +288,13 @@
   "countries": {
     "CH": "Schweiz",
     "LI": "Liechtenstein"
+  },
+  "header": {
+    "helpAndSupport": {
+      "title": "Hilfe & Support",
+      "support": {
+        "title": "Support"
+      }
+    }
   }
 }

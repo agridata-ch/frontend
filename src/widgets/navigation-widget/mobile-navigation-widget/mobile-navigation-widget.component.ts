@@ -9,6 +9,7 @@ import { I18nPipe } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { AgridataAvatarComponent, AvatarSize } from '@/shared/ui/agridata-avatar';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ContactSupportInfoComponent } from '@/widgets/contact-support-info';
 import { UidSwitchComponent, UidSwitchVariant } from '@/widgets/uid-switch';
 
 /**
@@ -26,6 +27,7 @@ import { UidSwitchComponent, UidSwitchVariant } from '@/widgets/uid-switch';
     I18nPipe,
     AgridataAvatarComponent,
     UidSwitchComponent,
+    ContactSupportInfoComponent,
   ],
   templateUrl: './mobile-navigation-widget.component.html',
 })
