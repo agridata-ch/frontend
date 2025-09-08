@@ -1,6 +1,7 @@
 <div class="px-12 py-6 flex justify-between items-center bg-agridata-primary-text text-white">
   <a class="agridata-logo text-[40px]" routerLink="/">agridata.ch</a>
   <div class="hidden lg:flex flex-row gap-10 items-center">
+    <app-contact-support-info />
     <agridata-language-select />
     @if (isAuthenticated() && userData()) {
       <app-account-overlay [userData]="userData()"></app-account-overlay>

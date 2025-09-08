@@ -6,6 +6,7 @@ import { I18nPipe } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AccountOverlayComponent } from '@/widgets/account-overlay';
+import { ContactSupportInfoComponent } from '@/widgets/contact-support-info';
 import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
 
 /**
@@ -13,7 +14,7 @@ import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
  * conditionally shows the account overlay or login button depending on authentication state. It
  * integrates authentication services and ensures reactive updates when user data changes.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-09-08
  */
 @Component({
   selector: 'app-header-widget',
@@ -24,6 +25,7 @@ import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
     AccountOverlayComponent,
     NavigationWidgetComponent,
     ButtonComponent,
+    ContactSupportInfoComponent,
   ],
   templateUrl: './header-widget.component.html',
   styleUrl: './header-widget.component.css',
