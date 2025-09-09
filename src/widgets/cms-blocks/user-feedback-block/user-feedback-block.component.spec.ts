@@ -19,32 +19,16 @@ describe('UserFeedbackBlockComponent', () => {
     componentRef = fixture.componentRef;
 
     componentRef.setInput('block', {
-      id: 33,
-      heading: 'Ihre digitale Souveränität:',
-      items: [
-        {
-          id: 114,
-          label: 'Sie entscheiden, wer Zugriff auf Ihre Daten erhält',
-          icon: {
-            id: 17,
-            documentId: 'ggg7xbwh91edowi71d44s6fm',
-            alternativeText: null,
-            url: '/uploads/icon_97b99a9124.png',
-            formats: null,
-          },
-        },
-        {
-          id: 115,
-          label: 'Transparente Übersicht auf Ihrem persönlichen Dashboard',
-          icon: {
-            id: 17,
-            documentId: 'ggg7xbwh91edowi71d44s6fm',
-            alternativeText: null,
-            url: '/uploads/icon_97b99a9124.png',
-            formats: null,
-          },
-        },
-      ],
+      id: 5,
+      quote:
+        'Endlich weiss ich, wer welche Daten hat. Mit einem Klick kann ich Freigaben erteilen oder stoppen. Das gibt mir Sicherheit.',
+      name: 'Hans Zimmermann',
+      location: 'Bio-Hof Thurgau',
+      image: {
+        id: 23,
+        alternativeText: null,
+        url: '/uploads/Screenshot_2025_09_02_at_12_42_36_aa1d98d9a7.png',
+      },
     });
 
     fixture.detectChanges();

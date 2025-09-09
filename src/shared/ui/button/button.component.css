@@ -149,6 +149,14 @@
   border-color: var(--color-blue-100);
 }
 
+.agridata-button.agridata-button-icon:disabled,
+.agridata-button.agridata-button-icon-outline:disabled {
+  background-color: transparent;
+  border-color: transparent;
+  cursor: not-allowed;
+  color: var(--color-agridata-primary-200);
+}
+
 .agridata-button.agridata-button-icon-outline {
   border-color: var(--color-agridata-primary-600);
 }

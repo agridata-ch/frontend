@@ -1,0 +1,25 @@
+<div class="bg-white p-6 lg:p-8 border border-agridata-stroke rounded-lg flex gap-14 w-full h-full">
+  @if (block().image) {
+    <img
+      [src]="generateMediaUrl(block().image.url)"
+      [alt]="block().image.alternativeText"
+      class="w-[200px] h-[200px] rounded-full object-cover hidden lg:block"
+    />
+  }
+  <div class="flex flex-col gap-11 justify-between">
+    <span>{{ block().quote }}</span>
+    <div class="flex gap-2">
+      @if (block().image) {
+        <img
+          [src]="generateMediaUrl(block().image.url)"
+          [alt]="block().image.alternativeText"
+          class="w-[50px] h-[50px] rounded-full object-cover lg:hidden"
+        />
+      }
+      <div class="flex flex-col gap-2">
+        <span class="font-semibold lg:font-bold lg:text-lg">{{ block().name }}</span>
+        <span class="text-sm text-agridata-tertiary-text">{{ block().location }}</span>
+      </div>
+    </div>
+  </div>
+</div>
