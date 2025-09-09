@@ -1,3 +1,9 @@
+## [1.0.0-rc.63](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.62...v1.0.0-rc.63) (2025-09-09)
+
+### Features
+
+- **cms-footer:** add cms-footer ([040d071](https://github.com/agridata-ch/frontend/commit/040d0715479caf88bf4f965fa0b92ebb71605a30)), closes [DIGIB2-745](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-745)
+
 ## [1.0.0-rc.62](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.61...v1.0.0-rc.62) (2025-09-08)
 
 ### Features
