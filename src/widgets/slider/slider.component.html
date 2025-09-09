@@ -1,0 +1,39 @@
+<div class="slider-container" #sliderContainer>
+  <div
+    class="slider-track mb-2"
+    #sliderTrack
+    [style.transform]="'translateX(' + translateX() + 'px)'"
+  >
+    <ng-content></ng-content>
+  </div>
+  <div class="flex justify-center relative min-h-8">
+    <div class="hidden lg:flex items-center">
+      @for (page of totalPages(); track $index) {
+        <span
+          class="inline-block w-2.5 h-2.5 rounded-full mx-1 transition-all ease-in-out duration-300"
+          [class.bg-agridata-primary-600]="$index === currentIndex()"
+          [class.bg-agridata-stroke]="$index !== currentIndex()"
+          [class.w-5]="$index === currentIndex()"
+        ></span>
+      }
+    </div>
+    <div class="lg:absolute lg:right-0">
+      <app-agridata-button
+        [variant]="ButtonVariants.Icon"
+        (onClick)="goPrev()"
+        [disabled]="currentIndex() === 0"
+      >
+        <fa-icon class="lg:hidden" size="xl" [icon]="iconChevronLeft"></fa-icon>
+        <fa-icon class="hidden lg:flex" size="lg" [icon]="iconChevronLeft"></fa-icon>
+      </app-agridata-button>
+      <app-agridata-button
+        [variant]="ButtonVariants.Icon"
+        (onClick)="goNext()"
+        [disabled]="currentIndex() === totalPages().length - 1"
+      >
+        <fa-icon class="lg:hidden" size="xl" [icon]="iconChevronRight"></fa-icon>
+        <fa-icon class="hidden lg:flex" size="lg" [icon]="iconChevronRight"></fa-icon>
+      </app-agridata-button>
+    </div>
+  </div>
+</div>
