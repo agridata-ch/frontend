@@ -4,7 +4,6 @@ import { Component, input } from '@angular/core';
 import { Block } from '@/entities/cms';
 import { CMS_BLOCKS } from '@/shared/constants/constants';
 import {
-  HeroBlockComponent,
   SectionCardGridBlockComponent,
   SectionMediaBlockComponent,
   SectionTextImageBlockComponent,
@@ -15,14 +14,13 @@ import {
  * Component for rendering CMS blocks dynamically. Selects the appropriate block component based on
  * type
  *
- * CommentLastReviewed: 2025-09-02
+ * CommentLastReviewed: 2025-09-09
  */
 @Component({
   selector: 'app-cms-block-renderer',
   standalone: true,
   imports: [
     CommonModule,
-    HeroBlockComponent,
     SectionMediaBlockComponent,
     SectionTextImageBlockComponent,
     SectionUserFeedbackBlockComponent,

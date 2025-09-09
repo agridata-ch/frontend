@@ -1,6 +1,6 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
-import { Block, HeroBlock } from '@/entities/cms';
+import { HeroBlock } from '@/entities/cms';
 import { generateMediaUrl } from '@/shared/lib/cms';
 import { ButtonComponent, ButtonVariants, HrefTarget } from '@/shared/ui/button';
 
@@ -16,13 +16,13 @@ import { ButtonComponent, ButtonVariants, HrefTarget } from '@/shared/ui/button'
   imports: [ButtonComponent],
 })
 export class HeroBlockComponent {
-  readonly block = input.required<Block>();
+  readonly block = input.required<HeroBlock>();
 
   readonly generateMediaUrl = generateMediaUrl;
   readonly ButtonVariants = ButtonVariants;
   readonly HrefTarget = HrefTarget;
 
-  protected readonly cmsData = computed(() => {
-    return this.block() as HeroBlock;
-  });
+  // protected readonly cmsData = computed(() => {
+  //   return this.block() as HeroBlock;
+  // });
 }

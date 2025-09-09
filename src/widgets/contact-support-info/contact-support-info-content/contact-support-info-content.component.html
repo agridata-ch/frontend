@@ -5,16 +5,13 @@
   >
     <a
       href="tel:{{ phoneNumber() }}"
-      class="lg:text-agridata-primary-600 hover:text-agridata-primary-500 group p-4"
+      class="lg:text-agridata-primary-600 hover:underline group p-4"
     >
-      <fa-icon [icon]="iconPhone" class="mr-1 group-hover:text-agridata-primary-500" />
+      <fa-icon [icon]="iconPhone" class="mr-1 lg:group-hover:underline" />
       <span>{{ phoneNumber() }}</span>
     </a>
-    <a
-      href="mailto:{{ email() }}"
-      class="lg:text-agridata-primary-600 hover:text-agridata-primary-500 group p-4"
-    >
-      <fa-icon [icon]="iconEmail" class="mr-1 group-hover:text-agridata-primary-500" />
+    <a href="mailto:{{ email() }}" class="lg:text-agridata-primary-600 hover:underline group p-4">
+      <fa-icon [icon]="iconEmail" class="mr-1 lg:group-hover:underline" />
       <span>{{ email() }}</span>
     </a>
   </div>

@@ -1,10 +1,10 @@
 export enum ButtonVariants {
   Primary = 'primary',
   PrimaryAccept = 'primary-accept',
-  PrimaryHero = 'primary-hero',
+  PrimaryCms = 'primary-cms',
   Secondary = 'secondary',
   SecondaryReject = 'secondary-reject',
-  SecondaryHero = 'secondary-hero',
+  SecondaryCms = 'secondary-cms',
   Tertiary = 'tertiary',
   Icon = 'icon',
   IconOutline = 'icon-outline',
