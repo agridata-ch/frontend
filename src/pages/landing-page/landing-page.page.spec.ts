@@ -12,37 +12,58 @@ const mockResponse = {
     createdAt: '2025-08-18T07:53:32.135Z',
     updatedAt: '2025-08-19T06:07:27.571Z',
     publishedAt: '2025-08-19T06:07:27.587Z',
-    blocks: [
-      {
-        __component: 'blocks.hero',
-        id: 19,
-        heading: 'Der Datenraum für den Agrar & Ernährungssektor',
-        subHeading: 'Daten sicher, vereinfacht und effizient austauschen mit dem Once-Only-Prinzip',
-        cta: [
-          {
-            id: 41,
-            href: '/login',
-            label: 'Jetzt starten',
-            isExternal: false,
-            isButtonLink: true,
-            type: 'PRIMARY',
-          },
-          {
-            id: 42,
-            href: 'https://www.blw.admin.ch/de/anwendung-agridata',
-            label: 'Mehr erfahren',
-            isExternal: true,
-            isButtonLink: true,
-            type: 'SECONDARY',
-          },
-        ],
-        image: {
-          id: 14,
-          documentId: 'de3uu5s58pw44pujnitq5i9j',
-          alternativeText: null,
-          url: '/uploads/366a3361ab7ed1e19a8c83c77b6b499131aa4bbb_b4ea8c324a.jpg',
+    hero: {
+      __component: 'blocks.hero',
+      id: 19,
+      heading: 'Der Datenraum für den Agrar & Ernährungssektor',
+      subHeading: 'Daten sicher, vereinfacht und effizient austauschen mit dem Once-Only-Prinzip',
+      cta: [
+        {
+          id: 41,
+          href: '/login',
+          label: 'Jetzt starten',
+          isExternal: false,
+          isButtonLink: true,
+          type: 'PRIMARY',
         },
+        {
+          id: 42,
+          href: 'https://www.blw.admin.ch/de/anwendung-agridata',
+          label: 'Mehr erfahren',
+          isExternal: true,
+          isButtonLink: true,
+          type: 'SECONDARY',
+        },
+      ],
+      image: {
+        id: 14,
+        documentId: 'de3uu5s58pw44pujnitq5i9j',
+        alternativeText: null,
+        url: '/uploads/366a3361ab7ed1e19a8c83c77b6b499131aa4bbb_b4ea8c324a.jpg',
       },
+    },
+    footer: {
+      id: 2,
+      heading: 'Ready for the Footer?',
+      subHeading: 'Do you have any questions?',
+      cta: {
+        id: 93,
+        href: '/login',
+        label: 'Get Started',
+        isExternal: false,
+        isButtonLink: true,
+        type: 'Primary',
+      },
+      contactLink: {
+        id: 94,
+        href: '/contact',
+        label: 'Contact Us',
+        isExternal: false,
+        isButtonLink: false,
+        type: 'Primary',
+      },
+    },
+    blocks: [
       {
         __component: 'blocks.section-heading-text-image',
         id: 20,

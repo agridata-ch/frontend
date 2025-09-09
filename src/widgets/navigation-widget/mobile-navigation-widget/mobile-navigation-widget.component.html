@@ -1,7 +1,7 @@
 <app-agridata-button
   (onClick)="toggleNavigation()"
   [variant]="ButtonVariants.Icon"
-  [additionalClass]="'group'"
+  [additionalClass]="'group w-10'"
 >
   <fa-icon
     [icon]="menuIcon"
@@ -22,7 +22,8 @@
     <app-agridata-button
       (onClick)="toggleNavigation()"
       [variant]="ButtonVariants.Icon"
-      class="self-end group"
+      class="flex self-end group"
+      [additionalClass]="'self-end'"
     >
       <fa-icon
         [icon]="closeIcon"
@@ -57,7 +58,7 @@
     <hr class="text-agridata-tertiary-text" />
     @if (isAuthenticated()) {
       <app-agridata-button
-        [variant]="ButtonVariants.SecondaryHero"
+        [variant]="ButtonVariants.SecondaryCms"
         (onClick)="authService.logout()"
         [additionalClass]="'w-full'"
       >
@@ -65,7 +66,7 @@
       </app-agridata-button>
     } @else {
       <app-agridata-button
-        [variant]="ButtonVariants.SecondaryHero"
+        [variant]="ButtonVariants.SecondaryCms"
         (onClick)="authService.login()"
         [additionalClass]="'w-full'"
       >

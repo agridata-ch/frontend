@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, output } from '@angular/core';
+import { Component, HostBinding, input, output } from '@angular/core';
 
 import { ButtonVariants, HrefTarget } from './button.model';
 
@@ -8,7 +8,7 @@ import { ButtonVariants, HrefTarget } from './button.model';
  * ARIA label, selection state, custom classes, and optional hyperlink mode. It emits click events
  * and ensures accessibility through keyboard interaction support.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-09-09
  */
 @Component({
   selector: 'app-agridata-button',
@@ -27,6 +27,8 @@ export class ButtonComponent {
   additionalClass = input<string>('');
   href = input<string>('');
   target = input<HrefTarget>(HrefTarget.Self);
+
+  @HostBinding('style.display') display = 'contents';
 
   handleClick(event: Event) {
     this.onClick.emit(event);

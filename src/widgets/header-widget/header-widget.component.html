@@ -6,7 +6,7 @@
     @if (isAuthenticated() && userData()) {
       <app-account-overlay [userData]="userData()"></app-account-overlay>
     } @else {
-      <app-agridata-button [variant]="ButtonVariants.SecondaryHero" (onClick)="login()">
+      <app-agridata-button [variant]="ButtonVariants.SecondaryCms" (onClick)="login()">
         {{ 'account.login' | i18n }}
       </app-agridata-button>
     }

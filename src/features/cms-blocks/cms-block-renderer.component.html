@@ -1,8 +1,5 @@
 <div [class.bg-white]="isOdd()">
   @switch (block().__component) {
-    @case (CMS_BLOCKS.HERO) {
-      <app-hero-block [block]="block()" />
-    }
     @case (CMS_BLOCKS.SECTION_MEDIA) {
       <app-section-media-block [block]="block()" />
     }

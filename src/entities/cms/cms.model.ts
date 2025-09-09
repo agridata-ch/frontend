@@ -64,12 +64,19 @@ export interface TextImageBlock {
 }
 
 export interface HeroBlock {
-  __component: 'blocks.hero';
   id: number;
   heading: string;
   subHeading: string;
   cta: CTA[];
   image: Image;
+}
+
+export interface FooterBlock {
+  id: number;
+  heading: string;
+  subHeading: string;
+  cta: CTA | null;
+  contactLink: CTA | null;
 }
 
 export interface UserFeedbackBlock {
@@ -124,7 +131,6 @@ export interface SectionCardGridBlock {
 }
 
 export type Block =
-  | HeroBlock
   | SectionMediaBlock
   | SectionTextImageBlock
   | TextImageBlock
@@ -139,6 +145,8 @@ export interface PageData {
   updatedAt: string;
   publishedAt: string;
   blocks: Block[];
+  footer: FooterBlock;
+  hero: HeroBlock;
 }
 
 export interface StrapiResponse {
