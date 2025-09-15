@@ -1,3 +1,9 @@
+## [1.0.0-rc.64](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.63...v1.0.0-rc.64) (2025-09-15)
+
+### Features
+
+- **slider:** add slider component ([cba2a85](https://github.com/agridata-ch/frontend/commit/cba2a8538f8fe00317c0ace2e536d82d8cf0f8c8)), closes [DIGIB2-743](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-743)
+
 ## [1.0.0-rc.63](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.62...v1.0.0-rc.63) (2025-09-09)
 
 ### Features
