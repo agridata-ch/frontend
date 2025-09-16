@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
-import { ParticipantsService } from '@/entities/openapi';
+import { UsersService } from '@/entities/openapi';
 
 /**
  * Service for interacting with participant-related API endpoints. Provides methods to retrieve UIDs
@@ -12,8 +12,8 @@ import { ParticipantsService } from '@/entities/openapi';
 @Injectable({
   providedIn: 'root',
 })
-export class ParticipantService {
-  private readonly apiService = inject(ParticipantsService);
+export class UserService {
+  private readonly apiService = inject(UsersService);
 
   async getAuthorizedUids() {
     return firstValueFrom(this.apiService.getAuthorizedUids());

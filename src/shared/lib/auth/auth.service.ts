@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Subject, takeUntil } from 'rxjs';
 
-import { ParticipantsService, UserInfoDto } from '@/entities/openapi';
+import { UserInfoDto, UsersService } from '@/entities/openapi';
 import { USER_ROLES } from '@/shared/constants/constants';
 
 /**
@@ -15,7 +15,7 @@ import { USER_ROLES } from '@/shared/constants/constants';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly oidcService = inject(OidcSecurityService);
-  private readonly participantService = inject(ParticipantsService);
+  private readonly participantService = inject(UsersService);
   private readonly router = inject(Router);
   private readonly destroy$ = new Subject<void>();
 

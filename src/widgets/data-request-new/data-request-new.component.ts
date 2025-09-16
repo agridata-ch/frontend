@@ -6,10 +6,8 @@ import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import DataRequestDtoSchema from '@/assets/formSchemas/DataRequestUpdateDto.json';
 import { DataRequestService } from '@/entities/api';
-import {
-  ConsentRequestDetailViewDtoDataRequestStateCode,
-  DataRequestDto,
-} from '@/entities/openapi';
+import { DataRequestDto } from '@/entities/openapi';
+import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { Dto, buildReactiveForm, flattenFormGroup } from '@/shared/lib/form.helper';
 import { ToastService, ToastType } from '@/shared/toast';
@@ -423,5 +421,9 @@ export class DataRequestNewComponent {
         this.logoFile.set(null);
       });
     }
+  }
+
+  invitationLink() {
+    return `${window.location.origin}/consent-requests/create/${this.dataRequestId()}`;
   }
 }

@@ -11,7 +11,7 @@ import {
 
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { ParticipantService } from '@/entities/api/participant.service';
+import { UserService } from '@/entities/api/user.service';
 import { UidDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
@@ -20,7 +20,7 @@ import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-s
 describe('producerUidGuard', () => {
   let producerUidGuard: ProducerUidGuard;
   let uid: string;
-  let participantService: Partial<ParticipantService>;
+  let participantService: Partial<UserService>;
   let agridataStateService: Partial<AgridataStateService>;
   let authService: Partial<AuthService>;
   const activatedRouteSnapshot = (
@@ -50,7 +50,7 @@ describe('producerUidGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         ProducerUidGuard,
-        { provide: ParticipantService, useValue: participantService },
+        { provide: UserService, useValue: participantService },
         { provide: AgridataStateService, useValue: agridataStateService },
         { provide: AuthService, useValue: authService },
         provideRouter([]),

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { of } from 'rxjs';
 
-import { ParticipantsService } from '@/entities/openapi';
+import { UsersService } from '@/entities/openapi';
 import { mockUserData } from '@/shared/testing/mocks/mock-auth.service';
 
 import { AuthService } from './auth.service';
@@ -16,7 +16,7 @@ describe('AuthService', () => {
     logoff: jest.Mock;
   };
   let mockRouter: { navigate: jest.Mock<Promise<boolean>, [unknown[]]> };
-  let mockParticipantService: Partial<ParticipantsService>;
+  let mockUsersService: Partial<UsersService>;
   let setItemSpy: jest.SpyInstance;
   let removeItemSpy: jest.SpyInstance;
 
@@ -43,7 +43,7 @@ describe('AuthService', () => {
     mockRouter = {
       navigate: jest.fn().mockResolvedValue(true),
     };
-    mockParticipantService = {
+    mockUsersService = {
       getUserInfo: jest.fn().mockReturnValue(of(mockUserData)),
     };
 
@@ -52,7 +52,7 @@ describe('AuthService', () => {
         AuthService,
         { provide: OidcSecurityService, useValue: mockOidc },
         { provide: Router, useValue: mockRouter },
-        { provide: ParticipantsService, useValue: mockParticipantService },
+        { provide: UsersService, useValue: mockUsersService },
       ],
     });
   });

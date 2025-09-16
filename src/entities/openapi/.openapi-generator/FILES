@@ -8,9 +8,9 @@ api/dataProducts.service.ts
 api/dataRequests.service.ts
 api/dataTransfer.service.ts
 api/infoResource.service.ts
-api/participants.service.ts
 api/testData.service.ts
 api/uIDRegisterSearch.service.ts
+api/users.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -18,10 +18,9 @@ index.ts
 model/burDto.ts
 model/consentRequestConsumerViewDto.ts
 model/consentRequestCreatedDto.ts
-model/consentRequestDetailViewDto.ts
-model/consentRequestDetailViewDtoDataRequest.ts
-model/consentRequestDetailViewDtoDataRequestStateCode.ts
 model/consentRequestProducerViewDto.ts
+model/consentRequestProducerViewDtoDataRequest.ts
+model/consentRequestProducerViewDtoDataRequestStateCode.ts
 model/consentRequestStateEnum.ts
 model/dataProductDto.ts
 model/dataRequestDescriptionDto.ts
@@ -38,10 +37,12 @@ model/exceptionEnum.ts
 model/farmTypeEnum.ts
 model/legalFormEnum.ts
 model/models.ts
+model/pageResponseDtoUserInfoDto.ts
 model/translationDto.ts
 model/uidDto.ts
 model/uidRegisterAddressDto.ts
 model/uidRegisterOrganisationDto.ts
 model/userInfoDto.ts
 param.ts
+provide-api.ts
 variables.ts

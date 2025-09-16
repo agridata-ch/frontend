@@ -24,7 +24,8 @@
         <app-data-request-form-producer [form]="form()" [formDisabled]="formDisabled()" />
       }
       @case (FORM_GROUP_NAMES.CONTRACT) {
-        <span>step 5</span>
+        <h3>Invitation link</h3>
+        <a href="{{ invitationLink() }}">{{ invitationLink() }}</a>
       }
       @case (FORM_GROUP_NAMES.COMPLETION) {
         <span>step 6</span>

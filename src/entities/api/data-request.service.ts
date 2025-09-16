@@ -2,12 +2,9 @@ import { Injectable, inject, resource } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { DataRequestsService } from '@/entities/openapi/api/dataRequests.service';
+import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
 
-import {
-  ConsentRequestDetailViewDtoDataRequestStateCode,
-  DataRequestDto,
-  DataRequestUpdateDto,
-} from '../openapi';
+import { DataRequestDto, DataRequestUpdateDto } from '../openapi';
 
 /**
  * Service for managing data requests through the API. Provides methods to create, update, submit,

@@ -2,7 +2,7 @@ import { provideLocationMocks } from '@angular/common/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ParticipantService } from '@/entities/api/participant.service';
+import { UserService } from '@/entities/api/user.service';
 import { UidDto } from '@/entities/openapi';
 import { AuthService } from '@/shared/lib/auth';
 import { MockAuthService } from '@/shared/testing/mocks';
@@ -24,7 +24,7 @@ const uidDtos: UidDto[] = [
   } as UidDto,
 ];
 
-const participantService: Partial<ParticipantService> = {
+const participantService: Partial<UserService> = {
   getAuthorizedUids: jest.fn().mockReturnValue(Promise.resolve(uidDtos)),
 };
 
@@ -43,7 +43,7 @@ describe('AccountOverlayComponent', () => {
       imports: [AccountOverlayComponent],
       providers: [
         { provide: AuthService, useClass: MockAuthService },
-        { provide: ParticipantService, useValue: participantService },
+        { provide: UserService, useValue: participantService },
         provideLocationMocks(),
       ],
     }).compileComponents();
