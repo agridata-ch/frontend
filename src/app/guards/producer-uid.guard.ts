@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { ParticipantService } from '@/entities/api/participant.service';
+import { UserService } from '@/entities/api/user.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 
@@ -18,7 +18,7 @@ import { AuthService } from '@/shared/lib/auth';
 })
 export class ProducerUidGuard implements CanActivate {
   private readonly router = inject(Router);
-  private readonly participantService = inject(ParticipantService);
+  private readonly participantService = inject(UserService);
   private readonly agridataStateService = inject(AgridataStateService);
   private readonly authorizationService = inject(AuthService);
 

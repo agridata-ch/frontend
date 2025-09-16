@@ -2,11 +2,9 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConsentRequestService } from '@/entities/api/consent-request.service';
-import {
-  ConsentRequestDetailViewDto,
-  ConsentRequestDetailViewDtoDataRequestStateCode,
-  ConsentRequestStateEnum,
-} from '@/entities/openapi';
+import { ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestDetailViewDto } from '@/entities/openapi/model/consentRequestDetailViewDto';
+import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
 import { ToastService, ToastType } from '@/shared/toast';
 import { AgridataTableData } from '@/shared/ui/agridata-table';
 import { BadgeVariant } from '@/shared/ui/badge';

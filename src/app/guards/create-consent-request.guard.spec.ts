@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, Router, UrlTree, convertToParamMap } from '@ang
 import { CreateConsentRequestGuard } from '@/app/guards/create-consent-request.guard';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { ParticipantService } from '@/entities/api/participant.service';
+import { UserService } from '@/entities/api/user.service';
 import { ConsentRequestCreatedDto } from '@/entities/openapi/model/consentRequestCreatedDto';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { mockParticipantService } from '@/shared/testing/mocks';
@@ -57,7 +57,7 @@ describe('createConsentRequestGuard', () => {
       providers: [
         CreateConsentRequestGuard,
         { provide: ConsentRequestService, useValue: consentServiceMock },
-        { provide: ParticipantService, useValue: mockParticipantService },
+        { provide: UserService, useValue: mockParticipantService },
         { provide: AgridataStateService, useValue: mockAgridataStateServiceInstance },
         { provide: ProducerUidGuard, useValue: mockProducerUidGuard },
         { provide: Router, useValue: mockRouter },

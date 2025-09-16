@@ -30,10 +30,6 @@ export class ConsentRequestService {
     defaultValue: [],
   });
 
-  async getConsentRequest(consentRequestId: string) {
-    return firstValueFrom(this.apiService.getConsentRequest(consentRequestId));
-  }
-
   async updateConsentRequestStatus(consentRequestId: string, stateCode: string) {
     return firstValueFrom(
       this.apiService.updateConsentRequestStatus(consentRequestId, `"${stateCode}"`),
