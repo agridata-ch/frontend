@@ -1,3 +1,9 @@
+## [1.0.0-rc.65](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.64...v1.0.0-rc.65) (2025-09-16)
+
+### Bug Fixes
+
+- **user-api:** add changes to user api ([981c1cc](https://github.com/agridata-ch/frontend/commit/981c1cc6b0202a245eb2a35518f1333513815704)), closes [DIGIB2-696](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-696)
+
 ## [1.0.0-rc.64](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.63...v1.0.0-rc.64) (2025-09-15)
 
 ### Features
