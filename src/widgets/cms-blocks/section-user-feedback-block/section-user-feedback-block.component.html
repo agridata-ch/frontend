@@ -1,5 +1,8 @@
-<div class="px-10 py-20 flex flex-col items-center w-full">
-  <h2 class="mb-10">{{ cmsData().heading }}</h2>
+<div class="px-10 py-20 flex flex-col items-center w-full gap-10">
+  <div class="flex flex-col gap-4 text-center w-full">
+    <h2>{{ cmsData().heading }}</h2>
+    <p class="text-lg font-medium leading-[140%]">{{ cmsData().subHeading }}</p>
+  </div>
   <app-slider class="contents w-full">
     @for (block of cmsData().feedbackBlocks; track `${cmsData().__component}_${block.id}`) {
       <app-user-feedback-block [block]="block" class="h-full" />
