@@ -5,15 +5,16 @@
     [formControl]="control()!"
     [placeholder]="placeholder()"
     (blur)="onBlur.emit()"
-    class="border rounded-md border-gray-300 pl-5 py-3 pr-4 placeholder-gray-400 h-[120px] mb-2"
+    class="border rounded-md border-gray-300 pl-5 py-3 pr-4 h-[120px] mb-2"
     [class.border-red-500]="hasError()"
     [class.bg-gray-100]="disabled()"
+    [class.bg-white]="!disabled()"
     [class.cursor-not-allowed]="disabled()"
     [attr.maxlength]="maxCharacters()"
   ></textarea>
   @if (maxCharacters()) {
     <p class="text-sm text-gray-500 self-end absolute -bottom-6" [class.text-red-500]="hasError()">
-      {{ control()?.value.length }} / {{ maxCharacters() }}
+      {{ control()?.value?.length }} / {{ maxCharacters() }}
     </p>
   }
 </div>

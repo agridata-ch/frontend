@@ -62,6 +62,19 @@ export class FormControlComponent {
   }
 
   getMaxCharacters() {
-    return this.control()?.maxLength ?? null;
+    const control = this.control();
+
+    // First check if the maxLength was directly set on the control
+    if (control?.maxLength) {
+      return control.maxLength;
+    }
+
+    // For specific known controls, provide hardcoded values
+    // This allows us to display character count without complex validator inspection
+    if (this.controlType() === ControlTypes.TEXT_AREA && this.id() === 'contactFormMessage') {
+      return 500;
+    }
+
+    return null;
   }
 }

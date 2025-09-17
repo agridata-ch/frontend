@@ -130,12 +130,20 @@ export interface SectionCardGridBlock {
   cards: Card[];
 }
 
+export interface SectionContactFormBlock {
+  __component: 'blocks.contact-form';
+  id: number;
+  heading: string;
+  subHeading: string;
+}
+
 export type Block =
   | SectionMediaBlock
   | SectionTextImageBlock
   | TextImageBlock
   | SectionUserFeedbackBlock
-  | SectionCardGridBlock;
+  | SectionCardGridBlock
+  | SectionContactFormBlock;
 
 export interface PageData {
   id: number;

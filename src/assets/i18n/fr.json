@@ -296,5 +296,27 @@
         "title": "Assistance"
       }
     }
+  },
+  "contact-form": {
+    "firstName": {
+      "label": "Prénom"
+    },
+    "lastName": {
+      "label": "Nom de famille"
+    },
+    "organisation": {
+      "label": "Organisation (facultatif)"
+    },
+    "email": {
+      "label": "E-Mail"
+    },
+    "phone": {
+      "label": "Numéro de téléphone (facultatif)",
+      "placeholder": "+41 00 000 000"
+    },
+    "submit": "Envoyer la demande",
+    "message": {
+      "label": "Votre demande"
+    }
   }
 }

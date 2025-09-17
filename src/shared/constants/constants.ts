@@ -22,11 +22,13 @@ export const NAVIGATION_STATE_OPEN = 'navigationStateOpen';
 
 export const CMS_BLOCKS = {
   HERO: 'blocks.hero',
+  FOOTER: 'blocks.footer',
+  LIST: 'blocks.list',
   SECTION_MEDIA: 'layout.section-media',
   SECTION_TEXT_IMAGE: 'layout.section-text-image',
   SECTION_USER_FEEDBACK: 'layout.section-user-feedback',
   SECTION_CARD_GRID: 'layout.section-card-grid',
-  LIST: 'blocks.list',
+  CONTACT_FORM: 'blocks.contact-form',
 };
 
 export const VIDEO_FORMATS = ['.mp4', '.webm', '.wmv', '.avi', '.mov', '.mkv', '.flv'];
