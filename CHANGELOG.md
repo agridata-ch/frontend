@@ -1,3 +1,9 @@
+## [1.0.0-rc.67](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.66...v1.0.0-rc.67) (2025-09-18)
+
+### Bug Fixes
+
+- **user-feedback-block:** fix image shrink ([952b07e](https://github.com/agridata-ch/frontend/commit/952b07e4e967e18eb1df60cc33a7ba1ccf259201))
+
 ## [1.0.0-rc.66](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.65...v1.0.0-rc.66) (2025-09-18)
 
 ### Features
