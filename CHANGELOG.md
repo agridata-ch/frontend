@@ -1,3 +1,13 @@
+## [1.0.0-rc.68](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.67...v1.0.0-rc.68) (2025-09-19)
+
+### Features
+
+- **contact-form:** add email send ([220f759](https://github.com/agridata-ch/frontend/commit/220f7591c1a748fe2f2a9d2e21e1c276cc225162)), closes [DIGIB2-749](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-749)
+
+### Bug Fixes
+
+- **contact-form:** fix contact-form ([bf57a1c](https://github.com/agridata-ch/frontend/commit/bf57a1c9792bd92ac079c09362b0d2e7640eb46a)), closes [DIGIB2-749](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-749)
+
 ## [1.0.0-rc.67](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.66...v1.0.0-rc.67) (2025-09-18)
 
 ### Bug Fixes
