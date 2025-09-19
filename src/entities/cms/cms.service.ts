@@ -20,7 +20,7 @@ export class CmsService {
   private readonly http = inject(HttpClient);
   private readonly i18nService = inject(I18nService);
   private readonly apiUrl = environment.cmsBaseUrl;
-  private readonly emailSecret = environment.secrets.emailSecret;
+  private readonly cmsContactUrl = environment.cmsContactUrl;
 
   readonly fetchLandingPage = resource({
     params: () => ({ locale: this.i18nService.lang() }),
@@ -40,12 +40,6 @@ export class CmsService {
     });
 
   readonly submitContactForm = (data: ContactFormData) => {
-    return firstValueFrom(
-      this.http.post(`${this.apiUrl}/api/contact`, data, {
-        headers: {
-          'X-EMAIL-SECRET': this.emailSecret,
-        },
-      }),
-    );
+    return firstValueFrom(this.http.post(`${this.cmsContactUrl}`, data));
   };
 }
