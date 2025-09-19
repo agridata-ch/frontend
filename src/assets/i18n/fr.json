@@ -13,7 +13,7 @@
       "tableActions": {
         "title": "Actions",
         "details": "Détails",
-        "consent": "Consentir",
+        "consent": "Approuver",
         "decline": "Refuser"
       },
       "error": "Erreur lors de la mise à jour de la demande. RequestId: {{requestId}}"
@@ -26,7 +26,7 @@
     },
     "details": {
       "actions": {
-        "accept": "Consentir",
+        "accept": "Approuver",
         "reject": "Refuser"
       },
       "stateCode": {
@@ -35,7 +35,7 @@
         "OPENED": "Ouvert",
         "UNKNOWN": "Inconnu"
       },
-      "footerInformation": "Vous pouvez modifier votre consentement à tout moment.",
+      "footerInformation": "Vous pouvez modifier votre approbation à tout moment.",
       "requestDate": "Demande du {{ date }}",
       "sidepanel": {
         "title": "Vue détaillée"
@@ -43,13 +43,13 @@
     },
     "toast": {
       "title": {
-        "GRANTED": "Consentement accordé",
-        "DECLINED": "Consentement refusé",
-        "DEFAULT": "Demande mise à jour"
+        "GRANTED": "Approbation accordé",
+        "DECLINED": "Approbation refusé",
+        "DEFAULT": "La demande à été mise à jour"
       },
       "message": {
-        "GRANTED": "Vous avez consenti avec succès à la demande {{ name }}.",
-        "DECLINED": "Vous avez refusé avec succès la demande {{ name }}.",
+        "GRANTED": "La demande a été validée avec votre approbation. {{ name }}.",
+        "DECLINED": "La demande a été refusée avec succès. {{ name }}.",
         "DEFAULT": "La demande a été mise à jour."
       },
       "undo": "Annuler l'action"
@@ -57,7 +57,7 @@
     "dataRequest": {
       "title": "Demande de données",
       "state": "Statut",
-      "consumerName": "Demandeur",
+      "consumerName": "Requérant de données",
       "date": "Date de la demande",
       "stateCode": {
         "OPENED": "Ouvert",
@@ -72,7 +72,7 @@
     "sidePanelTitle": "Saisir une nouvelle demande de données"
   },
   "data-request": {
-    "consumerName": "Demandeur",
+    "consumerName": "Requérant de données",
     "title": "Demande de données",
     "date": "Date de la demande",
     "state": "Statut",
@@ -95,15 +95,15 @@
           "label": "Nom de la demande de données",
           "sublabel": "Le nom sera affiché à tous les producteurs de données dans leur langue préférée lorsqu'ils décideront de partager vos données.",
           "de": {
-            "label": "Nom de la demande Demande de données DE",
+            "label": "Nom de la demande de données DE",
             "placeholder": "Anfrage von [...] zum Bezug von [...]-Daten"
           },
           "fr": {
-            "label": "Nom de la demande Demande de données FR",
+            "label": "Nom de la demande de données FR",
             "placeholder": "Demande de [...] pour obtenir des données [...]"
           },
           "it": {
-            "label": "Nom de la demande Demande de données IT",
+            "label": "Nom de la demande de données IT",
             "placeholder": "Richiesta di [...] per ottenere [...] dati"
           }
         },
@@ -112,11 +112,11 @@
           "sublabel": "La description s'affiche dans la langue préférée de tous les producteurs de données afin qu'ils puissent prendre une décision éclairée.",
           "de": {
             "label": "Description de la demande DE",
-            "placeholder": "Mit der Einwilligung zur Datenweitergabe an [...] vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
+            "placeholder": "Wenn Sie der Datenweitergabe an [...]  zustimmen, vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
           },
           "fr": {
             "label": "Description de la demande FR",
-            "placeholder": "En autorisant la transmission de données à [...], vous simplifiez votre travail quotidien, réduisez les saisies multiples de données et accélérez les processus."
+            "placeholder": "En donnant votre approbation à la transmission de données à [...], vous simplifiez votre travail quotidien, réduisez les saisies multiples et accélérez les processus."
           },
           "it": {
             "label": "Description de la demande IT",
@@ -124,14 +124,14 @@
           }
         },
         "purpose": {
-          "label": "Objectif d'utilisation des données",
-          "sublabel": "La finalité de l'utilisation est indiquée à tous les producteurs de données dans leur langue préférée afin de garantir une transparence maximale quant à l'utilisation de leurs données.",
+          "label": "But de l'utilisation des données",
+          "sublabel": "Le but de l'utilisation de données est indiquée à tous les producteurs de données dans leur langue préférée afin de garantir une transparence maximale quant à l'utilisation de leurs données.",
           "de": {
-            "label": "Objectif d'utilisation des données DE",
+            "label": "But d'utilisation des données DE",
             "placeholder": "[...] nutzt die angefragten Daten für ... (Beschreibung durch Datenbezüger). Die Daten werden (nicht) an Dritte weitergegeben. [...] verpflichtet sich, im Umgang mit den Daten geltende Vorschriften einzuhalten."
           },
           "fr": {
-            "label": "Objectif d'utilisation des données FR",
+            "label": "But d'utilisation des données FR",
             "placeholder": "[...] utilise les données demandées pour ... (description par le bénéficiaire des données). Les données sont (non) transmises à des tiers. [...] s'engage à respecter la réglementation en vigueur en matière de traitement des données."
           },
           "it": {
@@ -169,7 +169,7 @@
         },
         "producer": {
           "label": "Votre annonce au producteurs de données",
-          "sublabel": "Ces informations seront affichées aux producteurs de données lors de la demande de consentement.",
+          "sublabel": "Ces informations seront affichées aux producteurs de données lors de la demande d’approbation.",
           "logo": "Logo"
         },
         "contact": {
@@ -198,7 +198,7 @@
         }
       },
       "producer": {
-        "info": "Une fois le contrat signé par toutes les parties contractantes, vous recevrez un modèle d'invitation par e-mail. Ce modèle contiendra un lien spécifique à votre demande. Vous pourrez ainsi inviter de manière ciblée vos producteurs de données.",
+        "info": "Une fois le contrat signé par toutes les parties contractantes, vous recevrez une e-mail modèle d'invitation par e-mail. Cette e-mail contiendra un lien spécifique à votre demande. Vous pourrez ainsi inviter de manière ciblée vos producteurs de données.",
         "title": "Déterminer les producteurs de données",
         "description": "Déterminez quel groupe de producteurs de données vous souhaitez cibler avec votre demande.",
         "targetGroup": {
@@ -213,25 +213,25 @@
     },
     "privacy": {
       "consent": {
-        "title": "Consentement",
-        "description": "En donnant votre accord, vous autorisez la transmission des données de la liste de vos exploitations associées au demandeur {{ consumerName }}"
+        "title": "Approbation",
+        "description": "En donnant votre accord, vous autorisez la transmission des données de la liste de vos exploitations associées au requérant des données {{ consumerName }}"
       },
       "dataProtection": {
         "title": "Protection des données",
-        "description": "{{ consumerName }} est responsable du traitement conforme à la protection des données de ces informations. Contactez directement {{ consumerName }} si vous souhaitez que vos données soient supprimées."
+        "description": "{{ consumerName }} est responsable du traitement conforme à la protection des données de ces informations."
       },
       "revocation": {
         "title": "Possibilité de révocation",
-        "description": "Vous pouvez révoquer ou modifier votre consentement à tout moment"
+        "description": "Vous pouvez révoquer ou modifier votre approbation à tout moment."
       }
     },
     "purpose": {
-      "title": "But",
+      "title": "But de l'utilisation des données",
       "description": "Les données suivantes seront transmises"
     },
     "wizard": {
       "steps": {
-        "consumer": "Bénéficiaire des données",
+        "consumer": "Requérant des données",
         "request": "Demande de données",
         "preview": "Aperçu",
         "producer": "Fournisseur de données",
@@ -260,7 +260,7 @@
       }
     },
     "provider": "Fournisseur de données",
-    "submissionDate": "Date de dépôt",
+    "submissionDate": "Date de soumission",
     "humanFriendlyId": "ID"
   },
   "forms": {
@@ -274,11 +274,11 @@
     }
   },
   "navigation": {
-    "open": "Navigation Ouverte",
-    "close": "Navigation Fermée",
+    "open": "Navigation ouverte",
+    "close": "Navigation fermée",
     "menuItems": {
       "helpAndSupport": "Aide et assistance",
-      "notifications": "Notification",
+      "notifications": "Notifications",
       "home": "Accueil"
     }
   },
@@ -317,6 +317,14 @@
     "submit": "Envoyer la demande",
     "message": {
       "label": "Votre demande"
+    },
+    "success": {
+      "title": "Message envoyé",
+      "message": "Merci beaucoup ! Nous avons bien reçu votre message et vous répondrons rapidement."
+    },
+    "error": {
+      "title": "Échec de l'envoi",
+      "message": "Une erreur s'est malheureusement produite. Veuillez réessayer plus tard. Erreur: {{ error }}"
     }
   }
 }

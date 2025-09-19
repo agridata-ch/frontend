@@ -116,7 +116,7 @@
           },
           "fr": {
             "label": "Descrizione dell'applicazione FR",
-            "placeholder": "En autorisant la transmission de données à [...], vous simplifiez votre travail quotidien, réduisez les saisies multiples de données et accélérez les processus."
+            "placeholder": "En donnant votre approbation à la transmission de données à [...], vous simplifiez votre travail quotidien, réduisez les saisies multiples et accélérez les processus."
           },
           "it": {
             "label": "Descrizione dell'applicazione IT",
@@ -317,6 +317,14 @@
     "submit": "Invia richiesta",
     "message": {
       "label": "La vostra richiesta"
+    },
+    "success": {
+      "title": "Messaggio inviato",
+      "message": "Grazie mille! Abbiamo ricevuto il tuo messaggio e ti risponderemo al più presto."
+    },
+    "error": {
+      "title": "Invio non riuscito",
+      "message": "Si è verificato un errore. Riprova più tardi. Errore: {{ error }}"
     }
   }
 }

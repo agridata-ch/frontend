@@ -38,6 +38,7 @@ coverage/
 testem.log
 /typings
 .env
+environment.secret.ts
 
 # System files
 .DS_Store

@@ -35,7 +35,7 @@
         "OPENED": "Offen",
         "UNKNOWN": "Unbekannt"
       },
-      "footerInformation": "Du kannst deine Zustimmung jederzeit ändern.",
+      "footerInformation": "Entscheid jederzeit änderbar.",
       "requestDate": "Anfrage vom {{ date }}",
       "sidepanel": {
         "title": "Detailansicht"
@@ -48,20 +48,20 @@
         "DEFAULT": "Anfrage aktualisiert"
       },
       "message": {
-        "GRANTED": "Du hast der Anfrage {{ name }} erfolgreich zugestimmt.",
-        "DECLINED": "Du hast die Anfrage {{ name }} erfolgreich abgelehnt.",
+        "GRANTED": "Sie haben der Anfrage {{ name }} erfolgreich zugestimmt.",
+        "DECLINED": "Sie haben die Anfrage {{ name }} erfolgreich abgelehnt.",
         "DEFAULT": "Die Anfrage wurde aktualisiert."
       },
       "undo": "Aktion rückgängig machen"
     },
     "dataRequest": {
-      "title": "Anfrage",
+      "title": "Datenanfrage",
       "state": "Status",
       "consumerName": "Datenbezüger",
       "date": "Anfragedatum",
       "stateCode": {
         "OPENED": "Offen",
-        "GRANTED": "Eingewilligt",
+        "GRANTED": "Zugestimmt",
         "DECLINED": "Abgelehnt"
       }
     }
@@ -78,7 +78,7 @@
     "state": "Status",
     "contact": {
       "title": "Kontaktdaten",
-      "description": "Bei Fragen oder Unklarheiten zum Datenantrag kontaktiere {{ organisationName }} unter:"
+      "description": "Bei Fragen oder Unklarheiten zum Datenantrag, kontaktieren Sie bitte direkt die Organisation:"
     },
     "form": {
       "request": {
@@ -112,11 +112,11 @@
           "sublabel": "Die Beschreibung wird allen Datenproduzent:innen in ihrer bevorzugten Sprache angezeigt, damit sie eine informierte Entscheidung treffen können.",
           "de": {
             "label": "Beschreibung des Antrags DE",
-            "placeholder": "Mit der Zustimmung zur Datenweitergabe an [...] vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
+            "placeholder": "Wenn Sie der Datenweitergabe an [...]  zustimmen, vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
           },
           "fr": {
             "label": "Beschreibung des Antrags FR",
-            "placeholder": "En autorisant la transmission de données à [...], vous simplifiez votre travail quotidien, réduisez les saisies multiples de données et accélérez les processus."
+            "placeholder": "En donnant votre approbation à la transmission de données à [...], vous simplifiez votre travail quotidien, réduisez les saisies multiples et accélérez les processus."
           },
           "it": {
             "label": "Beschreibung des Antrags IT",
@@ -214,20 +214,20 @@
     "privacy": {
       "consent": {
         "title": "Zustimmung",
-        "description": "Mit deiner Zustimmung erlaubst du, dass die Daten den Datenbezüger {{ consumerName }} übermittelt werden"
+        "description": "Mit Ihrer Zustimmung erlauben Sie die Datenübermittlung.\n\nEin Vertrag zwischen dem Bundesamt für Landwirtschaft und {{ consumerName }} bildet die rechtliche Grundlage für die Datenübermittlung und Datennutzung."
       },
       "dataProtection": {
         "title": "Datenschutz",
-        "description": "{{ consumerName }} ist für den datenschutzkonformen Umgang mit diesen Informationen verantwortlich. Wende dich direkt an {{ consumerName }}, wenn du möchtest, dass deine Daten gelöscht werden."
+        "description": "Gemäss Datenschutzgesetz ist {{ consumerName }}  für den datenschutzkonformen Umgang mit diesen Informationen verantwortlich."
       },
       "revocation": {
-        "title": "Widerrufsmöglichkeit",
-        "description": "Du kannst deine Zustimmung jederzeit anpassen."
+        "title": "Änderungsmöglichkeit",
+        "description": "Ihre Entscheidung kann jederzeit geändert werden."
       }
     },
     "purpose": {
-      "title": "Zweck",
-      "description": "Folgende Daten werden übermittelt"
+      "title": "Zweck der Datennutzung",
+      "description": "Folgende Daten werden übermittelt:"
     },
     "wizard": {
       "steps": {
@@ -278,7 +278,7 @@
     "close": "Navigation Schließen",
     "menuItems": {
       "helpAndSupport": "Hilfe & Support",
-      "notifications": "Benachrichtigung",
+      "notifications": "Benachrichtigungen",
       "home": "Home"
     }
   },
@@ -317,6 +317,14 @@
     "submit": "Anfrage senden",
     "message": {
       "label": "Ihr Anliegen"
+    },
+    "success": {
+      "title": "Nachricht gesendet",
+      "message": "Vielen Dank! Wir haben Ihre Nachricht erhalten und melden uns bald."
+    },
+    "error": {
+      "title": "Senden fehlgeschlagen",
+      "message": "Leider ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut. Error: {{ error }}"
     }
   }
 }

@@ -7,9 +7,10 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { Block, SectionContactFormBlock } from '@/entities/cms';
+import { Block, CmsService, ContactFormData, SectionContactFormBlock } from '@/entities/cms';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { FormControlWithMessages, getFormControl } from '@/shared/lib/form.helper';
+import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
 import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
@@ -28,6 +29,8 @@ import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
 export class SectionContactFormBlockComponent {
   readonly block = input.required<Block>();
   readonly i18nService = inject(I18nService);
+  readonly cmsService = inject(CmsService);
+  readonly toastService = inject(ToastService);
 
   protected readonly cmsData = computed(() => {
     return this.block() as SectionContactFormBlock;
@@ -70,16 +73,27 @@ export class SectionContactFormBlockComponent {
     return control;
   }
 
-  protected readonly handleSubmit = () => {
+  protected readonly handleSubmit = async () => {
     this.contactForm.markAllAsTouched(); // Mark all as touched to show validation errors
 
     if (this.contactForm.valid) {
-      console.log('Form submitted with data:', this.contactForm.value);
-      // Here you would implement the actual submission logic
-      // For example, calling an API service
-
-      // Reset form after submission
-      this.contactForm.reset();
+      await this.cmsService
+        .submitContactForm(this.contactForm.value as ContactFormData)
+        .then(() => {
+          this.contactForm.reset();
+          this.toastService.show(
+            this.i18nService.translate('contact-form.success.title'),
+            this.i18nService.translate('contact-form.success.message'),
+            ToastType.Success,
+          );
+        })
+        .catch((error) => {
+          this.toastService.show(
+            this.i18nService.translate('contact-form.error.title'),
+            this.i18nService.translate('contact-form.error.message', { error: error.message }),
+            ToastType.Error,
+          );
+        });
     }
   };
 }
