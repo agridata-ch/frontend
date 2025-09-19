@@ -1,9 +1,8 @@
-// import { secrets } from './environment.secret';
-
 export const environment = {
   production: false,
   apiBaseUrl: 'http://localhost:8060',
   cmsBaseUrl: 'http://localhost:1337',
+  cmsContactUrl: 'http://localhost:1337/api/contact',
   oidc: {
     authority: 'http://localhost:6999/realms/agate',
     clientId: 'agridata-ui',
@@ -15,5 +14,4 @@ export const environment = {
     useRefreshToken: true,
     secureRoutes: ['http://localhost:8060'],
   },
-  // secrets: secrets,
 };
