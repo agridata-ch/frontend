@@ -1,3 +1,5 @@
+// import { secrets } from './environment.secret';
+
 export const environment = {
   production: false,
   apiBaseUrl: 'https://api.int.agridata.ch',
@@ -13,4 +15,5 @@ export const environment = {
     useRefreshToken: true,
     secureRoutes: ['https://api.int.agridata.ch'],
   },
+  // secrets: secrets,
 };

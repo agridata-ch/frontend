@@ -1,6 +1,7 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { CmsService } from '@/entities/cms';
 import { I18nService } from '@/shared/i18n';
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
 import { MockI18nService } from '@/shared/testing/mocks/mock-i18n.service';
@@ -18,7 +19,13 @@ describe('SectionContactFormBlockComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [SectionContactFormBlockComponent],
-      providers: [{ provide: I18nService, useValue: mockI18nService }],
+      providers: [
+        { provide: I18nService, useValue: mockI18nService },
+        {
+          provide: CmsService,
+          useValue: { submitContactForm: jest.fn().mockResolvedValue(Promise.resolve()) },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SectionContactFormBlockComponent);
@@ -40,7 +47,7 @@ describe('SectionContactFormBlockComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should submit the form when valid and reset it afterwards', () => {
+  it('should submit the form when valid and reset it afterwards', async () => {
     const form = component['contactForm'];
 
     form.get('firstName')?.setValue('John');
@@ -50,7 +57,7 @@ describe('SectionContactFormBlockComponent', () => {
     form.get('phone')?.setValue('1234567890');
     form.get('message')?.setValue('This is a test message');
 
-    component['handleSubmit']();
+    await component['handleSubmit']();
 
     expect(form.get('firstName')?.value).toBe(null);
     expect(form.get('lastName')?.value).toBe(null);

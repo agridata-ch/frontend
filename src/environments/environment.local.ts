@@ -1,3 +1,5 @@
+// import { secrets } from './environment.secret';
+
 export const environment = {
   production: false,
   apiBaseUrl: 'http://localhost:8060',
@@ -13,4 +15,5 @@ export const environment = {
     useRefreshToken: true,
     secureRoutes: ['http://localhost:8060'],
   },
+  // secrets: secrets,
 };
