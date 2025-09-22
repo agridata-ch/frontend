@@ -1,3 +1,9 @@
+## [1.0.0-rc.69](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.68...v1.0.0-rc.69) (2025-09-22)
+
+### Features
+
+- **image-grid-block:** add image-grid-block ([4ecca3d](https://github.com/agridata-ch/frontend/commit/4ecca3d7cd65ecb38aacaabe080d3fb99c0f9c8b)), closes [DIGIB2-742](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-742)
+
 ## [1.0.0-rc.68](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.67...v1.0.0-rc.68) (2025-09-19)
 
 ### Features
