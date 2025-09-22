@@ -1,0 +1,9 @@
+<div class="flex flex-wrap justify-evenly px-6 lg:px-20 py-6 gap-6">
+  @for (img of cmsData().images; track img.id) {
+    <img
+      [src]="generateMediaUrl(img.url)"
+      [alt]="img.alternativeText"
+      class="max-h-11 object-contain"
+    />
+  }
+</div>

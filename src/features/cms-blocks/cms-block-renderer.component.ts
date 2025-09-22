@@ -9,6 +9,7 @@ import {
   SectionTextImageBlockComponent,
   SectionUserFeedbackBlockComponent,
 } from '@/widgets/cms-blocks';
+import { ImageGridBlockComponent } from '@/widgets/cms-blocks/image-grid-block/image-grid-block.component';
 import { SectionContactFormBlockComponent } from '@/widgets/cms-blocks/section-contact-form-block/section-contact-form-block.component';
 
 /**
@@ -27,6 +28,7 @@ import { SectionContactFormBlockComponent } from '@/widgets/cms-blocks/section-c
     SectionUserFeedbackBlockComponent,
     SectionCardGridBlockComponent,
     SectionContactFormBlockComponent,
+    ImageGridBlockComponent,
   ],
   templateUrl: './cms-block-renderer.component.html',
 })
