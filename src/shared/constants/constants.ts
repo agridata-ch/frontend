@@ -29,6 +29,7 @@ export const CMS_BLOCKS = {
   SECTION_USER_FEEDBACK: 'layout.section-user-feedback',
   SECTION_CARD_GRID: 'layout.section-card-grid',
   CONTACT_FORM: 'blocks.contact-form',
+  IMAGE_GRID: 'blocks.image-grid',
 };
 
 export const VIDEO_FORMATS = ['.mp4', '.webm', '.wmv', '.avi', '.mov', '.mkv', '.flv'];

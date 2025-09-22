@@ -136,6 +136,13 @@ export interface SectionContactFormBlock {
   heading: string;
   subHeading: string;
 }
+export interface ImageGridBlock {
+  __component: 'blocks.image-grid';
+  id: number;
+  heading: string;
+  subHeading: string;
+  images: Image[];
+}
 
 export type Block =
   | SectionMediaBlock
@@ -143,7 +150,8 @@ export type Block =
   | TextImageBlock
   | SectionUserFeedbackBlock
   | SectionCardGridBlock
-  | SectionContactFormBlock;
+  | SectionContactFormBlock
+  | ImageGridBlock;
 
 export interface PageData {
   id: number;
