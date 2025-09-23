@@ -30,7 +30,10 @@ export class MarkdownPipe implements PipeTransform {
       breaks: true,
     });
 
-    const html = marked(value);
+    // Pre-process the content to handle multiple consecutive line breaks
+    const processedValue = value.replace(/\n(?=\n)/g, '\n\n<br/>\n');
+
+    const html = marked(processedValue);
 
     // Let Angular sanitize the HTML (this removes scripts and other dangerous content)
     // while still allowing safe HTML elements

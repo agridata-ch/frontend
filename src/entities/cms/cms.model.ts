@@ -136,6 +136,19 @@ export interface SectionContactFormBlock {
   heading: string;
   subHeading: string;
 }
+
+export interface SectionFaqBlock {
+  __component: 'blocks.section-faq';
+  id: number;
+  heading: string;
+  subHeading: string;
+  faqs: {
+    id: number;
+    question: string;
+    answer: string;
+  }[];
+}
+
 export interface ImageGridBlock {
   __component: 'blocks.image-grid';
   id: number;
@@ -151,6 +164,7 @@ export type Block =
   | SectionUserFeedbackBlock
   | SectionCardGridBlock
   | SectionContactFormBlock
+  | SectionFaqBlock
   | ImageGridBlock;
 
 export interface PageData {
