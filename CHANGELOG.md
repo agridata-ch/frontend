@@ -1,3 +1,9 @@
+## [1.0.0-rc.70](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.69...v1.0.0-rc.70) (2025-09-23)
+
+### Features
+
+- **faq:** add cms faq ([ef83254](https://github.com/agridata-ch/frontend/commit/ef83254e660c471109e3ab42507a713093aa5294)), closes [DIGIB2-747](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-747)
+
 ## [1.0.0-rc.69](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.68...v1.0.0-rc.69) (2025-09-22)
 
 ### Features
