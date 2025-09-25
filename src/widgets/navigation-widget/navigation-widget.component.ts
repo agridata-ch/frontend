@@ -2,7 +2,12 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
-import { faChevronLeft, faChevronRight, faDatabase } from '@fortawesome/free-solid-svg-icons';
+import {
+  faChevronLeft,
+  faChevronRight,
+  faDatabase,
+  faUsers,
+} from '@fortawesome/free-solid-svg-icons';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
@@ -51,6 +56,11 @@ export class NavigationWidgetComponent {
         label: 'consumer.pageTitle',
         icon: faDatabase,
         route: `/${ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH}`,
+      },
+      this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) && {
+        label: 'supporter.pageTitle',
+        icon: faUsers,
+        route: `/${ROUTE_PATHS.SUPPORT_PATH}`,
       },
     ].filter(Boolean),
   );

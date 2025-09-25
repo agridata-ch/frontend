@@ -1,5 +1,6 @@
-<div class="relative w-full" (appClickOutside)="handleClickOutside()">
+<div class="relative inline-block w-full" (appClickOutside)="handleClickOutside()">
   <button
+    #trigger
     type="button"
     class="w-full border border-gray-300 rounded-md px-5 py-3 text-left flex justify-between items-center"
     [class.border-red-500]="hasError()"
@@ -10,14 +11,19 @@
     [disabled]="disabled()"
   >
     <span class="truncate">
-      {{ selectedOption()?.label || placeholder() }}
+      {{ getSelectedOptionLabel() || placeholder() }}
     </span>
     <fa-icon [icon]="dropdownIcon()" class="ml-2 text-gray-500" />
   </button>
 
   @if (isDropdownOpen()) {
     <div
-      class="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
+      #popover
+      class="absolut z-50 w-full bg-white border border-gray-300 rounded-md shadow-lg origin-top-left absolute left-0 bottom-full"
+      [class.origin-top-left]="openAbove()"
+      [class.bottom-full]="openAbove()"
+      [class.origin-bottom-left]="!openAbove()"
+      [class.top-full]="!openAbove()"
     >
       @for (option of options(); track option.value) {
         <div

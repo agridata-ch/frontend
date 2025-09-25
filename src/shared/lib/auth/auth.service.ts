@@ -29,6 +29,10 @@ export class AuthService {
     () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER) ?? false,
   );
 
+  readonly isSupporter = computed(
+    () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) ?? false,
+  );
+
   constructor() {
     this.checkAuth(true);
 

@@ -21,7 +21,6 @@ import { SectionFaqBlockComponent } from '@/widgets/cms-blocks/section-faq-block
  */
 @Component({
   selector: 'app-cms-block-renderer',
-  standalone: true,
   imports: [
     CommonModule,
     SectionMediaBlockComponent,

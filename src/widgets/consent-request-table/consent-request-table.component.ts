@@ -1,8 +1,21 @@
-import { Component, Signal, computed, inject, input, output, signal } from '@angular/core';
-import { faBan, faCheck } from '@fortawesome/free-solid-svg-icons';
+import {
+  Component,
+  TemplateRef,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { ConsentRequestService } from '@/entities/api';
-import { ConsentRequestProducerViewDto, ConsentRequestStateEnum } from '@/entities/openapi';
+import {
+  ConsentRequestProducerViewDto,
+  ConsentRequestStateEnum,
+  TranslationDto,
+} from '@/entities/openapi';
 import {
   getToastMessage,
   getToastTitle,
@@ -11,19 +24,18 @@ import {
 } from '@/shared/consent-request';
 import { I18nService } from '@/shared/i18n/i18n.service';
 import { ToastService, ToastType } from '@/shared/toast';
-import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
+import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
+import { ActionDTO, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
 import {
-  ActionDTO,
-  AgridataTableComponent,
-  AgridataTableData,
-  AgridataTableUtils,
-  CellTemplateDirective,
-  SortDirections,
-} from '@/shared/ui/agridata-table';
+  AgridataClientTableComponent,
+  ClientTableMetadata,
+} from '@/shared/ui/agridata-table/client-table';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
-import { ConsentRequestFilterComponent } from '@/widgets/consent-request-table/consent-request-filter/consent-request-filter.component';
+import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
+import { ConsentRequestFilterComponent } from '@/widgets/consent-request-table/consent-request-filter';
+import { ConsentRequestListComponent } from '@/widgets/consent-request-table/consent-request-list';
 
-import { ConsentRequestListComponent } from './consent-request-list';
+import { ConsentRequestProducerViewDtoDirective } from './consent-request-producer-view-dto.directive';
 
 /**
  * Implements the main table logic. It accepts a list of consent requests, transforms them into
@@ -31,17 +43,17 @@ import { ConsentRequestListComponent } from './consent-request-list';
  * with undo support, and toast notifications. It highlights open requests and integrates avatars
  * and badges for clear presentation.
  *
- * CommentLastReviewed: 2025-09-02
+ * CommentLastReviewed: 2025-09-18
  */
 @Component({
   selector: 'app-consent-request-table',
   imports: [
     ConsentRequestFilterComponent,
-    AgridataTableComponent,
     AgridataBadgeComponent,
-    CellTemplateDirective,
-    AgridataAvatarComponent,
     ConsentRequestListComponent,
+    AgridataClientTableComponent,
+    ConsentRequestProducerViewDtoDirective,
+    AgridataContactCardComponent,
   ],
   templateUrl: './consent-request-table.component.html',
 })
@@ -55,72 +67,112 @@ export class ConsentRequestTableComponent {
   readonly consentRequests = input.required<ConsentRequestProducerViewDto[]>();
   readonly tableRowAction = output<ConsentRequestProducerViewDto>();
 
+  private readonly dataRequestConsumerTemplate =
+    viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('dataRequestConsumer');
+  private readonly dataRequestTitleTemplate =
+    viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('dataRequestTitle');
+  private readonly dataRequestStateTemplate =
+    viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('dataRequestState');
   protected readonly checkIcon = faCheck;
-  protected readonly banIcon = faBan;
   protected readonly BadgeSize = BadgeSize;
-  protected readonly BadgeVariant = BadgeVariant;
-  protected readonly SortDirections = SortDirections;
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
-  protected readonly getCellValue = AgridataTableUtils.getCellValue;
 
   protected readonly dataRequestTitleHeader = 'consent-request.dataRequest.title';
   protected readonly dataRequestStateHeader = 'consent-request.dataRequest.state';
   protected readonly dataRequestConsumerHeader = 'consent-request.dataRequest.consumerName';
-
+  protected readonly dataRequestDateHeader = 'consent-request.dataRequest.date';
   protected readonly stateCodeFilter = signal<string | null>(null);
-  protected readonly requests: Signal<AgridataTableData[]> = computed(() => {
-    const filter = this.stateCodeFilter();
-    return this.consentRequests()
-      .filter((request) => !filter || request.stateCode === filter)
-      .map((request: ConsentRequestProducerViewDto) => ({
-        id: request.id,
-        data: [
-          {
-            header: this.dataRequestConsumerHeader,
-            value: request.dataRequest?.dataConsumerDisplayName ?? '',
-          },
-          {
-            header: this.dataRequestTitleHeader,
-            value: this.i18nService.useObjectTranslation(request.dataRequest?.title),
-          },
-          {
-            header: 'consent-request.dataRequest.date',
-            value: request.requestDate ?? '',
-          },
-          { header: this.dataRequestStateHeader, value: request.stateCode ?? '' },
-        ],
-        highlighted: request.stateCode === ConsentRequestStateEnum.Opened,
-        actions: this.getFilteredActions(request),
-        rowAction: () => this.openDetails(request),
-      }));
+  readonly filteredConsentRequests = computed(() => {
+    return this.consentRequests().filter(
+      (request) => !this.stateCodeFilter() || request.stateCode === this.stateCodeFilter(),
+    );
   });
-
-  getTranslatedStateValue(row: AgridataTableData, header: string) {
-    const value = this.getCellValue(row, header);
-    return this.i18nService.translate(`consent-request.dataRequest.stateCode.${value}`);
-  }
 
   getFilteredActions = (request?: ConsentRequestProducerViewDto): ActionDTO[] => {
     if (!request) return [];
     const requestTitle = this.i18nService.useObjectTranslation(request.dataRequest?.title);
 
-    const consent = {
+    const consent: ActionDTO = {
       icon: this.checkIcon,
       label: 'consent-request.table.tableActions.consent',
-      callback: () =>
-        this.updateConsentRequestState(request.id, ConsentRequestStateEnum.Granted, requestTitle),
+      callback: () => {
+        void this.updateConsentRequestState(
+          request.id,
+          ConsentRequestStateEnum.Granted,
+          requestTitle,
+        );
+      },
       isMainAction: true,
     };
 
     return request.stateCode === ConsentRequestStateEnum.Opened ? [consent] : [];
   };
 
-  getConsumerLogo(row: AgridataTableData) {
-    return (
-      this.consentRequests().find((request) => request.id === row.id)?.dataRequest
-        ?.dataConsumerLogoBase64 ?? null
-    );
+  openDetails = (request?: ConsentRequestProducerViewDto | null) => {
+    if (!request) return;
+    this.tableRowAction.emit(request);
+  };
+
+  protected readonly consentRequestsTableMetaData = computed<
+    ClientTableMetadata<ConsentRequestProducerViewDto>
+  >(() => {
+    return {
+      idColumn: 'id',
+      columns: [
+        {
+          name: this.dataRequestConsumerHeader,
+          renderer: {
+            type: CellRendererTypes.TEMPLATE,
+            template: this.dataRequestConsumerTemplate(),
+          },
+          enableSort: true,
+          sortValueFn: (item: ConsentRequestProducerViewDto) =>
+            item.dataRequest?.dataConsumerDisplayName ?? '',
+        },
+        {
+          name: this.dataRequestTitleHeader,
+          renderer: {
+            type: CellRendererTypes.TEMPLATE,
+            template: this.dataRequestTitleTemplate(),
+          },
+          enableSort: true,
+          sortValueFn: (item: ConsentRequestProducerViewDto) =>
+            item.dataRequest?.title ? this.getTranslation(item.dataRequest.title) : '',
+        },
+        {
+          name: this.dataRequestDateHeader,
+          enableSort: true,
+          initialSortDirection: SortDirections.DESC,
+          renderer: {
+            type: CellRendererTypes.FUNCTION,
+            cellRenderFn: (row) => row.requestDate ?? '',
+          },
+        },
+        {
+          name: this.dataRequestStateHeader,
+          renderer: {
+            type: CellRendererTypes.TEMPLATE,
+            template: this.dataRequestStateTemplate(),
+          },
+          enableSort: true,
+          sortValueFn: (item: ConsentRequestProducerViewDto) =>
+            this.getTranslatedStateValue(item.stateCode),
+        },
+      ],
+      actions: this.getFilteredActions,
+      rowAction: this.openDetails,
+      highlightFn: (item) => item.stateCode === ConsentRequestStateEnum.Opened,
+      searchFn: (data, searchTerm) =>
+        data.filter((item) => this.getTranslation(item.dataRequest?.title).includes(searchTerm)),
+    };
+  });
+
+  getTranslatedStateValue(stateCode?: ConsentRequestStateEnum | undefined) {
+    if (!stateCode) {
+      return '';
+    }
+    return this.i18nService.translate(`consent-request.dataRequest.stateCode.${stateCode}`);
   }
 
   setStateCodeFilter(state: string | null) {
@@ -163,15 +215,15 @@ export class ConsentRequestTableComponent {
     });
   }
 
-  getBadgeVariant = (stateCode: string) => {
+  getBadgeVariant = (stateCode: ConsentRequestStateEnum | undefined) => {
     if (stateCode === ConsentRequestStateEnum.Opened) return BadgeVariant.INFO;
     if (stateCode === ConsentRequestStateEnum.Granted) return BadgeVariant.SUCCESS;
     if (stateCode === ConsentRequestStateEnum.Declined) return BadgeVariant.ERROR;
     return BadgeVariant.DEFAULT;
   };
 
-  openDetails(request?: ConsentRequestProducerViewDto | null) {
-    if (!request) return;
-    this.tableRowAction.emit(request);
+  getTranslation(key: TranslationDto | undefined) {
+    if (!key) return '';
+    return this.i18nService.useObjectTranslation(key);
   }
 }

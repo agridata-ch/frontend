@@ -578,25 +578,117 @@ components:
       format: date-time
       examples:
         - 2022-03-10T12:15:50
-    PageResponseDtoUserInfoDto:
+    PageResponseDto:
       type: object
+      required:
+        - items
+        - totalItems
+        - totalPages
+        - currentPage
+        - pageSize
+      description: Generic paginated response wrapper.
       properties:
         items:
           type: array
-          items:
-            $ref: "#/components/schemas/UserInfoDto"
+          examples:
+            - - id: 1
+                name: Item A
+              - id: 2
+                name: Item B
+          items: { }
+          description: List of items on the current page.
         totalItems:
           type: integer
           format: int64
+          examples:
+            - 42
+          description: Total number of items across all pages.
         totalPages:
           type: integer
           format: int32
+          examples:
+            - 5
+          description: Total number of pages available.
         currentPage:
           type: integer
           format: int32
+          examples:
+            - 1
+          description: Current page number (0-based ).
         pageSize:
           type: integer
           format: int32
+          examples:
+            - 10
+          description: Number of items per page.
+    PageResponseDtoUserInfoDto:
+      type: object
+      required:
+        - items
+        - totalItems
+        - totalPages
+        - currentPage
+        - pageSize
+      description: Generic paginated response wrapper.
+      properties:
+        items:
+          type: array
+          examples:
+            - - id: 1
+                name: Item A
+              - id: 2
+                name: Item B
+          items:
+            $ref: "#/components/schemas/UserInfoDto"
+          description: List of items on the current page.
+        totalItems:
+          type: integer
+          format: int64
+          examples:
+            - 42
+          description: Total number of items across all pages.
+        totalPages:
+          type: integer
+          format: int32
+          examples:
+            - 5
+          description: Total number of pages available.
+        currentPage:
+          type: integer
+          format: int32
+          examples:
+            - 1
+          description: Current page number (0-based ).
+        pageSize:
+          type: integer
+          format: int32
+          examples:
+            - 10
+          description: Number of items per page.
+    ResourceQueryDto:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          description: page number
+          maximum: 100
+          minimum: 0
+        size:
+          type: integer
+          format: int32
+          description: page size
+          maximum: 100
+          minimum: 1
+        sortParams:
+          type: array
+          items:
+            type: string
+          description: List of field names to sort by. Default is ascending prefix
+            with - for descending
+        searchTerm:
+          type: string
+          description: string to search for in the resource
     TranslationDto:
       type: object
       properties:
@@ -1527,6 +1619,7 @@ paths:
           schema:
             type: integer
             format: int32
+            description: page number
             default: 0
             maximum: 100
             minimum: 0
@@ -1534,20 +1627,22 @@ paths:
           in: query
           schema:
             type: string
+            description: string to search for in the resource
         - name: size
           in: query
           schema:
             type: integer
             format: int32
+            description: page size
             default: 20
             maximum: 100
             minimum: 1
         - name: sortBy
           in: query
           schema:
-            type: array
-            items:
-              type: string
+            type: object
+            description: List of field names to sort by. Default is ascending prefix
+              with - for descending
       responses:
         "200":
           description: OK

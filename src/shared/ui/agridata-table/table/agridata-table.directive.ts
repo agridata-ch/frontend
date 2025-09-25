@@ -4,22 +4,9 @@ import {
   DoCheck,
   ElementRef,
   OnDestroy,
-  TemplateRef,
   inject,
   input,
 } from '@angular/core';
-
-/**
- * Directive for defining a custom table cell template. Allows developers to provide a template for
- * a specific header key, enabling flexible rendering of table cell content.
- *
- * CommentLastReviewed: 2025-08-25
- */
-@Directive({ selector: '[stCell]', standalone: true })
-export class CellTemplateDirective {
-  readonly header = input<string>('', { alias: 'stCell' });
-  constructor(public template: TemplateRef<unknown>) {}
-}
 
 /**
  * Directive implementing FLIP animations for table rows. Detects row position changes during

@@ -78,11 +78,9 @@ export class ConsentRequestDetailsComponent {
   readonly formattedLastStateChangeDate = computed(() =>
     formatDate(this.request()?.lastStateChangeDate),
   );
-  readonly dataConsumerName = computed(
-    () => this.request()?.dataRequest?.dataConsumerDisplayName ?? null,
-  );
+  readonly dataConsumerName = computed(() => this.request()?.dataRequest?.dataConsumerDisplayName);
   readonly requestConsumerLogo = computed(
-    () => this.request()?.dataRequest?.dataConsumerLogoBase64 ?? null,
+    () => this.request()?.dataRequest?.dataConsumerLogoBase64,
   );
 
   readonly requestTitle = computed(() =>

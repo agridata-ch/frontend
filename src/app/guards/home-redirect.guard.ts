@@ -29,6 +29,8 @@ export class HomeRedirectGuard implements CanActivate {
       return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);
     } else if (this.authService.isConsumer()) {
       return this.router.createUrlTree([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH]);
+    } else if (this.authService.isSupporter()) {
+      return this.router.createUrlTree([ROUTE_PATHS.SUPPORT_PATH]);
     }
 
     // Default - stay on the landing page

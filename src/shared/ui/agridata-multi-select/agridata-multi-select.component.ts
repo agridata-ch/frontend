@@ -49,11 +49,11 @@ export class AgridataMultiSelectComponent {
     this.isDropdownOpen.update((o) => !o);
   }
 
-  isSelected(id: string) {
+  isSelected(id: string | number) {
     return this.control()?.value.includes(id);
   }
 
-  onOptionToggle(value: string, event: Event) {
+  onOptionToggle(value: string | number, event: Event) {
     if (this.disabled()) return;
     event.stopPropagation();
     const checked = (event.target as HTMLInputElement).checked;

@@ -79,6 +79,7 @@ button {
   outline-offset: 0.125rem;
   cursor: pointer;
 }
+
 button:disabled {
   background-color: var(--color-gray-100);
   cursor: not-allowed;

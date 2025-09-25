@@ -13,6 +13,7 @@ export class MockAuthService {
   userRoles = jest.fn().mockReturnValue(['user']);
   isProducer = jest.fn().mockReturnValue(false);
   isConsumer = jest.fn().mockReturnValue(false);
+  isSupporter = jest.fn().mockReturnValue(false);
   logout = jest.fn();
   login = jest.fn();
 

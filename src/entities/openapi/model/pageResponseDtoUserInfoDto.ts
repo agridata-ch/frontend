@@ -10,11 +10,29 @@
 import { UserInfoDto } from './userInfoDto';
 
 
+/**
+ * Generic paginated response wrapper.
+ */
 export interface PageResponseDtoUserInfoDto { 
-    items?: Array<UserInfoDto>;
-    totalItems?: number;
-    totalPages?: number;
-    currentPage?: number;
-    pageSize?: number;
+    /**
+     * List of items on the current page.
+     */
+    items: Array<UserInfoDto>;
+    /**
+     * Total number of items across all pages.
+     */
+    totalItems: number;
+    /**
+     * Total number of pages available.
+     */
+    totalPages: number;
+    /**
+     * Current page number (0-based ).
+     */
+    currentPage: number;
+    /**
+     * Number of items per page.
+     */
+    pageSize: number;
 }
 

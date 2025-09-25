@@ -27,7 +27,6 @@ export class ButtonComponent {
   additionalClass = input<string>('');
   href = input<string>('');
   target = input<HrefTarget>(HrefTarget.Self);
-
   @HostBinding('style.display') display = 'contents';
 
   handleClick(event: Event) {
