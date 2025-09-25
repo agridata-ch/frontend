@@ -5,8 +5,23 @@
     "settings": "Einstellungen",
     "passwordAndSecurity": "Passwort und Sicherheit"
   },
-  "agridata-table": {
-    "actions": "Aktionen"
+  "table": {
+    "actions": "Aktionen",
+    "showingResults": "Zeige {{ current }} von {{ total }} Einträgen",
+    "pageInfo": "Seite {{ current }} von {{ total }}",
+    "previousPage": "vorherige Seite",
+    "nextPage": "nächste Seite",
+    "noData": "keine Daten vorhanden",
+    "loading": "Daten werden geladen",
+    "pageSelector": "Einträge pro Seite",
+    "header": {
+      "ariaLabels": {
+        "sort": "Sortieren nach: {{ sortBy }}"
+      }
+    },
+    "ariaLabels": {
+      "actions": "Aktionen"
+    }
   },
   "consent-request": {
     "table": {
@@ -283,7 +298,12 @@
     }
   },
   "producer": {
-    "pageTitle": "Datenanfragen"
+    "pageTitle": "Datenanfragen",
+    "redirect": {
+      "headline": "Erledigt!",
+      "description": "Besten Dank für Ihre Entscheidung,\u2028Sie werden in {{ count }} Sekunden automatisch zurück geleitet.",
+      "redirectNow": "Direkt zurück"
+    }
   },
   "countries": {
     "CH": "Schweiz",
@@ -327,20 +347,18 @@
       "message": "Leider ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut. Error: {{ error }}"
     }
   },
-  "search-input": {
-    "placeholder": "Tippe zum Suchen",
-    "aria-labels": {
-      "clearSearchButton": "Button Suche löschen"
+  "input": {
+    "search": {
+      "placeholder": "Tippe zum Suchen",
+      "ariaLabels": {
+        "clearSearchButton": "Suche löschen"
+      }
+    },
+    "common": {
+      "ariaLabel": {
+        "open": "Öffnen"
+      }
     }
-  },
-  "table": {
-    "showingResults": "Zeige {{ current }} von {{ total }} Einträgen",
-    "pageInfo": "Seite {{ current }} von {{ total }}",
-    "previousPage": "vorherige Seite",
-    "nextPage": "nächste Seite",
-    "noData": "keine Daten vorhanden",
-    "loading": "Daten werden geladen",
-    "pageSelector": "Einträge pro Seite"
   },
   "supporter": {
     "pageTitle": "Benutzerübersicht",

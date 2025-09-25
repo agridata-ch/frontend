@@ -32,7 +32,7 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
  * component supports approving or rejecting requests, provides undo actions, and displays
  * contextual toast notifications.
  *
- * CommentLastReviewed: 2025-09-05
+ * CommentLastReviewed: 2025-09-30
  */
 @Component({
   selector: 'app-consent-request-details',
@@ -53,13 +53,13 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
 export class ConsentRequestDetailsComponent {
   private readonly toastService = inject(ToastService);
   private readonly consentRequestService = inject(ConsentRequestService);
-  readonly metaDataService = inject(MetaDataService);
-
+  private readonly metaDataService = inject(MetaDataService);
   private readonly i18nService = inject(I18nService);
   private readonly dataRequestProducts = this.metaDataService.fetchDataProducts;
 
   readonly request = input<ConsentRequestProducerViewDto | null>(null);
-  readonly onCloseDetail = output<string | null>();
+  readonly preventManualClose = input<boolean>(false);
+  readonly closeDetail = output<string | null>();
 
   readonly badgeSize = BadgeSize;
   readonly consentRequestStateEnum = ConsentRequestStateEnum;
@@ -136,34 +136,40 @@ export class ConsentRequestDetailsComponent {
 
   handleCloseDetails() {
     this.showDetails.set(false);
-    this.onCloseDetail.emit(null);
+    this.closeDetail.emit(null);
   }
 
   async acceptRequest() {
-    this.toastService.show(
-      this.i18nService.translate(getToastTitle(ConsentRequestStateEnum.Granted)),
-      this.i18nService.translate(getToastMessage(ConsentRequestStateEnum.Granted), {
-        name: this.requestTitle(),
-      }),
-      getToastType(ConsentRequestStateEnum.Granted),
-      this.prepareUndoAction(this.requestId(), this.requestStateCode()),
-    );
+    if (!this.preventManualClose()) {
+      this.toastService.show(
+        this.i18nService.translate(getToastTitle(ConsentRequestStateEnum.Granted)),
+        this.i18nService.translate(getToastMessage(ConsentRequestStateEnum.Granted), {
+          name: this.requestTitle(),
+        }),
+        getToastType(ConsentRequestStateEnum.Granted),
+        this.prepareUndoAction(this.requestId(), this.requestStateCode()),
+      );
+    }
     this.updateAndReloadConsentRequestState(this.requestId(), ConsentRequestStateEnum.Granted);
   }
 
   async rejectRequest() {
-    const toastTitle = this.i18nService.translate(getToastTitle(ConsentRequestStateEnum.Declined));
-    const toastMessage = this.i18nService.translate(
-      getToastMessage(ConsentRequestStateEnum.Declined),
-      { name: this.requestTitle() },
-    );
-    const toastType = getToastType(ConsentRequestStateEnum.Declined);
-    this.toastService.show(
-      toastTitle,
-      toastMessage,
-      toastType,
-      this.prepareUndoAction(this.requestId(), this.requestStateCode()),
-    );
+    if (!this.preventManualClose()) {
+      const toastTitle = this.i18nService.translate(
+        getToastTitle(ConsentRequestStateEnum.Declined),
+      );
+      const toastMessage = this.i18nService.translate(
+        getToastMessage(ConsentRequestStateEnum.Declined),
+        { name: this.requestTitle() },
+      );
+      const toastType = getToastType(ConsentRequestStateEnum.Declined);
+      this.toastService.show(
+        toastTitle,
+        toastMessage,
+        toastType,
+        this.prepareUndoAction(this.requestId(), this.requestStateCode()),
+      );
+    }
     this.updateAndReloadConsentRequestState(this.requestId(), ConsentRequestStateEnum.Declined);
   }
 

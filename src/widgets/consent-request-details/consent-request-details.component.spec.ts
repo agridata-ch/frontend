@@ -61,7 +61,7 @@ describe('ConsentRequestDetailsComponent', () => {
     expect(component.showDetails()).toBe(true);
   });
 
-  it('handleCloseDetails hides the details and emits onCloseDetail', () => {
+  it('handleCloseDetails hides the details and emits closeDetail', () => {
     const req = {
       requestDate: new Date(),
       dataRequest: { dataConsumer: { name: 'John' } },
@@ -72,7 +72,7 @@ describe('ConsentRequestDetailsComponent', () => {
     expect(component.showDetails()).toBe(true);
 
     let emitted = false;
-    component.onCloseDetail.subscribe(() => (emitted = true));
+    component.closeDetail.subscribe(() => (emitted = true));
 
     component.handleCloseDetails();
     fixture.detectChanges();

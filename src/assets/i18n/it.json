@@ -5,8 +5,23 @@
     "settings": "Impostazioni",
     "passwordAndSecurity": "Password e sicurezza"
   },
-  "agridata-table": {
-    "actions": "Azioni"
+  "table": {
+    "actions": "Azioni",
+    "showingResults": "Mostra {{ current }} di {{ total }} voci",
+    "pageInfo": "Pagina {{ current }} di {{ total }}",
+    "previousPage": "pagina precedente",
+    "nextPage": "pagina successiva",
+    "noData": "Nessun dato disponibile",
+    "loading": "Caricamento dati in corso",
+    "pageSelector": "Voci per pagina",
+    "header": {
+      "ariaLabels": {
+        "sort": "Ordina per: {{ sortBy }}"
+      }
+    },
+    "ariaLabels": {
+      "actions": "Azioni"
+    }
   },
   "consent-request": {
     "table": {
@@ -283,7 +298,12 @@
     }
   },
   "producer": {
-    "pageTitle": "Richieste"
+    "pageTitle": "Richieste",
+    "redirect": {
+      "headline": "Fatto!",
+      "description": "Grazie per aver scelto il nostro servizio. Verrai reindirizzato automaticamente tra {{ count }} secondi.",
+      "redirectNow": "Direttamente indietro"
+    }
   },
   "countries": {
     "CH": "Svizzera",
@@ -327,20 +347,18 @@
       "message": "Si è verificato un errore. Riprova più tardi. Errore: {{ error }}"
     }
   },
-  "search-input": {
-    "placeholder": "Digita per cercare",
-    "aria-labels": {
-      "clearSearchButton": "Pulsante Cancella ricerca"
+  "input": {
+    "search": {
+      "placeholder": "Digita per cercare",
+      "ariaLabels": {
+        "clearSearchButton": "Cancella ricerca"
+      }
+    },
+    "common": {
+      "ariaLabel": {
+        "open": "Apri"
+      }
     }
-  },
-  "table": {
-    "showingResults": "Mostra {{ current }} di {{ total }} voci",
-    "pageInfo": "Pagina {{ current }} di {{ total }}",
-    "previousPage": "pagina precedente",
-    "nextPage": "pagina successiva",
-    "noData": "Nessun dato disponibile",
-    "loading": "Caricamento dati in corso",
-    "pageSelector": "Voci per pagina"
   },
   "supporter": {
     "pageTitle": "Panoramica utenti",

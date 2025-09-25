@@ -14,17 +14,16 @@
     [class.opacity-100]="isOpen()"
   >
     <div class="flex items-center justify-between sticky top-0">
-      <h3 class="text-lg text-agridata-secondary-text font-semibold">
+      <h4>
         {{ title() }}
-      </h3>
-      <fa-icon
-        size="3x"
-        [icon]="closeIcon"
-        class="text-agridata-primary-600 cursor-pointer hover:text-agridata-primary-500"
-        (click)="handleClose()"
-        (keydown.enter)="handleClose()"
-        tabindex="0"
-      />
+      </h4>
+      <app-agridata-button
+        [variant]="ButtonVariants.Icon"
+        (onClick)="handleClose()"
+        [disabled]="preventManualClose()"
+      >
+        <fa-icon size="xl" [icon]="closeIcon" />
+      </app-agridata-button>
     </div>
     <ng-content></ng-content>
   </div>

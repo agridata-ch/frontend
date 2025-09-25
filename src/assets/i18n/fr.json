@@ -5,8 +5,23 @@
     "settings": "Paramètres",
     "passwordAndSecurity": "Mot de passe et sécurité"
   },
-  "agridata-table": {
-    "actions": "Actions"
+  "table": {
+    "actions": "Actions",
+    "showingResults": "Afficher {{ current }} sur {{ total }} entrées",
+    "pageInfo": "Page {{ current }} sur {{ total }}",
+    "previousPage": "page précédente",
+    "nextPage": "page suivante",
+    "noData": "aucune donnée disponible",
+    "loading": "Chargement des données",
+    "pageSelector": "Entrées par page",
+    "header": {
+      "ariaLabels": {
+        "sort": "Trier par : {{ sortBy }}"
+      }
+    },
+    "ariaLabels": {
+      "actions": "Actions"
+    }
   },
   "consent-request": {
     "table": {
@@ -283,7 +298,12 @@
     }
   },
   "producer": {
-    "pageTitle": "Demandes"
+    "pageTitle": "Demandes",
+    "redirect": {
+      "headline": "C'est fait !",
+      "description": "Merci d'avoir choisi\u2028Vous serez redirigé automatiquement dans {{ count }} secondes.",
+      "redirectNow": "Retour direct"
+    }
   },
   "countries": {
     "CH": "Suisse",
@@ -327,20 +347,18 @@
       "message": "Une erreur s'est malheureusement produite. Veuillez réessayer plus tard. Erreur: {{ error }}"
     }
   },
-  "search-input": {
-    "placeholder": "Conseil pour la recherche",
-    "aria-labels": {
-      "clearSearchButton": "Bouton Effacer la recherche"
+  "input": {
+    "search": {
+      "placeholder": "Conseil pour la recherche",
+      "ariaLabels": {
+        "clearSearchButton": "Effacer la recherche"
+      }
+    },
+    "common": {
+      "ariaLabel": {
+        "open": "Ouvrir"
+      }
     }
-  },
-  "table": {
-    "showingResults": "Afficher {{ current }} sur {{ total }} entrées",
-    "pageInfo": "Page {{ current }} sur {{ total }}",
-    "previousPage": "page précédente",
-    "nextPage": "page suivante",
-    "noData": "aucune donnée disponible",
-    "loading": "Chargement des données",
-    "pageSelector": "Entrées par page"
   },
   "supporter": {
     "pageTitle": "Aperçu des utilisateurs",

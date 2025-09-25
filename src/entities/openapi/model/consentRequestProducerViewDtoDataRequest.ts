@@ -84,6 +84,10 @@ export interface ConsentRequestProducerViewDtoDataRequest {
      */
     dataConsumerLogoBase64?: string;
     targetGroup?: string;
+    /**
+     * Regex of valid redirect_uri
+     */
+    validRedirectUriRegex?: string;
 }
 export namespace ConsentRequestProducerViewDtoDataRequest {
 }

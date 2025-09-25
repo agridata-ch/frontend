@@ -89,8 +89,9 @@
 }
 
 .agridata-button.agridata-button-secondary-reject:disabled {
-  border-color: var(--color-red-300);
-  color: var(--color-red-300);
+  border-color: var(--color-gray-200);
+  color: var(--color-gray-200);
+  background-color: transparent;
   cursor: not-allowed;
 }
 
