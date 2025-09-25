@@ -1,18 +1,19 @@
-import { Component, Signal, computed, inject, output } from '@angular/core';
+import { Component, TemplateRef, computed, inject, output, viewChild } from '@angular/core';
 import { faEye, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { DataRequestService } from '@/entities/api';
-import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
-import { I18nService } from '@/shared/i18n';
 import {
-  ActionDTO,
-  AgridataTableComponent,
-  AgridataTableData,
-  AgridataTableUtils,
-  CellTemplateDirective,
-  SortDirections,
-} from '@/shared/ui/agridata-table';
+  ConsentRequestProducerViewDtoDataRequestStateCode,
+  DataRequestDto,
+  DataRequestStateEnum,
+  TranslationDto,
+} from '@/entities/openapi';
+import { I18nService } from '@/shared/i18n';
+import { ActionDTO, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
+import { AgridataClientTableComponent } from '@/shared/ui/agridata-table/client-table/agridata-client-table.component';
+import { ClientTableMetadata } from '@/shared/ui/agridata-table/client-table/client-table-model';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
+import { DataRequestDtoDirective } from '@/widgets/data-request-table/data-request-dto.directive';
 
 /**
  * Implements the main table logic. It fetches data requests, maps them into table rows, and
@@ -20,12 +21,12 @@ import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/bad
  * state values, assigns badge variants for visual state indicators, and emits events when a
  * row or action is triggered.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-09-18
  */
 @Component({
   selector: 'app-data-request-table',
-  imports: [AgridataTableComponent, AgridataBadgeComponent, CellTemplateDirective],
   templateUrl: './data-request-table.component.html',
+  imports: [AgridataClientTableComponent, AgridataBadgeComponent, DataRequestDtoDirective],
 })
 export class DataRequestTableComponent {
   private readonly i18nService = inject(I18nService);
@@ -45,38 +46,71 @@ export class DataRequestTableComponent {
   protected readonly retreatIcon = faRotateLeft;
   protected readonly SortDirections = SortDirections;
   protected readonly BadgeSize = BadgeSize;
-  protected readonly getCellValue = AgridataTableUtils.getCellValue;
 
-  protected readonly requests: Signal<AgridataTableData[]> = computed(() => {
-    return (
-      this.dataRequests.value()?.map((request: DataRequestDto) => ({
-        id: request.id ?? '',
-        data: [
+  private readonly humanFriendlyIdTemplate =
+    viewChild<TemplateRef<{ $implicit: DataRequestDto }>>('humanFriendlyId');
+  private readonly dataRequestTitleTemplate =
+    viewChild<TemplateRef<{ $implicit: DataRequestDto }>>('dataRequestTitle');
+  private readonly dataRequestStateTemplate =
+    viewChild<TemplateRef<{ $implicit: DataRequestDto }>>('dataRequestState');
+
+  protected readonly dataRequestsTableMetaData = computed<ClientTableMetadata<DataRequestDto>>(
+    () => {
+      return {
+        idColumn: 'id',
+        columns: [
           {
-            header: this.dataRequestHumanFriendlyIdHeader,
-            value: request.humanFriendlyId ?? '',
+            name: this.dataRequestHumanFriendlyIdHeader,
+            renderer: {
+              type: CellRendererTypes.TEMPLATE,
+              template: this.humanFriendlyIdTemplate(),
+            },
+            enableSort: true,
+            sortValueFn: (item) => item.humanFriendlyId ?? '',
           },
           {
-            header: this.dataRequestTitleHeader,
-            value: this.i18nService.useObjectTranslation(request?.title),
+            name: this.dataRequestTitleHeader,
+            renderer: {
+              type: CellRendererTypes.TEMPLATE,
+              template: this.dataRequestTitleTemplate(),
+            },
+            enableSort: true,
+            sortValueFn: (item) => this.getObjTranslation(item?.title),
           },
           {
-            header: this.dataRequestSubmissionDateHeader,
-            value: request?.submissionDate ?? '',
+            name: this.dataRequestSubmissionDateHeader,
+            renderer: {
+              type: CellRendererTypes.FUNCTION,
+              cellRenderFn: (item) => item?.submissionDate ?? '',
+            },
+            enableSort: true,
+            initialSortDirection: SortDirections.DESC,
+            sortValueFn: (item) => item.submissionDate ?? '',
           },
           {
-            header: this.dataRequestProviderHeader,
-            value: 'Agis',
+            name: this.dataRequestProviderHeader,
+            renderer: {
+              type: CellRendererTypes.FUNCTION,
+              cellRenderFn: () => 'Agis',
+            },
           },
-          { header: this.dataRequestStateHeader, value: request.stateCode ?? '' },
+          {
+            name: this.dataRequestStateHeader,
+            renderer: {
+              type: CellRendererTypes.TEMPLATE,
+              template: this.dataRequestStateTemplate(),
+            },
+            enableSort: true,
+            sortValueFn: (item) => this.getTranslation(item?.stateCode),
+          },
         ],
-        actions: this.getFilteredActions(request),
-        rowAction: () => this.tableRowAction.emit(request),
-      })) || []
-    );
-  });
+        actions: this.getFilteredActions,
+        rowAction: (item) => this.tableRowAction.emit(item),
+      };
+    },
+  );
 
-  protected getFilteredActions = (request?: DataRequestDto): ActionDTO[] => {
+  getFilteredActions = (request?: DataRequestDto): ActionDTO[] => {
     if (!request) return [];
 
     const details = {
@@ -101,16 +135,22 @@ export class DataRequestTableComponent {
     return [details];
   };
 
-  protected getTranslatedStateValue(row: AgridataTableData, header: string) {
-    const value = this.getCellValue(row, header);
+  protected getTranslation(value: string | undefined) {
     return this.i18nService.translate(`data-request.stateCode.${value}`);
   }
 
-  protected getBadgeVariant = (stateCode: string) => {
+  protected getBadgeVariant = (
+    stateCode: ConsentRequestProducerViewDtoDataRequestStateCode | undefined,
+  ) => {
     if (stateCode === DataRequestStateEnum.Draft) return BadgeVariant.INFO;
     if (stateCode === DataRequestStateEnum.InReview) return BadgeVariant.INFO;
     if (stateCode === DataRequestStateEnum.ToBeSigned) return BadgeVariant.WARNING;
     if (stateCode === DataRequestStateEnum.Active) return BadgeVariant.SUCCESS;
     return BadgeVariant.DEFAULT;
   };
+
+  getObjTranslation(key: TranslationDto | undefined) {
+    if (!key) return '';
+    return this.i18nService.useObjectTranslation(key);
+  }
 }

@@ -1,4 +1,4 @@
 export interface MultiSelectOption {
-  value: string;
+  value: string | number;
   label: string;
 }

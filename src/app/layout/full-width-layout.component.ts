@@ -14,7 +14,6 @@ import { HeaderWidgetComponent } from '@/widgets/header-widget';
  * CommentLastReviewed: 2025-08-25
  */
 @Component({
-  standalone: true,
   selector: 'app-full-width-layout',
   imports: [
     CommonModule,

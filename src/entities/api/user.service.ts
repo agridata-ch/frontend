@@ -1,7 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { UsersService } from '@/entities/openapi';
+import { ResourceQueryDto, UserInfoDto, UsersService } from '@/entities/openapi';
+import { PageResponseDto, arrayToObjectSortParams, asPageResponse } from '@/shared/lib/api.helper';
 
 /**
  * Service for interacting with participant-related API endpoints. Provides methods to retrieve UIDs
@@ -18,4 +20,17 @@ export class UserService {
   async getAuthorizedUids() {
     return firstValueFrom(this.apiService.getAuthorizedUids());
   }
+
+  getProducers = (queryDto: ResourceQueryDto): Promise<PageResponseDto<UserInfoDto>> => {
+    return firstValueFrom(
+      this.apiService
+        .getProducers(
+          queryDto.page,
+          queryDto.searchTerm,
+          queryDto.size,
+          arrayToObjectSortParams(queryDto.sortParams, 'sortBy'),
+        )
+        .pipe(map((response) => asPageResponse(response))),
+    );
+  };
 }

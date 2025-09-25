@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/bash
+echo "checking commits for outdated comment reviews..."
 set -euo pipefail
 
 changed_files=$(

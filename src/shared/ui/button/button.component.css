@@ -130,11 +130,16 @@
 .agridata-button.agridata-button-icon,
 .agridata-button.agridata-button-icon-outline {
   color: var(--color-agridata-primary-600);
-  border-color: transparent;
   background-color: transparent;
-  border: 1px solid transparent;
+  border: 1px solid;
   border-radius: 0.375rem; /* ~6px */
   padding: 4px;
+}
+
+.agridata-button.agridata-button-icon {
+  border-color: transparent;
+  width: 41px;
+  height: 41px;
 }
 
 .agridata-button.agridata-button-icon:hover,

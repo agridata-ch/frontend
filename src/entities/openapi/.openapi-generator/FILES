@@ -37,12 +37,13 @@ model/exceptionEnum.ts
 model/farmTypeEnum.ts
 model/legalFormEnum.ts
 model/models.ts
+model/pageResponseDto.ts
 model/pageResponseDtoUserInfoDto.ts
+model/resourceQueryDto.ts
 model/translationDto.ts
 model/uidDto.ts
 model/uidRegisterAddressDto.ts
 model/uidRegisterOrganisationDto.ts
 model/userInfoDto.ts
 param.ts
-provide-api.ts
 variables.ts

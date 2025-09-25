@@ -1,5 +1,7 @@
-import { Component, input, output } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { NgTemplateOutlet } from '@angular/common';
+import { Component, TemplateRef, input, model, output } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FaIconComponent, IconDefinition } from '@fortawesome/angular-fontawesome';
 
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
 
@@ -13,7 +15,7 @@ import { FormControlWithMessages } from '@/shared/lib/form.helper';
  */
 @Component({
   selector: 'app-agridata-input',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FaIconComponent, NgTemplateOutlet, FormsModule],
   templateUrl: './agridata-input.component.html',
 })
 export class AgridataInputComponent {
@@ -24,8 +26,11 @@ export class AgridataInputComponent {
   readonly maxCharacters = input<number | null>(1000);
   readonly hasError = input<boolean>(false);
   readonly inputPrefix = input<string>('');
+  readonly inputPrefixIcon = input<IconDefinition>();
+  readonly suffixTemplate = input<TemplateRef<unknown>>();
   readonly disabled = input<boolean>(false);
-  readonly value = input<string | number>();
+
+  readonly value = model<string | number>();
 
   readonly onBlur = output<void>();
   readonly onInput = output<string>();

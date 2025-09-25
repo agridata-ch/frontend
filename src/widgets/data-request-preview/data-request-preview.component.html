@@ -6,8 +6,8 @@
         <h3>{{ getFieldFromLang('title', lang) }}</h3>
         <div class="flex items-center gap-2">
           <app-agridata-avatar
-            [name]="dataRequest()?.dataConsumerDisplayName ?? null"
-            [imageUrl]="dataRequest()?.dataConsumerLogoBase64 ?? null"
+            [name]="dataRequest()?.dataConsumerDisplayName"
+            [imageUrl]="dataRequest()?.dataConsumerLogoBase64"
             [size]="AvatarSize.MEDIUM"
             [skin]="AvatarSkin.LIGHT"
           />

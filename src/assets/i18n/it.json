@@ -326,5 +326,31 @@
       "title": "Invio non riuscito",
       "message": "Si è verificato un errore. Riprova più tardi. Errore: {{ error }}"
     }
+  },
+  "search-input": {
+    "placeholder": "Digita per cercare",
+    "aria-labels": {
+      "clearSearchButton": "Pulsante Cancella ricerca"
+    }
+  },
+  "table": {
+    "showingResults": "Mostra {{ current }} di {{ total }} voci",
+    "pageInfo": "Pagina {{ current }} di {{ total }}",
+    "previousPage": "pagina precedente",
+    "nextPage": "pagina successiva",
+    "noData": "Nessun dato disponibile",
+    "loading": "Caricamento dati in corso",
+    "pageSelector": "Voci per pagina"
+  },
+  "supporter": {
+    "pageTitle": "Panoramica utenti",
+    "table": {
+      "name": "Nome",
+      "email": "E-Mail",
+      "phone": "Telefono",
+      "lastLogin": "Ultimo accesso",
+      "actions": "Azioni",
+      "startImpersonationButton": "Avvia visualizzazione utente"
+    }
   }
 }

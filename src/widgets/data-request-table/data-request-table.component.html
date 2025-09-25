@@ -1,30 +1,25 @@
-<app-agridata-table
-  [rawData]="requests()"
-  [defaultSortColumn]="dataRequestTitleHeader"
-  [defaultSortDirection]="SortDirections.ASC"
-  [isLoading]="dataRequests.isLoading()"
+<app-agridata-client-table
+  [rawData]="dataRequests.value()"
+  [tableMetadata]="dataRequestsTableMetaData()"
 >
-  <ng-template [stCell]="dataRequestHumanFriendlyIdHeader" let-item>
-    <span
-      class="text-agridata-primary-text font-medium"
-      [title]="getCellValue(item, dataRequestHumanFriendlyIdHeader)"
-    >
-      {{ getCellValue(item, dataRequestHumanFriendlyIdHeader) }}
+  <ng-template #humanFriendlyId [appDataRequestDtoGuard] let-item>
+    <span class="text-agridata-primary-text font-medium" [title]="item.humanFriendlyId ?? ''">
+      {{ item.humanFriendlyId ?? '' }}
     </span>
   </ng-template>
-  <ng-template [stCell]="dataRequestTitleHeader" let-item>
+  <ng-template #dataRequestTitle [appDataRequestDtoGuard] let-item>
     <span
       class="text-agridata-primary-600 agridata-ellipsis"
-      [title]="getCellValue(item, dataRequestTitleHeader)"
+      [title]="getObjTranslation(item?.title)"
     >
-      {{ getCellValue(item, dataRequestTitleHeader) }}
+      {{ getObjTranslation(item?.title) }}
     </span>
   </ng-template>
-  <ng-template [stCell]="dataRequestStateHeader" let-item>
+  <ng-template #dataRequestState [appDataRequestDtoGuard] let-item>
     <app-agridata-badge
-      [text]="getTranslatedStateValue(item, dataRequestStateHeader)"
-      [variant]="getBadgeVariant(getCellValue(item, dataRequestStateHeader))"
+      [text]="getTranslation(item?.stateCode)"
+      [variant]="getBadgeVariant(item?.stateCode)"
       [size]="BadgeSize.SM"
     />
   </ng-template>
-</app-agridata-table>
+</app-agridata-client-table>

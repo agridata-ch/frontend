@@ -1,4 +1,13 @@
-import { Component, computed, input, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  computed,
+  effect,
+  input,
+  model,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
@@ -21,40 +30,58 @@ import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
   templateUrl: './agridata-select.component.html', // Consider renaming the template file if needed
 })
 export class AgridataSelectComponent {
+  protected readonly popover = viewChild<ElementRef>('popover');
+  protected readonly trigger = viewChild<ElementRef>('trigger');
+
   readonly control = input<FormControlWithMessages>();
   readonly options = input<MultiSelectOption[]>([]);
   readonly placeholder = input<string>('');
   readonly hasError = input<boolean>(false);
   readonly disabled = input<boolean>(false);
 
-  readonly isDropdownOpen = signal<boolean>(false);
-  readonly selectedOption = signal<MultiSelectOption | null>(null);
-  readonly chevronDown = faChevronDown;
-  readonly chevronUp = faChevronUp;
-  readonly dropdownIcon = computed(() =>
+  readonly selectedOption = model<MultiSelectOption['value'] | null>(null);
+
+  protected readonly chevronDown = faChevronDown;
+  protected readonly chevronUp = faChevronUp;
+
+  protected readonly isDropdownOpen = signal<boolean>(false);
+  protected readonly openAbove = signal(false);
+
+  protected readonly dropdownIcon = computed(() =>
     this.isDropdownOpen() ? this.chevronUp : this.chevronDown,
   );
 
+  protected readonly popoverCalculator = effect(() => {
+    if (this.popover() && this.trigger()) {
+      const rect = this.trigger()?.nativeElement.getBoundingClientRect();
+      const rectPopover = this.popover()?.nativeElement.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      this.openAbove.set(spaceBelow < rectPopover.height);
+    }
+  });
+
   ngOnInit() {
     // Initialize selected option based on the control's value
-    const currentValue = this.control()?.value ?? null;
-    const selected = this.options().find((o) => o.value === currentValue) ?? null;
-
-    this.selectedOption.set(selected);
+    let currentValue = this.control()?.value ?? null;
+    currentValue = currentValue ?? this.selectedOption();
+    this.selectedOption.set(currentValue);
   }
 
   toggleDropdown(): void {
     this.isDropdownOpen.update((o) => !o);
   }
 
-  isSelected(id: string) {
+  isSelected(id: string | number) {
     return this.control()?.value === id;
   }
 
-  onOptionSelect(value: string, event: Event) {
+  getSelectedOptionLabel() {
+    return this.options().find((o) => o.value === this.selectedOption())?.label ?? null;
+  }
+
+  onOptionSelect(value: string | number, event: Event) {
     event.stopPropagation();
-    const selected = this.options().find((o) => o.value === value) ?? null;
-    this.selectedOption.set(selected);
+    this.selectedOption.set(value);
     this.control()?.setValue(value);
     this.isDropdownOpen.set(false);
   }

@@ -1,0 +1,172 @@
+<!-- Search Section -->
+@if (enableSearch()) {
+  <div class="mb-4">
+    <app-search-input
+      (onInput)="handleSearchInput($event)"
+      [isLoading]="dataProvider().isLoading()"
+    >
+    </app-search-input>
+  </div>
+}
+
+<!-- Main Table Container -->
+<div class="rounded-lg border border-gray-200">
+  <table class="table-auto w-full bg-white rounded-lg">
+    <!-- Table Header -->
+    <thead class="text-left border-b border-gray-200">
+      <tr>
+        @for (column of tableMetadata().columns; track column.name) {
+          <th
+            class="py-3 px-4 select-none text-slate-500 outline-0 hover:bg-gray-50 cursor-pointer focus:bg-gray-200 text-sm font-semibold"
+            (click)="toggleColumnSort(column)"
+            [class]="column.headerCssClasses"
+            (keydown.enter)="toggleColumnSort(column)"
+            [tabindex]="0"
+            [attr.aria-label]="'Sort by ' + (column.name | i18n)"
+          >
+            <div class="flex items-center">
+              <span class="mr-2">{{ column.name | i18n }}</span>
+              <div class="min-w-4" aria-hidden="true">
+                @if (getSortIcon(column)) {
+                  <fa-icon [icon]="getSortIcon(column)" class="text-agridata-primary-600" />
+                }
+              </div>
+            </div>
+          </th>
+        }
+        <!-- Actions Column Header -->
+        @if (tableMetadata().actions) {
+          <th class="py-3 px-4" aria-label="Actions"></th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @if (dataProvider().isLoading()) {
+        <!-- Loading State -->
+        <tr>
+          <td
+            [attr.colspan]="tableMetadata().columns.length + 1"
+            class="py-8 px-4 text-center text-slate-500"
+          >
+            <div class="flex items-center justify-center space-x-2">
+              <div
+                class="animate-spin rounded-full h-4 w-4 border-b-2 border-agridata-primary-600"
+              ></div>
+              <span>{{ 'table.loading' | i18n }}</span>
+            </div>
+          </td>
+        </tr>
+      } @else if (pageData().items.length === 0) {
+        <!-- Empty State -->
+        <tr>
+          <td
+            [attr.colspan]="tableMetadata().columns.length + 1"
+            class="py-8 px-4 text-center text-slate-500"
+          >
+            {{ 'table.noData' | i18n }}
+          </td>
+        </tr>
+      } @else {
+        <!-- Data Rows -->
+        @for (row of pageData().items; track getRowId(row)) {
+          @let rowId = getRowId(row);
+          <tr
+            class="hover:bg-agridata-primary-50 cursor-pointer transition-colors duration-150"
+            [class.bg-sky-50]="isRowHighlighted(row)"
+            [attr.aria-selected]="isRowHighlighted(row)"
+            (click)="handleRowClick(row)"
+            (keydown.enter)="handleRowClick(row)"
+            (mouseenter)="setHoveredRowId(rowId)"
+            (mouseleave)="setHoveredRowId(null)"
+            tabindex="0"
+            role="button"
+          >
+            <!-- Data Cells -->
+            @for (column of tableMetadata().columns; track column.name) {
+              <td class="py-3 px-4 border-t border-gray-200" [class]="column.cellCssClasses">
+                @if (
+                  column.renderer.type === CellRendererTypes.TEMPLATE && column.renderer.template
+                ) {
+                  <!-- Template-based Cell Renderer -->
+                  <ng-container
+                    *ngTemplateOutlet="column.renderer.template; context: { $implicit: row }"
+                  >
+                  </ng-container>
+                } @else if (column.renderer.type === CellRendererTypes.FUNCTION) {
+                  <!-- Function-based Cell Renderer -->
+                  <span
+                    class="agridata-ellipsis w-auto"
+                    [title]="formatCellValue(column.renderer.cellRenderFn(row))"
+                  >
+                    {{ formatCellValue(column.renderer.cellRenderFn(row)) }}
+                  </span>
+                }
+              </td>
+            }
+
+            <!-- Actions Cell -->
+            @if (tableMetadata().actions) {
+              <td class="py-3 px-4 border-t border-gray-200">
+                <app-table-actions
+                  [actions]="getRowActions(row)"
+                  [isRowHovered]="hoveredRowId() === rowId"
+                  (rowAction)="handleRowClick(row)"
+                />
+              </td>
+            }
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+
+  <!-- Pagination Section -->
+  @if (shouldShowPagination()) {
+    <div
+      class="flex justify-between items-center p-4 bg-gray-50 border-t border-t-gray-300 rounded-b-lg"
+    >
+      <div class="flex items-center gap-3">
+        {{ 'table.pageSelector' | i18n }}
+        <app-agridata-select
+          #trigger
+          [options]="SELECTABLE_PAGE_SIZES"
+          [(selectedOption)]="this.pageSize"
+        ></app-agridata-select>
+      </div>
+
+      <!-- Pagination Controls -->
+      <div
+        class="flex items-center rounded-md border border-agridata-stroke divide-x divide-agridata-stroke"
+      >
+        <app-agridata-button
+          [ariaLabel]="'table.previousPage' | i18n"
+          [disabled]="!canNavigateToPrevious()"
+          [variant]="ButtonVariants.Icon"
+          (onClick)="navigateToPreviousPage()"
+        >
+          <fa-icon [icon]="faChevronLeft" />
+        </app-agridata-button>
+
+        <span class="p-1">
+          {{
+            'table.pageInfo'
+              | i18n
+                : {
+                    current: currentPageIndex() + 1,
+                    total: pageData().totalPages,
+                  }
+          }}
+        </span>
+        <app-agridata-button
+          [disabled]="!canNavigateToNext()"
+          [variant]="ButtonVariants.Icon"
+          [ariaLabel]="'table.nextPage' | i18n"
+          (onClick)="navigateToNextPage()"
+        >
+          <fa-icon [icon]="faChevronRight" />
+        </app-agridata-button>
+      </div>
+    </div>
+  }
+</div>

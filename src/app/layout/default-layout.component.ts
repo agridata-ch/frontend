@@ -15,7 +15,6 @@ import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
  * CommentLastReviewed: 2025-08-25
  */
 @Component({
-  standalone: true,
   selector: 'app-default-layout',
   imports: [
     CommonModule,

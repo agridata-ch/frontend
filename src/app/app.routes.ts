@@ -4,16 +4,16 @@ import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 import { CreateConsentRequestGuard } from '@/app/guards/create-consent-request.guard';
 import { HomeRedirectGuard } from '@/app/guards/home-redirect.guard';
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
-import { DefaultLayoutComponent } from '@/app/layout';
+import { DefaultLayoutComponent, FullWidthLayoutComponent } from '@/app/layout';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
 import { LandingPage } from '@/pages/landing-page';
 import { NotFoundPage } from '@/pages/not-found';
+import { SupporterPageComponent } from '@/pages/supporter-page/';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
 
 import { LoginAuthGuard } from './guards/login.guard';
-import { FullWidthLayoutComponent } from './layout/full-width-layout.component';
 
 export const routes: Routes = [
   // #### public pages without authentication ####
@@ -91,6 +91,21 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    // support routes
+    path: ROUTE_PATHS.SUPPORT_PATH,
+    component: DefaultLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
+    data: { roles: [USER_ROLES.AGRIDATA_SUPPORTER] },
+    children: [
+      {
+        path: '',
+        component: SupporterPageComponent,
+      },
+    ],
+  },
+
   // #### general routes ####
   {
     path: '',

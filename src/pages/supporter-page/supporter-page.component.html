@@ -1,0 +1,31 @@
+<ng-container *i18n="let t; prefix: 'supporter'">
+  <h2 class="page-title">
+    <fa-icon [icon]="TITLE_ICON" class="mr-3" />
+    {{ t('pageTitle') }}
+  </h2>
+
+  <app-agridata-table
+    [dataProvider]="fetchProducers"
+    [tableMetadata]="usersTableMetaData()"
+    [(onQueryParamChange)]="resourceQueryDto"
+    [enableSearch]="true"
+  >
+    <ng-template #nameTemplate [appUserInfoDtoGuard] let-item>
+      <app-agridata-contact-card
+        [name]="getName(item)"
+        [secondaryName]="getAddress(item)"
+        [size]="AvatarSize.LARGE"
+        [skin]="AvatarSkin.COLOR"
+      />
+    </ng-template>
+
+    <ng-template #actionTemplate [appUserInfoDtoGuard] let-item>
+      <app-agridata-button (onClick)="startImpersonation(item)">
+        <div class="flex items-center gap-2">
+          <span class="hidden lg:inline">{{ t('table.startImpersonationButton') }}</span>
+          <fa-icon [icon]="faArrowUpRightFromSquare"></fa-icon>
+        </div>
+      </app-agridata-button>
+    </ng-template>
+  </app-agridata-table>
+</ng-container>

@@ -220,10 +220,10 @@ export class UsersService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getProducers(page?: number, searchTerm?: string, size?: number, sortBy?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageResponseDtoUserInfoDto>;
-    public getProducers(page?: number, searchTerm?: string, size?: number, sortBy?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageResponseDtoUserInfoDto>>;
-    public getProducers(page?: number, searchTerm?: string, size?: number, sortBy?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageResponseDtoUserInfoDto>>;
-    public getProducers(page?: number, searchTerm?: string, size?: number, sortBy?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getProducers(page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageResponseDtoUserInfoDto>;
+    public getProducers(page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageResponseDtoUserInfoDto>>;
+    public getProducers(page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageResponseDtoUserInfoDto>>;
+    public getProducers(page?: number, searchTerm?: string, size?: number, sortBy?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -232,12 +232,8 @@ export class UsersService extends BaseService {
           <any>searchTerm, 'searchTerm');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>size, 'size');
-        if (sortBy) {
-            sortBy.forEach((element) => {
-                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-                  <any>element, 'sortBy');
-            })
-        }
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>sortBy, 'sortBy');
 
         let localVarHeaders = this.defaultHeaders;
 

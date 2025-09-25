@@ -283,7 +283,7 @@
     }
   },
   "producer": {
-    "pageTitle": "Anfragen"
+    "pageTitle": "Datenanfragen"
   },
   "countries": {
     "CH": "Schweiz",
@@ -325,6 +325,32 @@
     "error": {
       "title": "Senden fehlgeschlagen",
       "message": "Leider ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut. Error: {{ error }}"
+    }
+  },
+  "search-input": {
+    "placeholder": "Tippe zum Suchen",
+    "aria-labels": {
+      "clearSearchButton": "Button Suche löschen"
+    }
+  },
+  "table": {
+    "showingResults": "Zeige {{ current }} von {{ total }} Einträgen",
+    "pageInfo": "Seite {{ current }} von {{ total }}",
+    "previousPage": "vorherige Seite",
+    "nextPage": "nächste Seite",
+    "noData": "keine Daten vorhanden",
+    "loading": "Daten werden geladen",
+    "pageSelector": "Einträge pro Seite"
+  },
+  "supporter": {
+    "pageTitle": "Benutzerübersicht",
+    "table": {
+      "name": "Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "lastLogin": "Letzter Login",
+      "actions": "Aktionen",
+      "startImpersonationButton": "Nutzeransicht starten"
     }
   }
 }
