@@ -1,6 +1,7 @@
 <app-sidepanel
   [isOpen]="showDetails()"
-  (onClose)="handleCloseDetails()"
+  (closeSidepanel)="handleCloseDetails()"
+  [preventManualClose]="preventManualClose()"
   [title]="t('sidepanel.title')"
   maxWidth="650px"
   *i18n="let t; prefix: 'consent-request.details'"

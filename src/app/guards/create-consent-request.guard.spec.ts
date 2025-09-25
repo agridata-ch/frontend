@@ -26,6 +26,7 @@ describe('createConsentRequestGuard', () => {
   let mockRouter: {
     createUrlTree: jest.Mock;
     parseUrl: jest.Mock;
+    navigate: jest.Mock;
   };
 
   let mockProducerUidGuard: {
@@ -38,6 +39,7 @@ describe('createConsentRequestGuard', () => {
     mockRouter = {
       createUrlTree: jest.fn().mockReturnValue(mockUrlTree),
       parseUrl: jest.fn().mockReturnValue(mockErrorUrlTree),
+      navigate: jest.fn(),
     };
 
     mockProducerUidGuard = {
@@ -73,7 +75,10 @@ describe('createConsentRequestGuard', () => {
   });
 
   it('should redirect to error page when no dataRequestUid is provided', async () => {
-    const route = { paramMap: convertToParamMap({}) } as ActivatedRouteSnapshot;
+    const route = {
+      paramMap: convertToParamMap({}),
+      queryParamMap: convertToParamMap({}),
+    } as ActivatedRouteSnapshot;
 
     const result = await createConsentRequestGuard.canActivate(route);
 
@@ -84,6 +89,7 @@ describe('createConsentRequestGuard', () => {
   it('should redirect to error page when no consent requests are created', async () => {
     const route = {
       paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
+      queryParamMap: convertToParamMap({}),
     } as ActivatedRouteSnapshot;
     (consentRequestService.createConsentRequests as jest.Mock).mockResolvedValue([]);
 
@@ -97,6 +103,7 @@ describe('createConsentRequestGuard', () => {
   it('should redirect to specific consent request page when a matching consent request is found', async () => {
     const route = {
       paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
+      queryParamMap: convertToParamMap({}),
     } as ActivatedRouteSnapshot;
     const mockConsentRequest: ConsentRequestCreatedDto = {
       id: testConsentRequestId,
@@ -118,9 +125,35 @@ describe('createConsentRequestGuard', () => {
     expect(result).toBe(mockUrlTree);
   });
 
+  it('should redirect to specific consent request page when a matching consent request is found with a redirectUrl', async () => {
+    const testRedirectUri = 'https://example.com/redirect';
+    const route = {
+      paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
+      queryParamMap: convertToParamMap({ redirect_uri: testRedirectUri }),
+    } as ActivatedRouteSnapshot;
+    const mockConsentRequest: ConsentRequestCreatedDto = {
+      id: testConsentRequestId,
+      dataProducerUid: testUid,
+    };
+    (consentRequestService.createConsentRequests as jest.Mock).mockResolvedValue([
+      mockConsentRequest,
+    ]);
+
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(testDataRequestUid);
+    expect(consentRequestService.fetchConsentRequests.reload).toHaveBeenCalled();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(
+      [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, testUid, testConsentRequestId],
+      { state: { redirect_uri: testRedirectUri } },
+    );
+    expect(result).toBe(false);
+  });
+
   it('should redirect to consent requests overview when no matching consent request is found', async () => {
     const route = {
       paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
+      queryParamMap: convertToParamMap({}),
     } as ActivatedRouteSnapshot;
     const mockConsentRequest: ConsentRequestCreatedDto = {
       id: testConsentRequestId,
@@ -142,6 +175,7 @@ describe('createConsentRequestGuard', () => {
   it('should redirect to error page when createConsentRequests throws an error', async () => {
     const route = {
       paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
+      queryParamMap: convertToParamMap({}),
     } as ActivatedRouteSnapshot;
     const testError = new Error('Test error');
     (consentRequestService.createConsentRequests as jest.Mock).mockRejectedValue(testError);

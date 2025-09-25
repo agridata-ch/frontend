@@ -20,6 +20,8 @@ export class CreateConsentRequestGuard implements CanActivate {
 
   async canActivate(route: ActivatedRouteSnapshot) {
     const dataRequestUid = route.paramMap.get('dataRequestUid') ?? '';
+    const redirectUrl = route.queryParamMap.get('redirect_uri') ?? null;
+
     if (!dataRequestUid) {
       return this.fail('No dataRequestUid provided in route parameters.');
     }
@@ -39,6 +41,16 @@ export class CreateConsentRequestGuard implements CanActivate {
 
       const consentRequestToOpen = consentRequests.find((cr) => cr.dataProducerUid === activeUid);
       if (consentRequestToOpen) {
+        // if a redirectUrl is present we need to use navigate instead of creating a UrlTree
+        // because we need to pass state (redirect_uri)
+        if (redirectUrl) {
+          this.router.navigate(
+            [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, activeUid, consentRequestToOpen.id],
+            { state: { redirect_uri: redirectUrl } },
+          );
+          // return false to cancel the current navigation
+          return false;
+        }
         return this.router.createUrlTree([
           ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
           activeUid,
