@@ -1,3 +1,9 @@
+## [1.0.0-rc.71](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.70...v1.0.0-rc.71) (2025-09-26)
+
+### Features
+
+- **support-page:** adds support-page ([f364564](https://github.com/agridata-ch/frontend/commit/f364564a5589a623e90991b904a2928ed12dedc8)), closes [DIGIB2-696](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-696)
+
 ## [1.0.0-rc.70](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.69...v1.0.0-rc.70) (2025-09-23)
 
 ### Features
