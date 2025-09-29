@@ -14,11 +14,12 @@
     "prepare": "husky",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
-    "generate:api": "openapi-generator-cli generate -i src/assets/openapi.yaml -g typescript-angular -o ./src/entities/openapi --global-property=apis,models,supportingFiles --skip-validate-spec --enable-post-process-file --additional-properties=supportsES6=true --ignore-file-override=./scripts/openapi-ignore.txt",
+    "api:generate": "openapi-generator-cli generate -i src/assets/openapi.yaml -g typescript-angular -o ./src/entities/openapi --global-property=apis,models,supportingFiles --skip-validate-spec --enable-post-process-file --additional-properties=supportsES6=true --ignore-file-override=./scripts/openapi-ignore.txt",
     "typecheck": "tsc --noEmit",
     "i18n:extract": "transloco-keys-manager extract",
     "i18n:find": "transloco-keys-manager find",
     "i18n:sync": "./src/scripts/sync-translations.sh",
+    "i18n:sync:windows": "powershell -ExecutionPolicy Bypass -File \"src/scripts/sync_translations.ps1\" ",
     "commentcheck": "./src/scripts/check-comments.sh"
   },
   "private": true,

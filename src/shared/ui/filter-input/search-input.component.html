@@ -1,4 +1,4 @@
-<div class="relative w-60 flex items-center" *i18n="let t; prefix: 'search-input'">
+<div class="relative w-60 flex items-center" *i18n="let t; prefix: 'input.search'">
   <app-agridata-input
     [(value)]="value"
     [placeholder]="t('placeholder')"
@@ -6,15 +6,15 @@
     [suffixTemplate]="suffixTemplate"
   ></app-agridata-input>
   <ng-template #suffixTemplate>
-    <div class="absolute inset-y-0 right-4 flex items-center">
+    <div class="absolute inset-y-0 right-4 flex items-center gap-2">
       @if (isLoading()) {
-        <fa-icon class="animate-spin" [icon]="faSpinner"></fa-icon>
+        <fa-icon animation="spin" [icon]="faSpinner"></fa-icon>
       }
       @if (trimmedValue() && !isLoading()) {
         <button
           class="text-agridata-primary-500 text-lg leading-none p-1 rounded-md transition-all duration-200 hover:bg-blue-100 bg-white"
           (click)="clearSearch()"
-          [aria-label]="t('ariaLabels.clearSearchButton')"
+          [attr.aria-label]="t('ariaLabels.clearSearchButton')"
         >
           <fa-icon [icon]="faClose" />
         </button>

@@ -1,6 +1,6 @@
 /// <reference types="jest" />
 
-import { ResourceRef, ResourceStatus, signal } from '@angular/core';
+import { ResourceRef, ResourceStatus, Signal, signal } from '@angular/core';
 
 /**
  * Supplies mock data objects and constants used across different tests.
@@ -8,16 +8,18 @@ import { ResourceRef, ResourceStatus, signal } from '@angular/core';
  * CommentLastReviewed: 2025-08-25
  */
 export class MockResources {
-  static createMockResourceRef<T>(initialValue: T): ResourceRef<T> {
+  static createMockResourceRef<T>(
+    initialValue: T,
+    loadingSignal?: Signal<boolean>,
+  ): ResourceRef<T> {
     const valueSignal = signal<T>(initialValue);
     const errorSignal = signal<Error | undefined>(undefined);
-    const loadingSignal = signal<boolean>(false);
     const statusSignal = signal<ResourceStatus>('resolved');
 
     return {
       value: valueSignal,
       error: errorSignal,
-      isLoading: loadingSignal,
+      isLoading: loadingSignal ?? signal(false),
       status: statusSignal,
 
       asReadonly: jest.fn(),

@@ -22,6 +22,7 @@
       [variant]="ButtonVariants.Icon"
       (onClick)="handleRowAction()"
       class="action-button"
+      [ariaLabel]="'table.ariaLabels.actions' | i18n"
     >
       <fa-icon size="xl" [icon]="iconRowAction" />
     </app-agridata-button>

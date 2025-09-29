@@ -30,15 +30,6 @@
   }
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .agridata-ellipsis {
   display: -webkit-box;
   -webkit-box-orient: vertical;
