@@ -9,9 +9,9 @@ import {
   TranslationDto,
 } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
+import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table/agridata-client-table.component';
+import { ClientTableMetadata } from '@/shared/ui/agridata-client-table/client-table-model';
 import { ActionDTO, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
-import { AgridataClientTableComponent } from '@/shared/ui/agridata-table/client-table/agridata-client-table.component';
-import { ClientTableMetadata } from '@/shared/ui/agridata-table/client-table/client-table-model';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { DataRequestDtoDirective } from '@/widgets/data-request-table/data-request-dto.directive';
 
@@ -65,7 +65,7 @@ export class DataRequestTableComponent {
               type: CellRendererTypes.TEMPLATE,
               template: this.humanFriendlyIdTemplate(),
             },
-            enableSort: true,
+            sortable: true,
             sortValueFn: (item) => item.humanFriendlyId ?? '',
           },
           {
@@ -74,7 +74,7 @@ export class DataRequestTableComponent {
               type: CellRendererTypes.TEMPLATE,
               template: this.dataRequestTitleTemplate(),
             },
-            enableSort: true,
+            sortable: true,
             sortValueFn: (item) => this.getObjTranslation(item?.title),
           },
           {
@@ -83,7 +83,7 @@ export class DataRequestTableComponent {
               type: CellRendererTypes.FUNCTION,
               cellRenderFn: (item) => item?.submissionDate ?? '',
             },
-            enableSort: true,
+            sortable: true,
             initialSortDirection: SortDirections.DESC,
             sortValueFn: (item) => item.submissionDate ?? '',
           },
@@ -100,8 +100,8 @@ export class DataRequestTableComponent {
               type: CellRendererTypes.TEMPLATE,
               template: this.dataRequestStateTemplate(),
             },
-            enableSort: true,
-            sortValueFn: (item) => this.getTranslation(item?.stateCode),
+            sortable: true,
+            sortValueFn: (item) => this.getStatusTranslation(item?.stateCode),
           },
         ],
         actions: this.getFilteredActions,
@@ -135,7 +135,10 @@ export class DataRequestTableComponent {
     return [details];
   };
 
-  protected getTranslation(value: string | undefined) {
+  protected getStatusTranslation(
+    value: ConsentRequestProducerViewDtoDataRequestStateCode | undefined,
+  ) {
+    if (!value) return '';
     return this.i18nService.translate(`data-request.stateCode.${value}`);
   }
 

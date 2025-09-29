@@ -1,19 +1,6 @@
 import { TemplateRef } from '@angular/core';
 
-import { ActionDTO } from '../table-actions/table-actions.component';
-
-export type AgridataTableCell = {
-  header: string;
-  value: string;
-};
-
-export type AgridataTableData = {
-  data: AgridataTableCell[];
-  highlighted?: boolean;
-  actions: ActionDTO[];
-  rowAction?: () => void;
-  id: string;
-};
+import { ActionDTO } from '@/shared/ui/agridata-table/table-actions/table-actions.component';
 
 export enum CellRendererTypes {
   FUNCTION = 'function',
@@ -44,10 +31,8 @@ export interface ColumnDefinition<T> {
   cellCssClasses?: string;
   sortField?: keyof T;
   initialSortDirection?: SortDirections;
-  enableSort?: boolean;
+  sortable?: boolean;
 }
-
-export type ActionFn<T> = (item?: T) => ActionDTO | null;
 
 export interface TableMetadata<T> {
   actions?: (item?: T) => ActionDTO[];

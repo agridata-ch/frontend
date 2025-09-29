@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, OnDestroy, input, output, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -28,7 +28,7 @@ import { AgridataInputComponent } from '@/shared/ui/agridata-input';
   ],
   templateUrl: './search-input.component.html',
 })
-export class SearchInputComponent {
+export class SearchInputComponent implements OnDestroy {
   readonly minSearchLength = input(3);
   readonly debounceTime = input(300);
   readonly isLoading = input<boolean>(false);
@@ -61,7 +61,7 @@ export class SearchInputComponent {
       });
   }
 
-  onDestroy() {
+  ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.complete();
   }

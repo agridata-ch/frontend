@@ -7,7 +7,7 @@ import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UserService } from '@/entities/api/user.service';
 import { ConsentRequestCreatedDto } from '@/entities/openapi/model/consentRequestCreatedDto';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { mockParticipantService } from '@/shared/testing/mocks';
+import { mockUserService } from '@/shared/testing/mocks';
 import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
 
 import { ProducerUidGuard } from './producer-uid.guard';
@@ -59,7 +59,7 @@ describe('createConsentRequestGuard', () => {
       providers: [
         CreateConsentRequestGuard,
         { provide: ConsentRequestService, useValue: consentServiceMock },
-        { provide: UserService, useValue: mockParticipantService },
+        { provide: UserService, useValue: mockUserService },
         { provide: AgridataStateService, useValue: mockAgridataStateServiceInstance },
         { provide: ProducerUidGuard, useValue: mockProducerUidGuard },
         { provide: Router, useValue: mockRouter },

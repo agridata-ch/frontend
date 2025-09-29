@@ -8,7 +8,6 @@ import {
   viewChild,
 } from '@angular/core';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { faArrowUpRightFromSquare, faUsers } from '@fortawesome/free-solid-svg-icons';
 
 import { UserService } from '@/entities/api/user.service';
@@ -50,7 +49,6 @@ export class SupporterPageComponent {
   protected readonly LAST_LOGIN_HEADER = 'supporter.table.lastLogin';
   protected readonly ACTION_HEADER = 'supporter.table.actions';
 
-  protected readonly EDIT_ICON = faPenToSquare;
   protected readonly TITLE_ICON = faUsers;
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
@@ -68,7 +66,7 @@ export class SupporterPageComponent {
         {
           name: this.NAME_HEADER,
           sortField: 'familyName',
-          enableSort: true,
+          sortable: true,
           renderer: {
             type: CellRendererTypes.TEMPLATE,
             template: this.nameTemplate(),
@@ -76,13 +74,13 @@ export class SupporterPageComponent {
         },
         {
           name: this.EMAIL_HEADER,
-          enableSort: true,
+          sortable: true,
           sortField: 'email',
           renderer: { type: CellRendererTypes.FUNCTION, cellRenderFn: (row) => row.email ?? '' },
         },
         {
           name: this.PHONE_HEADER,
-          enableSort: true,
+          sortable: true,
           sortField: 'phoneNumber',
           renderer: {
             type: CellRendererTypes.FUNCTION,
@@ -91,7 +89,7 @@ export class SupporterPageComponent {
         },
         {
           name: this.LAST_LOGIN_HEADER,
-          enableSort: true,
+          sortable: true,
           sortField: 'lastLoginDate',
           initialSortDirection: SortDirections.DESC,
           renderer: {

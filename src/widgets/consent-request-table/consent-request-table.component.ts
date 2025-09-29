@@ -25,11 +25,11 @@ import {
 import { I18nService } from '@/shared/i18n/i18n.service';
 import { ToastService, ToastType } from '@/shared/toast';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
-import { ActionDTO, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
 import {
   AgridataClientTableComponent,
   ClientTableMetadata,
-} from '@/shared/ui/agridata-table/client-table';
+} from '@/shared/ui/agridata-client-table';
+import { ActionDTO, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { ConsentRequestFilterComponent } from '@/widgets/consent-request-table/consent-request-filter';
@@ -126,7 +126,7 @@ export class ConsentRequestTableComponent {
             type: CellRendererTypes.TEMPLATE,
             template: this.dataRequestConsumerTemplate(),
           },
-          enableSort: true,
+          sortable: true,
           sortValueFn: (item: ConsentRequestProducerViewDto) =>
             item.dataRequest?.dataConsumerDisplayName ?? '',
         },
@@ -136,13 +136,13 @@ export class ConsentRequestTableComponent {
             type: CellRendererTypes.TEMPLATE,
             template: this.dataRequestTitleTemplate(),
           },
-          enableSort: true,
+          sortable: true,
           sortValueFn: (item: ConsentRequestProducerViewDto) =>
             item.dataRequest?.title ? this.getTranslation(item.dataRequest.title) : '',
         },
         {
           name: this.dataRequestDateHeader,
-          enableSort: true,
+          sortable: true,
           initialSortDirection: SortDirections.DESC,
           renderer: {
             type: CellRendererTypes.FUNCTION,
@@ -155,7 +155,7 @@ export class ConsentRequestTableComponent {
             type: CellRendererTypes.TEMPLATE,
             template: this.dataRequestStateTemplate(),
           },
-          enableSort: true,
+          sortable: true,
           sortValueFn: (item: ConsentRequestProducerViewDto) =>
             this.getTranslatedStateValue(item.stateCode),
         },

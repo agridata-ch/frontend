@@ -52,7 +52,7 @@ describe('AgridataSelectComponent', () => {
     expect(component.placeholder()).toBe(placeholder);
   });
 
-  describe.skip('selection logic', () => {
+  describe('selection logic', () => {
     it('should initialize selectedOption from control value on ngOnInit', () => {
       const options = [
         { value: '1', label: 'Option 1' },
@@ -61,12 +61,15 @@ describe('AgridataSelectComponent', () => {
       componentRef.setInput('options', options);
       // Simulate control value
       componentRef.setInput('control', { value: '2', setValue: jest.fn() });
-      component.ngOnInit();
-      expect(component.selectedOption()).toEqual(options[1]);
+      fixture.detectChanges();
+      expect(component.selectedOption()).toEqual(options[1].value);
     });
 
     it('should select an option and close dropdown', () => {
-      const event = { target: { checked: true }, stopPropagation: () => {} } as unknown as Event;
+      const event = {
+        target: { checked: true },
+        stopPropagation: () => {},
+      } as unknown as Event;
       const options = [
         { value: '1', label: 'Option 1' },
         { value: '2', label: 'Option 2' },
@@ -75,8 +78,8 @@ describe('AgridataSelectComponent', () => {
       componentRef.setInput('options', options);
       componentRef.setInput('control', { value: '', setValue: setValueMock });
       openComponent.isDropdownOpen.set(true);
-      openComponent.onOptionSelect('2', event);
-      expect(openComponent.selectedOption()).toEqual(options[1]);
+      openComponent.handleOptionSelect('2', event);
+      expect(openComponent.selectedOption()).toEqual(options[1].value);
       expect(setValueMock).toHaveBeenCalledWith('2');
       expect(openComponent.isDropdownOpen()).toBe(false);
     });

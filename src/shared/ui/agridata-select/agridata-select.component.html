@@ -7,6 +7,7 @@
     [class.bg-white]="!disabled()"
     [class.bg-gray-100]="disabled()"
     [class.cursor-not-allowed]="disabled()"
+    [attr.aria-label]="'input.common.ariaLabel.open' | i18n"
     (click)="toggleDropdown()"
     [disabled]="disabled()"
   >
@@ -29,8 +30,8 @@
         <div
           class="flex items-center px-5 py-3 hover:bg-gray-100 cursor-pointer"
           [class.bg-gray-100]="isSelected(option.value)"
-          (click)="onOptionSelect(option.value, $event)"
-          (keydown.enter)="onOptionSelect(option.value, $event)"
+          (click)="handleOptionSelect(option.value, $event)"
+          (keydown.enter)="handleOptionSelect(option.value, $event)"
         >
           <span>{{ option.label }}</span>
         </div>

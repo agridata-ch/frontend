@@ -1,0 +1,17 @@
+<td class="py-3 px-4 border-t border-gray-200" [class]="columnDefinition().cellCssClasses">
+  @let renderer = columnDefinition().renderer;
+  @switch (renderer.type) {
+    @case (CellRendererTypes.FUNCTION) {
+      <span
+        class="agridata-ellipsis w-auto"
+        [title]="formatCellValue(renderer.cellRenderFn(row()))"
+      >
+        {{ formatCellValue(renderer.cellRenderFn(row())) }}
+      </span>
+    }
+    @case (CellRendererTypes.TEMPLATE) {
+      <ng-container *ngTemplateOutlet="renderer.template; context: { $implicit: row() }">
+      </ng-container>
+    }
+  }
+</td>

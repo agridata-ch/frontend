@@ -7,7 +7,7 @@
   <app-agridata-table
     [dataProvider]="fetchProducers"
     [tableMetadata]="usersTableMetaData()"
-    [(onQueryParamChange)]="resourceQueryDto"
+    [(queryParameters)]="resourceQueryDto"
     [enableSearch]="true"
   >
     <ng-template #nameTemplate [appUserInfoDtoGuard] let-item>

@@ -13,6 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
+import { I18nPipe } from '@/shared/i18n';
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
 import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
 
@@ -26,7 +27,7 @@ import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
  */
 @Component({
   selector: 'app-agridata-select',
-  imports: [ReactiveFormsModule, FontAwesomeModule, ClickOutsideDirective],
+  imports: [ReactiveFormsModule, FontAwesomeModule, ClickOutsideDirective, I18nPipe],
   templateUrl: './agridata-select.component.html', // Consider renaming the template file if needed
 })
 export class AgridataSelectComponent {
@@ -79,7 +80,7 @@ export class AgridataSelectComponent {
     return this.options().find((o) => o.value === this.selectedOption())?.label ?? null;
   }
 
-  onOptionSelect(value: string | number, event: Event) {
+  handleOptionSelect(value: string | number, event: Event) {
     event.stopPropagation();
     this.selectedOption.set(value);
     this.control()?.setValue(value);

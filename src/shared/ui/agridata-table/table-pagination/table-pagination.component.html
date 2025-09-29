@@ -1,0 +1,44 @@
+<div
+  class="flex justify-between items-center p-4 bg-gray-50 border-t border-t-gray-300 rounded-b-lg"
+  *i18n="let t; prefix: 'table'"
+>
+  <div class="flex items-center gap-3">
+    {{ t('pageSelector') }}
+    <app-agridata-select
+      [options]="SELECTABLE_PAGE_SIZES"
+      [selectedOption]="this.pageSize()"
+      (selectedOptionChange)="this.setNewPageSize($event)"
+    ></app-agridata-select>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div
+    class="flex items-center rounded-md border border-agridata-stroke divide-x divide-agridata-stroke"
+  >
+    <app-agridata-button
+      [ariaLabel]="t('previousPage')"
+      [disabled]="!canNavigateToPrevious()"
+      [variant]="ButtonVariants.Icon"
+      (onClick)="navigateToPreviousPage()"
+    >
+      <fa-icon [icon]="faChevronLeft" />
+    </app-agridata-button>
+
+    <span class="p-1">
+      {{
+        t('pageInfo', {
+          current: currentPageIndex() + 1,
+          total: totalPages(),
+        })
+      }}
+    </span>
+    <app-agridata-button
+      [disabled]="!canNavigateToNext()"
+      [variant]="ButtonVariants.Icon"
+      [ariaLabel]="t('nextPage')"
+      (onClick)="navigateToNextPage()"
+    >
+      <fa-icon [icon]="faChevronRight" />
+    </app-agridata-button>
+  </div>
+</div>

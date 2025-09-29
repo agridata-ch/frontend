@@ -3,10 +3,12 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataRequestService } from '@/entities/api';
-import { DataRequestStateEnum } from '@/entities/openapi';
+import {
+  ConsentRequestProducerViewDtoDataRequestStateCode,
+  DataRequestStateEnum,
+} from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
-import { MockDataRequestService, MockI18nService, mockDataRequests } from '@/shared/testing/mocks';
-import { AgridataTableData } from '@/shared/ui/agridata-table';
+import { MockDataRequestService, mockDataRequests } from '@/shared/testing/mocks';
 import { BadgeVariant } from '@/shared/ui/badge';
 
 import { DataRequestTableComponent } from './data-request-table.component';
@@ -15,17 +17,22 @@ function flushPromises() {
   return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
-describe.skip('DataRequestTableComponent', () => {
+describe('DataRequestTableComponent', () => {
   let fixture: ComponentFixture<DataRequestTableComponent>;
   let component: DataRequestTableComponent;
   let componentRef: ComponentRef<DataRequestTableComponent>;
   let openComponent: any;
-
+  let mockI18nService: jest.Mocked<I18nService>;
   beforeEach(async () => {
+    mockI18nService = {
+      translate: jest.fn(),
+      useObjectTranslation: jest.fn(),
+    } as unknown as jest.Mocked<I18nService>;
+
     await TestBed.configureTestingModule({
       imports: [DataRequestTableComponent],
       providers: [
-        { provide: I18nService, useClass: MockI18nService },
+        { provide: I18nService, useValue: mockI18nService },
         { provide: DataRequestService, useClass: MockDataRequestService },
         provideHttpClient(),
       ],
@@ -36,40 +43,11 @@ describe.skip('DataRequestTableComponent', () => {
     component = componentRef.instance;
     openComponent = component as any;
 
-    componentRef.setInput('dataRequests', mockDataRequests);
     fixture.detectChanges();
   });
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should map dataRequests to table rows and emit rowAction output', () => {
-    const rowSpy = jest.fn();
-    component.tableRowAction.subscribe(rowSpy);
-
-    const rows = openComponent.requests();
-    expect(rows.length).toBe(3);
-
-    const first = rows[0];
-    first.rowAction?.();
-    expect(rowSpy).toHaveBeenCalledWith(mockDataRequests[0]);
-  });
-
-  it('getCellValue returns the correct value or empty string', () => {
-    const tableData: AgridataTableData = {
-      id: '1',
-      data: [
-        { header: 'Foo', value: 'Bar' },
-        { header: 'Baz', value: 'Quux' },
-      ],
-      highlighted: false,
-      actions: [],
-      rowAction: () => {},
-    };
-
-    expect(openComponent.getCellValue(tableData, 'Foo')).toBe('Bar');
-    expect(openComponent.getCellValue(tableData, 'Nonexistent')).toBe('');
   });
 
   it('getFilteredActions returns only details action for most states', () => {
@@ -90,18 +68,16 @@ describe.skip('DataRequestTableComponent', () => {
     expect(actions).toEqual([]);
   });
 
-  it('getTranslatedStateValue returns translated state value', () => {
-    const tableData: AgridataTableData = {
-      id: '1',
-      data: [{ header: openComponent.dataRequestStateHeader, value: DataRequestStateEnum.Draft }],
-      actions: [],
-    };
+  it('should get translated state value', () => {
+    const i18nServiceSpy = jest.spyOn(mockI18nService, 'translate');
 
-    const result = openComponent.getTranslatedStateValue(
-      tableData,
-      openComponent.dataRequestStateHeader,
-    );
-    expect(result).toBe(`data-request.stateCode.${DataRequestStateEnum.Draft}`);
+    component.getStatusTranslation(ConsentRequestProducerViewDtoDataRequestStateCode.Draft);
+
+    expect(i18nServiceSpy).toHaveBeenCalledWith('data-request.stateCode.DRAFT');
+  });
+
+  it('should handle undefined state value', () => {
+    expect(component.getStatusTranslation(undefined)).toBe('');
   });
 
   it('getBadgeVariant returns correct BadgeVariant for each state', () => {
@@ -128,5 +104,138 @@ describe.skip('DataRequestTableComponent', () => {
 
     expect(dataRequestService.retreatDataRequest).toHaveBeenCalledWith(inReviewRequest.id);
     expect(dataRequestService.fetchDataRequests.reload).toHaveBeenCalled();
+  });
+
+  // Tests für spezifische Funktionen in der DataRequestTableComponent
+
+  it('should emit action when row action is triggered', () => {
+    const emitSpy = jest.spyOn(component.tableRowAction, 'emit');
+    const request = mockDataRequests[0];
+
+    // Manuell den rowAction von tableMetaData aufrufen
+    const metadata = component.dataRequestsTableMetaData();
+    metadata.rowAction!(request);
+
+    expect(emitSpy).toHaveBeenCalledWith(request);
+  });
+
+  it('should get translated object correctly', () => {
+    const translationDto = { de: 'Testanfrage', en: 'Test request' };
+    const i18nServiceSpy = jest.spyOn(mockI18nService, 'useObjectTranslation');
+
+    component.getObjTranslation(translationDto);
+
+    expect(i18nServiceSpy).toHaveBeenCalledWith(translationDto);
+  });
+
+  it('should handle undefined translation object in getObjTranslation', () => {
+    expect(component.getObjTranslation(undefined)).toBe('');
+  });
+
+  it('dataRequestsTableMetaData should have correct structure', () => {
+    const metadata = component.dataRequestsTableMetaData();
+
+    expect(metadata.idColumn).toBe('id');
+    expect(metadata.columns.length).toBe(5);
+    expect(metadata.columns[0].name).toBe(component.dataRequestHumanFriendlyIdHeader);
+    expect(metadata.columns[0].sortable).toBe(true);
+    expect(metadata.columns[0].renderer.type).toBe('template');
+  });
+
+  it('should sort by sortValueFn for title column', () => {
+    const metadata = component.dataRequestsTableMetaData();
+    const titleColumn = metadata.columns[1];
+    const item = mockDataRequests[0];
+
+    mockI18nService.useObjectTranslation.mockReturnValue('Translated Title');
+
+    // Prüfen, ob die sortValueFn existiert und korrekt funktioniert
+    expect(titleColumn.sortValueFn).toBeDefined();
+    if (titleColumn.sortValueFn) {
+      const result = titleColumn.sortValueFn(item);
+      expect(result).toBe('Translated Title');
+      expect(mockI18nService.useObjectTranslation).toHaveBeenCalledWith(item.title);
+    }
+  });
+
+  it('should sort by sortValueFn for state column', () => {
+    const metadata = component.dataRequestsTableMetaData();
+    const stateColumn = metadata.columns[4];
+    const item = mockDataRequests[0];
+
+    mockI18nService.translate.mockReturnValue('Translated State');
+
+    // Prüfen, ob die sortValueFn existiert und korrekt funktioniert
+    expect(stateColumn.sortValueFn).toBeDefined();
+    if (stateColumn.sortValueFn) {
+      const result = stateColumn.sortValueFn(item);
+      expect(result).toBe('Translated State');
+      expect(mockI18nService.translate).toHaveBeenCalledWith(
+        expect.stringContaining('data-request.stateCode.'),
+      );
+    }
+  });
+
+  it('should have correct initial sort direction for submission date', () => {
+    const metadata = component.dataRequestsTableMetaData();
+    const submissionDateColumn = metadata.columns[2];
+
+    expect(submissionDateColumn.initialSortDirection).toBe('desc');
+  });
+
+  it('details action callback should emit tableRowAction', () => {
+    const emitSpy = jest.spyOn(component.tableRowAction, 'emit');
+    const request = mockDataRequests[0];
+    const actions = component.getFilteredActions(request);
+    const detailsAction = actions[0];
+
+    detailsAction.callback();
+
+    expect(emitSpy).toHaveBeenCalledWith(request);
+  });
+
+  it('should render submission date correctly', () => {
+    const metadata = component.dataRequestsTableMetaData();
+    const submissionDateColumn = metadata.columns[2];
+    const item = mockDataRequests[0];
+
+    // Prüfen, ob die cellRenderFn existiert und korrekt funktioniert
+    if (submissionDateColumn.renderer.type === 'function') {
+      const result = submissionDateColumn.renderer.cellRenderFn(item);
+      expect(result).toBe(item.submissionDate);
+    }
+  });
+
+  it('should render provider column correctly', () => {
+    const metadata = component.dataRequestsTableMetaData();
+    const providerColumn = metadata.columns[3];
+
+    // Prüfen, ob die cellRenderFn existiert und korrekt funktioniert
+    if (providerColumn.renderer.type === 'function') {
+      const result = providerColumn.renderer.cellRenderFn({});
+      expect(result).toBe('Agis');
+    }
+  });
+
+  it('should emit reload event when retreat action is triggered', async () => {
+    const emitSpy = jest.spyOn(component.realoadDataRequests, 'emit');
+    const dataRequestService = TestBed.inject(
+      DataRequestService,
+    ) as unknown as MockDataRequestService;
+
+    // Mock für die reload-Methode überschreiben, um realoadDataRequests auszulösen
+    dataRequestService.fetchDataRequests.reload = jest.fn().mockImplementation(() => {
+      component.realoadDataRequests.emit();
+      return true;
+    });
+
+    const inReviewRequest = mockDataRequests[1];
+    const actions = component.getFilteredActions(inReviewRequest);
+    const retreatAction = actions[1];
+
+    retreatAction.callback();
+    await flushPromises();
+
+    expect(emitSpy).toHaveBeenCalled();
   });
 });
