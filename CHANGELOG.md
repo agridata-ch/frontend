@@ -1,3 +1,9 @@
+## [1.0.0-rc.72](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.71...v1.0.0-rc.72) (2025-09-30)
+
+### Features
+
+- **deps:** update sonarsource/sonarqube-scan-action action to v6 ([bbec928](https://github.com/agridata-ch/frontend/commit/bbec928a2f95518eb72e297cc6632e87a6ddc256))
+
 ## [1.0.0-rc.71](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.70...v1.0.0-rc.71) (2025-09-26)
 
 ### Features
