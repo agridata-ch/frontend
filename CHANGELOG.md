@@ -1,3 +1,9 @@
+## [1.0.0-rc.77](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.76...v1.0.0-rc.77) (2025-10-01)
+
+### Bug Fixes
+
+- **destroy-timer:** destroy timer correctly ([a1dfc49](https://github.com/agridata-ch/frontend/commit/a1dfc49d6322c7a3f85b0f686626977d0ee9e542)), closes [DIGIB2-871](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-871)
+
 ## [1.0.0-rc.76](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.75...v1.0.0-rc.76) (2025-10-01)
 
 ### Bug Fixes
