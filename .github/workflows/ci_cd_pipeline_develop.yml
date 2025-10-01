@@ -20,10 +20,16 @@ jobs:
     needs: check-single-commit
     secrets: inherit
 
+  gitleaks:
+    name: '.'
+    uses: ./.github/workflows/reusable__gitleaks.yml
+    needs: check-single-commit
+    secrets: inherit
+
   unit-test-sonarqube:
     name: '.'
     uses: ./.github/workflows/reusable__unit_test_sonarqube.yml
-    needs: check-comments
+    needs: [check-comments, gitleaks]
     secrets: inherit
 
   semantic-release:
