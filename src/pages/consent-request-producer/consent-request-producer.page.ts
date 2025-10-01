@@ -71,13 +71,18 @@ export class ConsentRequestProducerPage {
 
       if (state.redirectUrl) {
         this.redirectUrl.set(state.redirectUrl);
-        this.startCountdown();
+        const countdownTimer = this.startCountdown();
 
         const redirectTimeout = setTimeout(() => {
           globalThis.location.href = state.redirectUrl!;
         }, REDIRECT_TIMEOUT);
 
-        onCleanup(() => clearTimeout(redirectTimeout));
+        onCleanup(() => {
+          clearTimeout(redirectTimeout);
+          if (countdownTimer) {
+            clearInterval(countdownTimer);
+          }
+        });
       }
     }
   });
@@ -156,7 +161,7 @@ export class ConsentRequestProducerPage {
     this.consentRequests.reload();
   };
 
-  startCountdown() {
+  startCountdown(): ReturnType<typeof setInterval> {
     this.countdownValue.set(REDIRECT_TIMEOUT / 1000);
     const timer = setInterval(() => {
       const currentValue = this.countdownValue();
@@ -166,6 +171,7 @@ export class ConsentRequestProducerPage {
         this.countdownValue.set(currentValue - 1);
       }
     }, 1000);
+    return timer;
   }
 
   redirectDirectly = () => {
