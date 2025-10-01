@@ -1,3 +1,9 @@
+## [1.0.0-rc.74](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.73...v1.0.0-rc.74) (2025-10-01)
+
+### Features
+
+- **support-page:** refactor table into components / add tests ([ce4945d](https://github.com/agridata-ch/frontend/commit/ce4945d0857763d54f13cc5a7d9681c003190819)), closes [DIGIB2-696](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-696)
+
 ## [1.0.0-rc.73](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.72...v1.0.0-rc.73) (2025-10-01)
 
 ### Features
