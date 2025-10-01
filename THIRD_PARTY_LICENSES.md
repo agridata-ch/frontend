@@ -289,7 +289,7 @@
  - **[@es-joy/jsdoccomment@0.53.0](https://github.com/es-joy/jsdoccomment)**
     - licenses: MIT
     - copyright: Copyright JS Foundation and other contributors, https://js.foundation. Copyright (c) 2021 Brett Zamir
- - **[@esbuild/darwin-arm64@0.25.9](https://github.com/evanw/esbuild)**
+ - **[@esbuild/linux-x64@0.25.9](https://github.com/evanw/esbuild)**
     - licenses: MIT
     - copyright: 
  - **[@eslint-community/eslint-utils@4.7.0](https://github.com/eslint-community/eslint-utils)**
@@ -517,7 +517,7 @@
  - **[@listr2/prompt-adapter-inquirer@3.0.1](https://github.com/listr2/listr2)**
     - licenses: MIT
     - copyright: Copyright (c) Cenk Kilic <cenk@kilic.dev> (https://srcs.kilic.dev)
- - **[@lmdb/lmdb-darwin-arm64@3.4.2](https://github.com/kriszyp/lmdb-js)**
+ - **[@lmdb/lmdb-linux-x64@3.4.2](https://github.com/kriszyp/lmdb-js)**
     - licenses: MIT
     - copyright: 
  - **[@lukeed/csprng@1.1.0](https://github.com/lukeed/csprng)**
@@ -526,10 +526,13 @@
  - **[@modelcontextprotocol/sdk@1.17.3](https://github.com/modelcontextprotocol/typescript-sdk)**
     - licenses: MIT
     - copyright: Copyright (c) 2024 Anthropic, PBC
- - **[@msgpackr-extract/msgpackr-extract-darwin-arm64@3.0.3](https://github.com/kriszyp/msgpackr-extract)**
+ - **[@msgpackr-extract/msgpackr-extract-linux-x64@3.0.3](https://github.com/kriszyp/msgpackr-extract)**
     - licenses: MIT
     - copyright: 
- - **[@napi-rs/nice-darwin-arm64@1.1.1](https://github.com/Brooooooklyn/nice)**
+ - **[@napi-rs/nice-linux-x64-gnu@1.1.1](https://github.com/Brooooooklyn/nice)**
+    - licenses: MIT
+    - copyright: 
+ - **[@napi-rs/nice-linux-x64-musl@1.1.1](https://github.com/Brooooooklyn/nice)**
     - licenses: MIT
     - copyright: 
  - **[@napi-rs/nice@1.1.1](https://github.com/Brooooooklyn/nice)**
@@ -649,7 +652,10 @@
  - **[@oxc-project/types@0.81.0](https://github.com/oxc-project/oxc)**
     - licenses: MIT
     - copyright: Copyright (c) 2024-present VoidZero Inc. & Contributors. Copyright (c) 2023 Boshen
- - **[@parcel/watcher-darwin-arm64@2.5.1](https://github.com/parcel-bundler/watcher)**
+ - **[@parcel/watcher-linux-x64-glibc@2.5.1](https://github.com/parcel-bundler/watcher)**
+    - licenses: MIT
+    - copyright: Copyright (c) 2017-present Devon Govett
+ - **[@parcel/watcher-linux-x64-musl@2.5.1](https://github.com/parcel-bundler/watcher)**
     - licenses: MIT
     - copyright: Copyright (c) 2017-present Devon Govett
  - **[@parcel/watcher@2.5.1](https://github.com/parcel-bundler/watcher)**
@@ -670,13 +676,19 @@
  - **[@pnpm/npm-conf@2.3.1](https://github.com/pnpm/npm-conf)**
     - licenses: MIT
     - copyright: Copyright (c) Kevin Mårtensson <kevinmartensson@gmail.com> (github.com/kevva)
- - **[@rolldown/binding-darwin-arm64@1.0.0-beta.32](https://github.com/rolldown/rolldown)**
+ - **[@rolldown/binding-linux-x64-gnu@1.0.0-beta.32](https://github.com/rolldown/rolldown)**
+    - licenses: MIT
+    - copyright: 
+ - **[@rolldown/binding-linux-x64-musl@1.0.0-beta.32](https://github.com/rolldown/rolldown)**
     - licenses: MIT
     - copyright: 
  - **[@rolldown/pluginutils@1.0.0-beta.32](https://github.com/rolldown/rolldown)**
     - licenses: MIT
     - copyright: Copyright (c) 2024-present VoidZero Inc. & Contributors
- - **[@rollup/rollup-darwin-arm64@4.50.0](https://github.com/rollup/rollup)**
+ - **[@rollup/rollup-linux-x64-gnu@4.50.0](https://github.com/rollup/rollup)**
+    - licenses: MIT
+    - copyright: 
+ - **[@rollup/rollup-linux-x64-musl@4.50.0](https://github.com/rollup/rollup)**
     - licenses: MIT
     - copyright: 
  - **[@rtsao/scc@1.1.0](https://github.com/rtsao/scc)**
@@ -760,7 +772,10 @@
  - **[@tailwindcss/node@4.1.5](https://github.com/tailwindlabs/tailwindcss)**
     - licenses: MIT
     - copyright: Copyright (c) Tailwind Labs, Inc.
- - **[@tailwindcss/oxide-darwin-arm64@4.1.5](https://github.com/tailwindlabs/tailwindcss)**
+ - **[@tailwindcss/oxide-linux-x64-gnu@4.1.5](https://github.com/tailwindlabs/tailwindcss)**
+    - licenses: MIT
+    - copyright: Copyright (c) Tailwind Labs, Inc.
+ - **[@tailwindcss/oxide-linux-x64-musl@4.1.5](https://github.com/tailwindlabs/tailwindcss)**
     - licenses: MIT
     - copyright: Copyright (c) Tailwind Labs, Inc.
  - **[@tailwindcss/oxide@4.1.5](https://github.com/tailwindlabs/tailwindcss)**
@@ -895,7 +910,10 @@
  - **[@ungap/structured-clone@1.3.0](https://github.com/ungap/structured-clone)**
     - licenses: ISC
     - copyright: Copyright (c) 2021, Andrea Giammarchi, @WebReflection
- - **[@unrs/resolver-binding-darwin-arm64@1.11.1](https://github.com/unrs/unrs-resolver)**
+ - **[@unrs/resolver-binding-linux-x64-gnu@1.11.1](https://github.com/unrs/unrs-resolver)**
+    - licenses: MIT
+    - copyright: 
+ - **[@unrs/resolver-binding-linux-x64-musl@1.11.1](https://github.com/unrs/unrs-resolver)**
     - licenses: MIT
     - copyright: 
  - **[@vitejs/plugin-basic-ssl@2.1.0](https://github.com/vitejs/vite-plugin-basic-ssl)**
@@ -1882,7 +1900,7 @@
  - **[from2@2.3.0](https://github.com/hughsk/from2)**
     - licenses: MIT
     - copyright: Copyright (c) 2014 Hugh Kennedy
- - **[frontend@1.0.0-rc.74](undefined)**
+ - **[frontend@1.0.0-rc.76](undefined)**
     - licenses: UNLICENSED
     - copyright: Copyright (c) 2025, agridata.ch
  - **[fs-extra@11.3.1](https://github.com/jprichardson/node-fs-extra)**
@@ -1900,9 +1918,6 @@
  - **[fs.realpath@1.0.0](https://github.com/isaacs/fs.realpath)**
     - licenses: ISC
     - copyright: Copyright (c) Isaac Z. Schlueter and Contributors
- - **[fsevents@2.3.3](https://github.com/fsevents/fsevents)**
-    - licenses: MIT
-    - copyright: Copyright (C) 2010-2020 by Philipp Dunkel, Ben Noordhuis, Elan Shankar, Paul Miller
  - **[function-bind@1.1.2](https://github.com/Raynos/function-bind)**
     - licenses: MIT
     - copyright: Copyright (c) 2013 Raynos.
@@ -2602,7 +2617,10 @@
  - **[license-checker@25.0.1](https://github.com/davglass/license-checker)**
     - licenses: BSD-3-Clause
     - copyright: Copyright 2012 Yahoo Inc.
- - **[lightningcss-darwin-arm64@1.29.2](https://github.com/parcel-bundler/lightningcss)**
+ - **[lightningcss-linux-x64-gnu@1.29.2](https://github.com/parcel-bundler/lightningcss)**
+    - licenses: MPL-2.0
+    - copyright: 
+ - **[lightningcss-linux-x64-musl@1.29.2](https://github.com/parcel-bundler/lightningcss)**
     - licenses: MPL-2.0
     - copyright: 
  - **[lightningcss@1.29.2](https://github.com/parcel-bundler/lightningcss)**
