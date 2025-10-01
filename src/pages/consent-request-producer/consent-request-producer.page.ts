@@ -85,11 +85,15 @@ export class ConsentRequestProducerPage implements OnDestroy {
           const url = state.redirectUrl!;
           // Clean up timers before redirecting
           this.clearAllTimers();
+          this.resetRedirect();
           globalThis.location.href = url;
         }, REDIRECT_TIMEOUT);
 
         // Register cleanup function with effect
-        onCleanup(() => this.clearAllTimers());
+        onCleanup(() => {
+          this.clearAllTimers();
+          this.resetRedirect();
+        });
       }
     }
   });
@@ -193,6 +197,7 @@ export class ConsentRequestProducerPage implements OnDestroy {
     if (url) {
       // Make sure to clear timers before redirecting
       this.clearAllTimers();
+      this.resetRedirect();
       globalThis.location.href = url;
     }
   };
