@@ -1,3 +1,9 @@
+## [1.0.0-rc.79](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.78...v1.0.0-rc.79) (2025-10-01)
+
+### Bug Fixes
+
+- **cleanup:** add some cleanups ([3279490](https://github.com/agridata-ch/frontend/commit/3279490895149920a37b132817e14308e8f02a6b))
+
 ## [1.0.0-rc.78](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.77...v1.0.0-rc.78) (2025-10-01)
 
 ### Bug Fixes
