@@ -5,9 +5,10 @@ import { CreateConsentRequestGuard } from '@/app/guards/create-consent-request.g
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UserService } from '@/entities/api/user.service';
+import { UidDto } from '@/entities/openapi';
 import { ConsentRequestCreatedDto } from '@/entities/openapi/model/consentRequestCreatedDto';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { mockUserService } from '@/shared/testing/mocks';
+import { mockUserService, mockUserService } from '@/shared/testing/mocks';
 import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
 
 import { ProducerUidGuard } from './producer-uid.guard';
@@ -170,6 +171,98 @@ describe('createConsentRequestGuard', () => {
       ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
     ]);
     expect(result).toBe(mockUrlTree);
+  });
+
+  it('should set active uid when a valid uid is provided in query parameters', async () => {
+    const validUid = '123'; // Valid UID from mockUserService
+    const route = {
+      paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
+      queryParamMap: convertToParamMap({ uid: validUid }),
+    } as ActivatedRouteSnapshot;
+    const mockConsentRequest: ConsentRequestCreatedDto = {
+      id: testConsentRequestId,
+      dataProducerUid: validUid,
+    };
+    (consentRequestService.createConsentRequests as jest.Mock).mockResolvedValue([
+      mockConsentRequest,
+    ]);
+    // Mock userUidsLoaded signal return value
+    jest.spyOn(mockAgridataStateServiceInstance, 'userUidsLoaded').mockReturnValue(true);
+    // Mock userUids to include the valid uid
+    jest
+      .spyOn(mockAgridataStateServiceInstance, 'userUids')
+      .mockReturnValue([{ uid: validUid } as UidDto]);
+
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(mockAgridataStateServiceInstance.setActiveUid).toHaveBeenCalledWith(validUid);
+    expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(testDataRequestUid);
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([
+      ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
+      validUid,
+      testConsentRequestId,
+    ]);
+    expect(result).toBe(mockUrlTree);
+  });
+
+  it('should load authorized uids when userUids are not loaded and uid is provided', async () => {
+    const validUid = '123'; // Valid UID from mockUserService
+    const route = {
+      paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
+      queryParamMap: convertToParamMap({ uid: validUid }),
+    } as ActivatedRouteSnapshot;
+    const mockConsentRequest: ConsentRequestCreatedDto = {
+      id: testConsentRequestId,
+      dataProducerUid: validUid,
+    };
+    (consentRequestService.createConsentRequests as jest.Mock).mockResolvedValue([
+      mockConsentRequest,
+    ]);
+    // Mock userUidsLoaded signal to return false to test the getAuthorizedUids path
+    jest.spyOn(mockAgridataStateServiceInstance, 'userUidsLoaded').mockReturnValue(false);
+    // Make sure mockUserService.getAuthorizedUids returns the correct data
+    (mockUserService.getAuthorizedUids as jest.Mock).mockReturnValue(
+      Promise.resolve([{ uid: validUid } as UidDto]),
+    );
+
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(mockUserService.getAuthorizedUids).toHaveBeenCalled();
+    expect(mockAgridataStateServiceInstance.setActiveUid).toHaveBeenCalledWith(validUid);
+    expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(testDataRequestUid);
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([
+      ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
+      validUid,
+      testConsentRequestId,
+    ]);
+    expect(result).toBe(mockUrlTree);
+  });
+
+  it('should redirect to error page when an invalid uid is provided', async () => {
+    const invalidUid = 'invalid-uid'; // This uid does not exist in mockUserService
+    const route = {
+      paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
+      queryParamMap: convertToParamMap({ uid: invalidUid }),
+    } as ActivatedRouteSnapshot;
+    // Mock userUidsLoaded signal to return true
+    jest.spyOn(mockAgridataStateServiceInstance, 'userUidsLoaded').mockReturnValue(true);
+    // Mock userUids to return UIDs that don't contain the invalid UID
+    jest
+      .spyOn(mockAgridataStateServiceInstance, 'userUids')
+      .mockReturnValue([
+        { uid: '1' } as UidDto,
+        { uid: '2' } as UidDto,
+        { uid: testUid } as UidDto,
+      ]);
+
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(mockAgridataStateServiceInstance.userUidsLoaded).toHaveBeenCalled();
+    expect(mockAgridataStateServiceInstance.userUids).toHaveBeenCalled();
+    expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.ERROR);
+    expect(result).toBe(mockErrorUrlTree);
+    // Verify that setActiveUid was not called with the invalid uid
+    expect(mockAgridataStateServiceInstance.setActiveUid).not.toHaveBeenCalledWith(invalidUid);
   });
 
   it('should redirect to error page when createConsentRequests throws an error', async () => {
