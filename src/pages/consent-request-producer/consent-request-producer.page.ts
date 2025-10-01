@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { Component, OnDestroy, effect, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
@@ -36,7 +36,7 @@ import { REDIRECT_TIMEOUT } from './consent-request-producer.page.model';
   ],
   templateUrl: './consent-request-producer.page.html',
 })
-export class ConsentRequestProducerPage {
+export class ConsentRequestProducerPage implements OnDestroy {
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly agridataStateService = inject(AgridataStateService);
   private readonly router = inject(Router);
@@ -55,7 +55,14 @@ export class ConsentRequestProducerPage {
   readonly countdownValue = signal(REDIRECT_TIMEOUT / 1000);
   readonly shouldRedirect = signal<boolean>(false);
 
+  // Store timers at class level so they can be accessed and cleared from anywhere
+  private countdownTimer?: ReturnType<typeof setInterval>;
+  private redirectTimeout?: ReturnType<typeof setTimeout>;
+
   readonly handleRouterState = effect((onCleanup) => {
+    // Clean up any existing timers first
+    this.clearAllTimers();
+
     const state = history.state;
 
     if (state?.redirect_uri) {
@@ -71,18 +78,18 @@ export class ConsentRequestProducerPage {
 
       if (state.redirectUrl) {
         this.redirectUrl.set(state.redirectUrl);
-        const countdownTimer = this.startCountdown();
+        this.startCountdown();
 
-        const redirectTimeout = setTimeout(() => {
-          globalThis.location.href = state.redirectUrl!;
+        this.redirectTimeout = setTimeout(() => {
+          // Store the URL before cleaning up
+          const url = state.redirectUrl!;
+          // Clean up timers before redirecting
+          this.clearAllTimers();
+          globalThis.location.href = url;
         }, REDIRECT_TIMEOUT);
 
-        onCleanup(() => {
-          clearTimeout(redirectTimeout);
-          if (countdownTimer) {
-            clearInterval(countdownTimer);
-          }
-        });
+        // Register cleanup function with effect
+        onCleanup(() => this.clearAllTimers());
       }
     }
   });
@@ -161,23 +168,53 @@ export class ConsentRequestProducerPage {
     this.consentRequests.reload();
   };
 
-  startCountdown(): ReturnType<typeof setInterval> {
+  startCountdown(): void {
+    // Clear any existing countdown timer first
+    if (this.countdownTimer) {
+      clearInterval(this.countdownTimer);
+    }
+
     this.countdownValue.set(REDIRECT_TIMEOUT / 1000);
-    const timer = setInterval(() => {
+    this.countdownTimer = setInterval(() => {
       const currentValue = this.countdownValue();
       if (currentValue <= 1) {
-        clearInterval(timer);
+        if (this.countdownTimer) {
+          clearInterval(this.countdownTimer);
+          this.countdownTimer = undefined;
+        }
       } else {
         this.countdownValue.set(currentValue - 1);
       }
     }, 1000);
-    return timer;
   }
 
   redirectDirectly = () => {
     const url = this.redirectUrl();
     if (url) {
+      // Make sure to clear timers before redirecting
+      this.clearAllTimers();
       globalThis.location.href = url;
     }
   };
+
+  // Method to clear all timers in one place
+  private clearAllTimers() {
+    if (this.countdownTimer) {
+      clearInterval(this.countdownTimer);
+      this.countdownTimer = undefined;
+    }
+    if (this.redirectTimeout) {
+      clearTimeout(this.redirectTimeout);
+      this.redirectTimeout = undefined;
+    }
+  }
+
+  /**
+   * Angular lifecycle hook that is called when the component is destroyed.
+   * Ensures all timers are cleared even if effect cleanup doesn't run.
+   */
+  ngOnDestroy(): void {
+    this.clearAllTimers();
+    this.resetRedirect();
+  }
 }
