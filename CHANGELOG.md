@@ -1,3 +1,9 @@
+## [1.0.0-rc.75](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.74...v1.0.0-rc.75) (2025-10-01)
+
+### Features
+
+- **create-consent-request guard:** update create-consent-request guard ([29b02b2](https://github.com/agridata-ch/frontend/commit/29b02b21e9c0b2f49b6c00832ea885b4cba99864)), closes [DIGIB2-858](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-858)
+
 ## [1.0.0-rc.74](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.73...v1.0.0-rc.74) (2025-10-01)
 
 ### Features
