@@ -8,7 +8,7 @@ module.exports = {
   },
   packageRules: [
     {
-      matchDatasources: ['npm'],
+      matchDatasources: ['npm', 'github-actions'],
       minimumReleaseAge: '180 days',
     },
   ],

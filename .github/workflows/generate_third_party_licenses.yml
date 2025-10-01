@@ -1,0 +1,67 @@
+name: Generate Third Party Licenses
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 22 * * 0'
+
+jobs:
+  generate-third-party-licenses:
+    name: Generate Third Party Licenses
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          clean: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check for license differences
+        id: license-check
+        run: |
+          npm run licenses:check || echo "DIFFERENCES_FOUND=true" >> $GITHUB_ENV
+
+      - name: Generate app token
+        if: env.DIFFERENCES_FOUND == 'true'
+        uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: 2045482
+          private-key: ${{ secrets.PRIVATE_KEY_GITHUB_APP_LICENSE_CHECKER }}
+
+      - name: Generate third party licenses
+        if: env.DIFFERENCES_FOUND == 'true'
+        run: npm run licenses
+
+      - name: Commit and create PR if differences
+        if: env.DIFFERENCES_FOUND == 'true'
+        run: |
+          git config user.name "agridata-license-checker"
+          git config user.email "operations@agridata.ch"
+
+          branch="update/licenses-$(date +%Y%m%d%H%M%S)"
+          git checkout -b "$branch"
+          git add THIRD_PARTY_LICENSES.md
+          git commit -m "feat(license): update THIRD_PARTY_LICENSES.md"
+          git push origin "$branch"
+
+          gh pr create \
+            --title "feat(license): update THIRD_PARTY_LICENSES.md" \
+            --body "Automated update of third-party licenses" \
+            --base develop \
+            --head "$branch"
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
