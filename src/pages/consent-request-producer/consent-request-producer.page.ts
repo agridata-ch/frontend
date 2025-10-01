@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnDestroy, effect, inject, input, signal } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
@@ -23,7 +23,7 @@ import { REDIRECT_TIMEOUT } from './consent-request-producer.page.model';
  * it also handles the redirect to an external URL if specified in the route state and validated against
  * the request's valid redirect URI regex.
  *
- * CommentLastReviewed: 2025-08-30
+ * CommentLastReviewed: 2025-10-01
  */
 @Component({
   selector: 'app-consent-request-producer-page',
@@ -36,7 +36,7 @@ import { REDIRECT_TIMEOUT } from './consent-request-producer.page.model';
   ],
   templateUrl: './consent-request-producer.page.html',
 })
-export class ConsentRequestProducerPage implements OnDestroy {
+export class ConsentRequestProducerPage {
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly agridataStateService = inject(AgridataStateService);
   private readonly router = inject(Router);
@@ -147,6 +147,7 @@ export class ConsentRequestProducerPage implements OnDestroy {
   resetRedirect = () => {
     this.redirectUrl.set(null);
     this.shouldRedirect.set(false);
+    this.showRedirect.set(false);
   };
 
   setSelectedRequest = (request?: ConsentRequestProducerViewDto | null) => {
@@ -212,14 +213,5 @@ export class ConsentRequestProducerPage implements OnDestroy {
       clearTimeout(this.redirectTimeout);
       this.redirectTimeout = undefined;
     }
-  }
-
-  /**
-   * Angular lifecycle hook that is called when the component is destroyed.
-   * Ensures all timers are cleared even if effect cleanup doesn't run.
-   */
-  ngOnDestroy(): void {
-    this.clearAllTimers();
-    this.resetRedirect();
   }
 }
