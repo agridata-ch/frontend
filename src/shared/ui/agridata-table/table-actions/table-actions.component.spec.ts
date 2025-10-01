@@ -1,7 +1,10 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+
+import { getTranslocoModule } from '@/app/transloco-testing.module';
 
 import { ActionDTO, TableActionsComponent } from './table-actions.component';
 
@@ -12,7 +15,15 @@ describe('TableActionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TableActionsComponent, FontAwesomeModule],
+      imports: [
+        TableActionsComponent,
+        FontAwesomeModule,
+        getTranslocoModule({
+          langs: {
+            de: {},
+          },
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TableActionsComponent);
@@ -58,5 +69,26 @@ describe('TableActionsComponent', () => {
     component.handleRowAction();
 
     expect(rowActionSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should disable the main action button if main action is disabled', () => {
+    const mainAction: ActionDTO = {
+      label: 'actions.accept',
+      callback: jest.fn(),
+      isMainAction: true,
+      isDisabled: true,
+    };
+
+    componentRef.setInput('actions', [mainAction]);
+    fixture.detectChanges();
+
+    // Query the main action button
+    const buttons = fixture.debugElement.queryAll(By.css('app-agridata-button'));
+    const acceptButton = buttons.find((btn) =>
+      btn.nativeElement.textContent.includes('actions.accept'),
+    );
+
+    expect(acceptButton).toBeTruthy();
+    expect(acceptButton?.componentInstance?.disabled()).toBe(true);
   });
 });

@@ -2,9 +2,13 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentRef, ResourceRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
+import { getTranslocoModule } from '@/app/transloco-testing.module';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ConsentRequestService } from '@/entities/api/consent-request.service';
 import { ConsentRequestProducerViewDto } from '@/entities/openapi';
+import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
 import { MockResources } from '@/shared/testing/mocks/mock-resources';
 import { ToastService } from '@/shared/toast';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
@@ -18,6 +22,7 @@ describe('ConsentRequestDetailsComponent', () => {
     updateConsentRequestStatus: jest.Mock;
     fetchConsentRequests: ResourceRef<ConsentRequestProducerViewDto[]>;
   };
+  let agridataStateService: AgridataStateService;
 
   beforeEach(async () => {
     toastService = { show: jest.fn() };
@@ -27,18 +32,27 @@ describe('ConsentRequestDetailsComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [ConsentRequestDetailsComponent],
+      imports: [
+        ConsentRequestDetailsComponent,
+        getTranslocoModule({
+          langs: {
+            de: {},
+          },
+        }),
+      ],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: ToastService, useValue: toastService },
         { provide: ConsentRequestService, useValue: consentRequestService },
+        { provide: AgridataStateService, useValue: mockAgridataStateService('testuid') },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ConsentRequestDetailsComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
+    agridataStateService = TestBed.inject(AgridataStateService);
     fixture.detectChanges();
   });
 
@@ -139,5 +153,29 @@ describe('ConsentRequestDetailsComponent', () => {
     );
     expect(consentRequestService.fetchConsentRequests.reload).toHaveBeenCalled();
     expect(closeSpy).toHaveBeenCalled();
+  });
+
+  it('should disable buttons when impersonating', () => {
+    const req = {
+      dataRequest: { dataConsumer: { name: 'TestConsumer' } },
+    } as unknown as ConsentRequestProducerViewDto;
+
+    jest.spyOn(agridataStateService, 'isImpersonating').mockReturnValue(true);
+    componentRef.setInput('request', req);
+    fixture.detectChanges();
+
+    // Query all button elements
+    const buttons = fixture.debugElement.queryAll(By.css('app-agridata-button button'));
+
+    // Find accept and reject buttons by their text content
+    const acceptButton = buttons.find((btn) =>
+      btn.nativeElement.textContent.includes('actions.accept'),
+    );
+    const rejectButton = buttons.find((btn) =>
+      btn.nativeElement.textContent.includes('actions.reject'),
+    );
+
+    expect(acceptButton?.nativeElement.disabled).toBe(true);
+    expect(rejectButton?.nativeElement.disabled).toBe(true);
   });
 });

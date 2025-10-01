@@ -1,0 +1,20 @@
+@if (isImpersonating()) {
+  <div
+    class="fixed inset-0 border-8 border-yellow-400 pointer-events-none z-50 flex items-start justify-center"
+  >
+    <div
+      class="bg-yellow-400 px-4 py-2 rounded-b-md shadow-md pointer-events-auto flex gap-8 leading-tight"
+    >
+      <span>
+        {{ 'supporter.overlay.title' | i18n: { user: userName() } }}
+      </span>
+      <a
+        (keydown)="disableSupportMode()"
+        (click)="disableSupportMode()"
+        class="font-bold hover:bg-yellow-500 transition-colors duration-200 underline cursor-pointer text-sm"
+      >
+        {{ 'supporter.overlay.exit' | i18n }}
+      </a>
+    </div>
+  </div>
+}

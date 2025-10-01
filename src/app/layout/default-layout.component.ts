@@ -7,6 +7,7 @@ import { ToastComponent } from '@/shared/ui/toast';
 import { FooterWidgetComponent } from '@/widgets/footer-widget';
 import { HeaderWidgetComponent } from '@/widgets/header-widget';
 import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
+import { SupporterOverlayComponent } from '@/widgets/supporter-overlay/supporter-overlay.component';
 
 /**
  * Provides a layout with header, navigation, footer, and toast notifications. It reacts to
@@ -23,11 +24,13 @@ import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
     NavigationWidgetComponent,
     FooterWidgetComponent,
     ToastComponent,
+    SupporterOverlayComponent,
   ],
   templateUrl: './default-layout.component.html',
 })
 export class DefaultLayoutComponent {
   private readonly authService = inject(AuthService);
+
   constructor() {
     // Refresh the page when the authentication state changes
     // This is useful for cases where the user logs in or out in a different tab

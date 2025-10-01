@@ -20,7 +20,7 @@
     </ng-template>
 
     <ng-template #actionTemplate [appUserInfoDtoGuard] let-item>
-      <app-agridata-button (onClick)="startImpersonation(item)">
+      <app-agridata-button (onClick)="openImpersonationTab(item)">
         <div class="flex items-center gap-2">
           <span class="hidden lg:inline">{{ t('table.startImpersonationButton') }}</span>
           <fa-icon [icon]="faArrowUpRightFromSquare"></fa-icon>

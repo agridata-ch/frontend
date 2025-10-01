@@ -12,6 +12,7 @@ export interface ActionDTO {
   label: string;
   callback: () => void;
   isMainAction?: boolean;
+  isDisabled?: boolean;
 }
 
 /**

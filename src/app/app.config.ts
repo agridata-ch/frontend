@@ -8,6 +8,7 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideTransloco } from '@jsverse/transloco';
 import { AbstractSecurityStorage, authInterceptor, provideAuth } from 'angular-auth-oidc-client';
 
+import { impersonationInterceptor } from '@/app/interceptors/impersonation-interceptor';
 import { Configuration } from '@/entities/openapi';
 import { environment } from '@/environments/environment';
 import { AgridataOIDCStorage, oidcConfig } from '@/shared/lib/auth';
@@ -21,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient(withInterceptors([authInterceptor()])),
+    provideHttpClient(withInterceptors([authInterceptor(), impersonationInterceptor])),
     {
       provide: Configuration,
       useValue: new Configuration({ basePath: environment.apiBaseUrl }),

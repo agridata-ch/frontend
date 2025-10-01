@@ -1,7 +1,11 @@
 import { Injectable, signal } from '@angular/core';
 
 import { UidDto } from '@/entities/openapi';
-import { ACTIVE_UID_FIELD, NAVIGATION_STATE_OPEN } from '@/shared/constants/constants';
+import {
+  ACTIVE_UID_FIELD,
+  KTIDP_IMPERSONATION_QUERY_PARAM,
+  NAVIGATION_STATE_OPEN,
+} from '@/shared/constants/constants';
 
 /**
  * Centralized state service for managing active and available UIDs. Persists the currently active
@@ -50,5 +54,9 @@ export class AgridataStateService {
       return storedUid;
     }
     return uids.length > 0 && uids[0].uid ? uids[0].uid : null;
+  }
+
+  isImpersonating(): boolean {
+    return sessionStorage.getItem(KTIDP_IMPERSONATION_QUERY_PARAM) !== null;
   }
 }

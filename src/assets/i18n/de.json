@@ -369,6 +369,10 @@
       "lastLogin": "Letzter Login",
       "actions": "Aktionen",
       "startImpersonationButton": "Nutzeransicht starten"
+    },
+    "overlay": {
+      "exit": "Ansicht schliessen",
+      "title": "Nutzeransicht {{user}}"
     }
   }
 }

@@ -6,7 +6,8 @@ import { I18nPipe } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
 import { MockAuthService, mockUserData } from '@/shared/testing/mocks/mock-auth.service';
-import { SupporterOverlayComponent } from '@/widgets/supporter-overlay/supporter-overlay.component';
+
+import { SupporterOverlayComponent } from './supporter-overlay.component';
 
 describe('SupporterOverlayComponent', () => {
   let component: SupporterOverlayComponent;

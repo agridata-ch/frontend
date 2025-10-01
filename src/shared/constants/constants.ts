@@ -35,3 +35,5 @@ export const CMS_BLOCKS = {
 };
 
 export const VIDEO_FORMATS = ['.mp4', '.webm', '.wmv', '.avi', '.mov', '.mkv', '.flv'];
+
+export const KTIDP_IMPERSONATION_QUERY_PARAM = 'ktIdP';

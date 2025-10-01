@@ -13,6 +13,7 @@ import { faArrowUpRightFromSquare, faUsers } from '@fortawesome/free-solid-svg-i
 import { UserService } from '@/entities/api/user.service';
 import { PageResponseDto, ResourceQueryDto, UserInfoDto } from '@/entities/openapi';
 import { UserInfoDtoDirective } from '@/pages/supporter-page/user-info-dto.directive';
+import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
 import { I18nDirective } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import {
@@ -52,6 +53,8 @@ export class SupporterPageComponent {
   protected readonly TITLE_ICON = faUsers;
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
+
+  protected readonly faArrowUpRightFromSquare = faArrowUpRightFromSquare;
 
   private readonly nameTemplate =
     viewChild<TemplateRef<{ $implicit: UserInfoDto }>>('nameTemplate');
@@ -124,9 +127,8 @@ export class SupporterPageComponent {
     return [item.addressPostalCode, item.addressLocality].filter(Boolean).join(' ');
   }
 
-  protected startImpersonation(item: UserInfoDto) {
-    console.log('starting impersanation', item);
+  protected openImpersonationTab(item: UserInfoDto) {
+    const absoluteUrl = `${globalThis.location.origin}?${KTIDP_IMPERSONATION_QUERY_PARAM}=${item.ktIdP}`;
+    globalThis.open(absoluteUrl, '_blank');
   }
-
-  protected readonly faArrowUpRightFromSquare = faArrowUpRightFromSquare;
 }

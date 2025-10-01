@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/r
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UserService } from '@/entities/api/user.service';
-import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 
 /**
@@ -23,7 +23,11 @@ export class ProducerUidGuard implements CanActivate {
   private readonly authorizationService = inject(AuthService);
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<UrlTree | boolean> {
-    if (!this.authorizationService.isProducer()) {
+    if (
+      !this.authorizationService.isAuthenticated() ||
+      (!this.authorizationService.isProducer() &&
+        !sessionStorage.getItem(KTIDP_IMPERSONATION_QUERY_PARAM))
+    ) {
       // this filter is only relevant for producers
       return true;
     }

@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { ComponentRef, signal } from '@angular/core';
+import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
@@ -17,6 +17,7 @@ import {
   mockConsentRequestService,
   mockConsentRequests,
 } from '@/shared/testing/mocks';
+import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
 import { mockMetadataService } from '@/shared/testing/mocks/mock-meta-data.service';
 
 describe('ConsentRequestProducerPage - component behavior', () => {
@@ -38,9 +39,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     } as unknown as jest.Mocked<Router>;
     metadataService = mockMetadataService;
 
-    agridataStateService = {
-      activeUid: signal(activeUid),
-    };
+    agridataStateService = mockAgridataStateService(activeUid);
     await TestBed.configureTestingModule({
       providers: [
         ConsentRequestProducerPage,

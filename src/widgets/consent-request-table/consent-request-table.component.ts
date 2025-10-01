@@ -11,6 +11,7 @@ import {
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { ConsentRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
   ConsentRequestProducerViewDto,
   ConsentRequestStateEnum,
@@ -61,7 +62,7 @@ export class ConsentRequestTableComponent {
   private readonly toastService = inject(ToastService);
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly i18nService = inject(I18nService);
-
+  private readonly agridataStateService = inject(AgridataStateService);
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
   readonly consentRequests = input.required<ConsentRequestProducerViewDto[]>();
@@ -96,6 +97,7 @@ export class ConsentRequestTableComponent {
     const consent: ActionDTO = {
       icon: this.checkIcon,
       label: 'consent-request.table.tableActions.consent',
+      isDisabled: this.agridataStateService.isImpersonating(),
       callback: () => {
         void this.updateConsentRequestState(
           request.id,
