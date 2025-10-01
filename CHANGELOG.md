@@ -1,3 +1,9 @@
+## [1.0.0-rc.73](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.72...v1.0.0-rc.73) (2025-10-01)
+
+### Features
+
+- **external-redirect:** add redirect after consent ([f0ccd1a](https://github.com/agridata-ch/frontend/commit/f0ccd1ae730a96d3d8880ea117b71d17ab7c35d8)), closes [DIGIB2-871](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-871)
+
 ## [1.0.0-rc.72](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.71...v1.0.0-rc.72) (2025-09-30)
 
 ### Features
