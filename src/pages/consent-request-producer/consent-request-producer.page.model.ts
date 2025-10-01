@@ -1,1 +1,1 @@
-export const REDIRECT_TIMEOUT = 5000;
+export const REDIRECT_TIMEOUT = 4000;

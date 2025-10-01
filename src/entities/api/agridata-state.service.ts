@@ -28,7 +28,6 @@ export class AgridataStateService {
   }
 
   setActiveUid(uid: string) {
-    console.log('uid', uid);
     localStorage.setItem(ACTIVE_UID_FIELD, uid);
     this.activeUid.set(uid);
   }

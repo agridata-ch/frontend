@@ -8,7 +8,7 @@ import { UserService } from '@/entities/api/user.service';
 import { UidDto } from '@/entities/openapi';
 import { ConsentRequestCreatedDto } from '@/entities/openapi/model/consentRequestCreatedDto';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { mockUserService, mockUserService } from '@/shared/testing/mocks';
+import { mockUserService } from '@/shared/testing/mocks';
 import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
 
 import { ProducerUidGuard } from './producer-uid.guard';
