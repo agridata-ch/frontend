@@ -1,4 +1,3 @@
-import { WritableSignal, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import {
   ActivatedRouteSnapshot,
@@ -13,8 +12,9 @@ import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UserService } from '@/entities/api/user.service';
 import { UidDto } from '@/entities/openapi';
-import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
+import { MockAuthService } from '@/shared/testing/mocks';
 import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
 
 describe('producerUidGuard', () => {
@@ -43,20 +43,17 @@ describe('producerUidGuard', () => {
       getAuthorizedUids: jest.fn().mockReturnValue(Promise.resolve([{ uid: uid } as UidDto])),
     };
 
-    authService = {
-      isProducer: signal(true),
-    };
-
     TestBed.configureTestingModule({
       providers: [
         ProducerUidGuard,
         { provide: UserService, useValue: participantService },
         { provide: AgridataStateService, useValue: agridataStateService },
-        { provide: AuthService, useValue: authService },
+        { provide: AuthService, useClass: MockAuthService },
         provideRouter([]),
       ],
     });
     producerUidGuard = TestBed.inject(ProducerUidGuard);
+    authService = TestBed.inject(AuthService);
   });
 
   it('should be created', () => {
@@ -72,6 +69,8 @@ describe('producerUidGuard', () => {
 
   it('should change active uid if different uid is provided', async () => {
     const newUid = '444';
+    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
+    jest.spyOn(authService, 'isProducer').mockReturnValue(true);
     (participantService.getAuthorizedUids as jest.MockedFn<any>).mockResolvedValueOnce(
       Promise.resolve([{ uid: uid } as UidDto, { uid: newUid } as UidDto]),
     );
@@ -83,6 +82,8 @@ describe('producerUidGuard', () => {
   });
 
   it('should rewrite route to consentrequest/uid using set uid', async () => {
+    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
+    jest.spyOn(authService, 'isProducer').mockReturnValue(true);
     const guardResult = await producerUidGuard.canActivate(
       activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
     );
@@ -94,12 +95,32 @@ describe('producerUidGuard', () => {
     }
   });
 
+  it('should rewrite route to consentrequest/uid using set uid when impersonation is active', async () => {
+    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
+    jest.spyOn(authService, 'isSupporter').mockReturnValue(true);
+    sessionStorage.setItem(KTIDP_IMPERSONATION_QUERY_PARAM, 'fakeKtIdp');
+    const guardResult = await producerUidGuard.canActivate(
+      activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
+    );
+    expect(guardResult).toBeInstanceOf(UrlTree);
+    if (guardResult instanceof UrlTree) {
+      expect(guardResult.toString()).toEqual(
+        `/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${uid}`,
+      );
+    }
+    sessionStorage.clear();
+  });
+
   it('should not rewrite route if not on consent request route', async () => {
+    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
+    jest.spyOn(authService, 'isProducer').mockReturnValue(true);
     const guardResult = await producerUidGuard.canActivate(activatedRouteSnapshot('', '', {}));
     expect(guardResult).toEqual(true);
   });
 
   it('should redirect to error if user doesnt own uid', async () => {
+    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
+    jest.spyOn(authService, 'isProducer').mockReturnValue(true);
     const guardResult = await producerUidGuard.canActivate(
       activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', { uid: '999' }),
     );
@@ -110,7 +131,17 @@ describe('producerUidGuard', () => {
   });
 
   it('should accept request if the user is not a producer', async () => {
-    (authService.isProducer as WritableSignal<boolean>).set(false);
+    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
+    jest.spyOn(authService, 'isProducer').mockReturnValue(false);
+    const guardResult = await producerUidGuard.canActivate(
+      activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
+    );
+    expect(guardResult).toEqual(true);
+  });
+
+  it('should accept request if the user is supporter and impersonation is not active', async () => {
+    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
+    jest.spyOn(authService, 'isSupporter').mockReturnValue(true);
     const guardResult = await producerUidGuard.canActivate(
       activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
     );

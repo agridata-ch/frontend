@@ -47,7 +47,8 @@ export class NavigationWidgetComponent {
 
   readonly navigationItems = computed(() =>
     [
-      this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) && {
+      (this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) ||
+        this.agridataStateService.isImpersonating()) && {
         label: 'producer.pageTitle',
         icon: faFile,
         route: `/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`,
@@ -57,11 +58,12 @@ export class NavigationWidgetComponent {
         icon: faDatabase,
         route: `/${ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH}`,
       },
-      this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) && {
-        label: 'supporter.pageTitle',
-        icon: faUsers,
-        route: `/${ROUTE_PATHS.SUPPORT_PATH}`,
-      },
+      this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) &&
+        !this.agridataStateService.isImpersonating() && {
+          label: 'supporter.pageTitle',
+          icon: faUsers,
+          route: `/${ROUTE_PATHS.SUPPORT_PATH}`,
+        },
     ].filter(Boolean),
   );
 

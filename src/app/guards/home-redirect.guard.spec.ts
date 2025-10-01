@@ -1,8 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { Router, UrlTree } from '@angular/router';
 
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
+import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
 import { MockAuthService } from '@/shared/testing/mocks/mock-auth.service';
 
 import { HomeRedirectGuard } from './home-redirect.guard';
@@ -11,8 +13,10 @@ describe('HomeRedirectGuard', () => {
   let guard: HomeRedirectGuard;
   let authService: AuthService;
   let router: Router;
-
+  let mockAgridataStateServiceInstance: ReturnType<typeof mockAgridataStateService>;
   beforeEach(() => {
+    mockAgridataStateServiceInstance = mockAgridataStateService('fakeUid');
+
     const mockRouter = {
       createUrlTree: jest.fn(),
     };
@@ -22,6 +26,7 @@ describe('HomeRedirectGuard', () => {
         HomeRedirectGuard,
         { provide: AuthService, useClass: MockAuthService },
         { provide: Router, useValue: mockRouter },
+        { provide: AgridataStateService, useValue: mockAgridataStateServiceInstance },
       ],
     });
 
@@ -51,6 +56,31 @@ describe('HomeRedirectGuard', () => {
     const result = guard.canActivate();
 
     expect(router.createUrlTree).toHaveBeenCalledWith([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);
+    expect(result).toBe(urlTree);
+  });
+
+  it('should redirect to consent request path for supporter that is impersonating a producer', () => {
+    const urlTree = {} as UrlTree;
+    jest.spyOn(mockAgridataStateServiceInstance, 'isImpersonating').mockReturnValue(true);
+    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
+    jest.spyOn(authService, 'isSupporter').mockReturnValue(true);
+    (router.createUrlTree as jest.Mock).mockReturnValue(urlTree);
+
+    const result = guard.canActivate();
+
+    expect(router.createUrlTree).toHaveBeenCalledWith([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);
+    expect(result).toBe(urlTree);
+  });
+
+  it('should redirect to supporter path for supporter', () => {
+    const urlTree = {} as UrlTree;
+    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
+    jest.spyOn(authService, 'isSupporter').mockReturnValue(true);
+    (router.createUrlTree as jest.Mock).mockReturnValue(urlTree);
+
+    const result = guard.canActivate();
+
+    expect(router.createUrlTree).toHaveBeenCalledWith([ROUTE_PATHS.SUPPORT_PATH]);
     expect(result).toBe(urlTree);
   });
 

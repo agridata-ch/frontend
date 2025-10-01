@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 
@@ -18,14 +19,15 @@ import { AuthService } from '@/shared/lib/auth';
 export class HomeRedirectGuard implements CanActivate {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  private readonly stateService = inject(AgridataStateService);
 
   canActivate() {
     if (!this.authService.isAuthenticated()) {
-      // Allow unauthenticated users to access landing page
+      // Allow unauthenticated users to access the landing page
       return true;
     }
 
-    if (this.authService.isProducer()) {
+    if (this.authService.isProducer() || this.stateService.isImpersonating()) {
       return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);
     } else if (this.authService.isConsumer()) {
       return this.router.createUrlTree([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH]);

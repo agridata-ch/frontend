@@ -31,6 +31,7 @@
         [variant]="ButtonVariants.Secondary"
         (onClick)="logout()"
         [additionalClass]="'w-full'"
+        [disabled]="agridataStateService.isImpersonating()"
       >
         {{ 'account.logout' | i18n }}
       </app-agridata-button>

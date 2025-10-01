@@ -3,6 +3,7 @@ import { autoLoginPartialRoutesGuard } from 'angular-auth-oidc-client';
 
 import { CreateConsentRequestGuard } from '@/app/guards/create-consent-request.guard';
 import { HomeRedirectGuard } from '@/app/guards/home-redirect.guard';
+import { ImpersonationGuardGuard } from '@/app/guards/impersonation.guard';
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { DefaultLayoutComponent, FullWidthLayoutComponent } from '@/app/layout';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
@@ -27,7 +28,7 @@ export const routes: Routes = [
   {
     path: '',
     component: FullWidthLayoutComponent,
-    canActivate: [ProducerUidGuard, HomeRedirectGuard],
+    canActivate: [ImpersonationGuardGuard, ProducerUidGuard, HomeRedirectGuard],
     children: [
       {
         path: '',
@@ -48,8 +49,8 @@ export const routes: Routes = [
     path: `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`,
     component: DefaultLayoutComponent,
     runGuardsAndResolvers: 'paramsChange',
-    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
-    data: { roles: [USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER] },
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard, ImpersonationGuardGuard],
+    data: { roles: [USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER, USER_ROLES.AGRIDATA_SUPPORTER] },
     children: [
       {
         path: ``,

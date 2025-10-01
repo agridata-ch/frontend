@@ -3,6 +3,7 @@
     <app-agridata-button
       click-stop-propagation
       [variant]="ButtonVariants.PrimaryAccept"
+      [disabled]="mainAction()?.isDisabled ?? false"
       (onClick)="handleActionClick(mainAction()!)"
     >
       {{ mainAction()?.label | i18n }}

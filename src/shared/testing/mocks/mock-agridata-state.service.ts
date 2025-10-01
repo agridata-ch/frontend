@@ -11,6 +11,7 @@ export const mockAgridataStateService = (uid: string): Partial<AgridataStateServ
     setActiveUid: jest.fn(),
     activeUid: signal(uid),
     userUids: signal(mockUids),
+    isImpersonating: jest.fn(),
   };
 };
 

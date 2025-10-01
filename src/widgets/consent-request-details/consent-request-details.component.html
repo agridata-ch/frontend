@@ -50,7 +50,10 @@
         <app-agridata-button
           class="flex-1"
           [variant]="ButtonVariants.SecondaryReject"
-          [disabled]="request()?.stateCode === consentRequestStateEnum.Declined"
+          [disabled]="
+            request()?.stateCode === consentRequestStateEnum.Declined ||
+            agridataStateService.isImpersonating()
+          "
           (onClick)="rejectRequest()"
           [additionalClass]="'w-full'"
         >
@@ -59,7 +62,10 @@
         <app-agridata-button
           class="flex-1"
           [variant]="ButtonVariants.PrimaryAccept"
-          [disabled]="request()?.stateCode === consentRequestStateEnum.Granted"
+          [disabled]="
+            request()?.stateCode === consentRequestStateEnum.Granted ||
+            agridataStateService.isImpersonating()
+          "
           (onClick)="acceptRequest()"
           [additionalClass]="'w-full'"
         >
