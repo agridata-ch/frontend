@@ -1,3 +1,9 @@
+## [1.0.0-rc.81](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.80...v1.0.0-rc.81) (2025-10-02)
+
+### Features
+
+- **support-page:** adds impersonation ([daab158](https://github.com/agridata-ch/frontend/commit/daab158048aac7bcf77411cc2016ac349f3c5132)), closes [DIGIB2-630](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-630)
+
 ## [1.0.0-rc.80](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.79...v1.0.0-rc.80) (2025-10-02)
 
 ### Features
