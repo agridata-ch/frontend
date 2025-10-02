@@ -1,3 +1,9 @@
+## [1.0.0-rc.80](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.79...v1.0.0-rc.80) (2025-10-02)
+
+### Features
+
+- **open-source:** prepare for open-source ([cca3eb1](https://github.com/agridata-ch/frontend/commit/cca3eb1cac33f6721aeb5548610c8108b560975f)), closes [DIGIB2-866](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-866)
+
 ## [1.0.0-rc.79](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.78...v1.0.0-rc.79) (2025-10-01)
 
 ### Bug Fixes
