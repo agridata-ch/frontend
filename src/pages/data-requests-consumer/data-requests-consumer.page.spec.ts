@@ -6,7 +6,7 @@ import { MockDataRequestService, mockDataRequests } from '@/shared/testing/mocks
 
 import { DataRequestsConsumerPage } from './data-requests-consumer.page';
 
-describe.skip('DataRequestsConsumerPage - component behavior', () => {
+describe('DataRequestsConsumerPage - component behavior', () => {
   let fixture: ComponentFixture<DataRequestsConsumerPage>;
   let component: DataRequestsConsumerPage;
   let openComponent: any;
@@ -51,7 +51,7 @@ describe.skip('DataRequestsConsumerPage - component behavior', () => {
     openComponent.setSelectedRequest(request);
 
     expect(openComponent.selectedRequest()).toEqual(request);
-    expect(mockLocation.go).toHaveBeenCalledWith('data-requests/1');
+    expect(mockLocation.go).toHaveBeenCalledWith(`data-requests/${request.id}`);
   });
 
   it('should setSelectedRequest to null', () => {
@@ -153,9 +153,12 @@ describe.skip('DataRequestsConsumerPage - component behavior', () => {
     expect(openComponent.selectedRequest()).toBeNull();
   });
 
-  it.skip('should open panel when dataRequestId matches a request', () => {
+  it('should open panel when dataRequestId matches a request', () => {
+    // Get the ID of the first mock request and use it
+    const requestId = mockDataRequests[0].id;
+
     // Set a dataRequestId that will match the first mock request
-    openComponent.dataRequestId = () => '1'; // ID of first mock request
+    openComponent.dataRequestId = () => requestId;
 
     // Reset panel state to ensure clean test
     openComponent.showPanel.set(false);
@@ -178,6 +181,7 @@ describe.skip('DataRequestsConsumerPage - component behavior', () => {
 
     // The panel should open and the correct request should be selected
     expect(openComponent.showPanel()).toBe(true);
-    expect(openComponent.selectedRequest()).toEqual(mockDataRequests[0]);
+    const expectedRequest = mockDataRequests.find((req) => req.id === requestId);
+    expect(openComponent.selectedRequest()).toEqual(expectedRequest);
   });
 });

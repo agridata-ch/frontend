@@ -6,12 +6,17 @@ import {
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideTransloco } from '@jsverse/transloco';
-import { AbstractSecurityStorage, authInterceptor, provideAuth } from 'angular-auth-oidc-client';
+import {
+  AbstractSecurityStorage,
+  DefaultLocalStorageService,
+  authInterceptor,
+  provideAuth,
+} from 'angular-auth-oidc-client';
 
 import { impersonationInterceptor } from '@/app/interceptors/impersonation-interceptor';
 import { Configuration } from '@/entities/openapi';
 import { environment } from '@/environments/environment';
-import { AgridataOIDCStorage, oidcConfig } from '@/shared/lib/auth';
+import { oidcConfig } from '@/shared/lib/auth';
 
 import { routes } from './app.routes';
 import { i18nConfig } from './i18n.config';
@@ -38,6 +43,6 @@ export const appConfig: ApplicationConfig = {
         ...oidcConfig,
       },
     }),
-    { provide: AbstractSecurityStorage, useClass: AgridataOIDCStorage },
+    { provide: AbstractSecurityStorage, useClass: DefaultLocalStorageService },
   ],
 };

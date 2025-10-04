@@ -1,4 +1,4 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { Subject, takeUntil } from 'rxjs';
@@ -33,16 +33,9 @@ export class AuthService {
     () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) ?? false,
   );
 
-  constructor() {
-    this.checkAuth(true);
-
-    // Listen for “storage” events so other tabs’ logins/logouts propagate here
-    window.addEventListener('storage', (event: StorageEvent) => {
-      if (event.key?.startsWith('oidc.')) {
-        this.checkAuth();
-      }
-    });
-  }
+  readonly checkAuthEffect = effect(() => {
+    this.checkAuth();
+  });
 
   private decodeJwt(token: string) {
     try {
@@ -55,7 +48,7 @@ export class AuthService {
     }
   }
 
-  checkAuth(updateLocalStorage = false) {
+  checkAuth() {
     this.oidcService
       .checkAuth()
       .pipe(takeUntil(this.destroy$))
@@ -64,9 +57,6 @@ export class AuthService {
         if (isAuthenticated) {
           this.participantService.getUserInfo().subscribe((userData) => {
             this.userData.set(userData);
-            if (updateLocalStorage) {
-              localStorage.setItem('oidc.user', JSON.stringify(userData));
-            }
           });
           const decoded = this.decodeJwt(accessToken);
           const roles =
@@ -76,9 +66,6 @@ export class AuthService {
           this.userRoles.set(roles);
         } else {
           this.userData.set(null);
-          if (updateLocalStorage) {
-            localStorage.removeItem('oidc.user');
-          }
         }
       });
   }
