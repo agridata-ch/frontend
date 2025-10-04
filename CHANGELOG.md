@@ -1,3 +1,9 @@
+## [1.0.0-rc.82](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.81...v1.0.0-rc.82) (2025-10-04)
+
+### Bug Fixes
+
+- **authentication:** update auth config ([d0052e6](https://github.com/agridata-ch/frontend/commit/d0052e6897b63daeebf9ff9809af2adc3bd5e814)), closes [DIGIB2-860](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-860)
+
 ## [1.0.0-rc.81](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.80...v1.0.0-rc.81) (2025-10-02)
 
 ### Features
