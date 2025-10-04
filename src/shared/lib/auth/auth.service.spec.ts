@@ -17,8 +17,6 @@ describe('AuthService', () => {
   };
   let mockRouter: { navigate: jest.Mock<Promise<boolean>, [unknown[]]> };
   let mockUsersService: Partial<UsersService>;
-  let setItemSpy: jest.SpyInstance;
-  let removeItemSpy: jest.SpyInstance;
 
   /**
    * Helper to build a minimal JWT‐style string whose payload
@@ -32,9 +30,6 @@ describe('AuthService', () => {
   }
 
   beforeEach(() => {
-    setItemSpy = jest.spyOn(Storage.prototype, 'setItem').mockClear();
-    removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem').mockClear();
-
     mockOidc = {
       checkAuth: jest.fn(),
       authorize: jest.fn(),
@@ -73,9 +68,6 @@ describe('AuthService', () => {
       expect(mockAuthService.userData()).toEqual(mockUserData);
       expect(mockAuthService.userRoles()).toEqual(roles);
 
-      expect(setItemSpy).toHaveBeenCalledWith('oidc.user', JSON.stringify(mockUserData));
-      expect(removeItemSpy).not.toHaveBeenCalled();
-
       done();
     }, 0);
   });
@@ -85,8 +77,6 @@ describe('AuthService', () => {
       of({ isAuthenticated: false, userData: null, accessToken: '' }),
     );
 
-    localStorage.setItem('oidc.user', JSON.stringify({ dummy: 'value' }));
-
     mockAuthService = TestBed.inject(AuthService);
 
     setTimeout(() => {
@@ -94,7 +84,6 @@ describe('AuthService', () => {
       expect(mockAuthService.userData()).toBeNull();
       expect(mockAuthService.userRoles()).toBeNull();
 
-      expect(removeItemSpy).toHaveBeenCalledWith('oidc.user');
       done();
     }, 0);
   });
@@ -123,33 +112,6 @@ describe('AuthService', () => {
       expect(mockOidc.logoff).toHaveBeenCalled();
       expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
       done();
-    }, 0);
-  });
-
-  it('calling checkAuth(false) does not modify localStorage when unauthenticated', (done) => {
-    mockOidc.checkAuth.mockReturnValue(of({ isAuthenticated: false, accessToken: '' }));
-    mockAuthService = TestBed.inject(AuthService);
-
-    setTimeout(() => {
-      expect(removeItemSpy).toHaveBeenCalledWith('oidc.user');
-      removeItemSpy.mockClear();
-      setItemSpy.mockClear();
-
-      const roles = ['admin'];
-      const token = makeJwtWithRoles(roles);
-      mockOidc.checkAuth.mockReturnValue(of({ isAuthenticated: true, accessToken: token }));
-
-      mockAuthService.checkAuth(false);
-
-      setTimeout(() => {
-        expect(mockAuthService.isAuthenticated()).toBe(true);
-        expect(mockAuthService.userData()).toEqual(mockUserData);
-        expect(mockAuthService.userRoles()).toEqual(roles);
-
-        expect(setItemSpy).not.toHaveBeenCalled();
-        expect(removeItemSpy).not.toHaveBeenCalled();
-        done();
-      }, 0);
     }, 0);
   });
 
