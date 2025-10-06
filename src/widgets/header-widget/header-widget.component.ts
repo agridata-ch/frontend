@@ -3,9 +3,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map } from 'rxjs';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { CmsService, StrapiCollectionTypeResponse } from '@/entities/cms';
 import { LanguageSelectComponent } from '@/features/language-select';
 import { I18nPipe, I18nService } from '@/shared/i18n';
+import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { AuthService } from '@/shared/lib/auth';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AccountOverlayComponent } from '@/widgets/account-overlay';
@@ -38,8 +40,7 @@ export class HeaderWidgetComponent {
   private readonly strapiService = inject(CmsService);
   private readonly i18nService = inject(I18nService);
   private readonly router = inject(Router);
-  protected readonly landingPage = this.strapiService.fetchLandingPage;
-
+  private readonly errorHandler = inject(ErrorHandlerService);
   protected readonly cmsPagesResource = resource({
     params: () => ({
       isAuthenticated: this.authService.isAuthenticated(),
@@ -53,9 +54,17 @@ export class HeaderWidgetComponent {
     },
   });
 
+  handleCmsPageResourceErrors = createResourceErrorHandlerEffect(
+    this.cmsPagesResource,
+    this.errorHandler,
+  );
+
   readonly cmsPages = computed(() => {
-    const data = (this.cmsPagesResource.value() as StrapiCollectionTypeResponse)?.data;
-    return data ? [...data].sort((a, b) => (a.position > b.position ? 1 : -1)) : [];
+    if (!this.cmsPagesResource.error()) {
+      const data = (this.cmsPagesResource.value() as StrapiCollectionTypeResponse)?.data;
+      return data ? [...data].sort((a, b) => (a.position > b.position ? 1 : -1)) : [];
+    }
+    return [];
   });
 
   readonly currentUrl = toSignal(

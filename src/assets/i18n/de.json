@@ -135,7 +135,7 @@
           },
           "it": {
             "label": "Beschreibung des Antrags IT",
-            "placeholder": "Con il consenso all'inoltro dei dati a [...] si semplifica il lavoro quotidiano, si riducono gli inserimenti multipli di dati e si velocizzano i processi."
+            "placeholder": "Con il consenso all'inoltro dei dati a [...] si semplifica il lavoro quotidiano, si riducono gli inserimenti multipli di dati a più riprese e si velocizzano i processi."
           }
         },
         "purpose": {
@@ -151,7 +151,7 @@
           },
           "it": {
             "label": "Nutzungszweck der Daten IT",
-            "placeholder": "[...] utilizza i dati richiesti per ... (descrizione del destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
+            "placeholder": "[...] utilizza i dati richiesti per ... (descrizione dell’acquirente dil destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
           }
         }
       },
@@ -308,6 +308,7 @@
     "CH": "Schweiz",
     "LI": "Liechtenstein"
   },
+  "account.loginForm.loginButton": "Login",
   "header": {
     "helpAndSupport": {
       "title": "Hilfe & Support",

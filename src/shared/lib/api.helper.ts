@@ -1,3 +1,7 @@
+import { ResourceRef, Signal, computed, effect } from '@angular/core';
+
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
+
 export interface PageResponseDto<T> {
   items: Array<T>;
   totalItems: number;
@@ -23,4 +27,23 @@ export function arrayToObjectSortParams(sortParams: Array<string> | undefined, p
   const sortObj: Record<string, string> = {};
   sortParams.forEach((param) => (sortObj[paramName] = param));
   return sortObj;
+}
+
+export function createResourceErrorHandlerEffect<T>(
+  resource: ResourceRef<T>,
+  errorService: ErrorHandlerService,
+) {
+  return effect(() => {
+    const error = resource.error();
+    if (error) {
+      errorService.handleError(error);
+    }
+  });
+}
+
+export function createResourceValueComputed<T>(
+  resource: ResourceRef<T>,
+  fallbackValue: T = [] as T,
+): Signal<T> {
+  return computed(() => (resource.error() ? fallbackValue : resource.value()));
 }

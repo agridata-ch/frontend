@@ -1,22 +1,5 @@
+import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
-
-/**
- * Offers a mock implementation of the data request service, returning controlled test responses.
- *
- * CommentLastReviewed: 2025-08-25
- */
-export class MockDataRequestService {
-  fetchDataRequests = {
-    value: jest.fn().mockReturnValue(mockDataRequests),
-    isLoading: jest.fn(),
-    reload: jest.fn(),
-  };
-  retreatDataRequest = jest.fn().mockResolvedValue(undefined);
-  createDataRequest = jest.fn().mockResolvedValue(mockDataRequests[0]);
-  updateDataRequestDetails = jest.fn().mockResolvedValue(undefined);
-  uploadLogo = jest.fn().mockResolvedValue(undefined);
-  submitDataRequest = jest.fn().mockResolvedValue(undefined);
-}
 
 export const mockDataRequests: DataRequestDto[] = [
   {
@@ -41,3 +24,17 @@ export const mockDataRequests: DataRequestDto[] = [
     title: { de: 'Request C' },
   } as DataRequestDto,
 ];
+
+/**
+ * Offers a mock implementation of the data request service, returning controlled test responses.
+ *
+ * CommentLastReviewed: 2025-08-25
+ */
+export const mockDataRequestService: Partial<DataRequestService> = {
+  fetchDataRequests: jest.fn().mockResolvedValue(mockDataRequests),
+  retreatDataRequest: jest.fn().mockResolvedValue(undefined),
+  createDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
+  updateDataRequestDetails: jest.fn().mockResolvedValue(undefined),
+  uploadLogo: jest.fn().mockResolvedValue(undefined),
+  submitDataRequest: jest.fn().mockResolvedValue(undefined),
+};

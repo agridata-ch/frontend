@@ -1,6 +1,9 @@
 <ng-container *i18n="let t; prefix: 'consumer'">
   <div class="flex justify-between">
-    <h2 class="page-title"><fa-icon [icon]="icon" class="mr-3" />{{ t('pageTitle') }}</h2>
+    <h2 class="page-title">
+      <fa-icon [icon]="icon" class="mr-3" />
+      {{ t('pageTitle') }}
+    </h2>
     <div>
       <app-agridata-button
         (onClick)="handleOpen()"
@@ -23,6 +26,12 @@
       </app-sidepanel>
     </div>
   </div>
-  <app-data-request-table (tableRowAction)="setSelectedRequest($event)" />
+  <app-error-outlet></app-error-outlet>
+
+  <app-data-request-table
+    [dataRequests]="dataRequests()"
+    [dataRequestsResource]="dataRequestsResource"
+    (tableRowAction)="setSelectedRequest($event)"
+  ></app-data-request-table>
 </ng-container>
 <div class="flex justify-end"></div>

@@ -9,6 +9,7 @@ import { DefaultLayoutComponent, FullWidthLayoutComponent } from '@/app/layout';
 import { CmsPage } from '@/pages/cms-page';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
+import { ErrorPage } from '@/pages/error-page/error-page.component';
 import { LandingPage } from '@/pages/landing-page';
 import { NotFoundPage } from '@/pages/not-found';
 import { SupporterPageComponent } from '@/pages/supporter-page/';
@@ -121,6 +122,13 @@ export const routes: Routes = [
   },
 
   // #### general routes ####
+  {
+    path: ROUTE_PATHS.ERROR,
+    component: DefaultLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
+    canActivate: [AuthorizationGuard],
+    children: [{ path: '**', component: ErrorPage }],
+  },
   {
     path: ROUTE_PATHS.NOT_FOUND,
     component: DefaultLayoutComponent,

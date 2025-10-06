@@ -1,0 +1,3 @@
+@if (errors && errors().length > 0) {
+  <app-error-alert-list [errors]="errors()" (closeErrors)="closeErrors()"></app-error-alert-list>
+}

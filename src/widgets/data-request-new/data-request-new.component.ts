@@ -12,6 +12,7 @@ import { I18nDirective, I18nService } from '@/shared/i18n';
 import { Dto, buildReactiveForm, flattenFormGroup } from '@/shared/lib/form.helper';
 import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 import {
   DataRequestFormConsumerComponent,
@@ -42,6 +43,7 @@ import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
     DataRequestPreviewComponent,
     DataRequestFormConsumerComponent,
     DataRequestFormProducerComponent,
+    ErrorOutletComponent,
   ],
   templateUrl: './data-request-new.component.html',
 })

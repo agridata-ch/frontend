@@ -1,11 +1,12 @@
 <ng-container *i18n="let t; prefix: 'producer'">
-  <h2 class="page-title"><fa-icon [icon]="fileIcon" class="mr-3" />{{ t('pageTitle') }}</h2>
+  <h2 class="page-title">
+    <fa-icon [icon]="fileIcon" class="mr-3" />
+    {{ t('pageTitle') }}
+  </h2>
 </ng-container>
-@if (consentRequests.isLoading()){
-<p>Loading...</p>
-} @else {
+<app-error-outlet></app-error-outlet>
 <app-consent-request-table
-  [consentRequests]="consentRequests.value()"
+  [consentRequests]="consentRequests()"
   (tableRowAction)="setSelectedRequest($event)"
   [consentRequestsResource]="consentRequestResource"
 />
@@ -16,13 +17,12 @@
   [consentRequestsResource]="consentRequestResource"
 />
 @if (showRedirect()) {
-<div class="absolute right-0 top-0 bottom-0 z-10 w-full bg-gray-900 opacity-50"></div>
-<div
-  class="fixed inset-0 flex items-center justify-center z-11"
-  *i18n="let t; prefix: 'producer.redirect'"
+<app-modal
+  [open]="showRedirect()"
+  [title]="'producer.redirect.headline' | i18n"
+  [showCloseButton]="false"
 >
-  <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-    <h3 class="mb-4">{{ t('headline') }}</h3>
+  <div class="text-center" *i18n="let t; prefix: 'producer.redirect'">
     <div class="flex justify-center mb-4">
       <p>{{ t('description', { count: countdownValue() }) }}</p>
     </div>
@@ -30,5 +30,5 @@
       {{ t('redirectNow') }}
     </app-agridata-button>
   </div>
-</div>
-} }
+</app-modal>
+}

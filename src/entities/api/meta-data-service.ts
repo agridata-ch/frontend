@@ -1,7 +1,7 @@
-import { Injectable, inject, resource } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
-import { DataProductsService } from '@/entities/openapi';
+import { DataProductDto, DataProductsService } from '@/entities/openapi';
 
 /**
  * Service for retrieving metadata about available data products.
@@ -14,7 +14,19 @@ import { DataProductsService } from '@/entities/openapi';
 export class MetaDataService {
   private readonly dataProductService = inject(DataProductsService);
 
-  readonly fetchDataProducts = resource({
-    loader: () => firstValueFrom(this.dataProductService.getDataProducts()),
+  private readonly dataProducts = signal<Array<DataProductDto>>([]);
+
+  dataProductFetchEffect = effect(() => {
+    this.fetchDataProducts().then((products) => {
+      this.dataProducts.set(products);
+    });
   });
+
+  getDataProducts() {
+    return this.dataProducts.asReadonly();
+  }
+
+  private fetchDataProducts() {
+    return firstValueFrom(this.dataProductService.getDataProducts());
+  }
 }

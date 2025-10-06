@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UserService } from '@/entities/api/user.service';
 import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
@@ -9,7 +10,7 @@ import { AuthService } from '@/shared/lib/auth';
 /**
  * Guard to load the producers authorized uids and set the consent request uid parameter if not present or set active uid if parameter is provided.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-10-13
  *
  * @param route
  */
@@ -21,6 +22,7 @@ export class ProducerUidGuard implements CanActivate {
   private readonly participantService = inject(UserService);
   private readonly agridataStateService = inject(AgridataStateService);
   private readonly authorizationService = inject(AuthService);
+  private readonly errorService = inject(ErrorHandlerService);
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<UrlTree | boolean> {
     if (
@@ -43,7 +45,7 @@ export class ProducerUidGuard implements CanActivate {
       // Always ensure userUid is set when available and valid, regardless of route
       if (userUid) {
         if (!uids.includes(userUid)) {
-          return this.fail('invalid url, user does not have access to uid: ' + userUid);
+          return this.fail(new Error('invalid url, user does not have access to uid: ' + userUid));
         }
 
         // Always set active uid when it's different from current
@@ -69,13 +71,15 @@ export class ProducerUidGuard implements CanActivate {
         return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, defaultUid]);
       }
     } catch (err) {
-      console.error(err);
+      return err instanceof Error
+        ? this.fail(err)
+        : this.fail(new Error('Unknown error occurred in producer-uid guard', { cause: err }));
     }
     return this.router.parseUrl(ROUTE_PATHS.ERROR);
   }
 
-  private fail(msg: string) {
-    console.error('[ProducerUidGuard]', msg);
+  private fail(error: Error) {
+    this.errorService.handleError(error);
     return this.router.parseUrl(ROUTE_PATHS.ERROR);
   }
 }

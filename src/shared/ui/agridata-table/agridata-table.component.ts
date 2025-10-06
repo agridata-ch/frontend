@@ -110,15 +110,17 @@ export class AgridataTableComponent<T> {
     });
 
     effect(() => {
-      const currentPageData = this.dataProvider().value();
-      if (currentPageData?.items) {
-        this.pageData.set({
-          currentPage: currentPageData?.currentPage ?? 0,
-          pageSize: currentPageData?.pageSize ?? PAGE_SIZES[0],
-          totalPages: currentPageData?.totalPages ?? 1,
-          items: currentPageData?.items ?? [],
-          totalItems: currentPageData?.totalItems ?? 0,
-        });
+      if (!this.dataProvider().error()) {
+        const currentPageData = this.dataProvider().value();
+        if (currentPageData?.items) {
+          this.pageData.set({
+            currentPage: currentPageData?.currentPage ?? 0,
+            pageSize: currentPageData?.pageSize ?? PAGE_SIZES[0],
+            totalPages: currentPageData?.totalPages ?? 1,
+            items: currentPageData?.items ?? [],
+            totalItems: currentPageData?.totalItems ?? 0,
+          });
+        }
       }
     });
   }

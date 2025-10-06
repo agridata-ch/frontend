@@ -1,4 +1,4 @@
-import { Injectable, inject, resource } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { UIDRegisterSearchService } from '@/entities/openapi';
@@ -16,13 +16,7 @@ import { UIDRegisterSearchService } from '@/entities/openapi';
 export class UidRegisterService {
   private readonly apiService = inject(UIDRegisterSearchService);
 
-  readonly fetchUidInfosOfCurrentUser = resource({
-    loader: () => firstValueFrom(this.apiService.getByUidOfCurrentUser()),
-  });
-
-  searchByUidResource(uid: number) {
-    return resource({
-      loader: () => firstValueFrom(this.apiService.getByUid(uid)),
-    });
+  fetchUidInfosOfCurrentUser() {
+    return firstValueFrom(this.apiService.getByUidOfCurrentUser());
   }
 }

@@ -1,4 +1,13 @@
-import { Component, TemplateRef, computed, inject, output, viewChild } from '@angular/core';
+import {
+  Component,
+  ResourceRef,
+  TemplateRef,
+  computed,
+  inject,
+  input,
+  output,
+  viewChild,
+} from '@angular/core';
 import { faEye, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { DataRequestService } from '@/entities/api';
@@ -32,8 +41,9 @@ export class DataRequestTableComponent {
   private readonly i18nService = inject(I18nService);
   private readonly dataRequestService = inject(DataRequestService);
 
+  readonly dataRequestsResource = input.required<ResourceRef<DataRequestDto[] | undefined>>();
+  readonly dataRequests = input.required<DataRequestDto[]>();
   readonly tableRowAction = output<DataRequestDto>();
-  readonly realoadDataRequests = output();
 
   protected readonly dataRequestHumanFriendlyIdHeader = 'data-request.humanFriendlyId';
   protected readonly dataRequestTitleHeader = 'data-request.title';
@@ -41,10 +51,8 @@ export class DataRequestTableComponent {
   protected readonly dataRequestStateHeader = 'data-request.state';
   protected readonly dataRequestProviderHeader = 'data-request.provider';
 
-  protected readonly dataRequests = this.dataRequestService.fetchDataRequests;
   protected readonly eyeIcon = faEye;
   protected readonly retreatIcon = faRotateLeft;
-  protected readonly SortDirections = SortDirections;
   protected readonly BadgeSize = BadgeSize;
 
   private readonly humanFriendlyIdTemplate =
@@ -123,7 +131,7 @@ export class DataRequestTableComponent {
       label: 'data-request.table.tableActions.retreat',
       callback: () => {
         this.dataRequestService.retreatDataRequest(request.id!).then(() => {
-          this.dataRequestService.fetchDataRequests.reload();
+          this.dataRequestsResource().reload();
         });
       },
     };

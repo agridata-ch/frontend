@@ -135,7 +135,7 @@
           },
           "it": {
             "label": "Description de la demande IT",
-            "placeholder": "Con il consenso all'inoltro dei dati a [...] si semplifica il lavoro quotidiano, si riducono gli inserimenti multipli di dati e si velocizzano i processi."
+            "placeholder": "Con il consenso all'inoltro dei dati a [...] si semplifica il lavoro quotidiano, si riducono gli inserimenti multipli di dati a più riprese e si velocizzano i processi."
           }
         },
         "purpose": {
@@ -151,7 +151,7 @@
           },
           "it": {
             "label": "Objectif d'utilisation des données IT",
-            "placeholder": "[...] utilizza i dati richiesti per ... (descrizione del destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
+            "placeholder": "[...] utilizza i dati richiesti per ... (descrizione dell’acquirente dil destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
           }
         }
       },
@@ -372,6 +372,42 @@
     "overlay": {
       "exit": "Fermer la vue",
       "title": "Affichage utilisateur {{user}}"
+    }
+  },
+  "errors": {
+    "title": "Une erreur s'est produite",
+    "close": "fermer",
+    "frontend": {
+      "unexpected": {
+        "title": "Une erreur inattendue s'est produite.",
+        "details": "{{ errorDetails }}"
+      }
+    },
+    "backend": {
+      "method": {
+        "get": "Échec du chargement",
+        "post": "Échec de l'enregistrement",
+        "put": "Échec de l'enregistrement",
+        "patch": "Échec de l'enregistrement",
+        "delete": "Échec de la suppression"
+      },
+      "errorId": "ID d'erreur : {{errorId}}",
+      "path": "Chemin : {{method}} :  {{path}}",
+      "generic": {
+        "title": "Erreur serveur"
+      },
+      "internalServerError": "Veuillez réessayer plus tard ou contacter le service d'assistance.",
+      "badRequest": "Une erreur s'est produite lors du traitement de votre demande. Veuillez vérifier vos informations et réessayer.",
+      "unauthorized": "Connectez-vous ou rechargez la page.",
+      "forbidden": "Accès non autorisé à la ressource.",
+      "notFound": "La ressource souhaitée n'est pas disponible.",
+      "serviceUnavailable": "Un service est indisponible en raison d'une interruption.\nNous serons de nouveau en ligne dès que possible.",
+      "unexpected": "Une erreur inattendue s'est produite. Veuillez réessayer plus tard ou contacter le service d'assistance. Statut : {{status}}"
+    },
+    "popupTitle": "Des erreurs sont survenues",
+    "errorPage": {
+      "title": "Des erreurs sont survenues",
+      "back": "retour"
     }
   },
   "breadcrumb": {

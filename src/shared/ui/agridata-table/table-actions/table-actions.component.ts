@@ -38,7 +38,6 @@ export class TableActionsComponent {
   readonly actions = input<ActionDTO[]>([]);
   readonly isRowHovered = input<boolean>(false);
   readonly rowAction = output<void>();
-
   readonly isOpen = signal(false);
 
   readonly iconRowAction = faChevronRight;

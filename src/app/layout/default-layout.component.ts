@@ -13,7 +13,7 @@ import { SupporterOverlayComponent } from '@/widgets/supporter-overlay/supporter
  * Provides a layout with header, navigation, footer, and toast notifications. It reacts to
  * authentication state changes to refresh the application when users log out or log back in.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-10-06
  */
 @Component({
   selector: 'app-default-layout',
