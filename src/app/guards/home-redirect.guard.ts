@@ -22,7 +22,6 @@ export class HomeRedirectGuard implements CanActivate {
   private readonly stateService = inject(AgridataStateService);
 
   canActivate() {
-    this.authService.checkAuth();
     if (!this.authService.isAuthenticated()) {
       // Allow unauthenticated users to access the landing page
       return true;
