@@ -1,7 +1,5 @@
-import { Component, HostListener, inject } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-
-import { AuthService } from '@/shared/lib/auth';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 /**
  * The root Angular component that renders the application shell. It provides the router outlet as
@@ -15,20 +13,4 @@ import { AuthService } from '@/shared/lib/auth';
   styleUrl: './app.component.css',
   imports: [RouterOutlet],
 })
-export class AppComponent {
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
-
-  @HostListener('window:focus')
-  onWindowFocus() {
-    // Check authentication status when window regains focus
-    this.authService.checkAuth();
-
-    if (this.authService.isAuthenticated()) {
-      // reload the page if on the default route to trigger our home-redirect guard
-      if (this.router.url === '/') {
-        globalThis.location.reload();
-      }
-    }
-  }
-}
+export class AppComponent {}
