@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "1.0.0-rc.83",
+  "version": "1.0.0-rc.84",
   "license": "MIT",
   "scripts": {
     "ng": "ng",

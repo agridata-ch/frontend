@@ -1,3 +1,9 @@
+## [1.0.0-rc.84](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.83...v1.0.0-rc.84) (2025-10-06)
+
+### Bug Fixes
+
+- **authentication:** use default config for auth client ([489ada3](https://github.com/agridata-ch/frontend/commit/489ada347dc64b429d8490650c0ac6ec777f580b)), closes [DIGIB2-860](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-860)
+
 ## [1.0.0-rc.83](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.82...v1.0.0-rc.83) (2025-10-06)
 
 ### Bug Fixes
