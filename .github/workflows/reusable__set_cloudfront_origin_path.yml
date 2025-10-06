@@ -28,6 +28,7 @@ jobs:
       - name: Set CloudFront origin path
         env:
           CLOUDFRONT_DISTRIBUTION_DESCRIPTION: 'agridata:cloudfront-frontend'
+          ORIGIN_ID: 'agridata-frontend'
           ORIGIN_PATH: ${{ inputs.cloudfront-origin-path }}
         run: |
           set -euo pipefail
@@ -63,8 +64,11 @@ jobs:
             --id "$DISTRIBUTION_ID" \
             --query 'DistributionConfig' > config.json
 
-          echo "Setting OriginPath to '/${ORIGIN_PATH}'..."
-          jq --arg v "/${ORIGIN_PATH}" '.Origins.Items[0].OriginPath = $v' config.json > new-config.json
+          echo "Setting OriginPath for Origin ID '${ORIGIN_ID}' to '/${ORIGIN_PATH}'..."
+
+          jq --arg id "$ORIGIN_ID" --arg v "/${ORIGIN_PATH}" '
+            .Origins.Items |= map(if .Id == $id then .OriginPath = $v else . end)
+          ' config.json > new-config.json
 
           aws cloudfront update-distribution \
             --id "$DISTRIBUTION_ID" \
