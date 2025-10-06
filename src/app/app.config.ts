@@ -6,12 +6,7 @@ import {
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideTransloco } from '@jsverse/transloco';
-import {
-  AbstractSecurityStorage,
-  DefaultLocalStorageService,
-  authInterceptor,
-  provideAuth,
-} from 'angular-auth-oidc-client';
+import { authInterceptor, provideAuth } from 'angular-auth-oidc-client';
 
 import { impersonationInterceptor } from '@/app/interceptors/impersonation-interceptor';
 import { Configuration } from '@/entities/openapi';
@@ -43,6 +38,5 @@ export const appConfig: ApplicationConfig = {
         ...oidcConfig,
       },
     }),
-    { provide: AbstractSecurityStorage, useClass: DefaultLocalStorageService },
   ],
 };

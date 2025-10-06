@@ -54,10 +54,9 @@ describe('AuthService', () => {
 
   afterEach(() => {
     jest.restoreAllMocks();
-    localStorage.clear();
   });
 
-  it('should set signals and localStorage when checkAuth emits authenticated=true', (done) => {
+  it('should set signals when checkAuth emits authenticated=true', (done) => {
     const roles = ['role1', 'role2'];
     const accessToken = makeJwtWithRoles(roles);
     mockOidc.checkAuth.mockReturnValue(of({ isAuthenticated: true, accessToken }));
@@ -72,7 +71,7 @@ describe('AuthService', () => {
     }, 0);
   });
 
-  it('should clear userData and localStorage when checkAuth emits authenticated=false', (done) => {
+  it('should clear userData when checkAuth emits authenticated=false', (done) => {
     mockOidc.checkAuth.mockReturnValue(
       of({ isAuthenticated: false, userData: null, accessToken: '' }),
     );
