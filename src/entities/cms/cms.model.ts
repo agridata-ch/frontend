@@ -53,7 +53,7 @@ export interface Card {
 }
 
 export interface TextImageBlock {
-  __component: 'block.text-image';
+  __component: string;
   id: number;
   text: string;
   heading: string;
@@ -61,6 +61,13 @@ export interface TextImageBlock {
   list: List | null;
   image: Image;
   button: CTA | null;
+}
+
+export interface ImageCardBlock {
+  __component: string;
+  id: number;
+  image: Image;
+  card: Card;
 }
 
 export interface HeroBlock {
@@ -88,7 +95,7 @@ export interface UserFeedbackBlock {
 }
 
 export interface SectionMediaBlock {
-  __component: 'blocks.section-heading-media';
+  __component: string;
   id: number;
   heading: string;
   subHeading: string;
@@ -98,16 +105,10 @@ export interface SectionMediaBlock {
     alternativeText: string | null;
     url: string;
   };
-  test: {
-    id: number;
-    documentId: string;
-    alternativeText: string | null;
-    url: string;
-  };
 }
 
 export interface SectionTextImageBlock {
-  __component: 'blocks.section-heading-text-image';
+  __component: string;
   id: number;
   heading: string;
   subHeading: string;
@@ -115,7 +116,7 @@ export interface SectionTextImageBlock {
 }
 
 export interface SectionUserFeedbackBlock {
-  __component: 'layout.section-heading-user-feedback';
+  __component: string;
   id: number;
   heading: string;
   subHeading: string;
@@ -123,7 +124,7 @@ export interface SectionUserFeedbackBlock {
 }
 
 export interface SectionCardGridBlock {
-  __component: 'blocks.section-heading-card-grid';
+  __component: string;
   id: number;
   heading: string;
   subHeading: string;
@@ -131,14 +132,14 @@ export interface SectionCardGridBlock {
 }
 
 export interface SectionContactFormBlock {
-  __component: 'blocks.contact-form';
+  __component: string;
   id: number;
   heading: string;
   subHeading: string;
 }
 
 export interface SectionFaqBlock {
-  __component: 'blocks.section-faq';
+  __component: string;
   id: number;
   heading: string;
   subHeading: string;
@@ -149,8 +150,16 @@ export interface SectionFaqBlock {
   }[];
 }
 
+export interface SectionImageCardBlock {
+  __component: string;
+  id: number;
+  heading: string;
+  subHeading: string;
+  imageCardBlock: ImageCardBlock;
+}
+
 export interface ImageGridBlock {
-  __component: 'blocks.image-grid';
+  __component: string;
   id: number;
   heading: string;
   subHeading: string;
@@ -165,7 +174,9 @@ export type Block =
   | SectionCardGridBlock
   | SectionContactFormBlock
   | SectionFaqBlock
-  | ImageGridBlock;
+  | ImageGridBlock
+  | SectionImageCardBlock
+  | ImageCardBlock;
 
 export interface PageData {
   id: number;

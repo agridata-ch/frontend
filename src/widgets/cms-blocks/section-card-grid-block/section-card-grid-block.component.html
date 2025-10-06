@@ -7,7 +7,7 @@
     @for (card of cmsData().cards; track `${cmsData().__component}_${card.id}`) {
       <app-card-block
         [card]="card"
-        class="w-full md:w-[calc(calc(100%/2)-var(--spacing)*3)] lg:w-[calc(calc(100%/3)-var(--spacing)*4)] shrink-0"
+        class="w-full md:w-[calc(calc(100%/2)-var(--spacing)*3)] lg:w-[calc(calc(100%/3)-var(--spacing)*4)] shrink-0 bg-agridata-content-gray"
       />
     }
   </div>

@@ -1,4 +1,10 @@
-<div class="flex flex-col gap-6 bg-agridata-content-gray px-5 py-5 h-full w-full">
+<div
+  class="flex flex-col px-5 py-5 h-full"
+  [class.md:px-8]="size() === 'large'"
+  [class.md:py-8]="size() === 'large'"
+  [class.gap-2]="size() === 'large'"
+  [class.gap-6]="size() === 'medium'"
+>
   @if (card().image) {
     <img
       [src]="generateMediaUrl(card().image.url)"
@@ -7,7 +13,13 @@
     />
   }
   <div class="flex flex-col gap-2">
-    <h5>{{ card().heading }}</h5>
-    <span>{{ card().text }}</span>
+    @if (size() === 'large') {
+      <h3>{{ card().heading }}</h3>
+    } @else if (size() === 'medium') {
+      <h5>{{ card().heading }}</h5>
+    } @else {
+      <span>{{ card().heading }}</span>
+    }
+    <div [innerHTML]="card().text | markdown"></div>
   </div>
 </div>

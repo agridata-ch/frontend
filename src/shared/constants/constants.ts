@@ -32,6 +32,7 @@ export const CMS_BLOCKS = {
   CONTACT_FORM: 'blocks.contact-form',
   SECTION_FAQ: 'layout.section-faq',
   IMAGE_GRID: 'blocks.image-grid',
+  SECTION_IMAGE_CARD: 'layout.section-image-card',
 };
 
 export const VIDEO_FORMATS = ['.mp4', '.webm', '.wmv', '.avi', '.mov', '.mkv', '.flv'];
