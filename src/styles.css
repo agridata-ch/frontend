@@ -92,3 +92,9 @@ textarea,
 select {
   outline-color: var(--color-gray-900);
 }
+
+a {
+  &:hover {
+    text-decoration: underline;
+  }
+}
