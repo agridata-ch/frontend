@@ -1,3 +1,9 @@
+## [1.0.0-rc.83](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.82...v1.0.0-rc.83) (2025-10-06)
+
+### Bug Fixes
+
+- **deployment:** set origin_id for deployment ([ace6780](https://github.com/agridata-ch/frontend/commit/ace67808f90fe687c4d78537e64de36e0267b00e))
+
 ## [1.0.0-rc.82](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.81...v1.0.0-rc.82) (2025-10-04)
 
 ### Bug Fixes
