@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 
 import { BackendVersionService } from '@/entities/api';
 import { environment } from '@/environments/environment';
+import { createResourceValueComputed } from '@/shared/lib/api.helper';
 import { TestDataApiService } from '@/widgets/footer-widget/api/test-data.service';
 
 import { version as frontendVersion } from '../../../../package.json';
@@ -23,7 +24,8 @@ export class FooterWidgetComponent {
   private readonly backendVersionService = inject(BackendVersionService);
 
   protected readonly frontendVersion = signal(frontendVersion);
-  protected readonly backendVersion = this.backendVersionService.fetchBackendVersion;
+  protected readonly backendVersionResource = this.backendVersionService.fetchBackendVersion;
+  protected readonly backendVersion = createResourceValueComputed(this.backendVersionResource, {});
 
   readonly isDevMode = computed(() => !environment.production);
 

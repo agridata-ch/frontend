@@ -3,9 +3,9 @@
     <fa-icon [icon]="TITLE_ICON" class="mr-3" />
     {{ t('pageTitle') }}
   </h2>
-
+  <app-error-outlet></app-error-outlet>
   <app-agridata-table
-    [dataProvider]="fetchProducers"
+    [dataProvider]="fetchProducersResource"
     [tableMetadata]="usersTableMetaData()"
     [(queryParameters)]="resourceQueryDto"
     [enableSearch]="true"

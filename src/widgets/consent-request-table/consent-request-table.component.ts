@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
@@ -25,7 +26,7 @@ import {
   getUndoAction,
 } from '@/shared/consent-request';
 import { I18nService } from '@/shared/i18n/i18n.service';
-import { ToastService, ToastType } from '@/shared/toast';
+import { ToastService } from '@/shared/toast';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import {
   AgridataClientTableComponent,
@@ -64,6 +65,7 @@ export class ConsentRequestTableComponent {
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly i18nService = inject(I18nService);
   private readonly agridataStateService = inject(AgridataStateService);
+  private readonly errorService = inject(ErrorHandlerService);
 
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
@@ -201,13 +203,7 @@ export class ConsentRequestTableComponent {
         this.consentRequestsResource()?.reload();
       })
       .catch((error) => {
-        const errorMessage = this.i18nService.translate('consent-request.table.error', {
-          requestId: error.error?.requestId ?? '',
-        });
-        console.log(error.error);
-        // Handle case where error.error might be undefined
-        const errorMsg = error.error?.message || error.message || 'Unknown error';
-        this.toastService.show(errorMsg, errorMessage, ToastType.Error);
+        this.errorService.handleError(error, { i18n: 'consent-request.table.error' });
       });
   };
 

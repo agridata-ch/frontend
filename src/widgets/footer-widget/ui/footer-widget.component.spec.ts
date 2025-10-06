@@ -46,6 +46,6 @@ describe('FooterWidgetComponent', () => {
     ).nativeElement;
 
     expect(spanEl.textContent).toContain(`FE ${openComponent.frontendVersion()}`);
-    expect(spanEl.textContent).toContain(`BE ${openComponent.backendVersion.value().version}`);
+    expect(spanEl.textContent).toContain(`BE ${openComponent.backendVersion().version}`);
   });
 });

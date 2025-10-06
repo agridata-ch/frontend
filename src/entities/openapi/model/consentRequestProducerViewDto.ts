@@ -22,6 +22,10 @@ export interface ConsentRequestProducerViewDto {
     dataProducerUid?: string;
     stateCode?: ConsentRequestStateEnum;
     /**
+     * If the state should be shown as migrated
+     */
+    showStateAsMigrated?: boolean;
+    /**
      * Date and time when the state was changed last
      */
     lastStateChangeDate?: string;

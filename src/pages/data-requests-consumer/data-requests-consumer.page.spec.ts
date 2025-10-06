@@ -1,62 +1,66 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
-import { MockDataRequestService, mockDataRequests } from '@/shared/testing/mocks';
+import { mockDataRequestService, mockDataRequests } from '@/shared/testing/mocks';
+import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
 
 import { DataRequestsConsumerPage } from './data-requests-consumer.page';
 
 describe('DataRequestsConsumerPage - component behavior', () => {
   let fixture: ComponentFixture<DataRequestsConsumerPage>;
   let component: DataRequestsConsumerPage;
-  let openComponent: any;
   let mockLocation: jest.Mocked<Location>;
+  let dataRequestService: Partial<DataRequestService>;
+  let errorService: Partial<ErrorHandlerService>;
 
   beforeEach(async () => {
     mockLocation = {
       go: jest.fn(),
     } as unknown as jest.Mocked<Location>;
-
+    dataRequestService = mockDataRequestService;
+    errorService = mockErrorHandlerService;
     await TestBed.configureTestingModule({
       providers: [
         DataRequestsConsumerPage,
-        { provide: DataRequestService, useClass: MockDataRequestService },
+        { provide: DataRequestService, useValue: dataRequestService },
         { provide: Location, useValue: mockLocation },
+        { provide: ErrorHandlerService, useValue: errorService },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataRequestsConsumerPage);
     component = fixture.componentInstance;
-    openComponent = component as any;
     fixture.detectChanges();
   });
 
   it('should create the component', () => {
-    expect(openComponent).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
   it('should handleOpen', () => {
-    openComponent.handleOpen();
-    expect(openComponent.showPanel()).toBe(true);
+    component['handleOpen']();
+    expect(component['showPanel']()).toBe(true);
   });
 
   it('should handleClose and set manual close flag', () => {
-    openComponent.handleClose();
-    expect(openComponent.showPanel()).toBe(false);
+    component['handleClose']();
+    expect(component['showPanel']()).toBe(false);
     expect(mockLocation.go).toHaveBeenCalled();
   });
 
   it('should setSelectedRequest and reset manual close flag', () => {
     const request = mockDataRequests[0];
-    openComponent.setSelectedRequest(request);
+    component['setSelectedRequest'](request);
 
-    expect(openComponent.selectedRequest()).toEqual(request);
+    expect(component['selectedRequest']()).toEqual(request);
     expect(mockLocation.go).toHaveBeenCalledWith(`data-requests/${request.id}`);
   });
 
   it('should setSelectedRequest to null', () => {
-    openComponent.setSelectedRequest(null);
-    expect(openComponent.selectedRequest()).toBeNull();
+    component['setSelectedRequest'](null);
+    expect(component['selectedRequest']()).toBeNull();
     expect(mockLocation.go).toHaveBeenCalledWith('data-requests');
   });
 
@@ -65,92 +69,92 @@ describe('DataRequestsConsumerPage - component behavior', () => {
     const request = mockDataRequests[0];
 
     // Initially the panel should be closed and panelOpenedAutomatically is true
-    openComponent.showPanel.set(false);
-    openComponent.panelOpenedAutomatically.set(true);
+    component['showPanel'].set(false);
+    component['panelOpenedAutomatically'].set(true);
 
     // Panel should not open when panelOpenedAutomatically is true
-    if (id && !openComponent.panelOpenedAutomatically()) {
-      openComponent.selectedRequest.set(request);
-      openComponent.showPanel.set(true);
+    if (id && !component['panelOpenedAutomatically']()) {
+      component['selectedRequest'].set(request);
+      component['showPanel'].set(true);
     }
 
     // Panel should remain closed
-    expect(openComponent.showPanel()).toBe(false);
+    expect(component['showPanel']()).toBe(false);
 
     // Now set panelOpenedAutomatically to false
-    openComponent.panelOpenedAutomatically.set(false);
+    component['panelOpenedAutomatically'].set(false);
 
     // Panel should now open since panelOpenedAutomatically is false
-    if (id && !openComponent.panelOpenedAutomatically()) {
-      openComponent.selectedRequest.set(request);
-      openComponent.showPanel.set(true);
+    if (id && !component['panelOpenedAutomatically']()) {
+      component['selectedRequest'].set(request);
+      component['showPanel'].set(true);
     }
 
-    expect(openComponent.showPanel()).toBe(true);
-    expect(openComponent.selectedRequest()).toBe(request);
+    expect(component['showPanel']()).toBe(true);
+    expect(component['selectedRequest']()).toBe(request);
   });
 
   it('should process URL parameters correctly', () => {
-    openComponent.dataRequestId = () => '1';
+    fixture.componentRef.setInput('dataRequestId', '1');
 
     // Simulate processing URL parameters - panel should open for the first time
-    if (openComponent.dataRequestId() && openComponent.dataRequests.value()) {
+    if (component.dataRequestId() && component['dataRequests']()) {
       const request = mockDataRequests[0];
-      openComponent.selectedRequest.set(request);
-      openComponent.showPanel.set(true);
-      openComponent.panelOpenedAutomatically.set(true); // This is set by initialOpenEffect
+      component['selectedRequest'].set(request);
+      component['showPanel'].set(true);
+      component['panelOpenedAutomatically'].set(true); // This is set by initialOpenEffect
     }
 
-    expect(openComponent.showPanel()).toBe(true);
+    expect(component['showPanel']()).toBe(true);
 
     // Close the panel
-    openComponent.handleClose();
-    expect(openComponent.showPanel()).toBe(false);
+    component['handleClose']();
+    expect(component['showPanel']()).toBe(false);
 
     // panelOpenedAutomatically should still be true because it was already opened automatically
-    expect(openComponent.panelOpenedAutomatically()).toBe(true);
+    expect(component['panelOpenedAutomatically']()).toBe(true);
 
     // After closing, even with the same dataRequestId, it shouldn't reopen automatically
     if (
-      openComponent.dataRequestId() &&
-      openComponent.dataRequests.value() &&
-      !openComponent.panelOpenedAutomatically()
+      component.dataRequestId() &&
+      component['dataRequests']() &&
+      !component['panelOpenedAutomatically']()
     ) {
       const request = mockDataRequests[0];
-      openComponent.selectedRequest.set(request);
-      openComponent.showPanel.set(true);
+      component['selectedRequest'].set(request);
+      component['showPanel'].set(true);
     }
 
     // Panel should remain closed
-    expect(openComponent.showPanel()).toBe(false);
+    expect(component['showPanel']()).toBe(false);
   });
 
   it('should not open panel when dataRequestId has no matching request', () => {
     // Now set a dataRequestId that won't match any request
-    openComponent.dataRequestId = () => 'non-existent-id';
+    fixture.componentRef.setInput('dataRequestId', 'non-existent-id');
 
     // Reset panel state to ensure clean test
-    openComponent.showPanel.set(false);
-    openComponent.selectedRequest.set(null);
-    openComponent.panelOpenedAutomatically.set(false);
+    component['showPanel'].set(false);
+    component['selectedRequest'].set(null);
+    component['panelOpenedAutomatically'].set(false);
 
     // Directly test the effect's condition by manually simulating its behavior
-    const id = openComponent.dataRequestId();
-    const requests = openComponent.dataRequests.value();
+    const id = component.dataRequestId();
+    const requests = component['dataRequests']();
 
     // This is the code we're testing (similar to the initialOpenEffect in the component)
-    if (id && requests && !openComponent.panelOpenedAutomatically()) {
+    if (id && requests && !component['panelOpenedAutomatically']()) {
       const matchingRequest = requests.find((req: any) => req.id === id);
       if (matchingRequest) {
-        openComponent.selectedRequest.set(matchingRequest);
-        openComponent.showPanel.set(true);
-        openComponent.panelOpenedAutomatically.set(true);
+        component['selectedRequest'].set(matchingRequest);
+        component['showPanel'].set(true);
+        component['panelOpenedAutomatically'].set(true);
       }
     }
 
     // The panel should stay closed since no matching request was found
-    expect(openComponent.showPanel()).toBe(false);
-    expect(openComponent.selectedRequest()).toBeNull();
+    expect(component['showPanel']()).toBe(false);
+    expect(component['selectedRequest']()).toBeNull();
   });
 
   it('should open panel when dataRequestId matches a request', () => {
@@ -158,30 +162,42 @@ describe('DataRequestsConsumerPage - component behavior', () => {
     const requestId = mockDataRequests[0].id;
 
     // Set a dataRequestId that will match the first mock request
-    openComponent.dataRequestId = () => requestId;
+    fixture.componentRef.setInput('dataRequestId', requestId);
 
     // Reset panel state to ensure clean test
-    openComponent.showPanel.set(false);
-    openComponent.selectedRequest.set(null);
-    openComponent.panelOpenedAutomatically.set(false);
+    component['showPanel'].set(false);
+    component['selectedRequest'].set(null);
+    component['panelOpenedAutomatically'].set(false);
 
     // Directly test the effect's condition by manually simulating its behavior
-    const id = openComponent.dataRequestId();
-    const requests = openComponent.dataRequests.value();
+    const id = component.dataRequestId();
+    const requests = component['dataRequests']();
 
     // This is the code we're testing (similar to initialOpenEffect in component)
-    if (id && requests && !openComponent.panelOpenedAutomatically()) {
+    if (id && requests && !component['panelOpenedAutomatically']()) {
       const matchingRequest = requests.find((req: any) => req.id === id);
       if (matchingRequest) {
-        openComponent.selectedRequest.set(matchingRequest);
-        openComponent.showPanel.set(true);
-        openComponent.panelOpenedAutomatically.set(true);
+        component['selectedRequest'].set(matchingRequest);
+        component['showPanel'].set(true);
+        component['panelOpenedAutomatically'].set(true);
       }
     }
 
     // The panel should open and the correct request should be selected
-    expect(openComponent.showPanel()).toBe(true);
+    expect(component['showPanel']()).toBe(true);
     const expectedRequest = mockDataRequests.find((req) => req.id === requestId);
-    expect(openComponent.selectedRequest()).toEqual(expectedRequest);
+    expect(component['selectedRequest']()).toEqual(expectedRequest);
+  });
+
+  it('should handle errors from dataRequestsResource and send them to errorService', async () => {
+    const testError = new Error('Test error from fetchDataRequests');
+    (dataRequestService.fetchDataRequests as jest.Mock).mockRejectedValueOnce(testError);
+
+    // Create a new fixture with the mocked error
+    const errorFixture = TestBed.createComponent(DataRequestsConsumerPage);
+    errorFixture.detectChanges();
+    await errorFixture.whenStable();
+
+    expect(errorService.handleError).toHaveBeenCalledWith(testError);
   });
 });

@@ -3,6 +3,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MetaDataService } from '@/entities/api/meta-data-service';
@@ -12,12 +13,13 @@ import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import {
-  MockDataRequestService,
   MockI18nService,
   mockConsentRequestService,
   mockConsentRequests,
+  mockDataRequestService,
 } from '@/shared/testing/mocks';
 import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
+import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
 import { mockMetadataService } from '@/shared/testing/mocks/mock-meta-data.service';
 
 describe('ConsentRequestProducerPage - component behavior', () => {
@@ -28,6 +30,8 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   let mockRouter: jest.Mocked<Router>;
   let metadataService: Partial<MetaDataService>;
   let agridataStateService: Partial<AgridataStateService>;
+  let consentRequestService: Partial<ConsentRequestService>;
+  let errorService: Partial<ErrorHandlerService>;
   const activeUid = '123';
 
   beforeEach(async () => {
@@ -38,18 +42,21 @@ describe('ConsentRequestProducerPage - component behavior', () => {
       navigate: jest.fn(),
     } as unknown as jest.Mocked<Router>;
     metadataService = mockMetadataService;
+    consentRequestService = mockConsentRequestService;
+    errorService = mockErrorHandlerService;
 
     agridataStateService = mockAgridataStateService(activeUid);
     await TestBed.configureTestingModule({
       providers: [
         ConsentRequestProducerPage,
-        { provide: ConsentRequestService, useValue: mockConsentRequestService },
+        { provide: ConsentRequestService, useValue: consentRequestService },
         { provide: Location, useValue: mockLocation },
         { provide: Router, useValue: mockRouter },
         { provide: I18nService, useClass: MockI18nService },
-        { provide: DataRequestService, useValue: MockDataRequestService },
+        { provide: DataRequestService, useValue: mockDataRequestService },
         { provide: MetaDataService, useValue: metadataService },
         { provide: AgridataStateService, useValue: agridataStateService },
+        { provide: ErrorHandlerService, useValue: errorService },
       ],
     }).compileComponents();
 
@@ -135,7 +142,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   });
 
   it('reloadConsentRequests calls consentRequests.reload', () => {
-    const reloadSpy = jest.spyOn(component.consentRequests, 'reload');
+    const reloadSpy = jest.spyOn(component.consentRequestResource, 'reload');
     component.reloadConsentRequests();
     expect(reloadSpy).toHaveBeenCalled();
   });
@@ -239,7 +246,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
 
   describe('effect for consentRequestId', () => {
     it('does not call setSelectedRequest if consentRequests is loading', () => {
-      jest.spyOn(component.consentRequests, 'isLoading').mockReturnValue(true);
+      jest.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(true);
       const showSpy = jest.spyOn(component, 'setSelectedRequest');
 
       componentRef.setInput('consentRequestId', '1');
@@ -248,8 +255,8 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     });
 
     it('calls setSelectedRequest with correct request if consentRequestId is set and not loading', () => {
-      jest.spyOn(component.consentRequests, 'isLoading').mockReturnValue(false);
-      jest.spyOn(component.consentRequests, 'value').mockReturnValue(mockConsentRequests);
+      jest.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(false);
+      jest.spyOn(component.consentRequestResource, 'value').mockReturnValue(mockConsentRequests);
 
       componentRef.setInput('consentRequestId', '2');
       fixture.detectChanges();
@@ -257,8 +264,8 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     });
 
     it('does not call setSelectedRequest if consentRequestId is not set', () => {
-      jest.spyOn(component.consentRequests, 'isLoading').mockReturnValue(false);
-      jest.spyOn(component.consentRequests, 'value').mockReturnValue(mockConsentRequests);
+      jest.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(false);
+      jest.spyOn(component.consentRequestResource, 'value').mockReturnValue(mockConsentRequests);
       const showSpy = jest.spyOn(component, 'setSelectedRequest');
       componentRef.setInput('consentRequestId', '');
       fixture.detectChanges();
@@ -266,8 +273,8 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     });
 
     it('sets selectedRequest to null if consentRequestId is not found in requests', () => {
-      jest.spyOn(component.consentRequests, 'isLoading').mockReturnValue(false);
-      jest.spyOn(component.consentRequests, 'value').mockReturnValue(mockConsentRequests);
+      jest.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(false);
+      jest.spyOn(component.consentRequestResource, 'value').mockReturnValue(mockConsentRequests);
 
       componentRef.setInput('consentRequestId', 'non-existent-id');
       fixture.detectChanges();
@@ -645,5 +652,17 @@ describe('ConsentRequestProducerPage - component behavior', () => {
         configurable: true,
       });
     });
+  });
+
+  it('should handle errors from consentRequestResource and send them to errorService', async () => {
+    const testError = new Error('Test error from fetchConsentRequests');
+    (consentRequestService.fetchConsentRequests as jest.Mock).mockRejectedValueOnce(testError);
+
+    // Create a new fixture with the mocked error
+    const errorFixture = TestBed.createComponent(ConsentRequestProducerPage);
+    errorFixture.detectChanges();
+    await errorFixture.whenStable();
+
+    expect(errorService.handleError).toHaveBeenCalledWith(testError);
   });
 });

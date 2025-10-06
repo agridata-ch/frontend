@@ -34,16 +34,16 @@ export class DataRequestPreviewComponent {
   readonly dataRequest = input<DataRequestDto>();
   readonly metaDataService = inject(MetaDataService);
 
-  readonly products = this.metaDataService.fetchDataProducts;
+  readonly products = this.metaDataService.getDataProducts();
 
   readonly availableLangs = availableLangs;
   readonly AvatarSize = AvatarSize;
   readonly AvatarSkin = AvatarSkin;
 
   readonly productsList = computed(() =>
-    this.products
-      .value()
-      ?.filter((product: DataProductDto) => this.dataRequest()?.products?.includes(product.id)),
+    this.products()?.filter((product: DataProductDto) =>
+      this.dataRequest()?.products?.includes(product.id),
+    ),
   );
 
   getFieldFromLang = <K extends keyof DataRequestDto>(field: K, lang: string) => {

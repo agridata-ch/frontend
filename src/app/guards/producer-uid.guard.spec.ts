@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import {
   ActivatedRouteSnapshot,
+  convertToParamMap,
   Params,
+  provideRouter,
   UrlSegment,
   UrlTree,
-  convertToParamMap,
-  provideRouter,
 } from '@angular/router';
 
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
@@ -155,6 +155,22 @@ describe('producerUidGuard', () => {
     const guardResult = await producerUidGuard.canActivate(
       activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
     );
+    if (guardResult instanceof UrlTree) {
+      expect(guardResult.toString()).toEqual(`/${ROUTE_PATHS.ERROR}`);
+    }
+  });
+
+  it('should handle non-Error exceptions and wrap them in Error', async () => {
+    const nonErrorException = 'string error';
+    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
+    jest.spyOn(authService, 'isProducer').mockReturnValue(true);
+    (participantService.getAuthorizedUids as jest.MockedFn<any>).mockRejectedValueOnce(
+      nonErrorException,
+    );
+    const guardResult = await producerUidGuard.canActivate(
+      activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
+    );
+    expect(guardResult).toBeInstanceOf(UrlTree);
     if (guardResult instanceof UrlTree) {
       expect(guardResult.toString()).toEqual(`/${ROUTE_PATHS.ERROR}`);
     }

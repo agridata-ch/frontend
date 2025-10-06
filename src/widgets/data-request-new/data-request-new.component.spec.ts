@@ -9,9 +9,9 @@ import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
   MockAuthService,
-  MockDataRequestService,
   MockI18nService,
-  MockUidRegisterService,
+  mockDataRequestService,
+  mockUidRegisterService,
 } from '@/shared/testing/mocks';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 
@@ -21,26 +21,26 @@ describe('DataRequestNewComponent', () => {
   let fixture: ComponentFixture<DataRequestNewComponent>;
   let component: DataRequestNewComponent;
   let componentRef: ComponentRef<DataRequestNewComponent>;
-  let mockDataRequestService: MockDataRequestService;
   let authService: AuthService;
+  let dataRequestService = mockDataRequestService;
 
   beforeEach(async () => {
+    dataRequestService = mockDataRequestService;
+
     await TestBed.configureTestingModule({
       imports: [DataRequestNewComponent, ReactiveFormsModule, AgridataWizardComponent],
       providers: [
-        { provide: DataRequestService, useClass: MockDataRequestService },
+        { provide: DataRequestService, useValue: dataRequestService },
         { provide: I18nService, useClass: MockI18nService },
         { provide: AuthService, useClass: MockAuthService },
-        { provide: UidRegisterService, useClass: MockUidRegisterService },
+        { provide: UidRegisterService, useValue: mockUidRegisterService },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataRequestNewComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
-    mockDataRequestService = TestBed.inject(
-      DataRequestService,
-    ) as unknown as MockDataRequestService;
+
     authService = TestBed.inject(AuthService);
     jest.spyOn(authService, 'getUserFullName').mockReturnValue('Test User');
 
@@ -56,13 +56,12 @@ describe('DataRequestNewComponent', () => {
       id: 'ABC123',
       stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
     };
-    mockDataRequestService.createDataRequest.mockResolvedValue(returned);
+    dataRequestService.createDataRequest = jest.fn().mockResolvedValue(returned);
 
-    component.handleSave();
+    await component.handleSave();
 
     expect(mockDataRequestService.createDataRequest).toHaveBeenCalledTimes(1);
 
-    await mockDataRequestService.createDataRequest.mock.results[0].value;
     expect(component.dataRequestId()).toBe('ABC123');
   });
 
@@ -70,7 +69,7 @@ describe('DataRequestNewComponent', () => {
     component.dataRequestId.set('EXISTING');
     fixture.detectChanges();
 
-    component.handleSave();
+    await component.handleSave();
 
     expect(mockDataRequestService.updateDataRequestDetails).toHaveBeenCalledTimes(1);
   });
@@ -113,7 +112,7 @@ describe('DataRequestNewComponent', () => {
       id: 'NEW123',
       stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
     };
-    mockDataRequestService.createDataRequest.mockResolvedValue(newDto);
+    dataRequestService.createDataRequest = jest.fn().mockResolvedValue(newDto);
     await component.createOrSaveDataRequest();
     expect(mockDataRequestService.createDataRequest).toHaveBeenCalled();
     expect(component.dataRequestId()).toBe('NEW123');
@@ -125,7 +124,7 @@ describe('DataRequestNewComponent', () => {
       id: 'NEW123',
       stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
     };
-    mockDataRequestService.createDataRequest.mockResolvedValue(newDto);
+    dataRequestService.createDataRequest = jest.fn().mockResolvedValue(newDto);
     const file = new File([''], 'logo.png', { type: 'image/png' });
     component.handleSaveLogo(file);
     await component.createOrSaveDataRequest();
@@ -186,7 +185,7 @@ describe('DataRequestNewComponent', () => {
     component.dataRequestId.set('123');
     const file = new File([''], 'logo.png', { type: 'image/png' });
     component.handleSaveLogo(file);
-    expect(mockDataRequestService.uploadLogo).toHaveBeenCalledWith('123', file);
+    expect(dataRequestService.uploadLogo).toHaveBeenCalledWith('123', file);
   });
 
   describe('handleSubmitAndContinue', () => {
@@ -209,7 +208,7 @@ describe('DataRequestNewComponent', () => {
       await component.handleSubmitAndContinue();
 
       expect(component.handleSave).toHaveBeenCalled();
-      expect(mockDataRequestService.submitDataRequest).not.toHaveBeenCalled();
+      expect(dataRequestService.submitDataRequest).not.toHaveBeenCalled();
     });
 
     it('should call submitDataRequest and advance to next step when form is valid', async () => {
@@ -221,7 +220,7 @@ describe('DataRequestNewComponent', () => {
       const form = component.form();
 
       Object.defineProperty(form, 'valid', { get: () => true });
-      mockDataRequestService.submitDataRequest.mockResolvedValue(mockResponse);
+      dataRequestService.submitDataRequest = jest.fn().mockResolvedValue(mockResponse);
 
       await component.handleSubmitAndContinue();
 

@@ -27,16 +27,15 @@ export class DataRequestFormRequestComponent {
   readonly form = input<FormGroup>();
   readonly formDisabled = input<boolean>(false);
 
-  readonly dataProductsResource = this.metaDataService.fetchDataProducts;
   readonly products = signal<MultiSelectOption[]>([]);
 
   readonly ControlTypes = ControlTypes;
   readonly getFormControl = getFormControl;
 
   readonly updateProductsEffect = effect(() => {
-    const products = this.dataProductsResource.value() ?? [];
+    const products = this.metaDataService.getDataProducts();
     this.products.set(
-      products.map((p) => ({
+      products().map((p) => ({
         value: p.id,
         label: p.name?.[this.i18nService.lang() as keyof typeof p.name] ?? '',
       })),

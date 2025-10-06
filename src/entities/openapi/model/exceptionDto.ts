@@ -12,7 +12,7 @@ import { ExceptionEnum } from './exceptionEnum';
 
 export interface ExceptionDto { 
     message?: string;
-    requestId?: string;
+    requestId: string;
     type?: ExceptionEnum;
     debugMessage?: string;
 }

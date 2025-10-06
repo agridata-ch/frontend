@@ -28,16 +28,7 @@ export default defineConfig([
       unicorn: unicornPlugin,
     },
     rules: {
-      'sort-imports': [
-        'error',
-        {
-          ignoreCase: false,
-          ignoreDeclarationSort: true,
-          ignoreMemberSort: false,
-          memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
-          allowSeparatedGroups: true,
-        },
-      ],
+      'sort-imports': 'off',
       'import/no-unresolved': 'error',
       'import/order': [
         'error',

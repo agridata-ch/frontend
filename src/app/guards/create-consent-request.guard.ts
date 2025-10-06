@@ -1,23 +1,29 @@
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UserService } from '@/entities/api/user.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 
 /**
- * Guard to create consent requests for a given data request and redirect to the created consent request.
- * it also handles the optional redirect_uri query parameter to pass it to the consent request page,
- * and also handles setting the active uid if provided in the query parameters.
+ * Guard to create consent requests for a given data request and handle navigation based on the
+ * created consent requests and the active user UID.
+ * It checks for the presence of a dataRequestUid in the route parameters and optionally a uid
+ * in the query parameters. If a uid is provided, it verifies that the uid is in the list of
+ * authorized uids for the current user. It then creates consent requests for the specified
+ * data request and navigates to the appropriate consent request detail page based on the active
+ * uid or redirects to the consent request producer overview if no matching consent request is found.
  *
- * CommentLastReviewed: 2025-10-01
+ * CommentLastReviewed: 2025-10-14
  */
 @Injectable({
   providedIn: 'root',
 })
 export class CreateConsentRequestGuard implements CanActivate {
   private readonly router = inject(Router);
+  private readonly errorService = inject(ErrorHandlerService);
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly agridataStateService = inject(AgridataStateService);
   private readonly participantService = inject(UserService);
@@ -28,7 +34,7 @@ export class CreateConsentRequestGuard implements CanActivate {
     const uid = route.queryParamMap.get('uid') ?? null;
 
     if (!dataRequestUid) {
-      return this.fail('No dataRequestUid provided in route parameters.');
+      return this.fail(new Error('No dataRequestUid provided in route parameters.'));
     }
 
     if (uid) {
@@ -37,7 +43,7 @@ export class CreateConsentRequestGuard implements CanActivate {
         : await this.participantService.getAuthorizedUids();
 
       if (!uidDtos.some((userUid) => userUid.uid === uid)) {
-        return this.fail('Provided uid is not in the list of authorized uids: ' + uid);
+        return this.fail(new Error('Provided uid is not in the list of authorized uids: ' + uid));
       }
 
       this.agridataStateService.setActiveUid(uid);
@@ -47,7 +53,9 @@ export class CreateConsentRequestGuard implements CanActivate {
       const consentRequests =
         await this.consentRequestService.createConsentRequests(dataRequestUid);
       if (!consentRequests || consentRequests.length === 0) {
-        return this.fail('No consent requests created for dataRequestUid: ' + dataRequestUid);
+        return this.fail(
+          new Error('No consent requests created for dataRequestUid: ' + dataRequestUid),
+        );
       }
 
       const activeUid = this.agridataStateService.activeUid();
@@ -76,12 +84,16 @@ export class CreateConsentRequestGuard implements CanActivate {
       }
       return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);
     } catch (error) {
-      return this.fail('Error creating consent requests:' + error);
+      return error instanceof Error
+        ? this.fail(error)
+        : this.fail(
+            new Error('Unknown error occurred during consent request creation', { cause: error }),
+          );
     }
   }
 
-  private fail(msg: string) {
-    console.error('[CreateConsentRequestGuard]', msg);
+  private fail(error: Error) {
+    this.errorService.handleError(error);
     return this.router.parseUrl(ROUTE_PATHS.ERROR);
   }
 }

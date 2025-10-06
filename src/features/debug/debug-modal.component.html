@@ -1,0 +1,76 @@
+@if (debugEnabled()) {
+  <app-modal [(open)]="debugEnabled" title="debug">
+    <div class="mb-2 p-2 bg-gray-50 rounded border border-gray-200">
+      <div class="font-semibold mb-1 text-gray-700">Browser Information</div>
+      <div class="grid grid-cols-2 gap-x-3 gap-y-1 text-xs">
+        <div>
+          <span class="font-medium text-gray-600">Language:</span>
+          <span class="ml-1 text-gray-800">{{ browserInfo.language }}</span>
+        </div>
+        <div>
+          <span class="font-medium text-gray-600">Screen:</span>
+          <span class="ml-1 text-gray-800">{{ browserInfo.screenResolution }}</span>
+        </div>
+        <div>
+          <span class="font-medium text-gray-600">Viewport:</span>
+          <span class="ml-1 text-gray-800">{{ browserInfo.viewport }}</span>
+        </div>
+        <div>
+          <span class="font-medium text-gray-600">Cookies:</span>
+          <span class="ml-1 text-gray-800">{{
+            browserInfo.cookieEnabled ? 'Enabled' : 'Disabled'
+          }}</span>
+        </div>
+        <div>
+          <span class="font-medium text-gray-600">Online:</span>
+          <span class="ml-1 text-gray-800">{{ browserInfo.onLine ? 'Yes' : 'No' }}</span>
+        </div>
+        <div class="col-span-2">
+          <span class="font-medium text-gray-600">User Agent:</span>
+          <div class="ml-1 text-gray-800 break-all text-xs">{{ browserInfo.userAgent }}</div>
+        </div>
+      </div>
+    </div>
+
+    <table class="w-full border-collapse text-[13px]">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-1 py-0.5 text-left text-[13px]">Timestamp</th>
+          <th class="px-1 py-0.5 text-left text-[13px]">Source</th>
+          <th class="px-1 py-0.5 text-left text-[13px]">Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (log of logs(); track log.timestamp) {
+          <tr
+            class="border-b border-gray-200"
+            [class.hover:bg-red-50]="log.status === 'ERROR'"
+            [class.hover:bg-blue-50]="log.source === 'REQUEST'"
+            [class.hover:bg-green-50]="log.status === 'SUCCESS'"
+            [class.hover:bg-purple-50]="log.source === 'ROUTE_START' || log.source === 'ROUTE_END'"
+          >
+            <td class="px-1 py-0.5 text-xs text-gray-500 whitespace-nowrap">
+              {{ log.timestamp | agridataDate: 'long' }}
+            </td>
+            <td class="px-1 py-0.5 text-[13px] whitespace-nowrap">
+              <span
+                [class.text-red-600]="log.status === 'ERROR'"
+                [class.text-blue-600]="log.source === 'REQUEST'"
+                [class.text-green-600]="log.status === 'SUCCESS'"
+                [class.text-purple-600]="log.source === 'ROUTE_START' || log.source === 'ROUTE_END'"
+              >
+                {{ log.source }}
+              </span>
+            </td>
+            <td class="px-1 py-0.5 text-[13px] break-all">{{ log.message }}</td>
+          </tr>
+        }
+        @if (logs().length === 0) {
+          <tr>
+            <td colspan="3" class="p-2 text-center text-gray-500 text-[13px]">No logs available</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </app-modal>
+}
