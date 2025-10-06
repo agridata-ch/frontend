@@ -1,3 +1,9 @@
+## [1.0.0-rc.85](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.84...v1.0.0-rc.85) (2025-10-06)
+
+### Bug Fixes
+
+- **home-redirect:** remove unused auth code ([b87ff83](https://github.com/agridata-ch/frontend/commit/b87ff831093e05f3aa722ecaffe98e6f2f22feee)), closes [DIGIB2-860](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-860)
+
 ## [1.0.0-rc.84](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.83...v1.0.0-rc.84) (2025-10-06)
 
 ### Bug Fixes
