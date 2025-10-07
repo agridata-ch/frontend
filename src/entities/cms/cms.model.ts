@@ -105,6 +105,7 @@ export interface SectionMediaBlock {
     alternativeText: string | null;
     url: string;
   };
+  anchorId: string;
 }
 
 export interface SectionTextImageBlock {
@@ -113,6 +114,7 @@ export interface SectionTextImageBlock {
   heading: string;
   subHeading: string;
   imageTextBlocks: TextImageBlock[];
+  anchorId: string;
 }
 
 export interface SectionUserFeedbackBlock {
@@ -121,6 +123,7 @@ export interface SectionUserFeedbackBlock {
   heading: string;
   subHeading: string;
   feedbackBlocks: UserFeedbackBlock[];
+  anchorId: string;
 }
 
 export interface SectionCardGridBlock {
@@ -129,6 +132,7 @@ export interface SectionCardGridBlock {
   heading: string;
   subHeading: string;
   cards: Card[];
+  anchorId: string;
 }
 
 export interface SectionContactFormBlock {
@@ -136,6 +140,7 @@ export interface SectionContactFormBlock {
   id: number;
   heading: string;
   subHeading: string;
+  anchorId: string;
 }
 
 export interface SectionFaqBlock {
@@ -148,6 +153,7 @@ export interface SectionFaqBlock {
     question: string;
     answer: string;
   }[];
+  anchorId: string;
 }
 
 export interface SectionImageCardBlock {
@@ -156,14 +162,14 @@ export interface SectionImageCardBlock {
   heading: string;
   subHeading: string;
   imageCardBlock: ImageCardBlock;
+  anchorId: string;
 }
 
 export interface ImageGridBlock {
   __component: string;
   id: number;
-  heading: string;
-  subHeading: string;
   images: Image[];
+  anchorId: string;
 }
 
 export type Block =

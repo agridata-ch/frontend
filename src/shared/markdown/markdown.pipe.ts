@@ -23,6 +23,10 @@ export class MarkdownPipe implements PipeTransform {
     // Configure marked to be more secure
     const renderer = new marked.Renderer();
 
+    renderer.link = function ({ href, title, text }) {
+      return `<a href="${href}" title="${title || ''}" class="hover:underline">${text}</a>`;
+    };
+
     // Disable HTML in markdown
     marked.setOptions({
       renderer: renderer,
