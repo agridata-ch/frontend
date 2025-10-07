@@ -21,12 +21,15 @@ export class CmsService {
   private readonly i18nService = inject(I18nService);
   private readonly apiUrl = environment.cmsBaseUrl;
   private readonly cmsContactUrl = environment.cmsContactUrl;
+  private readonly isDevMode = !environment.production;
 
   readonly fetchLandingPage = resource({
     params: () => ({ locale: this.i18nService.lang() }),
     loader: ({ params }) => {
       return firstValueFrom(
-        this.http.get(`${this.apiUrl}/api/landing-page?locale=${params.locale}`),
+        this.http.get(
+          `${this.apiUrl}/api/landing-page?locale=${params.locale}${this.isDevMode ? '&status=draft' : ''}`,
+        ),
       );
     },
   });
