@@ -1,3 +1,9 @@
+## [1.0.0-rc.87](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.86...v1.0.0-rc.87) (2025-10-07)
+
+### Bug Fixes
+
+- **cms:** update cms styles ([7c1e3c2](https://github.com/agridata-ch/frontend/commit/7c1e3c225ffc4f6f466d3a6457aa53f8449d2c68))
+
 ## [1.0.0-rc.86](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.85...v1.0.0-rc.86) (2025-10-07)
 
 ### Features
