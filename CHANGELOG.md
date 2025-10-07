@@ -1,3 +1,9 @@
+## [1.0.0-rc.86](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.85...v1.0.0-rc.86) (2025-10-07)
+
+### Features
+
+- **cms:** add new component ([7e971fc](https://github.com/agridata-ch/frontend/commit/7e971fceee3272bef930a02cc725ba3a5cea45e9)), closes [DIGIB2-748](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-748)
+
 ## [1.0.0-rc.85](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.84...v1.0.0-rc.85) (2025-10-06)
 
 ### Bug Fixes
