@@ -49,7 +49,6 @@ export class CreateConsentRequestGuard implements CanActivate {
       if (!consentRequests || consentRequests.length === 0) {
         return this.fail('No consent requests created for dataRequestUid: ' + dataRequestUid);
       }
-      this.consentRequestService.fetchConsentRequests.reload();
 
       const activeUid = this.agridataStateService.activeUid();
 

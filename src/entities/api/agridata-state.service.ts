@@ -18,13 +18,13 @@ import {
   providedIn: 'root',
 })
 export class AgridataStateService {
-  readonly activeUid = signal<string | null>(this.getStoredUid());
+  readonly activeUid = signal<string | undefined>(this.getStoredUid());
   readonly userUids = signal<UidDto[]>([]);
   readonly userUidsLoaded = signal(false);
   readonly isNavigationOpen = signal(this.getNavigationStateOpen());
 
-  private getStoredUid(): string | null {
-    return localStorage.getItem(ACTIVE_UID_FIELD);
+  private getStoredUid(): string | undefined {
+    return localStorage.getItem(ACTIVE_UID_FIELD) as string | undefined;
   }
 
   private getNavigationStateOpen() {

@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { Component, effect, inject, input, resource, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
@@ -23,7 +23,7 @@ import { REDIRECT_TIMEOUT } from './consent-request-producer.page.model';
  * it also handles the redirect to an external URL if specified in the route state and validated against
  * the request's valid redirect URI regex.
  *
- * CommentLastReviewed: 2025-10-01
+ * CommentLastReviewed: 2025-10-08
  */
 @Component({
   selector: 'app-consent-request-producer-page',
@@ -37,8 +37,8 @@ import { REDIRECT_TIMEOUT } from './consent-request-producer.page.model';
   templateUrl: './consent-request-producer.page.html',
 })
 export class ConsentRequestProducerPage {
-  private readonly consentRequestService = inject(ConsentRequestService);
   private readonly agridataStateService = inject(AgridataStateService);
+  private readonly consentRequestService = inject(ConsentRequestService);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
 
@@ -47,7 +47,18 @@ export class ConsentRequestProducerPage {
   readonly fileIcon = faFile;
   readonly faSpinner = faSpinner;
 
-  readonly consentRequests = this.consentRequestService.fetchConsentRequests;
+  readonly consentRequestResource = resource({
+    params: () => ({ uid: this.agridataStateService.activeUid() }),
+    loader: ({ params }) => {
+      if (!params?.uid) {
+        return Promise.resolve([]);
+      }
+      return this.consentRequestService.fetchConsentRequests(params.uid);
+    },
+    defaultValue: [],
+  });
+
+  readonly consentRequests = this.consentRequestResource;
 
   readonly selectedRequest = signal<ConsentRequestProducerViewDto | null>(null);
   readonly redirectUrl = signal<string | null>(null);

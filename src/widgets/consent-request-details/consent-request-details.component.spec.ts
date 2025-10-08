@@ -1,6 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentRef, ResourceRef } from '@angular/core';
+import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -8,8 +8,8 @@ import { getTranslocoModule } from '@/app/transloco-testing.module';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ConsentRequestService } from '@/entities/api/consent-request.service';
 import { ConsentRequestProducerViewDto } from '@/entities/openapi';
+import { mockConsentRequestService } from '@/shared/testing/mocks';
 import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
-import { MockResources } from '@/shared/testing/mocks/mock-resources';
 import { ToastService } from '@/shared/toast';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 
@@ -18,18 +18,11 @@ describe('ConsentRequestDetailsComponent', () => {
   let component: ConsentRequestDetailsComponent;
   let componentRef: ComponentRef<ConsentRequestDetailsComponent>;
   let toastService: { show: jest.Mock };
-  let consentRequestService: {
-    updateConsentRequestStatus: jest.Mock;
-    fetchConsentRequests: ResourceRef<ConsentRequestProducerViewDto[]>;
-  };
+  let consentRequestService: ConsentRequestService;
   let agridataStateService: AgridataStateService;
 
   beforeEach(async () => {
     toastService = { show: jest.fn() };
-    consentRequestService = {
-      updateConsentRequestStatus: jest.fn().mockResolvedValue({}),
-      fetchConsentRequests: MockResources.createMockResourceRef([]),
-    };
 
     await TestBed.configureTestingModule({
       imports: [
@@ -44,7 +37,7 @@ describe('ConsentRequestDetailsComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: ToastService, useValue: toastService },
-        { provide: ConsentRequestService, useValue: consentRequestService },
+        { provide: ConsentRequestService, useValue: mockConsentRequestService },
         { provide: AgridataStateService, useValue: mockAgridataStateService('testuid') },
       ],
     }).compileComponents();
@@ -52,6 +45,7 @@ describe('ConsentRequestDetailsComponent', () => {
     fixture = TestBed.createComponent(ConsentRequestDetailsComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
+    consentRequestService = TestBed.inject(ConsentRequestService);
     agridataStateService = TestBed.inject(AgridataStateService);
     fixture.detectChanges();
   });
@@ -116,9 +110,13 @@ describe('ConsentRequestDetailsComponent', () => {
       dataRequest: { dataConsumer: { name: 'TestConsumer' } },
     } as unknown as ConsentRequestProducerViewDto;
     componentRef.setInput('request', req);
+
+    // Create a mock resource with a reload method
+    const mockResource = { reload: jest.fn() };
+    componentRef.setInput('consentRequestsResource', mockResource as any);
     fixture.detectChanges();
 
-    consentRequestService.updateConsentRequestStatus.mockResolvedValue({});
+    (consentRequestService.updateConsentRequestStatus as jest.Mock).mockResolvedValue({});
 
     const closeSpy = jest.spyOn(component, 'handleCloseDetails');
     await component.acceptRequest();
@@ -127,7 +125,7 @@ describe('ConsentRequestDetailsComponent', () => {
 
     expect(toastService.show).toHaveBeenCalled();
     expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith('123', 'GRANTED');
-    expect(consentRequestService.fetchConsentRequests.reload).toHaveBeenCalled();
+    expect(mockResource.reload).toHaveBeenCalled();
     expect(closeSpy).toHaveBeenCalled();
   });
 
@@ -137,9 +135,13 @@ describe('ConsentRequestDetailsComponent', () => {
       dataRequest: { dataConsumer: { name: 'TestConsumer' } },
     } as unknown as ConsentRequestProducerViewDto;
     componentRef.setInput('request', req);
+
+    // Create a mock resource with a reload method
+    const mockResource = { reload: jest.fn() };
+    componentRef.setInput('consentRequestsResource', mockResource as any);
     fixture.detectChanges();
 
-    consentRequestService.updateConsentRequestStatus.mockResolvedValue({});
+    (consentRequestService.updateConsentRequestStatus as jest.Mock).mockResolvedValue({});
 
     const closeSpy = jest.spyOn(component, 'handleCloseDetails');
     await component.rejectRequest();
@@ -151,7 +153,7 @@ describe('ConsentRequestDetailsComponent', () => {
       '456',
       'DECLINED',
     );
-    expect(consentRequestService.fetchConsentRequests.reload).toHaveBeenCalled();
+    expect(mockResource.reload).toHaveBeenCalled();
     expect(closeSpy).toHaveBeenCalled();
   });
 

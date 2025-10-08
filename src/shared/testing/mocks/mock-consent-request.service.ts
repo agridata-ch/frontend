@@ -3,8 +3,6 @@ import { ConsentRequestStateEnum } from '@/entities/openapi';
 import { ConsentRequestDetailViewDto } from '@/entities/openapi/model/consentRequestDetailViewDto';
 import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
 
-import { MockResources } from './mock-resources';
-
 export const mockConsentRequests: ConsentRequestDetailViewDto[] = [
   {
     id: '1',
@@ -38,8 +36,9 @@ export const mockConsentRequests: ConsentRequestDetailViewDto[] = [
   } as ConsentRequestDetailViewDto,
 ];
 
-export const mockConsentRequestService: Partial<ConsentRequestService> = {
-  fetchConsentRequests: MockResources.createMockResourceRef(mockConsentRequests),
+export const mockConsentRequestService = {
   updateConsentRequestStatus: jest.fn().mockResolvedValue(undefined),
   createConsentRequests: jest.fn().mockReturnValue({}),
-};
+  apiService: { uid: 'test-uid' },
+  fetchConsentRequests: jest.fn().mockReturnValue(mockConsentRequests),
+} as unknown as ConsentRequestService;

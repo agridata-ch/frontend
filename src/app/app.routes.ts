@@ -23,12 +23,13 @@ export const routes: Routes = [
     // This route is used for the OIDC authentication response handling
     path: 'auth-response',
     component: DefaultLayoutComponent,
+    canActivate: [AuthorizationGuard],
     pathMatch: 'full',
   },
   {
     path: '',
     component: FullWidthLayoutComponent,
-    canActivate: [ImpersonationGuardGuard, ProducerUidGuard, HomeRedirectGuard],
+    canActivate: [AuthorizationGuard, ImpersonationGuardGuard, ProducerUidGuard, HomeRedirectGuard],
     children: [
       {
         path: '',

@@ -73,6 +73,11 @@ describe('ConsentRequestTableComponent', () => {
     fixture = TestBed.createComponent(ConsentRequestTableComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('consentRequests', mockConsentRequests);
+    // Set the consentRequestsResource input to the fetchConsentRequests ResourceRef
+    fixture.componentRef.setInput(
+      'consentRequestsResource',
+      consentRequestService.fetchConsentRequests,
+    );
     fixture.detectChanges();
   });
 
@@ -132,16 +137,34 @@ describe('ConsentRequestTableComponent', () => {
   });
 
   it('should prepare undo action correctly', async () => {
+    // Create a mock resource with a reload method
+    const mockResourceRef = {
+      reload: jest.fn(),
+      value: jest.fn().mockReturnValue([]),
+      loading: jest.fn().mockReturnValue(false),
+    };
+
+    // Set the input to use our local mock
+    fixture.componentRef.setInput('consentRequestsResource', mockResourceRef);
+    fixture.detectChanges();
+
     const undoAction = component.prepareUndoAction('1');
 
     expect(undoAction).toBeDefined();
-    await undoAction?.callback();
 
+    // Call the callback and make sure it calls updateConsentRequestStatus
+    undoAction?.callback();
+
+    // Wait for the promise chain to complete
+    await Promise.resolve();
+    await Promise.resolve();
+
+    // Check the expected method calls
     expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith(
       '1',
       ConsentRequestStateEnum.Opened,
     );
-    expect(consentRequestService.fetchConsentRequests.reload).toHaveBeenCalled();
+    expect(mockResourceRef.reload).toHaveBeenCalled();
   });
 
   it('should handle error on consent request update', async () => {
@@ -156,7 +179,7 @@ describe('ConsentRequestTableComponent', () => {
 
     await component.updateConsentRequestState('1', ConsentRequestStateEnum.Granted, 'Test Request');
     fixture.detectChanges();
-    await new Promise(process.nextTick);
+    await Promise.resolve();
 
     expect(mockToastService.show).toHaveBeenCalledWith(
       'Error message',
@@ -174,7 +197,8 @@ describe('ConsentRequestTableComponent', () => {
   });
 
   it('should handle undefined state value', () => {
-    expect(component.getTranslatedStateValue(undefined)).toBe('');
+    const stateCode = undefined as unknown as ConsentRequestStateEnum;
+    expect(component.getTranslatedStateValue(stateCode)).toBe('');
   });
 
   it('should execute action callback correctly', () => {

@@ -8,7 +8,22 @@ import { UserInfoDto } from '@/entities/openapi';
  * CommentLastReviewed: 2025-08-27
  */
 export class MockAuthService {
-  isAuthenticated = jest.fn().mockReturnValue(false);
+  // Track authentication state internally
+  _isAuthenticated = false;
+
+  // Hybrid approach for the isAuthenticated property
+  // This allows for both: authService.isAuthenticated() and authService.isAuthenticated.set()
+  isAuthenticated = Object.assign(
+    jest.fn().mockImplementation(() => this._isAuthenticated),
+    {
+      set: jest.fn().mockImplementation((value: boolean) => {
+        this._isAuthenticated = value;
+      }),
+    },
+  );
+
+  setUserRoles = jest.fn();
+  storeUserRoles = jest.fn();
   userData = jest.fn().mockReturnValue(null);
   userRoles = jest.fn().mockReturnValue(['user']);
   isProducer = jest.fn().mockReturnValue(false);

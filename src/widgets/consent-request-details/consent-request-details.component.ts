@@ -1,4 +1,14 @@
-import { Component, Signal, computed, effect, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  ResourceRef,
+  Signal,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ConsentRequestService } from '@/entities/api';
@@ -53,16 +63,18 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
 })
 export class ConsentRequestDetailsComponent {
   public readonly agridataStateService = inject(AgridataStateService);
-
   private readonly toastService = inject(ToastService);
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly metaDataService = inject(MetaDataService);
   private readonly i18nService = inject(I18nService);
-  private readonly dataRequestProducts = this.metaDataService.fetchDataProducts;
+
   readonly request = input<ConsentRequestProducerViewDto | null>(null);
   readonly preventManualClose = input<boolean>(false);
+  readonly consentRequestsResource = input<ResourceRef<ConsentRequestProducerViewDto[]>>();
+
   readonly closeDetail = output<string | null>();
 
+  private readonly dataRequestProducts = this.metaDataService.fetchDataProducts;
   readonly badgeSize = BadgeSize;
   readonly consentRequestStateEnum = ConsentRequestStateEnum;
   readonly ButtonVariants = ButtonVariants;
@@ -185,7 +197,7 @@ export class ConsentRequestDetailsComponent {
   async updateAndReloadConsentRequestState(id: string, stateCode: string) {
     try {
       await this.consentRequestService.updateConsentRequestStatus(id, stateCode);
-      this.consentRequestService.fetchConsentRequests.reload();
+      this.consentRequestsResource()?.reload();
       this.handleCloseDetails();
     } catch (error) {
       console.error('Error updating consent request status:', error);
