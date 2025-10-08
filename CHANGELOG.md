@@ -1,3 +1,9 @@
+## [1.0.0-rc.88](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.87...v1.0.0-rc.88) (2025-10-08)
+
+### Bug Fixes
+
+- **consent-request:** fix consent-request resource ([1e67a54](https://github.com/agridata-ch/frontend/commit/1e67a5469f843a6d98df6ac929cc7987af1cef3f)), closes [DIGIB2-860](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-860)
+
 ## [1.0.0-rc.87](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.86...v1.0.0-rc.87) (2025-10-07)
 
 ### Bug Fixes
