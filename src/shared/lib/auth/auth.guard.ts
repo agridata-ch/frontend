@@ -6,6 +6,8 @@ import { map } from 'rxjs/operators';
 
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 
+import { AuthService } from './auth.service';
+
 /**
  * Implements a route guard that checks authentication and required roles before allowing navigation.
  * Redirects to a forbidden route if access is denied.
@@ -15,6 +17,7 @@ import { ROUTE_PATHS } from '@/shared/constants/constants';
 @Injectable({ providedIn: 'root' })
 export class AuthorizationGuard implements CanActivate {
   private readonly oidcSecurityService = inject(OidcSecurityService);
+  private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
   private decodeAccessToken(token: string) {
@@ -29,9 +32,8 @@ export class AuthorizationGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
     const requiredRoles: string[] = route.data['roles'] || [];
 
-    return this.oidcSecurityService.getAuthenticationResult().pipe(
-      map((authResult) => {
-        const accessToken = authResult?.access_token;
+    return this.oidcSecurityService.checkAuth().pipe(
+      map(({ accessToken, isAuthenticated }) => {
         let userRoles: string[] = [];
 
         if (accessToken) {
@@ -42,8 +44,12 @@ export class AuthorizationGuard implements CanActivate {
           }
         }
 
-        // save user roles in session storage for later use
-        localStorage.setItem('userRoles', JSON.stringify(userRoles));
+        this.authService.isAuthenticated.set(isAuthenticated);
+        this.authService.setUserRoles(userRoles);
+
+        if (!requiredRoles || requiredRoles.length === 0) {
+          return true; // No specific roles required, allow access
+        }
 
         const hasRole =
           requiredRoles.length === 0 || requiredRoles.some((role) => userRoles.includes(role));

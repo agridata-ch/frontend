@@ -1,5 +1,6 @@
 import {
   Component,
+  ResourceRef,
   TemplateRef,
   computed,
   inject,
@@ -63,10 +64,13 @@ export class ConsentRequestTableComponent {
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly i18nService = inject(I18nService);
   private readonly agridataStateService = inject(AgridataStateService);
+
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
   readonly consentRequests = input.required<ConsentRequestProducerViewDto[]>();
+
   readonly tableRowAction = output<ConsentRequestProducerViewDto>();
+  readonly consentRequestsResource = input<ResourceRef<ConsentRequestProducerViewDto[]>>();
 
   private readonly dataRequestConsumerTemplate =
     viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('dataRequestConsumer');
@@ -194,14 +198,16 @@ export class ConsentRequestTableComponent {
         const toastType = getToastType(stateCode);
         const undoAction = this.prepareUndoAction(id);
         this.toastService.show(toastTitle, toastMessage, toastType, undoAction);
-        this.consentRequestService.fetchConsentRequests.reload();
+        this.consentRequestsResource()?.reload();
       })
       .catch((error) => {
         const errorMessage = this.i18nService.translate('consent-request.table.error', {
           requestId: error.error?.requestId ?? '',
         });
         console.log(error.error);
-        this.toastService.show(error.error.message, errorMessage, ToastType.Error);
+        // Handle case where error.error might be undefined
+        const errorMsg = error.error?.message || error.message || 'Unknown error';
+        this.toastService.show(errorMsg, errorMessage, ToastType.Error);
       });
   };
 
@@ -212,7 +218,7 @@ export class ConsentRequestTableComponent {
     return getUndoAction(() => {
       this.toastService.show(this.i18nService.translate(getToastTitle('')), '');
       this.consentRequestService.updateConsentRequestStatus(id, previousStateCode!).then(() => {
-        this.consentRequestService.fetchConsentRequests.reload();
+        this.consentRequestsResource()?.reload();
       });
     });
   }

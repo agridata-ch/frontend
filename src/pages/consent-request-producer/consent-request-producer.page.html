@@ -7,11 +7,13 @@
 <app-consent-request-table
   [consentRequests]="consentRequests.value()"
   (tableRowAction)="setSelectedRequest($event)"
+  [consentRequestsResource]="consentRequestResource"
 />
 <app-consent-request-details
   [request]="selectedRequest()"
   (closeDetail)="setSelectedRequest()"
   [preventManualClose]="redirectUrl() !== null"
+  [consentRequestsResource]="consentRequestResource"
 />
 @if (showRedirect()) {
 <div class="absolute right-0 top-0 bottom-0 z-10 w-full bg-gray-900 opacity-50"></div>

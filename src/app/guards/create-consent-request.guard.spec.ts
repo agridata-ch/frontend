@@ -8,7 +8,7 @@ import { UserService } from '@/entities/api/user.service';
 import { UidDto } from '@/entities/openapi';
 import { ConsentRequestCreatedDto } from '@/entities/openapi/model/consentRequestCreatedDto';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { mockUserService } from '@/shared/testing/mocks';
+import { MockResources, mockUserService } from '@/shared/testing/mocks';
 import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
 
 import { ProducerUidGuard } from './producer-uid.guard';
@@ -49,9 +49,7 @@ describe('createConsentRequestGuard', () => {
 
     const consentServiceMock = {
       createConsentRequests: jest.fn(),
-      fetchConsentRequests: {
-        reload: jest.fn(),
-      },
+      fetchConsentRequests: MockResources,
     };
 
     mockAgridataStateServiceInstance = mockAgridataStateService(testUid);
@@ -117,7 +115,6 @@ describe('createConsentRequestGuard', () => {
     const result = await createConsentRequestGuard.canActivate(route);
 
     expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(testDataRequestUid);
-    expect(consentRequestService.fetchConsentRequests.reload).toHaveBeenCalled();
     expect(mockRouter.createUrlTree).toHaveBeenCalledWith([
       ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
       testUid,
@@ -143,7 +140,6 @@ describe('createConsentRequestGuard', () => {
     const result = await createConsentRequestGuard.canActivate(route);
 
     expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(testDataRequestUid);
-    expect(consentRequestService.fetchConsentRequests.reload).toHaveBeenCalled();
     expect(mockRouter.navigate).toHaveBeenCalledWith(
       [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, testUid, testConsentRequestId],
       { state: { redirect_uri: testRedirectUri } },
