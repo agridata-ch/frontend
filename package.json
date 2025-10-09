@@ -21,9 +21,7 @@
     "i18n:find": "transloco-keys-manager find",
     "i18n:sync": "./src/scripts/sync-translations.sh",
     "i18n:sync:windows": "powershell -ExecutionPolicy Bypass -File \"src/scripts/sync_translations.ps1\" ",
-    "commentcheck": "./src/scripts/check-comments.sh",
-    "licenses": "./src/scripts/generate-third-party-licenses.sh",
-    "licenses:check": "./src/scripts/generate-third-party-licenses.sh --check"
+    "commentcheck": "./src/scripts/check-comments.sh"
   },
   "private": true,
   "dependencies": {
@@ -78,7 +76,6 @@
     "husky": "9.1.7",
     "jest": "30.1.3",
     "jest-preset-angular": "15.0.0",
-    "license-checker": "^25.0.1",
     "marked": "16.2.0",
     "ngx-build-plus": "20.0.0",
     "postcss": "8.5.3",
