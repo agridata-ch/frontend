@@ -1,3 +1,9 @@
+## [1.0.0-rc.90](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.89...v1.0.0-rc.90) (2025-10-09)
+
+### Features
+
+- **cms-pages:** add page-loader ([24bc992](https://github.com/agridata-ch/frontend/commit/24bc99272038bc1de7b72446d38795d64825f06e)), closes [DIGIB2-737](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-737)
+
 ## [1.0.0-rc.89](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.88...v1.0.0-rc.89) (2025-10-09)
 
 ### Features
