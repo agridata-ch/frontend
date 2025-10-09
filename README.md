@@ -1,6 +1,8 @@
 # agridata.ch Frontend
 This is the frontend of agridata.ch. The frontend is built with Angular and Typescript.
 
+Test
+
 # Installation
 ## Requirements
 - Node.js (>= 20.0.0)
