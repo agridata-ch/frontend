@@ -10,12 +10,12 @@
   />
 </app-agridata-button>
 <div
-  class="fixed right-0 top-0 bottom-0 z-10 overflow-hidden backdrop-brightness-75 shadow-2xl transition-[width] duration-300 ease-in-out max-w-[425px] bg-agridata-primary-text"
+  class="fixed right-0 top-0 bottom-0 z-10 backdrop-brightness-75 shadow-2xl transition-[width] duration-300 ease-in-out max-w-[425px] bg-agridata-primary-text"
   [class.w-0]="!isNavigationOpen()"
   [class.w-full]="isNavigationOpen()"
 >
   <div
-    class="flex flex-col gap-8 h-full py-8 px-12 transition-opacity duration-100 ease-in-out relative"
+    class="flex flex-col gap-8 h-full py-8 px-12 transition-opacity duration-100 ease-in-out overflow-auto"
     [class.opacity-0]="!isNavigationOpen()"
     [class.opacity-100]="isNavigationOpen()"
   >
@@ -43,17 +43,17 @@
         <app-uid-switch [variant]="UidSwitchVariant.Dark" />
       </div>
     } @else {
-      <ul>
-        <li>
-          <!-- TODO: DIGIB2-XXX Add this -->
-          <!-- <a routerLink="/" class="flex gap-3">
-            <fa-icon [icon]="homeIcon" size="lg" />
-            {{ 'navigation.menuItems.home' | i18n }}
-          </a> -->
-        </li>
-      </ul>
+      <div class="flex flex-col gap-8">
+        @for (page of cmsPages(); track page.id) {
+          <a [routerLink]="`/cms/${page.slug}`" class="text-xl">
+            {{ page.title }}
+          </a>
+        }
+      </div>
     }
-    <app-contact-support-info />
+    @if (isAuthenticated()) {
+      <app-contact-support-info />
+    }
     <agridata-language-select />
     <hr class="text-agridata-tertiary-text" />
     @if (isAuthenticated()) {

@@ -1,9 +1,11 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons';
 import { faBars, faBell, faClose, faHome } from '@fortawesome/free-solid-svg-icons';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { PageData } from '@/entities/cms';
 import { LanguageSelectComponent } from '@/features/language-select';
 import { I18nPipe } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
@@ -21,6 +23,7 @@ import { UidSwitchComponent, UidSwitchVariant } from '@/widgets/uid-switch';
 @Component({
   selector: 'app-mobile-navigation-widget',
   imports: [
+    RouterLink,
     FontAwesomeModule,
     LanguageSelectComponent,
     ButtonComponent,
@@ -34,6 +37,8 @@ import { UidSwitchComponent, UidSwitchVariant } from '@/widgets/uid-switch';
 export class MobileNavigationWidgetComponent {
   readonly authService = inject(AuthService);
   readonly agridataStateService = inject(AgridataStateService);
+
+  readonly cmsPages = input<PageData[]>([]);
 
   readonly isNavigationOpen = signal(false);
 

@@ -5,3 +5,4 @@ export * from './mock-data-request.service';
 export * from './mock-auth.service';
 export * from './mock-resources';
 export * from './mock-user.service';
+export * from './mock-cms.service';

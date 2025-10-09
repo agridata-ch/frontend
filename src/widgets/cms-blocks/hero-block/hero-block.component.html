@@ -30,6 +30,10 @@
           }
         </div>
       }
+
+      @if (block().list && block().list.items && block().list.items.length > 0) {
+        <app-list-block [list]="block().list" [cols]="2" />
+      }
     </div>
   </div>
 </div>

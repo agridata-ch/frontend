@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
-import { AuthService, UserData } from '@/shared/lib/auth';
-import { MockAuthService } from '@/shared/testing/mocks';
+import { CmsService } from '@/entities/cms';
+import { UserInfoDto } from '@/entities/openapi';
+import { AuthService } from '@/shared/lib/auth';
+import { MockAuthService, mockCmsService } from '@/shared/testing/mocks';
 import { HeaderWidgetComponent } from '@/widgets/header-widget';
 
 describe('HeaderWidgetComponent', () => {
@@ -16,6 +18,7 @@ describe('HeaderWidgetComponent', () => {
       providers: [
         { provide: AuthService, useClass: MockAuthService },
         { provide: ActivatedRoute, useValue: {} },
+        { provide: CmsService, useValue: mockCmsService },
       ],
     }).compileComponents();
 
@@ -44,15 +47,11 @@ describe('HeaderWidgetComponent', () => {
   });
 
   it('userData signal reflects AuthService.userData()', () => {
-    const fakeUser: UserData = {
-      name: 'Alice',
+    const fakeUser: UserInfoDto = {
+      givenName: 'Alice',
       email: 'alice@example.com',
-      sub: '123',
-      preferred_username: 'alice',
-      given_name: 'Alice',
-      family_name: 'Smith',
-      uid: 123,
-      loginid: 'alice123',
+      familyName: 'Smith',
+      uid: '123',
     };
     jest.spyOn(authService, 'userData').mockReturnValue(fakeUser);
     createComponent();

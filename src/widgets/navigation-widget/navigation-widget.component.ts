@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFile } from '@fortawesome/free-regular-svg-icons';
@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { PageData } from '@/entities/cms';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { I18nPipe } from '@/shared/i18n/i18n.pipe';
@@ -39,6 +40,8 @@ export class NavigationWidgetComponent {
   private readonly authService = inject(AuthService);
   private readonly agridataStateService = inject(AgridataStateService);
   readonly i18nService = inject(I18nService);
+
+  readonly cmsPages = input<PageData[]>([]);
 
   readonly isNavigationOpen = computed(this.agridataStateService.isNavigationOpen);
   readonly chevronIcon = computed(() => (this.isNavigationOpen() ? faChevronLeft : faChevronRight));

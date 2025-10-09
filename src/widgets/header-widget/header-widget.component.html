@@ -1,7 +1,21 @@
-<div class="px-12 py-6 flex justify-between items-center bg-agridata-primary-text text-white">
-  <a class="agridata-logo text-[40px]" routerLink="/">agridata.ch</a>
+<div class="px-12 flex justify-between bg-agridata-primary-text text-white h-[100px]">
+  <a class="agridata-logo text-[40px] flex items-center" routerLink="/">agridata.ch</a>
+  @if (!isAuthenticated()) {
+    <div class="hidden lg:flex items-stretch self-stretch gap-2">
+      @for (page of cmsPages(); track page.id) {
+        <a [routerLink]="`/cms/${page.slug}`" class="flex items-center px-4 relative text-lg">
+          <span>{{ page.title }}</span>
+          @if (currentPage() === page.slug) {
+            <div class="absolute inset-x-0 bottom-0 border-b-8 border-white"></div>
+          }
+        </a>
+      }
+    </div>
+  }
   <div class="hidden lg:flex flex-row gap-10 items-center">
-    <app-contact-support-info />
+    @if (isAuthenticated()) {
+      <app-contact-support-info />
+    }
     <agridata-language-select />
     @if (isAuthenticated() && userData()) {
       <app-account-overlay [userData]="userData()"></app-account-overlay>
@@ -11,7 +25,7 @@
       </app-agridata-button>
     }
   </div>
-  <div class="flex lg:hidden">
-    <app-navigation-widget />
+  <div class="flex lg:hidden items-center">
+    <app-navigation-widget [cmsPages]="cmsPages()" />
   </div>
 </div>

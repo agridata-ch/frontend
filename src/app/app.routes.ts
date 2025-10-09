@@ -6,6 +6,7 @@ import { HomeRedirectGuard } from '@/app/guards/home-redirect.guard';
 import { ImpersonationGuardGuard } from '@/app/guards/impersonation.guard';
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { DefaultLayoutComponent, FullWidthLayoutComponent } from '@/app/layout';
+import { CmsPage } from '@/pages/cms-page';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
 import { LandingPage } from '@/pages/landing-page';
@@ -34,6 +35,17 @@ export const routes: Routes = [
       {
         path: '',
         component: LandingPage,
+      },
+    ],
+  },
+  {
+    path: 'cms/:slug',
+    component: FullWidthLayoutComponent,
+    canActivate: [AuthorizationGuard, HomeRedirectGuard],
+    children: [
+      {
+        path: '',
+        component: CmsPage,
       },
     ],
   },
@@ -110,10 +122,17 @@ export const routes: Routes = [
 
   // #### general routes ####
   {
+    path: ROUTE_PATHS.NOT_FOUND,
+    component: DefaultLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
+    canActivate: [AuthorizationGuard],
+    children: [{ path: '**', component: NotFoundPage }],
+  },
+  {
     path: '',
     component: DefaultLayoutComponent,
     runGuardsAndResolvers: 'paramsChange',
-    canActivate: [autoLoginPartialRoutesGuard],
+    canActivate: [AuthorizationGuard],
     children: [{ path: '**', component: NotFoundPage }],
   },
 ];

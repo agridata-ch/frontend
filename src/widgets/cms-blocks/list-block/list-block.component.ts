@@ -15,6 +15,7 @@ import { generateMediaUrl } from '@/shared/lib/cms';
 })
 export class ListBlockComponent {
   readonly list = input.required<List>();
+  readonly cols = input<number>(1);
 
   protected readonly generateMediaUrl = generateMediaUrl;
 }

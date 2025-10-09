@@ -76,6 +76,7 @@ export interface HeroBlock {
   subHeading: string;
   cta: CTA[];
   image: Image;
+  list: List;
 }
 
 export interface FooterBlock {
@@ -194,10 +195,16 @@ export interface PageData {
   blocks: Block[];
   footer: FooterBlock;
   hero: HeroBlock;
+  slug: string;
+  position: number;
 }
 
-export interface StrapiResponse {
+export interface StrapiSingleTypeResponse {
   data: PageData;
+}
+
+export interface StrapiCollectionTypeResponse {
+  data: PageData[];
 }
 
 export interface ContactFormData {
