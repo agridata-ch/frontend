@@ -1,3 +1,9 @@
+## [1.0.0-rc.89](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.88...v1.0.0-rc.89) (2025-10-09)
+
+### Features
+
+- **open-source:** update THIRD_PARTY_LICENSES.md to use github dependency graph ([97022dd](https://github.com/agridata-ch/frontend/commit/97022dde2a5325d1dba10b96eb74a47ead7bb13f)), closes [DIGIB2-866](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-866)
+
 ## [1.0.0-rc.88](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.87...v1.0.0-rc.88) (2025-10-08)
 
 ### Bug Fixes
