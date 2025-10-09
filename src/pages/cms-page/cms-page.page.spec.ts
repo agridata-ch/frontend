@@ -1,31 +1,23 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 
 import { CmsService } from '@/entities/cms';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { mockCmsResponse, mockCmsService } from '@/shared/testing/mocks';
 
-import { LandingPage } from './landing-page.page';
+import { CmsPage } from './cms-page.page';
 
-describe('LandingPage', () => {
-  let component: LandingPage;
-  let fixture: ComponentFixture<LandingPage>;
-  let mockRouter: jest.Mocked<Router>;
+describe('CmsPage', () => {
+  let component: CmsPage;
+  let fixture: ComponentFixture<CmsPage>;
 
   beforeEach(async () => {
-    mockRouter = {
-      navigate: jest.fn(),
-    } as unknown as jest.Mocked<Router>;
-
     await TestBed.configureTestingModule({
-      providers: [
-        { provide: CmsService, useValue: mockCmsService },
-        { provide: Router, useValue: mockRouter },
-      ],
+      providers: [{ provide: CmsService, useValue: mockCmsService }, provideRouter([])],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LandingPage);
+    fixture = TestBed.createComponent(CmsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -50,7 +42,7 @@ describe('LandingPage', () => {
 
   describe('errorEffect', () => {
     beforeEach(() => {
-      fixture = TestBed.createComponent(LandingPage);
+      fixture = TestBed.createComponent(CmsPage);
       component = fixture.componentInstance;
     });
 
@@ -58,11 +50,14 @@ describe('LandingPage', () => {
       const httpErrorResponse = new HttpErrorResponse({ status: 404 });
       const mockError = new Error('Not found', { cause: httpErrorResponse });
 
-      jest.spyOn(component['landingPage'], 'error').mockReturnValue(mockError);
+      jest.spyOn(component['cmsPageResource'], 'error').mockReturnValue(mockError);
+
+      const router = TestBed.inject(Router);
+      const navSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true as any);
 
       fixture.detectChanges();
 
-      expect(mockRouter.navigate).toHaveBeenCalledWith([ROUTE_PATHS.NOT_FOUND], {
+      expect(navSpy).toHaveBeenCalledWith([ROUTE_PATHS.NOT_FOUND], {
         state: { error: 'Not found' },
       });
     });
@@ -71,11 +66,14 @@ describe('LandingPage', () => {
       const httpErrorResponse = new HttpErrorResponse({ status: 400 });
       const mockError = new Error('Error', { cause: httpErrorResponse });
 
-      jest.spyOn(component['landingPage'], 'error').mockReturnValue(mockError);
+      jest.spyOn(component['cmsPageResource'], 'error').mockReturnValue(mockError);
+
+      const router = TestBed.inject(Router);
+      const navSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true as any);
 
       fixture.detectChanges();
 
-      expect(mockRouter.navigate).toHaveBeenCalledWith([ROUTE_PATHS.ERROR]);
+      expect(navSpy).toHaveBeenCalledWith([ROUTE_PATHS.ERROR]);
     });
   });
 });

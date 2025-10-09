@@ -1,5 +1,5 @@
-@if (cmsPage.isLoading()) { ...Loading CMS } @else if (cmsPage.error()) { ...Error loading CMS }
-@else {
+@if (landingPage.isLoading()) { ...Loading CMS } @else if (landingPage.error()) { ...Error loading
+CMS } @else {
 <app-hero-block [block]="heroBlock()" />
 @for (block of pageBlocks(); track `${block.__component}_${block.id}`) {
 <app-cms-block-renderer [block]="block" [index]="$index"></app-cms-block-renderer>

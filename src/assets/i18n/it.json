@@ -31,7 +31,7 @@
         "consent": "Acconsenti",
         "decline": "Rifiuta"
       },
-      "error": "Errore durante l'aggiornamento della richiesta. RequestId: {{requestId}}"
+      "error": "Errore durante l'aggiornamento della richiesta."
     },
     "filter": {
       "ALL": "Tutti",
@@ -233,7 +233,7 @@
       },
       "dataProtection": {
         "title": "Protezione dei dati",
-        "description": "{{ consumerName }} è responsabile del trattamento conforme alla protezione dei dati di queste informazioni. Contatta direttamente {{ consumerName }} se desideri che i tuoi dati vengano cancellati."
+        "description": "Ai sensi della legge sulla protezione dei dati, {{ consumerName }} è responsabile del trattamento di tali informazioni in conformità con la normativa sulla protezione dei dati."
       },
       "revocation": {
         "title": "Possibilità di revoca",
@@ -293,8 +293,7 @@
     "close": "Navigazione Chiusa",
     "menuItems": {
       "helpAndSupport": "Aiuto e assistenza",
-      "notifications": "Notifica",
-      "home": "Home"
+      "notifications": "Notifica"
     }
   },
   "producer": {
@@ -374,5 +373,25 @@
       "exit": "Chiudi vista",
       "title": "Visualizzazione utente {{user}}"
     }
+  },
+  "errors": {
+    "title": "Si è verificato un errore",
+    "close": "chiudere",
+    "frontend": {
+      "unexpected": {
+        "title": "Si è verificato un errore imprevisto",
+        "details": "{{ errorDetails }}"
+      }
+    },
+    "backend": {
+      "internalServerError": "Riprova più tardi o contatta l'assistenza",
+      "badRequest": "Si è verificato un errore durante l'elaborazione della tua richiesta. Controlla i dati inseriti e riprova.",
+      "unauthorized": "Effettua il login o ricarica la pagina.",
+      "forbidden": "Accesso non autorizzato alla risorsa.",
+      "serviceUnavailable": "Un servizio non è disponibile a causa di un'interruzione.\nTorneremo online il prima possibile."
+    }
+  },
+  "breadcrumb": {
+    "home": "Casa"
   }
 }

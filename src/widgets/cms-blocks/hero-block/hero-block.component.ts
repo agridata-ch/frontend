@@ -3,6 +3,7 @@ import { Component, input } from '@angular/core';
 import { HeroBlock } from '@/entities/cms';
 import { generateMediaUrl } from '@/shared/lib/cms';
 import { ButtonComponent, ButtonVariants, HrefTarget } from '@/shared/ui/button';
+import { ListBlockComponent } from '@/widgets/cms-blocks/list-block/list-block.component';
 
 /**
  * Implements hero block logic, including background image rendering, heading and subheading
@@ -13,7 +14,7 @@ import { ButtonComponent, ButtonVariants, HrefTarget } from '@/shared/ui/button'
 @Component({
   selector: 'app-hero-block',
   templateUrl: './hero-block.component.html',
-  imports: [ButtonComponent],
+  imports: [ButtonComponent, ListBlockComponent],
 })
 export class HeroBlockComponent {
   readonly block = input.required<HeroBlock>();

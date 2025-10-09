@@ -5,6 +5,7 @@ export const ROUTE_PATHS = {
   SUPPORT_PATH: 'support',
   FORBIDDEN: 'forbidden',
   ERROR: 'error',
+  NOT_FOUND: 'not-found',
 };
 
 export const USER_ROLES = {

@@ -31,7 +31,7 @@
         "consent": "Zustimmen",
         "decline": "Ablehnen"
       },
-      "error": "Fehler beim Aktualisieren des Antrags. RequestId: {{requestId}}"
+      "error": "Fehler beim Aktualisieren des Antrags."
     },
     "filter": {
       "ALL": "Alle",
@@ -293,8 +293,7 @@
     "close": "Navigation Schließen",
     "menuItems": {
       "helpAndSupport": "Hilfe & Support",
-      "notifications": "Benachrichtigungen",
-      "home": "Home"
+      "notifications": "Benachrichtigungen"
     }
   },
   "producer": {
@@ -374,5 +373,44 @@
       "exit": "Ansicht schliessen",
       "title": "Nutzeransicht {{user}}"
     }
+  },
+  "errors": {
+    "title": "Es ist ein Fehler aufgetreten",
+    "close": "schliessen",
+    "frontend": {
+      "unexpected": {
+        "title": "Es ist ein unerwarteter Fehler aufgetreten",
+        "details": "{{ errorDetails }}"
+      }
+    },
+    "backend": {
+      "method": {
+        "get": "Ladevorgang fehlgeschlagen",
+        "post": "Speichervorgang fehlgeschlagen",
+        "put": "Speichervorgang fehlgeschlagen",
+        "patch": "Speichervorgang fehlgeschlagen",
+        "delete": "Löschvorgang fehlgeschlagen"
+      },
+      "errorId": "Fehler-Id: {{errorId}}",
+      "path": "Pfad: {{method}}:  {{path}}",
+      "generic": {
+        "title": "Serverfehler aufgetreten"
+      },
+      "internalServerError": "Bitte versuchen Sie es später noch einmal oder melden Sie sich beim Support",
+      "badRequest": "Es ist ein Fehler bei der Verarbeitung Ihrer Anfrage aufgetreten. Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.",
+      "unauthorized": "Loggen sie sich ein oder rufen Sie die Seite erneut auf.",
+      "forbidden": "Kein berechtigter Zugriff auf die Ressource.",
+      "notFound": "Die gewünschte Ressource ist nicht verfügbar.",
+      "serviceUnavailable": "Ein Service ist wegen einem Unterbruch nicht erreichbar.\nWir sind schnellstmöglich wieder online.",
+      "unexpected": "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es später noch einmal oder melden Sie sich beim Support. Status: {{status}}"
+    },
+    "popupTitle": "Es sind Fehler aufgetreten",
+    "errorPage": {
+      "title": "Es sind Fehler aufgetreten",
+      "back": "zurück"
+    }
+  },
+  "breadcrumb": {
+    "home": "Home"
   }
 }

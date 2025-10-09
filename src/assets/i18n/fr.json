@@ -31,7 +31,7 @@
         "consent": "Approuver",
         "decline": "Refuser"
       },
-      "error": "Erreur lors de la mise à jour de la demande. RequestId: {{requestId}}"
+      "error": "Erreur lors de la mise à jour de la demande."
     },
     "filter": {
       "ALL": "Tous",
@@ -293,8 +293,7 @@
     "close": "Navigation fermée",
     "menuItems": {
       "helpAndSupport": "Aide et assistance",
-      "notifications": "Notifications",
-      "home": "Accueil"
+      "notifications": "Notifications"
     }
   },
   "producer": {
@@ -374,5 +373,8 @@
       "exit": "Fermer la vue",
       "title": "Affichage utilisateur {{user}}"
     }
+  },
+  "breadcrumb": {
+    "home": "Accueil"
   }
 }
