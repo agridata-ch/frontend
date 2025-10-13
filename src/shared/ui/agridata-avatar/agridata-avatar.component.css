@@ -1,0 +1,47 @@
+.agridata-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--color-agridata-stroke);
+  overflow: hidden;
+  line-height: 1;
+}
+
+.agridata-avatar-small {
+  width: 40px;
+  height: 40px;
+}
+
+.agridata-avatar-medium {
+  width: 50px;
+  height: 50px;
+  font-size: 1.2rem;
+}
+
+.agridata-avatar-large {
+  width: 60px;
+  height: 60px;
+  font-size: 1.5rem;
+}
+
+.agridata-avatar-light {
+  background-color: white;
+  color: var(--color-agridata-primary-text);
+}
+
+.agridata-avatar-dark {
+  background-color: var(--color-gray-900);
+  color: white;
+  border-color: var(--color-gray-900);
+}
+
+.agridata-avatar-color {
+  color: white;
+}
+
+.agridata-avatar-default {
+  background-color: var(--color-agridata-icon-on-dark);
+  color: white;
+  border-color: var(--color-agridata-icon-on-dark);
+}

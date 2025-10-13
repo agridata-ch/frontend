@@ -1,0 +1,27 @@
+<ng-template #content>
+  <ng-content></ng-content>
+</ng-template>
+
+@if (!href()) {
+  <button
+    [type]="type()"
+    [disabled]="disabled()"
+    [tabindex]="tabindex()"
+    [attr.aria-label]="ariaLabel()"
+    (click)="handleClick($event)"
+    (keydown.enter)="handleClick($event)"
+    [class]="`agridata-button agridata-button-${variant()} ${ selected() ? 'selected' : ''} ${additionalClass()}`"
+  >
+    <ng-container [ngTemplateOutlet]="content"></ng-container>
+  </button>
+} @else {
+  <a
+    [href]="href()"
+    [target]="target()"
+    [tabindex]="tabindex()"
+    [rel]="'noopener noreferrer'"
+    [class]="`agridata-button agridata-button-${variant()} ${ selected() ? 'selected' : ''} ${additionalClass()}`"
+  >
+    <ng-container [ngTemplateOutlet]="content"></ng-container>
+  </a>
+}

@@ -1,0 +1,119 @@
+<form [formGroup]="form()!" class="flex flex-col gap-10" *i18n="let t; prefix: 'data-request.form'">
+  <h2>{{ t('request.headline') }}</h2>
+  <div class="flex flex-col bg-gray-100 py-6 px-4 rounded-lg gap-6">
+    <div>
+      <h4 class="mb-2">{{ t('request.provider.label') }}</h4>
+      <span class="text-agridata-tertiary-text">{{ t('request.provider.sublabel') }}</span>
+    </div>
+    <div class="grid gap-6 grid-cols-2">
+      <div class="flex flex-col w-full">
+        <label class="mb-2 font-medium leading-[130%]" for="requestProvider">
+          {{ t('request.provider.label') }}
+        </label>
+        <input
+          class="border rounded-md border-gray-300 px-5 py-3 placeholder-gray-400 w-full mb-6 cursor-not-allowed"
+          value="AGIS"
+          disabled
+          name="requestProvider"
+          [disabled]="true"
+        />
+      </div>
+      <app-form-control
+        [control]="getFormControl(this.form()!, 'request.products')"
+        id="requestProducts"
+        [label]="t('request.products.label')"
+        [placeholder]="t('request.products.placeholder')"
+        [controlType]="ControlTypes.MULTI_SELECT"
+        [options]="products()"
+        [disabled]="formDisabled()"
+      />
+    </div>
+  </div>
+  <div>
+    <div class="mb-6">
+      <h4 class="text-agridata-primary-text mb-2">{{ t('request.title.label') }}</h4>
+      <span class="text-agridata-tertiary-text">{{ t('request.title.sublabel') }}</span>
+    </div>
+    <app-form-control
+      [control]="getFormControl(this.form()!, 'request.title.de')"
+      id="requestTitleDe"
+      [label]="t('request.title.de.label')"
+      [placeholder]="t('request.title.de.placeholder')"
+      [disabled]="formDisabled()"
+    />
+    <app-form-control
+      [control]="getFormControl(this.form()!, 'request.title.fr')"
+      id="requestTitleFr"
+      [label]="t('request.title.fr.label')"
+      [placeholder]="t('request.title.fr.placeholder')"
+      [disabled]="formDisabled()"
+    />
+    <app-form-control
+      [control]="getFormControl(this.form()!, 'request.title.it')"
+      id="requestTitleIt"
+      [label]="t('request.title.it.label')"
+      [placeholder]="t('request.title.it.placeholder')"
+      [disabled]="formDisabled()"
+    />
+  </div>
+  <div>
+    <div class="mb-6">
+      <h4 class="text-agridata-primary-text mb-2">{{ t('request.description.label') }}</h4>
+      <span class="text-agridata-tertiary-text">{{ t('request.description.sublabel') }}</span>
+    </div>
+    <app-form-control
+      [control]="getFormControl(this.form()!, 'request.description.de')"
+      id="requestDescriptionDe"
+      [label]="t('request.description.de.label')"
+      [placeholder]="t('request.description.de.placeholder')"
+      [controlType]="ControlTypes.TEXT_AREA"
+      [disabled]="formDisabled()"
+    />
+    <app-form-control
+      [control]="getFormControl(this.form()!, 'request.description.fr')"
+      id="requestDescriptionFr"
+      [label]="t('request.description.fr.label')"
+      [placeholder]="t('request.description.fr.placeholder')"
+      [controlType]="ControlTypes.TEXT_AREA"
+      [disabled]="formDisabled()"
+    />
+    <app-form-control
+      [control]="getFormControl(this.form()!, 'request.description.it')"
+      id="requestDescriptionIt"
+      [label]="t('request.description.it.label')"
+      [placeholder]="t('request.description.it.placeholder')"
+      [controlType]="ControlTypes.TEXT_AREA"
+      [disabled]="formDisabled()"
+    />
+  </div>
+  <div class="mb-6">
+    <div class="mb-6">
+      <h4 class="text-agridata-primary-text mb-2">{{ t('request.purpose.label') }}</h4>
+      <span class="text-agridata-tertiary-text">{{ t('request.purpose.sublabel') }}</span>
+    </div>
+    <app-form-control
+      [control]="getFormControl(this.form()!, 'request.purpose.de')"
+      id="requestPurposeDe"
+      [label]="t('request.purpose.de.label')"
+      [placeholder]="t('request.purpose.de.placeholder')"
+      [controlType]="ControlTypes.TEXT_AREA"
+      [disabled]="formDisabled()"
+    />
+    <app-form-control
+      [control]="getFormControl(this.form()!, 'request.purpose.fr')"
+      id="requestPurposeFr"
+      [label]="t('request.purpose.fr.label')"
+      [placeholder]="t('request.purpose.fr.placeholder')"
+      [controlType]="ControlTypes.TEXT_AREA"
+      [disabled]="formDisabled()"
+    />
+    <app-form-control
+      [control]="getFormControl(this.form()!, 'request.purpose.it')"
+      id="requestPurposeIt"
+      [label]="t('request.purpose.it.label')"
+      [placeholder]="t('request.purpose.it.placeholder')"
+      [controlType]="ControlTypes.TEXT_AREA"
+      [disabled]="formDisabled()"
+    />
+  </div>
+</form>

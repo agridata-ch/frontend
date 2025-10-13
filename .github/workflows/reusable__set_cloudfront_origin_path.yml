@@ -1,0 +1,89 @@
+on:
+  workflow_call:
+    inputs:
+      account-id:
+        required: true
+        type: string
+      cloudfront-origin-path:
+        required: true
+        type: string
+
+jobs:
+  set-cloudfront-origin-path:
+    name: Set cloudfront origin path
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      AWS_REGION: eu-central-2
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: arn:aws:iam::${{ inputs.account-id }}:role/agridata-application-deployment-role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Set CloudFront origin path
+        env:
+          CLOUDFRONT_DISTRIBUTION_DESCRIPTION: 'agridata:cloudfront-frontend'
+          ORIGIN_ID: 'agridata-frontend'
+          ORIGIN_PATH: ${{ inputs.cloudfront-origin-path }}
+        run: |
+          set -euo pipefail
+
+          echo "Resolving CloudFront distribution by Description='${CLOUDFRONT_DISTRIBUTION_DESCRIPTION}'..."
+
+          MATCHING_IDS_JSON=$(aws cloudfront list-distributions \
+          --query "DistributionList.Items[?Comment==\`${CLOUDFRONT_DISTRIBUTION_DESCRIPTION}\`].Id" \
+          --output json)
+
+          mapfile -t IDS < <(jq -r '.[]' <<< "$MATCHING_IDS_JSON")
+
+          if [ "${#IDS[@]}" -eq 0 ]; then
+            echo "Error: No CloudFront distribution found with Description (Comment)='${CLOUDFRONT_DISTRIBUTION_DESCRIPTION}'." >&2
+            exit 1
+          elif [ "${#IDS[@]}" -gt 1 ]; then
+            echo "Error: Multiple distributions found with Description (Comment)='${CLOUDFRONT_DISTRIBUTION_DESCRIPTION}':" >&2
+            printf ' - %s\n' "${IDS[@]}" >&2
+            echo "Please make the Description unique." >&2
+            exit 1
+          fi
+
+          DISTRIBUTION_ID="${IDS[0]}"
+          echo "Resolved distribution ID: ${DISTRIBUTION_ID}"
+
+          # Fetch ETag
+          ETAG=$(aws cloudfront get-distribution-config \
+            --id "$DISTRIBUTION_ID" \
+            --query ETag --output text)
+
+          # Fetch current config
+          aws cloudfront get-distribution-config \
+            --id "$DISTRIBUTION_ID" \
+            --query 'DistributionConfig' > config.json
+
+          echo "Setting OriginPath for Origin ID '${ORIGIN_ID}' to '/${ORIGIN_PATH}'..."
+
+          jq --arg id "$ORIGIN_ID" --arg v "/${ORIGIN_PATH}" '
+            .Origins.Items |= map(if .Id == $id then .OriginPath = $v else . end)
+          ' config.json > new-config.json
+
+          aws cloudfront update-distribution \
+            --id "$DISTRIBUTION_ID" \
+            --if-match "$ETAG" \
+            --distribution-config file://new-config.json
+
+          echo "Creating CloudFront invalidation for path '/${ORIGIN_PATH}/*'..."
+          aws cloudfront create-invalidation \
+            --distribution-id "$DISTRIBUTION_ID" \
+            --paths "/${ORIGIN_PATH}/*"
+
+      - name: Update SSM Parameter with new origin path
+        run: |
+          aws ssm put-parameter \
+            --name "/frontend/cloudfront-origin-path" \
+            --value "/${{ inputs.cloudfront-origin-path}}" \
+            --type "String" \
+            --overwrite

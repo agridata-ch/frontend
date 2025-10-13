@@ -1,0 +1,11 @@
+:root {
+  --heading-one-font-size: 4rem; /* 64px */
+  --heading-one-line-height: 100%;
+
+  --heading-two-color: inherit;
+
+  @media screen and (max-width: 768px) {
+    --heading-one-font-size: 1.5rem; /* 24px */
+    --heading-one-line-height: 120%;
+  }
+}

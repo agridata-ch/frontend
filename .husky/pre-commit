@@ -1,1 +1,1 @@
-npm run prettier:staged && npx eslint src/
+npm run prettier:staged && npx eslint src/ && src/scripts/check-comments.sh

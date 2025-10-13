@@ -1,0 +1,28 @@
+<div [class.bg-white]="isOdd()">
+  @switch (block().__component) {
+    @case (CMS_BLOCKS.SECTION_MEDIA) {
+      <app-section-media-block [block]="block()" />
+    }
+    @case (CMS_BLOCKS.SECTION_TEXT_IMAGE) {
+      <app-section-text-image-block [block]="block()" />
+    }
+    @case (CMS_BLOCKS.SECTION_USER_FEEDBACK) {
+      <app-section-user-feedback-block [block]="block()" />
+    }
+    @case (CMS_BLOCKS.SECTION_CARD_GRID) {
+      <app-section-card-grid-block [block]="block()" />
+    }
+    @case (CMS_BLOCKS.CONTACT_FORM) {
+      <app-section-contact-form-block [block]="block()" />
+    }
+    @case (CMS_BLOCKS.SECTION_FAQ) {
+      <app-section-faq-block [block]="block()" />
+    }
+    @case (CMS_BLOCKS.IMAGE_GRID) {
+      <app-image-grid-block [block]="block()" />
+    }
+    @case (CMS_BLOCKS.SECTION_IMAGE_CARD) {
+      <app-section-image-card-block [block]="block()" />
+    }
+  }
+</div>

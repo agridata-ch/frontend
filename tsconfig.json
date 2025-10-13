@@ -3,6 +3,30 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@/app/*": [
+        "app/*"
+      ],
+      "@/pages/*": [
+        "pages/*"
+      ],
+      "@/widgets/*": [
+        "widgets/*"
+      ],
+      "@/features/*": [
+        "features/*"
+      ],
+      "@/entities/*": [
+        "entities/*"
+      ],
+      "@/shared/*": [
+        "shared/*"
+      ]
+    },
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
@@ -17,12 +41,24 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": [
+      "jest"
+    ],
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ],
 }

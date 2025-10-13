@@ -1,31 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from './api.service';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { version } from '../../package.json';
 
+/**
+ * The root Angular component that renders the application shell. It provides the router outlet as
+ * the placeholder for dynamic routes.
+ *
+ * CommentLastReviewed: 2025-10-03
+ */
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   imports: [RouterOutlet],
-  standalone: true,
 })
-export class AppComponent implements OnInit {
-  backendMessage = '';
-  public version;
-
-  constructor(private readonly apiService: ApiService) {
-    this.version = version;
-  }
-
-  ngOnInit(): void {
-    this.apiService.getBackendMessage().subscribe({
-      next: (response) => {
-        this.backendMessage = response;
-      },
-      error: (err) => {
-        console.error('Error contacting the backend', err);
-      },
-    });
-  }
-}
+export class AppComponent {}

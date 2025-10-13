@@ -1,0 +1,416 @@
+{
+  "account": {
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "settings": "Einstellungen",
+    "passwordAndSecurity": "Passwort und Sicherheit"
+  },
+  "table": {
+    "actions": "Aktionen",
+    "showingResults": "Zeige {{ current }} von {{ total }} Einträgen",
+    "pageInfo": "Seite {{ current }} von {{ total }}",
+    "previousPage": "vorherige Seite",
+    "nextPage": "nächste Seite",
+    "noData": "keine Daten vorhanden",
+    "loading": "Daten werden geladen",
+    "pageSelector": "Einträge pro Seite",
+    "header": {
+      "ariaLabels": {
+        "sort": "Sortieren nach: {{ sortBy }}"
+      }
+    },
+    "ariaLabels": {
+      "actions": "Aktionen"
+    }
+  },
+  "consent-request": {
+    "table": {
+      "tableActions": {
+        "title": "Aktionen",
+        "details": "Details",
+        "consent": "Zustimmen",
+        "decline": "Ablehnen"
+      },
+      "error": "Fehler beim Aktualisieren des Antrags."
+    },
+    "filter": {
+      "ALL": "Alle",
+      "OPENED": "Offen",
+      "DECLINED": "Abgelehnt",
+      "GRANTED": "Zugestimmt"
+    },
+    "details": {
+      "actions": {
+        "accept": "Zustimmen",
+        "reject": "Ablehnen"
+      },
+      "stateCode": {
+        "GRANTED": "Zugestimmt am {{ date }}",
+        "DECLINED": "Abgelehnt am {{ date }}",
+        "OPENED": "Offen",
+        "UNKNOWN": "Unbekannt"
+      },
+      "footerInformation": "Entscheid jederzeit änderbar.",
+      "requestDate": "Anfrage vom {{ date }}",
+      "sidepanel": {
+        "title": "Detailansicht"
+      }
+    },
+    "toast": {
+      "title": {
+        "GRANTED": "Zustimmung erteilt",
+        "DECLINED": "Anfrage abgelehnt",
+        "DEFAULT": "Anfrage aktualisiert"
+      },
+      "message": {
+        "GRANTED": "Sie haben der Anfrage {{ name }} erfolgreich zugestimmt.",
+        "DECLINED": "Sie haben die Anfrage {{ name }} erfolgreich abgelehnt.",
+        "DEFAULT": "Die Anfrage wurde aktualisiert."
+      },
+      "undo": "Aktion rückgängig machen"
+    },
+    "dataRequest": {
+      "title": "Datenanfrage",
+      "state": "Status",
+      "consumerName": "Datenbezüger",
+      "date": "Anfragedatum",
+      "stateCode": {
+        "OPENED": "Offen",
+        "GRANTED": "Zugestimmt",
+        "DECLINED": "Abgelehnt"
+      }
+    }
+  },
+  "consumer": {
+    "pageTitle": "Datenanträge",
+    "createNewDataRequest": "Neuer Antrag",
+    "sidePanelTitle": "Neuer Datenantrag erfassen"
+  },
+  "data-request": {
+    "consumerName": "Datenbezüger",
+    "title": "Datenantrag",
+    "date": "Antragsdatum",
+    "state": "Status",
+    "contact": {
+      "title": "Kontaktdaten",
+      "description": "Bei Fragen oder Unklarheiten zum Datenantrag, kontaktieren Sie bitte direkt die Organisation:"
+    },
+    "form": {
+      "request": {
+        "headline": "Angaben zum Datenbezug",
+        "provider": {
+          "label": "Datenanbieter",
+          "sublabel": "Aktuell steht nur ein Datenabieter zur Verfügung. Es werden kontinuierlich weitere Anbieter angebunden."
+        },
+        "products": {
+          "label": "Welches Datenprodukt möchten Sie?",
+          "placeholder": "Wählen Sie die Produkte aus, für die Sie Daten anfordern möchten."
+        },
+        "title": {
+          "label": "Antragname Datenanfrage",
+          "sublabel": "Der Name wird allen Datenproduzenten in ihrer bevorzugten Sprache angezeigt, wenn sie über die Freigabe Ihrer Daten entscheiden. ",
+          "de": {
+            "label": "Antragname Datenanfrage DE",
+            "placeholder": "Anfrage von [...] zum Bezug von [...]-Daten"
+          },
+          "fr": {
+            "label": "Antragname Datenanfrage FR",
+            "placeholder": "Demande de [...] pour obtenir des données [...]"
+          },
+          "it": {
+            "label": "Antragname Datenanfrage IT",
+            "placeholder": "Richiesta di [...] per ottenere [...] dati"
+          }
+        },
+        "description": {
+          "label": "Beschreibung des Antrags",
+          "sublabel": "Die Beschreibung wird allen Datenproduzent:innen in ihrer bevorzugten Sprache angezeigt, damit sie eine informierte Entscheidung treffen können.",
+          "de": {
+            "label": "Beschreibung des Antrags DE",
+            "placeholder": "Wenn Sie der Datenweitergabe an [...]  zustimmen, vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
+          },
+          "fr": {
+            "label": "Beschreibung des Antrags FR",
+            "placeholder": "En donnant votre approbation à la transmission de données à [...], vous simplifiez votre travail quotidien, réduisez les saisies multiples et accélérez les processus."
+          },
+          "it": {
+            "label": "Beschreibung des Antrags IT",
+            "placeholder": "Con il consenso all'inoltro dei dati a [...] si semplifica il lavoro quotidiano, si riducono gli inserimenti multipli di dati e si velocizzano i processi."
+          }
+        },
+        "purpose": {
+          "label": "Nutzungszweck der Daten",
+          "sublabel": "Der Nutzungszweck wird allen Datenproduzent:innen in ihrer bevorzugten Sprache angezeigt, um maximale Transparenz über die Verwendung ihrer Daten zu gewährleisten.",
+          "de": {
+            "label": "Nutzungszweck der Daten DE",
+            "placeholder": "[...] nutzt die angefragten Daten für ... (Beschreibung durch Datenbezüger). Die Daten werden (nicht) an Dritte weitergegeben. [...] verpflichtet sich, im Umgang mit den Daten geltende Vorschriften einzuhalten."
+          },
+          "fr": {
+            "label": "Nutzungszweck der Daten FR",
+            "placeholder": "[...] utilise les données demandées pour ... (description par le bénéficiaire des données). Les données sont (non) transmises à des tiers. [...] s'engage à respecter la réglementation en vigueur en matière de traitement des données."
+          },
+          "it": {
+            "label": "Nutzungszweck der Daten IT",
+            "placeholder": "[...] utilizza i dati richiesti per ... (descrizione del destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
+          }
+        }
+      },
+      "consumer": {
+        "headline": "Angaben zum Datenbezüger",
+        "name": {
+          "label": "Name",
+          "placeholder": "Name"
+        },
+        "uid": {
+          "label": "UID",
+          "placeholder": "CHEXXXXXXXXX",
+          "prefix": "CHE"
+        },
+        "dataConsumerStreet": {
+          "label": "Strasse",
+          "placeholder": "Strasse"
+        },
+        "dataConsumerZip": {
+          "label": "PLZ",
+          "placeholder": "PLZ"
+        },
+        "dataConsumerCity": {
+          "label": "Ort",
+          "placeholder": "Ort"
+        },
+        "dataConsumerCountry": {
+          "label": "Land",
+          "placeholder": "Land"
+        },
+        "producer": {
+          "label": "Ihre Anzeige beim Produzenten",
+          "sublabel": "Diese Angaben werden den Datenproduzent:innen bei der Einverständnis-Anfrage angezeigt.",
+          "logo": "Logo"
+        },
+        "contact": {
+          "label": "Ihre Kontaktangaben",
+          "sublabel": "Telefon oder E-Mail für Rückfragen zu Ihrem Antrag."
+        },
+        "contactPhoneNumber": {
+          "label": "Telefon Nr.",
+          "placeholder": "+41 .. ... ..."
+        },
+        "contactEmailAddress": {
+          "label": "E-Mail-Adresse",
+          "placeholder": "...@......."
+        },
+        "dataConsumerDisplayName": {
+          "label": "Anzeigename/Kurzform",
+          "placeholder": "Anzeigename/Kurzform"
+        },
+        "logo": {
+          "label": "Logo",
+          "upload": "Bild hochladen",
+          "error": {
+            "invalidFileType": "Ungültiger Dateityp. Bitte laden Sie eine PNG- oder JPG-Datei hoch.",
+            "size": "Die Datei ist zu gross. Max. erlaubte Grösse: {{ maxSize }}"
+          }
+        }
+      },
+      "producer": {
+        "info": "Nachdem der Vertrag von allen Vertragspartner unterzeichnet wurde, erhalten Sie eine E-Mail-Einladungs-Vorlage. Diese Vorlage wird einen für Ihren Antrag spezifischen Link enthalten. Damit können Sie danach gezielt Ihre Datenproduzenten einladen.",
+        "title": "Datenproduzenten bestimmen",
+        "description": "Bestimmen Sie, welche Gruppe von Datenproduzenten Sie mit Ihrem Antrag ansprechen möchten.",
+        "targetGroup": {
+          "label": "Gruppe von Datenproduzenten",
+          "placeholder": "Gruppe von Datenproduzenten",
+          "helperText": "Beispiel: alle Bio-Landwirte"
+        }
+      }
+    },
+    "preview": {
+      "title": "Vorschau"
+    },
+    "privacy": {
+      "consent": {
+        "title": "Zustimmung",
+        "description": "Mit Ihrer Zustimmung erlauben Sie die Datenübermittlung.\n\nEin Vertrag zwischen dem Bundesamt für Landwirtschaft und {{ consumerName }} bildet die rechtliche Grundlage für die Datenübermittlung und Datennutzung."
+      },
+      "dataProtection": {
+        "title": "Datenschutz",
+        "description": "Gemäss Datenschutzgesetz ist {{ consumerName }}  für den datenschutzkonformen Umgang mit diesen Informationen verantwortlich."
+      },
+      "revocation": {
+        "title": "Änderungsmöglichkeit",
+        "description": "Ihre Entscheidung kann jederzeit geändert werden."
+      }
+    },
+    "purpose": {
+      "title": "Zweck der Datennutzung",
+      "description": "Folgende Daten werden übermittelt:"
+    },
+    "wizard": {
+      "steps": {
+        "consumer": "Bezüger",
+        "request": "Anfrage",
+        "preview": "Vorschau",
+        "producer": "Produzent",
+        "contract": "Vertrag",
+        "completion": "Abschluss"
+      },
+      "saveDraft": "Zwischenspeichern",
+      "saveAndComplete": "Speichern und Einreichen",
+      "next": "Weiter",
+      "previous": "Zurück",
+      "submitAndContinue": "Antrag einreichen & weiter"
+    },
+    "submit": {
+      "error": "Fehler beim Einreichen des Antrags"
+    },
+    "stateCode": {
+      "IN_REVIEW": "In Prüfung",
+      "DRAFT": "Entwurf",
+      "TO_BE_SIGNED": "Unterzeichnung offen",
+      "ACTIVE": "Aktiv"
+    },
+    "table": {
+      "tableActions": {
+        "details": "Anzeigen",
+        "retreat": "Zurückziehen"
+      }
+    },
+    "provider": "Datenanbieter",
+    "submissionDate": "Datum der Einreichung",
+    "humanFriendlyId": "ID"
+  },
+  "forms": {
+    "error": {
+      "required": "Dieses Feld ist erforderlich.",
+      "minlength": "Mindestens {{min}} Zeichen erforderlich.",
+      "maxlength": "Maximal {{max}} Zeichen erlaubt.",
+      "minItems": "Mindestens {{min}} Einträge erforderlich.",
+      "maxItems": "Maximal {{max}} Einträge erlaubt.",
+      "pattern": "Ungültiges Format."
+    }
+  },
+  "navigation": {
+    "open": "Navigation Öffnen",
+    "close": "Navigation Schließen",
+    "menuItems": {
+      "helpAndSupport": "Hilfe & Support",
+      "notifications": "Benachrichtigungen"
+    }
+  },
+  "producer": {
+    "pageTitle": "Datenanfragen",
+    "redirect": {
+      "headline": "Erledigt!",
+      "description": "Besten Dank für Ihre Entscheidung,\u2028Sie werden in {{ count }} Sekunden automatisch zurück geleitet.",
+      "redirectNow": "Direkt zurück"
+    }
+  },
+  "countries": {
+    "CH": "Schweiz",
+    "LI": "Liechtenstein"
+  },
+  "header": {
+    "helpAndSupport": {
+      "title": "Hilfe & Support",
+      "support": {
+        "title": "Support"
+      }
+    }
+  },
+  "contact-form": {
+    "firstName": {
+      "label": "Vorname"
+    },
+    "lastName": {
+      "label": "Nachname"
+    },
+    "organisation": {
+      "label": "Organisation (optional)"
+    },
+    "email": {
+      "label": "E-Mail"
+    },
+    "phone": {
+      "label": "Telefonnummer (optional)",
+      "placeholder": "+41 00 000 000"
+    },
+    "submit": "Anfrage senden",
+    "message": {
+      "label": "Ihr Anliegen"
+    },
+    "success": {
+      "title": "Nachricht gesendet",
+      "message": "Vielen Dank! Wir haben Ihre Nachricht erhalten und melden uns bald."
+    },
+    "error": {
+      "title": "Senden fehlgeschlagen",
+      "message": "Leider ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut. Error: {{ error }}"
+    }
+  },
+  "input": {
+    "search": {
+      "placeholder": "Tippe zum Suchen",
+      "ariaLabels": {
+        "clearSearchButton": "Suche löschen"
+      }
+    },
+    "common": {
+      "ariaLabel": {
+        "open": "Öffnen"
+      }
+    }
+  },
+  "supporter": {
+    "pageTitle": "Benutzerübersicht",
+    "table": {
+      "name": "Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "lastLogin": "Letzter Login",
+      "actions": "Aktionen",
+      "startImpersonationButton": "Nutzeransicht starten"
+    },
+    "overlay": {
+      "exit": "Ansicht schliessen",
+      "title": "Nutzeransicht {{user}}"
+    }
+  },
+  "errors": {
+    "title": "Es ist ein Fehler aufgetreten",
+    "close": "schliessen",
+    "frontend": {
+      "unexpected": {
+        "title": "Es ist ein unerwarteter Fehler aufgetreten",
+        "details": "{{ errorDetails }}"
+      }
+    },
+    "backend": {
+      "method": {
+        "get": "Ladevorgang fehlgeschlagen",
+        "post": "Speichervorgang fehlgeschlagen",
+        "put": "Speichervorgang fehlgeschlagen",
+        "patch": "Speichervorgang fehlgeschlagen",
+        "delete": "Löschvorgang fehlgeschlagen"
+      },
+      "errorId": "Fehler-Id: {{errorId}}",
+      "path": "Pfad: {{method}}:  {{path}}",
+      "generic": {
+        "title": "Serverfehler aufgetreten"
+      },
+      "internalServerError": "Bitte versuchen Sie es später noch einmal oder melden Sie sich beim Support",
+      "badRequest": "Es ist ein Fehler bei der Verarbeitung Ihrer Anfrage aufgetreten. Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.",
+      "unauthorized": "Loggen sie sich ein oder rufen Sie die Seite erneut auf.",
+      "forbidden": "Kein berechtigter Zugriff auf die Ressource.",
+      "notFound": "Die gewünschte Ressource ist nicht verfügbar.",
+      "serviceUnavailable": "Ein Service ist wegen einem Unterbruch nicht erreichbar.\nWir sind schnellstmöglich wieder online.",
+      "unexpected": "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuchen Sie es später noch einmal oder melden Sie sich beim Support. Status: {{status}}"
+    },
+    "popupTitle": "Es sind Fehler aufgetreten",
+    "errorPage": {
+      "title": "Es sind Fehler aufgetreten",
+      "back": "zurück"
+    }
+  },
+  "breadcrumb": {
+    "home": "Home"
+  }
+}

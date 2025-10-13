@@ -1,0 +1,20 @@
+<div *i18n="let t; prefix: 'header.helpAndSupport'" (appClickOutside)="closeOverlay()">
+  <button
+    class="flex lg:flex-col items-center px-2 lg:px-4 py-2 rounded focus:outline-none"
+    (click)="handleToggle()"
+    type="button"
+  >
+    <div class="flex items-center justify-center w-10 h-10">
+      <fa-icon [icon]="iconQuestion" size="xl" />
+    </div>
+    <span class="lg:text-gray-400 lg:text-xs">
+      {{ t('title') }}
+    </span>
+  </button>
+  <app-popover [isOpen]="showPopover()" class="hidden lg:block">
+    <app-contact-support-info-content />
+  </app-popover>
+  <app-contact-support-info-content
+    class="border border-agridata-stroke rounded-lg lg:hidden flex"
+  />
+</div>

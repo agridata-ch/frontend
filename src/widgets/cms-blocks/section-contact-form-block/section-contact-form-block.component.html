@@ -1,0 +1,68 @@
+<div
+  class="container mx-auto px-10 py-20 flex flex-col items-center gap-10"
+  [attr.id]="cmsData().anchorId ? cmsData().anchorId : null"
+>
+  <div class="flex flex-col gap-4 text-center w-full">
+    <h2>{{ cmsData().heading }}</h2>
+    <p class="text-lg font-medium leading-[140%]">{{ cmsData().subHeading }}</p>
+  </div>
+  <form
+    [formGroup]="contactForm"
+    class="flex flex-col gap-6 w-full"
+    (submit)="handleSubmit()"
+    *i18n="let t; prefix: 'contact-form'"
+  >
+    <div class="flex flex-col lg:flex-row gap-6 w-full">
+      <app-form-control
+        [control]="getFormControl(contactForm, 'firstName')"
+        id="contactFormFirstName"
+        [label]="t('firstName.label')"
+        class="w-full lg:w-1/2"
+      />
+      <app-form-control
+        [control]="getFormControl(contactForm, 'lastName')"
+        id="contactFormLastName"
+        [label]="t('lastName.label')"
+        class="w-full lg:w-1/2"
+      />
+    </div>
+
+    <app-form-control
+      [control]="getFormControl(contactForm, 'organisation')"
+      id="contactFormOrganisation"
+      [label]="t('organisation.label')"
+      class="w-full"
+    />
+
+    <div class="flex flex-col lg:flex-row gap-6 w-full">
+      <app-form-control
+        [control]="getFormControl(contactForm, 'email')"
+        id="contactFormEmail"
+        [label]="t('email.label')"
+        class="w-full lg:w-1/2"
+      />
+
+      <app-form-control
+        [control]="getFormControl(contactForm, 'phone')"
+        id="contactFormPhone"
+        [label]="t('phone.label')"
+        [placeholder]="t('phone.placeholder')"
+        class="w-full lg:w-1/2"
+      />
+    </div>
+
+    <app-form-control
+      [control]="getFormControl(contactForm, 'message')"
+      id="contactFormMessage"
+      [label]="t('message.label')"
+      [controlType]="ControlTypes.TEXT_AREA"
+      class="w-full"
+    />
+
+    <div class="flex justify-end">
+      <app-agridata-button (onClick)="handleSubmit()" [variant]="ButtonVariants.Primary">
+        <span>{{ t('submit') }}</span>
+      </app-agridata-button>
+    </div>
+  </form>
+</div>

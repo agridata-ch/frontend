@@ -1,0 +1,24 @@
+<div class="relative w-60 flex items-center" *i18n="let t; prefix: 'input.search'">
+  <app-agridata-input
+    [(value)]="value"
+    [placeholder]="t('placeholder')"
+    [inputPrefixIcon]="magnifyingGlassIcon"
+    [suffixTemplate]="suffixTemplate"
+  ></app-agridata-input>
+  <ng-template #suffixTemplate>
+    <div class="absolute inset-y-0 right-4 flex items-center gap-2">
+      @if (isLoading()) {
+        <fa-icon animation="spin" [icon]="faSpinner"></fa-icon>
+      }
+      @if (trimmedValue() && !isLoading()) {
+        <button
+          class="text-agridata-primary-500 text-lg leading-none p-1 rounded-md transition-all duration-200 hover:bg-blue-100 bg-white"
+          (click)="clearSearch()"
+          [attr.aria-label]="t('ariaLabels.clearSearchButton')"
+        >
+          <fa-icon [icon]="faClose" />
+        </button>
+      }
+    </div>
+  </ng-template>
+</div>

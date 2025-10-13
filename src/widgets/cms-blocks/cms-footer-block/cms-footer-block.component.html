@@ -1,0 +1,32 @@
+<div
+  class="relative flex flex-col gap-10 items-center bg-agridata-primary-600 text-white py-20 px-4 overflow-hidden"
+>
+  <div
+    class="absolute inset-0 bg-[url(assets/images/cms-footer-image.png)] bg-bottom-right bg-contain bg-no-repeat opacity-30"
+  ></div>
+  <div class="relative flex flex-col gap-10 items-center w-full text-center">
+    <h2>{{ block().heading }}</h2>
+    @if (block().cta) {
+      <app-agridata-button
+        [href]="block().cta?.href!"
+        [target]="block().cta?.isExternal ? HrefTarget.Blank : HrefTarget.Self"
+        [variant]="ButtonVariants[`${block().cta?.type!}Cms`]"
+      >
+        {{ block().cta?.label }}
+        <fa-icon [icon]="buttonIcon" />
+      </app-agridata-button>
+    }
+    <div class="flex gap-4 flex-col lg:flex-row">
+      <p>{{ block().subHeading }}</p>
+      <a
+        href="{{ block().contactLink?.href }}"
+        [target]="block().contactLink?.isExternal ? HrefTarget.Blank : HrefTarget.Self"
+        [tabindex]="0"
+        [rel]="'noopener noreferrer'"
+        class="text-white underline"
+      >
+        {{ block().contactLink?.label }}
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<th
+  class="py-3 px-4 select-none text-slate-500 outline-0 hover:bg-gray-50 cursor-pointer focus:bg-gray-200 text-sm font-semibold"
+  (click)="toggleColumnSort()"
+  [class]="columnDefinition().headerCssClasses"
+  (keydown.enter)="toggleColumnSort()"
+  [tabindex]="0"
+  [attr.aria-label]="'table.header.ariaLabels.sort' | i18n"
+>
+  <div class="flex items-center">
+    <span class="mr-2">{{ columnDefinition().name | i18n }}</span>
+    <div class="min-w-4" aria-hidden="true">
+      @if (getSortIcon()) {
+        <fa-icon [icon]="getSortIcon()" class="text-agridata-primary-600" />
+      }
+    </div>
+  </div>
+</th>

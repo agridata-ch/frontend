@@ -9,126 +9,60 @@ on:
     branches: [develop]
 
 jobs:
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  check-single-commit:
+    name: '.'
+    uses: ./.github/workflows/reusable__check_single_commit.yml
+    secrets: inherit
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
+  check-comments:
+    name: '.'
+    uses: ./.github/workflows/reusable__check_comments.yml
+    needs: check-single-commit
+    secrets: inherit
 
-      - name: Install dependencies
-        run: npm ci
+  gitleaks:
+    name: '.'
+    uses: ./.github/workflows/reusable__gitleaks.yml
+    needs: check-single-commit
+    secrets: inherit
 
-      - name: Run unit tests
-        run: npx ng test --coverage --watch=false
-
-      - name: Run SonarQube Analysis
-        uses: SonarSource/sonarqube-scan-action@v5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          projectBaseDir: .
-          args: >
-            -Dsonar.organization=agridata-ch
-            -Dsonar.projectKey=agridata-ch_frontend
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+  unit-test-sonarqube:
+    name: '.'
+    uses: ./.github/workflows/reusable__unit_test_sonarqube.yml
+    needs: [check-comments, gitleaks]
+    secrets: inherit
 
   semantic-release:
-    name: Semantic Release
     if: github.ref == 'refs/heads/develop'
-    needs: test
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
+    name: '.'
+    uses: ./.github/workflows/reusable__semantic_release.yml
+    needs: unit-test-sonarqube
+    secrets: inherit
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
-
-      - name: npm install
-        run: npm install
-
-      - name: Build
-        run: npm run build -- --configuration=production
-
-      - uses: actions/create-github-app-token@v1
-        id: app-token
-        env:
-          GITHUB_APP_SEMANTIC_RELEASE_APP_ID: 1236243
-        with:
-          app-id: ${{ env.GITHUB_APP_SEMANTIC_RELEASE_APP_ID }}
-          private-key: ${{ secrets.PRIVATE_KEY_GITHUB_APP_SEMANTIC_RELEASE }}
-
-      - name: Semantic Release
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: npx semantic-release
-
-  build-deploy:
-    name: Build and deploy application
+  read-version:
+    if: github.ref == 'refs/heads/develop'
+    name: '.'
     needs: semantic-release
+    uses: ./.github/workflows/reusable__read_version.yml
+    with:
+      branch-name: 'develop'
+
+  build-push-s3:
     if: github.ref == 'refs/heads/develop'
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      IMAGE: ${{ steps.push-image.outputs.image }}
-    env:
-      AWS_REGION: eu-central-2
-      S3_BUCKET: agridata-s3-entwicklung-frontend
-      CLOUDFRONT_DISTRIBUTION_ID: EZ4QXZV5B64VV
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    name: '.'
+    uses: ./.github/workflows/reusable__build_push_s3.yml
+    needs: read-version
+    secrets: inherit
+    with:
+      account-id: 108782064107 # develop
+      version: ${{needs.read-version.outputs.version}}
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::108782064107:role/agridata-application-deployment-role
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-          cache-dependency-path: package-lock.json
-
-      - name: npm install
-        run: npm install
-
-      - name: npm build
-        run: npm run build -- --configuration=production
-
-      - name: Deploy to S3 bucket
-        run: |
-          aws s3 sync dist/frontend/browser/ s3://${{ env.S3_BUCKET }}/ \
-            --region ${{ env.AWS_REGION }} \
-            --delete
-
-      - name: Invalidate cloudfront cache
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ env.CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths "/*"
+  set-cloudfront-origin-path:
+    if: github.ref == 'refs/heads/develop'
+    name: '.'
+    uses: ./.github/workflows/reusable__set_cloudfront_origin_path.yml
+    needs: [read-version, build-push-s3]
+    secrets: inherit
+    with:
+      account-id: 108782064107 # develop
+      cloudfront-origin-path: ${{needs.read-version.outputs.version}}

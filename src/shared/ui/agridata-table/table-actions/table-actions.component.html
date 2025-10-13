@@ -1,0 +1,53 @@
+<div class="flex flex-row gap-4 justify-end" [class.is-hovered]="isRowHovered()">
+  @if (mainAction()) {
+    <app-agridata-button
+      click-stop-propagation
+      [variant]="ButtonVariants.PrimaryAccept"
+      [disabled]="mainAction()?.isDisabled ?? false"
+      (onClick)="handleActionClick(mainAction()!)"
+    >
+      {{ mainAction()?.label | i18n }}
+    </app-agridata-button>
+  }
+  @if (showContextMenu()) {
+    <app-agridata-button
+      click-stop-propagation
+      [variant]="ButtonVariants.IconOutline"
+      (onClick)="handleToggle()"
+    >
+      <fa-icon [icon]="iconEllipsis" />
+    </app-agridata-button>
+  } @else {
+    <app-agridata-button
+      click-stop-propagation
+      [variant]="ButtonVariants.Icon"
+      (onClick)="handleRowAction()"
+      class="action-button"
+      [ariaLabel]="'table.ariaLabels.actions' | i18n"
+    >
+      <fa-icon size="xl" [icon]="iconRowAction" />
+    </app-agridata-button>
+  }
+  @if (isOpen()) {
+    <div
+      class="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
+      (appClickOutside)="handleClickOutside()"
+    >
+      <ul>
+        @for (action of actions(); track action.label) {
+          <li
+            click-stop-propagation
+            class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+            (click)="handleActionClick(action)"
+            (keydown.enter)="handleActionClick(action)"
+          >
+            @if (action.icon) {
+              <fa-icon [icon]="action.icon" class="mr-2" />
+            }
+            {{ action.label | i18n }}
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

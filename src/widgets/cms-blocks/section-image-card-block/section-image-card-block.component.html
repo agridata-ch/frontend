@@ -1,0 +1,12 @@
+<div
+  class="container mx-auto px-6 md:px-10 pb-10 pt-20 flex flex-col items-center"
+  [attr.id]="cmsData().anchorId ? cmsData().anchorId : null"
+>
+  <div class="flex flex-col gap-4 text-center w-full">
+    <h2>{{ cmsData().heading }}</h2>
+    <p class="text-lg font-medium leading-[140%]">{{ cmsData().subHeading }}</p>
+  </div>
+  @if (cmsData().imageCardBlock) {
+    <app-image-card-block [block]="cmsData().imageCardBlock" />
+  }
+</div>

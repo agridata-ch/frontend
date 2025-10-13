@@ -1,0 +1,13 @@
+<div class="flex flex-col min-h-screen relative">
+  <app-header-widget></app-header-widget>
+
+  <div class="flex flex-1">
+    <app-navigation-widget class="hidden lg:block"></app-navigation-widget>
+    <main class="container items-center mx-auto px-6 lg:px-10 py-8 flex-1 overflow-auto">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+  <app-footer-widget></app-footer-widget>
+  <app-toast-container></app-toast-container>
+  <app-supporter-overlay></app-supporter-overlay>
+</div>

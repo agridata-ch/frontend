@@ -1,0 +1,36 @@
+<div class="flex flex-col gap-8" *i18n="let t; prefix: 'data-request.preview'">
+  @for (lang of availableLangs; track lang) {
+    <div class="flex flex-col gap-4">
+      <h2>{{ `${t('title')} ${lang.toUpperCase()}` }}</h2>
+      <div class="flex flex-col gap-6 border border-agridata-stroke rounded-lg p-6">
+        <h3>{{ getFieldFromLang('title', lang) }}</h3>
+        <div class="flex items-center gap-2">
+          <app-agridata-avatar
+            [name]="dataRequest()?.dataConsumerDisplayName"
+            [imageUrl]="dataRequest()?.dataConsumerLogoBase64"
+            [size]="AvatarSize.MEDIUM"
+            [skin]="AvatarSkin.LIGHT"
+          />
+          <span class="text-agridata-primary-text font-medium">
+            {{ dataRequest()?.dataConsumerDisplayName }}
+          </span>
+        </div>
+        <span class="text-agridata-secondary-text">
+          {{ getFieldFromLang('description', lang) }}
+        </span>
+        <app-data-request-purpose-accordion
+          [purpose]="getFieldFromLang('purpose', lang)"
+          [products]="productsList()"
+        />
+        <app-data-request-contact
+          [phoneNumber]="dataRequest()?.contactPhoneNumber"
+          [email]="dataRequest()?.contactEmailAddress"
+          [organisationName]="dataRequest()?.dataConsumerDisplayName"
+        />
+        <app-data-request-privacy-infos
+          [dataConsumerName]="dataRequest()?.dataConsumerDisplayName"
+        />
+      </div>
+    </div>
+  }
+</div>

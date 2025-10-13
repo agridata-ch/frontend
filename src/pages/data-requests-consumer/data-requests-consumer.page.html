@@ -1,0 +1,28 @@
+<ng-container *i18n="let t; prefix: 'consumer'">
+  <div class="flex justify-between">
+    <h2 class="page-title"><fa-icon [icon]="icon" class="mr-3" />{{ t('pageTitle') }}</h2>
+    <div>
+      <app-agridata-button
+        (onClick)="handleOpen()"
+        (keydown.enter)="handleOpen()"
+        [variant]="ButtonVariants.Primary"
+      >
+        <fa-icon [icon]="buttonIcon" class="mr-2" />
+        <span>{{ t('createNewDataRequest') }}</span>
+      </app-agridata-button>
+      <app-sidepanel
+        [title]="t('sidePanelTitle')"
+        [isOpen]="showPanel()"
+        (closeSidepanel)="handleClose()"
+        [maxWidth]="'75%'"
+        [backgroundColor]="'#efefef'"
+      >
+        @if(showPanel()) {
+        <app-data-request-new class="contents" [selectedRequest]="selectedRequest()" />
+        }
+      </app-sidepanel>
+    </div>
+  </div>
+  <app-data-request-table (tableRowAction)="setSelectedRequest($event)" />
+</ng-container>
+<div class="flex justify-end"></div>

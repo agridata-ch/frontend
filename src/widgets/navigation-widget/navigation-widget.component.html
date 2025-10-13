@@ -1,0 +1,41 @@
+@if (showNavigation()) {
+  <div class="relative h-full hidden lg:block">
+    <nav
+      class="bg-white border-r border-agridata-stroke px-2 py-15 gap-2 h-full overflow-hidden transition-[width] duration-300 ease-in-out will-change-[width]"
+      [class.w-21]="!isNavigationOpen()"
+      [class.w-56]="isNavigationOpen()"
+    >
+      <ul class="flex flex-col gap-2">
+        @for (navigationItem of navigationItems(); track navigationItem) {
+          @if (navigationItem && typeof navigationItem === 'object') {
+            <li
+              class="rounded-lg text-agridata-primary-text"
+              routerLinkActive="bg-agridata-background-page"
+            >
+              <a [routerLink]="navigationItem.route" class="w-full flex items-center px-6 py-6">
+                <fa-icon [icon]="navigationItem.icon" />
+                <span
+                  class="absolute left-12 ml-3 w-fit transition-opacity duration-100 ease h-full max-h-[3em] flex items-center"
+                  [class.opacity-0]="!isNavigationOpen() || isAnimating()"
+                  [class.opacity-100]="!isAnimating() && isNavigationOpen()"
+                >
+                  {{ navigationItem.label | i18n }}
+                </span>
+              </a>
+            </li>
+          }
+        }
+      </ul>
+    </nav>
+    <button
+      (click)="toggleNavigation()"
+      class="absolute bottom-14 -right-3 w-6 h-6 border rounded-full bg-white hover:bg-agridata-background-page z-10"
+      [attr.aria-label]="
+        isNavigationOpen() ? ('navigation.open' | i18n) : ('navigation.close' | i18n)
+      "
+    >
+      <fa-icon size="xs" [icon]="chevronIcon()" class="text-agridata-secondary-text" />
+    </button>
+  </div>
+}
+<app-mobile-navigation-widget class="flex lg:hidden" [cmsPages]="cmsPages()" />

@@ -1,0 +1,15 @@
+<div class="px-12 py-6 flex justify-between items-center bg-agridata-primary-text text-white">
+  <div>
+    @if (isDevMode()) {
+      <button (click)="resetData()" class="ml-1 text-xs btn btn-secondary">
+        Testdaten zurücksetzen
+      </button>
+    }
+  </div>
+  <div>
+    <span class="text-agridata-tertiary-text">
+      agridata.ch © 2025 — FE {{ frontendVersion() }} · BE
+      {{ backendVersion.value()?.['version'] }}
+    </span>
+  </div>
+</div>

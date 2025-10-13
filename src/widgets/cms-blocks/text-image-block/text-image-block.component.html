@@ -1,0 +1,38 @@
+<div
+  class="flex flex-col md:flex-row items-center gap-8 py-10"
+  [class.md:flex-row-reverse]="cmsData().reversed"
+>
+  <div class="flex flex-col gap-6 md:w-1/2">
+    <h3>{{ cmsData().heading }}</h3>
+    <div [innerHTML]="cmsData().text | markdown"></div>
+
+    @if (cmsData().list) {
+      <app-list-block [list]="cmsData().list!" />
+    }
+
+    @if (button()) {
+      @if (button()?.isButtonLink) {
+        <app-agridata-button
+          [href]="button()?.href!"
+          [target]="button()?.isExternal ? HrefTarget.Blank : HrefTarget.Self"
+          [variant]="ButtonVariants[`${button()?.type!}`]"
+        >
+          {{ button()?.label }}
+          <fa-icon [icon]="buttonIcon" />
+        </app-agridata-button>
+      } @else {
+        <a [href]="button()?.href" [target]="button()?.isExternal ? '_blank' : '_self'">
+          {{ button()?.label }}
+        </a>
+      }
+    }
+  </div>
+
+  <div class="md:w-1/2">
+    <img
+      [src]="generateMediaUrl(cmsData().image.url)"
+      [alt]="alternativeText()"
+      class="rounded-lg"
+    />
+  </div>
+</div>

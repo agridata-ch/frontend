@@ -1,0 +1,54 @@
+<div class="flex flex-col">
+  <label [for]="id()" class="mb-2 font-medium leading-[130%]" [class.text-red-500]="hasError()">{{
+    label()
+  }}</label>
+  @if (controlType() === ControlTypes.INPUT) {
+    <app-agridata-input
+      [control]="control()"
+      [id]="id()!"
+      [type]="type()"
+      [placeholder]="placeholder()"
+      (onBlur)="onBlur.emit()"
+      [maxCharacters]="getMaxCharacters()"
+      [hasError]="hasError()"
+      [inputPrefix]="inputPrefix()"
+      [disabled]="disabled()"
+    />
+  }
+  @if (controlType() === ControlTypes.SELECT) {
+    <app-agridata-select
+      [control]="control()"
+      [options]="options()"
+      [placeholder]="placeholder()"
+      [hasError]="hasError()"
+      [disabled]="disabled()"
+    />
+  }
+  @if (controlType() === ControlTypes.MULTI_SELECT) {
+    <app-agridata-multi-select
+      [control]="control()"
+      [options]="options()"
+      [placeholder]="placeholder()"
+      [hasError]="hasError()"
+      [disabled]="disabled()"
+    />
+  }
+  @if (controlType() === ControlTypes.TEXT_AREA) {
+    <app-agridata-textarea
+      [control]="control()"
+      [id]="id()!"
+      [placeholder]="placeholder()"
+      (onBlur)="onBlur.emit()"
+      [maxCharacters]="getMaxCharacters()"
+      [hasError]="hasError()"
+      [disabled]="disabled()"
+    />
+  }
+  <span class="min-h-[1.5em] block text-gray-700" [class.text-red-500]="hasError()">
+    @if (hasError()) {
+      <span class="text-sm">{{ errorMessage() }}</span>
+    } @else if (helperText()) {
+      <span class="text-sm">{{ helperText() }}</span>
+    }
+  </span>
+</div>

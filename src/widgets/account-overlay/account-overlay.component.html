@@ -1,0 +1,41 @@
+<div class="relative inline-block" (appClickOutside)="handleClickOutside()">
+  <button
+    class="flex gap-3 items-center hover:bg-agridata-hover-on-dark p-2 rounded-md cursor-pointer"
+    [class.bg-agridata-hover-on-dark]="isOverlayOpen()"
+    (click)="toggleOverlay()"
+  >
+    <app-agridata-avatar [name]="overlayName()" [size]="AvatarSize.SMALL" />
+    <div class="text-left">
+      <div>{{ overlayName() }}</div>
+      <div class="text-sm text-gray-400">{{ activeUid() }}</div>
+    </div>
+    <fa-icon [icon]="dropdownIcon()" />
+  </button>
+
+  <app-popover [isOpen]="isOverlayOpen()" class="right-0">
+    <div class="flex flex-col gap-4 p-4">
+      <div class="flex items-center gap-3">
+        <app-agridata-avatar
+          [name]="overlayName()"
+          [size]="AvatarSize.SMALL"
+          [skin]="AvatarSkin.DARK"
+        />
+        <div>
+          <div class="text-lg font-semibold">{{ overlayName() }}</div>
+          <div class="text-sm text-agridata-secondary-text whitespace-nowrap">
+            {{ userData()?.email }}
+          </div>
+        </div>
+      </div>
+      <app-agridata-button
+        [variant]="ButtonVariants.Secondary"
+        (onClick)="logout()"
+        [additionalClass]="'w-full'"
+        [disabled]="agridataStateService.isImpersonating()"
+      >
+        {{ 'account.logout' | i18n }}
+      </app-agridata-button>
+      <app-uid-switch />
+    </div>
+  </app-popover>
+</div>

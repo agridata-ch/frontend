@@ -1,0 +1,17 @@
+<div class="flex">
+  <h5 class="font-bold mb-4">{{ list().heading }}</h5>
+  <ul class="grid grid-cols-1 sm:grid-cols-{{ cols() }} gap-y-4 gap-x-2">
+    @for (item of list().items; track `${item.label}_${item.id}`) {
+      <li class="flex items-center gap-3">
+        @if (item.icon) {
+          <img
+            [src]="generateMediaUrl(item.icon.url)"
+            [alt]="item.icon.alternativeText"
+            class="w-10 h-10"
+          />
+        }
+        <span>{{ item.label }}</span>
+      </li>
+    }
+  </ul>
+</div>

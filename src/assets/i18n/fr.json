@@ -1,0 +1,380 @@
+{
+  "account": {
+    "login": "Se connecter",
+    "logout": "Se déconnecter",
+    "settings": "Paramètres",
+    "passwordAndSecurity": "Mot de passe et sécurité"
+  },
+  "table": {
+    "actions": "Actions",
+    "showingResults": "Afficher {{ current }} sur {{ total }} entrées",
+    "pageInfo": "Page {{ current }} sur {{ total }}",
+    "previousPage": "page précédente",
+    "nextPage": "page suivante",
+    "noData": "aucune donnée disponible",
+    "loading": "Chargement des données",
+    "pageSelector": "Entrées par page",
+    "header": {
+      "ariaLabels": {
+        "sort": "Trier par : {{ sortBy }}"
+      }
+    },
+    "ariaLabels": {
+      "actions": "Actions"
+    }
+  },
+  "consent-request": {
+    "table": {
+      "tableActions": {
+        "title": "Actions",
+        "details": "Détails",
+        "consent": "Approuver",
+        "decline": "Refuser"
+      },
+      "error": "Erreur lors de la mise à jour de la demande."
+    },
+    "filter": {
+      "ALL": "Tous",
+      "OPENED": "Ouvert",
+      "DECLINED": "Refusé",
+      "GRANTED": "Accordé"
+    },
+    "details": {
+      "actions": {
+        "accept": "Approuver",
+        "reject": "Refuser"
+      },
+      "stateCode": {
+        "GRANTED": "Accepté le {{ date }}",
+        "DECLINED": "Refusé le {{ date }}",
+        "OPENED": "Ouvert",
+        "UNKNOWN": "Inconnu"
+      },
+      "footerInformation": "Vous pouvez modifier votre approbation à tout moment.",
+      "requestDate": "Demande du {{ date }}",
+      "sidepanel": {
+        "title": "Vue détaillée"
+      }
+    },
+    "toast": {
+      "title": {
+        "GRANTED": "Approbation accordé",
+        "DECLINED": "Approbation refusé",
+        "DEFAULT": "La demande à été mise à jour"
+      },
+      "message": {
+        "GRANTED": "La demande a été validée avec votre approbation. {{ name }}.",
+        "DECLINED": "La demande a été refusée avec succès. {{ name }}.",
+        "DEFAULT": "La demande a été mise à jour."
+      },
+      "undo": "Annuler l'action"
+    },
+    "dataRequest": {
+      "title": "Demande de données",
+      "state": "Statut",
+      "consumerName": "Requérant de données",
+      "date": "Date de la demande",
+      "stateCode": {
+        "OPENED": "Ouvert",
+        "GRANTED": "Accordé",
+        "DECLINED": "Refusé"
+      }
+    }
+  },
+  "consumer": {
+    "pageTitle": "Demandes de données",
+    "createNewDataRequest": "Nouvelle demande de données",
+    "sidePanelTitle": "Saisir une nouvelle demande de données"
+  },
+  "data-request": {
+    "consumerName": "Requérant de données",
+    "title": "Demande de données",
+    "date": "Date de la demande",
+    "state": "Statut",
+    "contact": {
+      "title": "Coordonnées",
+      "description": "Pour toute question ou clarification concernant la demande de données, veuillez contacter {{ organisationName }} à l'adresse suivante:"
+    },
+    "form": {
+      "request": {
+        "headline": "Informations sur la référence des données",
+        "provider": {
+          "label": "Fournisseur de données",
+          "sublabel": "Actuellement, un seul fournisseur de données est disponible. D'autres fournisseurs sont continuellement connectés."
+        },
+        "products": {
+          "label": "Quel produit de données souhaitez-vous ?",
+          "placeholder": "Sélectionnez les produits pour lesquels vous souhaitez demander des données."
+        },
+        "title": {
+          "label": "Nom de la demande de données",
+          "sublabel": "Le nom sera affiché à tous les producteurs de données dans leur langue préférée lorsqu'ils décideront de partager vos données.",
+          "de": {
+            "label": "Nom de la demande de données DE",
+            "placeholder": "Anfrage von [...] zum Bezug von [...]-Daten"
+          },
+          "fr": {
+            "label": "Nom de la demande de données FR",
+            "placeholder": "Demande de [...] pour obtenir des données [...]"
+          },
+          "it": {
+            "label": "Nom de la demande de données IT",
+            "placeholder": "Richiesta di [...] per ottenere [...] dati"
+          }
+        },
+        "description": {
+          "label": "Description de la demande",
+          "sublabel": "La description s'affiche dans la langue préférée de tous les producteurs de données afin qu'ils puissent prendre une décision éclairée.",
+          "de": {
+            "label": "Description de la demande DE",
+            "placeholder": "Wenn Sie der Datenweitergabe an [...]  zustimmen, vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
+          },
+          "fr": {
+            "label": "Description de la demande FR",
+            "placeholder": "En donnant votre approbation à la transmission de données à [...], vous simplifiez votre travail quotidien, réduisez les saisies multiples et accélérez les processus."
+          },
+          "it": {
+            "label": "Description de la demande IT",
+            "placeholder": "Con il consenso all'inoltro dei dati a [...] si semplifica il lavoro quotidiano, si riducono gli inserimenti multipli di dati e si velocizzano i processi."
+          }
+        },
+        "purpose": {
+          "label": "But de l'utilisation des données",
+          "sublabel": "Le but de l'utilisation de données est indiquée à tous les producteurs de données dans leur langue préférée afin de garantir une transparence maximale quant à l'utilisation de leurs données.",
+          "de": {
+            "label": "But d'utilisation des données DE",
+            "placeholder": "[...] nutzt die angefragten Daten für ... (Beschreibung durch Datenbezüger). Die Daten werden (nicht) an Dritte weitergegeben. [...] verpflichtet sich, im Umgang mit den Daten geltende Vorschriften einzuhalten."
+          },
+          "fr": {
+            "label": "But d'utilisation des données FR",
+            "placeholder": "[...] utilise les données demandées pour ... (description par le bénéficiaire des données). Les données sont (non) transmises à des tiers. [...] s'engage à respecter la réglementation en vigueur en matière de traitement des données."
+          },
+          "it": {
+            "label": "Objectif d'utilisation des données IT",
+            "placeholder": "[...] utilizza i dati richiesti per ... (descrizione del destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
+          }
+        }
+      },
+      "consumer": {
+        "headline": "Informations sur le bénéficiaire des données",
+        "name": {
+          "label": "Nom",
+          "placeholder": "Nom"
+        },
+        "uid": {
+          "label": "UID",
+          "placeholder": "CHEXXXXXXXXX",
+          "prefix": "CHE"
+        },
+        "dataConsumerStreet": {
+          "label": "Rue",
+          "placeholder": "Rue"
+        },
+        "dataConsumerZip": {
+          "label": "Code postal",
+          "placeholder": "Code postal"
+        },
+        "dataConsumerCity": {
+          "label": "Ville",
+          "placeholder": "Ville"
+        },
+        "dataConsumerCountry": {
+          "label": "Pays",
+          "placeholder": "Pays"
+        },
+        "producer": {
+          "label": "Votre annonce au producteurs de données",
+          "sublabel": "Ces informations seront affichées aux producteurs de données lors de la demande d’approbation.",
+          "logo": "Logo"
+        },
+        "contact": {
+          "label": "Vos coordonnées",
+          "sublabel": "Téléphone ou e-mail pour toute question concernant votre demande."
+        },
+        "contactPhoneNumber": {
+          "label": "Numéro de téléphone",
+          "placeholder": "+41 .. ... ..."
+        },
+        "contactEmailAddress": {
+          "label": "Adresse e-mail",
+          "placeholder": "...@......"
+        },
+        "dataConsumerDisplayName": {
+          "label": "Nom d'affichage / Abréviation",
+          "placeholder": "Nom d'affichage / Abréviation"
+        },
+        "logo": {
+          "label": "Logo",
+          "upload": "Télécharger une image",
+          "error": {
+            "invalidFileType": "Type de fichier invalide. Veuillez télécharger un fichier PNG ou JPG.",
+            "size": "Le fichier est trop volumineux. Taille maximale autorisée: {{ maxSize }}"
+          }
+        }
+      },
+      "producer": {
+        "info": "Une fois le contrat signé par toutes les parties contractantes, vous recevrez une e-mail modèle d'invitation par e-mail. Cette e-mail contiendra un lien spécifique à votre demande. Vous pourrez ainsi inviter de manière ciblée vos producteurs de données.",
+        "title": "Déterminer les producteurs de données",
+        "description": "Déterminez quel groupe de producteurs de données vous souhaitez cibler avec votre demande.",
+        "targetGroup": {
+          "label": "Groupe de producteurs de données",
+          "placeholder": "Groupe de producteurs de données",
+          "helperText": "Exemple : tous les agriculteurs bio"
+        }
+      }
+    },
+    "preview": {
+      "title": "Aperçu"
+    },
+    "privacy": {
+      "consent": {
+        "title": "Approbation",
+        "description": "En donnant votre accord, vous autorisez la transmission des données de la liste de vos exploitations associées au requérant des données {{ consumerName }}"
+      },
+      "dataProtection": {
+        "title": "Protection des données",
+        "description": "{{ consumerName }} est responsable du traitement conforme à la protection des données de ces informations."
+      },
+      "revocation": {
+        "title": "Possibilité de révocation",
+        "description": "Vous pouvez révoquer ou modifier votre approbation à tout moment."
+      }
+    },
+    "purpose": {
+      "title": "But de l'utilisation des données",
+      "description": "Les données suivantes seront transmises"
+    },
+    "wizard": {
+      "steps": {
+        "consumer": "Requérant des données",
+        "request": "Demande de données",
+        "preview": "Aperçu",
+        "producer": "Fournisseur de données",
+        "contract": "Contrat",
+        "completion": "Conclusion"
+      },
+      "saveDraft": "Mise en cache",
+      "saveAndComplete": "Enregistrer et soumettre",
+      "next": "Suivant",
+      "previous": "Retour",
+      "submitAndContinue": "Soumettre la demande et continuer"
+    },
+    "submit": {
+      "error": "Erreur lors de la soumission de la demande"
+    },
+    "stateCode": {
+      "IN_REVIEW": "En cours d'examen",
+      "DRAFT": "Projet",
+      "TO_BE_SIGNED": "Signature ouverte",
+      "ACTIVE": "Actif"
+    },
+    "table": {
+      "tableActions": {
+        "details": "Afficher",
+        "retreat": "Retrait"
+      }
+    },
+    "provider": "Fournisseur de données",
+    "submissionDate": "Date de soumission",
+    "humanFriendlyId": "ID"
+  },
+  "forms": {
+    "error": {
+      "required": "Ce champ est obligatoire.",
+      "minlength": "Minimum {{min}} caractères requis.",
+      "maxlength": "Maximum {{max}} caractères autorisés.",
+      "minItems": "Minimum {{min}} éléments requis.",
+      "maxItems": "Maximum {{max}} éléments autorisés.",
+      "pattern": "Format invalide."
+    }
+  },
+  "navigation": {
+    "open": "Navigation ouverte",
+    "close": "Navigation fermée",
+    "menuItems": {
+      "helpAndSupport": "Aide et assistance",
+      "notifications": "Notifications"
+    }
+  },
+  "producer": {
+    "pageTitle": "Demandes",
+    "redirect": {
+      "headline": "C'est fait !",
+      "description": "Merci d'avoir choisi\u2028Vous serez redirigé automatiquement dans {{ count }} secondes.",
+      "redirectNow": "Retour direct"
+    }
+  },
+  "countries": {
+    "CH": "Suisse",
+    "LI": "Liechtenstein"
+  },
+  "header": {
+    "helpAndSupport": {
+      "title": "Aide et assistance",
+      "support": {
+        "title": "Assistance"
+      }
+    }
+  },
+  "contact-form": {
+    "firstName": {
+      "label": "Prénom"
+    },
+    "lastName": {
+      "label": "Nom de famille"
+    },
+    "organisation": {
+      "label": "Organisation (facultatif)"
+    },
+    "email": {
+      "label": "E-Mail"
+    },
+    "phone": {
+      "label": "Numéro de téléphone (facultatif)",
+      "placeholder": "+41 00 000 000"
+    },
+    "submit": "Envoyer la demande",
+    "message": {
+      "label": "Votre demande"
+    },
+    "success": {
+      "title": "Message envoyé",
+      "message": "Merci beaucoup ! Nous avons bien reçu votre message et vous répondrons rapidement."
+    },
+    "error": {
+      "title": "Échec de l'envoi",
+      "message": "Une erreur s'est malheureusement produite. Veuillez réessayer plus tard. Erreur: {{ error }}"
+    }
+  },
+  "input": {
+    "search": {
+      "placeholder": "Conseil pour la recherche",
+      "ariaLabels": {
+        "clearSearchButton": "Effacer la recherche"
+      }
+    },
+    "common": {
+      "ariaLabel": {
+        "open": "Ouvrir"
+      }
+    }
+  },
+  "supporter": {
+    "pageTitle": "Aperçu des utilisateurs",
+    "table": {
+      "name": "Nom",
+      "email": "E-Mail",
+      "phone": "Téléphone",
+      "lastLogin": "Dernière connexion",
+      "actions": "Actions",
+      "startImpersonationButton": "Lancer la vue utilisateur"
+    },
+    "overlay": {
+      "exit": "Fermer la vue",
+      "title": "Affichage utilisateur {{user}}"
+    }
+  },
+  "breadcrumb": {
+    "home": "Accueil"
+  }
+}

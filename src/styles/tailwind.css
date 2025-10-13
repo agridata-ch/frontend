@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-agridata-primary-50: #eaf0fa;
+  --color-agridata-primary-100: #d6e0f5;
+  --color-agridata-primary-200: #bbccee;
+  --color-agridata-primary-300: #99b3e6;
+  --color-agridata-primary-400: #7799dd;
+  --color-agridata-primary-500: #5580d5;
+  --color-agridata-primary-600: #3366cc;
+  --color-agridata-primary-700: #2b55aa;
+  --color-agridata-primary-800: #224488;
+  --color-agridata-primary-900: #1a3366;
+  --color-agridata-secondary-600: #13C296;
+
+  --color-agridata-primary-text: #263645;
+  --color-agridata-secondary-text: #46596b;
+  --color-agridata-tertiary-text: #62748e;
+
+  --color-agridata-stroke: #ededed;
+  --color-agridata-background-page: #ededed;
+  --color-agridata-content-gray: #f1f5f9;
+
+  --color-agridata-hover-on-dark: #5c6874;
+  --color-agridata-icon-on-dark: #656565;
+}

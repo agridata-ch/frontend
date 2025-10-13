@@ -1,0 +1,25 @@
+<app-agridata-client-table
+  [rawData]="dataRequests.value()"
+  [tableMetadata]="dataRequestsTableMetaData()"
+>
+  <ng-template #humanFriendlyId [appDataRequestDtoGuard] let-item>
+    <span class="text-agridata-primary-text font-medium" [title]="item.humanFriendlyId ?? ''">
+      {{ item.humanFriendlyId ?? '' }}
+    </span>
+  </ng-template>
+  <ng-template #dataRequestTitle [appDataRequestDtoGuard] let-item>
+    <span
+      class="text-agridata-primary-600 agridata-ellipsis"
+      [title]="getObjTranslation(item?.title)"
+    >
+      {{ getObjTranslation(item?.title) }}
+    </span>
+  </ng-template>
+  <ng-template #dataRequestState [appDataRequestDtoGuard] let-item>
+    <app-agridata-badge
+      [text]="getStatusTranslation(item?.stateCode)"
+      [variant]="getBadgeVariant(item?.stateCode)"
+      [size]="BadgeSize.SM"
+    />
+  </ng-template>
+</app-agridata-client-table>

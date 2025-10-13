@@ -1,2 +1,94 @@
 /* You can add global styles to this file, and also import other style files */
-@import 'tailwindcss';
+@import './styles/tailwind.css';
+@import './styles/utilities.css';
+@import './styles/variables.css';
+
+/* Base font & colors for the whole app */
+body {
+  font-family: 'Inclusive Sans', sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-size: var(--base-font-size);
+  color: var(--color-agridata-primary-text);
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-slate-50);
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+
+  @apply antialiased;
+}
+
+/* Reset default margins on all headings, then re-apply our own */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: var(--font-weight-bold);
+  line-height: 130%;
+
+  @media screen and (max-width: 768px) {
+    line-height: 120%;
+  }
+}
+
+h1 {
+  font-size: var(--heading-one-font-size);
+  line-height: var(--heading-one-line-height);
+}
+
+/* Your “default” h2 style */
+h2 {
+  font-size: var(--heading-two-font-size);
+  color: var(--heading-two-color);
+
+  &.page-title {
+    font-size: var(--heading-page-title-font-size);
+    margin-bottom: 3rem;
+  }
+}
+
+h3 {
+  font-size: var(--heading-three-font-size);
+  color: var(--heading-three-color);
+}
+
+h4 {
+  font-size: var(--heading-four-font-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--heading-four-color);
+}
+
+h5 {
+  font-size: var(--heading-five-font-size);
+  color: var(--heading-five-color);
+}
+
+h6 {
+  font-size: var(--heading-six-font-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--heading-six-color);
+}
+
+p {
+  font-size: var(--paragraph-font-size);
+}
+
+button {
+  outline-color: var(--color-gray-900);
+  outline-offset: 0.125rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: var(--color-gray-100);
+  cursor: not-allowed;
+}
+
+input,
+textarea,
+select {
+  outline-color: var(--color-gray-900);
+}

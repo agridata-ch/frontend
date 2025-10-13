@@ -1,3 +1,7 @@
 export const environment = {
-  apiUrl: 'https://api.dev.agridata.ch'
+  production: false,
+  apiBaseUrl: 'https://localhost',
+  cmsBaseUrl: 'https://localhost:1337',
+  cmsContactUrl: 'https://cms.agridata.ch/api/contact',
+  oidc: {},
 };

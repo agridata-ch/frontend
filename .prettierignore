@@ -23,3 +23,5 @@ src/assets/
 src/themes/
 src/styles/
 src/index.html
+src/entities/openapi
+THIRD_PARTY_LICENSES.md

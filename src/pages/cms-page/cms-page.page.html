@@ -1,0 +1,13 @@
+@if (cmsPageResource.isLoading()) { ...Loading CMS } @else if (cmsPageResource.error()) { ...Error
+loading CMS } @else {
+<app-hero-block [block]="heroBlock()" />
+<div class="flex gap-3 py-6 px-8 text-agridata-primary-text font-medium leading-6">
+  <a routerLink="/" class="hover:underline cursor-pointer"> {{ 'breadcrumb.home' | i18n }} </a>
+  <fa-icon [icon]="breadcrumbIcon" />
+  <span>{{ pageTitle() }}</span>
+</div>
+@for (block of pageBlocks(); track `${block.__component}_${block.id}`) {
+<app-cms-block-renderer [block]="block" [index]="$index"></app-cms-block-renderer>
+}
+<app-cms-footer-block [block]="footerBlock()" />
+}

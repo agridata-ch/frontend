@@ -1,0 +1,157 @@
+@if (uidInfoResource.isLoading()) {
+  <div class="flex items-center justify-center h-full">
+    <span class="text-gray-500">loading</span>
+  </div>
+} @else {
+  <form
+    [formGroup]="form()!"
+    class="flex flex-col gap-6"
+    *i18n="let t; prefix: 'data-request.form.consumer'"
+  >
+    <h2>{{ t('headline') }}</h2>
+    <div class="flex flex-col gap-6">
+      <div class="flex gap-6">
+        <div class="flex flex-col grow">
+          <label for="dataConsumerName" class="mb-2 font-medium leading-[130%]">{{
+            t('name.label')
+          }}</label>
+          <app-agridata-input
+            id="dataConsumerName"
+            type="text"
+            [disabled]="true"
+            [value]="consumerName()"
+            placeholder="{{ t('name.placeholder') }}"
+            [disabled]="consumerName() != null || formDisabled()"
+          />
+        </div>
+        <div class="flex flex-col max-w-[180px]">
+          <label for="dataConsumerUID" class="mb-2 font-medium leading-[130%]">{{
+            t('uid.label')
+          }}</label>
+          <app-agridata-input
+            id="dataConsumerUID"
+            type="text"
+            [disabled]="true"
+            [value]="consumerUid()"
+            placeholder="{{ t('uid.placeholder') }}"
+            [disabled]="consumerUid() != null || formDisabled()"
+          />
+        </div>
+      </div>
+      <app-form-control
+        [control]="getFormControl(this.form()!, 'consumer.dataConsumerStreet')"
+        id="dataConsumerStreet"
+        [label]="t('dataConsumerStreet.label')"
+        [placeholder]="t('dataConsumerStreet.placeholder')"
+        [disabled]="formDisabled()"
+      />
+      <div class="flex gap-6">
+        <app-form-control
+          [control]="getFormControl(this.form()!, 'consumer.dataConsumerZip')"
+          id="dataConsumerZip"
+          [label]="t('dataConsumerZip.label')"
+          [placeholder]="t('dataConsumerZip.placeholder')"
+          class="max-w-[200px]"
+          [disabled]="formDisabled()"
+        />
+        <app-form-control
+          [control]="getFormControl(this.form()!, 'consumer.dataConsumerCity')"
+          id="dataConsumerCity"
+          [label]="t('dataConsumerCity.label')"
+          [placeholder]="t('dataConsumerCity.placeholder')"
+          class="grow"
+          [disabled]="formDisabled()"
+        />
+      </div>
+      <app-form-control
+        [control]="getFormControl(this.form()!, 'consumer.dataConsumerCountry')"
+        id="dataConsumerCountry"
+        [label]="t('dataConsumerCountry.label')"
+        [placeholder]="t('dataConsumerCountry.placeholder')"
+        [controlType]="ControlTypes.SELECT"
+        [options]="countries()"
+        class="max-w-[200px]"
+        [disabled]="formDisabled()"
+      />
+      <div class="flex flex-col gap-6 bg-agridata-content-gray p-6 rounded-lg">
+        <div class="flex flex-col">
+          <h4>{{ t('producer.label') }}</h4>
+          <span class="text-agridata-secondary-text">
+            {{ t('producer.sublabel') }}
+          </span>
+        </div>
+        <div class="flex gap-6">
+          <div class="flex flex-col gap-1 justify-end min-w-[120px]">
+            <div class="flex items-center gap-4">
+              <app-agridata-avatar
+                [name]="consumerDisplayName()"
+                [imageUrl]="logoPreviewUrl()"
+                [size]="AvatarSize.LARGE"
+                [skin]="AvatarSkin.LIGHT"
+              />
+              <div class="flex flex-col gap-2">
+                <span class="text-agridata-primary-text font-medium">{{ t('logo.label') }}</span>
+                @if (!formDisabled()) {
+                  <app-agridata-button
+                    [variant]="ButtonVariants.Link"
+                    (onClick)="fileInput.click()"
+                    (keydown.enter)="fileInput.click()"
+                  >
+                    {{ t('logo.upload') }}
+                  </app-agridata-button>
+                }
+                <input
+                  #fileInput
+                  type="file"
+                  accept=".jpg, .jpeg, .png"
+                  class="hidden"
+                  (change)="onFileSelected($event)"
+                />
+              </div>
+            </div>
+            <span class="min-h-[1.5em] text-red-500 block">
+              @if (logoErrorMessage()) {
+                <span class="text-sm">{{ logoErrorMessage() }}</span>
+              }
+            </span>
+          </div>
+          <app-form-control
+            [control]="getFormControl(this.form()!, 'consumer.dataConsumerDisplayName')"
+            id="dataConsumerDisplayName"
+            [label]="t('dataConsumerDisplayName.label')"
+            [placeholder]="t('dataConsumerDisplayName.placeholder')"
+            (input)="handleChangeConsumerInitials($event)"
+            class="grow"
+            [disabled]="formDisabled()"
+          />
+        </div>
+      </div>
+      <div class="flex flex-col gap-6 bg-agridata-content-gray p-6 rounded-lg">
+        <div class="flex flex-col">
+          <h4>{{ t('contact.label') }}</h4>
+          <span class="text-agridata-secondary-text">
+            {{ t('contact.sublabel') }}
+          </span>
+        </div>
+        <div class="flex gap-6">
+          <app-form-control
+            [control]="getFormControl(this.form()!, 'consumer.contactPhoneNumber')"
+            id="contactPhoneNumber"
+            [label]="t('contactPhoneNumber.label')"
+            [placeholder]="t('contactPhoneNumber.placeholder')"
+            class="max-w-[200px]"
+            [disabled]="formDisabled()"
+          />
+          <app-form-control
+            [control]="getFormControl(this.form()!, 'consumer.contactEmailAddress')"
+            id="contactEmailAddress"
+            [label]="t('contactEmailAddress.label')"
+            [placeholder]="t('contactEmailAddress.placeholder')"
+            class="grow"
+            [disabled]="formDisabled()"
+          />
+        </div>
+      </div>
+    </div>
+  </form>
+}

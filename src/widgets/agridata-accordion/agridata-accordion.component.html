@@ -1,0 +1,31 @@
+<div
+  class="flex flex-col bg-white w-full border border-agridata-stroke rounded-lg bg-opacity-50"
+  [class.hover:bg-agridata-primary-50]="!isExpanded()"
+  [class.hover:border-gray-400]="!isExpanded()"
+>
+  <button
+    class="flex justify-between items-center py-6 px-6"
+    (click)="toggleAccordion()"
+    (keydown.enter)="toggleAccordion()"
+    tabindex="0"
+  >
+    <span
+      [class.text-lg]="isLarge()"
+      [class.font-semibold]="isLarge()"
+      [class.font-medium]="!isLarge()"
+      [class.leading-[140%]]="isLarge()"
+      [class.leading-[130%]]="!isLarge()"
+      >{{ header() }}</span
+    >
+    <fa-icon [icon]="expandIcon()"></fa-icon>
+  </button>
+  <div
+    #contentWrapper
+    class="overflow-hidden transition-all ease-in-out duration-300"
+    style="height: 0px"
+  >
+    <div #contentInner class="pb-4 px-6">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

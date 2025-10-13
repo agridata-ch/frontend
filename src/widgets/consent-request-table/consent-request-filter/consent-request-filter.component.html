@@ -1,0 +1,21 @@
+<div class="mb-4 flex gap-4 flex-wrap">
+  @for (filter of filterOptions; track filter) {
+    <!-- normally you don't use ! for classes but here it's neccessary because of tailwind and angular -->
+    <app-agridata-button
+      [variant]="ButtonVariants.Filter"
+      (onClick)="handleClick(filter.value)"
+      [selected]="isSelected(filter.value)"
+    >
+      <span>
+        {{ filter.label | i18n }}
+        @if (filter.value === consentRequestStateEnum.Opened) {
+          <span
+            class="text-agridata-secondary-text bg-agridata-content-gray size-3 rounded-full px-2"
+          >
+            {{ totalOpenRequests() }}
+          </span>
+        }
+      </span>
+    </app-agridata-button>
+  }
+</div>

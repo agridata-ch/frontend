@@ -1,0 +1,4 @@
+.is-hovered .action-button {
+  background-color: var(--color-blue-100);
+  border-color: var(--color-blue-100);
+}

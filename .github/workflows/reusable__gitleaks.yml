@@ -1,0 +1,29 @@
+on:
+  workflow_call:
+
+jobs:
+  git-leaks:
+    name: Gitleaks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          clean: true
+
+      - name: Generate GitHub App Token
+        uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: 2038498
+          private-key: ${{ secrets.PRIVATE_KEY_GITHUB_APP_GITLEAKS }}
+
+      - name: Run Gitleaks Scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          GITLEAKS_LICENSE: ${{ secrets.LICENSE_KEY_GITLEAKS }}

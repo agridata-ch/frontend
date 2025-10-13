@@ -1,0 +1,83 @@
+<app-agridata-wizard
+  [steps]="formControlSteps()"
+  #wizard
+  (onStepChange)="handleStepChange()"
+  class="flex flex-col flex-1 min-h-0 relative"
+>
+  <div wizardContent>
+    @switch (wizard.currentStepId()) {
+      @case (FORM_GROUP_NAMES.CONSUMER) {
+        <app-data-request-form-consumer
+          [form]="form()"
+          (saveLogo)="handleSaveLogo($event)"
+          [dataRequestLogo]="dataRequest()?.dataConsumerLogoBase64"
+          [formDisabled]="formDisabled()"
+        />
+      }
+      @case (FORM_GROUP_NAMES.REQUEST) {
+        <app-data-request-form-request [form]="form()" [formDisabled]="formDisabled()" />
+      }
+      @case (FORM_GROUP_NAMES.PREVIEW) {
+        <app-data-request-preview [dataRequest]="dataRequest()!" />
+      }
+      @case (FORM_GROUP_NAMES.PRODUCER) {
+        <app-data-request-form-producer [form]="form()" [formDisabled]="formDisabled()" />
+      }
+      @case (FORM_GROUP_NAMES.CONTRACT) {
+        <h3>Invitation link</h3>
+        <a href="{{ invitationLink() }}">{{ invitationLink() }}</a>
+      }
+      @case (FORM_GROUP_NAMES.COMPLETION) {
+        <span>step 6</span>
+      }
+    }
+  </div>
+  <div wizardFooter class="contents" *i18n="let t; prefix: 'data-request.wizard'">
+    @if (wizard.currentStep() !== formControlSteps().length - 1) {
+      <app-agridata-button
+        [variant]="ButtonVariants.Tertiary"
+        (onClick)="handleSave()"
+        [disabled]="formDisabled()"
+      >
+        {{ t('saveDraft') }}
+      </app-agridata-button>
+      <div class="flex gap-4">
+        <app-agridata-button
+          [variant]="ButtonVariants.Secondary"
+          (onClick)="handlePreviousStep()"
+          [disabled]="wizard.currentStep() === 0"
+        >
+          <fa-icon [icon]="previousIcon"></fa-icon>
+          <span class="ml-2">{{ t('previous') }}</span>
+        </app-agridata-button>
+        @if (wizard.currentStepId() === FORM_GROUP_NAMES.PRODUCER && !formDisabled()) {
+          <app-agridata-button (onClick)="handleSubmitAndContinue()">
+            {{ t('submitAndContinue') }}
+            <fa-icon [icon]="nextIcon"></fa-icon>
+          </app-agridata-button>
+        } @else {
+          <app-agridata-button (onClick)="handleNextStep()">
+            <span class="mr-2">{{ t('next') }}</span>
+            <fa-icon [icon]="nextIcon"></fa-icon>
+          </app-agridata-button>
+        }
+      </div>
+    } @else {
+      <app-agridata-button
+        [variant]="ButtonVariants.Secondary"
+        (onClick)="handlePreviousStep()"
+        [disabled]="wizard.currentStep() === 0"
+      >
+        {{ t('previous') }}
+      </app-agridata-button>
+      <div class="flex gap-4">
+        <app-agridata-button [variant]="ButtonVariants.Secondary" (onClick)="handleSave()">
+          {{ t('saveDraft') }}
+        </app-agridata-button>
+        <app-agridata-button (onClick)="handleSaveAndComplete()">
+          {{ t('saveAndComplete') }}
+        </app-agridata-button>
+      </div>
+    }
+  </div>
+</app-agridata-wizard>
