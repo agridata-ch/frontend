@@ -20,14 +20,14 @@ jobs:
     secrets: inherit
 
   semantic-release:
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/main'
     name: '.'
     uses: ./.github/workflows/reusable__semantic_release.yml
     needs: [unit-test-sonarqube, gitleaks]
     secrets: inherit
 
   read-version:
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/main'
     name: '.'
     needs: semantic-release
     uses: ./.github/workflows/reusable__read_version.yml
@@ -35,7 +35,7 @@ jobs:
       branch-name: 'main'
 
   build-push-s3:
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/main'
     name: '.'
     uses: ./.github/workflows/reusable__build_push_s3.yml
     needs: read-version
@@ -45,7 +45,7 @@ jobs:
       version: ${{needs.read-version.outputs.version}}
 
   set-cloudfront-origin-path:
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/main'
     name: '.'
     uses: ./.github/workflows/reusable__set_cloudfront_origin_path.yml
     needs: [read-version, build-push-s3]
