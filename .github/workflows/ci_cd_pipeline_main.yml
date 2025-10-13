@@ -14,17 +14,22 @@ jobs:
     uses: ./.github/workflows/reusable__unit_test_sonarqube.yml
     secrets: inherit
 
+  gitleaks:
+    name: '.'
+    uses: ./.github/workflows/reusable__gitleaks.yml
+    secrets: inherit
+
   semantic-release:
     if: github.ref == 'refs/heads/develop'
     name: '.'
     uses: ./.github/workflows/reusable__semantic_release.yml
-    needs: unit-test-sonarqube
+    needs: [unit-test-sonarqube, gitleaks]
     secrets: inherit
 
   read-version:
     if: github.ref == 'refs/heads/develop'
     name: '.'
-    needs: unit-test-sonarqube
+    needs: semantic-release
     uses: ./.github/workflows/reusable__read_version.yml
     with:
       branch-name: 'main'
