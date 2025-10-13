@@ -1,3 +1,9 @@
+## [1.0.0-rc.91](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.90...v1.0.0-rc.91) (2025-10-13)
+
+### Bug Fixes
+
+- **pipeline:** fix pipeline ([942d9f3](https://github.com/agridata-ch/frontend/commit/942d9f3b12330473512af9f4fc8465b07031c72e))
+
 ## [1.0.0-rc.90](https://github.com/agridata-ch/frontend/compare/v1.0.0-rc.89...v1.0.0-rc.90) (2025-10-09)
 
 ### Features
