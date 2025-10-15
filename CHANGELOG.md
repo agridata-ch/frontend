@@ -1,3 +1,9 @@
+## [1.1.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.0.0...v1.1.0-rc.1) (2025-10-15)
+
+### Features
+
+- **error-handling:** adds error handling ([19ac43c](https://github.com/agridata-ch/frontend/commit/19ac43c5552c307eb9082deff164e59509c2780c)), closes [DIGIB2-835](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-835)
+
 ## 1.0.0 (2025-10-13)
 
 ### Features
