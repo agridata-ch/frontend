@@ -3,6 +3,7 @@
   border-radius: 0.375rem; /* ~6px */
   padding: 0.875rem 1.75rem; /* ~13px top/bottom, ~28px left/right */
   cursor: pointer;
+  outline-width: 4px;
 }
 
 .agridata-button:disabled {
@@ -31,16 +32,23 @@
   color: white;
   border-color: var(--color-green-600);
   background-color: var(--color-green-600);
+  outline-color: var(--color-green-300);
 }
 
 .agridata-button.agridata-button-primary-accept:hover {
-  background-color: var(--color-green-500);
-  border-color: var(--color-green-500);
+  background-color: var(--color-green-700);
+  border-color: var(--color-green-700);
+}
+
+.agridata-button.agridata-button-primary-accept:focus {
+  background-color: var(--color-green-700);
+  border-color: var(--color-green-700);
+  outline-style: solid;
 }
 
 .agridata-button.agridata-button-primary-accept:disabled {
-  background-color: var(--color-green-200);
-  border-color: var(--color-green-200);
+  background-color: var(--color-gray-200);
+  border-color: var(--color-gray-200);
   cursor: not-allowed;
 }
 
@@ -81,11 +89,18 @@
 .agridata-button.agridata-button-secondary-reject {
   border-color: var(--color-red-600);
   color: var(--color-red-600);
+  outline-color: var(--color-red-200);
 }
 
 .agridata-button.agridata-button-secondary-reject:hover {
   border-color: var(--color-red-400);
+  background-color: var(--color-red-50);
   color: var(--color-red-400);
+}
+
+.agridata-button.agridata-button-secondary-reject:focus {
+  background-color: var(--color-red-50);
+  outline-style: solid;
 }
 
 .agridata-button.agridata-button-secondary-reject:disabled {
@@ -181,11 +196,23 @@
 .agridata-button.agridata-button-filter {
   font-size: var(--text-sm);
   border-radius: var(--radius-4xl);
+  border-color: var(--color-agridata-primary-600);
+  color: var(--color-agridata-primary-600);
   background-color: white;
+  padding: 0.5rem 1rem;
+  outline-color: var(--color-agridata-primary-200);
+}
+
+.agridata-button.agridata-button-filter:focus {
+  outline-style: solid;
+}
+
+.agridata-button.agridata-button-filter:hover {
+  background-color: var(--color-agridata-primary-50);
 }
 
 .agridata-button.agridata-button-filter.selected {
   background-color: var(--color-gray-200);
-  border-color: var(--color-gray-800);
-  color: var(--color-gray-800);
+  border-color: var(--color-agridata-primary-text);
+  color: var(--color-agridata-primary-text);
 }

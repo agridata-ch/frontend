@@ -78,7 +78,6 @@ p {
 
 button {
   outline-color: var(--color-gray-900);
-  outline-offset: 0.125rem;
   cursor: pointer;
 }
 
