@@ -1,3 +1,9 @@
+## [1.1.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.2...v1.1.0-rc.3) (2025-10-15)
+
+### Features
+
+- **deps:** update actions/setup-node action to v6 ([04cb9d7](https://github.com/agridata-ch/frontend/commit/04cb9d736ef7dbed3f3438213a76aaabe0e44919))
+
 ## [1.1.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.1...v1.1.0-rc.2) (2025-10-15)
 
 ### Features
