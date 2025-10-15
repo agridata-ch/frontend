@@ -1,4 +1,7 @@
-<app-consent-request-filter (onClick)="setStateCodeFilter($event)" [requests]="consentRequests()" />
+<app-consent-request-filter
+  (onClick)="setStateCodeFilter($event)"
+  [requests]="filteredConsentRequests()"
+/>
 <app-agridata-client-table
   [rawData]="filteredConsentRequests()"
   [tableMetadata]="consentRequestsTableMetaData()"
@@ -33,6 +36,7 @@
 </app-agridata-client-table>
 <app-consent-request-list
   class="lg:hidden"
-  [consentRequests]="consentRequests()"
+  [consentRequests]="filteredConsentRequests()"
   (openDetails)="openDetails($event)"
+  (updateConsentRequestStatus)="updateConsentRequestState($event.id, $event.newState, $event.title)"
 />

@@ -5,23 +5,24 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { ConsentRequestProducerViewDto, ConsentRequestStateEnum } from '@/entities/openapi';
 import { formatDate } from '@/shared/date';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
+import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 
 /**
  * Component to display a list of consent requests in a mobile-friendly format.
  *
- * CommentLastReviewed: 2025-09-02
+ * CommentLastReviewed: 2025-10-15
  */
 @Component({
   selector: 'app-consent-request-list',
   imports: [
-    AgridataAvatarComponent,
     FontAwesomeModule,
     ButtonComponent,
     AgridataBadgeComponent,
     I18nDirective,
+    AgridataContactCardComponent,
   ],
   templateUrl: './consent-request-list.component.html',
 })
@@ -29,6 +30,7 @@ export class ConsentRequestListComponent {
   protected readonly i18nService = inject(I18nService);
   readonly consentRequests = input<ConsentRequestProducerViewDto[]>();
   readonly openDetails = output<ConsentRequestProducerViewDto>();
+  readonly updateConsentRequestStatus = output<{ id: string; newState: string; title?: string }>();
 
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
@@ -55,5 +57,15 @@ export class ConsentRequestListComponent {
     if (stateCode === ConsentRequestStateEnum.Granted) return BadgeVariant.SUCCESS;
     if (stateCode === ConsentRequestStateEnum.Declined) return BadgeVariant.ERROR;
     return BadgeVariant.DEFAULT;
+  }
+
+  acceptRequest(event: Event, request: ConsentRequestProducerViewDto) {
+    event.stopPropagation();
+    const requestTitle = this.i18nService.useObjectTranslation(request.dataRequest?.title);
+    this.updateConsentRequestStatus.emit({
+      id: request.id,
+      newState: ConsentRequestStateEnum.Granted,
+      title: requestTitle,
+    });
   }
 }
