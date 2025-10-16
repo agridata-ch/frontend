@@ -44,7 +44,7 @@ export const routes: Routes = [
   {
     path: ROUTE_PATHS.IMPRESSUM_PATH,
     component: FullWidthLayoutComponent,
-    canActivate: [AuthorizationGuard, HomeRedirectGuard],
+    canActivate: [AuthorizationGuard],
     children: [
       {
         path: '',
@@ -55,7 +55,7 @@ export const routes: Routes = [
   {
     path: ROUTE_PATHS.PRIVACY_POLICY_PATH,
     component: FullWidthLayoutComponent,
-    canActivate: [AuthorizationGuard, HomeRedirectGuard],
+    canActivate: [AuthorizationGuard],
     children: [
       {
         path: '',
