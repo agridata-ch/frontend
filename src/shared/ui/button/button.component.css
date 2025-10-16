@@ -4,6 +4,7 @@
   padding: 0.875rem 1.75rem; /* ~13px top/bottom, ~28px left/right */
   cursor: pointer;
   outline-width: 4px;
+  font-weight: 600;
 }
 
 .agridata-button:disabled {
@@ -185,7 +186,6 @@
 .agridata-button.agridata-button-link {
   border: 0;
   color: var(--color-agridata-primary-600);
-  font-weight: 600;
   padding: 0;
 }
 

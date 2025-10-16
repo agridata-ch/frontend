@@ -28,6 +28,20 @@ export class CmsService {
       ),
     );
 
+  readonly fetchImprintPage = (locale: string) =>
+    firstValueFrom(
+      this.http.get(
+        `${this.apiUrl}/api/imprint?locale=${locale}${this.isDevMode ? '&status=draft' : ''}`,
+      ),
+    );
+
+  readonly fetchPrivacyPolicyPage = (locale: string) =>
+    firstValueFrom(
+      this.http.get(
+        `${this.apiUrl}/api/privacy-policy?locale=${locale}${this.isDevMode ? '&status=draft' : ''}`,
+      ),
+    );
+
   readonly fetchCmsPages = (locale: string) =>
     firstValueFrom(this.http.get(`${this.apiUrl}/api/pages?locale=${locale}`));
 

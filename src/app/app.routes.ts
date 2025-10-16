@@ -10,8 +10,10 @@ import { CmsPage } from '@/pages/cms-page';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
 import { ErrorPage } from '@/pages/error-page/error-page.component';
+import { ImprintPage } from '@/pages/imprint-page';
 import { LandingPage } from '@/pages/landing-page';
 import { NotFoundPage } from '@/pages/not-found';
+import { PrivacyPolicyPage } from '@/pages/privacy-policy-page';
 import { SupporterPageComponent } from '@/pages/supporter-page/';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
@@ -36,6 +38,28 @@ export const routes: Routes = [
       {
         path: '',
         component: LandingPage,
+      },
+    ],
+  },
+  {
+    path: ROUTE_PATHS.IMPRESSUM_PATH,
+    component: FullWidthLayoutComponent,
+    canActivate: [AuthorizationGuard, HomeRedirectGuard],
+    children: [
+      {
+        path: '',
+        component: ImprintPage,
+      },
+    ],
+  },
+  {
+    path: ROUTE_PATHS.PRIVACY_POLICY_PATH,
+    component: FullWidthLayoutComponent,
+    canActivate: [AuthorizationGuard, HomeRedirectGuard],
+    children: [
+      {
+        path: '',
+        component: PrivacyPolicyPage,
       },
     ],
   },
