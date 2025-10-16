@@ -182,8 +182,8 @@ const config: Config = {
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: [
-    // Add marked to the list of node_modules that should be transformed
-    '/node_modules/(?!marked).+\\.js$',
+    // Transform ESM packages shipped in node_modules that Jest needs to process
+    'node_modules/(?!(@jsverse|@angular|angular-auth-oidc-client|rxjs|tslib|@ngrx|marked|@fortawesome)/)',
   ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
