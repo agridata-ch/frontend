@@ -1,3 +1,9 @@
+## [1.1.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.6...v1.1.0-rc.7) (2025-10-16)
+
+### Features
+
+- **toast:** add fixed width ([93b5c7a](https://github.com/agridata-ch/frontend/commit/93b5c7af4222cbc06016dab19087be12b0b6daa6)), closes [DIGIB2-534](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-534)
+
 ## [1.1.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.5...v1.1.0-rc.6) (2025-10-16)
 
 ### Features
