@@ -1,7 +1,4 @@
-<app-consent-request-filter
-  (onClick)="setStateCodeFilter($event)"
-  [requests]="filteredConsentRequests()"
-/>
+<app-consent-request-filter (onClick)="setStateCodeFilter($event)" [requests]="consentRequests()" />
 <app-agridata-client-table
   [rawData]="filteredConsentRequests()"
   [tableMetadata]="consentRequestsTableMetaData()"
