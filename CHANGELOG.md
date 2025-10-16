@@ -1,3 +1,10 @@
+## [1.1.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.4...v1.1.0-rc.5) (2025-10-16)
+
+### Bug Fixes
+
+- **DIGIB2-957:** passing consentRequests instead of filtered consentRequests ([8918c19](https://github.com/agridata-ch/frontend/commit/8918c1987b6aa6ec2ac07ba8439e40e5434aae78)), closes [DIGIB2-957](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-957)
+- **table:** centers cell content vertically ([f1f82cd](https://github.com/agridata-ch/frontend/commit/f1f82cd6debab3c62ee5c73ee5f3f342559a7b58)), closes [DIGIB2-894](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-894)
+
 ## [1.1.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.3...v1.1.0-rc.4) (2025-10-16)
 
 ### Features
