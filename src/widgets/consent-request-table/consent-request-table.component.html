@@ -9,10 +9,10 @@
       <app-agridata-contact-card
         [imageUrl]="item.dataRequest?.dataConsumerLogoBase64"
         [name]="item.dataRequest?.dataConsumerDisplayName"
-        [size]="AvatarSize.MEDIUM"
+        [secondaryName]="item.dataRequest?.dataConsumerCity"
+        [size]="AvatarSize.SMALL"
         [skin]="AvatarSkin.LIGHT"
-      >
-      </app-agridata-contact-card>
+      />
     </div>
   </ng-template>
   <ng-template #dataRequestTitle [appConsentRequestProducerViewDtoGuard] let-item>

@@ -34,6 +34,7 @@ import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agr
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
+import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';
 import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
 import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
@@ -60,6 +61,7 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
     AgridataAvatarComponent,
     DataRequestContactComponent,
     ErrorOutletComponent,
+    AgridataContactCardComponent,
   ],
   templateUrl: './consent-request-details.component.html',
 })
@@ -95,6 +97,7 @@ export class ConsentRequestDetailsComponent {
   readonly requestConsumerLogo = computed(
     () => this.request()?.dataRequest?.dataConsumerLogoBase64,
   );
+  readonly dataConsumerCity = computed(() => this.request()?.dataRequest?.dataConsumerCity);
 
   readonly requestTitle = computed(() =>
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.title),

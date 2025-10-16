@@ -23,13 +23,13 @@
         {{ requestTitle() }}
       </h3>
       <div class="flex items-center gap-2">
-        <app-agridata-avatar
-          [imageUrl]="requestConsumerLogo()"
+        <app-agridata-contact-card
           [name]="dataConsumerName()"
+          [imageUrl]="requestConsumerLogo()"
+          [secondaryName]="dataConsumerCity()"
           [size]="AvatarSize.MEDIUM"
           [skin]="AvatarSkin.LIGHT"
         />
-        <span class="text-gray-800 text-lg font-semibold">{{ dataConsumerName() }}</span>
       </div>
 
       <span class="text-agridata-primary-text font-normal">

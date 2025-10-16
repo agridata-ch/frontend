@@ -9,6 +9,7 @@ import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy
 import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
 
 import { availableLangs } from '../../../transloco.config';
+import { AgridataContactCardComponent } from '../agridata-contact-card';
 
 /**
  * Implements the preview logic. It integrates metadata services to fetch products, dynamically
@@ -26,6 +27,7 @@ import { availableLangs } from '../../../transloco.config';
     DataRequestPrivacyInfosComponent,
     DataRequestContactComponent,
     AgridataAvatarComponent,
+    AgridataContactCardComponent,
   ],
   templateUrl: './data-request-preview.component.html',
 })

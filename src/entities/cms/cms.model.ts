@@ -207,6 +207,19 @@ export interface StrapiCollectionTypeResponse {
   data: PageData[];
 }
 
+export interface StrapiSingleTypeResponseWithContent {
+  data: {
+    id: number;
+    documentId: string;
+    title: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    content: string;
+    footer: FooterBlock;
+  };
+}
+
 export interface ContactFormData {
   firstName: string;
   lastName: string;
