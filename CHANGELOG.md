@@ -1,3 +1,9 @@
+## [1.1.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.7...v1.1.0-rc.8) (2025-10-16)
+
+### Features
+
+- **cms:** load draft pages ([7451723](https://github.com/agridata-ch/frontend/commit/74517238048fa1b23f6d1293b77e2e01eb70de64)), closes [DIGIB2-773](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-773)
+
 ## [1.1.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.6...v1.1.0-rc.7) (2025-10-16)
 
 ### Features
