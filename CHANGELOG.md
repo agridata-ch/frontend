@@ -1,3 +1,9 @@
+## [1.1.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.3...v1.1.0-rc.4) (2025-10-16)
+
+### Features
+
+- **dependency-updates:** updates dependencies (angular 20.3) ([6a52378](https://github.com/agridata-ch/frontend/commit/6a5237893c8724bdf97fce8193c0329e66ceccbf)), closes [DIGIB2-835](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-835)
+
 ## [1.1.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.2...v1.1.0-rc.3) (2025-10-15)
 
 ### Features
