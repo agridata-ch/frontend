@@ -1,4 +1,7 @@
-<td class="py-3 px-4 border-t border-gray-200" [class]="columnDefinition().cellCssClasses">
+<td
+  class="align-middle py-3 px-4 border-t border-gray-200"
+  [class]="columnDefinition().cellCssClasses"
+>
   @let renderer = columnDefinition().renderer;
   @switch (renderer.type) {
     @case (CellRendererTypes.FUNCTION) {
