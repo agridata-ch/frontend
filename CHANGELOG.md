@@ -1,3 +1,9 @@
+## [1.1.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.5...v1.1.0-rc.6) (2025-10-16)
+
+### Features
+
+- **cms:** add new cms pages ([4d275d2](https://github.com/agridata-ch/frontend/commit/4d275d2218bdd3f51053ca85ff5e87db06222355))
+
 ## [1.1.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.4...v1.1.0-rc.5) (2025-10-16)
 
 ### Bug Fixes
