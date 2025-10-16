@@ -43,7 +43,11 @@ export class CmsService {
     );
 
   readonly fetchCmsPages = (locale: string) =>
-    firstValueFrom(this.http.get(`${this.apiUrl}/api/pages?locale=${locale}`));
+    firstValueFrom(
+      this.http.get(
+        `${this.apiUrl}/api/pages?locale=${locale}${this.isDevMode ? '&status=draft' : ''}`,
+      ),
+    );
 
   readonly fetchCmsPage = (slug: string, locale: string) =>
     firstValueFrom(
