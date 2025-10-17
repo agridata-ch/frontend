@@ -1,3 +1,9 @@
+## [1.1.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.8...v1.1.0-rc.9) (2025-10-17)
+
+### Features
+
+- **icons:** add font-awsome pro icons ([90cb390](https://github.com/agridata-ch/frontend/commit/90cb390cadac005063c31b3f7414685ed79072ff)), closes [DIGIB2-480](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-480)
+
 ## [1.1.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.7...v1.1.0-rc.8) (2025-10-16)
 
 ### Features
