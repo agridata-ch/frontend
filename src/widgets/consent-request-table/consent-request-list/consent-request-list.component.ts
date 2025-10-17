@@ -1,6 +1,6 @@
 import { Component, inject, input, output } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight } from '@fortawesome/pro-regular-svg-icons';
 
 import { ConsentRequestProducerViewDto, ConsentRequestStateEnum } from '@/entities/openapi';
 import { formatDate } from '@/shared/date';

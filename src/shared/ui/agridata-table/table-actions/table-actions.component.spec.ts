@@ -2,7 +2,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/pro-regular-svg-icons';
 
 import { getTranslocoModule } from '@/app/transloco-testing.module';
 

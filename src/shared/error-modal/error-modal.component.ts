@@ -1,5 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { faClose } from '@fortawesome/pro-light-svg-icons';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';

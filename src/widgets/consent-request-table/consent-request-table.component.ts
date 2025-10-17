@@ -9,7 +9,6 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
@@ -80,7 +79,6 @@ export class ConsentRequestTableComponent {
     viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('dataRequestTitle');
   private readonly dataRequestStateTemplate =
     viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('dataRequestState');
-  protected readonly checkIcon = faCheck;
   protected readonly BadgeSize = BadgeSize;
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
@@ -101,7 +99,6 @@ export class ConsentRequestTableComponent {
     const requestTitle = this.i18nService.useObjectTranslation(request.dataRequest?.title);
 
     const consent: ActionDTO = {
-      icon: this.checkIcon,
       label: 'consent-request.table.tableActions.consent',
       isDisabled: this.agridataStateService.isImpersonating(),
       callback: () => {

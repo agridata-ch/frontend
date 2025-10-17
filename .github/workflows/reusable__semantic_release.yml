@@ -6,6 +6,8 @@ jobs:
     name: Semantic Release
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5

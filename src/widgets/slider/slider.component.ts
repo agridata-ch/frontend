@@ -9,7 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight } from '@fortawesome/pro-regular-svg-icons';
 
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
@@ -35,8 +35,8 @@ export class SliderComponent implements AfterViewInit {
   protected readonly gap = signal<number>(16);
   protected readonly slidesPerPage = signal<number>(window.innerWidth >= 768 ? 2 : 1);
 
-  protected readonly totalPages = computed(() =>
-    Array(Math.ceil(this.slideCount() / this.slidesPerPage())),
+  protected readonly totalPages = computed(
+    () => new Array(Math.ceil(this.slideCount() / this.slidesPerPage())),
   );
 
   protected readonly iconChevronRight = faChevronRight;

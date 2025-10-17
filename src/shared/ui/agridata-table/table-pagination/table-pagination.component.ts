@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight } from '@fortawesome/pro-regular-svg-icons';
 
 import { I18nDirective } from '@/shared/i18n';
 import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';

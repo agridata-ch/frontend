@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowUp } from '@fortawesome/pro-light-svg-icons';
 
 import { ColumnDefinition, SortDirections } from '@/shared/ui/agridata-table';
 

@@ -29,12 +29,12 @@
     </nav>
     <button
       (click)="toggleNavigation()"
-      class="absolute bottom-14 -right-3 w-6 h-6 border rounded-full bg-white hover:bg-agridata-background-page z-10"
+      class="absolute bottom-14 -right-2.5 rounded-full border-transparent w-6 h-6 bg-white hover:bg-agridata-background-page z-10"
       [attr.aria-label]="
         isNavigationOpen() ? ('navigation.open' | i18n) : ('navigation.close' | i18n)
       "
     >
-      <fa-icon size="xs" [icon]="chevronIcon()" class="text-agridata-secondary-text" />
+      <fa-icon size="xl" [icon]="navIcon()" class="flex text-agridata-secondary-text" />
     </button>
   </div>
 }
