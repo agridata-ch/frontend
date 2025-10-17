@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, effect, inject, input, resource, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faDatabase, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faDatabase, faPlus } from '@fortawesome/pro-regular-svg-icons';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';

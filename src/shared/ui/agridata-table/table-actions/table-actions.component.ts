@@ -1,6 +1,7 @@
 import { Component, computed, input, output, signal } from '@angular/core';
 import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
-import { faChevronRight, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight } from '@fortawesome/pro-light-svg-icons';
+import { faEllipsisVertical } from '@fortawesome/pro-regular-svg-icons';
 
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
 import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';

@@ -154,6 +154,10 @@
 }
 
 .agridata-button.agridata-button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   border-color: transparent;
   width: 41px;
   height: 41px;

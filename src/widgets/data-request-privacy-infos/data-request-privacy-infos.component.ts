@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faLock, faPenSquare, faRepeat } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faPenSquare, faRepeat } from '@fortawesome/pro-regular-svg-icons';
 
 import { I18nPipe } from '@/shared/i18n';
 

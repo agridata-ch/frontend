@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight } from '@fortawesome/pro-regular-svg-icons';
 
 import { Block, TextImageBlock } from '@/entities/cms';
 import { generateMediaUrl } from '@/shared/lib/cms';

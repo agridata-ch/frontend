@@ -1,6 +1,6 @@
 import { Component, HostListener, input, output } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { faClose } from '@fortawesome/pro-light-svg-icons';
 
 import { ButtonComponent, ButtonVariants } from '../ui/button';
 

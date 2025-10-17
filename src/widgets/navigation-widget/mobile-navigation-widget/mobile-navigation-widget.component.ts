@@ -1,8 +1,13 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons';
-import { faBars, faBell, faClose, faHome } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBars,
+  faBell,
+  faClose,
+  faHome,
+  faCircleQuestion,
+} from '@fortawesome/pro-regular-svg-icons';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { PageData } from '@/entities/cms';

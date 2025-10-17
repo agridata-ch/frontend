@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, effect, inject, input, resource } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight } from '@fortawesome/pro-regular-svg-icons';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { CmsService, StrapiSingleTypeResponse } from '@/entities/cms';

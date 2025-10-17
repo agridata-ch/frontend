@@ -8,7 +8,7 @@ import {
   output,
   viewChild,
 } from '@angular/core';
-import { faEye, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faRotateLeft } from '@fortawesome/pro-regular-svg-icons';
 
 import { DataRequestService } from '@/entities/api';
 import {

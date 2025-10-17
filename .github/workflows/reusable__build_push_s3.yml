@@ -15,6 +15,7 @@ jobs:
     timeout-minutes: 5
     env:
       AWS_REGION: eu-central-2
+      FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
     permissions:
       id-token: write
       contents: read

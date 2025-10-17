@@ -30,7 +30,7 @@ import { I18nDirective, I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService } from '@/shared/toast';
-import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
+import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
@@ -58,7 +58,6 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
     SidepanelComponent,
     ButtonComponent,
     DataRequestPrivacyInfosComponent,
-    AgridataAvatarComponent,
     DataRequestContactComponent,
     ErrorOutletComponent,
     AgridataContactCardComponent,

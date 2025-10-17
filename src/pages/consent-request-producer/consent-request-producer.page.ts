@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, effect, inject, input, resource, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFile } from '@fortawesome/free-regular-svg-icons';
+import { faFileCheck } from '@fortawesome/pro-regular-svg-icons';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
@@ -53,7 +53,7 @@ export class ConsentRequestProducerPage {
   private readonly errorService = inject(ErrorHandlerService);
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
-  readonly fileIcon = faFile;
+  readonly fileIcon = faFileCheck;
 
   readonly consentRequestResource = resource({
     params: () => ({ uid: this.agridataStateService.activeUid() }),

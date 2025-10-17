@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
+import { IconDefinition } from '@fortawesome/pro-regular-svg-icons';
 
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';

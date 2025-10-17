@@ -10,7 +10,7 @@ import {
   signal,
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/pro-regular-svg-icons';
 
 import { ResourceQueryDto } from '@/entities/openapi';
 import { I18nDirective } from '@/shared/i18n';
