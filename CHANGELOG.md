@@ -1,3 +1,9 @@
+## [1.1.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.9...v1.1.0-rc.10) (2025-10-20)
+
+### Features
+
+- **cms card:** update card ([a80e47d](https://github.com/agridata-ch/frontend/commit/a80e47d18628b004a9b9cbcdca38809714f59eb3)), closes [DIGIB2-909](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-909)
+
 ## [1.1.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.8...v1.1.0-rc.9) (2025-10-17)
 
 ### Features
