@@ -45,11 +45,15 @@ export interface List {
   items: ListItem[];
 }
 
+export type CardColors = 'Blue' | 'Green' | 'Red' | 'Yellow' | 'Orange';
+
 export interface Card {
   id: number;
   image: Image;
   heading: string;
   text: string;
+  colorized: boolean;
+  color: CardColors;
 }
 
 export interface TextImageBlock {

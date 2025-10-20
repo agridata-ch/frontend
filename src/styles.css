@@ -63,17 +63,12 @@ h4 {
 
 h5 {
   font-size: var(--heading-five-font-size);
-  color: var(--heading-five-color);
 }
 
 h6 {
   font-size: var(--heading-six-font-size);
   font-weight: var(--font-weight-semibold);
   color: var(--heading-six-color);
-}
-
-p {
-  font-size: var(--paragraph-font-size);
 }
 
 button {

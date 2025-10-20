@@ -1,4 +1,6 @@
-<div class="px-12 py-6 flex justify-between items-center bg-agridata-primary-text text-white">
+<div
+  class="px-12 py-6 flex flex-col md:flex-row gap-2 justify-between items-center bg-agridata-primary-text text-white"
+>
   <div>
     @if (isDevMode()) {
       <button (click)="resetData()" class="ml-1 text-xs btn btn-secondary">
@@ -6,7 +8,7 @@
       </button>
     }
   </div>
-  <div class="flex gap-2">
+  <div class="flex flex-col md:flex-row gap-2">
     <a href="{{ ROUTE_PATHS.IMPRESSUM_PATH }}" class="hover:underline p-4">Impressum</a>
     <a href="{{ ROUTE_PATHS.PRIVACY_POLICY_PATH }}" class="hover:underline p-4">Datenschutz</a>
   </div>
