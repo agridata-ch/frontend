@@ -1,8 +1,7 @@
 import { Component, computed, input, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faTimes } from '@fortawesome/pro-light-svg-icons';
-import { faChevronDown, faChevronUp } from '@fortawesome/pro-regular-svg-icons';
+import { faChevronDown, faChevronUp, faTimes } from '@fortawesome/pro-regular-svg-icons';
 
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
 import { FormControlWithMessages } from '@/shared/lib/form.helper';

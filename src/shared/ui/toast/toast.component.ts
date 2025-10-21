@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCheck, faClose } from '@fortawesome/pro-light-svg-icons';
+import { faCheck, faClose } from '@fortawesome/pro-regular-svg-icons';
 
 import { I18nPipe } from '@/shared/i18n';
 import { Toast, ToastService, ToastState, ToastType } from '@/shared/toast';

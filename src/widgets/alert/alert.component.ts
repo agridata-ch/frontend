@@ -6,7 +6,7 @@ import {
   faClose,
   faWarning,
   faCheckCircle,
-} from '@fortawesome/pro-light-svg-icons';
+} from '@fortawesome/pro-regular-svg-icons';
 
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 

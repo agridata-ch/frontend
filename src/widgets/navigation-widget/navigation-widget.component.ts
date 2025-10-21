@@ -3,11 +3,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faFileCheck,
-  faCircleChevronLeft,
-  faCircleChevronRight,
+  faChevronLeft,
+  faChevronRight,
   faDatabase,
   faUsers,
-} from '@fortawesome/pro-light-svg-icons';
+} from '@fortawesome/pro-regular-svg-icons';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { PageData } from '@/entities/cms';
@@ -44,9 +44,7 @@ export class NavigationWidgetComponent {
   readonly cmsPages = input<PageData[]>([]);
 
   readonly isNavigationOpen = computed(this.agridataStateService.isNavigationOpen);
-  readonly navIcon = computed(() =>
-    this.isNavigationOpen() ? faCircleChevronLeft : faCircleChevronRight,
-  );
+  readonly navIcon = computed(() => (this.isNavigationOpen() ? faChevronLeft : faChevronRight));
   readonly showNavigation = computed(() => this.authService.isAuthenticated());
   readonly userRoles = computed(() => this.authService.userRoles());
 
