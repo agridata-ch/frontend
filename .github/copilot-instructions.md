@@ -33,6 +33,7 @@ For tests adhere to those rules:
 
 - Focus tests on features with high complexity. I don't want too many tests.
 - Don't test the implementation but rather verify the components function. You don't need to mock child components.
+- don't test style related features
 - jest for mocking and spies.
 - add a constant usable by any tests like this: component = fixture.componentInstance; Use this where possible instead of componentRef
 - add a constant usable by any tests like this: let componentRef: ComponentRef<ErrorModal> = fixture.componentRef;

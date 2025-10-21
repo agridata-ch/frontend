@@ -167,8 +167,11 @@ describe('AgridataTableComponent', () => {
       fixture.componentRef.setInput('dataProvider', MockResources.createMockResourceRef(emptyData));
       fixture.detectChanges();
 
-      const emptyRow = compiled.querySelector('tbody tr td');
-      expect(emptyRow?.textContent).toContain('noData');
+      const emptyStateComponent = fixture.debugElement.query(By.css('app-empty-state'));
+      expect(emptyStateComponent).toBeTruthy();
+
+      const tableElement = fixture.debugElement.query(By.css('table'));
+      expect(tableElement).toBeFalsy();
     });
 
     it('should render actions column when actions are provided', () => {

@@ -2,6 +2,10 @@
   class="border border-agridata-stroke rounded-md divide-y divide-agridata-stroke overflow-hidden"
   *i18n="let t; prefix: 'consent-request'"
 >
+  @if (consentRequests()?.length === 0) {
+    <app-empty-state></app-empty-state>
+  }
+
   @for (request of consentRequests(); track request.id) {
     <div
       (click)="handleClick(request)"

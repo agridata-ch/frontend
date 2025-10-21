@@ -92,7 +92,7 @@
     "date": "Data richiesta",
     "state": "Stato",
     "contact": {
-      "title": "ContattiInformazioni di contatto",
+      "title": "Informazioni di contatto",
       "description": "Per qualsiasi domanda o chiarimento sulla richiesta di dati, contattare direttamente {{ organisationName }} all'indirizzo seguente:"
     },
     "form": {
@@ -124,10 +124,10 @@
         },
         "description": {
           "label": "Descrizione della richiesta",
-          "sublabel": "La descrizione è visualizzata pressoviene mostrata a tutti i produttori di dati nella loro lingua preferita, affinchécosì possaono prendere una decisione informatacon cognizione di causa.",
+          "sublabel": "La descrizione è visualizzata presso tutti i produttori di dati nella loro lingua preferita, affinché possano prendere una decisione con cognizione di causa.",
           "de": {
             "label": "Descrizione della richiesta DE",
-            "placeholder": "Mit der Einwilligung zur Datenweitergabe an [...] vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
+            "placeholder": "Wenn Sie der Datenweitergabe an [...]  zustimmen, vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
           },
           "fr": {
             "label": "Descrizione della richiesta FR",
@@ -140,7 +140,7 @@
         },
         "purpose": {
           "label": "Scopo di utilizzo dei dati",
-          "sublabel": "Lo scopo di ell'utilizzo è visualizzato presso viene mostrato a tutti i produttori di dati nella loro lingua preferita, per garantire la massima trasparenza sull'uso dei loro dati.",
+          "sublabel": "Lo scopo di utilizzo è visualizzato presso tutti i produttori di dati nella loro lingua preferita, per garantire la massima trasparenza sull'uso dei loro dati.",
           "de": {
             "label": "Scopo di utilizzo dei dati DE",
             "placeholder": "[...] nutzt die angefragten Daten für ... (Beschreibung durch Datenbezüger). Die Daten werden (nicht) an Dritte weitergegeben. [...] verpflichtet sich, im Umgang mit den Daten geltende Vorschriften einzuhalten."
@@ -156,7 +156,7 @@
         }
       },
       "consumer": {
-        "headline": "Informazioni sull’acquirentea richiesta di dati",
+        "headline": "Informazioni sull’acquirente di dati",
         "name": {
           "label": "Nome",
           "placeholder": "Nome"
@@ -183,8 +183,8 @@
           "placeholder": "Paese"
         },
         "producer": {
-          "label": "Come vieni visualizzato La tua pubblicità presso il produttore di dati",
-          "sublabel": "Queste informazioni sonoverranno visualizzate presso ai produttori di dati durante la richiesta di consenso.",
+          "label": "Come vieni visualizzato presso il produttore di dati",
+          "sublabel": "Queste informazioni sono visualizzate presso i produttori di dati durante la richiesta di consenso.",
           "logo": "Logo"
         },
         "contact": {
@@ -229,15 +229,15 @@
     "privacy": {
       "consent": {
         "title": "Consenso",
-        "description": "Con il tuo consenso, autorizzi la trasmissione dei dati.\n\nUn contratto tra l’Ufficio federale dell’agricoltura e  {{ consumerName }} costituisce la base legale per la trasmissione e l’utilizzo dei dati."
+        "description": "Con il tuo consenso, {{ consumerName }} potrà accedere ai dati sopra indicati."
       },
       "dataProtection": {
         "title": "Protezione dei dati",
-        "description": "Ai sensi della legge sulla protezione dei dati, {{ consumerName }} è responsabile del trattamento di tali informazioni in conformità con la normativa sulla protezione dei dati."
+        "description": "Tra {{ dataProvider }} e {{ consumerName }} esiste un contratto che regola in modo inequivocabile lo scopo e l'utilizzo dei dati sopra descritti. {{ consumerName }} è tenuto a rispettare le disposizioni della legge sulla protezione dei dati."
       },
       "revocation": {
         "title": "Possibilità di modifica",
-        "description": "Puoi revocare o modificare il tuo consenso in qualsiasi momento."
+        "description": "Hai la possibilità di cambiare la tua decisione in qualsiasi momento."
       }
     },
     "purpose": {
@@ -271,7 +271,7 @@
     "table": {
       "tableActions": {
         "details": "Visualizza",
-        "retreat": "Ritirarsi"
+        "retreat": "Ritira"
       }
     },
     "provider": "Fornitore di dati",
@@ -297,7 +297,7 @@
     }
   },
   "producer": {
-    "pageTitle": "Richieste",
+    "pageTitle": "Richiesta di dati",
     "redirect": {
       "headline": "Fatto!",
       "description": "Grazie per aver scelto il nostro servizio. Verrai reindirizzato automaticamente tra {{ count }} secondi.",
@@ -308,6 +308,7 @@
     "CH": "Svizzera",
     "LI": "Liechtenstein"
   },
+  "account.loginForm.loginButton": "Accedi",
   "header": {
     "helpAndSupport": {
       "title": "Aiuto e supporto",
@@ -392,7 +393,7 @@
         "delete": "Operazione di cancellazione non riuscita"
       },
       "errorId": "ID errore: {{errorId}}",
-      "path": "Percorso: {{method}}:  {{path}}",
+      "path": "Percorso: {{method}}: {{path}}",
       "generic": {
         "title": "Si è verificato un errore del server"
       },
@@ -412,5 +413,10 @@
   },
   "breadcrumb": {
     "home": "Casa"
+  },
+  "emptyState": {
+    "title": "Nessuna richiesta disponibile",
+    "message": "Al momento non ci sono richieste di dati attive e non è necessario intraprendere alcuna azione. \nNon appena verrà presentata una prima richiesta di dati, questa verrà visualizzata qui e ne sarete informati.",
+    "additionalInfo": "Per ulteriori informazioni consultare "
   }
 }

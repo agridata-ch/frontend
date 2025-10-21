@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
-  ResourceRef,
-  WritableSignal,
   computed,
   effect,
   input,
   model,
+  ResourceRef,
   signal,
+  WritableSignal,
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faSpinner } from '@fortawesome/pro-regular-svg-icons';
@@ -23,6 +23,7 @@ import { TableCellComponent } from '@/shared/ui/agridata-table/table-cell/table-
 import { TableHeaderCellComponent } from '@/shared/ui/agridata-table/table-header-cell/table-header-cell.component';
 import { TablePaginationComponent } from '@/shared/ui/agridata-table/table-pagination/table-pagination.component';
 import { ButtonVariants } from '@/shared/ui/button';
+import { EmptyStateComponent } from '@/shared/ui/empty-state/empty-state.component';
 import { SearchInputComponent } from '@/shared/ui/filter-input/search-input.component';
 
 import {
@@ -57,6 +58,7 @@ import {
     TableCellComponent,
     TablePaginationComponent,
     I18nDirective,
+    EmptyStateComponent,
   ],
   templateUrl: './agridata-table.component.html',
 })

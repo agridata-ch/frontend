@@ -229,15 +229,15 @@
     "privacy": {
       "consent": {
         "title": "Approbation",
-        "description": "En donnant votre accord, vous autorisez la transmission des données de la liste de vos exploitations associées au requérant des données {{ consumerName }}"
+        "description": "Avec votre consentement,  {{ consumerName }}  peut consulter les données mentionnées ci-dessus."
       },
       "dataProtection": {
         "title": "Protection des données",
-        "description": "{{ consumerName }} est responsable du traitement conforme à la protection des données de ces informations."
+        "description": "Il existe un contrat entre {{ dataProvider }} et {{ consumerName }} qui régit clairement l'objectif et l'utilisation des données décrits ci-dessus. {{ consumerName }} est tenu de respecter les dispositions de la loi sur la protection des données."
       },
       "revocation": {
         "title": "Possibilité de révocation",
-        "description": "Vous pouvez révoquer ou modifier votre approbation à tout moment."
+        "description": "Vous avez à tout moment la possibilité de modifier votre décision."
       }
     },
     "purpose": {
@@ -392,7 +392,7 @@
         "delete": "Échec de la suppression"
       },
       "errorId": "ID d'erreur : {{errorId}}",
-      "path": "Chemin : {{method}} :  {{path}}",
+      "path": "Chemin : {{method}}: {{path}}",
       "generic": {
         "title": "Erreur serveur"
       },
@@ -412,5 +412,10 @@
   },
   "breadcrumb": {
     "home": "Accueil"
+  },
+  "emptyState": {
+    "title": "Aucune demande disponible",
+    "message": "Vous n'avez actuellement aucune demande de données active et n'avez rien à faire pour le moment. \nDès qu'une première demande de données sera effectuée, elle s'affichera ici et vous en serez informé.",
+    "additionalInfo": "Vous trouverez de plus amples informations sur "
   }
 }

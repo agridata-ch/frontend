@@ -2,17 +2,17 @@
   --base-font-size: 16px;
 
   --heading-one-color: var(--color-agridata-primary-text);
-  --heading-one-font-size: 3rem;  /* 48px */
+  --heading-one-font-size: 3rem; /* 48px */
   --heading-one-line-height: 125%;
 
   --heading-two-color: var(--color-agridata-primary-text);
-  --heading-two-font-size: 2.25rem;  /* 36px */
+  --heading-two-font-size: 2.25rem; /* 36px */
 
   --heading-three-color: var(--color-agridata-primary-text);
-  --heading-three-font-size: 1.75rem;  /* 28px */
+  --heading-three-font-size: 1.75rem; /* 28px */
 
   --heading-four-color: var(--color-agridata-primary-text);
-  --heading-four-font-size: 1.375rem;  /* 22px */
+  --heading-four-font-size: 1.375rem; /* 22px */
 
   --heading-five-font-size: 1rem; /* 16px */
 
@@ -28,6 +28,10 @@
   --text-base: 1rem; /* 16px */
   --text-lg: 1.125rem; /* 18px */
 
+  --text-sm--line-height: 130%;
+  --text-base--line-height: 130%;
+  --text-lg--line-height: 140%;
+
   @media screen and (max-width: 768px) {
     --heading-one-font-size: 2.25rem; /* 36px */
     --heading-two-font-size: 1.875rem; /* 30px */
@@ -35,16 +39,15 @@
     --heading-four-font-size: 1.25rem; /* 20px */
     --heading-five-font-size: 1.125rem; /* 18px */
     --heading-six-font-size: 0.875rem; /* 14px */
-
     --heading-page-title-font-size: 1.75rem; /* 28px */
     --heading-page-title-line-height: 120%;
 
     --paragraph-font-size: 1.125rem; /* 18px */
-
-      /* tailwind variables */
+    /* tailwind variables */
     --text-xs: 0.875rem; /* 14px */
     --text-sm: 1rem; /* 16px */
     --text-base: 1.125rem; /* 18px */
     --text-lg: 1.25rem; /* 20px */
+
   }
 }

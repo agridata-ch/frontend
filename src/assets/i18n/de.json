@@ -229,15 +229,15 @@
     "privacy": {
       "consent": {
         "title": "Zustimmung",
-        "description": "Mit Ihrer Zustimmung erlauben Sie die Datenübermittlung.\n\nEin Vertrag zwischen dem Bundesamt für Landwirtschaft und {{ consumerName }} bildet die rechtliche Grundlage für die Datenübermittlung und Datennutzung."
+        "description": "Mit Ihrer Zustimmung kann  {{ consumerName }}  die oben aufgeführten Daten abrufen."
       },
       "dataProtection": {
         "title": "Datenschutz",
-        "description": "Gemäss Datenschutzgesetz ist {{ consumerName }}  für den datenschutzkonformen Umgang mit diesen Informationen verantwortlich."
+        "description": "Zwischen {{ dataProvider }} und {{ consumerName }} besteht ein Vertrag, der den oben beschriebenen Zweck und die Nutzung der Daten eindeutig regelt. {{ consumerName }} ist verpflichtet, die Bestimmungen des Datenschutzgesetzes einzuhalten."
       },
       "revocation": {
         "title": "Änderungsmöglichkeit",
-        "description": "Ihre Entscheidung kann jederzeit geändert werden."
+        "description": "Sie haben jederzeit die Möglichkeit, Ihren Entscheid zu ändern."
       }
     },
     "purpose": {
@@ -393,7 +393,7 @@
         "delete": "Löschvorgang fehlgeschlagen"
       },
       "errorId": "Fehler-Id: {{errorId}}",
-      "path": "Pfad: {{method}}:  {{path}}",
+      "path": "Pfad: {{method}}: {{path}}",
       "generic": {
         "title": "Serverfehler aufgetreten"
       },
@@ -413,5 +413,10 @@
   },
   "breadcrumb": {
     "home": "Home"
+  },
+  "emptyState": {
+    "title": "Keine Anfragen vorhanden",
+    "message": "Sie haben derzeit keine aktiven Datenanfragen und müssen aktuell nichts unternehmen. \nSobald eine erste Datenanfrage besteht, wird diese hier angezeigt und Sie werden informiert.",
+    "additionalInfo": "Weitere Informationen finden Sie auf "
   }
 }

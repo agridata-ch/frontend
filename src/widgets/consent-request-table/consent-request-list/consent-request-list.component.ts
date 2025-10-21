@@ -8,6 +8,7 @@ import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { EmptyStateComponent } from '@/shared/ui/empty-state/empty-state.component';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 
 /**
@@ -23,6 +24,7 @@ import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
     AgridataBadgeComponent,
     I18nDirective,
     AgridataContactCardComponent,
+    EmptyStateComponent,
   ],
   templateUrl: './consent-request-list.component.html',
 })
