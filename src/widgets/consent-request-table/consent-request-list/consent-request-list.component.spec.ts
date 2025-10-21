@@ -41,6 +41,14 @@ describe('ConsentRequestListComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should display empty state when there are no consent requests', () => {
+    fixture.componentRef.setInput('consentRequests', []);
+    fixture.detectChanges();
+
+    const emptyStateComponent = fixture.nativeElement.querySelector('app-empty-state');
+    expect(emptyStateComponent).toBeTruthy();
+  });
+
   it('should emit updateConsentRequestStatus event with correct data when acceptRequest is called', () => {
     const mockRequest: ConsentRequestProducerViewDto = {
       id: 'request-123',
