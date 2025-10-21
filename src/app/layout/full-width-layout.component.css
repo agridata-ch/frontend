@@ -4,6 +4,29 @@
 
   --heading-two-color: inherit;
 
+  /* List styling */
+  ul,
+  ol {
+    padding-left: 1.5rem;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  /* Nested list styling */
+  li > ul {
+    list-style: circle;
+  }
+
+  li > ol {
+    list-style: lower-alpha;
+  }
+
   @media screen and (max-width: 768px) {
     --heading-one-font-size: 1.5rem; /* 24px */
     --heading-one-line-height: 120%;

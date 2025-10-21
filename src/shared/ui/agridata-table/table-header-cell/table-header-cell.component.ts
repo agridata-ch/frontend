@@ -1,6 +1,6 @@
 import { Component, HostBinding, input, output } from '@angular/core';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faArrowDown, faArrowUp } from '@fortawesome/pro-light-svg-icons';
+import { faArrowDown, faArrowUp } from '@fortawesome/pro-regular-svg-icons';
 
 import { I18nPipe } from '@/shared/i18n';
 import { ColumnDefinition, SortDirections } from '@/shared/ui/agridata-table';
