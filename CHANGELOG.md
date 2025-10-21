@@ -1,3 +1,9 @@
+## [1.1.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.10...v1.1.0-rc.11) (2025-10-21)
+
+### Features
+
+- **empty-state:** adds empty state component ([a5caae1](https://github.com/agridata-ch/frontend/commit/a5caae198600c0bbb59793b21fe9c1941176b380)), closes [DIGIB2-454](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-454)
+
 ## [1.1.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.9...v1.1.0-rc.10) (2025-10-20)
 
 ### Features
