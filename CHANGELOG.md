@@ -1,3 +1,9 @@
+## [1.1.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.11...v1.1.0-rc.12) (2025-10-22)
+
+### Bug Fixes
+
+- **cms:** update cms card ([2740212](https://github.com/agridata-ch/frontend/commit/27402124b2b5b2173fb946cb47e5ebb2cca54bfa)), closes [DIGIB2-909](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-909)
+
 ## [1.1.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.10...v1.1.0-rc.11) (2025-10-21)
 
 ### Features
