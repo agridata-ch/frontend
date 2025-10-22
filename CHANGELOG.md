@@ -1,3 +1,9 @@
+## [1.1.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.13...v1.1.0-rc.14) (2025-10-22)
+
+### Bug Fixes
+
+- **authentication:** fix logout ([acd6a5b](https://github.com/agridata-ch/frontend/commit/acd6a5b670ee481c6cde2b9de9d361aba651aeef))
+
 ## [1.1.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.12...v1.1.0-rc.13) (2025-10-22)
 
 ### Bug Fixes
