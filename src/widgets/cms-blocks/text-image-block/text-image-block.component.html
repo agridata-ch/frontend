@@ -16,6 +16,7 @@
           [href]="button()?.href!"
           [target]="button()?.isExternal ? HrefTarget.Blank : HrefTarget.Self"
           [variant]="ButtonVariants[`${button()?.type!}`]"
+          additionalClass="w-fit"
         >
           {{ button()?.label }}
           <fa-icon [icon]="buttonIcon" />

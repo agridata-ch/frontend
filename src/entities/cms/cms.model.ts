@@ -1,7 +1,7 @@
 export interface Image {
   id: number;
   documentId: string;
-  alternativeText: string | null;
+  alternativeText: string;
   url: string;
   formats?: {
     thumbnail?: ImageFormat;
