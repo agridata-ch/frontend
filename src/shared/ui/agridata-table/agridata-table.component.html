@@ -8,7 +8,7 @@
     </app-search-input>
   </div>
 }
-@if (pageData().items.length === 0) {
+@if (pageData().items.length === 0 && !dataProvider().isLoading()) {
   <!-- Empty State -->
   <div class="flex flex-1">
     <app-empty-state></app-empty-state>

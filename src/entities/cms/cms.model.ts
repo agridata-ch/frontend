@@ -140,6 +140,15 @@ export interface SectionCardGridBlock {
   anchorId: string;
 }
 
+export interface SectionImageListBlock {
+  __component: string;
+  id: number;
+  heading: string;
+  subHeading: string;
+  imageList: ImageListBlock;
+  anchorId: string;
+}
+
 export interface SectionContactFormBlock {
   __component: string;
   id: number;
@@ -177,6 +186,13 @@ export interface ImageGridBlock {
   anchorId: string;
 }
 
+export interface ImageListBlock {
+  __component: string;
+  id: number;
+  heading: string;
+  images: Image[];
+}
+
 export type Block =
   | SectionMediaBlock
   | SectionTextImageBlock
@@ -187,7 +203,9 @@ export type Block =
   | SectionFaqBlock
   | ImageGridBlock
   | SectionImageCardBlock
-  | ImageCardBlock;
+  | ImageCardBlock
+  | SectionImageListBlock
+  | ImageListBlock;
 
 export interface PageData {
   id: number;

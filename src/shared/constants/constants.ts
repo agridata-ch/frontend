@@ -32,6 +32,7 @@ export const CMS_BLOCKS = {
   SECTION_TEXT_IMAGE: 'layout.section-text-image',
   SECTION_USER_FEEDBACK: 'layout.section-user-feedback',
   SECTION_CARD_GRID: 'layout.section-card-grid',
+  SECTION_IMAGE_LIST: 'layout.section-image-list',
   CONTACT_FORM: 'blocks.contact-form',
   SECTION_FAQ: 'layout.section-faq',
   IMAGE_GRID: 'blocks.image-grid',
