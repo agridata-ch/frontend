@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { marked } from 'marked';
+import { marked, Tokens } from 'marked';
 
 /**
  * Defines a custom Angular pipe for converting Markdown text into sanitized HTML. It leverages
@@ -25,6 +25,19 @@ export class MarkdownPipe implements PipeTransform {
 
     renderer.link = function ({ href, title, text }) {
       return `<a href="${href}" title="${title || ''}" class="hover:underline">${text}</a>`;
+    };
+
+    // Store the original list renderer
+    const originalListRenderer = renderer.list.bind(renderer);
+
+    // Override the list renderer to add our custom classes
+    renderer.list = function (token: Tokens.List): string {
+      const html = originalListRenderer(token);
+
+      // Add our custom classes to the generated HTML
+      return token.ordered
+        ? html.replaceAll('<ol>', '<ol class="list-decimal pl-5">')
+        : html.replaceAll('<ul>', '<ul class="list-disc pl-5">');
     };
 
     // Disable HTML in markdown
