@@ -1,3 +1,9 @@
+## [1.1.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.12...v1.1.0-rc.13) (2025-10-22)
+
+### Bug Fixes
+
+- **cms:** fix cms blocks ([3e85035](https://github.com/agridata-ch/frontend/commit/3e850359a364e45702e19657b10e4ba86dc54362))
+
 ## [1.1.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.11...v1.1.0-rc.12) (2025-10-22)
 
 ### Bug Fixes
