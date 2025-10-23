@@ -3,7 +3,7 @@
     <img
       [src]="generateMediaUrl(block().image.url)"
       [alt]="block().image.alternativeText"
-      class="w-[200px] h-[200px] rounded-full object-cover hidden lg:block shrink-0"
+      class="w-[200px] h-[200px] rounded-full hidden lg:block shrink-0"
     />
   }
   <div class="flex flex-col gap-11 justify-between">
@@ -13,7 +13,7 @@
         <img
           [src]="generateMediaUrl(block().image.url)"
           [alt]="block().image.alternativeText"
-          class="w-[50px] h-[50px] rounded-full object-cover lg:hidden"
+          class="w-[50px] h-[50px] rounded-full lg:hidden"
         />
       }
       <div class="flex flex-col gap-2">

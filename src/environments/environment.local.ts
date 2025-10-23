@@ -2,7 +2,7 @@ export const environment = {
   production: false,
   apiBaseUrl: 'http://localhost:8060',
   cmsBaseUrl: 'http://localhost:1337',
-  cmsContactUrl: 'http://localhost:1337/api/contact',
+  cmsContactUrl: 'https://cms.agridata.ch/api/contact',
   oidc: {
     authority: 'http://localhost:6999/realms/agate',
     clientId: 'agridata-ui',
