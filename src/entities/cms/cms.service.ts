@@ -57,6 +57,10 @@ export class CmsService {
     );
 
   readonly submitContactForm = (data: ContactFormData) => {
-    return firstValueFrom(this.http.post(`${this.cmsContactUrl}`, data));
+    return firstValueFrom(
+      this.http.post(`${this.cmsContactUrl}`, data, {
+        withCredentials: true,
+      }),
+    );
   };
 }

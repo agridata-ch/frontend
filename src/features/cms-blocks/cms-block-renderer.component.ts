@@ -14,6 +14,7 @@ import { SectionContactFormBlockComponent } from '@/widgets/cms-blocks/section-c
 import { SectionFaqBlockComponent } from '@/widgets/cms-blocks/section-faq-block/section-faq-block.component';
 import { SectionImageCardBlockComponent } from '@/widgets/cms-blocks/section-image-card-block/section-image-card-block.component';
 import { SectionImageListComponent } from '@/widgets/cms-blocks/section-image-list/section-image-list.component';
+import { SectionTimelineComponent } from '@/widgets/cms-blocks/section-timeline/section-timeline.component';
 
 /**
  * Component for rendering CMS blocks dynamically. Selects the appropriate block component based on
@@ -34,6 +35,7 @@ import { SectionImageListComponent } from '@/widgets/cms-blocks/section-image-li
     ImageGridBlockComponent,
     SectionImageCardBlockComponent,
     SectionImageListComponent,
+    SectionTimelineComponent,
   ],
   templateUrl: './cms-block-renderer.component.html',
 })

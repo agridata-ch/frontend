@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation, effect, inject } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  Renderer2,
+  ViewEncapsulation,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { AuthService } from '@/shared/lib/auth';
@@ -30,16 +38,39 @@ import { HeaderWidgetComponent } from '@/widgets/header-widget';
 })
 export class FullWidthLayoutComponent {
   private readonly authService = inject(AuthService);
-  constructor() {
-    // Refresh the page when the authentication state changes
-    // This is useful for cases where the user logs in or out in a different tab
-    let prev = this.authService.isAuthenticated();
-    effect(() => {
-      const curr = this.authService.isAuthenticated();
-      if (prev && !curr) {
-        window.location.reload();
-      }
-      prev = curr;
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly renderer = inject(Renderer2);
+
+  private readonly scriptLoaded = signal(false);
+
+  private readonly authStateEffect = effect(() => {
+    const prevAuth = this.authService.isAuthenticated();
+    if (prevAuth) {
+      window.location.reload();
+    }
+  });
+
+  private readonly scriptEffect = effect(() => {
+    this.loadScript(
+      'https://d2eac639efd4.edge.sdk.awswaf.com/d2eac639efd4/9f40e813b39c/challenge.js',
+    )
+      .then(() => this.scriptLoaded.set(true))
+      .catch((error) => console.error('Script loading failed:', error));
+  });
+
+  private loadScript(url: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const script = this.renderer.createElement('script');
+      this.renderer.setAttribute(script, 'src', url);
+
+      script.onload = () => resolve();
+      script.onerror = (error: Error) => reject(error);
+
+      this.renderer.appendChild(document.body, script);
+
+      this.destroyRef.onDestroy(() => {
+        this.renderer.removeChild(document.body, script);
+      });
     });
   }
 }

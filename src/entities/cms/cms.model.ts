@@ -193,6 +193,23 @@ export interface ImageListBlock {
   images: Image[];
 }
 
+export interface TimelineCardBlock {
+  __component: string;
+  id: number;
+  heading: string;
+  description: string;
+  image: Image;
+}
+
+export interface SectionTimelineBlock {
+  __component: string;
+  id: number;
+  heading: string;
+  subHeading: string;
+  cards: TimelineCardBlock[];
+  anchorId: string;
+}
+
 export type Block =
   | SectionMediaBlock
   | SectionTextImageBlock
@@ -205,7 +222,9 @@ export type Block =
   | SectionImageCardBlock
   | ImageCardBlock
   | SectionImageListBlock
-  | ImageListBlock;
+  | ImageListBlock
+  | SectionTimelineBlock
+  | TimelineCardBlock;
 
 export interface PageData {
   id: number;

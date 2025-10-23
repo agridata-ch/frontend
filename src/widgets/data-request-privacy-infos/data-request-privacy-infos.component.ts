@@ -29,6 +29,7 @@ export class DataRequestPrivacyInfosComponent {
         icon: this.editIcon,
         title: 'data-request.privacy.consent.title',
         description: 'data-request.privacy.consent.description',
+        translationParams: { consumerName: this.dataConsumerName() },
       },
       {
         icon: this.lockIcon,
