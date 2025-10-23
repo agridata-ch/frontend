@@ -1,3 +1,9 @@
+## [1.1.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.14...v1.1.0-rc.15) (2025-10-23)
+
+### Features
+
+- **cms:** adds tragerschaft image list section and block components ([5930aa8](https://github.com/agridata-ch/frontend/commit/5930aa84571c78a8f03a54b17a84b3f536bbe1a3)), closes [DIGIB2-911](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-911)
+
 ## [1.1.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.13...v1.1.0-rc.14) (2025-10-22)
 
 ### Bug Fixes
