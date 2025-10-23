@@ -47,19 +47,19 @@ For tests adhere to those rules:
   btn.query(By.css('[aria-label="common.ariaLabel.close"]')),
   );
   matchingButton?.triggerEventHandler('onClick', null);
-- use the following for mocking services:
-  export const mockMetadataService: Partial<MetaDataService> = {
+- most services already have mock import like this: import { mockMetadataService } from '@/shared/testing/mocks/mock-meta-data.service';
+- the mock service should look like this:
+  export const mockMetadataService = {
   getDataProducts: jest.fn().mockReturnValue(signal([])),
-  };
-- for each mock service create a variable in the main describe block like this:
-  let mockMetaDataService: Partial<MetaDataService>;
+  } satisfies Partial<MetaDataService>;
+- in the test suites describe block declare the service like this: let metadataService: typeof mockMetadataService;
 - in the beforeEach block assign the mock to the variable like this: metadataService = mockMetadataService; Sometimes you may need to override a signal or a function for a specific test, this ensures that the test is reset to the original mock before each test.
 - when testing a resource created in the tested component override the service function that is used in its loader function like that:
 
   ```
    it('should handle errors from dataRequestsResource and send them to errorService', async () => {
    const testError = new Error('Test error from fetchDataRequests');
-   (dataRequestService.fetchDataRequests as jest.Mock).mockRejectedValueOnce(testError);
+   dataRequestService.fetchDataRequests.mockRejectedValueOnce(testError);
 
    // Create a new fixture with the mocked error
    const errorFixture = TestBed.createComponent(DataRequestsConsumerPage);

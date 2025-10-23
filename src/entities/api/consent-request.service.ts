@@ -1,6 +1,7 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
+import { CreateConsentRequestDto } from '@/entities/openapi';
 import { ConsentRequestsService } from '@/entities/openapi/api/consentRequests.service';
 
 /**
@@ -8,7 +9,7 @@ import { ConsentRequestsService } from '@/entities/openapi/api/consentRequests.s
  * update consent requests, while integrating with the application state to scope operations to the
  * currently active UID.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-10-23
  */
 @Injectable({
   providedIn: 'root',
@@ -26,7 +27,7 @@ export class ConsentRequestService {
     );
   }
 
-  async createConsentRequests(dataRequestUid: string) {
-    return firstValueFrom(this.apiService.createConsentRequests(dataRequestUid));
+  async createConsentRequests(createConsentRequestDto: Array<CreateConsentRequestDto>) {
+    return firstValueFrom(this.apiService.createConsentRequests(createConsentRequestDto));
   }
 }

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { getTranslocoModule } from '@/app/transloco-testing.module';
+
 import { EmptyStateComponent } from './empty-state.component';
 
 describe('EmptyStateComponent', () => {
@@ -9,7 +11,14 @@ describe('EmptyStateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EmptyStateComponent],
+      imports: [
+        EmptyStateComponent,
+        getTranslocoModule({
+          langs: {
+            de: {},
+          },
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EmptyStateComponent);
@@ -25,21 +34,19 @@ describe('EmptyStateComponent', () => {
     const img = fixture.debugElement.query(By.css('img'));
     expect(img).toBeTruthy();
     expect(img.nativeElement.src).toContain('assets/images/app-ok.svg');
-    expect(img.nativeElement.alt).toBe('Keine Anfragen');
+    expect(img.nativeElement.alt).toBe('emptyState.title');
   });
 
   it('should display the heading text', () => {
     const heading = fixture.debugElement.query(By.css('h5'));
     expect(heading).toBeTruthy();
-    expect(heading.nativeElement.textContent.trim()).toBe('Keine Anfragen vorhanden');
+    expect(heading.nativeElement.textContent.trim()).toBe('emptyState.title');
   });
 
   it('should display the main description text', () => {
     const paragraphs = fixture.debugElement.queryAll(By.css('p'));
     expect(paragraphs.length).toBeGreaterThanOrEqual(1);
-    expect(paragraphs[0].nativeElement.textContent).toContain(
-      'Sie haben derzeit keine aktiven Datenanfragen',
-    );
+    expect(paragraphs[0].nativeElement.textContent).toContain('emptyState.message');
   });
 
   it('should display a link to agridata.ch', () => {
