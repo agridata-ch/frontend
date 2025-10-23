@@ -1,3 +1,9 @@
+## [1.1.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.15...v1.1.0-rc.16) (2025-10-23)
+
+### Features
+
+- **consent-request:** create single consent request ([669a7dc](https://github.com/agridata-ch/frontend/commit/669a7dc9fa0c820a64791db047138e96250d7a1f)), closes [DIGIB2-887](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-887)
+
 ## [1.1.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.14...v1.1.0-rc.15) (2025-10-23)
 
 ### Features
