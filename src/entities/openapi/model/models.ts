@@ -5,6 +5,7 @@ export * from './consentRequestProducerViewDto';
 export * from './consentRequestProducerViewDtoDataRequest';
 export * from './consentRequestProducerViewDtoDataRequestStateCode';
 export * from './consentRequestStateEnum';
+export * from './createConsentRequestDto';
 export * from './dataProductDto';
 export * from './dataRequestDescriptionDto';
 export * from './dataRequestDto';

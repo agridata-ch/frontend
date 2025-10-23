@@ -22,6 +22,7 @@ model/consentRequestProducerViewDto.ts
 model/consentRequestProducerViewDtoDataRequest.ts
 model/consentRequestProducerViewDtoDataRequestStateCode.ts
 model/consentRequestStateEnum.ts
+model/createConsentRequestDto.ts
 model/dataProductDto.ts
 model/dataRequestDescriptionDto.ts
 model/dataRequestDto.ts
