@@ -1,3 +1,9 @@
+## [1.1.0-rc.19](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.18...v1.1.0-rc.19) (2025-10-24)
+
+### Features
+
+- **data-request-purpose:** add link to cms ([1356dd7](https://github.com/agridata-ch/frontend/commit/1356dd7552697faf7030eef926ba63ed63daa51a)), closes [DIGIB2-913](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-913)
+
 ## [1.1.0-rc.18](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.17...v1.1.0-rc.18) (2025-10-24)
 
 ### Bug Fixes
