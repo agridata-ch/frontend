@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  DestroyRef,
+  effect,
+  inject,
+  input,
+  Renderer2,
+  signal,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -31,6 +41,10 @@ export class SectionContactFormBlockComponent {
   readonly i18nService = inject(I18nService);
   readonly cmsService = inject(CmsService);
   readonly toastService = inject(ToastService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly renderer = inject(Renderer2);
+
+  private readonly scriptLoaded = signal(false);
 
   protected readonly cmsData = computed(() => {
     return this.block() as SectionContactFormBlock;
@@ -58,6 +72,30 @@ export class SectionContactFormBlockComponent {
       maxlength: () => this.i18nService.translate('forms.error.maxlength', { max: 500 }),
     }),
   });
+
+  private readonly scriptEffect = effect(() => {
+    this.loadScript(
+      'https://d2eac639efd4.edge.sdk.awswaf.com/d2eac639efd4/9f40e813b39c/challenge.js',
+    )
+      .then(() => this.scriptLoaded.set(true))
+      .catch((error) => console.error('Script loading failed:', error));
+  });
+
+  private loadScript(url: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const script = this.renderer.createElement('script');
+      this.renderer.setAttribute(script, 'src', url);
+
+      script.onload = () => resolve();
+      script.onerror = (error: Error) => reject(error);
+
+      this.renderer.appendChild(document.body, script);
+
+      this.destroyRef.onDestroy(() => {
+        this.renderer.removeChild(document.body, script);
+      });
+    });
+  }
 
   private createFormControl(
     initialValue: string,

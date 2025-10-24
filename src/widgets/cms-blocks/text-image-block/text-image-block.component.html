@@ -27,6 +27,20 @@
         </a>
       }
     }
+
+    @if (cmsData().linkedImages) {
+      <div class="flex flex-col sm:flex-row gap-4 py-10">
+        @for (linkedImage of cmsData().linkedImages; track linkedImage.id) {
+          <a [href]="linkedImage.link" target="_blank" rel="noopener noreferrer">
+            <img
+              [src]="generateMediaUrl(linkedImage.image.url)"
+              [alt]="linkedImage.image.alternativeText"
+              class="rounded-lg border border-agridata-stroke max-w-[120px]"
+            />
+          </a>
+        }
+      </div>
+    }
   </div>
 
   <div class="lg:w-1/2">
