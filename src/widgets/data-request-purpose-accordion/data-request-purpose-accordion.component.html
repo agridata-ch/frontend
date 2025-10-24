@@ -17,6 +17,13 @@
           <span>{{ getFieldFromLang(product, 'description') }}</span>
         </div>
       }
+      <a
+        [href]="productDataLink"
+        target="_blank"
+        class="text-agridata-primary-600 hover:underline cursor-pointer"
+      >
+        {{ 'data-request.purpose.moreInfos' | i18n }}
+      </a>
     </div>
   </app-agridata-accordion>
 </div>

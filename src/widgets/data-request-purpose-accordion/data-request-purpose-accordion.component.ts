@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
 
 import { DataProductDto } from '@/entities/openapi';
+import { environment } from '@/environments/environment';
 import { I18nPipe, I18nService } from '@/shared/i18n';
 import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
 
@@ -28,6 +29,8 @@ export class DataRequestPurposeAccordionComponent {
     if (!productsValue) return [];
     return Array.isArray(productsValue) ? productsValue : [];
   });
+
+  readonly productDataLink = `${environment.appBaseUrl}/cms/data-consumer#data-products`;
 
   getFieldFromLang = (product: DataProductDto, field: keyof DataProductDto) => {
     const fieldValue = product?.[field];

@@ -229,11 +229,11 @@
     "privacy": {
       "consent": {
         "title": "Zustimmung",
-        "description": "Mit Ihrer Zustimmung kann  {{ consumerName }}  die oben aufgeführten Daten abrufen."
+        "description": "Mit Ihrer Zustimmung kann {{ consumerName }} die oben aufgeführten Daten abrufen."
       },
       "dataProtection": {
         "title": "Datenschutz",
-        "description": "Zwischen {{ dataProvider }} und {{ consumerName }} besteht ein Vertrag, der den oben beschriebenen Zweck und die Nutzung der Daten eindeutig regelt. {{ consumerName }} ist verpflichtet, die Bestimmungen des Datenschutzgesetzes einzuhalten."
+        "description": "Zwischen AGIS und {{ consumerName }} besteht ein Vertrag, der den oben beschriebenen Zweck und die Nutzung der Daten eindeutig regelt. {{ consumerName }} ist verpflichtet, die Bestimmungen des Datenschutzgesetzes einzuhalten."
       },
       "revocation": {
         "title": "Änderungsmöglichkeit",
@@ -242,7 +242,8 @@
     },
     "purpose": {
       "title": "Zweck der Datennutzung",
-      "description": "Folgende Daten werden übermittelt:"
+      "description": "Folgende Daten werden übermittelt:",
+      "moreInfos": "Weitere Details anzeigen"
     },
     "wizard": {
       "steps": {
