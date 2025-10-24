@@ -52,7 +52,7 @@ export class FullWidthLayoutComponent {
 
   private readonly scriptEffect = effect(() => {
     this.loadScript(
-      'https://d2eac639efd4.edge.sdk.awswaf.com/d2eac639efd4/9f40e813b39c/challenge.js',
+      'https://5fa1804f0ea1.edge.sdk.awswaf.com/5fa1804f0ea1/ba55c0cb54f5/challenge.js',
     )
       .then(() => this.scriptLoaded.set(true))
       .catch((error) => console.error('Script loading failed:', error));
