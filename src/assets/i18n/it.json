@@ -233,7 +233,7 @@
       },
       "dataProtection": {
         "title": "Protezione dei dati",
-        "description": "Tra {{ dataProvider }} e {{ consumerName }} esiste un contratto che regola in modo inequivocabile lo scopo e l'utilizzo dei dati sopra descritti. {{ consumerName }} è tenuto a rispettare le disposizioni della legge sulla protezione dei dati."
+        "description": "Tra AGIS e {{ consumerName }} esiste un contratto che regola in modo inequivocabile lo scopo e l'utilizzo dei dati sopra descritti. {{ consumerName }} è tenuto a rispettare le disposizioni della legge sulla protezione dei dati."
       },
       "revocation": {
         "title": "Possibilità di modifica",
@@ -242,7 +242,8 @@
     },
     "purpose": {
       "title": "Scopo dell’utilizzo dei dati",
-      "description": "I seguenti dati saranno trasmessi"
+      "description": "I seguenti dati saranno trasmessi",
+      "moreInfos": "Visualizza maggiori dettagli"
     },
     "wizard": {
       "steps": {

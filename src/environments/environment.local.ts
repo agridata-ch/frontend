@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  appBaseUrl: 'http://localhost:4200',
   apiBaseUrl: 'http://localhost:8060',
   cmsBaseUrl: 'http://localhost:1337',
   cmsContactUrl: 'https://cms.agridata.ch/api/contact',
