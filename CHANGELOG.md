@@ -1,3 +1,9 @@
+## [1.1.0-rc.17](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.16...v1.1.0-rc.17) (2025-10-24)
+
+### Features
+
+- **cms:** add timeline component ([576b6a5](https://github.com/agridata-ch/frontend/commit/576b6a51d9f3bb099de500145b4718da03bbf6b9)), closes [DIGIB2-910](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-910)
+
 ## [1.1.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.15...v1.1.0-rc.16) (2025-10-23)
 
 ### Features
