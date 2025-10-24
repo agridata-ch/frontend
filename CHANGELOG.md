@@ -1,3 +1,9 @@
+## [1.1.0-rc.24](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.23...v1.1.0-rc.24) (2025-10-24)
+
+### Bug Fixes
+
+- **cms:** fix styling of linkedImages ([0c13d3b](https://github.com/agridata-ch/frontend/commit/0c13d3b8e5f2ef14c9646787a2bad7d712e4b166))
+
 ## [1.1.0-rc.23](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.22...v1.1.0-rc.23) (2025-10-24)
 
 ### Features
