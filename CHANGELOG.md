@@ -1,3 +1,9 @@
+## [1.1.0-rc.23](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.22...v1.1.0-rc.23) (2025-10-24)
+
+### Features
+
+- **cms:** add linked images ([acabbf3](https://github.com/agridata-ch/frontend/commit/acabbf3bc716a51d5385722f155ca97174995f63)), closes [DIGIB2-950](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-950)
+
 ## [1.1.0-rc.22](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.21...v1.1.0-rc.22) (2025-10-24)
 
 ### Bug Fixes
