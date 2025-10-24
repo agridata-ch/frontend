@@ -29,13 +29,13 @@
     }
 
     @if (cmsData().linkedImages) {
-      <div class="flex flex-col sm:flex-row gap-4 py-10">
+      <div class="flex gap-4 py-10 justify-between sm:justify-start">
         @for (linkedImage of cmsData().linkedImages; track linkedImage.id) {
           <a [href]="linkedImage.link" target="_blank" rel="noopener noreferrer">
             <img
               [src]="generateMediaUrl(linkedImage.image.url)"
               [alt]="linkedImage.image.alternativeText"
-              class="rounded-lg border border-agridata-stroke max-w-[120px]"
+              class="rounded-lg border border-agridata-stroke max-h-10"
             />
           </a>
         }
