@@ -1,3 +1,9 @@
+## [1.1.0-rc.20](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.19...v1.1.0-rc.20) (2025-10-24)
+
+### Bug Fixes
+
+- **contact:** add new waf url ([32e4c19](https://github.com/agridata-ch/frontend/commit/32e4c191410e4d603a0abaaaec7a8f70adcdf161))
+
 ## [1.1.0-rc.19](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.18...v1.1.0-rc.19) (2025-10-24)
 
 ### Features
