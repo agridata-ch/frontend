@@ -30,7 +30,7 @@ export class DataRequestPurposeAccordionComponent {
     return Array.isArray(productsValue) ? productsValue : [];
   });
 
-  readonly productDataLink = `${environment.appBaseUrl}/cms/data-consumer#data-products`;
+  readonly productDataLink = `${environment.appBaseUrl}/cms/data-consumer#dataProduct`;
 
   getFieldFromLang = (product: DataProductDto, field: keyof DataProductDto) => {
     const fieldValue = product?.[field];
