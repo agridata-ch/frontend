@@ -56,6 +56,12 @@ export interface Card {
   color: CardColors;
 }
 
+export interface LinkedImage {
+  id: number;
+  image: Image;
+  link: string;
+}
+
 export interface TextImageBlock {
   __component: string;
   id: number;
@@ -65,6 +71,7 @@ export interface TextImageBlock {
   list: List | null;
   image: Image;
   button: CTA | null;
+  linkedImages: LinkedImage[];
 }
 
 export interface ImageCardBlock {
