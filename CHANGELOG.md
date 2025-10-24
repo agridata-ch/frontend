@@ -1,3 +1,9 @@
+## [1.1.0-rc.22](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.21...v1.1.0-rc.22) (2025-10-24)
+
+### Bug Fixes
+
+- **cms:** fix image-list styling, close mobile menu on navigation ([51ea336](https://github.com/agridata-ch/frontend/commit/51ea336342a115644ac07ea5ef2f189749b62713))
+
 ## [1.1.0-rc.21](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.20...v1.1.0-rc.21) (2025-10-24)
 
 ### Bug Fixes
