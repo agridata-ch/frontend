@@ -1,3 +1,9 @@
+## [1.1.0-rc.21](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.20...v1.1.0-rc.21) (2025-10-24)
+
+### Bug Fixes
+
+- **contact:** add awsWafCookieDomainList ([a9ad783](https://github.com/agridata-ch/frontend/commit/a9ad78304105d0f49df00c0a9b8ef770493f2a60)), closes [DIGIB2-976](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-976)
+
 ## [1.1.0-rc.20](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.19...v1.1.0-rc.20) (2025-10-24)
 
 ### Bug Fixes
