@@ -1,3 +1,9 @@
+## [1.1.0-rc.18](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.17...v1.1.0-rc.18) (2025-10-24)
+
+### Bug Fixes
+
+- **cms:** list block styling ([36035c8](https://github.com/agridata-ch/frontend/commit/36035c8e54b1d9b6d8f438c300551e1136c04cb9))
+
 ## [1.1.0-rc.17](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.16...v1.1.0-rc.17) (2025-10-24)
 
 ### Features
