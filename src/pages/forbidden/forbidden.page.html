@@ -1,0 +1,18 @@
+<div
+  class="relative flex h-full w-full items-center justify-center bg-[url('/assets/images/forbidden-bg.jpg')] bg-cover bg-center bg-no-repeat"
+>
+  <div class="absolute right-0 top-0 bottom-0 w-full bg-agridata-primary-text/75"></div>
+
+  <div class="flex flex-col items-center gap-10 z-10">
+    <div class="flex flex-col items-center gap-4">
+      <span class="text-lg text-white"> 403 </span>
+      <h1 class="text-white text-center">{{ 'errors.forbiddenPage.title' | i18n }}</h1>
+      <span class="text-lg text-center text-white whitespace-break-spaces"
+        >{{ 'errors.forbiddenPage.message' | i18n }}</span
+      >
+    </div>
+    <app-agridata-button [href]="'/'" [variant]="ButtonVariants.SecondaryCms">
+      {{ 'errors.backToHome' | i18n }}
+    </app-agridata-button>
+  </div>
+</div>

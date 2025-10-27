@@ -10,8 +10,10 @@ import { CmsPage } from '@/pages/cms-page';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
 import { ErrorPage } from '@/pages/error-page/error-page.component';
+import { ForbiddenPage } from '@/pages/forbidden';
 import { ImprintPage } from '@/pages/imprint-page';
 import { LandingPage } from '@/pages/landing-page';
+import { MaintenancePage } from '@/pages/maintenance';
 import { NotFoundPage } from '@/pages/not-found';
 import { PrivacyPolicyPage } from '@/pages/privacy-policy-page';
 import { SupporterPageComponent } from '@/pages/supporter-page/';
@@ -155,14 +157,28 @@ export const routes: Routes = [
   },
   {
     path: ROUTE_PATHS.NOT_FOUND,
-    component: DefaultLayoutComponent,
+    component: FullWidthLayoutComponent,
     runGuardsAndResolvers: 'paramsChange',
     canActivate: [AuthorizationGuard],
     children: [{ path: '**', component: NotFoundPage }],
   },
   {
+    path: ROUTE_PATHS.FORBIDDEN,
+    component: FullWidthLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
+    canActivate: [AuthorizationGuard],
+    children: [{ path: '**', component: ForbiddenPage }],
+  },
+  {
+    path: ROUTE_PATHS.MAINTENANCE,
+    component: FullWidthLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
+    canActivate: [AuthorizationGuard],
+    children: [{ path: '**', component: MaintenancePage }],
+  },
+  {
     path: '',
-    component: DefaultLayoutComponent,
+    component: FullWidthLayoutComponent,
     runGuardsAndResolvers: 'paramsChange',
     canActivate: [AuthorizationGuard],
     children: [{ path: '**', component: NotFoundPage }],

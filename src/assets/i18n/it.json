@@ -233,7 +233,7 @@
       },
       "dataProtection": {
         "title": "Protezione dei dati",
-        "description": "Tra AGIS e {{ consumerName }} esiste un contratto che regola in modo inequivocabile lo scopo e l'utilizzo dei dati sopra descritti. {{ consumerName }} è tenuto a rispettare le disposizioni della legge sulla protezione dei dati."
+        "description": "Tra UFAG e {{ consumerName }} esiste un contratto che regola in modo inequivocabile lo scopo e l'utilizzo dei dati sopra descritti. {{ consumerName }} è tenuto a rispettare le disposizioni della legge sulla protezione dei dati."
       },
       "revocation": {
         "title": "Possibilità di modifica",
@@ -410,7 +410,21 @@
     "errorPage": {
       "title": "Si sono verificati degli errori",
       "back": "indietro"
-    }
+    },
+    "forbiddenPage": {
+      "title": "Ops, non è possibile accedere a questa pagina",
+      "message": "Accesso non autorizzato alla pagina..."
+    },
+    "notFoundPage": {
+      "title": "Ops, pagina non trovata",
+      "message": "La pagina richiesta non è più disponibile, ci scusiamo per l'inconveniente..."
+    },
+    "backToHome": "Torna alla pagina iniziale",
+    "maintenancePage": {
+      "title": "Tornerà presto...",
+      "message": "Il nostro sito web non è attualmente disponibile a causa di lavori di manutenzione programmati.\nTorneremo presto online."
+    },
+    "reloadPage": "Ricarica pagina"
   },
   "breadcrumb": {
     "home": "Casa"
