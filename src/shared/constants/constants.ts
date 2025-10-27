@@ -8,6 +8,7 @@ export const ROUTE_PATHS = {
   FORBIDDEN: 'forbidden',
   ERROR: 'error',
   NOT_FOUND: 'not-found',
+  MAINTENANCE: 'maintenance',
 };
 
 export const USER_ROLES = {

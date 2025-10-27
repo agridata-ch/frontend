@@ -233,7 +233,7 @@
       },
       "dataProtection": {
         "title": "Datenschutz",
-        "description": "Zwischen AGIS und {{ consumerName }} besteht ein Vertrag, der den oben beschriebenen Zweck und die Nutzung der Daten eindeutig regelt. {{ consumerName }} ist verpflichtet, die Bestimmungen des Datenschutzgesetzes einzuhalten."
+        "description": "Zwischen BLW und {{ consumerName }} besteht ein Vertrag, der den oben beschriebenen Zweck und die Nutzung der Daten eindeutig regelt. {{ consumerName }} ist verpflichtet, die Bestimmungen des Datenschutzgesetzes einzuhalten."
       },
       "revocation": {
         "title": "Änderungsmöglichkeit",
@@ -410,7 +410,21 @@
     "errorPage": {
       "title": "Es sind Fehler aufgetreten",
       "back": "zurück"
-    }
+    },
+    "forbiddenPage": {
+      "title": "Uuups, kein Zugriff auf diese Seite",
+      "message": "Kein berechtigter Zugriff auf die Seite..."
+    },
+    "notFoundPage": {
+      "title": "Upps, Seite nicht gefunden",
+      "message": "Die gewünschte Seite ist leider nicht mehr verfügbar, wir entschuldigen uns dafür..."
+    },
+    "backToHome": "Zurück zur Startseite",
+    "maintenancePage": {
+      "title": "Es läuft gleich wieder...",
+      "message": "Unsere Website ist derzeit wegen planmässiger Wartungsarbeiten nicht erreichbar.\nWir sind bald wieder online."
+    },
+    "reloadPage": "Seite neu laden"
   },
   "breadcrumb": {
     "home": "Home"

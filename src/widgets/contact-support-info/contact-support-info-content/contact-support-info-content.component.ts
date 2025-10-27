@@ -16,7 +16,7 @@ import { I18nDirective } from '@/shared/i18n';
   templateUrl: './contact-support-info-content.component.html',
 })
 export class ContactSupportInfoContentComponent {
-  protected readonly phoneNumber = signal('0041 032 123 45 67');
+  protected readonly phoneNumber = signal('+41 58 466 15 95');
   protected readonly email = signal('support@agridata.ch');
 
   protected readonly iconPhone = faPhone;
