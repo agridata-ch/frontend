@@ -80,9 +80,9 @@ export const routes: Routes = [
   // #### protected pages with authentication ####
   {
     // login page to get redirected from the auth provider which uses a specific guard that is only for this route
-    path: 'login',
+    path: ROUTE_PATHS.LOGIN,
     component: DefaultLayoutComponent,
-    canActivate: [autoLoginPartialRoutesGuard, LoginAuthGuard],
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard, LoginAuthGuard],
   },
   {
     // producer routes

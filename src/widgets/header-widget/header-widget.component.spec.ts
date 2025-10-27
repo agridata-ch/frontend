@@ -1,13 +1,21 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, provideRouter, Router, RouterLink } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { CmsService } from '@/entities/cms';
 import { UserInfoDto } from '@/entities/openapi';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 import { MockAuthService, mockCmsService } from '@/shared/testing/mocks';
 import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
 import { HeaderWidgetComponent } from '@/widgets/header-widget';
+
+@Component({
+  selector: 'app-dummy',
+  template: '<p>Dummy</p>',
+})
+class DummyComponent {}
 
 describe('HeaderWidgetComponent', () => {
   let fixture: ComponentFixture<HeaderWidgetComponent>;
@@ -15,12 +23,15 @@ describe('HeaderWidgetComponent', () => {
   let authService: AuthService;
   let errorService: Partial<ErrorHandlerService>;
   let cmsService: Partial<CmsService>;
+  let router: Router;
+
   beforeEach(async () => {
     errorService = mockErrorHandlerService;
     cmsService = mockCmsService;
     await TestBed.configureTestingModule({
       imports: [HeaderWidgetComponent, RouterLink],
       providers: [
+        provideRouter([{ path: ROUTE_PATHS.LOGIN, component: DummyComponent }]),
         { provide: AuthService, useClass: MockAuthService },
         { provide: ActivatedRoute, useValue: {} },
         { provide: CmsService, useValue: cmsService },
@@ -28,6 +39,7 @@ describe('HeaderWidgetComponent', () => {
       ],
     }).compileComponents();
     authService = TestBed.inject(AuthService);
+    router = TestBed.inject(Router);
     jest.clearAllMocks();
   });
 
@@ -40,6 +52,18 @@ describe('HeaderWidgetComponent', () => {
   it('should create', () => {
     createComponent();
     expect(component).toBeTruthy();
+  });
+
+  it('should handle errors from fetchProducersResource and send them to errorService', async () => {
+    const testError = new Error('Test error from getProducers');
+    (cmsService.fetchCmsPages as jest.Mock).mockRejectedValueOnce(testError);
+
+    // Create a new fixture with the mocked error
+    const errorFixture = TestBed.createComponent(HeaderWidgetComponent);
+    errorFixture.detectChanges();
+    await errorFixture.whenStable();
+
+    expect(errorService.handleError).toHaveBeenCalledWith(testError);
   });
 
   it('isAuthenticated signal reflects AuthService.isAuthenticated()', () => {
@@ -69,21 +93,10 @@ describe('HeaderWidgetComponent', () => {
   });
 
   it('login() calls AuthService.login()', () => {
-    jest.spyOn(authService, 'login');
+    const navigateSpy = jest.spyOn(router, 'navigate');
+
     createComponent();
     component.login();
-    expect(authService.login).toHaveBeenCalled();
-  });
-
-  it('should handle errors from fetchProducersResource and send them to errorService', async () => {
-    const testError = new Error('Test error from getProducers');
-    (cmsService.fetchCmsPages as jest.Mock).mockRejectedValueOnce(testError);
-
-    // Create a new fixture with the mocked error
-    const errorFixture = TestBed.createComponent(HeaderWidgetComponent);
-    errorFixture.detectChanges();
-    await errorFixture.whenStable();
-
-    expect(errorService.handleError).toHaveBeenCalledWith(testError);
+    expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.LOGIN]);
   });
 });

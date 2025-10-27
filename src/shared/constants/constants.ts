@@ -9,6 +9,7 @@ export const ROUTE_PATHS = {
   ERROR: 'error',
   NOT_FOUND: 'not-found',
   MAINTENANCE: 'maintenance',
+  LOGIN: 'login',
 };
 
 export const USER_ROLES = {
