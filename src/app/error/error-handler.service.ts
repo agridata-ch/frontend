@@ -4,6 +4,7 @@ import { Injectable, OnDestroy, type Signal, signal, WritableSignal } from '@ang
 import { ErrorDto, TranslationItem } from '@/app/error/error-dto';
 import { getErrorMethod } from '@/app/interceptors/error-http-interceptor';
 import { ExceptionDto } from '@/entities/openapi';
+import { environment } from '@/environments/environment';
 
 export interface ResourceValueError extends Error {
   cause: ErrorWithCause;
@@ -69,7 +70,7 @@ export class ErrorHandlerService implements OnDestroy {
     const targetQueueId = this.getActiveQueueId();
     const targetQueue = this.errorQueues.get(targetQueueId);
 
-    if (targetQueue) {
+    if (targetQueue && !this.isFeErrorInProduction(errorDto)) {
       targetQueue.update((errors) => [...errors, errorDto]);
     }
 
@@ -316,5 +317,9 @@ export class ErrorHandlerService implements OnDestroy {
       i18n = `errors.backend.method.${method.toLowerCase()}`;
     }
     return i18n;
+  }
+
+  private isFeErrorInProduction(error: ErrorDto) {
+    return error.isFrontendError && environment.production;
   }
 }

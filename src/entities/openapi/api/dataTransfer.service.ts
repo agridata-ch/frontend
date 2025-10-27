@@ -39,7 +39,7 @@ export class DataTransferService extends BaseService {
 
     /**
      * Data Transfer
-     * Retrieves data defined by productId for a specified uid or bur local unit.
+     * Retrieves data defined by productId. The needed query parameters are depending on the requested productId. Please consult documentation to find the necessary parameters
      * @param productId productId for which the data is requested
      * @param bur Optional filter to retrieve data of a producer identified by a id of a local bur unit
      * @param uid Optional filter to retrieve data of a producer identified by the uid

@@ -554,6 +554,7 @@ components:
         - GENERIC
         - UID_MISSING
         - EXTERNAL_SERVICE_ERROR
+        - MAINTENANCE
     FarmTypeEnum:
       type: string
       enum:
@@ -1303,8 +1304,9 @@ paths:
             - agridata.ch.Agridata_Admin
   /api/data-transfer/v1/product/{productId}/data:
     get:
-      description: Retrieves data defined by productId for a specified uid or bur
-        local unit.
+      description: Retrieves data defined by productId. The needed query parameters
+        are depending on the requested productId. Please consult documentation to
+        find the necessary parameters
       operationId: dataTransfer
       tags:
         - Data Transfer
@@ -1834,6 +1836,6 @@ paths:
         - Info Resource
 info:
   title: agridata.ch API
-  version: 1.1.0-rc.2
+  version: 1.1.0-rc.4
   description: "This API provides access to the agridata.ch data exchange platform,\
     \ enabling Users to discover, request, approve, and manage data sharing agreements."
