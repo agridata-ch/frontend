@@ -12,6 +12,7 @@ export const mockAgridataStateService = (uid: string) => {
     activeUid: signal<string | undefined>(uid),
     userUids: signal(mockUids),
     isImpersonating: jest.fn(),
+    currentRouteWithoutQueryParams: signal<string | undefined>('/some-page'),
   } satisfies Partial<AgridataStateService>;
 };
 

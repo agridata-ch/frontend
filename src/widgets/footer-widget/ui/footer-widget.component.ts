@@ -1,10 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 
 import { BackendVersionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { environment } from '@/environments/environment';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nPipe } from '@/shared/i18n/i18n.pipe';
-import { createResourceValueComputed } from '@/shared/lib/api.helper';
 import { TestDataApiService } from '@/widgets/footer-widget/api/test-data.service';
 
 import { version as frontendVersion } from '../../../../package.json';
@@ -24,12 +24,23 @@ import { version as frontendVersion } from '../../../../package.json';
 export class FooterWidgetComponent {
   private readonly testDataService = inject(TestDataApiService);
   private readonly backendVersionService = inject(BackendVersionService);
+  private readonly stateService = inject(AgridataStateService);
 
+  loadBackendVersionEffect = effect(() => {
+    const route = this.stateService.currentRouteWithoutQueryParams();
+    if (route && !this.backendVersion() && this.shouldLoadBackendInfo(route)) {
+      this.backendVersionService
+        .fetchBackendVersion()
+        .then((version) => this.backendVersion.set(version))
+        .catch((err) => console.error(err));
+    }
+  });
+
+  private readonly BACKEND_INFO_ROUTE_BLACKLIST = ['/', `/${ROUTE_PATHS.MAINTENANCE}`];
   protected readonly ROUTE_PATHS = ROUTE_PATHS;
 
   protected readonly frontendVersion = signal(frontendVersion);
-  protected readonly backendVersionResource = this.backendVersionService.fetchBackendVersion;
-  protected readonly backendVersion = createResourceValueComputed(this.backendVersionResource, {});
+  protected readonly backendVersion = signal<{ [key: string]: string } | undefined>(undefined);
 
   readonly isDevMode = computed(() => !environment.production);
 
@@ -39,5 +50,9 @@ export class FooterWidgetComponent {
     await this.testDataService.resetTestData().finally(() => {
       window.location.reload();
     });
+  }
+
+  private shouldLoadBackendInfo(route: string) {
+    return !this.BACKEND_INFO_ROUTE_BLACKLIST.some((blacklistItem) => blacklistItem === route);
   }
 }

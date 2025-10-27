@@ -1,38 +1,40 @@
-import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ResourceRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { BackendVersionService } from '@/entities/api';
-import { MockResources } from '@/shared/testing/mocks';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { TestDataService } from '@/entities/openapi';
+import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
 import { FooterWidgetComponent } from '@/widgets/footer-widget';
+
+import { version as frontendVersion } from '../../../../package.json';
+
+const beVersion = '1.0.0';
+
+const createMockBackendVersionService = () =>
+  ({
+    fetchBackendVersion: jest.fn().mockResolvedValue({ version: beVersion }),
+  }) satisfies Partial<BackendVersionService>;
 
 describe('FooterWidgetComponent', () => {
   let component: FooterWidgetComponent;
-  let openComponent: any;
   let fixture: ComponentFixture<FooterWidgetComponent>;
-
-  let mockBackendVersionService: {
-    fetchBackendVersion: ResourceRef<{ [key: string]: string }>;
-  };
-
+  let backendVersionService: ReturnType<typeof createMockBackendVersionService>;
+  let stateService: ReturnType<typeof mockAgridataStateService>;
   beforeEach(async () => {
-    mockBackendVersionService = {
-      fetchBackendVersion: MockResources.createMockResourceRef({ version: '2.3.4' }),
-    };
+    backendVersionService = createMockBackendVersionService();
+    stateService = mockAgridataStateService('test-uid');
     await TestBed.configureTestingModule({
       imports: [FooterWidgetComponent],
       providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        { provide: BackendVersionService, useValue: mockBackendVersionService },
+        { provide: AgridataStateService, useValue: stateService },
+        { provide: BackendVersionService, useValue: backendVersionService },
+        { provide: TestDataService, useValue: {} },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FooterWidgetComponent);
     component = fixture.componentInstance;
-    openComponent = component as any;
     fixture.detectChanges();
   });
 
@@ -40,12 +42,10 @@ describe('FooterWidgetComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('renders FE and BE version', () => {
-    const spanEl: HTMLElement = fixture.debugElement.query(
-      By.css('.text-agridata-tertiary-text'),
-    ).nativeElement;
-
-    expect(spanEl.textContent).toContain(`FE ${openComponent.frontendVersion()}`);
-    expect(spanEl.textContent).toContain(`BE ${openComponent.backendVersion().version}`);
+  it('renders FE and BE version', async () => {
+    await fixture.whenStable();
+    const spanEl = fixture.debugElement.queryAll(By.css('.text-agridata-tertiary-text'));
+    expect(spanEl[0].nativeElement.textContent).toContain(`FE ${frontendVersion}`);
+    expect(spanEl[1].nativeElement.textContent).toContain(`BE ${beVersion}`);
   });
 });

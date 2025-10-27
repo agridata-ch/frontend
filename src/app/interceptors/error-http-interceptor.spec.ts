@@ -5,18 +5,25 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { provideRouter, Router } from '@angular/router';
 
-import { ExceptionDto } from '@/entities/openapi';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { ExceptionDto, ExceptionEnum } from '@/entities/openapi';
 import { DebugService } from '@/features/debug/debug.service';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { AuthService } from '@/shared/lib/auth';
+import { DummyComponent } from '@/shared/testing/mocks/dummy-components';
+import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
 
 import {
-  HttpErrorWithMethod,
-  METHOD_ENHANCED,
   enhanceHttpErrorWithMethod,
   errorHttpInterceptor,
   getErrorMethod,
   hasMethod,
+  HttpErrorWithMethod,
+  METHOD_ENHANCED,
 } from './error-http-interceptor';
 
 const mockDebugService: Partial<DebugService> = {
@@ -24,24 +31,42 @@ const mockDebugService: Partial<DebugService> = {
   addResponse: jest.fn(),
 };
 
+const createMockAuthService = () =>
+  ({
+    isAuthenticated: signal<boolean>(false),
+  }) satisfies Partial<AuthService>;
+
 describe('errorHttpInterceptor', () => {
   let httpClient: HttpClient;
   let httpMock: HttpTestingController;
   let debugService: Partial<DebugService>;
+  let authService: ReturnType<typeof createMockAuthService>;
+  let agridataStateService: ReturnType<typeof mockAgridataStateService>;
+  let router: Router;
 
   beforeEach(() => {
     debugService = { ...mockDebugService };
+    authService = createMockAuthService();
+    agridataStateService = mockAgridataStateService('test-uid');
 
     TestBed.configureTestingModule({
       providers: [
+        provideRouter([
+          { path: ROUTE_PATHS.MAINTENANCE, component: DummyComponent },
+          { path: '', component: DummyComponent },
+          { path: ROUTE_PATHS.PRIVACY_POLICY_PATH, component: DummyComponent },
+        ]),
         provideHttpClient(withInterceptors([errorHttpInterceptor])),
         provideHttpClientTesting(),
         { provide: DebugService, useValue: debugService },
+        { provide: AuthService, useValue: authService },
+        { provide: AgridataStateService, useValue: agridataStateService },
       ],
     });
 
     httpClient = TestBed.inject(HttpClient);
     httpMock = TestBed.inject(HttpTestingController);
+    router = TestBed.inject(Router);
   });
 
   afterEach(() => {
@@ -221,6 +246,208 @@ describe('errorHttpInterceptor', () => {
 
     const req2 = httpMock.expectOne(url2);
     req2.flush({});
+  });
+
+  describe('maintenance navigation', () => {
+    it('should navigate to maintenance and return 204 when maintenance error occurs for authenticated user', (done) => {
+      const testUrl = '/api/test';
+      const maintenanceError: ExceptionDto = {
+        requestId: 'test-request-id',
+        type: ExceptionEnum.Maintenance,
+        message: 'System is under maintenance',
+      };
+
+      authService.isAuthenticated.set(true);
+      agridataStateService.currentRouteWithoutQueryParams.set('/some-page');
+      const navigateSpy = jest.spyOn(router, 'navigate');
+
+      httpClient.get(testUrl).subscribe({
+        next: (response) => {
+          expect(response).toBeDefined();
+          expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.MAINTENANCE]);
+          done();
+        },
+        error: () => {
+          done.fail('Should not throw error when navigating to maintenance');
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
+    });
+
+    it('should not navigate to maintenance when user is not authenticated', (done) => {
+      const testUrl = '/api/test';
+      const maintenanceError: ExceptionDto = {
+        requestId: 'test-request-id',
+        type: ExceptionEnum.Maintenance,
+        message: 'System is under maintenance',
+      };
+
+      authService.isAuthenticated.set(false);
+      const navigateSpy = jest.spyOn(router, 'navigate');
+
+      httpClient.get(testUrl).subscribe({
+        error: (error: HttpErrorResponse) => {
+          expect(error.status).toBe(503);
+          expect(navigateSpy).not.toHaveBeenCalled();
+          done();
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
+    });
+
+    it('should not navigate to maintenance when current route is in blacklist (home page)', (done) => {
+      const testUrl = '/api/test';
+      const maintenanceError: ExceptionDto = {
+        requestId: 'test-request-id',
+        type: ExceptionEnum.Maintenance,
+        message: 'System is under maintenance',
+      };
+
+      authService.isAuthenticated.set(true);
+      agridataStateService.currentRouteWithoutQueryParams.set('/');
+      const navigateSpy = jest.spyOn(router, 'navigate');
+
+      httpClient.get(testUrl).subscribe({
+        error: (error: HttpErrorResponse) => {
+          expect(error.status).toBe(503);
+          expect(navigateSpy).not.toHaveBeenCalled();
+          done();
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
+    });
+
+    it('should not navigate to maintenance when current route is privacy policy', (done) => {
+      const testUrl = '/api/test';
+      const maintenanceError: ExceptionDto = {
+        requestId: 'test-request-id',
+        type: ExceptionEnum.Maintenance,
+        message: 'System is under maintenance',
+      };
+
+      authService.isAuthenticated.set(true);
+      agridataStateService.currentRouteWithoutQueryParams.set(
+        `/${ROUTE_PATHS.PRIVACY_POLICY_PATH}`,
+      );
+
+      const navigateSpy = jest.spyOn(router, 'navigate');
+
+      httpClient.get(testUrl).subscribe({
+        error: (error: HttpErrorResponse) => {
+          expect(error.status).toBe(503);
+          expect(navigateSpy).not.toHaveBeenCalled();
+          done();
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
+    });
+
+    it('should not navigate to maintenance when current route is already maintenance page', (done) => {
+      const testUrl = '/api/test';
+      const maintenanceError: ExceptionDto = {
+        requestId: 'test-request-id',
+        type: ExceptionEnum.Maintenance,
+        message: 'System is under maintenance',
+      };
+
+      authService.isAuthenticated.set(true);
+      agridataStateService.currentRouteWithoutQueryParams.set(`/${ROUTE_PATHS.MAINTENANCE}`);
+
+      const navigateSpy = jest.spyOn(router, 'navigate');
+
+      httpClient.get(testUrl).subscribe({
+        error: (error: HttpErrorResponse) => {
+          expect(error.status).toBe(503);
+          expect(navigateSpy).not.toHaveBeenCalled();
+          done();
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
+    });
+
+    it('should not navigate to maintenance when error is not maintenance type', (done) => {
+      const testUrl = '/api/test';
+      const otherError: ExceptionDto = {
+        requestId: 'test-request-id',
+        type: ExceptionEnum.Generic,
+        message: 'Resource not found',
+      };
+
+      authService.isAuthenticated.set(true);
+      agridataStateService.currentRouteWithoutQueryParams.set('/some-page');
+
+      const navigateSpy = jest.spyOn(router, 'navigate');
+
+      httpClient.get(testUrl).subscribe({
+        error: (error: HttpErrorResponse) => {
+          expect(error.status).toBe(404);
+          expect(navigateSpy).not.toHaveBeenCalled();
+          done();
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(otherError, { status: 404, statusText: 'Not Found' });
+    });
+
+    it('should not navigate to maintenance when error is not ExceptionDto', (done) => {
+      const testUrl = '/api/test';
+      const plainError = { error: 'Something went wrong' };
+
+      authService.isAuthenticated.set(true);
+      agridataStateService.currentRouteWithoutQueryParams.set('/some-page');
+
+      const navigateSpy = jest.spyOn(router, 'navigate');
+
+      httpClient.get(testUrl).subscribe({
+        error: (error: HttpErrorResponse) => {
+          expect(error.status).toBe(500);
+          expect(navigateSpy).not.toHaveBeenCalled();
+          done();
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(plainError, { status: 500, statusText: 'Internal Server Error' });
+    });
+
+    it('should handle null currentRoute gracefully', (done) => {
+      const testUrl = '/api/test';
+      const maintenanceError: ExceptionDto = {
+        requestId: 'test-request-id',
+        type: ExceptionEnum.Maintenance,
+        message: 'System is under maintenance',
+      };
+
+      authService.isAuthenticated.set(true);
+      agridataStateService.currentRouteWithoutQueryParams.set(undefined);
+
+      const navigateSpy = jest.spyOn(router, 'navigate');
+
+      httpClient.get(testUrl).subscribe({
+        next: (response) => {
+          expect(response).toBeDefined();
+          expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.MAINTENANCE]);
+          done();
+        },
+        error: () => {
+          done.fail('Should not throw error when navigating to maintenance');
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
+    });
   });
 });
 

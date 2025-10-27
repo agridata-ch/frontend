@@ -42,6 +42,7 @@ export class HeaderWidgetComponent {
   private readonly i18nService = inject(I18nService);
   private readonly router = inject(Router);
   private readonly errorHandler = inject(ErrorHandlerService);
+
   protected readonly cmsPagesResource = resource({
     params: () => ({
       isAuthenticated: this.authService.isAuthenticated(),

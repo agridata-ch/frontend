@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
+import { BackendVersionService } from '@/entities/api';
 import { I18nPipe } from '@/shared/i18n/i18n.pipe';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
@@ -15,6 +17,17 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 })
 export class MaintenancePage {
   protected readonly ButtonVariants = ButtonVariants;
+  private readonly backendVersionService = inject(BackendVersionService);
+  private readonly router = inject(Router);
+  checkIfMaintenanceActive = effect(() => {
+    this.backendVersionService
+      .fetchBackendVersion()
+      .then(() => {
+        // if we get a valid answer from the backend, we can assume that the maintenance is over
+        void this.router.navigate(['/']);
+      })
+      .catch((e) => console.warn('Maintenance mode still active', e));
+  });
 
   protected reloadPage() {
     globalThis.location.reload();
