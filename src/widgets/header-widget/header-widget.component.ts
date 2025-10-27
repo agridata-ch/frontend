@@ -6,6 +6,7 @@ import { filter, map } from 'rxjs';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { CmsService, StrapiCollectionTypeResponse } from '@/entities/cms';
 import { LanguageSelectComponent } from '@/features/language-select';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nPipe, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { AuthService } from '@/shared/lib/auth';
@@ -89,6 +90,6 @@ export class HeaderWidgetComponent {
   readonly ButtonVariants = ButtonVariants;
 
   login = () => {
-    this.authService.login();
+    this.router.navigate([ROUTE_PATHS.LOGIN]);
   };
 }
