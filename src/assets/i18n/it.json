@@ -294,7 +294,9 @@
     "close": "Chiudi la navigazione",
     "menuItems": {
       "helpAndSupport": "Aiuto e supporto",
-      "notifications": "Notifiche"
+      "notifications": "Notifiche",
+      "imprint": "Impressum",
+      "privacyPolicy": "Basi legali"
     }
   },
   "producer": {
@@ -422,7 +424,7 @@
     "backToHome": "Torna alla pagina iniziale",
     "maintenancePage": {
       "title": "Tornerà presto...",
-      "message": "Il nostro sito web non è attualmente disponibile a causa di lavori di manutenzione programmati.\nTorneremo presto online."
+      "message": "La nostra applicazione non è attualmente disponibile a causa di lavori di manutenzione. Torneremo presto online."
     },
     "reloadPage": "Ricarica pagina"
   },

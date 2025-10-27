@@ -1,5 +1,5 @@
 <div
-  class="relative flex h-full w-full items-center justify-center bg-[url('/assets/images/maintenance-bg.jpg')] bg-cover bg-center bg-no-repeat"
+  class="relative flex h-full w-full items-center justify-center bg-[url('/assets/images/maintenance-bg.webp')] bg-cover bg-center bg-no-repeat"
 >
   <div class="absolute right-0 top-0 bottom-0 w-full bg-agridata-primary-text/75"></div>
   <div class="flex flex-col items-center gap-10 z-10">
@@ -9,7 +9,7 @@
         >{{ 'errors.maintenancePage.message' | i18n }}</span
       >
     </div>
-    <app-agridata-button [href]="'/'" [variant]="ButtonVariants.SecondaryCms">
+    <app-agridata-button (onClick)="reloadPage()" [variant]="ButtonVariants.SecondaryCms">
       {{ 'errors.reloadPage' | i18n }}
     </app-agridata-button>
   </div>

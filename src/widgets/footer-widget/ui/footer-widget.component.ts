@@ -3,6 +3,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { BackendVersionService } from '@/entities/api';
 import { environment } from '@/environments/environment';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { I18nPipe } from '@/shared/i18n/i18n.pipe';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
 import { TestDataApiService } from '@/widgets/footer-widget/api/test-data.service';
 
@@ -17,7 +18,7 @@ import { version as frontendVersion } from '../../../../package.json';
  */
 @Component({
   selector: 'app-footer-widget',
-  imports: [],
+  imports: [I18nPipe],
   templateUrl: './footer-widget.component.html',
 })
 export class FooterWidgetComponent {

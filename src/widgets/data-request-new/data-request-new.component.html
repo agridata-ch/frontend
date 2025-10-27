@@ -24,13 +24,14 @@
       @case (FORM_GROUP_NAMES.PRODUCER) {
         <app-data-request-form-producer [form]="form()" [formDisabled]="formDisabled()" />
       }
-      @case (FORM_GROUP_NAMES.CONTRACT) {
+      <!-- TODO: Re-enable these steps when their implementation is ready DIGIB2-542 -->
+      <!-- @case (FORM_GROUP_NAMES.CONTRACT) {
         <h3>Invitation link</h3>
         <a href="{{ invitationLink() }}">{{ invitationLink() }}</a>
       }
       @case (FORM_GROUP_NAMES.COMPLETION) {
         <span>step 6</span>
-      }
+      } -->
     }
   </div>
   <div wizardFooter class="contents" *i18n="let t; prefix: 'data-request.wizard'">

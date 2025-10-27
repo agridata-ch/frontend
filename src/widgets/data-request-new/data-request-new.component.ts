@@ -143,16 +143,17 @@ export class DataRequestNewComponent {
       fields: ['targetGroup'],
       completionStrategy: FORM_COMPLETION_STRATEGIES.FORM_VALIDATION,
     },
-    {
-      formGroupName: FORM_GROUP_NAMES.CONTRACT,
-      fields: [],
-      completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
-    },
-    {
-      formGroupName: FORM_GROUP_NAMES.COMPLETION,
-      fields: [],
-      completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
-    },
+    // TODO: Re-enable these steps when their implementation is ready DIGIB2-542
+    // {
+    //   formGroupName: FORM_GROUP_NAMES.CONTRACT,
+    //   fields: [],
+    //   completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
+    // },
+    // {
+    //   formGroupName: FORM_GROUP_NAMES.COMPLETION,
+    //   fields: [],
+    //   completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
+    // },
   ]);
   readonly logoFile = signal<File | null>(null);
 
@@ -425,7 +426,8 @@ export class DataRequestNewComponent {
     }
   }
 
-  invitationLink() {
-    return `${window.location.origin}/consent-requests/create/${this.dataRequestId()}`;
-  }
+  // TODO: remove these code when their implementation is ready DIGIB2-542
+  // invitationLink() {
+  //   return `${window.location.origin}/consent-requests/create/${this.dataRequestId()}`;
+  // }
 }
