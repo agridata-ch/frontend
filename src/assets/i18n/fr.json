@@ -294,7 +294,9 @@
     "close": "Navigation fermée",
     "menuItems": {
       "helpAndSupport": "Aide et assistance",
-      "notifications": "Notifications"
+      "notifications": "Notifications",
+      "imprint": "Impressum",
+      "privacyPolicy": "Conditions d'utilisation"
     }
   },
   "producer": {
@@ -421,7 +423,7 @@
     "backToHome": "Retour à la page d'accueil",
     "maintenancePage": {
       "title": "Ça va bientôt repartir...",
-      "message": "Notre site web est actuellement indisponible en raison de travaux de maintenance prévus.\nNous serons bientôt de nouveau en ligne."
+      "message": "Notre application est actuellement indisponible pour cause de maintenance. Nous serons bientôt de nouveau en ligne."
     },
     "reloadPage": "Recharger la page"
   },

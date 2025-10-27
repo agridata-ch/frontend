@@ -9,8 +9,12 @@
     }
   </div>
   <div class="flex flex-col md:flex-row gap-2">
-    <a href="{{ ROUTE_PATHS.IMPRESSUM_PATH }}" class="hover:underline p-4">Impressum</a>
-    <a href="{{ ROUTE_PATHS.PRIVACY_POLICY_PATH }}" class="hover:underline p-4">Datenschutz</a>
+    <a href="{{ ROUTE_PATHS.IMPRESSUM_PATH }}" class="hover:underline p-4">{{
+      'navigation.menuItems.imprint' | i18n
+    }}</a>
+    <a href="{{ ROUTE_PATHS.PRIVACY_POLICY_PATH }}" class="hover:underline p-4">{{
+      'navigation.menuItems.privacyPolicy' | i18n
+    }}</a>
   </div>
   <div>
     <span class="text-agridata-tertiary-text">

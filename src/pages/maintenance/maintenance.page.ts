@@ -15,4 +15,8 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 })
 export class MaintenancePage {
   protected readonly ButtonVariants = ButtonVariants;
+
+  protected reloadPage() {
+    globalThis.location.reload();
+  }
 }
