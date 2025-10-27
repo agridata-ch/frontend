@@ -1,3 +1,9 @@
+## [1.1.0-rc.25](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.24...v1.1.0-rc.25) (2025-10-27)
+
+### Features
+
+- **error-pages:** add error pages ([47b44f0](https://github.com/agridata-ch/frontend/commit/47b44f0d3ab909c55ccc853dac0363ff12560070)), closes [DIGIB2-789](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-789)
+
 ## [1.1.0-rc.24](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.23...v1.1.0-rc.24) (2025-10-24)
 
 ### Bug Fixes
