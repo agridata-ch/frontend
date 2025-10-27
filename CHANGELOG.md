@@ -1,3 +1,9 @@
+## [1.1.0-rc.26](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.25...v1.1.0-rc.26) (2025-10-27)
+
+### Features
+
+- **maintenance-model:** redirect users first to /login before trigger login ([d8b9b7b](https://github.com/agridata-ch/frontend/commit/d8b9b7bd65ed3718501dae16ec4be6b154667edf)), closes [DIGIB2-261](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-261)
+
 ## [1.1.0-rc.25](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.24...v1.1.0-rc.25) (2025-10-27)
 
 ### Features
