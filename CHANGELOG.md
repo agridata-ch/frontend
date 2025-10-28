@@ -1,3 +1,9 @@
+## [1.1.0-rc.32](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.31...v1.1.0-rc.32) (2025-10-28)
+
+### Features
+
+- **google-analytics:** adds google analytics ([e8d1a21](https://github.com/agridata-ch/frontend/commit/e8d1a21e669f45ff227b15613aa9f69d89503fe3)), closes [DIGIB2-770](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-770)
+
 ## [1.1.0-rc.31](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.30...v1.1.0-rc.31) (2025-10-28)
 
 ### Bug Fixes
