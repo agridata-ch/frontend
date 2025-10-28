@@ -12,7 +12,7 @@ jobs:
   set-cloudfront-origin-path:
     name: Set cloudfront origin path
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     env:
       AWS_REGION: eu-central-2
     permissions:
@@ -74,6 +74,7 @@ jobs:
             --id "$DISTRIBUTION_ID" \
             --if-match "$ETAG" \
             --distribution-config file://new-config.json
+          aws cloudfront wait distribution-deployed --id "$DISTRIBUTION_ID"
 
           echo "Creating CloudFront invalidation for path '/${ORIGIN_PATH}/*'..."
           aws cloudfront create-invalidation \
