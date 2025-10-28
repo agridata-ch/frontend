@@ -1,3 +1,9 @@
+## [1.1.0-rc.34](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.33...v1.1.0-rc.34) (2025-10-28)
+
+### Features
+
+- **ui:** add more ui improvements ([a3bb926](https://github.com/agridata-ch/frontend/commit/a3bb926d3f96e51a184c19abac137d0316950add))
+
 ## [1.1.0-rc.33](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.32...v1.1.0-rc.33) (2025-10-28)
 
 ### Bug Fixes
