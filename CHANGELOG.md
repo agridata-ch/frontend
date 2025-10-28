@@ -1,3 +1,9 @@
+## [1.1.0-rc.33](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.32...v1.1.0-rc.33) (2025-10-28)
+
+### Bug Fixes
+
+- **cloudfront:** wait in pipeline until cloudfront is deployed ([9c7340d](https://github.com/agridata-ch/frontend/commit/9c7340d60b2179bd696b2cd5017360a16896e647))
+
 ## [1.1.0-rc.32](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.31...v1.1.0-rc.32) (2025-10-28)
 
 ### Features
