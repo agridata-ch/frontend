@@ -48,4 +48,46 @@ describe('FooterWidgetComponent', () => {
     expect(spanEl[0].nativeElement.textContent).toContain(`FE ${frontendVersion}`);
     expect(spanEl[0].nativeElement.textContent).toContain(`BE ${beVersion}`);
   });
+
+  describe('handleCopyright', () => {
+    it('should hide copyright after exactly 7 clicks within timeout', async () => {
+      // Call handleClickCopyright 7 times
+      for (let i = 0; i < 7; i++) {
+        component['handleClickCopyright']();
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1100));
+
+      expect(component['hideCopyright']()).toBe(true);
+    });
+
+    it('should not hide copyright when calling more than 7 times', async () => {
+      // Call handleClickCopyright 8 times
+      for (let i = 0; i < 8; i++) {
+        component['handleClickCopyright']();
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1100));
+
+      expect(component['hideCopyright']()).toBe(false);
+    });
+
+    it('should not hide copyright when calls are interrupted by timeout', async () => {
+      // First batch of calls
+      for (let i = 0; i < 4; i++) {
+        component['handleClickCopyright']();
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1100));
+
+      // Second batch of calls
+      for (let i = 0; i < 3; i++) {
+        component['handleClickCopyright']();
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1100));
+
+      expect(component['hideCopyright']()).toBe(false);
+    });
+  });
 });

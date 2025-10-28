@@ -71,7 +71,7 @@ export interface TextImageBlock {
   list: List | null;
   image: Image;
   button: CTA | null;
-  linkedImages: LinkedImage[];
+  linkedImages?: LinkedImage[];
 }
 
 export interface ImageCardBlock {

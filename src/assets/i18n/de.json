@@ -316,7 +316,8 @@
     "helpAndSupport": {
       "title": "Hilfe & Support",
       "support": {
-        "title": "Support"
+        "title": "Support",
+        "openingInfos": "Unsere Zeiten:\nMontag bis Freitag\n08:00 - 17:00 Uhr"
       }
     }
   },
