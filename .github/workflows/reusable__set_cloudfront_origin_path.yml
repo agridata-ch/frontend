@@ -75,10 +75,10 @@ jobs:
             --if-match "$ETAG" \
             --distribution-config file://new-config.json
 
-          echo "Creating CloudFront invalidation for path '/${ORIGIN_PATH}/*'..."
+          echo "Creating CloudFront invalidation"
           aws cloudfront create-invalidation \
             --distribution-id "$DISTRIBUTION_ID" \
-            --paths "/${ORIGIN_PATH}/*"
+            --paths "/*"
 
       - name: Update SSM Parameter with new origin path
         run: |
