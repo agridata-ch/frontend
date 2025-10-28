@@ -29,7 +29,7 @@
     }
 
     @if (cmsData().linkedImages) {
-      <div class="flex gap-4 py-10 justify-between sm:justify-start">
+      <div class="flex gap-4 py-10 justify-start">
         @for (linkedImage of cmsData().linkedImages; track linkedImage.id) {
           <a [href]="linkedImage.link" target="_blank" rel="noopener noreferrer">
             <img

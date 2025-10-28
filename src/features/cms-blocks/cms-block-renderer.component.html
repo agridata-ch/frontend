@@ -1,4 +1,4 @@
-<div [class.bg-white]="isOdd()">
+<div [class.bg-white]="isOdd()" [class.bg-agridata-content-gray]="!isOdd()">
   @switch (block().__component) {
     @case (CMS_BLOCKS.SECTION_MEDIA) {
       <app-section-media-block [block]="block()" />

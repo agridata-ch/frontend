@@ -18,10 +18,10 @@
   </div>
   <div>
     <span class="text-agridata-tertiary-text">
-      agridata.ch © 2025 — FE {{ frontendVersion() }}
+      agridata.ch © 2025 — {{ isCmsPage() ? ' ' : 'FE ' }}{{ frontendVersion() }}
+      @if (!isCmsPage() && backendVersion()) {
+        · BE {{ backendVersion()?.['version'] }}
+      }
     </span>
-    @if (backendVersion()) {
-      <span class="text-agridata-tertiary-text">· BE {{ backendVersion()?.['version'] }}</span>
-    }
   </div>
 </div>
