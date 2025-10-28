@@ -1,3 +1,9 @@
+## [1.1.0-rc.31](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.30...v1.1.0-rc.31) (2025-10-28)
+
+### Bug Fixes
+
+- **cloudfront:** invalidate cloudfront after deployment ([2918ba0](https://github.com/agridata-ch/frontend/commit/2918ba059c8d38659dd4ad3fdf4a02ea725a106a))
+
 ## [1.1.0-rc.30](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.29...v1.1.0-rc.30) (2025-10-28)
 
 ### Features
