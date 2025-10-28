@@ -27,10 +27,12 @@ import { ErrorModal } from '@/shared/error-modal/error-modal.component';
   imports: [RouterOutlet, ErrorModal, DebugModalComponent],
 })
 export class AppComponent {
+  // Injects
   private readonly injector = inject(Injector);
   private readonly router = inject(Router);
   private readonly scroller = inject(ViewportScroller);
 
+  // Signals
   private readonly currentAnchor = signal<string | null>(null);
 
   scrollEffect = effect((onCleanup) => {

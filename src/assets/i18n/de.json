@@ -424,7 +424,7 @@
     "backToHome": "Zurück zur Startseite",
     "maintenancePage": {
       "title": "Es läuft gleich wieder...",
-      "message": "Unsere Anwendung ist derzeit wegen Wartungsarbeiten nicht erreichbar.\\nWir sind bald wieder online."
+      "message": "Unsere Anwendung ist derzeit wegen Wartungsarbeiten nicht erreichbar.\nWir sind bald wieder online."
     },
     "reloadPage": "Seite neu laden"
   },

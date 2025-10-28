@@ -5,6 +5,8 @@ import { By } from '@angular/platform-browser';
 import { ErrorDto } from '@/app/error/error-dto';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { getTranslocoModule } from '@/app/transloco-testing.module';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
 import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 
@@ -24,11 +26,11 @@ describe('ErrorModal', () => {
   let fixture: ComponentFixture<ErrorModal>;
   let component: ErrorModal;
   let errorService: Partial<ErrorHandlerService>;
-
+  let stateService: ReturnType<typeof mockAgridataStateService>;
   beforeEach(async () => {
     errorService = mockErrorHandlerService;
     errorService.getGlobalErrors = jest.fn().mockReturnValue(signal([testError]));
-
+    stateService = mockAgridataStateService('test-ui');
     await TestBed.configureTestingModule({
       imports: [
         ErrorModal,
@@ -39,7 +41,10 @@ describe('ErrorModal', () => {
           },
         }),
       ],
-      providers: [{ provide: ErrorHandlerService, useValue: errorService }],
+      providers: [
+        { provide: ErrorHandlerService, useValue: errorService },
+        { provide: AgridataStateService, useValue: stateService },
+      ],
     }).compileComponents();
     fixture = TestBed.createComponent(ErrorModal);
     component = fixture.componentInstance;

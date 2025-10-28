@@ -24,14 +24,20 @@ import { ModalComponent } from '@/shared/ui/modal/modal.component';
 export class ErrorModal {
   private readonly errorService = inject(ErrorHandlerService);
   private readonly stateService = inject(AgridataStateService);
+  private readonly DONT_SHOW_ERROR_ON_ROUTES = [
+    ROUTE_PATHS.ERROR,
+    ROUTE_PATHS.MAINTENANCE,
+    ROUTE_PATHS.FORBIDDEN,
+    ROUTE_PATHS.NOT_FOUND,
+  ];
   readonly errors = this.errorService.getGlobalErrors();
 
-  isNotErrorRoute = computed(() => {
+  dontShowErrors = computed(() => {
     const route = this.stateService.currentRouteWithoutQueryParams();
     if (!route) {
       return true;
     }
-    return !route.endsWith(ROUTE_PATHS.ERROR);
+    return this.DONT_SHOW_ERROR_ON_ROUTES.some((r) => route.endsWith(r));
   });
 
   closeErrors() {
