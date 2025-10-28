@@ -6,6 +6,7 @@ import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { TestDataService } from '@/entities/openapi';
 import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
 import { FooterWidgetComponent } from '@/widgets/footer-widget';
+import { TestDataApiService } from '@/widgets/footer-widget/api/test-data.service';
 
 import { version as frontendVersion } from '../../../../package.json';
 
@@ -16,19 +17,27 @@ const createMockBackendVersionService = () =>
     fetchBackendVersion: jest.fn().mockResolvedValue({ version: beVersion }),
   }) satisfies Partial<BackendVersionService>;
 
+const createMockTestDataService = () =>
+  ({
+    resetTestData: jest.fn().mockResolvedValue('Manual migration executed'),
+  }) satisfies Partial<TestDataApiService>;
+
 describe('FooterWidgetComponent', () => {
   let component: FooterWidgetComponent;
   let fixture: ComponentFixture<FooterWidgetComponent>;
   let backendVersionService: ReturnType<typeof createMockBackendVersionService>;
+  let testDataService: ReturnType<typeof createMockTestDataService>;
   let stateService: ReturnType<typeof mockAgridataStateService>;
   beforeEach(async () => {
     backendVersionService = createMockBackendVersionService();
+    testDataService = createMockTestDataService();
     stateService = mockAgridataStateService('test-uid');
     await TestBed.configureTestingModule({
       imports: [FooterWidgetComponent],
       providers: [
         { provide: AgridataStateService, useValue: stateService },
         { provide: BackendVersionService, useValue: backendVersionService },
+        { provide: TestDataApiService, useValue: testDataService },
         { provide: TestDataService, useValue: {} },
       ],
     }).compileComponents();
@@ -88,6 +97,25 @@ describe('FooterWidgetComponent', () => {
       await new Promise((resolve) => setTimeout(resolve, 1100));
 
       expect(component['hideCopyright']()).toBe(false);
+    });
+  });
+
+  describe('resetData', () => {
+    it('should call testDataService when reset is triggered', async () => {
+      delete (window as any).location;
+      (window as any).location = { reload: jest.fn() };
+
+      await component['resetData']();
+
+      expect(testDataService.resetTestData).toHaveBeenCalled();
+      expect(window.location.reload).toHaveBeenCalled();
+    });
+
+    it('should complete successfully without throwing errors', async () => {
+      delete (window as any).location;
+      (window as any).location = { reload: jest.fn() };
+
+      await expect(component['resetData']()).resolves.not.toThrow();
     });
   });
 });

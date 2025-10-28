@@ -72,6 +72,9 @@ export class TestDataService extends BaseService {
             }
         }
 
+        // Backend returns plain text for this endpoint
+        responseType_ = 'text';
+
         let localVarPath = `/api/test-data/reset`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<any>('post', `${basePath}${localVarPath}`,
