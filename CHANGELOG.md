@@ -1,3 +1,9 @@
+## [1.1.0-rc.28](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.27...v1.1.0-rc.28) (2025-10-28)
+
+### Features
+
+- **maintenance-mode:** redirect to maintenance page upon receiving maintenance error from backend ([1bd1a9e](https://github.com/agridata-ch/frontend/commit/1bd1a9e12014858f6ccb6d59cc809436c2ab2f59)), closes [DIGIB2-261](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-261)
+
 ## [1.1.0-rc.27](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.26...v1.1.0-rc.27) (2025-10-27)
 
 ### Features
