@@ -316,7 +316,8 @@
     "helpAndSupport": {
       "title": "Aiuto e supporto",
       "support": {
-        "title": "Assistenza"
+        "title": "Assistenza",
+        "openingInfos": "I nostri orari:\nDal lunedì al venerdì\nDalle 08:00 alle 17:00"
       }
     }
   },
@@ -424,7 +425,7 @@
     "backToHome": "Torna alla pagina iniziale",
     "maintenancePage": {
       "title": "Tornerà presto...",
-      "message": "La nostra applicazione non è attualmente disponibile a causa di lavori di manutenzione.\\nTorneremo presto online."
+      "message": "La nostra applicazione non è attualmente disponibile a causa di lavori di manutenzione.\nTorneremo presto online."
     },
     "reloadPage": "Ricarica pagina"
   },

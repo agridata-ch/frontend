@@ -1,4 +1,4 @@
-<div class="flex flex-col md:flex-row items-center gap-2" [class.md:flex-row-reverse]="isOdd()">
+<div class="flex flex-col md:flex-row items-stretch gap-2" [class.md:flex-row-reverse]="isOdd()">
   <div
     class="flex flex-col md:flex-1/2 gap-6 text-center items-center h-full md:py-2 md:px-2 self-baseline"
   >
@@ -25,15 +25,15 @@
     </div>
   </div>
   <div
-    class="hidden md:flex md:flex-1/2 md:h-[500px] md:py-2 md:px-2 items-end"
+    class="hidden md:flex md:flex-1/2 md:py-2 md:px-2 items-end self-end"
     [class.justify-end]="isOdd()"
     [class.justify-start]="!isOdd()"
   >
     @if (!lastItem()) {
       @if (isOdd()) {
-        <img src="assets/images/arrow-left-down.svg" alt="Keine Anfragen" class="h-[260px]" />
+        <img src="assets/images/arrow-left-down.svg" alt="Keine Anfragen" class="h-[200px]" />
       } @else {
-        <img src="assets/images/arrow-right-down.svg" alt="Anfragen" class="h-[260px]" />
+        <img src="assets/images/arrow-right-down.svg" alt="Anfragen" class="h-[200px]" />
       }
     }
   </div>

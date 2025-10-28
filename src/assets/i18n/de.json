@@ -316,7 +316,8 @@
     "helpAndSupport": {
       "title": "Hilfe & Support",
       "support": {
-        "title": "Support"
+        "title": "Support",
+        "openingInfos": "Unsere Zeiten:\nMontag bis Freitag\n08:00 - 17:00 Uhr"
       }
     }
   },
@@ -424,7 +425,7 @@
     "backToHome": "Zurück zur Startseite",
     "maintenancePage": {
       "title": "Es läuft gleich wieder...",
-      "message": "Unsere Anwendung ist derzeit wegen Wartungsarbeiten nicht erreichbar.\\nWir sind bald wieder online."
+      "message": "Unsere Anwendung ist derzeit wegen Wartungsarbeiten nicht erreichbar.\nWir sind bald wieder online."
     },
     "reloadPage": "Seite neu laden"
   },

@@ -38,15 +38,36 @@ export class FooterWidgetComponent {
 
   private readonly BACKEND_INFO_ROUTE_BLACKLIST = ['/', `/${ROUTE_PATHS.MAINTENANCE}`];
   protected readonly ROUTE_PATHS = ROUTE_PATHS;
+  private clickTimeout: number | undefined;
 
   protected readonly frontendVersion = signal(frontendVersion);
   protected readonly backendVersion = signal<{ [key: string]: string } | undefined>(undefined);
+  protected readonly hideCopyright = signal(false);
+  private readonly clickCount = signal(0);
 
-  protected readonly isDevMode = computed(() => !environment.production);
+  protected readonly canResetData = computed(() => environment.canResetTestData);
   protected readonly isCmsPage = computed(() => {
     const route = this.stateService.currentRouteWithoutQueryParams();
     return route?.startsWith(`/cms`) || route === '/';
   });
+
+  protected handleClickCopyright() {
+    if (this.clickTimeout) {
+      window.clearTimeout(this.clickTimeout);
+    }
+
+    const newCount = this.clickCount() + 1;
+    this.clickCount.set(newCount);
+
+    this.clickTimeout = window.setTimeout(() => {
+      if (newCount === 7) {
+        this.hideCopyright.set(true);
+      } else {
+        this.hideCopyright.set(false);
+      }
+      this.clickCount.set(0);
+    }, 1000);
+  }
 
   // remove this method for production
   // it is only for testing purposes to reset the test data
