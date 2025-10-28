@@ -42,10 +42,12 @@ import { SectionTimelineComponent } from '@/widgets/cms-blocks/section-timeline/
 export class BlockRendererComponent {
   readonly block = input.required<Block>();
   readonly index = input.required<number>();
+  readonly isDynamicPage = input<boolean>(false);
 
   protected readonly CMS_BLOCKS = CMS_BLOCKS;
 
   isOdd() {
-    return this.index() % 2 === 1;
+    // For dynamic pages, alternate starting with even index (0)
+    return this.isDynamicPage() ? this.index() % 2 === 0 : this.index() % 2 === 1;
   }
 }

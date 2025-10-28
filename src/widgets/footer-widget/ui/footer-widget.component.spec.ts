@@ -46,6 +46,6 @@ describe('FooterWidgetComponent', () => {
     await fixture.whenStable();
     const spanEl = fixture.debugElement.queryAll(By.css('.text-agridata-tertiary-text'));
     expect(spanEl[0].nativeElement.textContent).toContain(`FE ${frontendVersion}`);
-    expect(spanEl[1].nativeElement.textContent).toContain(`BE ${beVersion}`);
+    expect(spanEl[0].nativeElement.textContent).toContain(`BE ${beVersion}`);
   });
 });

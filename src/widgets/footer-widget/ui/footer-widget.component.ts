@@ -42,7 +42,11 @@ export class FooterWidgetComponent {
   protected readonly frontendVersion = signal(frontendVersion);
   protected readonly backendVersion = signal<{ [key: string]: string } | undefined>(undefined);
 
-  readonly isDevMode = computed(() => !environment.production);
+  protected readonly isDevMode = computed(() => !environment.production);
+  protected readonly isCmsPage = computed(() => {
+    const route = this.stateService.currentRouteWithoutQueryParams();
+    return route?.startsWith(`/cms`) || route === '/';
+  });
 
   // remove this method for production
   // it is only for testing purposes to reset the test data

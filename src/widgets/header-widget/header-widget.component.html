@@ -1,5 +1,7 @@
 <div class="px-12 flex justify-between bg-agridata-primary-text text-white h-[100px]">
-  <a class="agridata-logo text-[40px] flex items-center" routerLink="/">agridata.ch</a>
+  <a class="agridata-logo text-[40px] flex items-center" routerLink="/">
+    <img src="/assets/images/agridata-logo.svg" alt="Agridata Logo" class="h-[60px]" />
+  </a>
   @if (!isAuthenticated()) {
     <div class="hidden lg:flex items-stretch self-stretch gap-2">
       @for (page of cmsPages(); track page.id) {
