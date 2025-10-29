@@ -426,8 +426,7 @@ export class DataRequestNewComponent {
     }
   }
 
-  // TODO: remove these code when their implementation is ready DIGIB2-542
-  // invitationLink() {
-  //   return `${window.location.origin}/consent-requests/create/${this.dataRequestId()}`;
-  // }
+  invitationLink() {
+    return `${globalThis.location.origin}/consent-requests/create/${this.dataRequestId()}`;
+  }
 }

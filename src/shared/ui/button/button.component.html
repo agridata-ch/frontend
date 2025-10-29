@@ -9,6 +9,7 @@
     [tabindex]="tabindex()"
     [attr.aria-label]="ariaLabel()"
     (click)="handleClick($event)"
+    (keydown.enter)="handleClick($event)"
     [class]="
       `agridata-button agridata-button-${variant()} ${selected() ? 'selected' : ''} ${additionalClass()}`
     "

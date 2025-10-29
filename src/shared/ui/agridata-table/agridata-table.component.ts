@@ -128,10 +128,9 @@ export class AgridataTableComponent<T> {
   }
 
   // Template methods (protected)
-  protected handleRowClick(event: Event, row: T): void {
+  protected handleRowClick(row: T): void {
     const rowAction = this.tableMetadata().rowAction;
-    if (event.target === event.currentTarget && rowAction) {
-      event.preventDefault();
+    if (rowAction) {
       rowAction(row);
     }
   }

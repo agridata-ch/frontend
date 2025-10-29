@@ -31,7 +31,7 @@ export class ButtonComponent {
 
   handleClick(event: Event) {
     event.preventDefault();
-    event.stopImmediatePropagation();
+    event.stopPropagation();
     this.onClick.emit(event);
   }
 }
