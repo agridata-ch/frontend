@@ -4,7 +4,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { faArrowLeft, faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import DataRequestDtoSchema from '@/assets/formSchemas/DataRequestUpdateDto.json';
+import { DataRequestUpdateDto } from '@/assets/formSchemas/agridata-schemas.json';
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto } from '@/entities/openapi';
 import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
@@ -53,7 +53,6 @@ export class DataRequestNewComponent {
   readonly toastService = inject(ToastService);
 
   readonly selectedRequest = input<DataRequestDto | null>(null);
-
   readonly dataRequestId = signal<string>(this.selectedRequest()?.id ?? '');
   readonly dataRequest = signal<DataRequestDto | null>(this.selectedRequest());
 
@@ -218,7 +217,7 @@ export class DataRequestNewComponent {
   readonly form = computed(() => {
     // Create the form with the current initialData
     const newForm = buildReactiveForm(
-      DataRequestDtoSchema,
+      DataRequestUpdateDto,
       this.formMap(),
       this.i18nService,
       this.initialData() as Dto,
