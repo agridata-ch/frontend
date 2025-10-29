@@ -25,9 +25,8 @@
         <app-data-request-form-producer [form]="form()" [formDisabled]="formDisabled()" />
       }
       @case (FORM_GROUP_NAMES.CONTRACT) {
-        <!-- TODO: Re-enable these steps when their implementation is ready DIGIB2-542 -->
-        <!-- <h3>Invitation link</h3>
-        <a href="{{ invitationLink() }}">{{ invitationLink() }}</a> -->
+        <h3>Invitation link</h3>
+        <a href="{{ invitationLink() }}">{{ invitationLink() }}</a>
       }
       <!-- TODO: Re-enable these steps when their implementation is ready DIGIB2-542 -->
       <!--@case (FORM_GROUP_NAMES.COMPLETION) {
