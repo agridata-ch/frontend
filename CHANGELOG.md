@@ -1,3 +1,9 @@
+## [1.1.0-rc.36](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.35...v1.1.0-rc.36) (2025-10-29)
+
+### Bug Fixes
+
+- **DIGIB2-988:** reactive effect for multiselect to fix race conditions with async service call ([774de63](https://github.com/agridata-ch/frontend/commit/774de63bcf27dad89a1b4caac138c5469cb0b227))
+
 ## [1.1.0-rc.35](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.34...v1.1.0-rc.35) (2025-10-29)
 
 ### Features
