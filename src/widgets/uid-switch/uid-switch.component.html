@@ -13,7 +13,7 @@
         (click)="selectUid(uid.uid)"
       >
         <span
-          class="w-5 h-5 border rounded-full"
+          class="shrink-0 w-5 h-5 border rounded-full"
           [class.border-agridata-primary-600]="variant() === UidSwitchVariant.Light"
           [class.border-agridata-primary-600]="activeUid() === uid.uid"
           [class.bg-agridata-primary-600]="activeUid() === uid.uid"
@@ -28,13 +28,13 @@
           />
           <div class="text-left">
             <div
-              class="text-l font-semibold"
+              class="text-sm font-semibold"
               [class.text-gray-900]="variant() === UidSwitchVariant.Dark && activeUid() === uid.uid"
             >
               {{ uid.name }}
             </div>
             <div
-              class="text-sm text-agridata-secondary-text"
+              class="text-xs text-agridata-secondary-text"
               [class.text-gray-400]="variant() === UidSwitchVariant.Dark"
             >
               {{ uid.uid }}
