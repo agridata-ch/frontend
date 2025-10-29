@@ -1,3 +1,9 @@
+## [1.1.0-rc.39](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.38...v1.1.0-rc.39) (2025-10-29)
+
+### Bug Fixes
+
+- **ui:** fix account-overlay ([93a11c1](https://github.com/agridata-ch/frontend/commit/93a11c1adf86ed268e78abe96b5d017a018c940d)), closes [DIGIB2-862](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-862)
+
 ## [1.1.0-rc.38](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.37...v1.1.0-rc.38) (2025-10-29)
 
 ### Bug Fixes
