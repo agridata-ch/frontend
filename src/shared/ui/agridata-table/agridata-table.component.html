@@ -55,8 +55,8 @@
             class="hover:bg-agridata-primary-50 cursor-pointer transition-colors duration-150"
             [class.bg-sky-50]="isRowHighlighted(row)"
             [attr.aria-selected]="isRowHighlighted(row)"
-            (click)="handleRowClick(row)"
-            (keydown.enter)="handleRowClick(row)"
+            (click)="handleRowClick($event, row)"
+            (keydown.enter)="handleRowClick($event, row)"
             (mouseenter)="setHoveredRowId(rowId)"
             (mouseleave)="setHoveredRowId(null)"
             tabindex="0"
@@ -73,8 +73,8 @@
                 <app-table-actions
                   [actions]="getRowActions(row)"
                   [isRowHovered]="hoveredRowId() === rowId"
-                  (rowAction)="handleRowClick(row)"
-                />
+                  (rowAction)="handleRowClick($event, row)"
+                ></app-table-actions>
               </td>
             }
           </tr>

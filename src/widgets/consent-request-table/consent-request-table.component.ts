@@ -101,7 +101,9 @@ export class ConsentRequestTableComponent {
     const consent: ActionDTO = {
       label: 'consent-request.table.tableActions.consent',
       isDisabled: this.agridataStateService.isImpersonating(),
-      callback: () => {
+      callback: (event?: Event) => {
+        event?.preventDefault();
+        event?.stopPropagation();
         void this.updateConsentRequestState(
           request.id,
           ConsentRequestStateEnum.Granted,

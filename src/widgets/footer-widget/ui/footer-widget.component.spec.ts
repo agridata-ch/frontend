@@ -56,7 +56,7 @@ describe('FooterWidgetComponent', () => {
         component['handleClickCopyright']();
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 1100));
+      await new Promise((resolve) => setTimeout(resolve, 600));
 
       expect(component['hideCopyright']()).toBe(true);
     });
@@ -67,7 +67,7 @@ describe('FooterWidgetComponent', () => {
         component['handleClickCopyright']();
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 1100));
+      await new Promise((resolve) => setTimeout(resolve, 600));
 
       expect(component['hideCopyright']()).toBe(false);
     });
@@ -78,14 +78,14 @@ describe('FooterWidgetComponent', () => {
         component['handleClickCopyright']();
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 1100));
+      await new Promise((resolve) => setTimeout(resolve, 600));
 
       // Second batch of calls
       for (let i = 0; i < 3; i++) {
         component['handleClickCopyright']();
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 1100));
+      await new Promise((resolve) => setTimeout(resolve, 600));
 
       expect(component['hideCopyright']()).toBe(false);
     });

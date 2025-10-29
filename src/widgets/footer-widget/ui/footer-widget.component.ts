@@ -53,31 +53,32 @@ export class FooterWidgetComponent {
 
   protected handleClickCopyright() {
     if (this.clickTimeout) {
-      window.clearTimeout(this.clickTimeout);
+      globalThis.clearTimeout(this.clickTimeout);
     }
 
     const newCount = this.clickCount() + 1;
     this.clickCount.set(newCount);
 
-    this.clickTimeout = window.setTimeout(() => {
+    this.clickTimeout = globalThis.setTimeout(() => {
       if (newCount === 7) {
         this.hideCopyright.set(true);
       } else {
         this.hideCopyright.set(false);
       }
       this.clickCount.set(0);
-    }, 1000);
+    }, 500);
   }
 
   // remove this method for production
   // it is only for testing purposes to reset the test data
   async resetData() {
-    await this.testDataService.resetTestData().finally(() => {
-      window.location.reload();
-    });
+    if (environment.canResetTestData)
+      await this.testDataService.resetTestData().finally(() => {
+        globalThis.location.reload();
+      });
   }
 
   private shouldLoadBackendInfo(route: string) {
-    return !this.BACKEND_INFO_ROUTE_BLACKLIST.some((blacklistItem) => blacklistItem === route);
+    return !this.BACKEND_INFO_ROUTE_BLACKLIST.includes(route);
   }
 }
