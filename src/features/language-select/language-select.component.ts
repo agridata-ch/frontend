@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, ViewEncapsulation } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { faChevronDown, faChevronUp } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -19,7 +19,6 @@ import { availableLangs } from '../../../transloco.config';
   imports: [FontAwesomeModule, PopoverComponent, ClickOutsideDirective],
   selector: 'agridata-language-select',
   templateUrl: './language-select.component.html',
-  encapsulation: ViewEncapsulation.None,
 })
 export class LanguageSelectComponent {
   private readonly i18nService = inject(I18nService);

@@ -9,21 +9,3 @@
     --heading-one-line-height: 120%;
   }
 }
-
-/* List styling */
-ul {
-  list-style: disc;
-}
-
-ol {
-  list-style: decimal;
-}
-
-/* Nested list styling */
-li > ul {
-  list-style: circle;
-}
-
-li > ol {
-  list-style: lower-alpha;
-}
