@@ -143,12 +143,12 @@ export class DataRequestNewComponent {
       fields: ['targetGroup'],
       completionStrategy: FORM_COMPLETION_STRATEGIES.FORM_VALIDATION,
     },
+    {
+      formGroupName: FORM_GROUP_NAMES.CONTRACT,
+      fields: [],
+      completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
+    },
     // TODO: Re-enable these steps when their implementation is ready DIGIB2-542
-    // {
-    //   formGroupName: FORM_GROUP_NAMES.CONTRACT,
-    //   fields: [],
-    //   completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
-    // },
     // {
     //   formGroupName: FORM_GROUP_NAMES.COMPLETION,
     //   fields: [],

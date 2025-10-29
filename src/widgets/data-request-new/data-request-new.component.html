@@ -24,12 +24,13 @@
       @case (FORM_GROUP_NAMES.PRODUCER) {
         <app-data-request-form-producer [form]="form()" [formDisabled]="formDisabled()" />
       }
-      <!-- TODO: Re-enable these steps when their implementation is ready DIGIB2-542 -->
-      <!-- @case (FORM_GROUP_NAMES.CONTRACT) {
-        <h3>Invitation link</h3>
-        <a href="{{ invitationLink() }}">{{ invitationLink() }}</a>
+      @case (FORM_GROUP_NAMES.CONTRACT) {
+        <!-- TODO: Re-enable these steps when their implementation is ready DIGIB2-542 -->
+        <!-- <h3>Invitation link</h3>
+        <a href="{{ invitationLink() }}">{{ invitationLink() }}</a> -->
       }
-      @case (FORM_GROUP_NAMES.COMPLETION) {
+      <!-- TODO: Re-enable these steps when their implementation is ready DIGIB2-542 -->
+      <!--@case (FORM_GROUP_NAMES.COMPLETION) {
         <span>step 6</span>
       } -->
     }
@@ -73,10 +74,14 @@
         {{ t('previous') }}
       </app-agridata-button>
       <div class="flex gap-4">
-        <app-agridata-button [variant]="ButtonVariants.Secondary" (onClick)="handleSave()">
+        <app-agridata-button
+          [variant]="ButtonVariants.Secondary"
+          (onClick)="handleSave()"
+          [disabled]="formDisabled()"
+        >
           {{ t('saveDraft') }}
         </app-agridata-button>
-        <app-agridata-button (onClick)="handleSaveAndComplete()">
+        <app-agridata-button (onClick)="handleSaveAndComplete()" [disabled]="formDisabled()">
           {{ t('saveAndComplete') }}
         </app-agridata-button>
       </div>
