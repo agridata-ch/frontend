@@ -21,7 +21,7 @@
     <app-agridata-button
       click-stop-propagation
       [variant]="ButtonVariants.Icon"
-      (onClick)="handleRowAction()"
+      (onClick)="handleRowAction($event)"
       class="action-button"
       [ariaLabel]="'table.ariaLabels.actions' | i18n"
     >

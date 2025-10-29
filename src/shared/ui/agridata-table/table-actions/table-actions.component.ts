@@ -13,7 +13,7 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 export interface ActionDTO {
   icon?: IconDefinition;
   label: string;
-  callback: () => void;
+  callback: (event?: Event) => void;
   isMainAction?: boolean;
   isDisabled?: boolean;
 }
@@ -40,7 +40,7 @@ export interface ActionDTO {
 export class TableActionsComponent {
   readonly actions = input<ActionDTO[]>([]);
   readonly isRowHovered = input<boolean>(false);
-  readonly rowAction = output<void>();
+  readonly rowAction = output<Event>();
   readonly isOpen = signal(false);
 
   readonly iconRowAction = faChevronRight;
@@ -69,8 +69,8 @@ export class TableActionsComponent {
     this.isOpen.set(false);
   }
 
-  handleRowAction() {
-    this.rowAction.emit();
+  handleRowAction(event: Event) {
+    this.rowAction.emit(event);
   }
 
   handleToggle() {
