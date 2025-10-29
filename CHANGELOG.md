@@ -1,3 +1,9 @@
+## [1.1.0-rc.41](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.40...v1.1.0-rc.41) (2025-10-29)
+
+### Bug Fixes
+
+- **ui:** fix event bubbling ([93bf2d0](https://github.com/agridata-ch/frontend/commit/93bf2d07f05ce0e91ddc9f0d3906d5630a1aae0e)), closes [DIGIB2-578](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-578)
+
 ## [1.1.0-rc.40](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.39...v1.1.0-rc.40) (2025-10-29)
 
 ### Bug Fixes
