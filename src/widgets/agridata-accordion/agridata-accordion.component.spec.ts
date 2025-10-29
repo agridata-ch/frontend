@@ -1,6 +1,6 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { faChevronDown, faChevronUp } from '@fortawesome/pro-regular-svg-icons';
+import { faChevronDown, faChevronUp } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 
 import { AgridataAccordionComponent } from './agridata-accordion.component';
 

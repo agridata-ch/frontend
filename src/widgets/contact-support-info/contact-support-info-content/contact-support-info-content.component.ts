@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
+import { faEnvelope, faPhone } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faPhone, faEnvelope } from '@fortawesome/pro-regular-svg-icons';
 
 import { I18nDirective } from '@/shared/i18n';
 

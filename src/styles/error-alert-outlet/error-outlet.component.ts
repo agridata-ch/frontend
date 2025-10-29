@@ -1,5 +1,5 @@
 import { Component, DestroyRef, effect, inject, signal, Signal } from '@angular/core';
-import { faClose } from '@fortawesome/pro-regular-svg-icons';
+import { faClose } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 
 import { ErrorDto } from '@/app/error/error-dto';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';

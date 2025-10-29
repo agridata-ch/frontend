@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
+import { faQuestionCircle } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faQuestionCircle } from '@fortawesome/pro-regular-svg-icons';
 
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
 import { I18nDirective } from '@/shared/i18n';

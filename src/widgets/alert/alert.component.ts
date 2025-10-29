@@ -1,12 +1,12 @@
 import { Component, computed, input, output } from '@angular/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faBan,
+  faCheckCircle,
   faCircleInfo,
   faClose,
   faWarning,
-  faCheckCircle,
-} from '@fortawesome/pro-regular-svg-icons';
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 

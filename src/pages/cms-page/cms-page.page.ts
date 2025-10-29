@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, effect, inject, input, resource } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowRight } from '@fortawesome/pro-regular-svg-icons';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { CmsService, StrapiSingleTypeResponse } from '@/entities/cms';

@@ -1,13 +1,13 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
-  faFileCheck,
   faChevronLeft,
   faChevronRight,
   faDatabase,
+  faFileCheck,
   faUsers,
-} from '@fortawesome/pro-regular-svg-icons';
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { PageData } from '@/entities/cms';

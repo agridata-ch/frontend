@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal, ViewChild } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { faArrowLeft, faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowLeft, faArrowRight } from '@fortawesome/pro-regular-svg-icons';
 
 import DataRequestDtoSchema from '@/assets/formSchemas/DataRequestUpdateDto.json';
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto } from '@/entities/openapi';
 import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { Dto, buildReactiveForm, flattenFormGroup } from '@/shared/lib/form.helper';
+import { buildReactiveForm, Dto, flattenFormGroup } from '@/shared/lib/form.helper';
 import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';

@@ -1,14 +1,17 @@
 import {
   Component,
-  TemplateRef,
   computed,
   inject,
   resource,
   signal,
+  TemplateRef,
   viewChild,
 } from '@angular/core';
+import {
+  faArrowUpRightFromSquare,
+  faUsers,
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faArrowUpRightFromSquare, faUsers } from '@fortawesome/pro-regular-svg-icons';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { UserService } from '@/entities/api/user.service';

@@ -1,9 +1,13 @@
-import { Component, OnDestroy, input, output, signal } from '@angular/core';
+import { Component, input, OnDestroy, output, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  faClose,
+  faMagnifyingGlass,
+  faSpinner,
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faClose, faMagnifyingGlass, faSpinner } from '@fortawesome/pro-regular-svg-icons';
-import { Subject, debounceTime, distinctUntilChanged, filter, takeUntil, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, Subject, takeUntil, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { I18nDirective } from '@/shared/i18n';
