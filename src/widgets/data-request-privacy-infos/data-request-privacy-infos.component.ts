@@ -1,6 +1,10 @@
 import { Component, computed, input } from '@angular/core';
+import {
+  faFileSignature,
+  faLockKeyhole,
+  faRotate,
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faLockKeyhole, faFileSignature, faRotate } from '@fortawesome/pro-regular-svg-icons';
 
 import { I18nPipe } from '@/shared/i18n';
 

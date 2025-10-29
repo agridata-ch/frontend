@@ -1,8 +1,8 @@
 import { Location } from '@angular/common';
 import { Component, effect, inject, input, resource, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { faFileCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFileCheck } from '@fortawesome/pro-regular-svg-icons';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';

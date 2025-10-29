@@ -1,6 +1,6 @@
 import { Component, input, model, output } from '@angular/core';
+import { faClose } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faClose } from '@fortawesome/pro-regular-svg-icons';
 
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 

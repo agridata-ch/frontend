@@ -1,14 +1,14 @@
 import {
   Component,
-  ResourceRef,
-  TemplateRef,
   computed,
   inject,
   input,
   output,
+  ResourceRef,
+  TemplateRef,
   viewChild,
 } from '@angular/core';
-import { faEye, faRotateLeft } from '@fortawesome/pro-regular-svg-icons';
+import { faEye, faRotateLeft } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 
 import { DataRequestService } from '@/entities/api';
 import {

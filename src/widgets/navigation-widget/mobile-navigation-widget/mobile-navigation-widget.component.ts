@@ -1,13 +1,7 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { faBars, faClose } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {
-  faBars,
-  faBell,
-  faClose,
-  faHome,
-  faCircleQuestion,
-} from '@fortawesome/pro-regular-svg-icons';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { PageData } from '@/entities/cms';
@@ -60,9 +54,7 @@ export class MobileNavigationWidgetComponent {
 
   readonly menuIcon = faBars;
   readonly closeIcon = faClose;
-  readonly supportIcon = faCircleQuestion;
-  readonly notificationIcon = faBell;
-  readonly homeIcon = faHome;
+
   readonly ButtonVariants = ButtonVariants;
   readonly AvatarSize = AvatarSize;
   readonly UidSwitchVariant = UidSwitchVariant;
