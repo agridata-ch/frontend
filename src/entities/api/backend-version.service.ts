@@ -1,4 +1,4 @@
-import { Injectable, inject, resource } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { InfoResourceService } from '@/entities/openapi/api/infoResource.service';
@@ -13,9 +13,7 @@ import { InfoResourceService } from '@/entities/openapi/api/infoResource.service
 export class BackendVersionService {
   private readonly infoResourceService = inject(InfoResourceService);
 
-  readonly fetchBackendVersion = resource({
-    loader: () => {
-      return firstValueFrom(this.infoResourceService.qInfoGet());
-    },
-  });
+  fetchBackendVersion() {
+    return firstValueFrom(this.infoResourceService.qInfoGet());
+  }
 }

@@ -1,8 +1,8 @@
 @if (isOpen()) {
-  <div class="absolute right-0 top-0 bottom-0 z-10 w-full bg-gray-900 opacity-20"></div>
+  <div class="absolute right-0 top-0 bottom-0 z-20 w-full bg-gray-900 opacity-20"></div>
 }
 <div
-  class="fixed right-0 top-0 bottom-0 z-10 bg-white overflow-hidden backdrop-brightness-75 shadow-2xl transition-[width] duration-300 ease-in-out"
+  class="fixed right-0 top-0 bottom-0 z-20 bg-white overflow-hidden backdrop-brightness-75 shadow-2xl transition-[width] duration-300 ease-in-out"
   [class.w-0]="!isOpen()"
   [class.w-full]="isOpen()"
   [style.maxWidth]="maxWidth()"

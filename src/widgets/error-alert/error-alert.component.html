@@ -1,0 +1,30 @@
+@let err = error();
+@if (err) {
+  <app-alert
+    [type]="error()?.isFrontendError ? AlertType.WARNING : AlertType.ERROR"
+    [showCloseButton]="true"
+    (closeAlert)="closeError.emit(true)"
+  >
+    <div class="flex gap-4 justify-between items-center" *i18n="let t">
+      <div class="flex-1">
+        <div class="flex justify-between">
+          <span class="font-medium">{{ t(err.i18nTitle.i18n, err.i18nTitle.i18nParameter) }}</span>
+          <span class="text-xs">{{ err.timestamp | agridataDate: 'long' }}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <div>{{ t(err.i18nReason.i18n, err.i18nReason.i18nParameter) }}</div>
+        </div>
+        @if (err.i18nPath || err.i18nErrorId) {
+          <div class="mt-4">
+            @if (err.i18nPath) {
+              <div>{{ t(err.i18nPath.i18n, err.i18nPath.i18nParameter) }}</div>
+            }
+            @if (err.i18nErrorId) {
+              <div>{{ t(err.i18nErrorId.i18n, err.i18nErrorId.i18nParameter) }}</div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </app-alert>
+}

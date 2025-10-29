@@ -1,0 +1,40 @@
+<div class="flex flex-col md:flex-row items-stretch gap-2" [class.md:flex-row-reverse]="isOdd()">
+  <div
+    class="flex flex-col md:flex-1/2 gap-6 text-center items-center h-full md:py-2 md:px-2 self-baseline"
+  >
+    <div
+      class="flex flex-col gap-2 items-center max-w-[375px] bg-white rounded-[5px] px-5 py-5"
+      [class.self-end]="!isOdd()"
+      [class.self-start]="isOdd()"
+    >
+      <div class="flex flex-row gap-2 items-center justify-center">
+        <span
+          class="flex justify-center items-center w-10 h-10 rounded-full bg-agridata-secondary-600 text-2xl font-bold text-white"
+          >{{ index() + 1 }}</span
+        >
+        <span class="text-lg font-semibold">{{ cmsData().heading }}</span>
+      </div>
+      <span class="text-agridata-secondary-text text-sm max-w-[330px]">
+        {{ cmsData().description }}
+      </span>
+      <img
+        class="flex w-60 object-cover"
+        [src]="generateMediaUrl(cmsData().image.url)"
+        [alt]="cmsData().image.alternativeText"
+      />
+    </div>
+  </div>
+  <div
+    class="hidden md:flex md:flex-1/2 md:py-2 md:px-2 items-end self-end"
+    [class.justify-end]="isOdd()"
+    [class.justify-start]="!isOdd()"
+  >
+    @if (!lastItem()) {
+      @if (isOdd()) {
+        <img src="assets/images/arrow-left-down.svg" alt="Keine Anfragen" class="h-[200px]" />
+      } @else {
+        <img src="assets/images/arrow-right-down.svg" alt="Anfragen" class="h-[200px]" />
+      }
+    }
+  </div>
+</div>

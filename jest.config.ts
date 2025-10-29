@@ -4,7 +4,7 @@
  */
 
 import type { Config } from 'jest';
-import { createCjsPreset } from 'jest-preset-angular/presets';
+import { createCjsPreset } from 'jest-preset-angular/presets/index.js';
 
 const config: Config = {
   ...createCjsPreset(),
@@ -65,7 +65,7 @@ const config: Config = {
   // globals: {},
 
   // The maximum amount of workers used to run your tests. Can be specified as % or a number. E.g. maxWorkers: 10% will use 10% of your CPU amount + 1 as the maximum worker number. maxWorkers: 2 will use a maximum of 2 workers.
-  // maxWorkers: "50%",
+  maxWorkers: process.env['CI'] ? 2 : '50%',
 
   // An array of directory names to be searched recursively up from the requiring module's location
   // moduleDirectories: [
@@ -182,8 +182,8 @@ const config: Config = {
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: [
-    // Add marked to the list of node_modules that should be transformed
-    '/node_modules/(?!marked).+\\.js$',
+    // Transform ESM packages needed for Angular 20
+    'node_modules/(?!(@jsverse|@angular|angular-auth-oidc-client|rxjs|tslib|@ngrx|marked|@fortawesome)/)',
   ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them

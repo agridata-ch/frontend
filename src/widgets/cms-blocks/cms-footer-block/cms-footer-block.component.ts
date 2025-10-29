@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
+import { faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import { FooterBlock } from '@/entities/cms';
 import { ButtonComponent, ButtonVariants, HrefTarget } from '@/shared/ui/button';

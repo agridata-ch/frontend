@@ -57,8 +57,7 @@ describe('AgridataMultiSelectComponent', () => {
 
     componentRef.setInput('options', options);
     componentRef.setInput('control', control);
-
-    component.ngOnInit();
+    fixture.detectChanges();
 
     expect(component.selectedOptions()).toEqual([
       { value: '1', label: 'Option 1' },
@@ -75,8 +74,7 @@ describe('AgridataMultiSelectComponent', () => {
 
     componentRef.setInput('options', options);
     componentRef.setInput('control', control);
-
-    component.ngOnInit();
+    fixture.detectChanges();
 
     expect(component.selectedOptions()).toEqual([]);
   });

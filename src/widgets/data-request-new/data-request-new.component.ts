@@ -1,17 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal, ViewChild } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { faArrowLeft, faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 import DataRequestDtoSchema from '@/assets/formSchemas/DataRequestUpdateDto.json';
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto } from '@/entities/openapi';
 import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { Dto, buildReactiveForm, flattenFormGroup } from '@/shared/lib/form.helper';
+import { buildReactiveForm, Dto, flattenFormGroup } from '@/shared/lib/form.helper';
 import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 import {
   DataRequestFormConsumerComponent,
@@ -42,6 +43,7 @@ import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
     DataRequestPreviewComponent,
     DataRequestFormConsumerComponent,
     DataRequestFormProducerComponent,
+    ErrorOutletComponent,
   ],
   templateUrl: './data-request-new.component.html',
 })
@@ -146,11 +148,12 @@ export class DataRequestNewComponent {
       fields: [],
       completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
     },
-    {
-      formGroupName: FORM_GROUP_NAMES.COMPLETION,
-      fields: [],
-      completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
-    },
+    // TODO: Re-enable these steps when their implementation is ready DIGIB2-542
+    // {
+    //   formGroupName: FORM_GROUP_NAMES.COMPLETION,
+    //   fields: [],
+    //   completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
+    // },
   ]);
   readonly logoFile = signal<File | null>(null);
 
@@ -424,6 +427,6 @@ export class DataRequestNewComponent {
   }
 
   invitationLink() {
-    return `${window.location.origin}/consent-requests/create/${this.dataRequestId()}`;
+    return `${globalThis.location.origin}/consent-requests/create/${this.dataRequestId()}`;
   }
 }

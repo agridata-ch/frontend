@@ -6,6 +6,8 @@ jobs:
     name: Unit Tests and SonarQube
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -13,9 +15,9 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
           cache-dependency-path: package-lock.json
 

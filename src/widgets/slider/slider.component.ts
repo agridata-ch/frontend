@@ -1,15 +1,15 @@
 import {
   AfterViewInit,
   Component,
+  computed,
   ElementRef,
   HostListener,
+  signal,
   ViewChild,
   ViewEncapsulation,
-  computed,
-  signal,
 } from '@angular/core';
+import { faChevronLeft, faChevronRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
@@ -35,8 +35,8 @@ export class SliderComponent implements AfterViewInit {
   protected readonly gap = signal<number>(16);
   protected readonly slidesPerPage = signal<number>(window.innerWidth >= 768 ? 2 : 1);
 
-  protected readonly totalPages = computed(() =>
-    Array(Math.ceil(this.slideCount() / this.slidesPerPage())),
+  protected readonly totalPages = computed(
+    () => new Array(Math.ceil(this.slideCount() / this.slidesPerPage())),
   );
 
   protected readonly iconChevronRight = faChevronRight;

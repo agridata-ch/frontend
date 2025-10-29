@@ -1,13 +1,9 @@
 <app-agridata-button
   (onClick)="toggleNavigation()"
   [variant]="ButtonVariants.Icon"
-  [additionalClass]="'group w-10'"
+  [additionalClass]="'group'"
 >
-  <fa-icon
-    [icon]="menuIcon"
-    size="xl"
-    class="text-white self-end group-hover:text-agridata-primary-600"
-  />
+  <fa-icon [icon]="menuIcon" size="xl" class="text-white group-hover:text-agridata-primary-600" />
 </app-agridata-button>
 <div
   class="fixed right-0 top-0 bottom-0 z-10 backdrop-brightness-75 shadow-2xl transition-[width] duration-300 ease-in-out max-w-[425px] bg-agridata-primary-text"
@@ -45,7 +41,7 @@
     } @else {
       <div class="flex flex-col gap-8">
         @for (page of cmsPages(); track page.id) {
-          <a [routerLink]="`/cms/${page.slug}`" class="text-xl">
+          <a [routerLink]="`/cms/${page.slug}`" class="text-xl" (click)="toggleNavigation()">
             {{ page.title }}
           </a>
         }

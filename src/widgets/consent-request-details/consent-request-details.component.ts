@@ -30,9 +30,11 @@ import { I18nDirective, I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService } from '@/shared/toast';
-import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
+import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
+import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';
 import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
 import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
@@ -56,8 +58,9 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
     SidepanelComponent,
     ButtonComponent,
     DataRequestPrivacyInfosComponent,
-    AgridataAvatarComponent,
     DataRequestContactComponent,
+    ErrorOutletComponent,
+    AgridataContactCardComponent,
   ],
   templateUrl: './consent-request-details.component.html',
 })
@@ -74,15 +77,12 @@ export class ConsentRequestDetailsComponent {
 
   readonly closeDetail = output<string | null>();
 
-  private readonly dataRequestProducts = this.metaDataService.fetchDataProducts;
   readonly badgeSize = BadgeSize;
   readonly consentRequestStateEnum = ConsentRequestStateEnum;
   readonly ButtonVariants = ButtonVariants;
   readonly AvatarSize = AvatarSize;
   readonly AvatarSkin = AvatarSkin;
 
-  readonly showSuccessToast = signal<boolean>(false);
-  readonly showErrorToast = signal<boolean>(false);
   readonly showDetails = signal(false);
   readonly requestStateCode: Signal<string> = computed(() => String(this.request()?.stateCode));
 
@@ -96,6 +96,7 @@ export class ConsentRequestDetailsComponent {
   readonly requestConsumerLogo = computed(
     () => this.request()?.dataRequest?.dataConsumerLogoBase64,
   );
+  readonly dataConsumerCity = computed(() => this.request()?.dataRequest?.dataConsumerCity);
 
   readonly requestTitle = computed(() =>
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.title),
@@ -110,8 +111,8 @@ export class ConsentRequestDetailsComponent {
     );
   });
   readonly requestProducts = computed(() =>
-    this.dataRequestProducts
-      ?.value()
+    this.metaDataService
+      .getDataProducts()()
       ?.filter((product) => this.request()?.dataRequest?.products?.includes(product.id)),
   );
   readonly badgeText = computed(() => {
@@ -154,6 +155,10 @@ export class ConsentRequestDetailsComponent {
   }
 
   async acceptRequest() {
+    await this.updateAndReloadConsentRequestState(
+      this.requestId(),
+      ConsentRequestStateEnum.Granted,
+    );
     if (!this.preventManualClose()) {
       this.toastService.show(
         this.i18nService.translate(getToastTitle(ConsentRequestStateEnum.Granted)),
@@ -164,10 +169,13 @@ export class ConsentRequestDetailsComponent {
         this.prepareUndoAction(this.requestId(), this.requestStateCode()),
       );
     }
-    this.updateAndReloadConsentRequestState(this.requestId(), ConsentRequestStateEnum.Granted);
   }
 
   async rejectRequest() {
+    await this.updateAndReloadConsentRequestState(
+      this.requestId(),
+      ConsentRequestStateEnum.Declined,
+    );
     if (!this.preventManualClose()) {
       const toastTitle = this.i18nService.translate(
         getToastTitle(ConsentRequestStateEnum.Declined),
@@ -184,7 +192,6 @@ export class ConsentRequestDetailsComponent {
         this.prepareUndoAction(this.requestId(), this.requestStateCode()),
       );
     }
-    this.updateAndReloadConsentRequestState(this.requestId(), ConsentRequestStateEnum.Declined);
   }
 
   prepareUndoAction(id: string, stateCode: string) {
@@ -195,12 +202,8 @@ export class ConsentRequestDetailsComponent {
   }
 
   async updateAndReloadConsentRequestState(id: string, stateCode: string) {
-    try {
-      await this.consentRequestService.updateConsentRequestStatus(id, stateCode);
-      this.consentRequestsResource()?.reload();
-      this.handleCloseDetails();
-    } catch (error) {
-      console.error('Error updating consent request status:', error);
-    }
+    await this.consentRequestService.updateConsentRequestStatus(id, stateCode);
+    this.consentRequestsResource()?.reload();
+    this.handleCloseDetails();
   }
 }

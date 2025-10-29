@@ -1,7 +1,4 @@
-<app-agridata-client-table
-  [rawData]="dataRequests.value()"
-  [tableMetadata]="dataRequestsTableMetaData()"
->
+<app-agridata-client-table [rawData]="dataRequests()" [tableMetadata]="dataRequestsTableMetaData()">
   <ng-template #humanFriendlyId [appDataRequestDtoGuard] let-item>
     <span class="text-agridata-primary-text font-medium" [title]="item.humanFriendlyId ?? ''">
       {{ item.humanFriendlyId ?? '' }}

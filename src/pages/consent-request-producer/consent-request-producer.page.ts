@@ -1,16 +1,22 @@
 import { Location } from '@angular/common';
 import { Component, effect, inject, input, resource, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { faFileCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFile } from '@fortawesome/free-regular-svg-icons';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ConsentRequestProducerViewDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { I18nDirective } from '@/shared/i18n';
+import { I18nDirective, I18nPipe } from '@/shared/i18n';
+import {
+  createResourceErrorHandlerEffect,
+  createResourceValueComputed,
+} from '@/shared/lib/api.helper';
 import { ButtonComponent } from '@/shared/ui/button';
+import { ModalComponent } from '@/shared/ui/modal/modal.component';
+import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 
@@ -33,6 +39,9 @@ import { REDIRECT_TIMEOUT } from './consent-request-producer.page.model';
     ConsentRequestDetailsComponent,
     I18nDirective,
     ButtonComponent,
+    ModalComponent,
+    ErrorOutletComponent,
+    I18nPipe,
   ],
   templateUrl: './consent-request-producer.page.html',
 })
@@ -41,11 +50,10 @@ export class ConsentRequestProducerPage {
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
-
+  private readonly errorService = inject(ErrorHandlerService);
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
-  readonly fileIcon = faFile;
-  readonly faSpinner = faSpinner;
+  readonly fileIcon = faFileCheck;
 
   readonly consentRequestResource = resource({
     params: () => ({ uid: this.agridataStateService.activeUid() }),
@@ -58,13 +66,17 @@ export class ConsentRequestProducerPage {
     defaultValue: [],
   });
 
-  readonly consentRequests = this.consentRequestResource;
-
   readonly selectedRequest = signal<ConsentRequestProducerViewDto | null>(null);
   readonly redirectUrl = signal<string | null>(null);
   readonly showRedirect = signal<boolean>(false);
   readonly countdownValue = signal(REDIRECT_TIMEOUT / 1000);
   readonly shouldRedirect = signal<boolean>(false);
+
+  readonly consentRequests = createResourceValueComputed(this.consentRequestResource, []);
+  private readonly handleFetchConsentRequestErrorsEffect = createResourceErrorHandlerEffect(
+    this.consentRequestResource,
+    this.errorService,
+  );
 
   // Store timers at class level so they can be accessed and cleared from anywhere
   private countdownTimer?: ReturnType<typeof setInterval>;
@@ -117,9 +129,9 @@ export class ConsentRequestProducerPage {
       return;
     }
 
-    if (!id || this.consentRequests.isLoading()) return;
+    if (!id || this.consentRequestResource.isLoading()) return;
 
-    const request = this.consentRequests.value().find((r) => r.id === id) ?? null;
+    const request = this.consentRequests().find((r) => r.id === id) ?? null;
 
     this.selectedRequest.set(request);
     this.checkForRedirect();
@@ -181,7 +193,7 @@ export class ConsentRequestProducerPage {
   };
 
   reloadConsentRequests = () => {
-    this.consentRequests.reload();
+    this.consentRequestResource.reload();
   };
 
   startCountdown(): void {

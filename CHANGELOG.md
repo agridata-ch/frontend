@@ -1,3 +1,250 @@
+## [1.1.0-rc.41](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.40...v1.1.0-rc.41) (2025-10-29)
+
+### Bug Fixes
+
+- **ui:** fix event bubbling ([93bf2d0](https://github.com/agridata-ch/frontend/commit/93bf2d07f05ce0e91ddc9f0d3906d5630a1aae0e)), closes [DIGIB2-578](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-578)
+
+## [1.1.0-rc.40](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.39...v1.1.0-rc.40) (2025-10-29)
+
+### Bug Fixes
+
+- **ui:** fix event-bubbling ([5c27147](https://github.com/agridata-ch/frontend/commit/5c2714719a4a11030e6bdf7749af4d931cc0aacf)), closes [DIGIB2-578](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-578)
+
+## [1.1.0-rc.39](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.38...v1.1.0-rc.39) (2025-10-29)
+
+### Bug Fixes
+
+- **ui:** fix account-overlay ([93a11c1](https://github.com/agridata-ch/frontend/commit/93a11c1adf86ed268e78abe96b5d017a018c940d)), closes [DIGIB2-862](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-862)
+
+## [1.1.0-rc.38](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.37...v1.1.0-rc.38) (2025-10-29)
+
+### Bug Fixes
+
+- **ui:** remove unused styles ([2a98a7e](https://github.com/agridata-ch/frontend/commit/2a98a7ea2d04601e88a00c5cb5a34e9ecd34bb7d))
+
+## [1.1.0-rc.37](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.36...v1.1.0-rc.37) (2025-10-29)
+
+### Bug Fixes
+
+- **ui:** fix style of language select, fix data-request disabled buttons ([d12f8bc](https://github.com/agridata-ch/frontend/commit/d12f8bc1536905c26cb9017ec8c02d1306f5255f))
+
+## [1.1.0-rc.36](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.35...v1.1.0-rc.36) (2025-10-29)
+
+### Bug Fixes
+
+- **DIGIB2-988:** reactive effect for multiselect to fix race conditions with async service call ([774de63](https://github.com/agridata-ch/frontend/commit/774de63bcf27dad89a1b4caac138c5469cb0b227))
+
+## [1.1.0-rc.35](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.34...v1.1.0-rc.35) (2025-10-29)
+
+### Features
+
+- **font-awesome:** migrates font awesome to custom kit ([b099b4f](https://github.com/agridata-ch/frontend/commit/b099b4f0890c97d023950373dfd2f461da599e52)), closes [DIGIB2-770](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-770)
+
+## [1.1.0-rc.34](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.33...v1.1.0-rc.34) (2025-10-28)
+
+### Features
+
+- **ui:** add more ui improvements ([a3bb926](https://github.com/agridata-ch/frontend/commit/a3bb926d3f96e51a184c19abac137d0316950add))
+
+## [1.1.0-rc.33](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.32...v1.1.0-rc.33) (2025-10-28)
+
+### Bug Fixes
+
+- **cloudfront:** wait in pipeline until cloudfront is deployed ([9c7340d](https://github.com/agridata-ch/frontend/commit/9c7340d60b2179bd696b2cd5017360a16896e647))
+
+## [1.1.0-rc.32](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.31...v1.1.0-rc.32) (2025-10-28)
+
+### Features
+
+- **google-analytics:** adds google analytics ([e8d1a21](https://github.com/agridata-ch/frontend/commit/e8d1a21e669f45ff227b15613aa9f69d89503fe3)), closes [DIGIB2-770](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-770)
+
+## [1.1.0-rc.31](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.30...v1.1.0-rc.31) (2025-10-28)
+
+### Bug Fixes
+
+- **cloudfront:** invalidate cloudfront after deployment ([2918ba0](https://github.com/agridata-ch/frontend/commit/2918ba059c8d38659dd4ad3fdf4a02ea725a106a))
+
+## [1.1.0-rc.30](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.29...v1.1.0-rc.30) (2025-10-28)
+
+### Features
+
+- **cms:** cms ui improvements ([aab1cf9](https://github.com/agridata-ch/frontend/commit/aab1cf9f7a441e96d5a1e7913aee8ff142f5263a))
+
+## [1.1.0-rc.29](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.28...v1.1.0-rc.29) (2025-10-28)
+
+### Features
+
+- **cms:** cms ui improvements ([fffa831](https://github.com/agridata-ch/frontend/commit/fffa8313321f6e50e0ffd6628fed2f05bc3cc73b))
+
+## [1.1.0-rc.28](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.27...v1.1.0-rc.28) (2025-10-28)
+
+### Features
+
+- **maintenance-mode:** redirect to maintenance page upon receiving maintenance error from backend ([1bd1a9e](https://github.com/agridata-ch/frontend/commit/1bd1a9e12014858f6ccb6d59cc809436c2ab2f59)), closes [DIGIB2-261](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-261)
+
+## [1.1.0-rc.27](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.26...v1.1.0-rc.27) (2025-10-27)
+
+### Features
+
+- **ui:** add some ui improvements ([35d79f6](https://github.com/agridata-ch/frontend/commit/35d79f679f781926e951a8d4805e3ffe605d8815))
+
+## [1.1.0-rc.26](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.25...v1.1.0-rc.26) (2025-10-27)
+
+### Features
+
+- **maintenance-model:** redirect users first to /login before trigger login ([d8b9b7b](https://github.com/agridata-ch/frontend/commit/d8b9b7bd65ed3718501dae16ec4be6b154667edf)), closes [DIGIB2-261](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-261)
+
+## [1.1.0-rc.25](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.24...v1.1.0-rc.25) (2025-10-27)
+
+### Features
+
+- **error-pages:** add error pages ([47b44f0](https://github.com/agridata-ch/frontend/commit/47b44f0d3ab909c55ccc853dac0363ff12560070)), closes [DIGIB2-789](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-789)
+
+## [1.1.0-rc.24](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.23...v1.1.0-rc.24) (2025-10-24)
+
+### Bug Fixes
+
+- **cms:** fix styling of linkedImages ([0c13d3b](https://github.com/agridata-ch/frontend/commit/0c13d3b8e5f2ef14c9646787a2bad7d712e4b166))
+
+## [1.1.0-rc.23](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.22...v1.1.0-rc.23) (2025-10-24)
+
+### Features
+
+- **cms:** add linked images ([acabbf3](https://github.com/agridata-ch/frontend/commit/acabbf3bc716a51d5385722f155ca97174995f63)), closes [DIGIB2-950](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-950)
+
+## [1.1.0-rc.22](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.21...v1.1.0-rc.22) (2025-10-24)
+
+### Bug Fixes
+
+- **cms:** fix image-list styling, close mobile menu on navigation ([51ea336](https://github.com/agridata-ch/frontend/commit/51ea336342a115644ac07ea5ef2f189749b62713))
+
+## [1.1.0-rc.21](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.20...v1.1.0-rc.21) (2025-10-24)
+
+### Bug Fixes
+
+- **contact:** add awsWafCookieDomainList ([a9ad783](https://github.com/agridata-ch/frontend/commit/a9ad78304105d0f49df00c0a9b8ef770493f2a60)), closes [DIGIB2-976](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-976)
+
+## [1.1.0-rc.20](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.19...v1.1.0-rc.20) (2025-10-24)
+
+### Bug Fixes
+
+- **contact:** add new waf url ([32e4c19](https://github.com/agridata-ch/frontend/commit/32e4c191410e4d603a0abaaaec7a8f70adcdf161))
+
+## [1.1.0-rc.19](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.18...v1.1.0-rc.19) (2025-10-24)
+
+### Features
+
+- **data-request-purpose:** add link to cms ([1356dd7](https://github.com/agridata-ch/frontend/commit/1356dd7552697faf7030eef926ba63ed63daa51a)), closes [DIGIB2-913](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-913)
+
+## [1.1.0-rc.18](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.17...v1.1.0-rc.18) (2025-10-24)
+
+### Bug Fixes
+
+- **cms:** list block styling ([36035c8](https://github.com/agridata-ch/frontend/commit/36035c8e54b1d9b6d8f438c300551e1136c04cb9))
+
+## [1.1.0-rc.17](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.16...v1.1.0-rc.17) (2025-10-24)
+
+### Features
+
+- **cms:** add timeline component ([576b6a5](https://github.com/agridata-ch/frontend/commit/576b6a51d9f3bb099de500145b4718da03bbf6b9)), closes [DIGIB2-910](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-910)
+
+## [1.1.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.15...v1.1.0-rc.16) (2025-10-23)
+
+### Features
+
+- **consent-request:** create single consent request ([669a7dc](https://github.com/agridata-ch/frontend/commit/669a7dc9fa0c820a64791db047138e96250d7a1f)), closes [DIGIB2-887](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-887)
+
+## [1.1.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.14...v1.1.0-rc.15) (2025-10-23)
+
+### Features
+
+- **cms:** adds tragerschaft image list section and block components ([5930aa8](https://github.com/agridata-ch/frontend/commit/5930aa84571c78a8f03a54b17a84b3f536bbe1a3)), closes [DIGIB2-911](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-911)
+
+## [1.1.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.13...v1.1.0-rc.14) (2025-10-22)
+
+### Bug Fixes
+
+- **authentication:** fix logout ([acd6a5b](https://github.com/agridata-ch/frontend/commit/acd6a5b670ee481c6cde2b9de9d361aba651aeef))
+
+## [1.1.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.12...v1.1.0-rc.13) (2025-10-22)
+
+### Bug Fixes
+
+- **cms:** fix cms blocks ([3e85035](https://github.com/agridata-ch/frontend/commit/3e850359a364e45702e19657b10e4ba86dc54362))
+
+## [1.1.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.11...v1.1.0-rc.12) (2025-10-22)
+
+### Bug Fixes
+
+- **cms:** update cms card ([2740212](https://github.com/agridata-ch/frontend/commit/27402124b2b5b2173fb946cb47e5ebb2cca54bfa)), closes [DIGIB2-909](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-909)
+
+## [1.1.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.10...v1.1.0-rc.11) (2025-10-21)
+
+### Features
+
+- **empty-state:** adds empty state component ([a5caae1](https://github.com/agridata-ch/frontend/commit/a5caae198600c0bbb59793b21fe9c1941176b380)), closes [DIGIB2-454](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-454)
+
+## [1.1.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.9...v1.1.0-rc.10) (2025-10-20)
+
+### Features
+
+- **cms card:** update card ([a80e47d](https://github.com/agridata-ch/frontend/commit/a80e47d18628b004a9b9cbcdca38809714f59eb3)), closes [DIGIB2-909](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-909)
+
+## [1.1.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.8...v1.1.0-rc.9) (2025-10-17)
+
+### Features
+
+- **icons:** add font-awsome pro icons ([90cb390](https://github.com/agridata-ch/frontend/commit/90cb390cadac005063c31b3f7414685ed79072ff)), closes [DIGIB2-480](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-480)
+
+## [1.1.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.7...v1.1.0-rc.8) (2025-10-16)
+
+### Features
+
+- **cms:** load draft pages ([7451723](https://github.com/agridata-ch/frontend/commit/74517238048fa1b23f6d1293b77e2e01eb70de64)), closes [DIGIB2-773](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-773)
+
+## [1.1.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.6...v1.1.0-rc.7) (2025-10-16)
+
+### Features
+
+- **toast:** add fixed width ([93b5c7a](https://github.com/agridata-ch/frontend/commit/93b5c7af4222cbc06016dab19087be12b0b6daa6)), closes [DIGIB2-534](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-534)
+
+## [1.1.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.5...v1.1.0-rc.6) (2025-10-16)
+
+### Features
+
+- **cms:** add new cms pages ([4d275d2](https://github.com/agridata-ch/frontend/commit/4d275d2218bdd3f51053ca85ff5e87db06222355))
+
+## [1.1.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.4...v1.1.0-rc.5) (2025-10-16)
+
+### Bug Fixes
+
+- **DIGIB2-957:** passing consentRequests instead of filtered consentRequests ([8918c19](https://github.com/agridata-ch/frontend/commit/8918c1987b6aa6ec2ac07ba8439e40e5434aae78)), closes [DIGIB2-957](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-957)
+- **table:** centers cell content vertically ([f1f82cd](https://github.com/agridata-ch/frontend/commit/f1f82cd6debab3c62ee5c73ee5f3f342559a7b58)), closes [DIGIB2-894](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-894)
+
+## [1.1.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.3...v1.1.0-rc.4) (2025-10-16)
+
+### Features
+
+- **dependency-updates:** updates dependencies (angular 20.3) ([6a52378](https://github.com/agridata-ch/frontend/commit/6a5237893c8724bdf97fce8193c0329e66ceccbf)), closes [DIGIB2-835](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-835)
+
+## [1.1.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.2...v1.1.0-rc.3) (2025-10-15)
+
+### Features
+
+- **deps:** update actions/setup-node action to v6 ([04cb9d7](https://github.com/agridata-ch/frontend/commit/04cb9d736ef7dbed3f3438213a76aaabe0e44919))
+
+## [1.1.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.1...v1.1.0-rc.2) (2025-10-15)
+
+### Features
+
+- **mobile ui:** improve mobile ui ([fb2c36d](https://github.com/agridata-ch/frontend/commit/fb2c36df892208d81f8ff3e07fa4bbfd66aa5535)), closes [DIGIB2-848](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-848)
+
+## [1.1.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.0.0...v1.1.0-rc.1) (2025-10-15)
+
+### Features
+
+- **error-handling:** adds error handling ([19ac43c](https://github.com/agridata-ch/frontend/commit/19ac43c5552c307eb9082deff164e59509c2780c)), closes [DIGIB2-835](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-835)
+
 ## 1.0.0 (2025-10-13)
 
 ### Features

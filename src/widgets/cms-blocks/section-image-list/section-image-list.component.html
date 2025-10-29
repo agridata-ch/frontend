@@ -1,0 +1,14 @@
+<div
+  class="container mx-auto px-6 lg:px-10 py-10 lg:py-20 flex flex-col items-center gap-10"
+  [attr.id]="cmsData().anchorId ? cmsData().anchorId : null"
+>
+  <div class="flex flex-col gap-10 text-center w-full">
+    <h2>{{ cmsData().heading }}</h2>
+    @if (cmsData().subHeading) {
+      <p class="text-lg text-justify">{{ cmsData().subHeading }}</p>
+    }
+  </div>
+  <div class="flex flex-wrap justify-center gap-6 w-full items-center">
+    <app-image-list-block [block]="cmsData().imageList"></app-image-list-block>
+  </div>
+</div>

@@ -14,7 +14,7 @@ import { LegalFormEnum } from './legalFormEnum';
  * Data transfer object representing an uid
  */
 export interface UidDto { 
-    uid?: string;
+    uid: string;
     name?: string;
     legalFormCode?: LegalFormEnum;
 }

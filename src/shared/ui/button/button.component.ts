@@ -30,6 +30,8 @@ export class ButtonComponent {
   @HostBinding('style.display') display = 'contents';
 
   handleClick(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
     this.onClick.emit(event);
   }
 }

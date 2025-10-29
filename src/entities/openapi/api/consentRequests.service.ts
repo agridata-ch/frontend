@@ -23,6 +23,8 @@ import { ConsentRequestProducerViewDto } from '../model/consentRequestProducerVi
 // @ts-ignore
 import { ConsentRequestStateEnum } from '../model/consentRequestStateEnum';
 // @ts-ignore
+import { CreateConsentRequestDto } from '../model/createConsentRequestDto';
+// @ts-ignore
 import { ExceptionDto } from '../model/exceptionDto';
 
 // @ts-ignore
@@ -43,17 +45,17 @@ export class ConsentRequestsService extends BaseService {
 
     /**
      * Create Consent Requests
-     * Creates consent requests for all accessible UIDs of the given data request ID, skipping any that already exist. Returns all consent requests associated with that data request and the user’s UIDs.
-     * @param dataRequestId 
+     * Creates consent requests for given uids, provided the user actually has access to those uids.
+     * @param createConsentRequestDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createConsentRequests(dataRequestId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ConsentRequestCreatedDto>>;
-    public createConsentRequests(dataRequestId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ConsentRequestCreatedDto>>>;
-    public createConsentRequests(dataRequestId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ConsentRequestCreatedDto>>>;
-    public createConsentRequests(dataRequestId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (dataRequestId === null || dataRequestId === undefined) {
-            throw new Error('Required parameter dataRequestId was null or undefined when calling createConsentRequests.');
+    public createConsentRequests(createConsentRequestDto: Array<CreateConsentRequestDto>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ConsentRequestCreatedDto>>;
+    public createConsentRequests(createConsentRequestDto: Array<CreateConsentRequestDto>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ConsentRequestCreatedDto>>>;
+    public createConsentRequests(createConsentRequestDto: Array<CreateConsentRequestDto>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ConsentRequestCreatedDto>>>;
+    public createConsentRequests(createConsentRequestDto: Array<CreateConsentRequestDto>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (createConsentRequestDto === null || createConsentRequestDto === undefined) {
+            throw new Error('Required parameter createConsentRequestDto was null or undefined when calling createConsentRequests.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -72,6 +74,15 @@ export class ConsentRequestsService extends BaseService {
         const localVarTransferCache: boolean = options?.transferCache ?? true;
 
 
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -83,11 +94,12 @@ export class ConsentRequestsService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/agreement/v1/consent-requests/${this.configuration.encodeParam({name: "dataRequestId", value: dataRequestId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/create`;
+        let localVarPath = `/api/agreement/v1/consent-requests`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<ConsentRequestCreatedDto>>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                body: createConsentRequestDto,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

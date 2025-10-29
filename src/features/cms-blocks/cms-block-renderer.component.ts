@@ -13,6 +13,8 @@ import { ImageGridBlockComponent } from '@/widgets/cms-blocks/image-grid-block/i
 import { SectionContactFormBlockComponent } from '@/widgets/cms-blocks/section-contact-form-block/section-contact-form-block.component';
 import { SectionFaqBlockComponent } from '@/widgets/cms-blocks/section-faq-block/section-faq-block.component';
 import { SectionImageCardBlockComponent } from '@/widgets/cms-blocks/section-image-card-block/section-image-card-block.component';
+import { SectionImageListComponent } from '@/widgets/cms-blocks/section-image-list/section-image-list.component';
+import { SectionTimelineComponent } from '@/widgets/cms-blocks/section-timeline/section-timeline.component';
 
 /**
  * Component for rendering CMS blocks dynamically. Selects the appropriate block component based on
@@ -32,16 +34,20 @@ import { SectionImageCardBlockComponent } from '@/widgets/cms-blocks/section-ima
     SectionFaqBlockComponent,
     ImageGridBlockComponent,
     SectionImageCardBlockComponent,
+    SectionImageListComponent,
+    SectionTimelineComponent,
   ],
   templateUrl: './cms-block-renderer.component.html',
 })
 export class BlockRendererComponent {
   readonly block = input.required<Block>();
   readonly index = input.required<number>();
+  readonly isDynamicPage = input<boolean>(false);
 
   protected readonly CMS_BLOCKS = CMS_BLOCKS;
 
   isOdd() {
-    return this.index() % 2 === 1;
+    // For dynamic pages, alternate starting with even index (0)
+    return this.isDynamicPage() ? this.index() % 2 === 0 : this.index() % 2 === 1;
   }
 }

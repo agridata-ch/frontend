@@ -1,5 +1,4 @@
 import { Component, input, resource, signal } from '@angular/core';
-import { isNumber } from '@jsverse/transloco';
 import { compareAsc, compareDesc, isValid, parseISO } from 'date-fns';
 
 import { ResourceQueryDto } from '@/entities/openapi';
@@ -164,7 +163,7 @@ export class AgridataClientTableComponent<T> {
         : compareDesc(dateA, dateB);
     }
 
-    if (isNumber(aVal) || isNumber(bVal)) {
+    if (this.isNumber(aVal) || this.isNumber(bVal)) {
       return direction === SortDirections.ASC
         ? (aVal as number) - (bVal as number)
         : (bVal as number) - (aVal as number);
@@ -173,5 +172,9 @@ export class AgridataClientTableComponent<T> {
     return direction === SortDirections.ASC
       ? String(aVal).localeCompare(String(bVal))
       : String(bVal).localeCompare(String(aVal));
+  }
+
+  isNumber(value: unknown): value is number {
+    return typeof value === 'number' && !Number.isNaN(value);
   }
 }

@@ -1,12 +1,13 @@
 import { ChangeDetectorRef, Inject, Optional, Pipe } from '@angular/core';
 import {
-  OrArray,
   TRANSLOCO_LANG,
   TRANSLOCO_SCOPE,
   TranslocoPipe,
   TranslocoScope,
   TranslocoService,
 } from '@jsverse/transloco';
+
+export type OrArray<T> = T | T[];
 
 /**
  * Defines a custom Angular pipe that extends the Transloco pipe. It enables inline translations

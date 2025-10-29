@@ -1,7 +1,7 @@
 export interface Image {
   id: number;
   documentId: string;
-  alternativeText: string | null;
+  alternativeText: string;
   url: string;
   formats?: {
     thumbnail?: ImageFormat;
@@ -45,11 +45,21 @@ export interface List {
   items: ListItem[];
 }
 
+export type CardColors = 'Blue' | 'Green' | 'Red' | 'Yellow' | 'Orange';
+
 export interface Card {
   id: number;
   image: Image;
   heading: string;
   text: string;
+  colorized: boolean;
+  color: CardColors;
+}
+
+export interface LinkedImage {
+  id: number;
+  image: Image;
+  link: string;
 }
 
 export interface TextImageBlock {
@@ -61,6 +71,7 @@ export interface TextImageBlock {
   list: List | null;
   image: Image;
   button: CTA | null;
+  linkedImages?: LinkedImage[];
 }
 
 export interface ImageCardBlock {
@@ -136,6 +147,15 @@ export interface SectionCardGridBlock {
   anchorId: string;
 }
 
+export interface SectionImageListBlock {
+  __component: string;
+  id: number;
+  heading: string;
+  subHeading: string;
+  imageList: ImageListBlock;
+  anchorId: string;
+}
+
 export interface SectionContactFormBlock {
   __component: string;
   id: number;
@@ -173,6 +193,30 @@ export interface ImageGridBlock {
   anchorId: string;
 }
 
+export interface ImageListBlock {
+  __component: string;
+  id: number;
+  heading: string;
+  images: Image[];
+}
+
+export interface TimelineCardBlock {
+  __component: string;
+  id: number;
+  heading: string;
+  description: string;
+  image: Image;
+}
+
+export interface SectionTimelineBlock {
+  __component: string;
+  id: number;
+  heading: string;
+  subHeading: string;
+  cards: TimelineCardBlock[];
+  anchorId: string;
+}
+
 export type Block =
   | SectionMediaBlock
   | SectionTextImageBlock
@@ -183,7 +227,11 @@ export type Block =
   | SectionFaqBlock
   | ImageGridBlock
   | SectionImageCardBlock
-  | ImageCardBlock;
+  | ImageCardBlock
+  | SectionImageListBlock
+  | ImageListBlock
+  | SectionTimelineBlock
+  | TimelineCardBlock;
 
 export interface PageData {
   id: number;
@@ -205,6 +253,19 @@ export interface StrapiSingleTypeResponse {
 
 export interface StrapiCollectionTypeResponse {
   data: PageData[];
+}
+
+export interface StrapiSingleTypeResponseWithContent {
+  data: {
+    id: number;
+    documentId: string;
+    title: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    content: string;
+    footer: FooterBlock;
+  };
 }
 
 export interface ContactFormData {

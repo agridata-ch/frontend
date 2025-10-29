@@ -1,6 +1,10 @@
 import { Component, computed, input } from '@angular/core';
+import {
+  faFileSignature,
+  faLockKeyhole,
+  faRotate,
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faLock, faPenSquare, faRepeat } from '@fortawesome/free-solid-svg-icons';
 
 import { I18nPipe } from '@/shared/i18n';
 
@@ -19,9 +23,9 @@ import { I18nPipe } from '@/shared/i18n';
 export class DataRequestPrivacyInfosComponent {
   readonly dataConsumerName = input<string | null>();
 
-  readonly editIcon = faPenSquare;
-  readonly lockIcon = faLock;
-  readonly repeatIcon = faRepeat;
+  readonly editIcon = faFileSignature;
+  readonly lockIcon = faLockKeyhole;
+  readonly repeatIcon = faRotate;
 
   readonly privacySections = computed(() => {
     return [
@@ -29,6 +33,7 @@ export class DataRequestPrivacyInfosComponent {
         icon: this.editIcon,
         title: 'data-request.privacy.consent.title',
         description: 'data-request.privacy.consent.description',
+        translationParams: { consumerName: this.dataConsumerName() },
       },
       {
         icon: this.lockIcon,

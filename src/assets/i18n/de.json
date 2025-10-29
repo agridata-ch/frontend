@@ -135,7 +135,7 @@
           },
           "it": {
             "label": "Beschreibung des Antrags IT",
-            "placeholder": "Con il consenso all'inoltro dei dati a [...] si semplifica il lavoro quotidiano, si riducono gli inserimenti multipli di dati e si velocizzano i processi."
+            "placeholder": "Con il consenso all'inoltro dei dati a [...] si semplifica il lavoro quotidiano, si riducono gli inserimenti multipli di dati a più riprese e si velocizzano i processi."
           }
         },
         "purpose": {
@@ -151,7 +151,7 @@
           },
           "it": {
             "label": "Nutzungszweck der Daten IT",
-            "placeholder": "[...] utilizza i dati richiesti per ... (descrizione del destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
+            "placeholder": "[...] utilizza i dati richiesti per ... (descrizione dell’acquirente dil destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
           }
         }
       },
@@ -229,20 +229,21 @@
     "privacy": {
       "consent": {
         "title": "Zustimmung",
-        "description": "Mit Ihrer Zustimmung erlauben Sie die Datenübermittlung.\n\nEin Vertrag zwischen dem Bundesamt für Landwirtschaft und {{ consumerName }} bildet die rechtliche Grundlage für die Datenübermittlung und Datennutzung."
+        "description": "Mit Ihrer Zustimmung kann {{ consumerName }} die oben aufgeführten Daten abrufen."
       },
       "dataProtection": {
         "title": "Datenschutz",
-        "description": "Gemäss Datenschutzgesetz ist {{ consumerName }}  für den datenschutzkonformen Umgang mit diesen Informationen verantwortlich."
+        "description": "Zwischen BLW und {{ consumerName }} besteht ein Vertrag, der den oben beschriebenen Zweck und die Nutzung der Daten eindeutig regelt. {{ consumerName }} ist verpflichtet, die Bestimmungen des Datenschutzgesetzes einzuhalten."
       },
       "revocation": {
         "title": "Änderungsmöglichkeit",
-        "description": "Ihre Entscheidung kann jederzeit geändert werden."
+        "description": "Sie haben jederzeit die Möglichkeit, Ihren Entscheid zu ändern."
       }
     },
     "purpose": {
       "title": "Zweck der Datennutzung",
-      "description": "Folgende Daten werden übermittelt:"
+      "description": "Folgende Daten werden übermittelt:",
+      "moreInfos": "Weitere Details anzeigen"
     },
     "wizard": {
       "steps": {
@@ -293,7 +294,9 @@
     "close": "Navigation Schließen",
     "menuItems": {
       "helpAndSupport": "Hilfe & Support",
-      "notifications": "Benachrichtigungen"
+      "notifications": "Benachrichtigungen",
+      "imprint": "Impressum",
+      "privacyPolicy": "Datenschutz"
     }
   },
   "producer": {
@@ -308,11 +311,13 @@
     "CH": "Schweiz",
     "LI": "Liechtenstein"
   },
+  "account.loginForm.loginButton": "Login",
   "header": {
     "helpAndSupport": {
       "title": "Hilfe & Support",
       "support": {
-        "title": "Support"
+        "title": "Support",
+        "openingInfos": "Unsere Zeiten:\nMontag bis Freitag\n08:00 - 17:00 Uhr"
       }
     }
   },
@@ -392,7 +397,7 @@
         "delete": "Löschvorgang fehlgeschlagen"
       },
       "errorId": "Fehler-Id: {{errorId}}",
-      "path": "Pfad: {{method}}:  {{path}}",
+      "path": "Pfad: {{method}}: {{path}}",
       "generic": {
         "title": "Serverfehler aufgetreten"
       },
@@ -408,9 +413,28 @@
     "errorPage": {
       "title": "Es sind Fehler aufgetreten",
       "back": "zurück"
-    }
+    },
+    "forbiddenPage": {
+      "title": "Uuups, kein Zugriff auf diese Seite",
+      "message": "Kein berechtigter Zugriff auf die Seite..."
+    },
+    "notFoundPage": {
+      "title": "Upps, Seite nicht gefunden",
+      "message": "Die gewünschte Seite ist leider nicht mehr verfügbar, wir entschuldigen uns dafür..."
+    },
+    "backToHome": "Zurück zur Startseite",
+    "maintenancePage": {
+      "title": "Es läuft gleich wieder...",
+      "message": "Unsere Anwendung ist derzeit wegen Wartungsarbeiten nicht erreichbar.\nWir sind bald wieder online."
+    },
+    "reloadPage": "Seite neu laden"
   },
   "breadcrumb": {
     "home": "Home"
+  },
+  "emptyState": {
+    "title": "Keine Anfragen vorhanden",
+    "message": "Sie haben derzeit keine aktiven Datenanfragen und müssen aktuell nichts unternehmen. \nSobald eine erste Datenanfrage besteht, wird diese hier angezeigt und Sie werden informiert.",
+    "additionalInfo": "Weitere Informationen finden Sie auf "
   }
 }

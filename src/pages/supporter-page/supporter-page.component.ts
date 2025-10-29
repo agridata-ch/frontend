@@ -1,20 +1,25 @@
 import {
   Component,
-  TemplateRef,
   computed,
   inject,
   resource,
   signal,
+  TemplateRef,
   viewChild,
 } from '@angular/core';
+import {
+  faArrowUpRightFromSquare,
+  faUsers,
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faArrowUpRightFromSquare, faUsers } from '@fortawesome/free-solid-svg-icons';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { UserService } from '@/entities/api/user.service';
 import { PageResponseDto, ResourceQueryDto, UserInfoDto } from '@/entities/openapi';
 import { UserInfoDtoDirective } from '@/pages/supporter-page/user-info-dto.directive';
 import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
 import { I18nDirective } from '@/shared/i18n';
+import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import {
   AgridataTableComponent,
@@ -23,6 +28,7 @@ import {
   TableMetadata,
 } from '@/shared/ui/agridata-table';
 import { ButtonComponent } from '@/shared/ui/button';
+import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card/';
 
 /**
@@ -38,12 +44,13 @@ import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card/';
     UserInfoDtoDirective,
     AgridataContactCardComponent,
     ButtonComponent,
+    ErrorOutletComponent,
   ],
   templateUrl: './supporter-page.component.html',
 })
 export class SupporterPageComponent {
-  public readonly userService = inject(UserService);
-
+  private readonly userService = inject(UserService);
+  private readonly errorService = inject(ErrorHandlerService);
   protected readonly NAME_HEADER = 'supporter.table.name';
   protected readonly EMAIL_HEADER = 'supporter.table.email';
   protected readonly PHONE_HEADER = 'supporter.table.phone';
@@ -111,13 +118,18 @@ export class SupporterPageComponent {
     };
   });
 
-  readonly fetchProducers = resource({
+  readonly fetchProducersResource = resource({
     params: () => this.resourceQueryDto(),
     loader: ({ params }) => {
       return this.userService.getProducers(params);
     },
+
     defaultValue: {} as PageResponseDto,
   });
+  fetchProducersErrorHandler = createResourceErrorHandlerEffect(
+    this.fetchProducersResource,
+    this.errorService,
+  );
 
   protected getName(item: UserInfoDto) {
     return [item.givenName, item.familyName].filter(Boolean).join(' ');

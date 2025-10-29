@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';

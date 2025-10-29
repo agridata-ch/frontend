@@ -15,6 +15,7 @@ jobs:
     timeout-minutes: 5
     env:
       AWS_REGION: eu-central-2
+      FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
     permissions:
       id-token: write
       contents: read
@@ -59,9 +60,9 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
           cache-dependency-path: package-lock.json
 

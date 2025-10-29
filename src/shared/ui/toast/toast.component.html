@@ -1,7 +1,7 @@
-<div class="fixed top-4 right-4 flex flex-col space-y-3 z-50 items-end">
+<div class="fixed top-28 right-4 flex flex-col space-y-3 items-end z-10">
   @for (toast of toasts(); track toast.id) {
     <div
-      class="border rounded-lg border-transparent shadow-xl p-4 flex items-center justify-between cursor-pointer w-fit"
+      class="border rounded-lg border-transparent shadow-xl p-4 flex items-center justify-between cursor-pointer w-fit max-w-[850px]"
       [class]="getToastClasses(toast)"
       [class.animate-toast-in]="toast.state === ToastState.Enter"
       [class.animate-toast-out]="toast.state === ToastState.Exit"

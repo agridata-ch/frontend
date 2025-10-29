@@ -1,4 +1,4 @@
-<div [class.bg-white]="isOdd()">
+<div [class.bg-white]="isOdd()" [class.bg-agridata-content-gray]="!isOdd()">
   @switch (block().__component) {
     @case (CMS_BLOCKS.SECTION_MEDIA) {
       <app-section-media-block [block]="block()" />
@@ -23,6 +23,12 @@
     }
     @case (CMS_BLOCKS.SECTION_IMAGE_CARD) {
       <app-section-image-card-block [block]="block()" />
+    }
+    @case (CMS_BLOCKS.SECTION_IMAGE_LIST) {
+      <app-section-image-list [block]="block()" />
+    }
+    @case (CMS_BLOCKS.SECTION_TIMELINE) {
+      <app-section-timeline [block]="block()" />
     }
   }
 </div>

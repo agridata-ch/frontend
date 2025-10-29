@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
-  ResourceRef,
-  WritableSignal,
   computed,
   effect,
   input,
   model,
+  ResourceRef,
   signal,
+  WritableSignal,
 } from '@angular/core';
+import { faSpinner } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import { ResourceQueryDto } from '@/entities/openapi';
 import { I18nDirective } from '@/shared/i18n';
@@ -23,6 +23,7 @@ import { TableCellComponent } from '@/shared/ui/agridata-table/table-cell/table-
 import { TableHeaderCellComponent } from '@/shared/ui/agridata-table/table-header-cell/table-header-cell.component';
 import { TablePaginationComponent } from '@/shared/ui/agridata-table/table-pagination/table-pagination.component';
 import { ButtonVariants } from '@/shared/ui/button';
+import { EmptyStateComponent } from '@/shared/ui/empty-state/empty-state.component';
 import { SearchInputComponent } from '@/shared/ui/filter-input/search-input.component';
 
 import {
@@ -57,6 +58,7 @@ import {
     TableCellComponent,
     TablePaginationComponent,
     I18nDirective,
+    EmptyStateComponent,
   ],
   templateUrl: './agridata-table.component.html',
 })
@@ -110,15 +112,17 @@ export class AgridataTableComponent<T> {
     });
 
     effect(() => {
-      const currentPageData = this.dataProvider().value();
-      if (currentPageData?.items) {
-        this.pageData.set({
-          currentPage: currentPageData?.currentPage ?? 0,
-          pageSize: currentPageData?.pageSize ?? PAGE_SIZES[0],
-          totalPages: currentPageData?.totalPages ?? 1,
-          items: currentPageData?.items ?? [],
-          totalItems: currentPageData?.totalItems ?? 0,
-        });
+      if (!this.dataProvider().error()) {
+        const currentPageData = this.dataProvider().value();
+        if (currentPageData?.items) {
+          this.pageData.set({
+            currentPage: currentPageData?.currentPage ?? 0,
+            pageSize: currentPageData?.pageSize ?? PAGE_SIZES[0],
+            totalPages: currentPageData?.totalPages ?? 1,
+            items: currentPageData?.items ?? [],
+            totalItems: currentPageData?.totalItems ?? 0,
+          });
+        }
       }
     });
   }

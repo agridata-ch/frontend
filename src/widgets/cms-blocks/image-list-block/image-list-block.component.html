@@ -1,0 +1,10 @@
+<h3 class="text-center">{{ cmsData().heading }}</h3>
+<div class="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-10 justify-items-center items-center">
+  @for (image of cmsData().images; track image.id) {
+    <img
+      [src]="generateMediaUrl(image.url)"
+      [alt]="image.alternativeText"
+      class="rounded-lg h-20"
+    />
+  }
+</div>

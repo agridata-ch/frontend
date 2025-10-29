@@ -1,8 +1,8 @@
 <div
-  class="flex flex-col md:flex-row items-center gap-8 py-10"
-  [class.md:flex-row-reverse]="cmsData().reversed"
+  class="flex flex-col lg:flex-row items-center gap-8"
+  [class.lg:flex-row-reverse]="cmsData().reversed"
 >
-  <div class="flex flex-col gap-6 md:w-1/2">
+  <div class="flex flex-col gap-6 lg:w-1/2">
     <h3>{{ cmsData().heading }}</h3>
     <div [innerHTML]="cmsData().text | markdown"></div>
 
@@ -16,6 +16,7 @@
           [href]="button()?.href!"
           [target]="button()?.isExternal ? HrefTarget.Blank : HrefTarget.Self"
           [variant]="ButtonVariants[`${button()?.type!}`]"
+          additionalClass="w-fit"
         >
           {{ button()?.label }}
           <fa-icon [icon]="buttonIcon" />
@@ -26,13 +27,29 @@
         </a>
       }
     }
+
+    @if (cmsData().linkedImages?.length) {
+      <div class="flex gap-4 py-10 justify-start">
+        @for (linkedImage of cmsData().linkedImages; track linkedImage.id) {
+          <a [href]="linkedImage.link" target="_blank" rel="noopener noreferrer">
+            <img
+              [src]="generateMediaUrl(linkedImage.image.url)"
+              [alt]="linkedImage.image.alternativeText"
+              class="rounded-lg border border-agridata-stroke max-h-10"
+            />
+          </a>
+        }
+      </div>
+    }
   </div>
 
-  <div class="md:w-1/2">
-    <img
-      [src]="generateMediaUrl(cmsData().image.url)"
-      [alt]="alternativeText()"
-      class="rounded-lg"
-    />
+  <div class="lg:w-1/2">
+    @if (cmsData().image) {
+      <img
+        [src]="generateMediaUrl(cmsData().image.url)"
+        [alt]="alternativeText()"
+        class="rounded-lg"
+      />
+    }
   </div>
 </div>

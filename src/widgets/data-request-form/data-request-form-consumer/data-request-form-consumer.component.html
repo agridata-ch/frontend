@@ -18,7 +18,6 @@
           <app-agridata-input
             id="dataConsumerName"
             type="text"
-            [disabled]="true"
             [value]="consumerName()"
             placeholder="{{ t('name.placeholder') }}"
             [disabled]="consumerName() != null || formDisabled()"
@@ -31,7 +30,6 @@
           <app-agridata-input
             id="dataConsumerUID"
             type="text"
-            [disabled]="true"
             [value]="consumerUid()"
             placeholder="{{ t('uid.placeholder') }}"
             [disabled]="consumerUid() != null || formDisabled()"

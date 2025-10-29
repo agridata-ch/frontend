@@ -3,16 +3,17 @@ import { signal } from '@angular/core';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UidDto } from '@/entities/openapi/model/uidDto';
 
-export const mockAgridataStateService = (uid: string): Partial<AgridataStateService> => {
+export const mockAgridataStateService = (uid: string) => {
   return {
     userUidsLoaded: signal(false),
     setUids: jest.fn(),
     getDefaultUid: jest.fn().mockReturnValue(uid),
     setActiveUid: jest.fn(),
-    activeUid: signal(uid),
+    activeUid: signal<string | undefined>(uid),
     userUids: signal(mockUids),
     isImpersonating: jest.fn(),
-  };
+    currentRouteWithoutQueryParams: signal<string | undefined>('/some-page'),
+  } satisfies Partial<AgridataStateService>;
 };
 
 export const mockUids = [

@@ -1,0 +1,7 @@
+@if (privacyPolicyResource.isLoading()) { ...Loading CMS } @else {
+<div class="container mx-auto px-10 pb-10 pt-20 flex flex-col items-center">
+  <div [innerHTML]="content() | markdown"></div>
+</div>
+@if (footerBlock()) {
+<app-cms-footer-block [block]="footerBlock()" />
+} }

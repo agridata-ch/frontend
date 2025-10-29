@@ -1,16 +1,16 @@
 import {
   Component,
-  ElementRef,
   computed,
   effect,
+  ElementRef,
   input,
   model,
   signal,
   viewChild,
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { faChevronDown, faChevronUp } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
 import { I18nPipe } from '@/shared/i18n';

@@ -1,14 +1,14 @@
 import {
   AfterViewInit,
   Component,
-  ElementRef,
-  ViewChild,
   computed,
+  ElementRef,
   input,
   signal,
+  ViewChild,
 } from '@angular/core';
+import { faChevronDown, faChevronUp } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 /**
  * Implements the accordion logic and behavior. It manages expansion state, toggles open/closed on

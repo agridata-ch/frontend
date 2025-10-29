@@ -1,4 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { filter, map } from 'rxjs';
 
 import { UidDto } from '@/entities/openapi';
 import {
@@ -18,18 +21,34 @@ import {
   providedIn: 'root',
 })
 export class AgridataStateService {
+  private readonly router = inject(Router);
+
   readonly activeUid = signal<string | undefined>(this.getStoredUid());
   readonly userUids = signal<UidDto[]>([]);
   readonly userUidsLoaded = signal(false);
   readonly isNavigationOpen = signal(this.getNavigationStateOpen());
 
-  private getStoredUid(): string | undefined {
-    return localStorage.getItem(ACTIVE_UID_FIELD) as string | undefined;
-  }
+  readonly currentRoute = toSignal(
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map(() => this.extractRoutePath()),
+    ),
+  );
 
-  private getNavigationStateOpen() {
-    return localStorage.getItem(NAVIGATION_STATE_OPEN) === 'true';
-  }
+  readonly routeStart = toSignal(
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationStart),
+      map((event) => event.url),
+    ),
+  );
+
+  readonly currentRouteWithoutQueryParams = computed(() => {
+    const route = this.currentRoute();
+    if (!route) {
+      return undefined;
+    }
+    return route.split('?')[0];
+  });
 
   setActiveUid(uid: string) {
     localStorage.setItem(ACTIVE_UID_FIELD, uid);
@@ -58,5 +77,21 @@ export class AgridataStateService {
 
   isImpersonating(): boolean {
     return sessionStorage.getItem(KTIDP_IMPERSONATION_QUERY_PARAM) !== null;
+  }
+
+  private getStoredUid(): string | undefined {
+    return localStorage.getItem(ACTIVE_UID_FIELD) as string | undefined;
+  }
+
+  private getNavigationStateOpen() {
+    return localStorage.getItem(NAVIGATION_STATE_OPEN) === 'true';
+  }
+
+  /**
+   * Extracts the route path from the current URL, excluding query parameters.
+   * @returns The current route path without query parameters
+   */
+  private extractRoutePath(): string {
+    return this.router.url;
   }
 }

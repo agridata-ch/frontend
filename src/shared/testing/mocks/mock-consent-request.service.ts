@@ -38,7 +38,6 @@ export const mockConsentRequests: ConsentRequestDetailViewDto[] = [
 
 export const mockConsentRequestService = {
   updateConsentRequestStatus: jest.fn().mockResolvedValue(undefined),
-  createConsentRequests: jest.fn().mockReturnValue({}),
-  apiService: { uid: 'test-uid' },
+  createConsentRequests: jest.fn(),
   fetchConsentRequests: jest.fn().mockReturnValue(mockConsentRequests),
-} as unknown as ConsentRequestService;
+} satisfies Partial<ConsentRequestService>;

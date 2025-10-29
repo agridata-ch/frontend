@@ -294,6 +294,8 @@ export const mockCmsResponse = {
         },
       },
     ],
+    content:
+      '# Welcome to agridata.ch\n\nYour **data room** for the agricultural & food sector\n\nData exchange made secure, simplified, and efficient with the once-only principle.',
   },
   meta: {},
 };
@@ -305,6 +307,8 @@ export const mockCmsResponse = {
  */
 export const mockCmsService = {
   fetchLandingPage: jest.fn().mockResolvedValue(mockCmsResponse),
+  fetchImprintPage: jest.fn().mockResolvedValue(mockCmsResponse),
+  fetchPrivacyPolicyPage: jest.fn().mockResolvedValue(mockCmsResponse),
   fetchCmsPages: jest.fn().mockResolvedValue([mockCmsResponse]),
   fetchCmsPage: jest.fn().mockResolvedValue(mockCmsResponse),
 };

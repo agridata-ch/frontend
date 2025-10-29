@@ -1,11 +1,11 @@
 <div class="flex items-center gap-2">
   <app-agridata-avatar [imageUrl]="imageUrl()" [name]="name()" [size]="size()" [skin]="skin()" />
-  <div class="flex flex-col">
+  <div class="flex flex-col justify-center leading-[130%]">
     @if (name()) {
-      <div class="agridata-ellipsis" [title]="name()">{{ name() }}</div>
+      <div class="agridata-ellipsis font-medium" [title]="name()">{{ name() }}</div>
     }
     @if (secondaryName()) {
-      <div class="agridata-ellipsis text-gray-500" [title]="secondaryName()">
+      <div class="agridata-ellipsis text-gray-500 text-sm" [title]="secondaryName()">
         {{ secondaryName() }}
       </div>
     }

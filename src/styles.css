@@ -63,7 +63,6 @@ h4 {
 
 h5 {
   font-size: var(--heading-five-font-size);
-  color: var(--heading-five-color);
 }
 
 h6 {
@@ -72,13 +71,8 @@ h6 {
   color: var(--heading-six-color);
 }
 
-p {
-  font-size: var(--paragraph-font-size);
-}
-
 button {
   outline-color: var(--color-gray-900);
-  outline-offset: 0.125rem;
   cursor: pointer;
 }
 

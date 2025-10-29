@@ -1,10 +1,21 @@
-import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+  resource,
+  signal,
+} from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { UidRegisterService } from '@/entities/api/uid-register.service';
 import { UserInfoDto } from '@/entities/openapi';
 import { COUNTRIES } from '@/shared/constants/constants';
 import { I18nDirective, I18nService } from '@/shared/i18n';
+import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { AuthService } from '@/shared/lib/auth';
 import { getFormControl } from '@/shared/lib/form.helper';
 import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
@@ -36,6 +47,7 @@ export class DataRequestFormConsumerComponent {
   readonly i18nService = inject(I18nService);
   readonly authService = inject(AuthService);
   readonly uidSearchService = inject(UidRegisterService);
+  readonly errorService = inject(ErrorHandlerService);
 
   readonly form = input<FormGroup>();
   readonly formDisabled = input<boolean>(false);
@@ -48,8 +60,13 @@ export class DataRequestFormConsumerComponent {
   readonly AvatarSize = AvatarSize;
   readonly AvatarSkin = AvatarSkin;
   readonly getFormControl = getFormControl;
-  readonly uidInfoResource = this.uidSearchService.fetchUidInfosOfCurrentUser;
-
+  readonly uidInfoResource = resource({
+    loader: () => this.uidSearchService.fetchUidInfosOfCurrentUser(),
+  });
+  private readonly uidInfoResourceErrorHandler = createResourceErrorHandlerEffect(
+    this.uidInfoResource,
+    this.errorService,
+  );
   readonly userData = signal<UserInfoDto | null>(this.authService.userData());
   readonly consumerName = signal<string>('');
   readonly consumerDisplayName = signal<string>('');

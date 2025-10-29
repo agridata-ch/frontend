@@ -1,7 +1,14 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
+import {
+  faBan,
+  faCheckCircle,
+  faCircleInfo,
+  faClose,
+  faWarning,
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
-import { faCircleInfo, faClose, faWarning } from '@fortawesome/free-solid-svg-icons';
+
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 import { AlertType } from './alert.model';
 
@@ -14,19 +21,22 @@ import { AlertType } from './alert.model';
  */
 @Component({
   selector: 'app-alert',
-  imports: [FontAwesomeModule],
+  imports: [FontAwesomeModule, ButtonComponent],
   templateUrl: './alert.component.html',
 })
 export class AlertComponent {
-  readonly type = input<AlertType>(AlertType.NEUTRAL);
-  readonly message = input<string>('');
-
+  protected readonly closeIcon = faClose;
+  protected readonly ButtonVariants = ButtonVariants;
   protected readonly AlertType = AlertType;
   protected readonly iconInfo = faCircleInfo;
   protected readonly iconWarning = faWarning;
-  protected readonly iconError = faClose;
+  protected readonly iconError = faBan;
   protected readonly iconNeutral = faCircleInfo;
   protected readonly iconSuccess = faCheckCircle;
+
+  readonly type = input<AlertType>(AlertType.NEUTRAL);
+  readonly showCloseButton = input<boolean>(false);
+  readonly closeAlert = output<boolean>();
 
   protected readonly alertIcon = computed(() => {
     switch (this.type()) {

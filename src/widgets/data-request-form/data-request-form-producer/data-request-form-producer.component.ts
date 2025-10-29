@@ -3,8 +3,8 @@ import { FormGroup } from '@angular/forms';
 
 import { I18nDirective } from '@/shared/i18n';
 import { getFormControl } from '@/shared/lib/form.helper';
-import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { ControlTypes, FormControlComponent } from '@/shared/ui/form-control';
+import { AlertComponent, AlertType } from '@/widgets/alert';
 
 /**
  * Implements the logic for managing producer inputs, including target groups and related attributes.

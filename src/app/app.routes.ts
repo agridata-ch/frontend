@@ -9,8 +9,13 @@ import { DefaultLayoutComponent, FullWidthLayoutComponent } from '@/app/layout';
 import { CmsPage } from '@/pages/cms-page';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
+import { ErrorPage } from '@/pages/error-page/error-page.component';
+import { ForbiddenPage } from '@/pages/forbidden';
+import { ImprintPage } from '@/pages/imprint-page';
 import { LandingPage } from '@/pages/landing-page';
+import { MaintenancePage } from '@/pages/maintenance';
 import { NotFoundPage } from '@/pages/not-found';
+import { PrivacyPolicyPage } from '@/pages/privacy-policy-page';
 import { SupporterPageComponent } from '@/pages/supporter-page/';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
@@ -39,6 +44,28 @@ export const routes: Routes = [
     ],
   },
   {
+    path: ROUTE_PATHS.IMPRESSUM_PATH,
+    component: FullWidthLayoutComponent,
+    canActivate: [AuthorizationGuard],
+    children: [
+      {
+        path: '',
+        component: ImprintPage,
+      },
+    ],
+  },
+  {
+    path: ROUTE_PATHS.PRIVACY_POLICY_PATH,
+    component: FullWidthLayoutComponent,
+    canActivate: [AuthorizationGuard],
+    children: [
+      {
+        path: '',
+        component: PrivacyPolicyPage,
+      },
+    ],
+  },
+  {
     path: 'cms/:slug',
     component: FullWidthLayoutComponent,
     canActivate: [AuthorizationGuard, HomeRedirectGuard],
@@ -53,9 +80,9 @@ export const routes: Routes = [
   // #### protected pages with authentication ####
   {
     // login page to get redirected from the auth provider which uses a specific guard that is only for this route
-    path: 'login',
+    path: ROUTE_PATHS.LOGIN,
     component: DefaultLayoutComponent,
-    canActivate: [autoLoginPartialRoutesGuard, LoginAuthGuard],
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard, LoginAuthGuard],
   },
   {
     // producer routes
@@ -122,15 +149,36 @@ export const routes: Routes = [
 
   // #### general routes ####
   {
-    path: ROUTE_PATHS.NOT_FOUND,
+    path: ROUTE_PATHS.ERROR,
     component: DefaultLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
+    canActivate: [AuthorizationGuard],
+    children: [{ path: '**', component: ErrorPage }],
+  },
+  {
+    path: ROUTE_PATHS.NOT_FOUND,
+    component: FullWidthLayoutComponent,
     runGuardsAndResolvers: 'paramsChange',
     canActivate: [AuthorizationGuard],
     children: [{ path: '**', component: NotFoundPage }],
   },
   {
+    path: ROUTE_PATHS.FORBIDDEN,
+    component: FullWidthLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
+    canActivate: [AuthorizationGuard],
+    children: [{ path: '**', component: ForbiddenPage }],
+  },
+  {
+    path: ROUTE_PATHS.MAINTENANCE,
+    component: FullWidthLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
+    canActivate: [AuthorizationGuard],
+    children: [{ path: '**', component: MaintenancePage }],
+  },
+  {
     path: '',
-    component: DefaultLayoutComponent,
+    component: FullWidthLayoutComponent,
     runGuardsAndResolvers: 'paramsChange',
     canActivate: [AuthorizationGuard],
     children: [{ path: '**', component: NotFoundPage }],

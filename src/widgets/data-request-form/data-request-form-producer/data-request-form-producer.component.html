@@ -9,5 +9,7 @@
     [helperText]="t('targetGroup.helperText')"
     [disabled]="formDisabled()"
   />
-  <app-alert class="mt-10" [message]="t('info')" />
+  <app-alert class="mt-10">
+    {{ t('info') }}
+  </app-alert>
 </div>

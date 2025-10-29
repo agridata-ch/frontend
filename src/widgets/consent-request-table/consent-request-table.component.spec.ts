@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { getTranslocoModule } from '@/app/transloco-testing.module';
 import { ConsentRequestService } from '@/entities/api';
 import {
@@ -9,6 +10,7 @@ import {
 } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { mockConsentRequestService } from '@/shared/testing/mocks';
+import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
 import { ToastService } from '@/shared/toast';
 
 import { ConsentRequestTableComponent } from './consent-request-table.component';
@@ -18,7 +20,7 @@ describe('ConsentRequestTableComponent', () => {
   let fixture: ComponentFixture<ConsentRequestTableComponent>;
   let mockToastService: jest.Mocked<ToastService>;
   let mockI18nService: jest.Mocked<I18nService>;
-
+  let mockErrorService = mockErrorHandlerService;
   let consentRequestService: ConsentRequestService;
   const mockConsentRequests: ConsentRequestProducerViewDto[] = [
     {
@@ -52,6 +54,7 @@ describe('ConsentRequestTableComponent', () => {
       translate: jest.fn(),
       useObjectTranslation: jest.fn(),
     } as unknown as jest.Mocked<I18nService>;
+    mockErrorService = mockErrorHandlerService;
 
     consentRequestService = mockConsentRequestService;
     await TestBed.configureTestingModule({
@@ -67,6 +70,7 @@ describe('ConsentRequestTableComponent', () => {
         { provide: ToastService, useValue: mockToastService },
         { provide: I18nService, useValue: mockI18nService },
         { provide: ConsentRequestService, useValue: consentRequestService },
+        { provide: ErrorHandlerService, useValue: mockErrorService },
       ],
     }).compileComponents();
 
@@ -181,11 +185,7 @@ describe('ConsentRequestTableComponent', () => {
     fixture.detectChanges();
     await Promise.resolve();
 
-    expect(mockToastService.show).toHaveBeenCalledWith(
-      'Error message',
-      'Translated error message',
-      'error',
-    );
+    expect(mockErrorService.handleError).toHaveBeenCalled();
   });
 
   it('should get translated state value', () => {

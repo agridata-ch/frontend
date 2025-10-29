@@ -2,6 +2,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { UidRegisterService } from '@/entities/api/uid-register.service';
 import { COUNTRIES } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
@@ -9,42 +10,54 @@ import { AuthService } from '@/shared/lib/auth';
 import {
   MockAuthService,
   MockI18nService,
-  MockUidRegisterService,
   MockUidRegisterServiceWithError,
+  mockUidRegisterService,
 } from '@/shared/testing/mocks';
+import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
 
 import { DataRequestFormConsumerComponent } from './data-request-form-consumer.component';
+
+/**
+ * Creates a form group for testing the DataRequestFormConsumerComponent.
+ */
+function createTestFormGroup(): FormGroup {
+  return new FormGroup({
+    consumer: new FormGroup({
+      dataConsumerDisplayName: new FormControl(''),
+      dataConsumerCity: new FormControl(''),
+      dataConsumerZip: new FormControl(''),
+      dataConsumerStreet: new FormControl(''),
+      dataConsumerCountry: new FormControl(''),
+      contactPhoneNumber: new FormControl(''),
+      contactEmailAddress: new FormControl(''),
+    }),
+  });
+}
 
 describe('DataRequestFormConsumerComponent', () => {
   let fixture: ComponentFixture<DataRequestFormConsumerComponent>;
   let component: DataRequestFormConsumerComponent;
   let componentRef: ComponentRef<DataRequestFormConsumerComponent>;
   let form: FormGroup;
-
+  let errorService: Partial<ErrorHandlerService>;
+  let uidService: Partial<UidRegisterService>;
   beforeEach(async () => {
+    errorService = mockErrorHandlerService;
+    uidService = mockUidRegisterService;
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, DataRequestFormConsumerComponent],
       providers: [
         { provide: I18nService, useClass: MockI18nService },
         { provide: AuthService, useClass: MockAuthService },
-        { provide: UidRegisterService, useClass: MockUidRegisterService },
+        { provide: UidRegisterService, useValue: uidService },
+        { provide: ErrorHandlerService, useValue: errorService },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DataRequestFormConsumerComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
-    form = new FormGroup({
-      consumer: new FormGroup({
-        dataConsumerDisplayName: new FormControl(''),
-        dataConsumerCity: new FormControl(''),
-        dataConsumerZip: new FormControl(''),
-        dataConsumerStreet: new FormControl(''),
-        dataConsumerCountry: new FormControl(''),
-        contactPhoneNumber: new FormControl(''),
-        contactEmailAddress: new FormControl(''),
-      }),
-    });
+    form = createTestFormGroup();
     componentRef.setInput('form', form);
     fixture.detectChanges();
   });
@@ -54,12 +67,32 @@ describe('DataRequestFormConsumerComponent', () => {
   });
 
   it('should compute countries list with translated labels', () => {
+    // Ensure form is properly set before accessing computed signals
     const countries = component.countries();
     expect(Array.isArray(countries)).toBe(true);
     countries.forEach((country) => {
       expect(country.label).toMatch(`countries.${country.value}`);
       expect(Object.values(COUNTRIES)).toContain(country.value);
     });
+  });
+
+  it('should handle errors from fetchUidInfosOfCurrentUser and send them to errorService', async () => {
+    const testError = new Error('Test error from fetchUidInfosOfCurrentUser');
+
+    // Reset and configure the mock to reject before creating the new fixture
+    (uidService.fetchUidInfosOfCurrentUser as jest.Mock).mockReset();
+    (uidService.fetchUidInfosOfCurrentUser as jest.Mock).mockRejectedValueOnce(testError);
+
+    // Create a new fixture with the mocked error
+    const errorFixture = TestBed.createComponent(DataRequestFormConsumerComponent);
+
+    // Set the form input before triggering change detection
+    errorFixture.componentRef.setInput('form', createTestFormGroup());
+
+    errorFixture.detectChanges();
+    await errorFixture.whenStable();
+
+    expect(errorService.handleError).toHaveBeenCalledWith(testError);
   });
 
   describe('formatBytes', () => {
@@ -129,17 +162,7 @@ describe('MockUidRegisterService not available', () => {
     fixture = TestBed.createComponent(DataRequestFormConsumerComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
-    form = new FormGroup({
-      consumer: new FormGroup({
-        dataConsumerDisplayName: new FormControl(''),
-        dataConsumerCity: new FormControl(''),
-        dataConsumerZip: new FormControl(''),
-        dataConsumerStreet: new FormControl(''),
-        dataConsumerCountry: new FormControl(''),
-        contactPhoneNumber: new FormControl(''),
-        contactEmailAddress: new FormControl(''),
-      }),
-    });
+    form = createTestFormGroup();
     componentRef.setInput('form', form);
     fixture.detectChanges();
   });

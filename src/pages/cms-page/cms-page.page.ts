@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, effect, inject, input, resource } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { CmsService, StrapiSingleTypeResponse } from '@/entities/cms';
 import { BlockRendererComponent } from '@/features/cms-blocks';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
@@ -33,6 +34,7 @@ export class CmsPage {
   private readonly strapiService = inject(CmsService);
   private readonly i18nService = inject(I18nService);
   private readonly router = inject(Router);
+  private readonly errorService = inject(ErrorHandlerService);
 
   protected readonly breadcrumbIcon = faArrowRight;
 
@@ -57,8 +59,7 @@ export class CmsPage {
       if (error?.cause instanceof HttpErrorResponse && error?.cause.status === 404) {
         this.router.navigate([ROUTE_PATHS.NOT_FOUND], { state: { error: error.message } });
       } else {
-        // TODO: Implement a global error handling service DIGIB2-835
-        // this.errorService.handleError(error);
+        this.errorService.handleError(error);
         this.router.navigate([ROUTE_PATHS.ERROR]);
       }
     }

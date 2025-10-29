@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
+import { faChevronDown, faChevronUp } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UserInfoDto } from '@/entities/openapi';

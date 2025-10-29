@@ -1,15 +1,29 @@
-<div class="px-12 py-6 flex justify-between items-center bg-agridata-primary-text text-white">
-  <div>
-    @if (isDevMode()) {
-      <button (click)="resetData()" class="ml-1 text-xs btn btn-secondary">
-        Testdaten zurücksetzen
-      </button>
-    }
+<div
+  class="px-12 py-6 flex flex-col md:flex-row gap-2 justify-between items-center bg-agridata-primary-text text-white"
+>
+  @if (canResetData()) {
+    <button (click)="resetData()" class="ml-1 text-xs btn btn-secondary">
+      Testdaten zurücksetzen
+    </button>
+  }
+  <div class="flex flex-col md:flex-row gap-2">
+    <a href="{{ ROUTE_PATHS.IMPRESSUM_PATH }}" class="hover:underline p-4">{{
+      'navigation.menuItems.imprint' | i18n
+    }}</a>
+    <a href="{{ ROUTE_PATHS.PRIVACY_POLICY_PATH }}" class="hover:underline p-4">{{
+      'navigation.menuItems.privacyPolicy' | i18n
+    }}</a>
   </div>
   <div>
     <span class="text-agridata-tertiary-text">
-      agridata.ch © 2025 — FE {{ frontendVersion() }} · BE
-      {{ backendVersion.value()?.['version'] }}
+      agridata.ch
+      <span (click)="handleClickCopyright()" (keydown.enter)="handleClickCopyright()">
+        {{ hideCopyright() ? '🌾' : '©' }}
+      </span>
+      2025 — {{ isCmsPage() ? ' ' : 'FE ' }}{{ frontendVersion() }}
+      @if (!isCmsPage() && backendVersion()) {
+        · BE {{ backendVersion()?.['version'] }}
+      }
     </span>
   </div>
 </div>

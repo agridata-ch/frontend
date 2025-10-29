@@ -58,7 +58,7 @@ describe('LandingPage', () => {
       const httpErrorResponse = new HttpErrorResponse({ status: 404 });
       const mockError = new Error('Not found', { cause: httpErrorResponse });
 
-      jest.spyOn(component['landingPage'], 'error').mockReturnValue(mockError);
+      jest.spyOn(component['landingPageResource'], 'error').mockReturnValue(mockError);
 
       fixture.detectChanges();
 
@@ -71,7 +71,7 @@ describe('LandingPage', () => {
       const httpErrorResponse = new HttpErrorResponse({ status: 400 });
       const mockError = new Error('Error', { cause: httpErrorResponse });
 
-      jest.spyOn(component['landingPage'], 'error').mockReturnValue(mockError);
+      jest.spyOn(component['landingPageResource'], 'error').mockReturnValue(mockError);
 
       fixture.detectChanges();
 

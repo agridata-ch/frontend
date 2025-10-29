@@ -1,0 +1,21 @@
+@if (open()) {
+  <div class="absolute h-screen inset-0 z-50 flex items-center justify-center bg-gray-900/50">
+    <!-- popup container -->
+    <div
+      class="bg-white border border-gray-300 rounded-lg shadow-lg p-6 m-4 max-h-screen overflow-auto"
+    >
+      <!-- Header with title and close button -->
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="flex-1 text-center">{{ title() }}</h3>
+        @if (showCloseButton()) {
+          <app-agridata-button [variant]="ButtonVariants.Icon" (onClick)="close()">
+            <fa-icon [icon]="closeIcon"></fa-icon>
+          </app-agridata-button>
+        }
+      </div>
+      <div class="overflow-y-auto">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+}

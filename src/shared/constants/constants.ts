@@ -3,9 +3,13 @@ export const ROUTE_PATHS = {
   CONSENT_REQUEST_PRODUCER_CREATE_SUBPATH: 'create',
   DATA_REQUESTS_CONSUMER_PATH: 'data-requests',
   SUPPORT_PATH: 'support',
+  IMPRESSUM_PATH: 'cms/imprint',
+  PRIVACY_POLICY_PATH: 'cms/privacy-policy',
   FORBIDDEN: 'forbidden',
   ERROR: 'error',
   NOT_FOUND: 'not-found',
+  MAINTENANCE: 'maintenance',
+  LOGIN: 'login',
 };
 
 export const USER_ROLES = {
@@ -30,10 +34,12 @@ export const CMS_BLOCKS = {
   SECTION_TEXT_IMAGE: 'layout.section-text-image',
   SECTION_USER_FEEDBACK: 'layout.section-user-feedback',
   SECTION_CARD_GRID: 'layout.section-card-grid',
+  SECTION_IMAGE_LIST: 'layout.section-image-list',
   CONTACT_FORM: 'blocks.contact-form',
   SECTION_FAQ: 'layout.section-faq',
   IMAGE_GRID: 'blocks.image-grid',
   SECTION_IMAGE_CARD: 'layout.section-image-card',
+  SECTION_TIMELINE: 'layout.section-timeline',
 };
 
 export const VIDEO_FORMATS = ['.mp4', '.webm', '.wmv', '.avi', '.mov', '.mkv', '.flv'];

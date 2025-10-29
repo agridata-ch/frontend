@@ -39,8 +39,8 @@ export class UIDRegisterSearchService extends BaseService {
 
     /**
      * Get By Uid
-     * Retrieves organisation details from the UID register using the specified UID. Accessible to users with the consumer or admin role.
-     * @param uid UID of the organisation
+     * Retrieves organisation details from the UID register using the specified UID. Accessible to users with the admin role.
+     * @param uid UID of the organisation without CHE prefix
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

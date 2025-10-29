@@ -1,13 +1,13 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFile } from '@fortawesome/free-regular-svg-icons';
 import {
   faChevronLeft,
   faChevronRight,
   faDatabase,
+  faFileCheck,
   faUsers,
-} from '@fortawesome/free-solid-svg-icons';
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { PageData } from '@/entities/cms';
@@ -44,7 +44,7 @@ export class NavigationWidgetComponent {
   readonly cmsPages = input<PageData[]>([]);
 
   readonly isNavigationOpen = computed(this.agridataStateService.isNavigationOpen);
-  readonly chevronIcon = computed(() => (this.isNavigationOpen() ? faChevronLeft : faChevronRight));
+  readonly navIcon = computed(() => (this.isNavigationOpen() ? faChevronLeft : faChevronRight));
   readonly showNavigation = computed(() => this.authService.isAuthenticated());
   readonly userRoles = computed(() => this.authService.userRoles());
 
@@ -53,7 +53,7 @@ export class NavigationWidgetComponent {
       (this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) ||
         this.agridataStateService.isImpersonating()) && {
         label: 'producer.pageTitle',
-        icon: faFile,
+        icon: faFileCheck,
         route: `/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`,
       },
       this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER) && {

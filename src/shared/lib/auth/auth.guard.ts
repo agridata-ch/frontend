@@ -25,6 +25,7 @@ export class AuthorizationGuard implements CanActivate {
       const payload = token.split('.')[1];
       return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
     } catch {
+      console.error('failed to decode access token');
       return {};
     }
   }

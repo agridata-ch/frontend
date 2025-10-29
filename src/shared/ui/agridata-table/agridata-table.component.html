@@ -8,51 +8,46 @@
     </app-search-input>
   </div>
 }
-
-<!-- Main Table Container -->
-<div class="rounded-lg border border-gray-200 relative" *i18n="let t; prefix: 'table'">
-  @if (dataProvider().isLoading()) {
-    <div class="absolute inset-0 flex items-center justify-center z-50">
-      <div class="inline-flex items-center justify-center rounded-lg gap-2">
-        <fa-icon
-          [attr.aria-label]="t('loading')"
-          class="text-2xl text-agridata-primary-600"
-          [icon]="faSpinner"
-          animation="spin"
-        ></fa-icon>
+@if (pageData().items.length === 0 && !dataProvider().isLoading()) {
+  <!-- Empty State -->
+  <div class="flex flex-1">
+    <app-empty-state></app-empty-state>
+  </div>
+} @else {
+  <!-- Main Table Container -->
+  <div class="rounded-lg border bg-white border-gray-200 relative" *i18n="let t; prefix: 'table'">
+    @if (dataProvider().isLoading()) {
+      <div class="absolute inset-0 flex items-center justify-center z-50">
+        <div class="inline-flex items-center justify-center rounded-lg gap-2">
+          <fa-icon
+            [attr.aria-label]="t('loading')"
+            class="text-2xl text-agridata-primary-600"
+            [icon]="faSpinner"
+            animation="spin"
+          ></fa-icon>
+        </div>
       </div>
-    </div>
-  }
-  <table class="table-auto w-full bg-white rounded-lg">
-    <!-- Table Header -->
-    <thead class="text-left border-b border-gray-200">
-      <tr>
-        @for (column of tableMetadata().columns; track column.name) {
-          <app-table-header-cell
-            [columnDefinition]="column"
-            [sortDirection]="headerColumnSortModel()[column.name]()"
-            (sortChange)="setSingleColumnSort(column, $event)"
-          ></app-table-header-cell>
-        }
-        <!-- Actions Column Header -->
-        @if (tableMetadata().actions) {
-          <th class="py-3 px-4" [attr.aria-label]="t('actions')"></th>
-        }
-      </tr>
-    </thead>
+    }
 
-    <tbody>
-      @if (pageData().items.length === 0) {
-        <!-- Empty State -->
+    <table class="table-auto w-full bg-white rounded-lg">
+      <!-- Table Header -->
+      <thead class="text-left border-b border-gray-200">
         <tr>
-          <td
-            [attr.colspan]="tableMetadata().columns.length + 1"
-            class="py-8 px-4 text-center text-slate-500"
-          >
-            {{ t('noData') }}
-          </td>
+          @for (column of tableMetadata().columns; track column.name) {
+            <app-table-header-cell
+              [columnDefinition]="column"
+              [sortDirection]="headerColumnSortModel()[column.name]()"
+              (sortChange)="setSingleColumnSort(column, $event)"
+            ></app-table-header-cell>
+          }
+          <!-- Actions Column Header -->
+          @if (tableMetadata().actions) {
+            <th class="py-3 px-4" [attr.aria-label]="t('actions')"></th>
+          }
         </tr>
-      } @else {
+      </thead>
+
+      <tbody>
         <!-- Data Rows -->
         @for (row of pageData().items; track getRowId(row)) {
           @let rowId = getRowId(row);
@@ -79,23 +74,23 @@
                   [actions]="getRowActions(row)"
                   [isRowHovered]="hoveredRowId() === rowId"
                   (rowAction)="handleRowClick(row)"
-                />
+                ></app-table-actions>
               </td>
             }
           </tr>
         }
-      }
-    </tbody>
-  </table>
+      </tbody>
+    </table>
 
-  <!-- Pagination Section -->
-  @if (shouldShowPagination()) {
-    <app-table-pagination
-      [pageSize]="pageData().pageSize"
-      [totalPages]="pageData().totalPages"
-      [currentPageIndex]="pageData().currentPage"
-      (pageChange)="nextPageIndex.set($event)"
-      (pageSizeChange)="nextPageSize.set($event)"
-    ></app-table-pagination>
-  }
-</div>
+    <!-- Pagination Section -->
+    @if (shouldShowPagination()) {
+      <app-table-pagination
+        [pageSize]="pageData().pageSize"
+        [totalPages]="pageData().totalPages"
+        [currentPageIndex]="pageData().currentPage"
+        (pageChange)="nextPageIndex.set($event)"
+        (pageSizeChange)="nextPageSize.set($event)"
+      ></app-table-pagination>
+    }
+  </div>
+}

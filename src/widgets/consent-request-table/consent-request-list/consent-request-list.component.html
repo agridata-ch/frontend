@@ -2,6 +2,10 @@
   class="border border-agridata-stroke rounded-md divide-y divide-agridata-stroke overflow-hidden"
   *i18n="let t; prefix: 'consent-request'"
 >
+  @if (consentRequests()?.length === 0) {
+    <app-empty-state></app-empty-state>
+  }
+
   @for (request of consentRequests(); track request.id) {
     <div
       (click)="handleClick(request)"
@@ -10,16 +14,24 @@
       [class.bg-white]="request.stateCode !== ConsentRequestStateEnum.Opened"
       [class.bg-sky-50]="request.stateCode === ConsentRequestStateEnum.Opened"
     >
-      <div class="flex gap-2 xs:gap-8">
-        <app-agridata-avatar
-          [imageUrl]="request.dataRequest?.dataConsumerLogoBase64!"
-          [name]="request.dataRequest?.dataConsumerDisplayName!"
+      <div class="flex justify-between">
+        <span class="text-agridata-primary-text font-normal">
+          {{ formatRequestDate(request) }}
+        </span>
+        <app-agridata-badge
+          [text]="t(`dataRequest.stateCode.${request.stateCode}`)"
+          [size]="BadgeSize.MD"
+          [variant]="getBadgeVariant(request)"
+        />
+      </div>
+      <div class="flex justify-between">
+        <app-agridata-contact-card
+          [name]="request.dataRequest?.dataConsumerDisplayName"
+          [imageUrl]="request.dataRequest?.dataConsumerLogoBase64"
+          [secondaryName]="request.dataRequest?.dataConsumerCity"
           [size]="AvatarSize.MEDIUM"
           [skin]="AvatarSkin.LIGHT"
         />
-        <span class="text-gray-800 text-lg font-semibold flex-1">
-          {{ request.dataRequest?.dataConsumerDisplayName }}
-        </span>
         <app-agridata-button
           click-stop-propagation
           [variant]="ButtonVariants.Icon"
@@ -31,16 +43,15 @@
       <span class="text-agridata-primary-600">
         {{ getTranslatedTitle(request) }}
       </span>
-      <div class="flex justify-between">
-        <span class="text-agridata-primary-text font-normal">
-          {{ formatRequestDate(request) }}
-        </span>
-        <app-agridata-badge
-          [text]="t(`dataRequest.stateCode.${request.stateCode}`)"
-          [size]="BadgeSize.MD"
-          [variant]="getBadgeVariant(request)"
-        />
-      </div>
+      @if (request.stateCode === ConsentRequestStateEnum.Opened) {
+        <app-agridata-button
+          click-stop-propagation
+          [variant]="ButtonVariants.PrimaryAccept"
+          (onClick)="acceptRequest($event, request)"
+        >
+          {{ t('table.tableActions.consent') }}
+        </app-agridata-button>
+      }
     </div>
   }
 </div>

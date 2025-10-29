@@ -1,6 +1,9 @@
 import { Component, computed, input, output, signal } from '@angular/core';
+import {
+  faChevronRight,
+  faEllipsisVertical,
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
-import { faChevronRight, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
 import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
@@ -38,7 +41,6 @@ export class TableActionsComponent {
   readonly actions = input<ActionDTO[]>([]);
   readonly isRowHovered = input<boolean>(false);
   readonly rowAction = output<void>();
-
   readonly isOpen = signal(false);
 
   readonly iconRowAction = faChevronRight;

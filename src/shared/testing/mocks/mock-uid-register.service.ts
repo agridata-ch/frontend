@@ -1,41 +1,8 @@
-/**
- * Mimics the UID register service for testing identifier validation and lookups.
- *
- * CommentLastReviewed: 2025-08-25
- */
-export class MockUidRegisterService {
-  fetchUidInfosOfCurrentUser = {
-    value: () => ({
-      uid: 123,
-      legalName: 'Test User',
-      address: {
-        city: 'Test City',
-        zip: '12345',
-        street: 'Test Street',
-        country: 'Test Country',
-      },
-    }),
-    isLoading: () => false,
-    reload: () => {},
-    error: () => null,
-  };
+import { UidRegisterService } from '@/entities/api';
 
-  searchByUidResource = (uid: number) => ({
-    value: () => ({
-      uid,
-      legalName: 'Other User',
-      address: {
-        city: 'Other City',
-        zip: '54321',
-        street: 'Other Street',
-        country: 'Other Country',
-      },
-    }),
-    isLoading: () => false,
-    reload: () => {},
-    error: () => null,
-  });
-}
+export const mockUidRegisterService: Partial<UidRegisterService> = {
+  fetchUidInfosOfCurrentUser: jest.fn().mockResolvedValue([]),
+};
 
 /**
  * Mimics an error of the UID register service.
