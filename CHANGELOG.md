@@ -1,3 +1,9 @@
+## [1.1.0-rc.38](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.37...v1.1.0-rc.38) (2025-10-29)
+
+### Bug Fixes
+
+- **ui:** remove unused styles ([2a98a7e](https://github.com/agridata-ch/frontend/commit/2a98a7ea2d04601e88a00c5cb5a34e9ecd34bb7d))
+
 ## [1.1.0-rc.37](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.36...v1.1.0-rc.37) (2025-10-29)
 
 ### Bug Fixes
