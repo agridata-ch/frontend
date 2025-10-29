@@ -1,3 +1,9 @@
+## [1.1.0-rc.37](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.36...v1.1.0-rc.37) (2025-10-29)
+
+### Bug Fixes
+
+- **ui:** fix style of language select, fix data-request disabled buttons ([d12f8bc](https://github.com/agridata-ch/frontend/commit/d12f8bc1536905c26cb9017ec8c02d1306f5255f))
+
 ## [1.1.0-rc.36](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.35...v1.1.0-rc.36) (2025-10-29)
 
 ### Bug Fixes
