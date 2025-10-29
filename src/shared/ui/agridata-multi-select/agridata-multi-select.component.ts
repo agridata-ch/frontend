@@ -1,4 +1,4 @@
-import { Component, computed, input, signal } from '@angular/core';
+import { Component, computed, effect, input, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown, faChevronUp, faTimes } from '@fortawesome/pro-regular-svg-icons';
@@ -35,15 +35,12 @@ export class AgridataMultiSelectComponent {
     this.isDropdownOpen() ? this.chevronUp : this.chevronDown,
   );
 
-  ngOnInit() {
-    // Initialize selected options based on the control's value
+  updateSelectedOptionsEffect = effect(() => {
     const currentValue = this.control()?.value || [];
-    this.selectedOptions.set(
-      this.options().filter((o) => {
-        return currentValue.includes(o.value);
-      }),
-    );
-  }
+    const availableOptions = this.options();
+
+    this.selectedOptions.set(availableOptions.filter((o) => currentValue.includes(o.value)));
+  });
 
   toggleDropdown() {
     this.isDropdownOpen.update((o) => !o);
