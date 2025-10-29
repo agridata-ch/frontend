@@ -1,3 +1,9 @@
+## [1.1.0-rc.35](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.34...v1.1.0-rc.35) (2025-10-29)
+
+### Features
+
+- **font-awesome:** migrates font awesome to custom kit ([b099b4f](https://github.com/agridata-ch/frontend/commit/b099b4f0890c97d023950373dfd2f461da599e52)), closes [DIGIB2-770](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-770)
+
 ## [1.1.0-rc.34](https://github.com/agridata-ch/frontend/compare/v1.1.0-rc.33...v1.1.0-rc.34) (2025-10-28)
 
 ### Features
