@@ -1,3 +1,9 @@
+## [1.1.1-rc.1](https://github.com/agridata-ch/frontend/compare/v1.1.0...v1.1.1-rc.1) (2025-10-30)
+
+### Bug Fixes
+
+- **logo:** fixes logo svg / safari black box ([3a939b5](https://github.com/agridata-ch/frontend/commit/3a939b524e82f3e7d1004721f413837132397773))
+
 ## [1.1.0](https://github.com/agridata-ch/frontend/compare/v1.0.0...v1.1.0) (2025-10-29)
 
 ### Features
