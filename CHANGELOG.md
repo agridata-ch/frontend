@@ -1,3 +1,9 @@
+## [1.2.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.2.0-rc.1...v1.2.0-rc.2) (2025-10-31)
+
+### Bug Fixes
+
+- **purpose:** fix white-space breaking ([9fb9bed](https://github.com/agridata-ch/frontend/commit/9fb9bed4d80d7019db879602988873f2413aa920))
+
 ## [1.2.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.1.1-rc.1...v1.2.0-rc.1) (2025-10-31)
 
 ### Features
