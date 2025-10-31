@@ -50,7 +50,7 @@
         "OPENED": "Aperto",
         "UNKNOWN": "Sconosciuto"
       },
-      "footerInformation": "Puoi modificare il tuo consenso in qualsiasi momento.",
+      "footerInformation": "Il consenso può essere modificato in qualsiasi momento.",
       "requestDate": "Richiesta del {{ date }}",
       "sidepanel": {
         "title": "Visualizzazione dettagliata"
@@ -93,7 +93,7 @@
     "state": "Stato",
     "contact": {
       "title": "Informazioni di contatto",
-      "description": "Per qualsiasi domanda o chiarimento sulla richiesta di dati, contattare direttamente {{ organisationName }} all'indirizzo seguente:"
+      "description": "Per qualsiasi domanda o chiarimento sulla richiesta di dati, contattare direttamente l'organizzazione:"
     },
     "form": {
       "request": {

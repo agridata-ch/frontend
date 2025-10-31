@@ -50,7 +50,7 @@
         "OPENED": "Ouvert",
         "UNKNOWN": "Inconnu"
       },
-      "footerInformation": "Vous pouvez modifier votre approbation à tout moment.",
+      "footerInformation": "Approbation modifiable à tout moment.",
       "requestDate": "Demande du {{ date }}",
       "sidepanel": {
         "title": "Vue détaillée"
@@ -93,7 +93,7 @@
     "state": "Statut",
     "contact": {
       "title": "Coordonnées",
-      "description": "Pour toute question ou clarification concernant la demande de données, veuillez contacter {{ organisationName }} à l'adresse suivante:"
+      "description": "Si vous avez des questions ou des doutes concernant la demande de données, veuillez contacter directement l'organisation:"
     },
     "form": {
       "request": {
@@ -229,11 +229,11 @@
     "privacy": {
       "consent": {
         "title": "Approbation",
-        "description": "Avec votre consentement,  {{ consumerName }}  peut consulter les données mentionnées ci-dessus."
+        "description": "En donnant votre approuvement,  {{ consumerName }}  peut consulter les données mentionnées ci-dessus."
       },
       "dataProtection": {
         "title": "Protection des données",
-        "description": "Il existe un contrat entre OFAG et {{ consumerName }} qui régit clairement l'objectif et l'utilisation des données décrits ci-dessus. {{ consumerName }} est tenu de respecter les dispositions de la loi sur la protection des données."
+        "description": "Il existe un contrat entre OFAG et {{ consumerName }} qui règle clairement l'objectif et l'utilisation des données décrits ci-dessus. {{ consumerName }} s'engage à respecter les dispositions de la loi sur la protection des données."
       },
       "revocation": {
         "title": "Possibilité de révocation",
