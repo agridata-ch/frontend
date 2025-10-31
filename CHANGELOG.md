@@ -1,3 +1,9 @@
+## [1.2.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.1.1-rc.1...v1.2.0-rc.1) (2025-10-31)
+
+### Features
+
+- **footer:** add footer logos ([80d37d6](https://github.com/agridata-ch/frontend/commit/80d37d6118177ebfc89130bb5718049ed861b15a)), closes [DIGIB2-525](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-525)
+
 ## [1.1.1-rc.1](https://github.com/agridata-ch/frontend/compare/v1.1.0...v1.1.1-rc.1) (2025-10-30)
 
 ### Bug Fixes
