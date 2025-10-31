@@ -1,3 +1,27 @@
+## [1.2.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.2.0-rc.2...v1.2.0-rc.3) (2025-10-31)
+
+### Features
+
+- **translation:** update translations ([80c8f0a](https://github.com/agridata-ch/frontend/commit/80c8f0a83e9bd03edc6f1ac56ba72e8fb2b8229c))
+
+## [1.2.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.2.0-rc.1...v1.2.0-rc.2) (2025-10-31)
+
+### Bug Fixes
+
+- **purpose:** fix white-space breaking ([9fb9bed](https://github.com/agridata-ch/frontend/commit/9fb9bed4d80d7019db879602988873f2413aa920))
+
+## [1.2.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.1.1-rc.1...v1.2.0-rc.1) (2025-10-31)
+
+### Features
+
+- **footer:** add footer logos ([80d37d6](https://github.com/agridata-ch/frontend/commit/80d37d6118177ebfc89130bb5718049ed861b15a)), closes [DIGIB2-525](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-525)
+
+## [1.1.1-rc.1](https://github.com/agridata-ch/frontend/compare/v1.1.0...v1.1.1-rc.1) (2025-10-30)
+
+### Bug Fixes
+
+- **logo:** fixes logo svg / safari black box ([3a939b5](https://github.com/agridata-ch/frontend/commit/3a939b524e82f3e7d1004721f413837132397773))
+
 ## [1.1.0](https://github.com/agridata-ch/frontend/compare/v1.0.0...v1.1.0) (2025-10-29)
 
 ### Features
