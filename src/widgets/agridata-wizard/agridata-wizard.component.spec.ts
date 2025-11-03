@@ -9,9 +9,9 @@ describe('AgridataWizardComponent', () => {
   let compRef: ComponentRef<AgridataWizardComponent>;
 
   const mockSteps: WizardStep[] = [
-    { id: '1', label: 'Step 1', isValid: true },
-    { id: '2', label: 'Step 2', isValid: false },
-    { id: '3', label: 'Step 3', isValid: true },
+    { id: '1', label: 'Step 1', isValid: true, completed: false },
+    { id: '2', label: 'Step 2', isValid: false, completed: false },
+    { id: '3', label: 'Step 3', isValid: true, completed: false },
   ];
 
   beforeEach(async () => {

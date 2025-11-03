@@ -8,12 +8,15 @@ import { COUNTRIES } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
-  MockAuthService,
-  MockI18nService,
-  MockUidRegisterServiceWithError,
-  mockUidRegisterService,
+  createMockI18nService,
+  createMockUidRegisterService,
+  MockUidRegisterService,
 } from '@/shared/testing/mocks';
-import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
+import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
+import {
+  createMockErrorHandlerService,
+  MockErrorHandlerService,
+} from '@/shared/testing/mocks/mock-error-handler.service';
 
 import { DataRequestFormConsumerComponent } from './data-request-form-consumer.component';
 
@@ -39,16 +42,18 @@ describe('DataRequestFormConsumerComponent', () => {
   let component: DataRequestFormConsumerComponent;
   let componentRef: ComponentRef<DataRequestFormConsumerComponent>;
   let form: FormGroup;
-  let errorService: Partial<ErrorHandlerService>;
-  let uidService: Partial<UidRegisterService>;
+  let errorService: MockErrorHandlerService;
+  let uidService: MockUidRegisterService;
+  let authService: MockAuthService;
   beforeEach(async () => {
-    errorService = mockErrorHandlerService;
-    uidService = mockUidRegisterService;
+    errorService = createMockErrorHandlerService();
+    uidService = createMockUidRegisterService();
+    authService = createMockAuthService();
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, DataRequestFormConsumerComponent],
       providers: [
-        { provide: I18nService, useClass: MockI18nService },
-        { provide: AuthService, useClass: MockAuthService },
+        { provide: I18nService, useValue: createMockI18nService() },
+        { provide: AuthService, useValue: authService },
         { provide: UidRegisterService, useValue: uidService },
         { provide: ErrorHandlerService, useValue: errorService },
       ],
@@ -148,14 +153,16 @@ describe('MockUidRegisterService not available', () => {
   let component: DataRequestFormConsumerComponent;
   let componentRef: ComponentRef<DataRequestFormConsumerComponent>;
   let form: FormGroup;
+  let authService: MockAuthService;
 
   beforeEach(async () => {
+    authService = createMockAuthService();
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, DataRequestFormConsumerComponent],
       providers: [
-        { provide: I18nService, useClass: MockI18nService },
-        { provide: AuthService, useClass: MockAuthService },
-        { provide: UidRegisterService, useClass: MockUidRegisterServiceWithError },
+        { provide: I18nService, useValue: createMockI18nService() },
+        { provide: AuthService, useValue: authService },
+        { provide: UidRegisterService, useValue: createMockUidRegisterService() },
       ],
     }).compileComponents();
 

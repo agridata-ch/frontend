@@ -300,15 +300,27 @@ export const mockCmsResponse = {
   meta: {},
 };
 
+import { CmsService } from '@/entities/cms';
+import { Mockify } from '@/shared/testing/mocks/test-model';
+
+export type MockCmsService = Mockify<CmsService>;
+
 /**
- * Provides a fake cms service for testing cms functionality.
+ * Factory that creates a fully-typed mock of `CmsService`.
+ * Methods are jest mocks and return the static `mockCmsResponse` by default.
  *
- * CommentLastReviewed: 2025-10-09
+ * CommentLastReviewed: 2025-11-03
  */
-export const mockCmsService = {
-  fetchLandingPage: jest.fn().mockResolvedValue(mockCmsResponse),
-  fetchImprintPage: jest.fn().mockResolvedValue(mockCmsResponse),
-  fetchPrivacyPolicyPage: jest.fn().mockResolvedValue(mockCmsResponse),
-  fetchCmsPages: jest.fn().mockResolvedValue([mockCmsResponse]),
-  fetchCmsPage: jest.fn().mockResolvedValue(mockCmsResponse),
-};
+export function createMockCmsService(): MockCmsService {
+  return {
+    fetchLandingPage: jest.fn().mockResolvedValue(mockCmsResponse),
+    fetchImprintPage: jest.fn().mockResolvedValue(mockCmsResponse),
+    fetchPrivacyPolicyPage: jest.fn().mockResolvedValue(mockCmsResponse),
+    fetchCmsPages: jest.fn().mockResolvedValue([mockCmsResponse]),
+    fetchCmsPage: jest.fn().mockResolvedValue(mockCmsResponse),
+    submitContactForm: jest.fn().mockResolvedValue(undefined),
+  } satisfies MockCmsService;
+}
+
+// Backwards-compatible default mock
+export const mockCmsService = createMockCmsService();

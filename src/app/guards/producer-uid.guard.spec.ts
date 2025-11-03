@@ -12,17 +12,24 @@ import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UserService } from '@/entities/api/user.service';
 import { UidDto } from '@/entities/openapi';
-import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
+import {
+  KTIDP_IMPERSONATION_QUERY_PARAM,
+  ROUTE_PATHS,
+  USER_ROLES,
+} from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
-import { MockAuthService } from '@/shared/testing/mocks';
-import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
+import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 
 describe('producerUidGuard', () => {
   let producerUidGuard: ProducerUidGuard;
   let uid: string;
   let participantService: Partial<UserService>;
-  let agridataStateService: Partial<AgridataStateService>;
-  let authService: Partial<AuthService>;
+  let agridataStateService: MockAgridataStateService;
+  let authService: MockAuthService;
   const activatedRouteSnapshot = (
     parentUrl: string,
     url: string,
@@ -37,23 +44,23 @@ describe('producerUidGuard', () => {
 
   beforeEach(() => {
     uid = '123';
-    agridataStateService = mockAgridataStateService(uid);
+    agridataStateService = createMockAgridataStateService();
 
     participantService = {
       getAuthorizedUids: jest.fn().mockReturnValue(Promise.resolve([{ uid: uid } as UidDto])),
     };
 
+    authService = createMockAuthService();
     TestBed.configureTestingModule({
       providers: [
         ProducerUidGuard,
         { provide: UserService, useValue: participantService },
         { provide: AgridataStateService, useValue: agridataStateService },
-        { provide: AuthService, useClass: MockAuthService },
+        { provide: AuthService, useValue: authService },
         provideRouter([]),
       ],
     });
     producerUidGuard = TestBed.inject(ProducerUidGuard);
-    authService = TestBed.inject(AuthService);
   });
 
   it('should be created', () => {
@@ -69,8 +76,9 @@ describe('producerUidGuard', () => {
 
   it('should change active uid if different uid is provided', async () => {
     const newUid = '444';
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
-    jest.spyOn(authService, 'isProducer').mockReturnValue(true);
+    authService.isAuthenticated.set(true);
+    authService.userRoles.set([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
+    authService.__testSignals.isProducer.set(true);
     (participantService.getAuthorizedUids as jest.MockedFn<any>).mockResolvedValueOnce(
       Promise.resolve([{ uid: uid } as UidDto, { uid: newUid } as UidDto]),
     );
@@ -82,8 +90,11 @@ describe('producerUidGuard', () => {
   });
 
   it('should rewrite route to consentrequest/uid using set uid', async () => {
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
-    jest.spyOn(authService, 'isProducer').mockReturnValue(true);
+    authService.isAuthenticated.set(true);
+    authService.userRoles.set([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
+    agridataStateService.getDefaultUid.mockReturnValue(uid);
+    authService.__testSignals.isProducer.set(true);
+
     const guardResult = await producerUidGuard.canActivate(
       activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
     );
@@ -96,8 +107,10 @@ describe('producerUidGuard', () => {
   });
 
   it('should rewrite route to consentrequest/uid using set uid when impersonation is active', async () => {
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
-    jest.spyOn(authService, 'isSupporter').mockReturnValue(true);
+    authService.isAuthenticated.set(true);
+    authService.userRoles.set([USER_ROLES.AGRIDATA_SUPPORTER]);
+    agridataStateService.getDefaultUid.mockReturnValue(uid);
+
     sessionStorage.setItem(KTIDP_IMPERSONATION_QUERY_PARAM, 'fakeKtIdp');
     const guardResult = await producerUidGuard.canActivate(
       activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
@@ -112,15 +125,17 @@ describe('producerUidGuard', () => {
   });
 
   it('should not rewrite route if not on consent request route', async () => {
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
-    jest.spyOn(authService, 'isProducer').mockReturnValue(true);
+    authService.isAuthenticated.set(true);
+    authService.userRoles.set([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
     const guardResult = await producerUidGuard.canActivate(activatedRouteSnapshot('', '', {}));
     expect(guardResult).toEqual(true);
   });
 
   it('should redirect to error if user doesnt own uid', async () => {
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
-    jest.spyOn(authService, 'isProducer').mockReturnValue(true);
+    authService.isAuthenticated.set(true);
+    authService.userRoles.set([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
+    authService.__testSignals.isProducer.set(true);
+
     const guardResult = await producerUidGuard.canActivate(
       activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', { uid: '999' }),
     );
@@ -131,8 +146,10 @@ describe('producerUidGuard', () => {
   });
 
   it('should accept request if the user is not a producer', async () => {
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
-    jest.spyOn(authService, 'isProducer').mockReturnValue(false);
+    authService.isAuthenticated.set(true);
+    authService.userRoles.set([]);
+    agridataStateService.getDefaultUid.mockReturnValue(uid);
+
     const guardResult = await producerUidGuard.canActivate(
       activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
     );
@@ -140,8 +157,10 @@ describe('producerUidGuard', () => {
   });
 
   it('should accept request if the user is supporter and impersonation is not active', async () => {
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
-    jest.spyOn(authService, 'isSupporter').mockReturnValue(true);
+    authService.isAuthenticated.set(true);
+    authService.userRoles.set([USER_ROLES.AGRIDATA_SUPPORTER]);
+    agridataStateService.getDefaultUid.mockReturnValue(uid);
+
     const guardResult = await producerUidGuard.canActivate(
       activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
     );
@@ -162,8 +181,10 @@ describe('producerUidGuard', () => {
 
   it('should handle non-Error exceptions and wrap them in Error', async () => {
     const nonErrorException = 'string error';
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
-    jest.spyOn(authService, 'isProducer').mockReturnValue(true);
+    authService.isAuthenticated.set(true);
+    authService.userRoles.set([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
+    authService.__testSignals.isProducer.set(true);
+
     (participantService.getAuthorizedUids as jest.MockedFn<any>).mockRejectedValueOnce(
       nonErrorException,
     );

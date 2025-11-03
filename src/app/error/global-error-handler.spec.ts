@@ -3,14 +3,17 @@ import { TestBed } from '@angular/core/testing';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { GlobalErrorHandler } from '@/app/error/global-error-handler';
-import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
+import {
+  createMockErrorHandlerService,
+  MockErrorHandlerService,
+} from '@/shared/testing/mocks/mock-error-handler.service';
 
 describe('GlobalErrorHandler', () => {
   let errorHandler: GlobalErrorHandler;
-  let errorHandlerService: Partial<ErrorHandlerService>;
+  let errorHandlerService: MockErrorHandlerService;
 
   beforeEach(() => {
-    errorHandlerService = mockErrorHandlerService;
+    errorHandlerService = createMockErrorHandlerService();
     TestBed.configureTestingModule({
       providers: [
         GlobalErrorHandler,

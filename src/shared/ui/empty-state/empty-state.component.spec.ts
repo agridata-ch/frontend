@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { getTranslocoModule } from '@/app/transloco-testing.module';
+import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { EmptyStateComponent } from './empty-state.component';
 
@@ -13,7 +13,7 @@ describe('EmptyStateComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         EmptyStateComponent,
-        getTranslocoModule({
+        createTranslocoTestingModule({
           langs: {
             de: {},
           },

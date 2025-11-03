@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { faArrowDown, faArrowUp } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 
-import { ColumnDefinition, SortDirections } from '@/shared/ui/agridata-table';
+import { CellRendererTypes, ColumnDefinition, SortDirections } from '@/shared/ui/agridata-table';
 
 import { TableHeaderCellComponent } from './table-header-cell.component';
 
@@ -30,7 +30,7 @@ describe('TableHeaderCellComponent', () => {
         name: 'test.column',
         sortable: true,
         renderer: {
-          type: 'function',
+          type: CellRendererTypes.FUNCTION,
           cellRenderFn: () => '',
         },
       };

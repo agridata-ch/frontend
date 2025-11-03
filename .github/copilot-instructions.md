@@ -47,13 +47,57 @@ For tests adhere to those rules:
   btn.query(By.css('[aria-label="common.ariaLabel.close"]')),
   );
   matchingButton?.triggerEventHandler('onClick', null);
-- most services already have mock import like this: import { mockMetadataService } from '@/shared/testing/mocks/mock-meta-data.service';
-- the mock service should look like this:
-  export const mockMetadataService = {
-  getDataProducts: jest.fn().mockReturnValue(signal([])),
-  } satisfies Partial<MetaDataService>;
-- in the test suites describe block declare the service like this: let metadataService: typeof mockMetadataService;
-- in the beforeEach block assign the mock to the variable like this: metadataService = mockMetadataService; Sometimes you may need to override a signal or a function for a specific test, this ensures that the test is reset to the original mock before each test.
+- most services already have mock like this:
+
+```javascript
+import {MockifyWithWritableSignals} from '@/shared/testing/mocks/test-model';
+
+export
+type
+MockAgridataStateServiceTestSignals = {
+  currentRouteWithoutQueryParams: WritableSignal < string | undefined >;
+};
+
+export
+type
+MockAgridataStateService = MockifyWithWritableSignals <
+  AgridataStateService,
+MockAgridataStateServiceTestSignals
+>;
+
+export function createMockAgridataStateService(): MockAgridataStateService {
+  const currentRouteWithoutQueryParams = signal < string | undefined > (undefined);
+
+  return {
+    activeUid: signal < string | undefined > (undefined),
+    getDefaultUid: jest.fn().mockReturnValue(undefined),
+    isImpersonating: jest.fn().mockReturnValue(false),
+    __testSignals: {currentRouteWithoutQueryParams},
+  }
+  satisfies
+  MockAgridataStateService;
+}
+```
+
+- assume that such a service exists for any service used in the component under test. It is always named with a "mock" prefix to the service name. Import like so:
+
+```javascript
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
+```
+
+- in the test suites describe block declare the service like this: let agridataStateService: MockAgridataStateService;
+- in the beforeEach block assign the mock to the variable like this: agridataStateService = createMockAgridataStateService();
+- to override mock service functions use jest like this:
+  ```
+   agridataStateService.isImpersonating.mockReturnValue(true);
+  ```
+  if the property is a signal use:
+  ```
+   agridataStateService.__testSignals.currentRouteWithoutQueryParams.set('/new/route');
+  ```
 - when testing a resource created in the tested component override the service function that is used in its loader function like that:
 
   ```
