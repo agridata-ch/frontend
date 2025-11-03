@@ -50,9 +50,12 @@ describe('EmptyStateComponent', () => {
   });
 
   it('should display a link to agridata.ch', () => {
+    const appBaseUrl = component['appBaseUrl'];
     const link = fixture.debugElement.query(By.css('a'));
     expect(link).toBeTruthy();
-    expect(link.nativeElement.href).toBe('https://www.agridata.ch/');
+
+    // need to add a slash at the end because of how href is resolved
+    expect(link.nativeElement.href).toBe(`${appBaseUrl}/`);
     expect(link.nativeElement.textContent.trim()).toBe('agridata.ch');
   });
 });
