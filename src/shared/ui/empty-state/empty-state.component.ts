@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+import { environment } from '@/environments/environment';
 import { I18nDirective } from '@/shared/i18n';
 
 /**
@@ -13,4 +14,6 @@ import { I18nDirective } from '@/shared/i18n';
   imports: [I18nDirective],
   templateUrl: './empty-state.component.html',
 })
-export class EmptyStateComponent {}
+export class EmptyStateComponent {
+  protected readonly appBaseUrl = environment.appBaseUrl;
+}

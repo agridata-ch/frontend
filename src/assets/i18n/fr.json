@@ -316,7 +316,8 @@
       "title": "Aide et assistance",
       "support": {
         "title": "Assistance",
-        "openingInfos": "Nos horaires:\nDu lundi au vendredi\nDe 8 h à 17 h"
+        "openingInfos": "Nos horaires:\nDu lundi au vendredi\nDe 8 h à 17 h",
+        "moreInfos": "Informations complémentaires"
       }
     }
   },
