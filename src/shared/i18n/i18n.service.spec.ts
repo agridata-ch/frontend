@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { TranslocoService } from '@jsverse/transloco';
-import { Subject } from 'rxjs';
 
 import { TranslationDto } from '@/entities/openapi';
+import { installMockLocalStorage } from '@/shared/testing/mocks/mock-local-store';
+import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { I18nService } from './i18n.service';
 
@@ -10,38 +11,24 @@ const LANG_STORAGE_KEY = 'lang';
 
 describe('I18nService', () => {
   let service: I18nService;
-  let mockTransloco: Partial<TranslocoService>;
-  let langChanges$: Subject<string>;
-  let getItemSpy: jest.SpyInstance;
-  let setItemSpy: jest.SpyInstance;
-
+  let translocoService: TranslocoService;
+  let localStore: ReturnType<typeof installMockLocalStorage>;
+  const translationKey = 'greeting';
   beforeEach(() => {
-    getItemSpy = jest.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
-    setItemSpy = jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {});
-
-    langChanges$ = new Subject<string>();
-
-    mockTransloco = {
-      getActiveLang: jest.fn().mockReturnValue('de'),
-      setActiveLang: jest.fn(),
-      translateObject: jest
-        .fn()
-        .mockImplementation(
-          (_key: string, _params: unknown, lang: string) =>
-            ({ [lang]: `value-${lang}` }) as unknown as TranslationDto,
-        ),
-      langChanges$: langChanges$,
-      load: jest.fn().mockReturnValue({
-        toPromise: () => Promise.resolve({}),
-      }),
-      translate: jest.fn().mockReturnValue('translated-value'),
-    };
+    localStore = installMockLocalStorage();
 
     TestBed.configureTestingModule({
-      providers: [I18nService, { provide: TranslocoService, useValue: mockTransloco }],
+      imports: [
+        createTranslocoTestingModule({
+          langs: {
+            de: { [translationKey]: 'hallo {{name}}' },
+          },
+        }),
+      ],
     });
 
     service = TestBed.inject(I18nService);
+    translocoService = TestBed.inject(TranslocoService);
   });
 
   afterEach(() => jest.restoreAllMocks());
@@ -51,39 +38,40 @@ describe('I18nService', () => {
   });
 
   it('initializes lang from localStorage when present', () => {
-    getItemSpy.mockReturnValue('fr');
+    localStore.setItem(LANG_STORAGE_KEY, 'fr');
     TestBed.resetTestingModule();
-    jest.spyOn(Storage.prototype, 'getItem').mockReturnValue('fr');
     TestBed.configureTestingModule({
-      providers: [I18nService, { provide: TranslocoService, useValue: mockTransloco }],
+      imports: [createTranslocoTestingModule()],
     });
-    const svc2 = TestBed.inject(I18nService);
-    expect(getItemSpy).toHaveBeenCalledWith(LANG_STORAGE_KEY);
-    expect(svc2.lang()).toBe('fr');
+    service = TestBed.inject(I18nService);
+
+    expect(service.lang()).toBe('fr');
   });
 
   it('falls back to getActiveLang() if localStorage is empty', () => {
     expect(service.lang()).toBe('de');
-    expect(mockTransloco.getActiveLang as jest.Mock).toHaveBeenCalled();
+    expect(localStore.setItem).toHaveBeenCalledWith(LANG_STORAGE_KEY, 'de');
   });
 
   it('syncs lang signal and localStorage on langChanges$', () => {
-    langChanges$.next('it');
+    translocoService.setActiveLang('it');
     expect(service.lang()).toBe('it');
-    expect(setItemSpy).toHaveBeenCalledWith(LANG_STORAGE_KEY, 'it');
+    expect(localStore.setItem).toHaveBeenCalledWith(LANG_STORAGE_KEY, 'it');
   });
 
   it('setActiveLang delegates to TranslocoService.setActiveLang()', () => {
+    const spy = jest.spyOn(translocoService, 'setActiveLang');
+
     service.setActiveLang('fr');
-    expect(mockTransloco.setActiveLang as jest.Mock).toHaveBeenCalledWith('fr');
+    expect(spy).toHaveBeenCalledWith('fr');
   });
 
   it('should translate keys using TranslocoService', () => {
-    const key = 'greeting';
     const params = { name: 'John' };
-    const result = service.translate(key, params);
-    expect(mockTransloco.translate).toHaveBeenCalledWith(key, params);
-    expect(result).toBe('translated-value');
+    const translateSpy = jest.spyOn(translocoService, 'translate');
+    const result = service.translate(translationKey, params);
+    expect(translateSpy).toHaveBeenCalledWith(translationKey, params);
+    expect(result).toBe('hallo John');
   });
 
   describe('useObjectTranslation()', () => {

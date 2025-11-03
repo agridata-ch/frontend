@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { faPenToSquare } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { getTranslocoModule } from '@/app/transloco-testing.module';
+import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { ActionDTO, TableActionsComponent } from './table-actions.component';
 
@@ -18,7 +18,7 @@ describe('TableActionsComponent', () => {
       imports: [
         TableActionsComponent,
         FontAwesomeModule,
-        getTranslocoModule({
+        createTranslocoTestingModule({
           langs: {
             de: {},
           },

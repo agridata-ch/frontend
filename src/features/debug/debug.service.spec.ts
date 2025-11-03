@@ -1,36 +1,34 @@
-import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DebugLogSource, DebugLogStatus } from '@/features/debug/debug.model';
-import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
-import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
+import {
+  createMockErrorHandlerService,
+  MockErrorHandlerService,
+} from '@/shared/testing/mocks/mock-error-handler.service';
 
 import { DebugService } from './debug.service';
 
 describe('DebugService', () => {
   let service: DebugService;
-  let mockErrorService: Partial<ErrorHandlerService>;
-  let mockStateService: Partial<AgridataStateService>;
+  let mockErrorService: MockErrorHandlerService;
+  let agridataStateService: MockAgridataStateService;
 
   beforeEach(() => {
-    mockErrorService = {
-      ...mockErrorHandlerService,
-      getAllErrors: jest.fn().mockReturnValue(signal([])),
-    };
+    mockErrorService = createMockErrorHandlerService();
 
-    mockStateService = {
-      ...mockAgridataStateService('test-uid'),
-      routeStart: signal(undefined),
-      currentRoute: signal(undefined),
-    };
+    agridataStateService = createMockAgridataStateService();
 
     TestBed.configureTestingModule({
       providers: [
         DebugService,
         { provide: ErrorHandlerService, useValue: mockErrorService },
-        { provide: AgridataStateService, useValue: mockStateService },
+        { provide: AgridataStateService, useValue: agridataStateService },
       ],
     });
     service = TestBed.inject(DebugService);

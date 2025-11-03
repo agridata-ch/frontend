@@ -8,15 +8,22 @@ import { UserService } from '@/entities/api/user.service';
 import { CreateConsentRequestDto, UidDto } from '@/entities/openapi';
 import { ConsentRequestCreatedDto } from '@/entities/openapi/model/consentRequestCreatedDto';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { mockConsentRequestService, mockUserService } from '@/shared/testing/mocks';
-import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
+import { createMockUserService, MockUserService } from '@/shared/testing/mocks';
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
+import {
+  createMockConsentRequestService,
+  MockConsentRequestService,
+} from '@/shared/testing/mocks/mock-consent-request-service';
 
 import { ProducerUidGuard } from './producer-uid.guard';
 
 describe('createConsentRequestGuard', () => {
   let createConsentRequestGuard: CreateConsentRequestGuard;
-  let consentRequestService: typeof mockConsentRequestService;
-
+  let consentRequestService: MockConsentRequestService;
+  let userService: MockUserService;
   const testUid = '123';
   const testDataRequestUid = 'test-data-request';
   const testConsentRequestId = 'test-consent-request-id';
@@ -34,9 +41,11 @@ describe('createConsentRequestGuard', () => {
     canActivate: jest.Mock;
   };
 
-  let agridataStateService: ReturnType<typeof mockAgridataStateService>;
+  let agridataStateService: MockAgridataStateService;
 
   beforeEach(() => {
+    userService = createMockUserService();
+
     mockRouter = {
       createUrlTree: jest.fn().mockReturnValue(mockUrlTree),
       parseUrl: jest.fn().mockReturnValue(mockErrorUrlTree),
@@ -46,15 +55,15 @@ describe('createConsentRequestGuard', () => {
     mockProducerUidGuard = {
       canActivate: jest.fn().mockResolvedValue(true),
     };
-    consentRequestService = mockConsentRequestService;
+    consentRequestService = createMockConsentRequestService();
 
-    agridataStateService = mockAgridataStateService(testUid);
+    agridataStateService = createMockAgridataStateService();
 
     TestBed.configureTestingModule({
       providers: [
         CreateConsentRequestGuard,
         { provide: ConsentRequestService, useValue: consentRequestService },
-        { provide: UserService, useValue: mockUserService },
+        { provide: UserService, useValue: userService },
         { provide: AgridataStateService, useValue: agridataStateService },
         { provide: ProducerUidGuard, useValue: mockProducerUidGuard },
         { provide: Router, useValue: mockRouter },
@@ -180,7 +189,7 @@ describe('createConsentRequestGuard', () => {
     const expectedCreateDto: CreateConsentRequestDto[] = [
       { uid: testUid, dataRequestId: testDataRequestUid },
     ];
-
+    agridataStateService.activeUid.set(testUid);
     const result = await createConsentRequestGuard.canActivate(route);
 
     expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
@@ -232,6 +241,7 @@ describe('createConsentRequestGuard', () => {
     jest.spyOn(agridataStateService, 'userUidsLoaded').mockReturnValue(true);
     // Mock userUids to include the valid uid
     jest.spyOn(agridataStateService, 'userUids').mockReturnValue([{ uid: validUid } as UidDto]);
+    agridataStateService.activeUid.set(validUid);
 
     const result = await createConsentRequestGuard.canActivate(route);
 
@@ -261,14 +271,14 @@ describe('createConsentRequestGuard', () => {
     ];
     // Mock userUidsLoaded signal to return false to test the getAuthorizedUids path
     jest.spyOn(agridataStateService, 'userUidsLoaded').mockReturnValue(false);
+    agridataStateService.activeUid.set(validUid);
+
     // Make sure mockUserService.getAuthorizedUids returns the correct data
-    (mockUserService.getAuthorizedUids as jest.Mock).mockReturnValue(
-      Promise.resolve([{ uid: validUid } as UidDto]),
-    );
+    userService.getAuthorizedUids.mockReturnValue(Promise.resolve([{ uid: validUid } as UidDto]));
 
     const result = await createConsentRequestGuard.canActivate(route);
 
-    expect(mockUserService.getAuthorizedUids).toHaveBeenCalled();
+    expect(userService.getAuthorizedUids).toHaveBeenCalled();
     expect(agridataStateService.setActiveUid).toHaveBeenCalledWith(validUid);
     expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
     expect(mockRouter.createUrlTree).toHaveBeenCalledWith([

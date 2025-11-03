@@ -4,7 +4,7 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { firstValueFrom, of } from 'rxjs';
 
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { MockAuthService } from '@/shared/testing/mocks';
+import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 
 import { AuthorizationGuard } from './auth.guard';
 import { AuthService } from './auth.service';
@@ -14,6 +14,7 @@ describe('AuthorizationGuard', () => {
   let mockOidc: Partial<OidcSecurityService>;
   let mockRouter: Partial<Router>;
   let fakeUrlTree: UrlTree;
+  let authService: MockAuthService;
 
   /**
    * Helper to build a minimal JWT‐style string whose payload
@@ -39,12 +40,15 @@ describe('AuthorizationGuard', () => {
       checkAuth: jest.fn().mockReturnValue(of({ accessToken: '', isAuthenticated: false })),
     };
 
+    // Create the auth mock and provide it to the TestBed so tests can mutate its signals
+    authService = createMockAuthService();
+
     TestBed.configureTestingModule({
       providers: [
         AuthorizationGuard,
         { provide: OidcSecurityService, useValue: mockOidc },
         { provide: Router, useValue: mockRouter },
-        { provide: AuthService, useClass: MockAuthService },
+        { provide: AuthService, useValue: authService },
       ],
     });
 
@@ -68,7 +72,6 @@ describe('AuthorizationGuard', () => {
 
     expect(result).toBe(true);
     // Verify the mock was called correctly
-    const authService = TestBed.inject(AuthService);
     expect(authService.setUserRoles).toHaveBeenCalledWith([]);
     expect(mockRouter.parseUrl).not.toHaveBeenCalled();
   });
@@ -86,7 +89,7 @@ describe('AuthorizationGuard', () => {
     const result = await firstValueFrom(guard.canActivate(route));
 
     expect(result).toBe(true);
-    expect(TestBed.inject(AuthService).setUserRoles).toHaveBeenCalledWith(['admin', 'user']);
+    expect(authService.setUserRoles).toHaveBeenCalledWith(['admin', 'user']);
     expect(mockRouter.parseUrl).not.toHaveBeenCalled();
   });
 
@@ -103,7 +106,7 @@ describe('AuthorizationGuard', () => {
     const result = await firstValueFrom(guard.canActivate(route));
 
     expect(result).toBe(fakeUrlTree);
-    expect(TestBed.inject(AuthService).setUserRoles).toHaveBeenCalledWith(['admin', 'user']);
+    expect(authService.setUserRoles).toHaveBeenCalledWith(['admin', 'user']);
     expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.FORBIDDEN);
   });
 
@@ -119,7 +122,7 @@ describe('AuthorizationGuard', () => {
     const result = await firstValueFrom(guard.canActivate(route));
 
     expect(result).toBe(fakeUrlTree);
-    expect(TestBed.inject(AuthService).setUserRoles).toHaveBeenCalledWith([]);
+    expect(authService.setUserRoles).toHaveBeenCalledWith([]);
     expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.FORBIDDEN);
   });
 
@@ -135,7 +138,7 @@ describe('AuthorizationGuard', () => {
     const result = await firstValueFrom(guard.canActivate(route));
 
     expect(result).toBe(true);
-    expect(TestBed.inject(AuthService).setUserRoles).toHaveBeenCalledWith([]);
+    expect(authService.setUserRoles).toHaveBeenCalledWith([]);
     expect(mockRouter.parseUrl).not.toHaveBeenCalled();
   });
 
@@ -150,7 +153,7 @@ describe('AuthorizationGuard', () => {
     const result = await firstValueFrom(guard.canActivate(route));
 
     expect(result).toBe(fakeUrlTree);
-    expect(TestBed.inject(AuthService).setUserRoles).toHaveBeenCalledWith([]);
+    expect(authService.setUserRoles).toHaveBeenCalledWith([]);
     expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.FORBIDDEN);
   });
 
@@ -165,7 +168,7 @@ describe('AuthorizationGuard', () => {
     const result = await firstValueFrom(guard.canActivate(route));
 
     expect(result).toBe(true);
-    expect(TestBed.inject(AuthService).setUserRoles).toHaveBeenCalledWith([]);
+    expect(authService.setUserRoles).toHaveBeenCalledWith([]);
     expect(mockRouter.parseUrl).not.toHaveBeenCalled();
   });
 });
