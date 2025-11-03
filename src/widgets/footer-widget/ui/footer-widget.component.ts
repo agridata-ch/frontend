@@ -39,6 +39,7 @@ export class FooterWidgetComponent {
   private readonly BACKEND_INFO_ROUTE_BLACKLIST = ['/', `/${ROUTE_PATHS.MAINTENANCE}`];
   protected readonly ROUTE_PATHS = ROUTE_PATHS;
   private clickTimeout: number | undefined;
+  readonly appBaseUrl = environment.appBaseUrl;
 
   protected readonly frontendVersion = signal(frontendVersion);
   protected readonly backendVersion = signal<{ [key: string]: string } | undefined>(undefined);
@@ -50,6 +51,7 @@ export class FooterWidgetComponent {
     const route = this.stateService.currentRouteWithoutQueryParams();
     return route?.startsWith(`/cms`) || route === '/';
   });
+  protected readonly currentYear = computed(() => new Date().getFullYear());
 
   protected handleClickCopyright() {
     if (this.clickTimeout) {
