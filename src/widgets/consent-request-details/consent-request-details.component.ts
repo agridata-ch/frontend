@@ -1,12 +1,12 @@
 import {
   Component,
-  ResourceRef,
-  Signal,
   computed,
   effect,
   inject,
   input,
   output,
+  ResourceRef,
+  Signal,
   signal,
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';

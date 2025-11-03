@@ -9,7 +9,12 @@ import {
   DataRequestStateEnum,
 } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
-import { MockResources, mockDataRequestService, mockDataRequests } from '@/shared/testing/mocks';
+import {
+  MockResources,
+  mockDataRequests,
+  createMockDataRequestService,
+  MockDataRequestService,
+} from '@/shared/testing/mocks';
 import { BadgeVariant } from '@/shared/ui/badge';
 
 import { DataRequestTableComponent } from './data-request-table.component';
@@ -23,14 +28,14 @@ describe('DataRequestTableComponent', () => {
   let component: DataRequestTableComponent;
   let componentRef: ComponentRef<DataRequestTableComponent>;
   let mockI18nService: jest.Mocked<I18nService>;
-  let dataRequestService: Partial<DataRequestService>;
+  let dataRequestService: MockDataRequestService;
   let dataRequestsResource: Signal<ResourceRef<DataRequestDto[] | undefined>>;
   beforeEach(async () => {
     mockI18nService = {
       translate: jest.fn(),
       useObjectTranslation: jest.fn(),
     } as unknown as jest.Mocked<I18nService>;
-    dataRequestService = mockDataRequestService;
+    dataRequestService = createMockDataRequestService();
     dataRequestsResource = signal(MockResources.createMockResourceRef(mockDataRequests));
     await TestBed.configureTestingModule({
       imports: [DataRequestTableComponent],

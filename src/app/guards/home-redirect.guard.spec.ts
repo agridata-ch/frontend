@@ -2,20 +2,24 @@ import { TestBed } from '@angular/core/testing';
 import { Router, UrlTree } from '@angular/router';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
-import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
-import { MockAuthService } from '@/shared/testing/mocks/mock-auth.service';
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
+import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 
 import { HomeRedirectGuard } from './home-redirect.guard';
 
 describe('HomeRedirectGuard', () => {
   let guard: HomeRedirectGuard;
-  let authService: AuthService;
+  let authService: MockAuthService;
   let router: Router;
-  let mockAgridataStateServiceInstance: ReturnType<typeof mockAgridataStateService>;
+  let agridataStateService: MockAgridataStateService;
   beforeEach(() => {
-    mockAgridataStateServiceInstance = mockAgridataStateService('fakeUid');
+    agridataStateService = createMockAgridataStateService();
+    authService = createMockAuthService();
 
     const mockRouter = {
       createUrlTree: jest.fn(),
@@ -24,14 +28,13 @@ describe('HomeRedirectGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         HomeRedirectGuard,
-        { provide: AuthService, useClass: MockAuthService },
+        { provide: AuthService, useValue: authService },
         { provide: Router, useValue: mockRouter },
-        { provide: AgridataStateService, useValue: mockAgridataStateServiceInstance },
+        { provide: AgridataStateService, useValue: agridataStateService },
       ],
     });
 
     guard = TestBed.inject(HomeRedirectGuard);
-    authService = TestBed.inject(AuthService);
     router = TestBed.inject(Router);
   });
 
@@ -40,7 +43,7 @@ describe('HomeRedirectGuard', () => {
   });
 
   it('should return true for unauthenticated users', () => {
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(false);
+    authService.isAuthenticated.set(false);
 
     const result = guard.canActivate();
 
@@ -49,8 +52,9 @@ describe('HomeRedirectGuard', () => {
 
   it('should redirect to consent request path for producers', () => {
     const urlTree = {} as UrlTree;
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
-    jest.spyOn(authService, 'isProducer').mockReturnValue(true);
+    authService.isAuthenticated.set(true);
+    authService.userRoles.set([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
+    authService.__testSignals.isProducer.set(true);
     (router.createUrlTree as jest.Mock).mockReturnValue(urlTree);
 
     const result = guard.canActivate();
@@ -61,9 +65,9 @@ describe('HomeRedirectGuard', () => {
 
   it('should redirect to consent request path for supporter that is impersonating a producer', () => {
     const urlTree = {} as UrlTree;
-    jest.spyOn(mockAgridataStateServiceInstance, 'isImpersonating').mockReturnValue(true);
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
-    jest.spyOn(authService, 'isSupporter').mockReturnValue(true);
+    jest.spyOn(agridataStateService, 'isImpersonating').mockReturnValue(true);
+    authService.isAuthenticated.set(true);
+    authService.userRoles.set([USER_ROLES.AGRIDATA_SUPPORTER]);
     (router.createUrlTree as jest.Mock).mockReturnValue(urlTree);
 
     const result = guard.canActivate();
@@ -74,9 +78,10 @@ describe('HomeRedirectGuard', () => {
 
   it('should redirect to supporter path for supporter', () => {
     const urlTree = {} as UrlTree;
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
-    jest.spyOn(authService, 'isSupporter').mockReturnValue(true);
+    authService.isAuthenticated.set(true);
+    authService.userRoles.set([USER_ROLES.AGRIDATA_SUPPORTER]);
     (router.createUrlTree as jest.Mock).mockReturnValue(urlTree);
+    authService.__testSignals.isSupporter.set(true);
 
     const result = guard.canActivate();
 
@@ -86,9 +91,10 @@ describe('HomeRedirectGuard', () => {
 
   it('should redirect to data requests path for consumers', () => {
     const urlTree = {} as UrlTree;
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
-    jest.spyOn(authService, 'isProducer').mockReturnValue(false);
-    jest.spyOn(authService, 'isConsumer').mockReturnValue(true);
+    authService.isAuthenticated.set(true);
+    authService.userRoles.set([USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER]);
+    authService.__testSignals.isConsumer.set(true);
+
     (router.createUrlTree as jest.Mock).mockReturnValue(urlTree);
 
     const result = guard.canActivate();
@@ -98,9 +104,8 @@ describe('HomeRedirectGuard', () => {
   });
 
   it('should return true for authenticated users with no specific role', () => {
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
-    jest.spyOn(authService, 'isProducer').mockReturnValue(false);
-    jest.spyOn(authService, 'isConsumer').mockReturnValue(false);
+    authService.isAuthenticated.set(true);
+    authService.userRoles.set([]);
 
     const result = guard.canActivate();
 

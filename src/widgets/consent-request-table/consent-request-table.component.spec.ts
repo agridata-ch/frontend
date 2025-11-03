@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { getTranslocoModule } from '@/app/transloco-testing.module';
 import { ConsentRequestService } from '@/entities/api';
 import {
   ConsentRequestProducerViewDto,
@@ -9,8 +8,15 @@ import {
   ConsentRequestStateEnum,
 } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
-import { mockConsentRequestService } from '@/shared/testing/mocks';
-import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
+import {
+  createMockConsentRequestService,
+  MockConsentRequestService,
+} from '@/shared/testing/mocks/mock-consent-request-service';
+import {
+  createMockErrorHandlerService,
+  MockErrorHandlerService,
+} from '@/shared/testing/mocks/mock-error-handler.service';
+import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ToastService } from '@/shared/toast';
 
 import { ConsentRequestTableComponent } from './consent-request-table.component';
@@ -20,8 +26,8 @@ describe('ConsentRequestTableComponent', () => {
   let fixture: ComponentFixture<ConsentRequestTableComponent>;
   let mockToastService: jest.Mocked<ToastService>;
   let mockI18nService: jest.Mocked<I18nService>;
-  let mockErrorService = mockErrorHandlerService;
-  let consentRequestService: ConsentRequestService;
+  let errorService: MockErrorHandlerService;
+  let consentRequestService: MockConsentRequestService;
   const mockConsentRequests: ConsentRequestProducerViewDto[] = [
     {
       id: '1',
@@ -54,13 +60,13 @@ describe('ConsentRequestTableComponent', () => {
       translate: jest.fn(),
       useObjectTranslation: jest.fn(),
     } as unknown as jest.Mocked<I18nService>;
-    mockErrorService = mockErrorHandlerService;
 
-    consentRequestService = mockConsentRequestService;
+    consentRequestService = createMockConsentRequestService();
+    errorService = createMockErrorHandlerService();
     await TestBed.configureTestingModule({
       imports: [
         ConsentRequestTableComponent,
-        getTranslocoModule({
+        createTranslocoTestingModule({
           langs: {
             de: {},
           },
@@ -70,7 +76,7 @@ describe('ConsentRequestTableComponent', () => {
         { provide: ToastService, useValue: mockToastService },
         { provide: I18nService, useValue: mockI18nService },
         { provide: ConsentRequestService, useValue: consentRequestService },
-        { provide: ErrorHandlerService, useValue: mockErrorService },
+        { provide: ErrorHandlerService, useValue: errorService },
       ],
     }).compileComponents();
 
@@ -185,7 +191,7 @@ describe('ConsentRequestTableComponent', () => {
     fixture.detectChanges();
     await Promise.resolve();
 
-    expect(mockErrorService.handleError).toHaveBeenCalled();
+    expect(errorService.handleError).toHaveBeenCalled();
   });
 
   it('should get translated state value', () => {

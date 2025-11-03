@@ -5,6 +5,7 @@ import importPlugin from 'eslint-plugin-import';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import securityPlugin from 'eslint-plugin-security';
 import unicornPlugin from 'eslint-plugin-unicorn';
+import unusedImports from 'eslint-plugin-unused-imports';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
@@ -26,10 +27,12 @@ export default defineConfig([
       import: importPlugin,
       security: securityPlugin,
       unicorn: unicornPlugin,
+      'unused-imports': unusedImports,
     },
     rules: {
       'sort-imports': 'off',
       'import/no-unresolved': 'error',
+      'unused-imports/no-unused-imports': 'error',
       'import/order': [
         'error',
         {

@@ -15,7 +15,10 @@ import { DebugService } from '@/features/debug/debug.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 import { DummyComponent } from '@/shared/testing/mocks/dummy-components';
-import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
 
 import {
   enhanceHttpErrorWithMethod,
@@ -41,13 +44,13 @@ describe('errorHttpInterceptor', () => {
   let httpMock: HttpTestingController;
   let debugService: Partial<DebugService>;
   let authService: ReturnType<typeof createMockAuthService>;
-  let agridataStateService: ReturnType<typeof mockAgridataStateService>;
+  let agridataStateService: MockAgridataStateService;
   let router: Router;
 
   beforeEach(() => {
     debugService = { ...mockDebugService };
     authService = createMockAuthService();
-    agridataStateService = mockAgridataStateService('test-uid');
+    agridataStateService = createMockAgridataStateService();
 
     TestBed.configureTestingModule({
       providers: [
@@ -258,7 +261,6 @@ describe('errorHttpInterceptor', () => {
       };
 
       authService.isAuthenticated.set(true);
-      agridataStateService.currentRouteWithoutQueryParams.set('/some-page');
       const navigateSpy = jest.spyOn(router, 'navigate');
 
       httpClient.get(testUrl).subscribe({
@@ -308,7 +310,7 @@ describe('errorHttpInterceptor', () => {
       };
 
       authService.isAuthenticated.set(true);
-      agridataStateService.currentRouteWithoutQueryParams.set('/');
+      agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(`/`);
       const navigateSpy = jest.spyOn(router, 'navigate');
 
       httpClient.get(testUrl).subscribe({
@@ -332,7 +334,7 @@ describe('errorHttpInterceptor', () => {
       };
 
       authService.isAuthenticated.set(true);
-      agridataStateService.currentRouteWithoutQueryParams.set(
+      agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(
         `/${ROUTE_PATHS.PRIVACY_POLICY_PATH}`,
       );
 
@@ -359,7 +361,9 @@ describe('errorHttpInterceptor', () => {
       };
 
       authService.isAuthenticated.set(true);
-      agridataStateService.currentRouteWithoutQueryParams.set(`/${ROUTE_PATHS.MAINTENANCE}`);
+      agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(
+        `/${ROUTE_PATHS.MAINTENANCE}`,
+      );
 
       const navigateSpy = jest.spyOn(router, 'navigate');
 
@@ -384,7 +388,6 @@ describe('errorHttpInterceptor', () => {
       };
 
       authService.isAuthenticated.set(true);
-      agridataStateService.currentRouteWithoutQueryParams.set('/some-page');
 
       const navigateSpy = jest.spyOn(router, 'navigate');
 
@@ -405,7 +408,6 @@ describe('errorHttpInterceptor', () => {
       const plainError = { error: 'Something went wrong' };
 
       authService.isAuthenticated.set(true);
-      agridataStateService.currentRouteWithoutQueryParams.set('/some-page');
 
       const navigateSpy = jest.spyOn(router, 'navigate');
 
@@ -430,8 +432,7 @@ describe('errorHttpInterceptor', () => {
       };
 
       authService.isAuthenticated.set(true);
-      agridataStateService.currentRouteWithoutQueryParams.set(undefined);
-
+      agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(undefined);
       const navigateSpy = jest.spyOn(router, 'navigate');
 
       httpClient.get(testUrl).subscribe({

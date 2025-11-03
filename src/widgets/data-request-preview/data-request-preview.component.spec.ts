@@ -3,8 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataRequestService } from '@/entities/api';
 import { MetaDataService } from '@/entities/api/meta-data-service';
-import { MockDataRequestService } from '@/shared/testing/mocks';
-import { mockMetadataService } from '@/shared/testing/mocks/mock-meta-data.service';
+import { createMockDataRequestService, MockDataRequestService } from '@/shared/testing/mocks';
+import {
+  createMockMetadataService,
+  MockMetaDataService,
+} from '@/shared/testing/mocks/mock-meta-data-service';
 
 import { DataRequestPreviewComponent } from './data-request-preview.component';
 
@@ -12,15 +15,15 @@ describe('DataRequestPreviewComponent', () => {
   let component: DataRequestPreviewComponent;
   let fixture: ComponentFixture<DataRequestPreviewComponent>;
   let componentRef: ComponentRef<DataRequestPreviewComponent>;
-  let metadataService: Partial<MetaDataService>;
-
+  let metadataService: MockMetaDataService;
+  let dataRequestService: MockDataRequestService;
   beforeEach(async () => {
-    metadataService = mockMetadataService;
-
+    metadataService = createMockMetadataService();
+    dataRequestService = createMockDataRequestService();
     await TestBed.configureTestingModule({
       imports: [DataRequestPreviewComponent],
       providers: [
-        { provide: DataRequestService, useClass: MockDataRequestService },
+        { provide: DataRequestService, useValue: dataRequestService },
         { provide: MetaDataService, useValue: metadataService },
       ],
     }).compileComponents();

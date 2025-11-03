@@ -2,7 +2,6 @@ import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { getTranslocoModule } from '@/app/transloco-testing.module';
 import { ResourceQueryDto } from '@/entities/openapi';
 import { PageResponseDto } from '@/shared/lib/api.helper';
 import { MockResources } from '@/shared/testing/mocks';
@@ -76,14 +75,7 @@ describe('AgridataTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        AgridataTableComponent,
-        getTranslocoModule({
-          langs: {
-            de: {},
-          },
-        }),
-      ],
+      imports: [AgridataTableComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AgridataTableComponent<TestUser>);
