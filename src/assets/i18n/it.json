@@ -317,7 +317,8 @@
       "title": "Aiuto e supporto",
       "support": {
         "title": "Assistenza",
-        "openingInfos": "I nostri orari:\nDal lunedì al venerdì\nDalle 08:00 alle 17:00"
+        "openingInfos": "I nostri orari:\nDal lunedì al venerdì\nDalle 08:00 alle 17:00",
+        "moreInfos": "Ulteriori informazioni"
       }
     }
   },

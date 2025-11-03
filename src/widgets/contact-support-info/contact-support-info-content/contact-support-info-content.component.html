@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-2 p-4 w-full" *i18n="let t; prefix: 'header.helpAndSupport'">
+<div class="flex flex-col gap-4 p-4 w-full" *i18n="let t; prefix: 'header.helpAndSupport'">
   <span class="font-semibold">{{ t('support.title') }}</span>
   <span class="text-sm text-agridata-secondary-text whitespace-break-spaces">{{
     t('support.openingInfos')
@@ -17,5 +17,20 @@
       <fa-icon [icon]="iconEmail" class="mr-1 lg:group-hover:underline" />
       <span>{{ email() }}</span>
     </a>
+  </div>
+  <div class="flex flex-col gap-2">
+    <span class="font-semibold">{{ t('support.moreInfos') }}</span>
+    <div
+      class="flex flex-col lg:border border-agridata-stroke rounded-lg divide-y divide-agridata-stroke"
+    >
+      <a
+        [href]="appBaseUrl"
+        target="_blank"
+        class="lg:text-agridata-primary-600 hover:underline group p-4"
+      >
+        <fa-icon [icon]="iconGlobe" class="mr-1 lg:group-hover:underline" />
+        <span>agridata.ch</span>
+      </a>
+    </div>
   </div>
 </div>
