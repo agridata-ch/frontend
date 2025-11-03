@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConsentRequestDtoDataRequestProducts } from '@/entities/openapi';
+import { DataProductDto } from '@/entities/openapi';
 
 import { DataRequestPurposeAccordionComponent } from './data-request-purpose-accordion.component';
 
@@ -44,7 +44,7 @@ describe('DataRequestPurposeAccordionComponent', () => {
     });
 
     it('should return the array when products is an array', () => {
-      const mockProducts: ConsentRequestDtoDataRequestProducts[] = [
+      const mockProducts: DataProductDto[] = [
         {
           id: '123',
           name: { de: 'Produkt 1', fr: 'Produit 1', it: 'Prodotto 1' },
@@ -66,7 +66,7 @@ describe('DataRequestPurposeAccordionComponent', () => {
     });
 
     it('should return empty array when products is a non-array value', () => {
-      const singleProduct: ConsentRequestDtoDataRequestProducts = {
+      const singleProduct: DataProductDto = {
         id: '123',
         name: { de: 'Produkt', fr: 'Produit', it: 'Prodotto' },
       };
@@ -82,7 +82,7 @@ describe('DataRequestPurposeAccordionComponent', () => {
   });
 
   it('should return the correct lang field from products', () => {
-    const mockProduct: ConsentRequestDtoDataRequestProducts = {
+    const mockProduct: DataProductDto = {
       id: '123',
       name: {
         de: 'Produkt Name',

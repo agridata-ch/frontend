@@ -6,19 +6,22 @@ import { UserInfoDto } from '@/entities/openapi';
 import { SupporterPageComponent } from '@/pages/supporter-page/supporter-page.component';
 import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
 import { I18nPipe } from '@/shared/i18n';
-import { mockUserService } from '@/shared/testing/mocks';
-import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
+import { createMockUserService, MockUserService } from '@/shared/testing/mocks';
+import {
+  createMockErrorHandlerService,
+  MockErrorHandlerService,
+} from '@/shared/testing/mocks/mock-error-handler.service';
 
 describe('SupporterPageComponent', () => {
   let component: SupporterPageComponent;
   let fixture: ComponentFixture<SupporterPageComponent>;
 
-  let userService: Partial<UserService>;
-  let errorService: Partial<ErrorHandlerService>;
+  let userService: MockUserService;
+  let errorService: MockErrorHandlerService;
 
   beforeEach(async () => {
-    userService = mockUserService;
-    errorService = mockErrorHandlerService;
+    userService = createMockUserService();
+    errorService = createMockErrorHandlerService();
 
     await TestBed.configureTestingModule({
       imports: [SupporterPageComponent, I18nPipe],

@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { UserService } from '@/entities/api/user.service';
 import { UidDto } from '@/entities/openapi';
 import { AuthService } from '@/shared/lib/auth';
-import { MockAuthService } from '@/shared/testing/mocks';
+import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 
 import { AccountOverlayComponent } from './account-overlay.component';
 
@@ -31,7 +31,7 @@ const participantService: Partial<UserService> = {
 describe('AccountOverlayComponent', () => {
   let component: AccountOverlayComponent;
   let fixture: ComponentFixture<AccountOverlayComponent>;
-  let authService: AuthService;
+  let authService: MockAuthService;
 
   const userDataMock = {
     name: 'John Doe',
@@ -39,10 +39,12 @@ describe('AccountOverlayComponent', () => {
   };
 
   beforeEach(async () => {
+    authService = createMockAuthService();
+
     await TestBed.configureTestingModule({
       imports: [AccountOverlayComponent],
       providers: [
-        { provide: AuthService, useClass: MockAuthService },
+        { provide: AuthService, useValue: authService },
         { provide: UserService, useValue: participantService },
         provideLocationMocks(),
       ],
@@ -50,7 +52,6 @@ describe('AccountOverlayComponent', () => {
 
     fixture = TestBed.createComponent(AccountOverlayComponent);
     component = fixture.componentInstance;
-    authService = TestBed.inject(AuthService);
   });
 
   it('should create', () => {

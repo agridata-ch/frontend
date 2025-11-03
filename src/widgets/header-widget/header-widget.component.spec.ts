@@ -7,8 +7,12 @@ import { CmsService } from '@/entities/cms';
 import { UserInfoDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
-import { MockAuthService, mockCmsService } from '@/shared/testing/mocks';
-import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
+import { mockCmsService } from '@/shared/testing/mocks';
+import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
+import {
+  createMockErrorHandlerService,
+  MockErrorHandlerService,
+} from '@/shared/testing/mocks/mock-error-handler.service';
 import { HeaderWidgetComponent } from '@/widgets/header-widget';
 
 @Component({
@@ -20,25 +24,26 @@ class DummyComponent {}
 describe('HeaderWidgetComponent', () => {
   let fixture: ComponentFixture<HeaderWidgetComponent>;
   let component: HeaderWidgetComponent;
-  let authService: AuthService;
-  let errorService: Partial<ErrorHandlerService>;
+  let authService: MockAuthService;
+  let errorService: MockErrorHandlerService;
   let cmsService: Partial<CmsService>;
   let router: Router;
 
   beforeEach(async () => {
-    errorService = mockErrorHandlerService;
+    errorService = createMockErrorHandlerService();
     cmsService = mockCmsService;
+    // create factory mock and provide it so tests can set signals
+    authService = createMockAuthService();
     await TestBed.configureTestingModule({
       imports: [HeaderWidgetComponent, RouterLink],
       providers: [
         provideRouter([{ path: ROUTE_PATHS.LOGIN, component: DummyComponent }]),
-        { provide: AuthService, useClass: MockAuthService },
+        { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: {} },
         { provide: CmsService, useValue: cmsService },
         { provide: ErrorHandlerService, useValue: errorService },
       ],
     }).compileComponents();
-    authService = TestBed.inject(AuthService);
     router = TestBed.inject(Router);
     jest.clearAllMocks();
   });
@@ -67,11 +72,11 @@ describe('HeaderWidgetComponent', () => {
   });
 
   it('isAuthenticated signal reflects AuthService.isAuthenticated()', () => {
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(false);
+    authService.isAuthenticated.set(false);
     createComponent();
     expect(component.isAuthenticated()).toBe(false);
 
-    jest.spyOn(authService, 'isAuthenticated').mockReturnValue(true);
+    authService.isAuthenticated.set(true);
     createComponent();
     expect(component.isAuthenticated()).toBe(true);
   });
@@ -83,11 +88,11 @@ describe('HeaderWidgetComponent', () => {
       familyName: 'Smith',
       uid: '123',
     };
-    jest.spyOn(authService, 'userData').mockReturnValue(fakeUser);
+    authService.userData.set(fakeUser);
     createComponent();
     expect(component.userData()).toBe(fakeUser);
 
-    jest.spyOn(authService, 'userData').mockReturnValue(null);
+    authService.userData.set(null);
     createComponent();
     expect(component.userData()).toBeNull();
   });

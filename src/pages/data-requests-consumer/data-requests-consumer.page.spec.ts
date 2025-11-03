@@ -3,8 +3,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
-import { mockDataRequestService, mockDataRequests } from '@/shared/testing/mocks';
-import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
+import {
+  mockDataRequests,
+  createMockDataRequestService,
+  MockDataRequestService,
+} from '@/shared/testing/mocks';
+import {
+  createMockErrorHandlerService,
+  MockErrorHandlerService,
+} from '@/shared/testing/mocks/mock-error-handler.service';
 
 import { DataRequestsConsumerPage } from './data-requests-consumer.page';
 
@@ -12,15 +19,15 @@ describe('DataRequestsConsumerPage - component behavior', () => {
   let fixture: ComponentFixture<DataRequestsConsumerPage>;
   let component: DataRequestsConsumerPage;
   let mockLocation: jest.Mocked<Location>;
-  let dataRequestService: Partial<DataRequestService>;
-  let errorService: Partial<ErrorHandlerService>;
+  let dataRequestService: MockDataRequestService;
+  let errorService: MockErrorHandlerService;
 
   beforeEach(async () => {
     mockLocation = {
       go: jest.fn(),
     } as unknown as jest.Mocked<Location>;
-    dataRequestService = mockDataRequestService;
-    errorService = mockErrorHandlerService;
+    dataRequestService = createMockDataRequestService();
+    errorService = createMockErrorHandlerService();
     await TestBed.configureTestingModule({
       providers: [
         DataRequestsConsumerPage,

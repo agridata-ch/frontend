@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { getTranslocoModule } from '@/app/transloco-testing.module';
 import {
   ConsentRequestProducerViewDto,
   ConsentRequestProducerViewDtoDataRequestStateCode,
   ConsentRequestStateEnum,
 } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
+import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { ConsentRequestListComponent } from './consent-request-list.component';
 
@@ -23,7 +23,7 @@ describe('ConsentRequestListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         ConsentRequestListComponent,
-        getTranslocoModule({
+        createTranslocoTestingModule({
           langs: {
             de: {},
           },

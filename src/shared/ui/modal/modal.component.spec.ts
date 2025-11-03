@@ -2,7 +2,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { getTranslocoModule } from '@/app/transloco-testing.module';
+import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ButtonComponent } from '@/shared/ui/button';
 
 import { ModalComponent } from './modal.component';
@@ -14,7 +14,7 @@ describe('ModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ModalComponent, getTranslocoModule()],
+      imports: [ModalComponent, createTranslocoTestingModule()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ModalComponent);

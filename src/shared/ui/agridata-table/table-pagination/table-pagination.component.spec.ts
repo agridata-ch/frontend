@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { getTranslocoModule } from '@/app/transloco-testing.module';
+import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { PAGE_SIZES } from '@/shared/ui/agridata-table';
 
 import { TablePaginationComponent } from './table-pagination.component';
@@ -14,7 +14,7 @@ describe('TablePaginationComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         TablePaginationComponent,
-        getTranslocoModule({
+        createTranslocoTestingModule({
           langs: {
             de: {
               table: {

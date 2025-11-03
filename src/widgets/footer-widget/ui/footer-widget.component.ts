@@ -38,7 +38,7 @@ export class FooterWidgetComponent {
 
   private readonly BACKEND_INFO_ROUTE_BLACKLIST = ['/', `/${ROUTE_PATHS.MAINTENANCE}`];
   protected readonly ROUTE_PATHS = ROUTE_PATHS;
-  private clickTimeout: number | undefined;
+  private clickTimeout?: ReturnType<typeof setTimeout>;
   readonly appBaseUrl = environment.appBaseUrl;
 
   protected readonly frontendVersion = signal(frontendVersion);

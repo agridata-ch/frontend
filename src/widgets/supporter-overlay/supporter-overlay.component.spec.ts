@@ -4,26 +4,33 @@ import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
 import { I18nPipe } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
-import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
-import { MockAuthService, mockUserData } from '@/shared/testing/mocks/mock-auth.service';
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
+import {
+  createMockAuthService,
+  MockAuthService,
+  mockUserData,
+} from '@/shared/testing/mocks/mock-auth-service';
 
 import { SupporterOverlayComponent } from './supporter-overlay.component';
 
 describe('SupporterOverlayComponent', () => {
   let component: SupporterOverlayComponent;
   let fixture: ComponentFixture<SupporterOverlayComponent>;
-  let mockAuthService: MockAuthService;
-  let mockStateService: Partial<AgridataStateService>;
+  let authService: MockAuthService;
+  let stateService: MockAgridataStateService;
 
   beforeEach(async () => {
-    mockAuthService = new MockAuthService();
-    mockStateService = mockAgridataStateService('test-uid');
+    authService = createMockAuthService();
+    stateService = createMockAgridataStateService();
 
     await TestBed.configureTestingModule({
       imports: [SupporterOverlayComponent, I18nPipe],
       providers: [
-        { provide: AuthService, useValue: mockAuthService },
-        { provide: AgridataStateService, useValue: mockStateService },
+        { provide: AuthService, useValue: authService },
+        { provide: AgridataStateService, useValue: stateService },
       ],
     }).compileComponents();
 
@@ -38,12 +45,12 @@ describe('SupporterOverlayComponent', () => {
 
   describe('userName', () => {
     it('should return empty string when no user data', () => {
-      mockAuthService.userData.mockReturnValue(null);
+      authService.userData.set(null);
       expect(component['userName']()).toBe('');
     });
 
     it('should return combined first and last name when both exist', () => {
-      mockAuthService.userData.mockReturnValue({
+      authService.userData.set({
         givenName: 'John',
         familyName: 'Doe',
       });
@@ -51,7 +58,7 @@ describe('SupporterOverlayComponent', () => {
     });
 
     it('should return only first name when last name is missing', () => {
-      mockAuthService.userData.mockReturnValue({
+      authService.userData.set({
         givenName: 'John',
         familyName: '',
       });
@@ -59,7 +66,7 @@ describe('SupporterOverlayComponent', () => {
     });
 
     it('should return only last name when first name is missing', () => {
-      mockAuthService.userData.mockReturnValue({
+      authService.userData.set({
         givenName: '',
         familyName: 'Doe',
       });
@@ -67,7 +74,7 @@ describe('SupporterOverlayComponent', () => {
     });
 
     it('should handle real user data object', () => {
-      mockAuthService.userData.mockReturnValue(mockUserData);
+      authService.userData.set(mockUserData);
       expect(component['userName']()).toBe('Producer 081');
     });
   });
