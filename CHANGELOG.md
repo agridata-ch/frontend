@@ -1,3 +1,9 @@
+## [1.3.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.1...v1.3.0-rc.2) (2025-11-04)
+
+### Features
+
+- **improve-openapi:** improves open api generation. DIGIB2-995 ([fc1734c](https://github.com/agridata-ch/frontend/commit/fc1734c224f682e65b8d6cada44065907cb1d8d7)), closes [DIGIB2-995](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-995)
+
 ## [1.3.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.2.0...v1.3.0-rc.1) (2025-11-04)
 
 ### Features
