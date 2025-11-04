@@ -24,7 +24,7 @@ export class MarkdownPipe implements PipeTransform {
     const renderer = new marked.Renderer();
 
     renderer.link = function ({ href, title, text }) {
-      return `<a href="${href}" title="${title || ''}" class="hover:underline">${text}</a>`;
+      return `<a href="${href}" title="${title || ''}" class="underline hover:text-agridata-primary-600">${text}</a>`;
     };
 
     // Store the original list renderer
