@@ -1,3 +1,9 @@
+## [1.3.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.2...v1.3.0-rc.3) (2025-11-04)
+
+### Bug Fixes
+
+- **footer:** style footer links ([33423a8](https://github.com/agridata-ch/frontend/commit/33423a84b470e2f48c692444198c0df9bf9b02e8))
+
 ## [1.3.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.1...v1.3.0-rc.2) (2025-11-04)
 
 ### Features
