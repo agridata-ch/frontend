@@ -1,8 +1,8 @@
-## [1.2.1](https://github.com/agridata-ch/frontend/compare/v1.2.0...v1.2.1) (2025-11-04)
+## [1.3.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.2.0...v1.3.0-rc.1) (2025-11-04)
 
-### Bug Fixes
+### Features
 
-- **config:** fix production config ([77d4ae8](https://github.com/agridata-ch/frontend/commit/77d4ae8e1bd8d689d92d8e6e6acf4e7fcfc6e9cd))
+- **ui:** add github links, update support popover ([45f73a8](https://github.com/agridata-ch/frontend/commit/45f73a857267b4782030d45256910bea530d868e)), closes [DIGIB2-340](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-340)
 
 ## [1.2.0](https://github.com/agridata-ch/frontend/compare/v1.1.0...v1.2.0) (2025-10-31)
 
