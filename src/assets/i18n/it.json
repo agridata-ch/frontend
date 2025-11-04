@@ -437,5 +437,10 @@
     "title": "Nessuna richiesta disponibile",
     "message": "Al momento non ci sono richieste di dati attive e non è necessario intraprendere alcuna azione. \nNon appena verrà presentata una prima richiesta di dati, questa verrà visualizzata qui e ne sarete informati.",
     "additionalInfo": "Per ulteriori informazioni consultare "
+  },
+  "footer": {
+    "logoBund": {
+      "altText": "Immagine con bandiera svizzera e scritta Confederazione Svizzera"
+    }
   }
 }
