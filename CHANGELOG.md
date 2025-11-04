@@ -1,3 +1,9 @@
+## [1.3.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.3...v1.3.0-rc.4) (2025-11-04)
+
+### Bug Fixes
+
+- **footer:** fix missing translation ([b23274c](https://github.com/agridata-ch/frontend/commit/b23274ca51e97d9d0bbd5cd9c030d1c288a33313))
+
 ## [1.3.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.2...v1.3.0-rc.3) (2025-11-04)
 
 ### Bug Fixes
