@@ -37,16 +37,11 @@
       (blur)="onBlur.emit()"
     />
   } @else {
-    <!--
-      This input is for non-form controls and we have to handle some stuff other than with the ReactiveForms
-      for example the disable state will be calculated in the component for the input with form control but the normal input have to have the property disabled set manually
-      and the value is set manually as well.
-    -->
     <input
       [id]="id()"
       [type]="type()"
       [placeholder]="placeholder()"
-      [disabled]="true"
+      [disabled]="disabled()"
       [(ngModel)]="value"
       [attr.maxlength]="maxCharacters()"
       [attr.aria-label]="
