@@ -1,3 +1,9 @@
+## [1.3.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.4...v1.3.0-rc.5) (2025-11-05)
+
+### Bug Fixes
+
+- **search-field:** removes search field deactivation (support page) ([2f747ac](https://github.com/agridata-ch/frontend/commit/2f747ac1f0207ecb5094e5da1cd0ffec21cf94bb)), closes [DIGIB2-1016](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1016)
+
 ## [1.3.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.3...v1.3.0-rc.4) (2025-11-04)
 
 ### Bug Fixes
