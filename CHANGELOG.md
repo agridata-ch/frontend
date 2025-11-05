@@ -1,3 +1,9 @@
+## [1.3.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.5...v1.3.0-rc.6) (2025-11-05)
+
+### Features
+
+- **test-optimization:** improves mocks ([52e0be3](https://github.com/agridata-ch/frontend/commit/52e0be3cc16c47acff21712185eb3ed06a8c4471)), closes [DIGIB2-1009](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1009)
+
 ## [1.3.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.4...v1.3.0-rc.5) (2025-11-05)
 
 ### Bug Fixes
