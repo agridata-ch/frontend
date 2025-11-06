@@ -1,3 +1,9 @@
+## [1.3.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.6...v1.3.0-rc.7) (2025-11-06)
+
+### Features
+
+- **seo:** add robots and sitemap ([7574ccb](https://github.com/agridata-ch/frontend/commit/7574ccb2a27dcfeb879fade1f630d6ccbde94b68)), closes [DIGIB2-1011](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1011)
+
 ## [1.3.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.5...v1.3.0-rc.6) (2025-11-05)
 
 ### Features
