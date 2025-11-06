@@ -1,4 +1,5 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { BackendVersionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -18,14 +19,13 @@ import { version as frontendVersion } from '../../../../package.json';
  */
 @Component({
   selector: 'app-footer-widget',
-  imports: [I18nPipe],
+  imports: [I18nPipe, RouterLink],
   templateUrl: './footer-widget.component.html',
 })
 export class FooterWidgetComponent {
   private readonly testDataService = inject(TestDataApiService);
   private readonly backendVersionService = inject(BackendVersionService);
   private readonly stateService = inject(AgridataStateService);
-
   loadBackendVersionEffect = effect(() => {
     const route = this.stateService.currentRouteWithoutQueryParams();
     if (route && !this.backendVersion() && this.shouldLoadBackendInfo(route)) {

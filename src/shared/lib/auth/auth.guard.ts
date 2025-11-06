@@ -32,7 +32,6 @@ export class AuthorizationGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
     const requiredRoles: string[] = route.data['roles'] || [];
-
     return this.oidcSecurityService.checkAuth().pipe(
       map(({ accessToken, isAuthenticated }) => {
         let userRoles: string[] = [];
@@ -44,9 +43,8 @@ export class AuthorizationGuard implements CanActivate {
             userRoles = userRoles.concat(decoded.realm_access.roles);
           }
         }
-
-        this.authService.isAuthenticated.set(isAuthenticated);
         this.authService.setUserRoles(userRoles);
+        this.authService.isAuthenticated.set(isAuthenticated);
 
         if (!requiredRoles || requiredRoles.length === 0) {
           return true; // No specific roles required, allow access

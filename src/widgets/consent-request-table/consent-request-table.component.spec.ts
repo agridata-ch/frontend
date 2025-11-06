@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import {
@@ -8,6 +9,7 @@ import {
   ConsentRequestStateEnum,
 } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
+import { createMockAnalyticsService } from '@/shared/testing/mocks/mock-analytics-service';
 import {
   createMockConsentRequestService,
   MockConsentRequestService,
@@ -77,6 +79,7 @@ describe('ConsentRequestTableComponent', () => {
         { provide: I18nService, useValue: mockI18nService },
         { provide: ConsentRequestService, useValue: consentRequestService },
         { provide: ErrorHandlerService, useValue: errorService },
+        { provide: AnalyticsService, useValue: createMockAnalyticsService() },
       ],
     }).compileComponents();
 

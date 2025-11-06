@@ -11,6 +11,7 @@ import {
 import { Router, RouterOutlet, Scroll } from '@angular/router';
 import { filter } from 'rxjs';
 
+import { AnalyticsService } from '@/app/analytics.service';
 import { DebugModalComponent } from '@/features/debug/debug-modal.component';
 import { ErrorModal } from '@/shared/error-modal/error-modal.component';
 
@@ -31,9 +32,13 @@ export class AppComponent {
   private readonly injector = inject(Injector);
   private readonly router = inject(Router);
   private readonly scroller = inject(ViewportScroller);
-
+  private readonly analyticsService = inject(AnalyticsService);
   // Signals
   private readonly currentAnchor = signal<string | null>(null);
+
+  private readonly pageLoadedTrackEffect = effect(() => {
+    this.analyticsService.logEvent('page_loaded');
+  });
 
   scrollEffect = effect((onCleanup) => {
     const anchor = this.currentAnchor();

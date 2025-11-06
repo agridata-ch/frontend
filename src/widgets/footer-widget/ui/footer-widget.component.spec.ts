@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 
 import { BackendVersionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -33,6 +34,7 @@ describe('FooterWidgetComponent', () => {
         { provide: AgridataStateService, useValue: stateService },
         { provide: BackendVersionService, useValue: backendVersionService },
         { provide: TestDataService, useValue: {} },
+        { provide: ActivatedRoute, useValue: {} },
       ],
     }).compileComponents();
 

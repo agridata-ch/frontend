@@ -5,6 +5,9 @@ import { TestBed } from '@angular/core/testing';
 import { Router, NavigationEnd, Scroll as RouterScroll, provideRouter } from '@angular/router';
 import { Subject } from 'rxjs';
 
+import { AnalyticsService } from '@/app/analytics.service';
+import { createMockAnalyticsService } from '@/shared/testing/mocks/mock-analytics-service';
+
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -33,6 +36,7 @@ describe('AppComponent', () => {
         provideRouter([]),
         { provide: Router, useValue: mockRouter },
         { provide: ViewportScroller, useValue: mockViewportScroller },
+        { provide: AnalyticsService, useValue: createMockAnalyticsService() },
       ],
     }).compileComponents();
 
