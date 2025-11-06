@@ -4,6 +4,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { AnalyticsService } from '@/app/analytics.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
@@ -14,6 +15,7 @@ import {
   createMockAgridataStateService,
   MockAgridataStateService,
 } from '@/shared/testing/mocks/mock-agridata-state-service';
+import { createMockAnalyticsService } from '@/shared/testing/mocks/mock-analytics-service';
 import {
   createMockConsentRequestService,
   MockConsentRequestService,
@@ -49,6 +51,7 @@ describe('ConsentRequestDetailsComponent', () => {
         { provide: ToastService, useValue: toastService },
         { provide: ConsentRequestService, useValue: consentRequestService },
         { provide: AgridataStateService, useValue: agridataStateService },
+        { provide: AnalyticsService, useValue: createMockAnalyticsService() },
       ],
     }).compileComponents();
 
