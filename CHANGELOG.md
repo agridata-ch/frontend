@@ -1,3 +1,9 @@
+## [1.3.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.7...v1.3.0-rc.8) (2025-11-06)
+
+### Features
+
+- **loading-screen:** adds loading screen ([94d9283](https://github.com/agridata-ch/frontend/commit/94d92838a6b9b18d05304d9fa38b2482e9959979)), closes [DIGIB2-875](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-875)
+
 ## [1.3.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.6...v1.3.0-rc.7) (2025-11-06)
 
 ### Features
