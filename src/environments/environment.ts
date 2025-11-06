@@ -6,4 +6,5 @@ export const environment = {
   cmsContactUrl: 'https://cms.agridata.ch/api/contact',
   canResetTestData: true,
   oidc: {},
+  gaMeasurementId: 'G-VPFVTHHTK0',
 };

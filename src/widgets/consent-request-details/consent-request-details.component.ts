@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { AnalyticsService } from '@/app/analytics.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MetaDataService } from '@/entities/api/meta-data-service';
@@ -70,6 +71,7 @@ export class ConsentRequestDetailsComponent {
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly metaDataService = inject(MetaDataService);
   private readonly i18nService = inject(I18nService);
+  private readonly analyticsService = inject(AnalyticsService);
 
   readonly request = input<ConsentRequestProducerViewDto | null>(null);
   readonly preventManualClose = input<boolean>(false);
@@ -155,6 +157,11 @@ export class ConsentRequestDetailsComponent {
   }
 
   async acceptRequest() {
+    this.analyticsService.logEvent('consent_request_state_changed', {
+      id: this.requestId(),
+      state: ConsentRequestStateEnum.Granted,
+      component: 'details',
+    });
     await this.updateAndReloadConsentRequestState(
       this.requestId(),
       ConsentRequestStateEnum.Granted,
@@ -172,6 +179,11 @@ export class ConsentRequestDetailsComponent {
   }
 
   async rejectRequest() {
+    this.analyticsService.logEvent('consent_request_state_changed', {
+      id: this.requestId(),
+      state: ConsentRequestStateEnum.Declined,
+      component: 'details',
+    });
     await this.updateAndReloadConsentRequestState(
       this.requestId(),
       ConsentRequestStateEnum.Declined,

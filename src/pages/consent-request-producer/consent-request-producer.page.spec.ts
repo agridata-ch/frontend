@@ -3,6 +3,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
+import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -22,6 +23,7 @@ import {
   createMockAgridataStateService,
   MockAgridataStateService,
 } from '@/shared/testing/mocks/mock-agridata-state-service';
+import { createMockAnalyticsService } from '@/shared/testing/mocks/mock-analytics-service';
 import {
   createMockConsentRequestService,
   MockConsentRequestService,
@@ -72,6 +74,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
         { provide: MetaDataService, useValue: metadataService },
         { provide: AgridataStateService, useValue: agridataStateService },
         { provide: ErrorHandlerService, useValue: errorService },
+        { provide: AnalyticsService, useValue: createMockAnalyticsService() },
       ],
     }).compileComponents();
 

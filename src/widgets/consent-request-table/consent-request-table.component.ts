@@ -10,6 +10,7 @@ import {
   viewChild,
 } from '@angular/core';
 
+import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -65,7 +66,7 @@ export class ConsentRequestTableComponent {
   private readonly i18nService = inject(I18nService);
   private readonly agridataStateService = inject(AgridataStateService);
   private readonly errorService = inject(ErrorHandlerService);
-
+  private readonly analyticsService = inject(AnalyticsService);
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
   readonly consentRequests = input.required<ConsentRequestProducerViewDto[]>();
@@ -185,6 +186,11 @@ export class ConsentRequestTableComponent {
   }
 
   updateConsentRequestState = async (id: string, stateCode: string, requestName?: string) => {
+    this.analyticsService.logEvent('consent_request_state_changed', {
+      id: id,
+      state: stateCode,
+      component: 'table',
+    });
     this.consentRequestService
       .updateConsentRequestStatus(id, stateCode)
       .then(() => {
