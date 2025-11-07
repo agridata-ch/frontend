@@ -1,3 +1,9 @@
+## [1.3.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.8...v1.3.0-rc.9) (2025-11-07)
+
+### Features
+
+- **google-analytics:** improves google analytics (envspecific / log routes / log main actions) ([968d66d](https://github.com/agridata-ch/frontend/commit/968d66d6ca3f93ef8e5f58448cdd8c1adf04a28a)), closes [DIGIB2-875](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-875)
+
 ## [1.3.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.7...v1.3.0-rc.8) (2025-11-06)
 
 ### Features
