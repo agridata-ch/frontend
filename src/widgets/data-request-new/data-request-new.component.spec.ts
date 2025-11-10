@@ -8,11 +8,11 @@ import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/open
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
-  MockAuthService,
-  MockI18nService,
-  mockDataRequestService,
-  mockUidRegisterService,
+  createMockDataRequestService,
+  createMockI18nService,
+  MockDataRequestService,
 } from '@/shared/testing/mocks';
+import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 
 import { DataRequestNewComponent } from './data-request-new.component';
@@ -21,19 +21,22 @@ describe('DataRequestNewComponent', () => {
   let fixture: ComponentFixture<DataRequestNewComponent>;
   let component: DataRequestNewComponent;
   let componentRef: ComponentRef<DataRequestNewComponent>;
-  let authService: AuthService;
-  let dataRequestService = mockDataRequestService;
+  let authService: MockAuthService;
+  let dataRequestService: MockDataRequestService;
 
   beforeEach(async () => {
-    dataRequestService = mockDataRequestService;
+    dataRequestService = createMockDataRequestService();
+
+    // Create factory mock and provide it so tests can mutate signals directly
+    authService = createMockAuthService();
 
     await TestBed.configureTestingModule({
       imports: [DataRequestNewComponent, ReactiveFormsModule, AgridataWizardComponent],
       providers: [
         { provide: DataRequestService, useValue: dataRequestService },
-        { provide: I18nService, useClass: MockI18nService },
-        { provide: AuthService, useClass: MockAuthService },
-        { provide: UidRegisterService, useValue: mockUidRegisterService },
+        { provide: I18nService, useValue: createMockI18nService() },
+        { provide: AuthService, useValue: authService },
+        { provide: UidRegisterService, useValue: createMockI18nService() },
       ],
     }).compileComponents();
 
@@ -41,8 +44,8 @@ describe('DataRequestNewComponent', () => {
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
 
-    authService = TestBed.inject(AuthService);
-    jest.spyOn(authService, 'getUserFullName').mockReturnValue('Test User');
+    // Set up mock behavior
+    authService.getUserFullName.mockReturnValue('Test User');
 
     fixture.detectChanges();
   });
@@ -60,7 +63,7 @@ describe('DataRequestNewComponent', () => {
 
     await component.handleSave();
 
-    expect(mockDataRequestService.createDataRequest).toHaveBeenCalledTimes(1);
+    expect(dataRequestService.createDataRequest).toHaveBeenCalledTimes(1);
 
     expect(component.dataRequestId()).toBe('ABC123');
   });
@@ -71,7 +74,7 @@ describe('DataRequestNewComponent', () => {
 
     await component.handleSave();
 
-    expect(mockDataRequestService.updateDataRequestDetails).toHaveBeenCalledTimes(1);
+    expect(dataRequestService.updateDataRequestDetails).toHaveBeenCalledTimes(1);
   });
 
   it('initially all formControlSteps are valid', () => {
@@ -114,9 +117,9 @@ describe('DataRequestNewComponent', () => {
     };
     dataRequestService.createDataRequest = jest.fn().mockResolvedValue(newDto);
     await component.createOrSaveDataRequest();
-    expect(mockDataRequestService.createDataRequest).toHaveBeenCalled();
+    expect(dataRequestService.createDataRequest).toHaveBeenCalled();
     expect(component.dataRequestId()).toBe('NEW123');
-    expect(mockDataRequestService.uploadLogo).not.toHaveBeenCalled();
+    expect(dataRequestService.uploadLogo).not.toHaveBeenCalled();
   });
 
   it('should create request on createOrSetDataRequestId with logo', async () => {
@@ -128,16 +131,16 @@ describe('DataRequestNewComponent', () => {
     const file = new File([''], 'logo.png', { type: 'image/png' });
     component.handleSaveLogo(file);
     await component.createOrSaveDataRequest();
-    expect(mockDataRequestService.createDataRequest).toHaveBeenCalled();
+    expect(dataRequestService.createDataRequest).toHaveBeenCalled();
     expect(component.dataRequestId()).toBe('NEW123');
-    expect(mockDataRequestService.uploadLogo).toHaveBeenCalled();
+    expect(dataRequestService.uploadLogo).toHaveBeenCalled();
   });
 
   it('should update request on createOrSetDataRequestId without logo', async () => {
     component.dataRequestId.set('123');
     await component.createOrSaveDataRequest();
-    expect(mockDataRequestService.uploadLogo).not.toHaveBeenCalled();
-    expect(mockDataRequestService.updateDataRequestDetails).toHaveBeenCalled();
+    expect(dataRequestService.uploadLogo).not.toHaveBeenCalled();
+    expect(dataRequestService.updateDataRequestDetails).toHaveBeenCalled();
   });
 
   it('should update request on createOrSetDataRequestId with logo', async () => {
@@ -145,8 +148,8 @@ describe('DataRequestNewComponent', () => {
     const file = new File([''], 'logo.png', { type: 'image/png' });
     component.handleSaveLogo(file);
     await component.createOrSaveDataRequest();
-    expect(mockDataRequestService.uploadLogo).toHaveBeenCalled();
-    expect(mockDataRequestService.updateDataRequestDetails).toHaveBeenCalled();
+    expect(dataRequestService.uploadLogo).toHaveBeenCalled();
+    expect(dataRequestService.updateDataRequestDetails).toHaveBeenCalled();
   });
 
   it('should handle next step correctly', () => {
@@ -225,7 +228,7 @@ describe('DataRequestNewComponent', () => {
       await component.handleSubmitAndContinue();
 
       expect(component.handleSave).toHaveBeenCalled();
-      expect(mockDataRequestService.submitDataRequest).toHaveBeenCalled();
+      expect(dataRequestService.submitDataRequest).toHaveBeenCalled();
     });
   });
 

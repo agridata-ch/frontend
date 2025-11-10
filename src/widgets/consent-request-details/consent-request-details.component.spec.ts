@@ -4,12 +4,23 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { getTranslocoModule } from '@/app/transloco-testing.module';
+import { AnalyticsService } from '@/app/analytics.service';
+import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { ConsentRequestService } from '@/entities/api/consent-request.service';
-import { ConsentRequestProducerViewDto } from '@/entities/openapi';
-import { mockConsentRequestService } from '@/shared/testing/mocks';
-import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
+import {
+  ConsentRequestProducerViewDto,
+  ConsentRequestProducerViewDtoDataRequestStateCode,
+} from '@/entities/openapi';
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
+import { createMockAnalyticsService } from '@/shared/testing/mocks/mock-analytics-service';
+import {
+  createMockConsentRequestService,
+  MockConsentRequestService,
+} from '@/shared/testing/mocks/mock-consent-request-service';
+import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ToastService } from '@/shared/toast';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 
@@ -18,16 +29,17 @@ describe('ConsentRequestDetailsComponent', () => {
   let component: ConsentRequestDetailsComponent;
   let componentRef: ComponentRef<ConsentRequestDetailsComponent>;
   let toastService: { show: jest.Mock };
-  let consentRequestService: ConsentRequestService;
-  let agridataStateService: AgridataStateService;
+  let consentRequestService: MockConsentRequestService;
+  let agridataStateService: MockAgridataStateService;
 
   beforeEach(async () => {
     toastService = { show: jest.fn() };
-
+    agridataStateService = createMockAgridataStateService();
+    consentRequestService = createMockConsentRequestService();
     await TestBed.configureTestingModule({
       imports: [
         ConsentRequestDetailsComponent,
-        getTranslocoModule({
+        createTranslocoTestingModule({
           langs: {
             de: {},
           },
@@ -37,16 +49,15 @@ describe('ConsentRequestDetailsComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: ToastService, useValue: toastService },
-        { provide: ConsentRequestService, useValue: mockConsentRequestService },
-        { provide: AgridataStateService, useValue: mockAgridataStateService('testuid') },
+        { provide: ConsentRequestService, useValue: consentRequestService },
+        { provide: AgridataStateService, useValue: agridataStateService },
+        { provide: AnalyticsService, useValue: createMockAnalyticsService() },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ConsentRequestDetailsComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
-    consentRequestService = TestBed.inject(ConsentRequestService);
-    agridataStateService = TestBed.inject(AgridataStateService);
     fixture.detectChanges();
   });
 
@@ -60,9 +71,10 @@ describe('ConsentRequestDetailsComponent', () => {
 
   it('setting request should open details', () => {
     const req = {
-      dataRequest: { dataConsumer: { name: 'TestConsumer' } },
-    } as unknown as ConsentRequestProducerViewDto;
-
+      id: '1',
+      requestDate: new Date().toISOString(),
+      dataRequest: { stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Active },
+    } as ConsentRequestProducerViewDto;
     componentRef.setInput('request', req);
     fixture.detectChanges(); // run the effect
 
@@ -71,9 +83,10 @@ describe('ConsentRequestDetailsComponent', () => {
 
   it('handleCloseDetails hides the details and emits closeDetail', () => {
     const req = {
-      requestDate: new Date(),
-      dataRequest: { dataConsumer: { name: 'John' } },
-    } as unknown as ConsentRequestProducerViewDto;
+      id: '1',
+      requestDate: new Date().toISOString(),
+      dataRequest: { stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Active },
+    } as ConsentRequestProducerViewDto;
 
     componentRef.setInput('request', req);
     fixture.detectChanges();
@@ -107,8 +120,10 @@ describe('ConsentRequestDetailsComponent', () => {
   it('should should show toast after acceptRequest', async () => {
     const req = {
       id: '123',
-      dataRequest: { dataConsumer: { name: 'TestConsumer' } },
-    } as unknown as ConsentRequestProducerViewDto;
+      requestDate: new Date().toISOString(),
+      dataRequest: { stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Active },
+    } as ConsentRequestProducerViewDto;
+
     componentRef.setInput('request', req);
 
     // Create a mock resource with a reload method
@@ -132,8 +147,10 @@ describe('ConsentRequestDetailsComponent', () => {
   it('should should show toast after rejectRequest', async () => {
     const req = {
       id: '456',
-      dataRequest: { dataConsumer: { name: 'TestConsumer' } },
-    } as unknown as ConsentRequestProducerViewDto;
+      requestDate: new Date().toISOString(),
+      dataRequest: { stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Active },
+    } as ConsentRequestProducerViewDto;
+
     componentRef.setInput('request', req);
 
     // Create a mock resource with a reload method
@@ -159,8 +176,10 @@ describe('ConsentRequestDetailsComponent', () => {
 
   it('should disable buttons when impersonating', () => {
     const req = {
-      dataRequest: { dataConsumer: { name: 'TestConsumer' } },
-    } as unknown as ConsentRequestProducerViewDto;
+      id: '1',
+      requestDate: new Date().toISOString(),
+      dataRequest: { stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Active },
+    } as ConsentRequestProducerViewDto;
 
     jest.spyOn(agridataStateService, 'isImpersonating').mockReturnValue(true);
     componentRef.setInput('request', req);

@@ -316,7 +316,8 @@
       "title": "Aide et assistance",
       "support": {
         "title": "Assistance",
-        "openingInfos": "Nos horaires:\nDu lundi au vendredi\nDe 8 h à 17 h"
+        "openingInfos": "Nos horaires:\nDu lundi au vendredi\nDe 8 h à 17 h",
+        "moreInfos": "Informations complémentaires"
       }
     }
   },
@@ -435,5 +436,10 @@
     "title": "Aucune demande disponible",
     "message": "Vous n'avez actuellement aucune demande de données active et n'avez rien à faire pour le moment. \nDès qu'une première demande de données sera effectuée, elle s'affichera ici et vous en serez informé.",
     "additionalInfo": "Vous trouverez de plus amples informations sur "
+  },
+  "footer": {
+    "logoBund": {
+      "altText": "Image avec drapeau suisse et inscription Confédération suisse"
+    }
   }
 }

@@ -5,12 +5,12 @@ import { of } from 'rxjs';
 
 import { UsersService } from '@/entities/openapi';
 import { USER_ROLES } from '@/shared/constants/constants';
-import { mockUserData } from '@/shared/testing/mocks/mock-auth.service';
+import { mockUserData } from '@/shared/testing/mocks/mock-auth-service';
 
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
-  let mockAuthService: AuthService;
+  let authService: AuthService;
   let mockOidc: {
     checkAuth: jest.Mock;
     authorize: jest.Mock<void, []>;
@@ -35,41 +35,41 @@ describe('AuthService', () => {
     const testRoles = ['admin', 'user'];
 
     // This test simulates parsing roles from a JWT token
-    mockAuthService = TestBed.inject(AuthService);
+    authService = TestBed.inject(AuthService);
 
     // Manually set the roles that would be extracted from the JWT
-    mockAuthService.setUserRoles(testRoles);
+    authService.setUserRoles(testRoles);
 
-    expect(mockAuthService.userRoles()).toEqual(testRoles);
+    expect(authService.userRoles()).toEqual(testRoles);
   });
 
   it('should have proper role computed signals', () => {
     // Test for the isProducer, isConsumer, and isSupporter computed signals
-    mockAuthService = TestBed.inject(AuthService);
+    authService = TestBed.inject(AuthService);
 
     // First, test with no roles (empty array instead of null)
-    mockAuthService.setUserRoles([]);
-    expect(mockAuthService.isProducer()).toBe(false);
-    expect(mockAuthService.isConsumer()).toBe(false);
-    expect(mockAuthService.isSupporter()).toBe(false);
+    authService.setUserRoles([]);
+    expect(authService.isProducer()).toBe(false);
+    expect(authService.isConsumer()).toBe(false);
+    expect(authService.isSupporter()).toBe(false);
 
     // Then test with the producer role
-    mockAuthService.setUserRoles([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
-    expect(mockAuthService.isProducer()).toBe(true);
-    expect(mockAuthService.isConsumer()).toBe(false);
-    expect(mockAuthService.isSupporter()).toBe(false);
+    authService.setUserRoles([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
+    expect(authService.isProducer()).toBe(true);
+    expect(authService.isConsumer()).toBe(false);
+    expect(authService.isSupporter()).toBe(false);
 
     // Then test with the consumer role
-    mockAuthService.setUserRoles([USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER]);
-    expect(mockAuthService.isProducer()).toBe(false);
-    expect(mockAuthService.isConsumer()).toBe(true);
-    expect(mockAuthService.isSupporter()).toBe(false);
+    authService.setUserRoles([USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER]);
+    expect(authService.isProducer()).toBe(false);
+    expect(authService.isConsumer()).toBe(true);
+    expect(authService.isSupporter()).toBe(false);
 
     // Then test with the supporter role
-    mockAuthService.setUserRoles([USER_ROLES.AGRIDATA_SUPPORTER]);
-    expect(mockAuthService.isProducer()).toBe(false);
-    expect(mockAuthService.isConsumer()).toBe(false);
-    expect(mockAuthService.isSupporter()).toBe(true);
+    authService.setUserRoles([USER_ROLES.AGRIDATA_SUPPORTER]);
+    expect(authService.isProducer()).toBe(false);
+    expect(authService.isConsumer()).toBe(false);
+    expect(authService.isSupporter()).toBe(true);
   });
 
   it('oidcPromise should update isAuthenticated signal', async () => {
@@ -78,20 +78,20 @@ describe('AuthService', () => {
     const authResult = { isAuthenticated: true, accessToken, userData: {}, idToken: '' };
     mockOidc.checkAuth.mockReturnValue(of(authResult));
 
-    mockAuthService = TestBed.inject(AuthService);
-    await mockAuthService.oidcPromise();
+    authService = TestBed.inject(AuthService);
+    await authService.oidcPromise();
 
-    expect(mockAuthService.isAuthenticated()).toBe(true);
+    expect(authService.isAuthenticated()).toBe(true);
   });
 
   // Add test to verify token parsing
   it('should extract roles from auth response', () => {
     const testRoles = ['admin', 'user'];
     // We're testing the ability to set and get user roles
-    mockAuthService = TestBed.inject(AuthService);
-    mockAuthService.setUserRoles(testRoles);
+    authService = TestBed.inject(AuthService);
+    authService.setUserRoles(testRoles);
 
-    expect(mockAuthService.userRoles()).toEqual(testRoles);
+    expect(authService.userRoles()).toEqual(testRoles);
   });
 
   beforeEach(() => {
@@ -124,17 +124,16 @@ describe('AuthService', () => {
   it('should set signals when checkAuth emits authenticated=true', async () => {
     const roles = ['role1', 'role2'];
 
-    // Create the mockAuthService first so we can spy on it
-    mockAuthService = TestBed.inject(AuthService);
+    authService = TestBed.inject(AuthService);
 
     // Need to manually set up the authentication state since the auth mechanism has changed
-    mockAuthService.isAuthenticated.set(true);
-    mockAuthService.setUserRoles(roles);
-    mockAuthService.userData.set(mockUserData);
+    authService.isAuthenticated.set(true);
+    authService.setUserRoles(roles);
+    authService.userData.set(mockUserData);
 
-    expect(mockAuthService.isAuthenticated()).toBe(true);
-    expect(mockAuthService.userData()).toEqual(mockUserData);
-    expect(mockAuthService.userRoles()).toEqual(roles);
+    expect(authService.isAuthenticated()).toBe(true);
+    expect(authService.userData()).toEqual(mockUserData);
+    expect(authService.userRoles()).toEqual(roles);
   });
 
   it('should clear userData when checkAuth emits authenticated=false', async () => {
@@ -142,25 +141,25 @@ describe('AuthService', () => {
       of({ isAuthenticated: false, userData: null, accessToken: '', idToken: '' }),
     );
 
-    mockAuthService = TestBed.inject(AuthService);
+    authService = TestBed.inject(AuthService);
 
     // Manually set the signals to simulate the effect of authentication state
-    mockAuthService.isAuthenticated.set(false);
-    mockAuthService.userData.set(null);
-    mockAuthService.userRoles.set(null);
+    authService.isAuthenticated.set(false);
+    authService.userData.set(null);
+    authService.userRoles.set(null);
 
-    expect(mockAuthService.isAuthenticated()).toBe(false);
-    expect(mockAuthService.userData()).toBeNull();
-    expect(mockAuthService.userRoles()).toBeNull();
+    expect(authService.isAuthenticated()).toBe(false);
+    expect(authService.userData()).toBeNull();
+    expect(authService.userRoles()).toBeNull();
   });
 
   it('login() calls oidc.authorize()', () => {
     mockOidc.checkAuth.mockReturnValue(
       of({ isAuthenticated: false, userData: null, accessToken: '' }),
     );
-    mockAuthService = TestBed.inject(AuthService);
+    authService = TestBed.inject(AuthService);
 
-    mockAuthService.login();
+    authService.login();
 
     expect(mockOidc.authorize).toHaveBeenCalled();
   });
@@ -170,9 +169,9 @@ describe('AuthService', () => {
       of({ isAuthenticated: false, userData: null, accessToken: '' }),
     );
     mockOidc.logoff.mockReturnValue(of(null));
-    mockAuthService = TestBed.inject(AuthService);
+    authService = TestBed.inject(AuthService);
 
-    mockAuthService.logout();
+    authService.logout();
 
     setTimeout(() => {
       expect(mockOidc.logoff).toHaveBeenCalled();
@@ -182,56 +181,56 @@ describe('AuthService', () => {
   });
 
   it('should return userFullName', () => {
-    mockAuthService.userData.set(mockUserData);
+    authService.userData.set(mockUserData);
 
-    const fullName = mockAuthService.getUserFullName();
+    const fullName = authService.getUserFullName();
 
     expect(fullName).toBe('Producer 081');
   });
 
   it('should return userFullName without givenName', () => {
-    mockAuthService.userData.set({ ...mockUserData, givenName: undefined });
+    authService.userData.set({ ...mockUserData, givenName: undefined });
 
-    const fullName = mockAuthService.getUserFullName();
+    const fullName = authService.getUserFullName();
 
     expect(fullName).toBe(' 081');
   });
 
   it('should return userFullName without familyName', () => {
-    mockAuthService.userData.set({ ...mockUserData, familyName: undefined });
+    authService.userData.set({ ...mockUserData, familyName: undefined });
 
-    const fullName = mockAuthService.getUserFullName();
+    const fullName = authService.getUserFullName();
 
     expect(fullName).toBe('Producer ');
   });
 
   it('should return userFullName without userData', () => {
-    mockAuthService.userData.set(null);
-    const fullName = mockAuthService.getUserFullName();
+    authService.userData.set(null);
+    const fullName = authService.getUserFullName();
 
     expect(fullName).toBe('');
   });
 
   it('should return userEmail', () => {
-    mockAuthService.userData.set(mockUserData);
+    authService.userData.set(mockUserData);
 
-    const email = mockAuthService.getUserEmail();
+    const email = authService.getUserEmail();
 
     expect(email).toBe('producer-081@agridata.ch');
   });
 
   it('should return userEmail without email', () => {
-    mockAuthService.userData.set({ ...mockUserData, email: undefined });
+    authService.userData.set({ ...mockUserData, email: undefined });
 
-    const email = mockAuthService.getUserEmail();
+    const email = authService.getUserEmail();
 
     expect(email).toBe('');
   });
 
   it('should return userEmail without userData', () => {
-    mockAuthService.userData.set(null);
+    authService.userData.set(null);
 
-    const email = mockAuthService.getUserEmail();
+    const email = authService.getUserEmail();
 
     expect(email).toBe('');
   });

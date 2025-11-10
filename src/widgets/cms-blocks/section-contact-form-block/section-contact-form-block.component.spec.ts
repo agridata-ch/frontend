@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CmsService } from '@/entities/cms';
 import { I18nService } from '@/shared/i18n';
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
-import { MockI18nService } from '@/shared/testing/mocks/mock-i18n.service';
+import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks/mock-i18n-service';
 
 import { SectionContactFormBlockComponent } from './section-contact-form-block.component';
 
@@ -15,7 +15,7 @@ describe('SectionContactFormBlockComponent', () => {
   let mockI18nService: MockI18nService;
 
   beforeEach(async () => {
-    mockI18nService = new MockI18nService();
+    mockI18nService = createMockI18nService();
 
     await TestBed.configureTestingModule({
       imports: [SectionContactFormBlockComponent],

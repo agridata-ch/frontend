@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { getTranslocoModule } from '@/app/transloco-testing.module';
 import { MockResources } from '@/shared/testing/mocks';
+import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { AgridataTableComponent, CellRendererTypes } from '@/shared/ui/agridata-table';
 
 import { AgridataClientTableComponent } from './agridata-client-table.component';
@@ -77,7 +77,7 @@ describe('AgridataClientTableComponent', () => {
       imports: [
         AgridataClientTableComponent,
         AgridataTableComponent,
-        getTranslocoModule({
+        createTranslocoTestingModule({
           langs: {
             de: {},
           },

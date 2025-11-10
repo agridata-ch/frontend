@@ -1,4 +1,5 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { BackendVersionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -18,14 +19,13 @@ import { version as frontendVersion } from '../../../../package.json';
  */
 @Component({
   selector: 'app-footer-widget',
-  imports: [I18nPipe],
+  imports: [I18nPipe, RouterLink],
   templateUrl: './footer-widget.component.html',
 })
 export class FooterWidgetComponent {
   private readonly testDataService = inject(TestDataApiService);
   private readonly backendVersionService = inject(BackendVersionService);
   private readonly stateService = inject(AgridataStateService);
-
   loadBackendVersionEffect = effect(() => {
     const route = this.stateService.currentRouteWithoutQueryParams();
     if (route && !this.backendVersion() && this.shouldLoadBackendInfo(route)) {
@@ -38,7 +38,8 @@ export class FooterWidgetComponent {
 
   private readonly BACKEND_INFO_ROUTE_BLACKLIST = ['/', `/${ROUTE_PATHS.MAINTENANCE}`];
   protected readonly ROUTE_PATHS = ROUTE_PATHS;
-  private clickTimeout: number | undefined;
+  private clickTimeout?: ReturnType<typeof setTimeout>;
+  readonly appBaseUrl = environment.appBaseUrl;
 
   protected readonly frontendVersion = signal(frontendVersion);
   protected readonly backendVersion = signal<{ [key: string]: string } | undefined>(undefined);
@@ -50,6 +51,7 @@ export class FooterWidgetComponent {
     const route = this.stateService.currentRouteWithoutQueryParams();
     return route?.startsWith(`/cms`) || route === '/';
   });
+  protected readonly currentYear = computed(() => new Date().getFullYear());
 
   protected handleClickCopyright() {
     if (this.clickTimeout) {

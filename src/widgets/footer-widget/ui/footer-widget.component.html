@@ -2,12 +2,16 @@
   class="px-12 py-6 flex flex-col lg:flex-row gap-8 lg:gap-2 justify-between items-center bg-agridata-primary-text text-white"
 >
   <div class="flex gap-8 lg:gap-16 flex-col lg:flex-row">
-    <img src="assets/images/logo-bund.svg" alt="{{ 'footer.logoBund' | i18n }}" class="h-[50px]" />
+    <img
+      src="assets/images/logo-bund.svg"
+      alt="{{ 'footer.logoBund.altText' | i18n }}"
+      class="h-[50px]"
+    />
 
     <!-- TODO: add if ready DIGIB2-843
     <img
       src="assets/images/logo-kolas.svg"
-      alt="{{ 'footer.logoKolas' | i18n }}"
+      alt="{{ 'footer.logoKolas.altText' | i18n }}"
       class="h-[50px]"
     /> -->
 
@@ -18,25 +22,50 @@
     }
   </div>
   <div class="flex flex-col lg:flex-row gap-8 lg:gap-10 items-center">
-    <a href="{{ ROUTE_PATHS.IMPRESSUM_PATH }}" class="hover:underline">{{
+    <a routerLink="/{{ ROUTE_PATHS.IMPRESSUM_PATH }}" class="underline">{{
       'navigation.menuItems.imprint' | i18n
     }}</a>
-    <a href="{{ ROUTE_PATHS.PRIVACY_POLICY_PATH }}" class="hover:underline">{{
+    <a routerLink="/{{ ROUTE_PATHS.PRIVACY_POLICY_PATH }}" class="underline">{{
       'navigation.menuItems.privacyPolicy' | i18n
     }}</a>
     <span class="text-agridata-tertiary-text flex flex-col lg:flex-row items-center gap-1">
       <div class="flex gap-1">
-        agridata.ch
+        <a class="underline text-white" href="{{ appBaseUrl }}" target="_blank"> agridata.ch </a>
         <span (click)="handleClickCopyright()" (keydown.enter)="handleClickCopyright()">
           {{ hideCopyright() ? '🌾' : '©' }}
         </span>
-        2025 <span class="hidden lg:flex">—</span>
+        {{ currentYear() }} <span class="hidden lg:flex">—</span>
       </div>
-      <div>
-        {{ isCmsPage() ? ' ' : ' FE ' }}{{ frontendVersion() }}
-        @if (!isCmsPage() && backendVersion()) {
-          · BE {{ backendVersion()?.['version'] }}
+      <div class="flex gap-2 items-center">
+        @if (isCmsPage()) {
+          <a href="https://github.com/agridata-ch/frontend/releases" target="_blank">{{
+            frontendVersion()
+          }}</a>
+        } @else {
+          <a
+            class="hover:underline"
+            href="https://github.com/agridata-ch/frontend/releases"
+            target="_blank"
+          >
+            FE {{ frontendVersion() }}
+          </a>
+          @if (backendVersion()) {
+            ·
+            <a
+              class="hover:underline"
+              href="https://github.com/agridata-ch/backend/releases"
+              target="_blank"
+              >BE {{ backendVersion()?.['version'] }}</a
+            >
+          }
         }
+        <a href="https://github.com/agridata-ch" target="_blank">
+          <img
+            class="h-3 w-3"
+            src="/assets/images/github-mark.svg"
+            alt="Link-icon to github repository"
+          />
+        </a>
       </div>
     </span>
   </div>

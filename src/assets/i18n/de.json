@@ -317,7 +317,8 @@
       "title": "Hilfe & Support",
       "support": {
         "title": "Support",
-        "openingInfos": "Unsere Zeiten:\nMontag bis Freitag\n08:00 - 17:00 Uhr"
+        "openingInfos": "Unsere Zeiten:\nMontag bis Freitag\n08:00 - 17:00 Uhr",
+        "moreInfos": "Weitere Informationen"
       }
     }
   },
@@ -436,5 +437,10 @@
     "title": "Keine Anfragen vorhanden",
     "message": "Sie haben derzeit keine aktiven Datenanfragen und müssen aktuell nichts unternehmen. \nSobald eine erste Datenanfrage besteht, wird diese hier angezeigt und Sie werden informiert.",
     "additionalInfo": "Weitere Informationen finden Sie auf "
+  },
+  "footer": {
+    "logoBund": {
+      "altText": "Bild mit Schweizer Flagge und Schrift Schweizerischer Eidgenossenschaft"
+    }
   }
 }

@@ -3,6 +3,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
+import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -13,14 +14,28 @@ import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import {
-  MockI18nService,
-  mockConsentRequestService,
+  createMockDataRequestService,
+  createMockI18nService,
   mockConsentRequests,
-  mockDataRequestService,
+  MockDataRequestService,
 } from '@/shared/testing/mocks';
-import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
-import { mockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler-service';
-import { mockMetadataService } from '@/shared/testing/mocks/mock-meta-data.service';
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
+import { createMockAnalyticsService } from '@/shared/testing/mocks/mock-analytics-service';
+import {
+  createMockConsentRequestService,
+  MockConsentRequestService,
+} from '@/shared/testing/mocks/mock-consent-request-service';
+import {
+  createMockErrorHandlerService,
+  MockErrorHandlerService,
+} from '@/shared/testing/mocks/mock-error-handler.service';
+import {
+  createMockMetadataService,
+  MockMetaDataService,
+} from '@/shared/testing/mocks/mock-meta-data-service';
 
 describe('ConsentRequestProducerPage - component behavior', () => {
   let fixture: ComponentFixture<ConsentRequestProducerPage>;
@@ -28,10 +43,11 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   let componentRef: ComponentRef<ConsentRequestProducerPage>;
   let mockLocation: jest.Mocked<Location>;
   let mockRouter: jest.Mocked<Router>;
-  let metadataService: Partial<MetaDataService>;
-  let agridataStateService: Partial<AgridataStateService>;
-  let consentRequestService: Partial<ConsentRequestService>;
-  let errorService: Partial<ErrorHandlerService>;
+  let metadataService: MockMetaDataService;
+  let agridataStateService: MockAgridataStateService;
+  let consentRequestService: MockConsentRequestService;
+  let errorService: MockErrorHandlerService;
+  let dataRequestService: MockDataRequestService;
   const activeUid = '123';
 
   beforeEach(async () => {
@@ -41,22 +57,24 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     mockRouter = {
       navigate: jest.fn(),
     } as unknown as jest.Mocked<Router>;
-    metadataService = mockMetadataService;
-    consentRequestService = mockConsentRequestService;
-    errorService = mockErrorHandlerService;
+    consentRequestService = createMockConsentRequestService();
+    dataRequestService = createMockDataRequestService();
+    metadataService = createMockMetadataService();
+    errorService = createMockErrorHandlerService();
 
-    agridataStateService = mockAgridataStateService(activeUid);
+    agridataStateService = createMockAgridataStateService();
     await TestBed.configureTestingModule({
       providers: [
         ConsentRequestProducerPage,
         { provide: ConsentRequestService, useValue: consentRequestService },
         { provide: Location, useValue: mockLocation },
         { provide: Router, useValue: mockRouter },
-        { provide: I18nService, useClass: MockI18nService },
-        { provide: DataRequestService, useValue: mockDataRequestService },
+        { provide: I18nService, useValue: createMockI18nService() },
+        { provide: DataRequestService, useValue: dataRequestService },
         { provide: MetaDataService, useValue: metadataService },
         { provide: AgridataStateService, useValue: agridataStateService },
         { provide: ErrorHandlerService, useValue: errorService },
+        { provide: AnalyticsService, useValue: createMockAnalyticsService() },
       ],
     }).compileComponents();
 
@@ -68,6 +86,8 @@ describe('ConsentRequestProducerPage - component behavior', () => {
 
   it('setSelectedRequest sets selectedRequest and calls router.navigate', () => {
     const req = mockConsentRequests[0];
+    agridataStateService.activeUid.set(activeUid);
+
     expect(component.selectedRequest()).toBeNull();
 
     component.setSelectedRequest(req);
@@ -85,6 +105,8 @@ describe('ConsentRequestProducerPage - component behavior', () => {
 
   it('setSelectedRequest with redirectUrlPattern should navigate with state when no request provided', () => {
     const testRedirectUrl = 'https://valid-external-redirect.com';
+    agridataStateService.activeUid.set(activeUid);
+
     component.redirectUrl.set(testRedirectUrl);
 
     component.shouldRedirect.set(true);
@@ -106,6 +128,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   it('setSelectedRequest with redirectUrlPattern should navigate with shouldRedirect=false when regex does not match', () => {
     const testRedirectUrl = 'https://invalid-domain.com';
     component.redirectUrl.set(testRedirectUrl);
+    agridataStateService.activeUid.set(activeUid);
 
     component.shouldRedirect.set(false);
 
@@ -126,6 +149,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   it('setSelectedRequest with null redirectUrl should navigate with shouldRedirect=false', () => {
     component.redirectUrl.set(null);
     component.shouldRedirect.set(false);
+    agridataStateService.activeUid.set(activeUid);
 
     component.setSelectedRequest();
 
@@ -657,6 +681,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   it('should handle errors from consentRequestResource and send them to errorService', async () => {
     const testError = new Error('Test error from fetchConsentRequests');
     (consentRequestService.fetchConsentRequests as jest.Mock).mockRejectedValueOnce(testError);
+    agridataStateService.activeUid.set(activeUid);
 
     // Create a new fixture with the mocked error
     const errorFixture = TestBed.createComponent(ConsentRequestProducerPage);

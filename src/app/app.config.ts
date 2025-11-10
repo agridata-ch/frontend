@@ -21,12 +21,15 @@ import { Configuration } from '@/entities/openapi';
 import { environment } from '@/environments/environment';
 import { oidcConfig } from '@/shared/lib/auth';
 
+import { GA_MEASUREMENT_ID, GA_SCRIPT_URL } from './analytics.config';
 import { routes } from './app.routes';
 import { i18nConfig } from './i18n.config';
 import { TranslocoHttpLoader } from './transloco-loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    { provide: GA_MEASUREMENT_ID, useValue: environment.gaMeasurementId },
+    { provide: GA_SCRIPT_URL, useValue: 'https://www.googletagmanager.com/gtag/js' },
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(

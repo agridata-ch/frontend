@@ -16,18 +16,149 @@
   <link rel="shortcut icon" href="assets/favicon/favicon.ico" />
   <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png" />
   <link rel="manifest" href="assets/site.webmanifest" />
-<script>globalThis.awsWafCookieDomainList = ['.agridata.ch']</script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VPFVTHHTK0"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-VPFVTHHTK0');
-</script>
+  <script>globalThis.awsWafCookieDomainList = ['.agridata.ch']</script>
+  <style>
+    /* page base background (kept from original) */
+    body {
+      background-color: #263645;
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Inclusive Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+
+    /* Fullscreen loading overlay */
+    #app-loading {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #263645; /* match background to prevent flicker */
+      z-index: 9999;
+      transition: opacity 300ms ease-in-out, visibility 300ms ease-in-out;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* When hiding, fade out */
+    #app-loading.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Spinner container */
+    #app-loading .spinner-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Force GPU rendering */
+      transform: translateZ(0);
+    }
+
+    /* Spinning border around logo */
+    #app-loading .spinner {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top-color: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      z-index: 2;
+      /* Hardware acceleration for smooth transforms */
+      will-change: transform;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+
+    #app-loading img {
+      width: 120px;
+      height: auto;
+      display: block;
+      position: relative;
+      z-index: 1;
+      /* Optimize image rendering */
+      transform: translateZ(0);
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      #app-loading {
+        transition: none;
+      }
+      #app-loading .spinner {
+        border-top-color: rgba(255, 255, 255, 0.3);
+      }
+    }
+  </style>
 
 </head>
 <body>
+  <!-- Loading overlay shown while Angular app boots -->
+  <div id="app-loading" role="status" aria-label="loading">
+    <div class="spinner-container">
+      <div class="spinner"></div>
+      <img src="assets/favicon/favicon.svg" alt="Loading agridata" />
+    </div>
+  </div>
+
   <app-root></app-root>
+
+  <script>
+    // Smooth spinner animation using requestAnimationFrame
+    (function() {
+      const spinner = document.querySelector('#app-loading .spinner');
+      if (!spinner) return;
+
+      // Check if user prefers reduced motion
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+
+      let rotation = 0;
+      let lastTimestamp = 0;
+      let animationId = null;
+
+      function animate(timestamp) {
+        // Calculate delta time (time since last frame)
+        const deltaTime = timestamp - lastTimestamp;
+
+        // Only update if we have a valid delta (skip first frame and large gaps)
+        if (lastTimestamp !== 0 && deltaTime < 100) {
+          // Rotate at 360 degrees per second (1 full rotation per second)
+          const degreesPerMs = 360 / 1000;
+          rotation += deltaTime * degreesPerMs;
+
+          // Keep rotation between 0-360 to prevent overflow
+          if (rotation >= 360) rotation -= 360;
+
+          // Apply transform
+          spinner.style.transform = 'rotate(' + rotation + 'deg) translateZ(0)';
+        }
+
+        lastTimestamp = timestamp;
+        animationId = requestAnimationFrame(animate);
+      }
+
+      // Start animation
+      animationId = requestAnimationFrame(animate);
+
+      // Stop animation when overlay is being removed
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.target.classList.contains('fade-out')) {
+            if (animationId) cancelAnimationFrame(animationId);
+            observer.disconnect();
+          }
+        });
+      });
+
+      observer.observe(document.getElementById('app-loading'), {
+        attributes: true,
+        attributeFilter: ['class']
+      });
+    })();
+  </script>
+
 </body>
 </html>

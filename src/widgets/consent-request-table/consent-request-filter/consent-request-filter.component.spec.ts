@@ -1,8 +1,7 @@
 import { ComponentRef } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConsentRequestDto } from '@/entities/openapi';
+import { ConsentRequestProducerViewDto } from '@/entities/openapi';
 import { ConsentRequestStateEnum } from '@/entities/openapi/model/consentRequestStateEnum';
 
 import { ConsentRequestFilterComponent } from './consent-request-filter.component';
@@ -12,11 +11,11 @@ describe('ConsentRequestFilterComponent', () => {
   let component: ConsentRequestFilterComponent;
   let componentRef: ComponentRef<ConsentRequestFilterComponent>;
 
-  const sampleRequests: ConsentRequestDto[] = [
-    { id: '1', stateCode: ConsentRequestStateEnum.Opened } as ConsentRequestDto,
-    { id: '2', stateCode: ConsentRequestStateEnum.Granted } as ConsentRequestDto,
-    { id: '3', stateCode: ConsentRequestStateEnum.Opened } as ConsentRequestDto,
-    { id: '4', stateCode: ConsentRequestStateEnum.Declined } as ConsentRequestDto,
+  const sampleRequests: ConsentRequestProducerViewDto[] = [
+    { id: '1', stateCode: ConsentRequestStateEnum.Opened },
+    { id: '2', stateCode: ConsentRequestStateEnum.Granted },
+    { id: '3', stateCode: ConsentRequestStateEnum.Opened },
+    { id: '4', stateCode: ConsentRequestStateEnum.Declined },
   ];
 
   beforeEach(async () => {

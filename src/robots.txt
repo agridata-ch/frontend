@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /$
+Allow: /cms/
+# Disallow everything else
+Disallow: /
+
+# Sitemap
+Sitemap: https://agridata.ch/sitemap.xml
+
+# Specifically block subdomains
+Host: agridata.ch

@@ -1,10 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 
 import { BackendVersionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { TestDataService } from '@/entities/openapi';
-import { mockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state.service';
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
 import { FooterWidgetComponent } from '@/widgets/footer-widget';
 
 import { version as frontendVersion } from '../../../../package.json';
@@ -20,16 +24,17 @@ describe('FooterWidgetComponent', () => {
   let component: FooterWidgetComponent;
   let fixture: ComponentFixture<FooterWidgetComponent>;
   let backendVersionService: ReturnType<typeof createMockBackendVersionService>;
-  let stateService: ReturnType<typeof mockAgridataStateService>;
+  let stateService: MockAgridataStateService;
   beforeEach(async () => {
     backendVersionService = createMockBackendVersionService();
-    stateService = mockAgridataStateService('test-uid');
+    stateService = createMockAgridataStateService();
     await TestBed.configureTestingModule({
       imports: [FooterWidgetComponent],
       providers: [
         { provide: AgridataStateService, useValue: stateService },
         { provide: BackendVersionService, useValue: backendVersionService },
         { provide: TestDataService, useValue: {} },
+        { provide: ActivatedRoute, useValue: {} },
       ],
     }).compileComponents();
 
@@ -43,6 +48,8 @@ describe('FooterWidgetComponent', () => {
   });
 
   it('renders FE and BE version', async () => {
+    stateService.__testSignals.currentRouteWithoutQueryParams.set('/test-route');
+
     await fixture.whenStable();
     const spanEl = fixture.debugElement.queryAll(By.css('.text-agridata-tertiary-text'));
     expect(spanEl[0].nativeElement.textContent).toContain(`FE ${frontendVersion}`);

@@ -2,6 +2,7 @@ import { ConsentRequestService } from '@/entities/api';
 import { ConsentRequestStateEnum } from '@/entities/openapi';
 import { ConsentRequestDetailViewDto } from '@/entities/openapi/model/consentRequestDetailViewDto';
 import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
+import { Mockify } from '@/shared/testing/mocks/test-model';
 
 export const mockConsentRequests: ConsentRequestDetailViewDto[] = [
   {
@@ -36,8 +37,18 @@ export const mockConsentRequests: ConsentRequestDetailViewDto[] = [
   } as ConsentRequestDetailViewDto,
 ];
 
-export const mockConsentRequestService = {
-  updateConsentRequestStatus: jest.fn().mockResolvedValue(undefined),
-  createConsentRequests: jest.fn(),
-  fetchConsentRequests: jest.fn().mockReturnValue(mockConsentRequests),
-} satisfies Partial<ConsentRequestService>;
+export type MockConsentRequestService = Mockify<ConsentRequestService>;
+
+/**
+ * Factory that creates a fully-typed mock of `ConsentRequestService`.
+ * Methods are jest mocks and default to resolving with `mockConsentRequests` where appropriate.
+ *
+ * CommentLastReviewed: 2025-11-04
+ */
+export function createMockConsentRequestService(): MockConsentRequestService {
+  return {
+    fetchConsentRequests: jest.fn().mockResolvedValue(mockConsentRequests),
+    updateConsentRequestStatus: jest.fn().mockResolvedValue(undefined),
+    createConsentRequests: jest.fn().mockResolvedValue(undefined),
+  } satisfies MockConsentRequestService;
+}

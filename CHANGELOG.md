@@ -1,3 +1,75 @@
+## [1.3.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.2.1...v1.3.0-rc.1) (2025-11-10)
+
+### Features
+
+- **google-analytics:** adds enable toggle ([d53551b](https://github.com/agridata-ch/frontend/commit/d53551b7b7dcef5b65c104244645f5ec01474d86)), closes [DIGIB2-1020](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1020)
+- **google-analytics:** improves google analytics (envspecific / log routes / log main actions) ([851328c](https://github.com/agridata-ch/frontend/commit/851328c333c4f062ecd756af0c8a28054f6380f3)), closes [DIGIB2-875](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-875)
+- **improve-openapi:** improves open api generation. DIGIB2-995 ([0c7cacb](https://github.com/agridata-ch/frontend/commit/0c7cacbedce756ee21be22c99e848dc326278e1b)), closes [DIGIB2-995](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-995)
+- **loading-screen:** adds loading screen ([eec9f6c](https://github.com/agridata-ch/frontend/commit/eec9f6c555a3810108653e7da462874d849de095)), closes [DIGIB2-875](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-875)
+- **seo:** add robots and sitemap ([e532af1](https://github.com/agridata-ch/frontend/commit/e532af1642686705e985ad741cdd973cadf8e6cf)), closes [DIGIB2-1011](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1011)
+- **test-optimization:** improves mocks ([e3b1822](https://github.com/agridata-ch/frontend/commit/e3b1822f01bad608bb2af8e4c7d2a5baca7ca0df)), closes [DIGIB2-1009](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1009)
+- **ui:** add github links, update support popover ([24140db](https://github.com/agridata-ch/frontend/commit/24140dbeb87f280ec67be01f064ca81da3bc5a80)), closes [DIGIB2-340](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-340)
+
+### Bug Fixes
+
+- **footer:** fix missing translation ([4c6e6df](https://github.com/agridata-ch/frontend/commit/4c6e6df701300b216e6bb1dfae57f261ff648c4b))
+- **footer:** style footer links ([b593027](https://github.com/agridata-ch/frontend/commit/b5930279c0be96f55bcd19e488eb254bd89ef0cc))
+- **search-field:** removes search field deactivation (support page) ([da7bfa0](https://github.com/agridata-ch/frontend/commit/da7bfa0f3456e652e43f419724969c984f2b564a)), closes [DIGIB2-1016](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1016)
+
+## [1.3.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.8...v1.3.0-rc.9) (2025-11-07)
+
+### Features
+
+- **google-analytics:** improves google analytics (envspecific / log routes / log main actions) ([968d66d](https://github.com/agridata-ch/frontend/commit/968d66d6ca3f93ef8e5f58448cdd8c1adf04a28a)), closes [DIGIB2-875](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-875)
+
+## [1.3.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.7...v1.3.0-rc.8) (2025-11-06)
+
+### Features
+
+- **loading-screen:** adds loading screen ([94d9283](https://github.com/agridata-ch/frontend/commit/94d92838a6b9b18d05304d9fa38b2482e9959979)), closes [DIGIB2-875](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-875)
+
+## [1.3.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.6...v1.3.0-rc.7) (2025-11-06)
+
+### Features
+
+- **seo:** add robots and sitemap ([7574ccb](https://github.com/agridata-ch/frontend/commit/7574ccb2a27dcfeb879fade1f630d6ccbde94b68)), closes [DIGIB2-1011](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1011)
+
+## [1.3.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.5...v1.3.0-rc.6) (2025-11-05)
+
+### Features
+
+- **test-optimization:** improves mocks ([52e0be3](https://github.com/agridata-ch/frontend/commit/52e0be3cc16c47acff21712185eb3ed06a8c4471)), closes [DIGIB2-1009](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1009)
+
+## [1.3.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.4...v1.3.0-rc.5) (2025-11-05)
+
+### Bug Fixes
+
+- **search-field:** removes search field deactivation (support page) ([2f747ac](https://github.com/agridata-ch/frontend/commit/2f747ac1f0207ecb5094e5da1cd0ffec21cf94bb)), closes [DIGIB2-1016](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1016)
+
+## [1.3.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.3...v1.3.0-rc.4) (2025-11-04)
+
+### Bug Fixes
+
+- **footer:** fix missing translation ([b23274c](https://github.com/agridata-ch/frontend/commit/b23274ca51e97d9d0bbd5cd9c030d1c288a33313))
+
+## [1.3.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.2...v1.3.0-rc.3) (2025-11-04)
+
+### Bug Fixes
+
+- **footer:** style footer links ([33423a8](https://github.com/agridata-ch/frontend/commit/33423a84b470e2f48c692444198c0df9bf9b02e8))
+
+## [1.3.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.3.0-rc.1...v1.3.0-rc.2) (2025-11-04)
+
+### Features
+
+- **improve-openapi:** improves open api generation. DIGIB2-995 ([fc1734c](https://github.com/agridata-ch/frontend/commit/fc1734c224f682e65b8d6cada44065907cb1d8d7)), closes [DIGIB2-995](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-995)
+
+## [1.3.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.2.0...v1.3.0-rc.1) (2025-11-04)
+
+### Features
+
+- **ui:** add github links, update support popover ([45f73a8](https://github.com/agridata-ch/frontend/commit/45f73a857267b4782030d45256910bea530d868e)), closes [DIGIB2-340](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-340)
+
 ## [1.2.1](https://github.com/agridata-ch/frontend/compare/v1.2.0...v1.2.1) (2025-11-04)
 
 ### Bug Fixes

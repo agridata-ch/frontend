@@ -42,9 +42,7 @@
     "target": "ES2022",
     "module": "ES2022",
     "resolveJsonModule": true,
-    "types": [
-      "jest"
-    ],
+
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -60,5 +58,5 @@
     {
       "path": "./tsconfig.spec.json"
     }
-  ],
+  ]
 }
