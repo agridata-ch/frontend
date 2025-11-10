@@ -5,6 +5,7 @@ export const environment = {
   cmsBaseUrl: 'https://remarkable-growth-2947108bb8.strapiapp.com',
   cmsContactUrl: 'https://cms.agridata.ch/api/contact',
   canResetTestData: false,
+  enableGoogleAnalytics: false,
   gaMeasurementId: 'G-6B94RMTR7J',
 
   oidc: {
