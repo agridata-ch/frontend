@@ -26,7 +26,11 @@ export class AnalyticsService {
   private readonly oidcSecurityService = inject(OidcSecurityService);
   private readonly gaId = inject(GA_MEASUREMENT_ID, { optional: true }) ?? 'G-TEST';
   private readonly gaUrl = inject(GA_SCRIPT_URL);
+
   private readonly injectTagEffect = effect(() => {
+    if (!environment.enableGoogleAnalytics) {
+      return;
+    }
     if (!environment.gaMeasurementId) {
       console.warn('GA Measurement ID not set in environment.');
       return;
@@ -46,6 +50,9 @@ export class AnalyticsService {
   });
 
   private readonly trackUserLoggedInEffect = effect((onCleanup) => {
+    if (!environment.enableGoogleAnalytics) {
+      return;
+    }
     const sub = this.oidcSecurityService.isAuthenticated$
       .pipe(debounceTime(200)) // event is triggerd upon route activation, even if the redirection happens in guards (which is done regularly after login). This makes sure that it is only logged once
       .subscribe((auth) => {
@@ -57,9 +64,11 @@ export class AnalyticsService {
   });
 
   private readonly trackPageViewsEffect = effect(() => {
+    if (!environment.enableGoogleAnalytics) {
+      return;
+    }
     const currentRoute = this.stateService.currentRoute();
     if (currentRoute) {
-      console.log('Current route', currentRoute);
       gtag('event', 'page_view', {
         page_path: currentRoute,
         page_location: window.location.href,
@@ -70,13 +79,13 @@ export class AnalyticsService {
 
   // Log a custom event
   logEvent(eventName: string, params: Record<string, unknown> = {}): void {
-    if (typeof gtag === 'function') {
+    if (environment.enableGoogleAnalytics && typeof gtag === 'function') {
       gtag('event', eventName, params);
     }
   }
   // Set user properties for GA4
   setUserProperties(properties: Record<string, unknown>): void {
-    if (typeof gtag === 'function') {
+    if (environment.enableGoogleAnalytics && typeof gtag === 'function') {
       gtag('set', 'user_properties', properties);
     }
   }
