@@ -27,7 +27,6 @@ export class AgridataStateService {
   readonly userUids = signal<UidDto[]>([]);
   readonly userUidsLoaded = signal(false);
   readonly isNavigationOpen = signal(this.getNavigationStateOpen());
-
   readonly currentRoute = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),

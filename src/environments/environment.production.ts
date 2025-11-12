@@ -5,8 +5,11 @@ export const environment = {
   cmsBaseUrl: 'https://cms.agridata.ch',
   cmsContactUrl: 'https://cms.agridata.ch/api/contact',
   canResetTestData: false,
-  enableGoogleAnalytics: false,
-  gaMeasurementId: 'G-BC7PS7D2FH',
+  titleEnvPrefix: '',
+
+  googleAnalyticsEnabled: false,
+  googleAnalyticsMeasurementId: 'G-QPQ6KHCPXS',
+  googleAnalyticsDebug: false,
 
   oidc: {
     authority: 'https://idp.agate.ch/auth/realms/agate',

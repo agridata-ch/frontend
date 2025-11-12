@@ -19,6 +19,8 @@ import { PrivacyPolicyPage } from '@/pages/privacy-policy-page';
 import { SupporterPageComponent } from '@/pages/supporter-page/';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
+import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
+import { DataRequestNewComponent } from '@/widgets/data-request-new';
 
 import { LoginAuthGuard } from './guards/login.guard';
 
@@ -34,6 +36,7 @@ export const routes: Routes = [
   },
   {
     path: '',
+    title: 'appTitle',
     component: FullWidthLayoutComponent,
     canActivate: [AuthorizationGuard, ImpersonationGuardGuard, ProducerUidGuard, HomeRedirectGuard],
     children: [
@@ -66,7 +69,7 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'cms/:slug',
+    path: `${ROUTE_PATHS.CMS_PATH}/:slug`,
     component: FullWidthLayoutComponent,
     canActivate: [AuthorizationGuard, HomeRedirectGuard],
     children: [
@@ -87,6 +90,7 @@ export const routes: Routes = [
   {
     // producer routes
     path: `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`,
+    title: 'producer.pageTitle',
     component: DefaultLayoutComponent,
     runGuardsAndResolvers: 'paramsChange',
     canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard, ImpersonationGuardGuard],
@@ -106,11 +110,13 @@ export const routes: Routes = [
         path: `:uid`,
         component: ConsentRequestProducerPage,
         canActivate: [ProducerUidGuard],
-      },
-      {
-        path: `:uid/:consentRequestId`,
-        component: ConsentRequestProducerPage,
-        canActivate: [ProducerUidGuard],
+        children: [
+          {
+            path: `:consentRequestId`,
+            component: ConsentRequestDetailsComponent,
+            title: 'consent-request.details.sidepanel.title',
+          },
+        ],
       },
     ],
   },
@@ -118,23 +124,27 @@ export const routes: Routes = [
     // consumer routes
     path: ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH,
     component: DefaultLayoutComponent,
-    runGuardsAndResolvers: 'paramsChange',
     canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
     data: { roles: [USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER] },
     children: [
       {
         path: '',
+        title: 'consumer.pageTitle',
         component: DataRequestsConsumerPage,
-      },
-      {
-        path: `:dataRequestId`,
-        component: DataRequestsConsumerPage,
+        children: [
+          {
+            path: `:dataRequestId`,
+            title: 'consumer.sidePanelTitle',
+            component: DataRequestNewComponent,
+          },
+        ],
       },
     ],
   },
   {
     // support routes
     path: ROUTE_PATHS.SUPPORT_PATH,
+    title: 'supporter.pageTitle',
     component: DefaultLayoutComponent,
     runGuardsAndResolvers: 'paramsChange',
     canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],

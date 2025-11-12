@@ -4,22 +4,21 @@ import {
   effect,
   inject,
   input,
-  output,
-  ResourceRef,
+  resource,
   Signal,
   signal,
 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AnalyticsService } from '@/app/analytics.service';
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MetaDataService } from '@/entities/api/meta-data-service';
-import {
-  ConsentRequestProducerViewDto,
-  ConsentRequestStateEnum,
-  DataRequestPurposeDto,
-} from '@/entities/openapi';
+import { ConsentRequestStateEnum, DataRequestPurposeDto } from '@/entities/openapi';
+import { FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM } from '@/pages/consent-request-producer';
+import { REDIRECT_TIMEOUT } from '@/pages/consent-request-producer/consent-request-producer.page.model';
 import {
   getToastMessage,
   getToastTitle,
@@ -29,11 +28,16 @@ import {
 import { formatDate } from '@/shared/date';
 import { I18nDirective, I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
+import {
+  createResourceErrorHandlerEffect,
+  createResourceValueComputed,
+} from '@/shared/lib/api.helper';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService } from '@/shared/toast';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { AlertComponent, AlertType } from '@/widgets/alert';
@@ -64,6 +68,7 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
     ErrorOutletComponent,
     AgridataContactCardComponent,
     AlertComponent,
+    ModalComponent,
   ],
   templateUrl: './consent-request-details.component.html',
 })
@@ -74,12 +79,22 @@ export class ConsentRequestDetailsComponent {
   private readonly metaDataService = inject(MetaDataService);
   private readonly i18nService = inject(I18nService);
   private readonly analyticsService = inject(AnalyticsService);
+  private readonly errorService = inject(ErrorHandlerService);
+  private readonly router = inject(Router);
+  private readonly activeRoute = inject(ActivatedRoute);
 
-  readonly request = input<ConsentRequestProducerViewDto | null>(null);
-  readonly preventManualClose = input<boolean>(false);
-  readonly consentRequestsResource = input<ResourceRef<ConsentRequestProducerViewDto[]>>();
+  // input from route parameter :consentRequestId
+  readonly consentRequestId = input<string | undefined>();
 
-  readonly closeDetail = output<string | null>();
+  readonly redirectUrl = signal<string | null>(null);
+  readonly showRedirect = signal<boolean>(false);
+  readonly countdownValue = signal(REDIRECT_TIMEOUT / 1000);
+  readonly shouldRedirect = signal<boolean>(false);
+  readonly refreshListNeeded = signal(false);
+
+  // Store timers at class level so they can be accessed and cleared from anywhere
+  private countdownTimer?: ReturnType<typeof setInterval>;
+  private redirectTimeout?: ReturnType<typeof setTimeout>;
 
   readonly badgeSize = BadgeSize;
   readonly consentRequestStateEnum = ConsentRequestStateEnum;
@@ -88,11 +103,10 @@ export class ConsentRequestDetailsComponent {
   readonly AvatarSkin = AvatarSkin;
   readonly AlertType = AlertType;
 
-  readonly showDetails = signal(false);
   readonly requestStateCode: Signal<string> = computed(() => String(this.request()?.stateCode));
 
   readonly currentLanguage = computed(() => this.i18nService.lang());
-  readonly requestId = computed(() => this.request()?.id ?? '');
+  readonly requestId = computed(() => this.request()?.id);
   readonly formattedRequestDate = computed(() => formatDate(this.request()?.requestDate));
   readonly formattedLastStateChangeDate = computed(() =>
     formatDate(this.request()?.lastStateChangeDate),
@@ -145,53 +159,131 @@ export class ConsentRequestDetailsComponent {
     return BadgeVariant.DEFAULT;
   });
 
-  readonly showDetailsEffect = effect(() => {
+  protected readonly consentRequestResource = resource({
+    params: () => ({ id: this.consentRequestId() }),
+    loader: ({ params }) => {
+      if (!params?.id) {
+        return Promise.resolve(undefined);
+      }
+      return this.consentRequestService.fetchConsentRequest(params.id);
+    },
+  });
+
+  private readonly errorHandlerEffect = createResourceErrorHandlerEffect(
+    this.consentRequestResource,
+    this.errorService,
+  );
+
+  readonly request = createResourceValueComputed(this.consentRequestResource);
+
+  private readonly checkForRedirectEffect = effect(() => {
     const request = this.request();
-    if (request) {
-      this.showDetails.set(true);
-    } else {
-      this.showDetails.set(false);
+    const redirectUri = history.state?.redirect_uri;
+
+    if (redirectUri) {
+      this.redirectUrl.set(redirectUri);
+      const redirectUrlPattern = request?.dataRequest?.validRedirectUriRegex;
+
+      if (!redirectUrlPattern) {
+        this.resetRedirect();
+        return;
+      }
+
+      try {
+        // we can ignore the lint warning here as we trust the pattern from our own backend
+        /* eslint-disable-next-line security/detect-non-literal-regexp */
+        const redirectRegex = new RegExp(redirectUrlPattern);
+
+        if (!redirectRegex?.test(redirectUri)) {
+          this.resetRedirect();
+          return;
+        }
+
+        // Clean up state to prevent persistence when returning to the page
+        // by replacing current history entry with a clean one
+        globalThis.history.replaceState({}, '', globalThis.location.href);
+        this.shouldRedirect.set(true);
+      } catch (error) {
+        console.warn(
+          `Invalid regex pattern provided: '${redirectUrlPattern}', error: ${error instanceof Error ? error.message : error}`,
+        );
+        this.resetRedirect();
+        return;
+      }
+    }
+  });
+  readonly startTimerEffect = effect((onCleanup) => {
+    this.clearAllTimers();
+    if (this.showRedirect()) {
+      this.startCountdown();
+
+      this.redirectTimeout = setTimeout(() => {
+        const url = this.redirectUrl();
+
+        this.clearAllTimers();
+        this.resetRedirect();
+        if (url) {
+          globalThis.location.href = url;
+        }
+      }, REDIRECT_TIMEOUT);
+
+      onCleanup(() => {
+        this.clearAllTimers();
+        this.resetRedirect();
+      });
     }
   });
 
   handleCloseDetails() {
-    this.showDetails.set(false);
-    this.closeDetail.emit(null);
+    if (!this.shouldRedirect()) {
+      this.router
+        .navigate(['../'], {
+          relativeTo: this.activeRoute,
+          state: { [FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM]: this.refreshListNeeded() },
+        })
+        .then();
+    }
   }
 
   async acceptRequest() {
+    const id = this.requestId();
+    if (!id) {
+      throw new Error('unable to accept consent request: missing id');
+    }
     this.analyticsService.logEvent('consent_request_state_changed', {
       id: this.requestId(),
       state: ConsentRequestStateEnum.Granted,
       component: 'details',
     });
-    await this.updateAndReloadConsentRequestState(
-      this.requestId(),
-      ConsentRequestStateEnum.Granted,
-    );
-    if (!this.preventManualClose()) {
+    this.refreshListNeeded.set(true);
+    await this.updateAndReloadConsentRequestState(id, ConsentRequestStateEnum.Granted);
+    this.showRedirect.set(this.shouldRedirect());
+    if (!this.shouldRedirect()) {
       this.toastService.show(
         this.i18nService.translate(getToastTitle(ConsentRequestStateEnum.Granted)),
         this.i18nService.translate(getToastMessage(ConsentRequestStateEnum.Granted), {
           name: this.requestTitle(),
         }),
         getToastType(ConsentRequestStateEnum.Granted),
-        this.prepareUndoAction(this.requestId(), this.requestStateCode()),
+        this.prepareUndoAction(id, this.requestStateCode()),
       );
     }
   }
 
   async rejectRequest() {
+    const id = this.requestId();
+    if (!id) {
+      throw new Error('unable to reject consent request: missing id');
+    }
+
     this.analyticsService.logEvent('consent_request_state_changed', {
-      id: this.requestId(),
+      id: id,
       state: ConsentRequestStateEnum.Declined,
       component: 'details',
     });
-    await this.updateAndReloadConsentRequestState(
-      this.requestId(),
-      ConsentRequestStateEnum.Declined,
-    );
-    if (!this.preventManualClose()) {
+    this.refreshListNeeded.set(true);
+    await this.updateAndReloadConsentRequestState(id, ConsentRequestStateEnum.Declined);
+    if (!this.shouldRedirect()) {
       const toastTitle = this.i18nService.translate(
         getToastTitle(ConsentRequestStateEnum.Declined),
       );
@@ -204,7 +296,7 @@ export class ConsentRequestDetailsComponent {
         toastTitle,
         toastMessage,
         toastType,
-        this.prepareUndoAction(this.requestId(), this.requestStateCode()),
+        this.prepareUndoAction(id, this.requestStateCode()),
       );
     }
   }
@@ -218,7 +310,56 @@ export class ConsentRequestDetailsComponent {
 
   async updateAndReloadConsentRequestState(id: string, stateCode: string) {
     await this.consentRequestService.updateConsentRequestStatus(id, stateCode);
-    this.consentRequestsResource()?.reload();
+    this.consentRequestResource?.reload();
+    this.refreshListNeeded.set(true);
     this.handleCloseDetails();
+  }
+
+  private readonly resetRedirect = () => {
+    this.redirectUrl.set(null);
+    this.shouldRedirect.set(false);
+    this.showRedirect.set(false);
+  };
+
+  private startCountdown(): void {
+    // Clear any existing countdown timer first
+    if (this.countdownTimer) {
+      clearInterval(this.countdownTimer);
+    }
+
+    this.countdownValue.set(REDIRECT_TIMEOUT / 1000);
+    this.countdownTimer = setInterval(() => {
+      const currentValue = this.countdownValue();
+      if (currentValue <= 1) {
+        if (this.countdownTimer) {
+          clearInterval(this.countdownTimer);
+          this.countdownTimer = undefined;
+        }
+      } else {
+        this.countdownValue.set(currentValue - 1);
+      }
+    }, 1000);
+  }
+
+  redirectDirectly = () => {
+    const url = this.redirectUrl();
+    if (url) {
+      // Make sure to clear timers before redirecting
+      this.clearAllTimers();
+      this.resetRedirect();
+      globalThis.location.href = url;
+    }
+  };
+
+  // Method to clear all timers in one place
+  private clearAllTimers() {
+    if (this.countdownTimer) {
+      clearInterval(this.countdownTimer);
+      this.countdownTimer = undefined;
+    }
+    if (this.redirectTimeout) {
+      clearTimeout(this.redirectTimeout);
+      this.redirectTimeout = undefined;
+    }
   }
 }

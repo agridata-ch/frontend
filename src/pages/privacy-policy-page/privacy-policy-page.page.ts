@@ -3,7 +3,12 @@ import { Component, computed, effect, inject, resource } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { CmsService, StrapiSingleTypeResponseWithContent } from '@/entities/cms';
+import { TitleService } from '@/app/title.service';
+import {
+  CmsService,
+  StrapiSingleTypeResponse,
+  StrapiSingleTypeResponseWithContent,
+} from '@/entities/cms';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
@@ -25,7 +30,7 @@ export class PrivacyPolicyPage {
   private readonly i18nService = inject(I18nService);
   private readonly router = inject(Router);
   private readonly errorService = inject(ErrorHandlerService);
-
+  private readonly titleService = inject(TitleService);
   protected readonly privacyPolicyResource = resource({
     params: () => ({ locale: this.i18nService.lang() }),
     loader: ({ params }) => {
@@ -55,5 +60,10 @@ export class PrivacyPolicyPage {
   protected readonly footerBlock = computed(() => {
     const response = this.privacyPolicyPage() as StrapiSingleTypeResponseWithContent;
     return response.data.footer;
+  });
+
+  private readonly updatePageHtmlTitle = effect(() => {
+    const response = this.privacyPolicyResource.value() as StrapiSingleTypeResponse;
+    this.titleService.setTranslatedTitle(response?.data?.title);
   });
 }
