@@ -3,6 +3,7 @@ export const ROUTE_PATHS = {
   CONSENT_REQUEST_PRODUCER_CREATE_SUBPATH: 'create',
   DATA_REQUESTS_CONSUMER_PATH: 'data-requests',
   SUPPORT_PATH: 'support',
+  CMS_PATH: 'cms',
   IMPRESSUM_PATH: 'cms/imprint',
   PRIVACY_POLICY_PATH: 'cms/privacy-policy',
   FORBIDDEN: 'forbidden',

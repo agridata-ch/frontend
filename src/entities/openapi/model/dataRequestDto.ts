@@ -17,7 +17,7 @@ import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
  * Details of the underlying data request
  */
 export interface DataRequestDto { 
-    id?: string;
+    id: string;
     /**
      * Human friendly id of the data request
      */

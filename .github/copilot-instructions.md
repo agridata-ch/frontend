@@ -122,3 +122,4 @@ import {
          },
        }),
   ```
+- to run tests use this command: `npm run test:unit -- test.spec.ts`

@@ -1,10 +1,11 @@
-import { Location } from '@angular/common';
-import { Component, effect, inject, input, resource, signal } from '@angular/core';
+import { Component, effect, inject, resource } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { faDatabase, faPlus } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nDirective } from '@/shared/i18n';
@@ -12,11 +13,12 @@ import {
   createResourceErrorHandlerEffect,
   createResourceValueComputed,
 } from '@/shared/lib/api.helper';
-import { SidepanelComponent } from '@/shared/sidepanel';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
-import { DataRequestNewComponent } from '@/widgets/data-request-new';
+import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-new';
 import { DataRequestTableComponent } from '@/widgets/data-request-table';
+
+export const FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM = 'refresh';
 
 /**
  * Displays a table of existing data requests and integrates a side panel for creating or editing
@@ -30,29 +32,22 @@ import { DataRequestTableComponent } from '@/widgets/data-request-table';
   imports: [
     FontAwesomeModule,
     I18nDirective,
-    DataRequestNewComponent,
     ButtonComponent,
-    SidepanelComponent,
     DataRequestTableComponent,
     ErrorOutletComponent,
+    RouterOutlet,
   ],
   templateUrl: './data-requests-consumer.page.html',
 })
 export class DataRequestsConsumerPage {
   private readonly dataRequestService = inject(DataRequestService);
-  private readonly location = inject(Location);
   private readonly errorService = inject(ErrorHandlerService);
-  // binds to the route parameter :dataRequestId
-  readonly dataRequestId = input<string>();
-
-  protected readonly showPanel = signal<boolean>(false);
-  protected readonly selectedRequest = signal<DataRequestDto | null>(null);
-  protected readonly panelOpenedAutomatically = signal<boolean>(false);
+  private readonly router = inject(Router);
 
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly buttonIcon = faPlus;
   protected readonly icon = faDatabase;
-
+  protected readonly stateService = inject(AgridataStateService);
   protected readonly dataRequestsResource = resource({
     loader: () => this.dataRequestService.fetchDataRequests(),
     defaultValue: [],
@@ -63,39 +58,20 @@ export class DataRequestsConsumerPage {
     this.errorService,
   );
 
-  private readonly initialOpenEffect = effect(() => {
-    const requestId = this.dataRequestId();
-    if (requestId && !this.panelOpenedAutomatically()) {
-      const request = this.dataRequests()?.find((r) => r.id === requestId);
-      if (request) {
-        this.setSelectedRequest(request);
-        this.panelOpenedAutomatically.set(true);
-      }
+  private readonly reloadDataRequestsEffect = effect(() => {
+    const nav = this.router.currentNavigation();
+    if (nav?.extras?.state?.[FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]) {
+      this.dataRequestsResource.reload();
     }
   });
 
-  private readonly openPanelEffect = effect(() => {
-    const request = this.selectedRequest();
-    if (request) {
-      this.showPanel.set(true);
+  protected newRequest = () => {
+    this.router.navigate([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH, DATA_REQUEST_NEW_ID]).then();
+  };
+
+  protected navigateToRequest = (request?: DataRequestDto | null) => {
+    if (request?.id) {
+      this.router.navigate([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH, request.id]).then();
     }
-  });
-
-  protected handleOpen() {
-    this.showPanel.set(true);
-  }
-
-  protected handleClose() {
-    this.dataRequestsResource.reload();
-    this.setSelectedRequest(null);
-    this.showPanel.set(false);
-  }
-
-  protected setSelectedRequest = (request?: DataRequestDto | null) => {
-    this.selectedRequest.set(request ?? null);
-
-    const base = ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH;
-    const newUrl = request?.id ? `${base}/${request.id}` : base;
-    this.location.go(newUrl);
   };
 }

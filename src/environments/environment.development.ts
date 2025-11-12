@@ -5,8 +5,12 @@ export const environment = {
   cmsBaseUrl: 'https://remarkable-growth-2947108bb8.strapiapp.com',
   cmsContactUrl: 'https://cms.agridata.ch/api/contact',
   canResetTestData: true,
-  enableGoogleAnalytics: false,
-  gaMeasurementId: 'G-7DEQCX0490',
+  titleEnvPrefix: 'd-',
+
+  googleAnalyticsEnabled: false,
+  googleAnalyticsMeasurementId: 'G-7DEQCX0490',
+  googleAnalyticsDebug: false,
+
   oidc: {
     authority: 'https://idp-rf.agate.ch/auth/realms/agate',
     clientId: 'agridata-rf',

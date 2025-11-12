@@ -23,28 +23,7 @@
 <app-error-outlet></app-error-outlet>
 <app-consent-request-table
   [consentRequests]="consentRequests()"
-  (tableRowAction)="setSelectedRequest($event)"
+  (tableRowAction)="navigateToRequest($event)"
   [consentRequestsResource]="consentRequestResource"
 />
-<app-consent-request-details
-  [request]="selectedRequest()"
-  (closeDetail)="setSelectedRequest()"
-  [preventManualClose]="redirectUrl() !== null"
-  [consentRequestsResource]="consentRequestResource"
-/>
-@if (showRedirect()) {
-<app-modal
-  [open]="showRedirect()"
-  [title]="'producer.redirect.headline' | i18n"
-  [showCloseButton]="false"
->
-  <div class="text-center" *i18n="let t; prefix: 'producer.redirect'">
-    <div class="flex justify-center mb-4">
-      <p>{{ t('description', { count: countdownValue() }) }}</p>
-    </div>
-    <app-agridata-button (onClick)="redirectDirectly()">
-      {{ t('redirectNow') }}
-    </app-agridata-button>
-  </div>
-</app-modal>
-}
+<router-outlet></router-outlet>

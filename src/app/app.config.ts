@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import {
   provideRouter,
+  TitleStrategy,
   withComponentInputBinding,
   withInMemoryScrolling,
   withViewTransitions,
@@ -17,6 +18,7 @@ import { authInterceptor, provideAuth } from 'angular-auth-oidc-client';
 import { GlobalErrorHandler } from '@/app/error/global-error-handler';
 import { errorHttpInterceptor } from '@/app/interceptors/error-http-interceptor';
 import { impersonationInterceptor } from '@/app/interceptors/impersonation-interceptor';
+import { AgridataTitleStrategy } from '@/app/title.strategy';
 import { Configuration } from '@/entities/openapi';
 import { environment } from '@/environments/environment';
 import { oidcConfig } from '@/shared/lib/auth';
@@ -28,8 +30,9 @@ import { TranslocoHttpLoader } from './transloco-loader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    { provide: GA_MEASUREMENT_ID, useValue: environment.gaMeasurementId },
+    { provide: GA_MEASUREMENT_ID, useValue: environment.googleAnalyticsMeasurementId },
     { provide: GA_SCRIPT_URL, useValue: 'https://www.googletagmanager.com/gtag/js' },
+    { provide: TitleStrategy, useClass: AgridataTitleStrategy },
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(

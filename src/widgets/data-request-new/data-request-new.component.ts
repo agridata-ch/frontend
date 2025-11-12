@@ -1,19 +1,45 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, input, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  effect,
+  inject,
+  input,
+  resource,
+  signal,
+  ViewChild,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { faArrowLeft, faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { debounceTime } from 'rxjs';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestUpdateDto } from '@/assets/formSchemas/agridata-schemas.json';
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto } from '@/entities/openapi';
 import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
+import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/pages/data-requests-consumer';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { buildReactiveForm, Dto, flattenFormGroup } from '@/shared/lib/form.helper';
+import {
+  createResourceErrorHandlerEffect,
+  createResourceValueComputed,
+} from '@/shared/lib/api.helper';
+import {
+  buildReactiveForm,
+  Dto,
+  flattenFormGroup,
+  populateFormFromDto,
+} from '@/shared/lib/form.helper';
+import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
-import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
+import { AgridataWizardComponent, WizardStep } from '@/widgets/agridata-wizard';
 import {
   DataRequestFormConsumerComponent,
   DataRequestFormProducerComponent,
@@ -21,6 +47,8 @@ import {
 } from '@/widgets/data-request-form';
 import { FORM_COMPLETION_STRATEGIES, FORM_GROUP_NAMES } from '@/widgets/data-request-new';
 import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
+
+export const DATA_REQUEST_NEW_ID = 'new';
 
 /**
  * Implements the wizard-driven data request creation flow. It manages multiple form groups,
@@ -44,17 +72,56 @@ import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
     DataRequestFormConsumerComponent,
     DataRequestFormProducerComponent,
     ErrorOutletComponent,
+    SidepanelComponent,
   ],
   templateUrl: './data-request-new.component.html',
 })
 export class DataRequestNewComponent {
-  readonly i18nService = inject(I18nService);
-  readonly dataRequestService = inject(DataRequestService);
-  readonly toastService = inject(ToastService);
+  private readonly i18nService = inject(I18nService);
+  private readonly dataRequestService = inject(DataRequestService);
+  private readonly toastService = inject(ToastService);
+  private readonly router = inject(Router);
+  private readonly errorService = inject(ErrorHandlerService);
+  private readonly destroyRef = inject(DestroyRef);
+  // set from route param
+  readonly dataRequestId = input<string | undefined>();
+  // writable signal used if data request is created
+  readonly currentDataRequestId = signal<string | undefined>(undefined);
+  readonly refreshListNeeded = signal(false);
 
-  readonly selectedRequest = input<DataRequestDto | null>(null);
-  readonly dataRequestId = signal<string>(this.selectedRequest()?.id ?? '');
-  readonly dataRequest = signal<DataRequestDto | null>(this.selectedRequest());
+  protected readonly dataRequestsResource = resource({
+    params: () => ({ id: this.dataRequestId() }),
+    loader: ({ params }) => {
+      if (!params?.id || params.id === DATA_REQUEST_NEW_ID) {
+        return Promise.resolve(undefined);
+      }
+      return this.dataRequestService.fetchDataRequest(params.id);
+    },
+  });
+
+  // initial data request from resource
+  readonly initialRequest = createResourceValueComputed(this.dataRequestsResource);
+  private readonly errorHandlerEffect = createResourceErrorHandlerEffect(
+    this.dataRequestsResource,
+    this.errorService,
+  );
+  // contains current data request state
+  readonly dataRequest = signal<DataRequestDto | undefined>(undefined);
+
+  private readonly updateDataRequestFromRessourceEffect = effect(() => {
+    const request = this.initialRequest();
+    this.dataRequest.set(request);
+    populateFormFromDto(this.form, request as unknown as Record<string, unknown>, this.formMap);
+    if (request?.id) {
+      this.updateFormSteps();
+    }
+  });
+
+  private readonly updateDataRequestIdFromRouteEffect = effect(() => {
+    if (this.dataRequestId() !== DATA_REQUEST_NEW_ID) {
+      this.currentDataRequestId.set(this.dataRequestId());
+    }
+  });
 
   readonly ButtonVariants = ButtonVariants;
   readonly ToastType = ToastType;
@@ -102,7 +169,7 @@ export class DataRequestNewComponent {
     'data-request.form.request.purpose.it.placeholder',
   );
 
-  readonly formMap = signal([
+  readonly formMap = [
     {
       formGroupName: FORM_GROUP_NAMES.CONSUMER,
       fields: [
@@ -153,19 +220,17 @@ export class DataRequestNewComponent {
     //   fields: [],
     //   completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
     // },
-  ]);
+  ];
   readonly logoFile = signal<File | null>(null);
 
-  readonly initialFormControlSteps = computed(() =>
-    this.formMap().map((step) => ({
+  readonly formControlSteps = signal<WizardStep[]>(
+    this.formMap.map((step) => ({
       id: step.formGroupName,
       label: this.getStepLabelSignal(step.formGroupName),
       isValid: true,
       completed: false,
     })),
   );
-
-  readonly formControlSteps = signal(this.initialFormControlSteps());
 
   private getStepLabelSignal(formGroupName: string) {
     switch (formGroupName) {
@@ -184,7 +249,7 @@ export class DataRequestNewComponent {
     }
   }
 
-  readonly initialValues = computed(() => ({
+  readonly defaultValues = computed(() => ({
     title: {
       de: this.titlePlaceholderDe(),
       fr: this.titlePlaceholderFr(),
@@ -202,63 +267,53 @@ export class DataRequestNewComponent {
     },
   }));
 
-  readonly initialData = computed(() => {
-    return this.selectedRequest() || this.initialValues();
-  });
-
   readonly formDisabled = computed(() => {
-    const request = this.selectedRequest() || this.dataRequest();
+    const request = this.dataRequest();
     return (
       !!request?.stateCode &&
       request.stateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Draft
     );
   });
 
-  readonly form = computed(() => {
+  readonly form = this.createForm();
+  private createForm() {
     // Create the form with the current initialData
     const newForm = buildReactiveForm(
       DataRequestUpdateDto,
-      this.formMap(),
+      this.formMap,
       this.i18nService,
-      this.initialData() as Dto,
+      this.defaultValues() as Dto,
     );
 
     // Set up form event handlers
-    this.formMap().forEach(({ formGroupName }) => {
+    this.formMap.forEach(({ formGroupName }) => {
       const fg = newForm.get(formGroupName) as unknown as FormGroup;
-      fg.statusChanges.subscribe(() => {
-        this.updateFormSteps(formGroupName, fg.valid);
-      });
+      fg.statusChanges
+        .pipe(takeUntilDestroyed(this.destroyRef), debounceTime(400))
+        .subscribe(() => {
+          if (fg.dirty) {
+            this.updateFormSteps(formGroupName, fg.valid);
+          }
+        });
     });
 
     return newForm;
-  });
+  }
 
   formGroupDisabledEffect = effect(() => {
     const disabled = this.formDisabled();
-    const form = this.form();
+    const form = this.form;
     form.updateValueAndValidity();
 
     // disable every form group where controls are available
     if (form && disabled) {
-      this.formMap().forEach(({ formGroupName }) => {
+      form.disable({ emitEvent: false });
+      this.formMap.forEach(({ formGroupName }) => {
         const fg = form.get(formGroupName) as unknown as FormGroup;
         if (fg && Object.keys(fg.controls).length > 0) {
           fg.disable({ emitEvent: false });
         }
       });
-    }
-  });
-
-  selectedRequestEffect = effect(() => {
-    const selected = this.selectedRequest();
-
-    if (selected) {
-      // Since initialData is a computed based on selectedRequest,
-      // the form will automatically be rebuilt by the computed signal
-      this.dataRequestId.set(selected.id ?? '');
-      this.dataRequest.set(selected);
-      this.updateFormSteps();
     }
   });
 
@@ -280,7 +335,7 @@ export class DataRequestNewComponent {
     if (this.formDisabled()) return;
 
     const id = this.wizard.currentStepId();
-    const form = this.form();
+    const form = this.form;
     form.get(id)?.markAllAsTouched();
     this.updateFormSteps(id, form.get(id)?.valid ?? false);
     await this.createOrSaveDataRequest();
@@ -288,12 +343,13 @@ export class DataRequestNewComponent {
 
   async handleSubmitAndContinue() {
     this.handleSave().then(async () => {
-      const form = this.form();
+      const form = this.form;
       form.markAllAsTouched();
       this.updateFormSteps();
-      if (form.valid) {
+      const dataRequestId = this.currentDataRequestId();
+      if (form.valid && dataRequestId) {
         await this.dataRequestService
-          .submitDataRequest(this.dataRequestId())
+          .submitDataRequest(dataRequestId)
           .then((dataRequest: DataRequestDto) => {
             this.dataRequest.set(dataRequest);
             this.wizard.nextStep();
@@ -308,9 +364,9 @@ export class DataRequestNewComponent {
       }
     });
   }
-
+  // @Todo this doesn't do anyting will be extended with DIGIB2-308
   handleSaveAndComplete() {
-    const form = this.form();
+    const form = this.form;
     form.markAllAsTouched();
     if (form.invalid) {
       console.error('Form is invalid, cannot save data request');
@@ -319,19 +375,18 @@ export class DataRequestNewComponent {
   }
 
   async createOrSaveDataRequest() {
-    const form = this.form();
+    this.refreshListNeeded.set(true);
+    const form = this.form;
     const flattenForm = flattenFormGroup(form);
-
-    if (this.dataRequestId()) {
+    const dataRequestId = this.currentDataRequestId();
+    if (dataRequestId) {
       if (this.logoFile()) {
-        await this.dataRequestService
-          .uploadLogo(this.dataRequestId(), this.logoFile()!)
-          .then(() => {
-            this.logoFile.set(null);
-          });
+        await this.dataRequestService.uploadLogo(dataRequestId, this.logoFile()!).then(() => {
+          this.logoFile.set(null);
+        });
       }
       await this.dataRequestService
-        .updateDataRequestDetails(this.dataRequestId(), flattenForm)
+        .updateDataRequestDetails(dataRequestId, flattenForm)
         .then((dataRequest: DataRequestDto) => {
           this.dataRequest.set(dataRequest);
         });
@@ -339,17 +394,20 @@ export class DataRequestNewComponent {
       await this.dataRequestService
         .createDataRequest(flattenForm)
         .then(async (dataRequest: DataRequestDto) => {
-          this.dataRequestId.set(dataRequest.id!);
+          this.currentDataRequestId.set(dataRequest.id);
           this.dataRequest.set(dataRequest);
           if (this.logoFile()) {
-            await this.dataRequestService
-              .uploadLogo(this.dataRequestId(), this.logoFile()!)
-              .then(() => {
-                this.logoFile.set(null);
-              });
+            await this.dataRequestService.uploadLogo(dataRequest.id, this.logoFile()!).then(() => {
+              this.logoFile.set(null);
+            });
           }
         });
     }
+  }
+  protected handleClose() {
+    this.router.navigate([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH], {
+      state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: this.refreshListNeeded() },
+    });
   }
 
   updateFormSteps(id?: string, valid?: boolean) {
@@ -359,7 +417,7 @@ export class DataRequestNewComponent {
           return step;
         }
 
-        const form = this.form();
+        const form = this.form;
         const formGroup = form.get(step.id) as unknown as FormGroup;
 
         if (formGroup.disabled) {
@@ -383,7 +441,7 @@ export class DataRequestNewComponent {
   }
 
   private isStepCompleted(formGroup: FormGroup, formGroupName: string): boolean {
-    const stepConfig = this.formMap().find((item) => item.formGroupName === formGroupName);
+    const stepConfig = this.formMap.find((item) => item.formGroupName === formGroupName);
 
     if (!stepConfig) return false;
 
@@ -417,15 +475,15 @@ export class DataRequestNewComponent {
 
   handleSaveLogo(logo: File) {
     this.logoFile.set(logo);
-
-    if (this.dataRequestId()) {
-      this.dataRequestService.uploadLogo(this.dataRequestId(), logo).then(() => {
+    const dataRequestId = this.currentDataRequestId();
+    if (dataRequestId) {
+      this.dataRequestService.uploadLogo(dataRequestId, logo).then(() => {
         this.logoFile.set(null);
       });
     }
   }
 
   invitationLink() {
-    return `${globalThis.location.origin}/consent-requests/create/${this.dataRequestId()}`;
+    return `${globalThis.location.origin}/consent-requests/create/${this.currentDataRequestId()}`;
   }
 }
