@@ -1,3 +1,10 @@
+## [1.4.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.3.0...v1.4.0-rc.1) (2025-11-12)
+
+### Features
+
+- **deps:** update dependency node to v24 ([1decf9b](https://github.com/agridata-ch/frontend/commit/1decf9b2a58cbe7c37230fc0d0c16076910cd0f4))
+- **deps:** update renovatebot/github-action action to v44 ([59d5cd3](https://github.com/agridata-ch/frontend/commit/59d5cd3f60654950af56f221da897b5b2e1fda3f))
+
 ## [1.3.0](https://github.com/agridata-ch/frontend/compare/v1.2.1...v1.3.0) (2025-11-10)
 
 ### Features
