@@ -23,6 +23,7 @@ import { AlertType } from './alert.model';
   selector: 'app-alert',
   imports: [FontAwesomeModule, ButtonComponent],
   templateUrl: './alert.component.html',
+  host: { class: 'block' },
 })
 export class AlertComponent {
   protected readonly closeIcon = faClose;

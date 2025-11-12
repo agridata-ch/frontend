@@ -305,6 +305,10 @@
       "headline": "C'est fait !",
       "description": "Merci d'avoir choisi\u2028Vous serez redirigé automatiquement dans {{ count }} secondes.",
       "redirectNow": "Retour direct"
+    },
+    "migrationInfo": {
+      "title": "La demande de données de {{ consumerName }} est désormais disponible ici.",
+      "description": "Votre approbation pour la demande de données {{name}} a été repris de « Mon partage de données agricoles (MAF) ».\nVous trouverez la demande dans le tableau ci-dessous et pouvez modifier votre approbation si nécessaire."
     }
   },
   "countries": {
@@ -441,5 +445,6 @@
     "logoBund": {
       "altText": "Image avec drapeau suisse et inscription Confédération suisse"
     }
-  }
+  },
+  "appTitle": "Agridata"
 }

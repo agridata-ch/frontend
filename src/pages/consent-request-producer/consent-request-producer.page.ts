@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, effect, inject, input, resource, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, resource, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { faFileCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -9,7 +9,7 @@ import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ConsentRequestProducerViewDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { I18nDirective, I18nPipe } from '@/shared/i18n';
+import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
 import {
   createResourceErrorHandlerEffect,
   createResourceValueComputed,
@@ -17,6 +17,7 @@ import {
 import { ButtonComponent } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
+import { AlertComponent, AlertType } from '@/widgets/alert';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 
@@ -42,6 +43,7 @@ import { REDIRECT_TIMEOUT } from './consent-request-producer.page.model';
     ModalComponent,
     ErrorOutletComponent,
     I18nPipe,
+    AlertComponent,
   ],
   templateUrl: './consent-request-producer.page.html',
 })
@@ -51,9 +53,13 @@ export class ConsentRequestProducerPage {
   private readonly router = inject(Router);
   private readonly location = inject(Location);
   private readonly errorService = inject(ErrorHandlerService);
+  private readonly i18nService = inject(I18nService);
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
+
+  private readonly DISMISSED_MIGRATIONS_KEY = 'dismissedMigrationAlerts';
   readonly fileIcon = faFileCheck;
+  readonly AlertType = AlertType;
 
   readonly consentRequestResource = resource({
     params: () => ({ uid: this.agridataStateService.activeUid() }),
@@ -71,6 +77,18 @@ export class ConsentRequestProducerPage {
   readonly showRedirect = signal<boolean>(false);
   readonly countdownValue = signal(REDIRECT_TIMEOUT / 1000);
   readonly shouldRedirect = signal<boolean>(false);
+  private readonly dismissedMigrationIds = signal<Set<string>>(this.loadDismissedMigrationIds());
+
+  readonly locale = computed(() => this.i18nService.lang());
+
+  readonly migratedRequests = computed(() =>
+    this.consentRequestResource.value().filter((request) => request.showStateAsMigrated),
+  );
+
+  readonly visibleMigratedRequests = computed(() => {
+    const dismissedIds = this.dismissedMigrationIds();
+    return this.migratedRequests().filter((request) => !dismissedIds.has(request.id));
+  });
 
   readonly consentRequests = createResourceValueComputed(this.consentRequestResource, []);
   private readonly handleFetchConsentRequestErrorsEffect = createResourceErrorHandlerEffect(
@@ -226,6 +244,18 @@ export class ConsentRequestProducerPage {
     }
   };
 
+  closeMigrationInfo(requestId: string) {
+    const currentIds = this.dismissedMigrationIds();
+    const updatedIds = new Set(currentIds);
+    updatedIds.add(requestId);
+    this.dismissedMigrationIds.set(updatedIds);
+    this.saveDismissedMigrationIds(updatedIds);
+  }
+
+  getMigratedRequestTitle(request: ConsentRequestProducerViewDto): string {
+    return this.i18nService.useObjectTranslation(request?.dataRequest?.title);
+  }
+
   // Method to clear all timers in one place
   private clearAllTimers() {
     if (this.countdownTimer) {
@@ -236,5 +266,14 @@ export class ConsentRequestProducerPage {
       clearTimeout(this.redirectTimeout);
       this.redirectTimeout = undefined;
     }
+  }
+
+  private loadDismissedMigrationIds(): Set<string> {
+    const storedIds = localStorage.getItem(this.DISMISSED_MIGRATIONS_KEY);
+    return storedIds ? new Set(JSON.parse(storedIds)) : new Set();
+  }
+
+  private saveDismissedMigrationIds(ids: Set<string>): void {
+    localStorage.setItem(this.DISMISSED_MIGRATIONS_KEY, JSON.stringify([...ids]));
   }
 }
