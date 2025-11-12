@@ -832,7 +832,7 @@ components:
     SecurityScheme:
       type: openIdConnect
       description: Authentication
-      openIdConnectUrl: http://localhost:6999/realms/agate/.well-known/openid-configuration
+      openIdConnectUrl: https://idp-rf.agate.ch/auth/realms/agate/.well-known/openid-configuration
 tags:
 - name: Consent Requests
   description: "Provides access to consent requests for data producers, consumers,\
@@ -1836,6 +1836,6 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.1.0-rc.4
+  version: 1.2.1-rc.1
   description: "This API provides access to the agridata.ch data exchange platform,\
     \ enabling Users to discover, request, approve, and manage data sharing agreements."

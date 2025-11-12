@@ -1,10 +1,10 @@
 import { ConsentRequestService } from '@/entities/api';
-import { ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestProducerViewDto, ConsentRequestStateEnum } from '@/entities/openapi';
 import { ConsentRequestDetailViewDto } from '@/entities/openapi/model/consentRequestDetailViewDto';
 import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
 import { Mockify } from '@/shared/testing/mocks/test-model';
 
-export const mockConsentRequests: ConsentRequestDetailViewDto[] = [
+export const mockConsentRequests: ConsentRequestProducerViewDto[] = [
   {
     id: '1',
     stateCode: ConsentRequestStateEnum.Opened,
@@ -14,6 +14,7 @@ export const mockConsentRequests: ConsentRequestDetailViewDto[] = [
       title: { de: 'Antrag A' },
       stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
     },
+    showStateAsMigrated: true,
   } as ConsentRequestDetailViewDto,
   {
     id: '2',
@@ -24,6 +25,7 @@ export const mockConsentRequests: ConsentRequestDetailViewDto[] = [
       title: { de: 'Antrag B' },
       stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
     },
+    showStateAsMigrated: false,
   } as ConsentRequestDetailViewDto,
   {
     id: '3',
@@ -34,6 +36,7 @@ export const mockConsentRequests: ConsentRequestDetailViewDto[] = [
       title: { de: 'Antrag C' },
       stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
     },
+    showStateAsMigrated: true,
   } as ConsentRequestDetailViewDto,
 ];
 

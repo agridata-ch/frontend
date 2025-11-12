@@ -18,6 +18,7 @@ import {
   createMockI18nService,
   mockConsentRequests,
   MockDataRequestService,
+  MockI18nService,
 } from '@/shared/testing/mocks';
 import {
   createMockAgridataStateService,
@@ -45,6 +46,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   let mockRouter: jest.Mocked<Router>;
   let metadataService: MockMetaDataService;
   let agridataStateService: MockAgridataStateService;
+  let i18nService: MockI18nService;
   let consentRequestService: MockConsentRequestService;
   let errorService: MockErrorHandlerService;
   let dataRequestService: MockDataRequestService;
@@ -61,6 +63,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     dataRequestService = createMockDataRequestService();
     metadataService = createMockMetadataService();
     errorService = createMockErrorHandlerService();
+    i18nService = createMockI18nService();
 
     agridataStateService = createMockAgridataStateService();
     await TestBed.configureTestingModule({
@@ -69,7 +72,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
         { provide: ConsentRequestService, useValue: consentRequestService },
         { provide: Location, useValue: mockLocation },
         { provide: Router, useValue: mockRouter },
-        { provide: I18nService, useValue: createMockI18nService() },
+        { provide: I18nService, useValue: i18nService },
         { provide: DataRequestService, useValue: dataRequestService },
         { provide: MetaDataService, useValue: metadataService },
         { provide: AgridataStateService, useValue: agridataStateService },
@@ -686,8 +689,62 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     // Create a new fixture with the mocked error
     const errorFixture = TestBed.createComponent(ConsentRequestProducerPage);
     errorFixture.detectChanges();
-    await errorFixture.whenStable();
+    // whenStable may reject because the resource enters an error state; swallow that to allow assertions
+    try {
+      await errorFixture.whenStable();
+    } catch {
+      // ignore the thrown resource error — component should forward it to the error handler
+    }
 
     expect(errorService.handleError).toHaveBeenCalledWith(testError);
+  });
+
+  describe('migration info handling', () => {
+    it('should show migration alerts for migrated requests', () => {
+      jest.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(false);
+      jest.spyOn(component.consentRequestResource, 'value').mockReturnValue(mockConsentRequests);
+
+      fixture.detectChanges();
+
+      expect(component.visibleMigratedRequests()).toHaveLength(2);
+      expect(component.visibleMigratedRequests()[0]).toBe(mockConsentRequests[0]);
+      expect(component.visibleMigratedRequests()[1]).toBe(mockConsentRequests[2]);
+    });
+
+    it('should remove request from visibleMigratedRequests when closeMigrationInfo is called', () => {
+      jest.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(false);
+      jest.spyOn(component.consentRequestResource, 'value').mockReturnValue(mockConsentRequests);
+
+      fixture.detectChanges();
+
+      expect(component.visibleMigratedRequests()).toHaveLength(2);
+
+      component.closeMigrationInfo('1');
+      fixture.detectChanges();
+
+      expect(component.visibleMigratedRequests()).toHaveLength(1);
+      expect(component.visibleMigratedRequests()[0].id).toBe('3');
+    });
+
+    it('should return empty array when no migrated requests exist', () => {
+      const nonMigratedRequests = mockConsentRequests.filter((req) => !req.showStateAsMigrated);
+      jest.spyOn(component.consentRequestResource, 'value').mockReturnValue(nonMigratedRequests);
+      fixture.detectChanges();
+
+      expect(component.visibleMigratedRequests()).toHaveLength(0);
+    });
+
+    it('should return migrated request title with data request name if available', () => {
+      const migratedRequest = {
+        ...mockConsentRequests[0],
+        dataRequest: {
+          ...mockConsentRequests[0].dataRequest,
+        },
+      } as ConsentRequestProducerViewDto;
+
+      const title = component.getMigratedRequestTitle(migratedRequest);
+
+      expect(title).toBe(mockConsentRequests[0].dataRequest?.title?.de);
+    });
   });
 });
