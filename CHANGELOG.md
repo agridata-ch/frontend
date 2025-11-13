@@ -1,3 +1,9 @@
+## [1.4.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.4.0-rc.2...v1.4.0-rc.3) (2025-11-13)
+
+### Features
+
+- **consent-request-details:** show migration info ([d90f9bb](https://github.com/agridata-ch/frontend/commit/d90f9bba3da791abf4e95dd7fdd55e7130398c34)), closes [DIGIB2-720](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-720)
+
 ## [1.4.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.4.0-rc.1...v1.4.0-rc.2) (2025-11-13)
 
 ### Features
