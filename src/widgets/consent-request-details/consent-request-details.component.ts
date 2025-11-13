@@ -36,6 +36,7 @@ import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/bad
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
+import { AlertComponent, AlertType } from '@/widgets/alert';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';
 import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
 import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
@@ -62,6 +63,7 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
     DataRequestContactComponent,
     ErrorOutletComponent,
     AgridataContactCardComponent,
+    AlertComponent,
   ],
   templateUrl: './consent-request-details.component.html',
 })
@@ -84,6 +86,7 @@ export class ConsentRequestDetailsComponent {
   readonly ButtonVariants = ButtonVariants;
   readonly AvatarSize = AvatarSize;
   readonly AvatarSkin = AvatarSkin;
+  readonly AlertType = AlertType;
 
   readonly showDetails = signal(false);
   readonly requestStateCode: Signal<string> = computed(() => String(this.request()?.stateCode));
