@@ -54,6 +54,9 @@
       "requestDate": "Anfrage vom {{ date }}",
       "sidepanel": {
         "title": "Detailansicht"
+      },
+      "request": {
+        "migrated": "Übernommen aus Meine Agrardatenfreigabe - MAF"
       }
     },
     "toast": {

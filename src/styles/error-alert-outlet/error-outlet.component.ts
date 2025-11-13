@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject, signal, Signal } from '@angular/core';
+import { Component, effect, inject, signal, Signal } from '@angular/core';
 import { faClose } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 
 import { ErrorDto } from '@/app/error/error-dto';
@@ -12,7 +12,7 @@ import { ButtonVariants } from '@/shared/ui/button';
  * provides a way to close and mark all errors as handled, ensuring that users are informed of issues
  * without overwhelming them with global error messages.
  *
- * CommentLastReviewed: 2025-10-14
+ * CommentLastReviewed: 2025-11-13
  */
 @Component({
   selector: 'app-error-outlet',
@@ -20,18 +20,15 @@ import { ButtonVariants } from '@/shared/ui/button';
   templateUrl: './error-outlet.component.html',
 })
 export class ErrorOutletComponent {
-
-  private readonly destroyRef = inject(DestroyRef);
   private readonly errorService = inject(ErrorHandlerService);
 
-  private handlerId = signal<string | undefined>(undefined);
+  private readonly handlerId = signal<string | undefined>(undefined);
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly closeIcon = faClose;
 
   protected errors : Signal<ErrorDto[] > | undefined ;
 
-  readonly stuff = effect((onCleanup) => {
-
+  readonly initializeEffect = effect((onCleanup) => {
     const handlerId = this.errorService.registerHandler();
     this.handlerId.set(handlerId);
     onCleanup(() => {
@@ -52,6 +49,4 @@ export class ErrorOutletComponent {
       this.errorService.markAllErrorsOfHandlerAsHandled(handlerId);
     }
   }
-
-
 }

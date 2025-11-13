@@ -80,13 +80,4 @@ describe('AlertComponent', () => {
       expect(component.closeAlert.emit).toHaveBeenCalledWith(true);
     });
   });
-
-  describe('Content Projection', () => {
-    it('should project content into the alert', () => {
-      fixture.detectChanges();
-
-      const contentSpan = fixture.debugElement.query(By.css('span'));
-      expect(contentSpan).toBeTruthy();
-    });
-  });
 });

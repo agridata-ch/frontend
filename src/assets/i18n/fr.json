@@ -54,6 +54,9 @@
       "requestDate": "Demande du {{ date }}",
       "sidepanel": {
         "title": "Vue détaillée"
+      },
+      "request": {
+        "migrated": "Repris de Mon partage de données agricoles - MAF"
       }
     },
     "toast": {

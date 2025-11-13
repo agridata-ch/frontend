@@ -54,6 +54,9 @@
       "requestDate": "Richiesta del {{ date }}",
       "sidepanel": {
         "title": "Visualizzazione dettagliata"
+      },
+      "request": {
+        "migrated": "Tratto da La mia condivisione dei dati agricoli - MAF"
       }
     },
     "toast": {

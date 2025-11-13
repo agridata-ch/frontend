@@ -13,9 +13,7 @@
 >
   <fa-icon class="mt-1" size="xl" [icon]="alertIcon()"></fa-icon>
   <div class="flex gap-4 w-full">
-    <span class="leading-[130%] w-full">
-      <ng-content></ng-content>
-    </span>
+    <ng-content></ng-content>
     @if (showCloseButton()) {
       <app-agridata-button
         ariaLabel="common.ariaLabel.close"
