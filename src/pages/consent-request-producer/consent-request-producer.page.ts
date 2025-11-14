@@ -106,6 +106,15 @@ export class ConsentRequestProducerPage {
 
     const state = history.state;
 
+    if (state?.justCreated && state?.consentRequestId) {
+      this.consentRequestResource.reload();
+      globalThis.history.replaceState(
+        { ...(state.redirect_uri && { redirect_uri: state.redirect_uri }) },
+        '',
+        globalThis.location.href,
+      );
+    }
+
     if (state?.redirect_uri) {
       this.redirectUrl.set(state.redirect_uri);
     }

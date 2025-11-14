@@ -133,18 +133,17 @@ export class CreateConsentRequestGuard implements CanActivate {
     );
 
     if (consentRequestToOpen) {
-      if (redirectUrl) {
-        this.router.navigate(
-          [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, activeUid, consentRequestToOpen.id],
-          { state: { redirect_uri: redirectUrl } },
-        );
-        return false;
-      }
-      return this.router.createUrlTree([
-        ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
-        activeUid,
-        consentRequestToOpen.id,
-      ]);
+      const navigationState = {
+        justCreated: true,
+        consentRequestId: consentRequestToOpen.id,
+        ...(redirectUrl && { redirect_uri: redirectUrl }),
+      };
+
+      this.router.navigate(
+        [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, activeUid, consentRequestToOpen.id],
+        { state: navigationState },
+      );
+      return true;
     }
 
     return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);

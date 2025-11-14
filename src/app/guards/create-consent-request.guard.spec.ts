@@ -132,12 +132,16 @@ describe('createConsentRequestGuard', () => {
     const result = await createConsentRequestGuard.canActivate(route);
 
     expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([
-      ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
-      firstUidDto.uid,
-      testConsentRequestId,
-    ]);
-    expect(result).toBe(mockUrlTree);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(
+      [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, firstUidDto.uid, testConsentRequestId],
+      {
+        state: {
+          justCreated: true,
+          consentRequestId: testConsentRequestId,
+        },
+      },
+    );
+    expect(result).toBe(true);
   });
 
   it('when uid parameter set, should create single consent requests and redirect to it', async () => {
@@ -167,12 +171,16 @@ describe('createConsentRequestGuard', () => {
     const result = await createConsentRequestGuard.canActivate(route);
 
     expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([
-      ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
-      firstUidDto.uid,
-      testConsentRequestId,
-    ]);
-    expect(result).toBe(mockUrlTree);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(
+      [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, firstUidDto.uid, testConsentRequestId],
+      {
+        state: {
+          justCreated: true,
+          consentRequestId: testConsentRequestId,
+        },
+      },
+    );
+    expect(result).toBe(true);
   });
 
   it('should redirect to specific consent request page when a matching consent request is found with a redirectUrl', async () => {
@@ -195,9 +203,15 @@ describe('createConsentRequestGuard', () => {
     expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
     expect(mockRouter.navigate).toHaveBeenCalledWith(
       [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, testUid, testConsentRequestId],
-      { state: { redirect_uri: testRedirectUri } },
+      {
+        state: {
+          justCreated: true,
+          consentRequestId: testConsentRequestId,
+          redirect_uri: testRedirectUri,
+        },
+      },
     );
-    expect(result).toBe(false);
+    expect(result).toBe(true);
   });
 
   it('should redirect to consent requests overview when no matching consent request is found', async () => {
@@ -247,12 +261,16 @@ describe('createConsentRequestGuard', () => {
 
     expect(agridataStateService.setActiveUid).toHaveBeenCalledWith(validUid);
     expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([
-      ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
-      validUid,
-      testConsentRequestId,
-    ]);
-    expect(result).toBe(mockUrlTree);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(
+      [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, validUid, testConsentRequestId],
+      {
+        state: {
+          justCreated: true,
+          consentRequestId: testConsentRequestId,
+        },
+      },
+    );
+    expect(result).toBe(true);
   });
 
   it('should load authorized uids when userUids are not loaded and uid is provided', async () => {
@@ -281,12 +299,16 @@ describe('createConsentRequestGuard', () => {
     expect(userService.getAuthorizedUids).toHaveBeenCalled();
     expect(agridataStateService.setActiveUid).toHaveBeenCalledWith(validUid);
     expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([
-      ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
-      validUid,
-      testConsentRequestId,
-    ]);
-    expect(result).toBe(mockUrlTree);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(
+      [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, validUid, testConsentRequestId],
+      {
+        state: {
+          justCreated: true,
+          consentRequestId: testConsentRequestId,
+        },
+      },
+    );
+    expect(result).toBe(true);
   });
 
   it('should redirect to error page when an invalid uid is provided', async () => {
