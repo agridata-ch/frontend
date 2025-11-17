@@ -1,3 +1,9 @@
+## [1.4.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.4.0-rc.4...v1.4.0-rc.5) (2025-11-17)
+
+### Bug Fixes
+
+- **google-analytics:** fixes reload list when decision is reverted ([734568a](https://github.com/agridata-ch/frontend/commit/734568af903962b2c1ecd7c5d55e9a82e21a9d0b)), closes [DIGIB2-1020](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1020)
+
 ## [1.4.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.4.0-rc.3...v1.4.0-rc.4) (2025-11-17)
 
 ### Features
