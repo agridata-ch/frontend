@@ -1,3 +1,9 @@
+## [1.4.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.4.0-rc.3...v1.4.0-rc.4) (2025-11-17)
+
+### Features
+
+- **google-analytics:** adds titles ([8c6fb81](https://github.com/agridata-ch/frontend/commit/8c6fb81f784feb972176a30d028a22447b64c697)), closes [DIGIB2-1020](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1020)
+
 ## [1.4.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.4.0-rc.2...v1.4.0-rc.3) (2025-11-13)
 
 ### Features
