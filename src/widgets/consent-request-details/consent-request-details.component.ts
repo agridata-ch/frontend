@@ -90,7 +90,9 @@ export class ConsentRequestDetailsComponent {
   readonly showRedirect = signal<boolean>(false);
   readonly countdownValue = signal(REDIRECT_TIMEOUT / 1000);
   readonly shouldRedirect = signal<boolean>(false);
-  readonly refreshListNeeded = signal(false);
+  private readonly refreshListNeeded = signal(false);
+  // this is primarily needed if the details screen is already closed and the user decides to undo (making sure the list reloads then)
+  private readonly onSameNavigationReload = signal(false);
 
   // Store timers at class level so they can be accessed and cleared from anywhere
   private countdownTimer?: ReturnType<typeof setInterval>;
@@ -239,6 +241,7 @@ export class ConsentRequestDetailsComponent {
       this.router
         .navigate(['../'], {
           relativeTo: this.activeRoute,
+          onSameUrlNavigation: this.onSameNavigationReload() ? 'reload' : 'ignore',
           state: { [FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM]: this.refreshListNeeded() },
         })
         .then();
@@ -304,6 +307,7 @@ export class ConsentRequestDetailsComponent {
   prepareUndoAction(id: string, stateCode: string) {
     return getUndoAction(() => {
       this.toastService.show(this.i18nService.translate(getToastTitle('')), '');
+      this.onSameNavigationReload.set(true);
       this.updateAndReloadConsentRequestState(id, stateCode);
     });
   }
