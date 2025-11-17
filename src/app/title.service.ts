@@ -8,28 +8,27 @@ import { I18nService } from '@/shared/i18n';
 
 /**
  * Service to manage and set the document title based on the current route and language.
- * CommentLastReviewed: 2025-11-12
+ * CommentLastReviewed: 2025-11-17
  */
 @Injectable({
   providedIn: 'root',
 })
 export class TitleService {
+  // Injects
   private readonly htmlTitle = inject(Title);
   private readonly i18nService = inject(I18nService);
-  private readonly route = signal<string | undefined>(undefined);
-  // used to store current translation key, so it can be translated on language change
+
+  // Signals
   private readonly i18nTitle = signal<string | undefined>(undefined);
+  private readonly route = signal<string | undefined>(undefined);
   private readonly translatedTitle = signal<string | undefined>(undefined);
-  roTranslatedTitle = this.translatedTitle.asReadonly();
-  ro18nTitle = this.i18nTitle.asReadonly();
-  roRoute = this.route.asReadonly();
 
-  private readonly updateTitleOnLangChangeEffect = effect(() => {
-    if (this.i18nService.lang()) {
-      this.updateTranslatedTitle();
-    }
-  });
+  // Computed Signals
+  readonly ro18nTitle = this.i18nTitle.asReadonly();
+  readonly roRoute = this.route.asReadonly();
+  readonly roTranslatedTitle = this.translatedTitle.asReadonly();
 
+  // Effects
   private readonly updateHtmlTitleEffect = effect(() => {
     const title = this.translatedTitle();
     const route = untracked(() => this.route());
@@ -44,7 +43,18 @@ export class TitleService {
     }
   });
 
-  setPageTitleByRoute(url: string, i18nTitle: string | undefined) {
+  private readonly updateTitleOnLangChangeEffect = effect(() => {
+    if (this.i18nService.lang()) {
+      this.updateTranslatedTitle();
+    }
+  });
+
+  setI18nTitle(i18n: string | undefined): void {
+    this.i18nTitle.set(i18n);
+    this.updateTranslatedTitle();
+  }
+
+  setPageTitleByRoute(url: string, i18nTitle: string | undefined): void {
     this.route.set(url);
 
     // cms will set title based on page content
@@ -59,19 +69,14 @@ export class TitleService {
     this.setI18nTitle(i18nTitle);
   }
 
-  setI18nTitle(i18n: string | undefined) {
-    this.i18nTitle.set(i18n);
-    this.updateTranslatedTitle();
-  }
-
-  setTranslatedTitle(title: string | undefined) {
+  setTranslatedTitle(title: string | undefined): void {
     if (!title) {
       return;
     }
     this.translatedTitle.set(title);
   }
 
-  private updateTranslatedTitle() {
+  private updateTranslatedTitle(): void {
     const i18nTitle = this.i18nTitle();
     if (!i18nTitle) {
       return;

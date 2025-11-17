@@ -49,94 +49,67 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
  * Implements the logic for displaying detailed consent request information. It renders metadata
  * such as dates, state, consumer identity, description, purpose, and related products. The
  * component supports approving or rejecting requests, provides undo actions, and displays
- * contextual toast notifications.
+ * contextual toast notifications. When a valid redirect URI is provided, the component shows
+ * a modal with a countdown timer before automatically redirecting the user to the specified URL.
  *
- * CommentLastReviewed: 2025-09-30
+ * CommentLastReviewed: 2025-11-17
  */
 @Component({
   selector: 'app-consent-request-details',
   imports: [
-    FontAwesomeModule,
-    DataRequestPurposeAccordionComponent,
     AgridataBadgeComponent,
-    I18nPipe,
-    I18nDirective,
-    SidepanelComponent,
-    ButtonComponent,
-    DataRequestPrivacyInfosComponent,
-    DataRequestContactComponent,
-    ErrorOutletComponent,
     AgridataContactCardComponent,
     AlertComponent,
+    ButtonComponent,
+    DataRequestContactComponent,
+    DataRequestPrivacyInfosComponent,
+    DataRequestPurposeAccordionComponent,
+    ErrorOutletComponent,
+    FontAwesomeModule,
+    I18nDirective,
+    I18nPipe,
     ModalComponent,
+    SidepanelComponent,
   ],
   templateUrl: './consent-request-details.component.html',
 })
 export class ConsentRequestDetailsComponent {
-  public readonly agridataStateService = inject(AgridataStateService);
-  private readonly toastService = inject(ToastService);
-  private readonly consentRequestService = inject(ConsentRequestService);
-  private readonly metaDataService = inject(MetaDataService);
-  private readonly i18nService = inject(I18nService);
-  private readonly analyticsService = inject(AnalyticsService);
-  private readonly errorService = inject(ErrorHandlerService);
-  private readonly router = inject(Router);
+  // Injects
+  protected readonly agridataStateService = inject(AgridataStateService);
   private readonly activeRoute = inject(ActivatedRoute);
+  private readonly analyticsService = inject(AnalyticsService);
+  private readonly consentRequestService = inject(ConsentRequestService);
+  private readonly errorService = inject(ErrorHandlerService);
+  private readonly i18nService = inject(I18nService);
+  private readonly metaDataService = inject(MetaDataService);
+  private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
 
-  // input from route parameter :consentRequestId
+  // Input properties
   readonly consentRequestId = input<string | undefined>();
 
-  readonly redirectUrl = signal<string | null>(null);
-  readonly showRedirect = signal<boolean>(false);
-  readonly countdownValue = signal(REDIRECT_TIMEOUT / 1000);
-  readonly shouldRedirect = signal<boolean>(false);
-  private readonly refreshListNeeded = signal(false);
-  // this is primarily needed if the details screen is already closed and the user decides to undo (making sure the list reloads then)
-  private readonly onSameNavigationReload = signal(false);
+  // Constants
+  protected readonly AlertType = AlertType;
+  protected readonly AvatarSize = AvatarSize;
+  protected readonly AvatarSkin = AvatarSkin;
+  protected readonly badgeSize = BadgeSize;
+  protected readonly ButtonVariants = ButtonVariants;
+  protected readonly consentRequestStateEnum = ConsentRequestStateEnum;
 
-  // Store timers at class level so they can be accessed and cleared from anywhere
+  // Timers
   private countdownTimer?: ReturnType<typeof setInterval>;
   private redirectTimeout?: ReturnType<typeof setTimeout>;
 
-  readonly badgeSize = BadgeSize;
-  readonly consentRequestStateEnum = ConsentRequestStateEnum;
-  readonly ButtonVariants = ButtonVariants;
-  readonly AvatarSize = AvatarSize;
-  readonly AvatarSkin = AvatarSkin;
-  readonly AlertType = AlertType;
+  // Signals
+  protected readonly countdownValue = signal(REDIRECT_TIMEOUT / 1000);
+  protected readonly redirectUrl = signal<string | null>(null);
+  protected readonly shouldRedirect = signal<boolean>(false);
+  protected readonly showRedirect = signal<boolean>(false);
+  private readonly onSameNavigationReload = signal(false);
+  private readonly refreshListNeeded = signal(false);
 
-  readonly requestStateCode: Signal<string> = computed(() => String(this.request()?.stateCode));
-
-  readonly currentLanguage = computed(() => this.i18nService.lang());
-  readonly requestId = computed(() => this.request()?.id);
-  readonly formattedRequestDate = computed(() => formatDate(this.request()?.requestDate));
-  readonly formattedLastStateChangeDate = computed(() =>
-    formatDate(this.request()?.lastStateChangeDate),
-  );
-  readonly dataConsumerName = computed(() => this.request()?.dataRequest?.dataConsumerDisplayName);
-  readonly requestConsumerLogo = computed(
-    () => this.request()?.dataRequest?.dataConsumerLogoBase64,
-  );
-  readonly dataConsumerCity = computed(() => this.request()?.dataRequest?.dataConsumerCity);
-
-  readonly requestTitle = computed(() =>
-    this.i18nService.useObjectTranslation(this.request()?.dataRequest?.title),
-  );
-  readonly requestDescription = computed(() =>
-    this.i18nService.useObjectTranslation(this.request()?.dataRequest?.description),
-  );
-  readonly requestPurpose = computed(() => {
-    const purpose = this.request()?.dataRequest?.purpose;
-    return (
-      (purpose as Record<string, string>)?.[this.currentLanguage()] ?? ('' as DataRequestPurposeDto)
-    );
-  });
-  readonly requestProducts = computed(() =>
-    this.metaDataService
-      .getDataProducts()()
-      ?.filter((product) => this.request()?.dataRequest?.products?.includes(product.id)),
-  );
-  readonly badgeText = computed(() => {
+  // Computed Signals
+  protected readonly badgeText = computed(() => {
     const stateCode = this.request()?.stateCode;
     if (stateCode === ConsentRequestStateEnum.Opened)
       return { key: 'consent-request.details.stateCode.OPENED' };
@@ -153,14 +126,13 @@ export class ConsentRequestDetailsComponent {
 
     return { key: 'consent-request.details.stateCode.UNKNOWN' };
   });
-  readonly badgeVariant = computed(() => {
+  protected readonly badgeVariant = computed(() => {
     const stateCode = this.request()?.stateCode;
     if (stateCode === ConsentRequestStateEnum.Opened) return BadgeVariant.INFO;
     if (stateCode === ConsentRequestStateEnum.Granted) return BadgeVariant.SUCCESS;
     if (stateCode === ConsentRequestStateEnum.Declined) return BadgeVariant.ERROR;
     return BadgeVariant.DEFAULT;
   });
-
   protected readonly consentRequestResource = resource({
     params: () => ({ id: this.consentRequestId() }),
     loader: ({ params }) => {
@@ -170,18 +142,47 @@ export class ConsentRequestDetailsComponent {
       return this.consentRequestService.fetchConsentRequest(params.id);
     },
   });
-
-  private readonly errorHandlerEffect = createResourceErrorHandlerEffect(
-    this.consentRequestResource,
-    this.errorService,
+  protected readonly currentLanguage = computed(() => this.i18nService.lang());
+  protected readonly dataConsumerCity = computed(
+    () => this.request()?.dataRequest?.dataConsumerCity,
+  );
+  protected readonly dataConsumerName = computed(
+    () => this.request()?.dataRequest?.dataConsumerDisplayName,
+  );
+  protected readonly formattedLastStateChangeDate = computed(() =>
+    formatDate(this.request()?.lastStateChangeDate),
+  );
+  protected readonly formattedRequestDate = computed(() => formatDate(this.request()?.requestDate));
+  protected readonly request = createResourceValueComputed(this.consentRequestResource);
+  protected readonly requestConsumerLogo = computed(
+    () => this.request()?.dataRequest?.dataConsumerLogoBase64,
+  );
+  protected readonly requestDescription = computed(() =>
+    this.i18nService.useObjectTranslation(this.request()?.dataRequest?.description),
+  );
+  protected readonly requestId = computed(() => this.request()?.id);
+  protected readonly requestProducts = computed(() =>
+    this.metaDataService
+      .getDataProducts()()
+      ?.filter((product) => this.request()?.dataRequest?.products?.includes(product.id)),
+  );
+  protected readonly requestPurpose = computed(() => {
+    const purpose = this.request()?.dataRequest?.purpose;
+    return (
+      (purpose as Record<string, string>)?.[this.currentLanguage()] ?? ('' as DataRequestPurposeDto)
+    );
+  });
+  protected readonly requestStateCode: Signal<string> = computed(() =>
+    String(this.request()?.stateCode),
+  );
+  protected readonly requestTitle = computed(() =>
+    this.i18nService.useObjectTranslation(this.request()?.dataRequest?.title),
   );
 
-  readonly request = createResourceValueComputed(this.consentRequestResource);
-
+  // Effects
   private readonly checkForRedirectEffect = effect(() => {
     const request = this.request();
-    const redirectUri = history.state?.redirect_uri;
-
+    const redirectUri = this.activeRoute.snapshot.queryParamMap.get('redirect_uri') ?? undefined;
     if (redirectUri) {
       this.redirectUrl.set(redirectUri);
       const redirectUrlPattern = request?.dataRequest?.validRedirectUriRegex;
@@ -214,7 +215,11 @@ export class ConsentRequestDetailsComponent {
       }
     }
   });
-  readonly startTimerEffect = effect((onCleanup) => {
+  private readonly errorHandlerEffect = createResourceErrorHandlerEffect(
+    this.consentRequestResource,
+    this.errorService,
+  );
+  private readonly startTimerEffect = effect((onCleanup) => {
     this.clearAllTimers();
     if (this.showRedirect()) {
       this.startCountdown();
@@ -236,7 +241,11 @@ export class ConsentRequestDetailsComponent {
     }
   });
 
-  handleCloseDetails() {
+  protected async acceptRequest(): Promise<void> {
+    await this.changeConsentRequestState(ConsentRequestStateEnum.Granted);
+  }
+
+  protected handleCloseDetails(): void {
     if (!this.shouldRedirect()) {
       this.router
         .navigate(['../'], {
@@ -248,63 +257,48 @@ export class ConsentRequestDetailsComponent {
     }
   }
 
-  async acceptRequest() {
-    const id = this.requestId();
-    if (!id) {
-      throw new Error('unable to accept consent request: missing id');
+  protected readonly redirectDirectly = (): void => {
+    const url = this.redirectUrl();
+    if (url) {
+      this.clearAllTimers();
+      this.resetRedirect();
+      globalThis.location.href = url;
     }
-    this.analyticsService.logEvent('consent_request_state_changed', {
-      id: this.requestId(),
-      state: ConsentRequestStateEnum.Granted,
-      component: 'details',
-    });
-    this.refreshListNeeded.set(true);
-    await this.updateAndReloadConsentRequestState(id, ConsentRequestStateEnum.Granted);
-    this.showRedirect.set(this.shouldRedirect());
-    if (!this.shouldRedirect()) {
-      this.toastService.show(
-        this.i18nService.translate(getToastTitle(ConsentRequestStateEnum.Granted)),
-        this.i18nService.translate(getToastMessage(ConsentRequestStateEnum.Granted), {
-          name: this.requestTitle(),
-        }),
-        getToastType(ConsentRequestStateEnum.Granted),
-        this.prepareUndoAction(id, this.requestStateCode()),
-      );
-    }
+  };
+
+  protected async rejectRequest(): Promise<void> {
+    await this.changeConsentRequestState(ConsentRequestStateEnum.Declined);
   }
 
-  async rejectRequest() {
+  private async changeConsentRequestState(newState: ConsentRequestStateEnum): Promise<void> {
     const id = this.requestId();
     if (!id) {
-      throw new Error('unable to reject consent request: missing id');
+      throw new Error(
+        `unable to ${newState === ConsentRequestStateEnum.Granted ? 'accept' : 'reject'} consent request: missing id`,
+      );
     }
 
     this.analyticsService.logEvent('consent_request_state_changed', {
       id: id,
-      state: ConsentRequestStateEnum.Declined,
+      state: newState,
       component: 'details',
     });
     this.refreshListNeeded.set(true);
-    await this.updateAndReloadConsentRequestState(id, ConsentRequestStateEnum.Declined);
+    await this.updateAndReloadConsentRequestState(id, newState);
+    this.showRedirect.set(this.shouldRedirect());
     if (!this.shouldRedirect()) {
-      const toastTitle = this.i18nService.translate(
-        getToastTitle(ConsentRequestStateEnum.Declined),
-      );
-      const toastMessage = this.i18nService.translate(
-        getToastMessage(ConsentRequestStateEnum.Declined),
-        { name: this.requestTitle() },
-      );
-      const toastType = getToastType(ConsentRequestStateEnum.Declined);
       this.toastService.show(
-        toastTitle,
-        toastMessage,
-        toastType,
+        this.i18nService.translate(getToastTitle(newState)),
+        this.i18nService.translate(getToastMessage(newState), {
+          name: this.requestTitle(),
+        }),
+        getToastType(newState),
         this.prepareUndoAction(id, this.requestStateCode()),
       );
     }
   }
 
-  prepareUndoAction(id: string, stateCode: string) {
+  private prepareUndoAction(id: string, stateCode: string) {
     return getUndoAction(() => {
       this.toastService.show(this.i18nService.translate(getToastTitle('')), '');
       this.onSameNavigationReload.set(true);
@@ -312,21 +306,31 @@ export class ConsentRequestDetailsComponent {
     });
   }
 
-  async updateAndReloadConsentRequestState(id: string, stateCode: string) {
+  private async updateAndReloadConsentRequestState(id: string, stateCode: string): Promise<void> {
     await this.consentRequestService.updateConsentRequestStatus(id, stateCode);
     this.consentRequestResource?.reload();
     this.refreshListNeeded.set(true);
     this.handleCloseDetails();
   }
 
-  private readonly resetRedirect = () => {
+  private clearAllTimers(): void {
+    if (this.countdownTimer) {
+      clearInterval(this.countdownTimer);
+      this.countdownTimer = undefined;
+    }
+    if (this.redirectTimeout) {
+      clearTimeout(this.redirectTimeout);
+      this.redirectTimeout = undefined;
+    }
+  }
+
+  private readonly resetRedirect = (): void => {
     this.redirectUrl.set(null);
     this.shouldRedirect.set(false);
     this.showRedirect.set(false);
   };
 
   private startCountdown(): void {
-    // Clear any existing countdown timer first
     if (this.countdownTimer) {
       clearInterval(this.countdownTimer);
     }
@@ -343,27 +347,5 @@ export class ConsentRequestDetailsComponent {
         this.countdownValue.set(currentValue - 1);
       }
     }, 1000);
-  }
-
-  redirectDirectly = () => {
-    const url = this.redirectUrl();
-    if (url) {
-      // Make sure to clear timers before redirecting
-      this.clearAllTimers();
-      this.resetRedirect();
-      globalThis.location.href = url;
-    }
-  };
-
-  // Method to clear all timers in one place
-  private clearAllTimers() {
-    if (this.countdownTimer) {
-      clearInterval(this.countdownTimer);
-      this.countdownTimer = undefined;
-    }
-    if (this.redirectTimeout) {
-      clearTimeout(this.redirectTimeout);
-      this.redirectTimeout = undefined;
-    }
   }
 }

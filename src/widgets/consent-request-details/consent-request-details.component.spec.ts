@@ -3,7 +3,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, ParamMap, Router } from '@angular/router';
 
 import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
@@ -42,11 +42,19 @@ describe('ConsentRequestDetailsComponent', () => {
   let agridataStateService: MockAgridataStateService;
   let errorService: MockErrorHandlerService;
   let mockRouter: Router;
+  let activeRoute: ActivatedRoute;
   beforeEach(async () => {
     toastService = { show: jest.fn() };
     agridataStateService = createMockAgridataStateService();
     consentRequestService = createMockConsentRequestService();
     errorService = createMockErrorHandlerService();
+    activeRoute = {
+      snapshot: {
+        queryParamMap: {
+          get: jest.fn().mockReturnValue('stuff'),
+        } as unknown as ParamMap,
+      } as unknown as ActivatedRouteSnapshot,
+    } as unknown as ActivatedRoute;
     mockRouter = {
       navigate: jest.fn().mockResolvedValue(true),
     } as unknown as jest.Mocked<Router>;
@@ -68,7 +76,7 @@ describe('ConsentRequestDetailsComponent', () => {
         { provide: AgridataStateService, useValue: agridataStateService },
         { provide: AnalyticsService, useValue: createMockAnalyticsService() },
         { provide: ErrorHandlerService, useValue: errorService },
-        { provide: ActivatedRoute, useValue: {} },
+        { provide: ActivatedRoute, useValue: activeRoute },
         { provide: Router, useValue: mockRouter },
       ],
     }).compileComponents();
@@ -93,7 +101,7 @@ describe('ConsentRequestDetailsComponent', () => {
 
   it('handleCloseDetails routes back to parent component', () => {
     const navSpy = jest.spyOn(mockRouter, 'navigate');
-    component.handleCloseDetails();
+    component['handleCloseDetails']();
     expect(navSpy).toHaveBeenCalled();
   });
 
@@ -115,7 +123,7 @@ describe('ConsentRequestDetailsComponent', () => {
     const resourceSpy = jest.spyOn(component['consentRequestResource'], 'reload');
     await fixture.whenStable();
 
-    await component.acceptRequest();
+    await component['acceptRequest']();
 
     expect(toastService.show).toHaveBeenCalled();
     expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith('1', 'GRANTED');
@@ -130,7 +138,7 @@ describe('ConsentRequestDetailsComponent', () => {
     const resourceSpy = jest.spyOn(component['consentRequestResource'], 'reload');
     await fixture.whenStable();
 
-    await component.rejectRequest();
+    await component['rejectRequest']();
 
     expect(toastService.show).toHaveBeenCalled();
     expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith('1', 'DECLINED');
@@ -160,11 +168,9 @@ describe('ConsentRequestDetailsComponent', () => {
   describe('checkForRedirect', () => {
     it('should set shouldRedirect to true when redirectUrl matches the regex pattern', async () => {
       const testRedirectUrl = 'https://valid-external-redirect.com';
-      const originalState = window.history.state;
-      Object.defineProperty(window.history, 'state', {
-        configurable: true,
-        get: () => ({ redirect_uri: testRedirectUrl }),
-      });
+      activeRoute.snapshot.queryParamMap.get = jest.fn().mockReturnValue(testRedirectUrl);
+      fixture.detectChanges();
+
       const mockRequest = {
         ...mockConsentRequests[0],
         dataRequest: {
@@ -180,19 +186,16 @@ describe('ConsentRequestDetailsComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
 
-      expect(component.shouldRedirect()).toBe(true);
-      window.history.replaceState(originalState, '', window.location.href);
+      expect(component['shouldRedirect']()).toBe(true);
     });
 
     it('should reset redirect when redirectUrlPattern is missing', async () => {
       const testRedirectUrl = 'https://valid-external-redirect.com';
-      component.redirectUrl.set(testRedirectUrl);
-      component.shouldRedirect.set(true);
-      const originalState = window.history.state;
-      Object.defineProperty(window.history, 'state', {
-        configurable: true,
-        get: () => ({ redirect_uri: testRedirectUrl }),
-      });
+      activeRoute.snapshot.queryParamMap.get = jest.fn().mockReturnValue(testRedirectUrl);
+      fixture.detectChanges();
+
+      component['shouldRedirect'].set(true);
+
       const mockRequest = {
         ...mockConsentRequests[0],
         dataRequest: {
@@ -206,20 +209,17 @@ describe('ConsentRequestDetailsComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
 
-      expect(component.shouldRedirect()).toBe(false);
-      expect(component.redirectUrl()).toBeNull();
-      window.history.replaceState(originalState, '', window.location.href);
+      expect(component['shouldRedirect']()).toBe(false);
+      expect(component['redirectUrl']()).toBeNull();
     });
 
     it('should reset redirect when regex does not match', async () => {
       const testRedirectUrl = 'https://invalid-domain.com';
-      component.redirectUrl.set(testRedirectUrl);
-      component.shouldRedirect.set(true);
-      const originalState = window.history.state;
-      Object.defineProperty(window.history, 'state', {
-        configurable: true,
-        get: () => ({ redirect_uri: testRedirectUrl }),
-      });
+      activeRoute.snapshot.queryParamMap.get = jest.fn().mockReturnValue(testRedirectUrl);
+      fixture.detectChanges();
+
+      component['shouldRedirect'].set(true);
+
       const mockRequest = {
         ...mockConsentRequests[0],
         dataRequest: {
@@ -234,20 +234,17 @@ describe('ConsentRequestDetailsComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
 
-      expect(component.shouldRedirect()).toBe(false);
-      expect(component.redirectUrl()).toBeNull();
-      window.history.replaceState(originalState, '', window.location.href);
+      expect(component['shouldRedirect']()).toBe(false);
+      expect(component['redirectUrl']()).toBeNull();
     });
 
     it('should handle invalid regex pattern and reset redirect', async () => {
       const testRedirectUrl = 'https://valid-external-redirect.com';
-      component.redirectUrl.set(testRedirectUrl);
-      component.shouldRedirect.set(true);
-      const originalState = window.history.state;
-      Object.defineProperty(window.history, 'state', {
-        configurable: true,
-        get: () => ({ redirect_uri: testRedirectUrl }),
-      });
+      activeRoute.snapshot.queryParamMap.get = jest.fn().mockReturnValue(testRedirectUrl);
+      fixture.detectChanges();
+
+      component['shouldRedirect'].set(true);
+
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
       const mockRequest = {
         ...mockConsentRequests[0],
@@ -263,12 +260,11 @@ describe('ConsentRequestDetailsComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
 
-      expect(component.shouldRedirect()).toBe(false);
-      expect(component.redirectUrl()).toBeNull();
+      expect(component['shouldRedirect']()).toBe(false);
+      expect(component['redirectUrl']()).toBeNull();
       expect(consoleWarnSpy).toHaveBeenCalled();
 
       consoleWarnSpy.mockRestore();
-      window.history.replaceState(originalState, '', window.location.href);
     });
   });
 
@@ -276,8 +272,8 @@ describe('ConsentRequestDetailsComponent', () => {
     it('should start timers if showRedirect active', () => {
       const testRedirectUrl = 'https://test-redirect.com';
 
-      component.redirectUrl.set(testRedirectUrl);
-      component.showRedirect.set(true);
+      component['redirectUrl'].set(testRedirectUrl);
+      component['showRedirect'].set(true);
 
       TestBed.tick();
 
@@ -295,8 +291,8 @@ describe('ConsentRequestDetailsComponent', () => {
         value: { href: '' },
       });
       const testRedirectUrl = 'https://test-redirect-with-timeout.com';
-      component.redirectUrl.set(testRedirectUrl);
-      component.showRedirect.set(true);
+      component['redirectUrl'].set(testRedirectUrl);
+      component['showRedirect'].set(true);
 
       TestBed.tick();
 
@@ -323,58 +319,46 @@ describe('ConsentRequestDetailsComponent', () => {
     });
 
     it('should decrement countdown value correctly', () => {
-      const initialValue = component.countdownValue();
-      component.showRedirect.set(true);
+      const initialValue = component['countdownValue']();
+      component['showRedirect'].set(true);
 
       TestBed.tick();
 
-      expect(component.countdownValue()).toBe(initialValue);
+      expect(component['countdownValue']()).toBe(initialValue);
 
       jest.advanceTimersByTime(1000);
       fixture.detectChanges();
 
-      expect(component.countdownValue()).toBe(initialValue - 1);
+      expect(component['countdownValue']()).toBe(initialValue - 1);
 
       jest.advanceTimersByTime(1000);
       fixture.detectChanges();
 
-      expect(component.countdownValue()).toBe(initialValue - 2);
+      expect(component['countdownValue']()).toBe(initialValue - 2);
     });
 
     it('should clear the interval when countdown reaches 0', () => {
       jest.useRealTimers();
       jest.useFakeTimers();
-      component.showRedirect.set(true);
-
-      // The component has a default value of 5 (from REDIRECT_TIMEOUT/1000)
-      // Let's create a spy for the redirectDirectly method
-      const redirectDirectlySpy = jest
-        .spyOn(component, 'redirectDirectly')
-        .mockImplementation(() => {});
+      component['showRedirect'].set(true);
 
       TestBed.tick();
 
-      const initialValue = component.countdownValue();
+      const initialValue = component['countdownValue']();
 
       jest.advanceTimersByTime(initialValue * 1000);
 
       // We don't need to check for 0 since the timer doesn't set to exactly 0 in the component
       // It stops decrementing when currentValue <= 1
-      expect(component.countdownValue()).toBe(1);
-
-      // Component doesn't automatically call redirectDirectly, this happens in the effect
-      // So we shouldn't expect it to be called here
-      expect(redirectDirectlySpy).not.toHaveBeenCalled();
-
-      redirectDirectlySpy.mockRestore();
+      expect(component['countdownValue']()).toBe(1);
     });
 
     it('should clear the interval when starting with countdown value 1', () => {
       jest.useRealTimers();
       jest.useFakeTimers();
-      component.showRedirect.set(true);
+      component['showRedirect'].set(true);
 
-      component.countdownValue.set(1);
+      component['countdownValue'].set(1);
 
       const originalSetInterval = window.setInterval;
       const mockSetInterval = jest.fn().mockReturnValue(123);
@@ -386,12 +370,12 @@ describe('ConsentRequestDetailsComponent', () => {
 
       TestBed.tick();
 
-      expect(component.countdownValue()).not.toBe(1);
+      expect(component['countdownValue']()).not.toBe(1);
 
       // Since we're mocking the timer functions, we need to manually call the timer callback
       const timerCallback = mockSetInterval.mock.calls[0][0];
 
-      component.countdownValue.set(1);
+      component['countdownValue'].set(1);
 
       timerCallback();
 
@@ -403,10 +387,10 @@ describe('ConsentRequestDetailsComponent', () => {
 
     it('should perform redirect when redirectDirectly is called', () => {
       jest.useRealTimers();
-      component.showRedirect.set(true);
+      component['showRedirect'].set(true);
 
       const testRedirectUrl = 'https://test-redirect-flow.com';
-      component.redirectUrl.set(testRedirectUrl);
+      component['redirectUrl'].set(testRedirectUrl);
 
       const locationHrefSetter = jest.fn();
       const originalLocation = window.location;
@@ -426,7 +410,7 @@ describe('ConsentRequestDetailsComponent', () => {
         configurable: true,
       });
 
-      component.redirectDirectly();
+      component['redirectDirectly']();
 
       expect(locationHrefSetter).toHaveBeenCalledWith(testRedirectUrl);
 
@@ -439,15 +423,15 @@ describe('ConsentRequestDetailsComponent', () => {
     it('should decrement countdown correctly when startCountdown is called', () => {
       jest.useRealTimers();
       jest.useFakeTimers();
-      component.showRedirect.set(true);
+      component['showRedirect'].set(true);
 
       TestBed.tick();
 
-      const initialValue = component.countdownValue();
+      const initialValue = component['countdownValue']();
 
       jest.advanceTimersByTime(1000);
 
-      expect(component.countdownValue()).toBe(initialValue - 1);
+      expect(component['countdownValue']()).toBe(initialValue - 1);
 
       jest.useRealTimers();
     });
@@ -456,8 +440,8 @@ describe('ConsentRequestDetailsComponent', () => {
   describe('redirectDirectly', () => {
     it('should redirect to the URL in redirectUrl signal', () => {
       const testRedirectUrl = 'https://test-direct-redirect.com';
-      component.showRedirect.set(true);
-      component.redirectUrl.set(testRedirectUrl);
+      component['showRedirect'].set(true);
+      component['redirectUrl'].set(testRedirectUrl);
 
       const locationHrefSetter = jest.fn();
       const originalLocation = window.location;
@@ -477,7 +461,7 @@ describe('ConsentRequestDetailsComponent', () => {
         configurable: true,
       });
 
-      component.redirectDirectly();
+      component['redirectDirectly']();
 
       expect(locationHrefSetter).toHaveBeenCalledWith(testRedirectUrl);
 
@@ -488,8 +472,8 @@ describe('ConsentRequestDetailsComponent', () => {
     });
 
     it('should not redirect when redirectUrl is null', () => {
-      component.redirectUrl.set(null);
-      component.showRedirect.set(true);
+      component['redirectUrl'].set(null);
+      component['showRedirect'].set(true);
 
       const locationHrefSetter = jest.fn();
       const originalLocation = window.location;
@@ -509,7 +493,7 @@ describe('ConsentRequestDetailsComponent', () => {
         configurable: true,
       });
 
-      component.redirectDirectly();
+      component['redirectDirectly']();
 
       expect(locationHrefSetter).not.toHaveBeenCalled();
 
