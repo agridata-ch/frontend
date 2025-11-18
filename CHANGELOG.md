@@ -1,3 +1,9 @@
+## [1.4.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.4.0-rc.5...v1.4.0-rc.6) (2025-11-18)
+
+### Bug Fixes
+
+- **consent-details:** fixes detail not opening after user logged in ([ab5e78d](https://github.com/agridata-ch/frontend/commit/ab5e78d63743854db6c96f4bfc44511aec40b53a)), closes [DIGIB2-1042](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1042)
+
 ## [1.4.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.4.0-rc.4...v1.4.0-rc.5) (2025-11-17)
 
 ### Bug Fixes
