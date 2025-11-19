@@ -282,3 +282,55 @@ export function flattenFormGroup(formGroup: FormGroup, skipTopLevel = true) {
 export function getFormControl(form: FormGroup, key: string) {
   return form.get(key) as FormControl;
 }
+
+/**
+ * Populates a FormGroup with values from a DTO based on the provided field mappings.
+ * Supports nested fields up to one level deep (e.g., 'title.de').
+ *
+ * @param form The FormGroup to populate
+ * @param dto The data transfer object containing the values
+ * @param fieldMaps Array of field mappings defining which fields belong to which form groups
+ * @param emitEvent Whether to emit events when setting values (default: false)
+ */
+export function populateFormFromDto<T extends Dto>(
+  form: FormGroup,
+  dto: T | undefined,
+  fieldMaps: FieldMap[],
+  emitEvent = true,
+) {
+  if (!dto) {
+    return;
+  }
+
+  fieldMaps.forEach((item) => {
+    const fg = form.get(item.formGroupName) as FormGroup | null;
+    if (!fg) {
+      return;
+    }
+
+    item.fields.forEach((field) => {
+      const parts = field.split('.');
+      if (parts.length > 2) {
+        console.error(
+          `Field ${field} has more than one dot, nested fields deeper than one level are not supported yet.`,
+        );
+        return;
+      }
+
+      let value = (dto as unknown as Dto)[parts[0]];
+      let controlField = fg.get(parts[0]);
+
+      if (parts.length > 1 && controlField) {
+        if (!value) {
+          return;
+        }
+        value = (value as unknown as Dto)[parts[1]];
+        controlField = controlField.get(parts[1]);
+      }
+
+      if (controlField) {
+        controlField.setValue(value, { emitEvent });
+      }
+    });
+  });
+}

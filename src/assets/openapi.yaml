@@ -89,6 +89,7 @@ components:
         dataRequest:
           type: object
           required:
+          - id
           - stateCode
           description: Details of the underlying data request
           properties:
@@ -282,6 +283,7 @@ components:
     DataRequestDto:
       type: object
       required:
+      - id
       - stateCode
       description: Details of the underlying data request
       properties:
@@ -951,6 +953,47 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Einwilliger
+  /api/agreement/v1/consent-requests/{id}:
+    get:
+      description: "Retrieves consent request with {id} if the authenticated data\
+        \ producer is assigned to it. "
+      operationId: getConsentRequest
+      tags:
+      - Consent Requests
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentRequestProducerViewDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Consent Request
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Support
   /api/agreement/v1/consent-requests/{id}/status:
     put:
       description: Updates the status of a specific consent request. Only accessible
@@ -1836,6 +1879,6 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.1.0-rc.4
+  version: 1.2.0
   description: "This API provides access to the agridata.ch data exchange platform,\
     \ enabling Users to discover, request, approve, and manage data sharing agreements."

@@ -6,32 +6,21 @@
     </h2>
     <div>
       <app-agridata-button
-        (onClick)="handleOpen()"
-        (keydown.enter)="handleOpen()"
+        (onClick)="newRequest()"
+        (keydown.enter)="newRequest()"
         [variant]="ButtonVariants.Primary"
       >
         <fa-icon [icon]="buttonIcon" class="mr-2" />
         <span>{{ t('createNewDataRequest') }}</span>
       </app-agridata-button>
-      <app-sidepanel
-        [title]="t('sidePanelTitle')"
-        [isOpen]="showPanel()"
-        (closeSidepanel)="handleClose()"
-        [maxWidth]="'75%'"
-        [backgroundColor]="'#efefef'"
-      >
-        @if(showPanel()) {
-        <app-data-request-new class="contents" [selectedRequest]="selectedRequest()" />
-        }
-      </app-sidepanel>
     </div>
   </div>
   <app-error-outlet></app-error-outlet>
-
+  <router-outlet></router-outlet>
   <app-data-request-table
     [dataRequests]="dataRequests()"
     [dataRequestsResource]="dataRequestsResource"
-    (tableRowAction)="setSelectedRequest($event)"
+    (tableRowAction)="navigateToRequest($event)"
   ></app-data-request-table>
 </ng-container>
 <div class="flex justify-end"></div>

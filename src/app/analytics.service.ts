@@ -1,9 +1,10 @@
-import { effect, inject, Injectable } from '@angular/core';
+import { effect, inject, Injectable, untracked } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { debounceTime } from 'rxjs';
 
 import { GA_MEASUREMENT_ID, GA_SCRIPT_URL } from '@/app/analytics.config';
-import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { TitleService } from '@/app/title.service';
 import { environment } from '@/environments/environment';
 
 declare let gtag: (
@@ -22,16 +23,16 @@ declare let gtag: (
   providedIn: 'root',
 })
 export class AnalyticsService {
-  private readonly stateService = inject(AgridataStateService);
   private readonly oidcSecurityService = inject(OidcSecurityService);
   private readonly gaId = inject(GA_MEASUREMENT_ID, { optional: true }) ?? 'G-TEST';
   private readonly gaUrl = inject(GA_SCRIPT_URL);
-
+  private readonly translocoService = inject(TranslocoService);
+  private readonly titleService = inject(TitleService);
   private readonly injectTagEffect = effect(() => {
-    if (!environment.enableGoogleAnalytics) {
+    if (!environment.googleAnalyticsEnabled) {
       return;
     }
-    if (!environment.gaMeasurementId) {
+    if (!environment.googleAnalyticsMeasurementId) {
       console.warn('GA Measurement ID not set in environment.');
       return;
     }
@@ -44,13 +45,28 @@ export class AnalyticsService {
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', '${environment.gaMeasurementId}');
+      gtag('config', '${environment.googleAnalyticsMeasurementId}',  { debug_mode: ${environment.googleAnalyticsDebug}});
     `;
     document.head.appendChild(inlineScript);
   });
 
+  private readonly trackPageViewsEffect = effect(() => {
+    if (!environment.googleAnalyticsEnabled) {
+      return;
+    }
+    const title = this.titleService.roTranslatedTitle();
+    if (title) {
+      this.logPageHit(
+        untracked(() => this.titleService.roRoute()),
+        title,
+        untracked(() => this.titleService.ro18nTitle()),
+      );
+      // reset i18n title, otherwise a successive route change would log i18nTitle even if it doesn't have one (e.g. cms pages)
+      this.titleService.setI18nTitle(undefined);
+    }
+  });
   private readonly trackUserLoggedInEffect = effect((onCleanup) => {
-    if (!environment.enableGoogleAnalytics) {
+    if (!environment.googleAnalyticsEnabled) {
       return;
     }
     const sub = this.oidcSecurityService.isAuthenticated$
@@ -63,29 +79,33 @@ export class AnalyticsService {
     onCleanup(() => sub.unsubscribe());
   });
 
-  private readonly trackPageViewsEffect = effect(() => {
-    if (!environment.enableGoogleAnalytics) {
-      return;
-    }
-    const currentRoute = this.stateService.currentRoute();
-    if (currentRoute) {
+  private readonly trackUserLanguageEffect = effect((onCleanup) => {
+    const sub = this.translocoService.langChanges$.subscribe((lang) => {
+      this.setUserProperties({ language: lang });
+    });
+    onCleanup(() => sub.unsubscribe());
+  });
+
+  logPageHit(route?: string, title?: string, i18nTitle?: string | undefined): void {
+    if (environment.googleAnalyticsEnabled && typeof gtag === 'function') {
       gtag('event', 'page_view', {
-        page_path: currentRoute,
+        page_path: route,
         page_location: window.location.href,
-        page_title: document.title,
+        page_title: title,
+        page_title_key: i18nTitle,
       });
     }
-  });
+  }
 
   // Log a custom event
   logEvent(eventName: string, params: Record<string, unknown> = {}): void {
-    if (environment.enableGoogleAnalytics && typeof gtag === 'function') {
+    if (environment.googleAnalyticsEnabled && typeof gtag === 'function') {
       gtag('event', eventName, params);
     }
   }
   // Set user properties for GA4
   setUserProperties(properties: Record<string, unknown>): void {
-    if (environment.enableGoogleAnalytics && typeof gtag === 'function') {
+    if (environment.googleAnalyticsEnabled && typeof gtag === 'function') {
       gtag('set', 'user_properties', properties);
     }
   }

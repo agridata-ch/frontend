@@ -1,5 +1,5 @@
 <div
-  class="flex gap-4 py-4 px-6 rounded-lg justify-between items-center"
+  class="flex gap-4 py-4 px-6 rounded-lg"
   [class.bg-agridata-content-gray]="type() === AlertType.NEUTRAL"
   [class.bg-yellow-100]="type() === AlertType.WARNING"
   [class.text-orange-700]="type() === AlertType.WARNING"
@@ -12,16 +12,16 @@
   [class.text-gray-700]="type() === AlertType.NEUTRAL"
 >
   <fa-icon class="mt-1" size="xl" [icon]="alertIcon()"></fa-icon>
-  <span class="leading-[130%] w-full">
+  <div class="flex gap-4 w-full">
     <ng-content></ng-content>
-  </span>
-  @if (showCloseButton()) {
-    <app-agridata-button
-      ariaLabel="common.ariaLabel.close"
-      [variant]="ButtonVariants.Icon"
-      (onClick)="closeAlert.emit(true)"
-    >
-      <fa-icon [icon]="closeIcon"></fa-icon>
-    </app-agridata-button>
-  }
+    @if (showCloseButton()) {
+      <app-agridata-button
+        ariaLabel="common.ariaLabel.close"
+        [variant]="ButtonVariants.Icon"
+        (onClick)="closeAlert.emit(true)"
+      >
+        <fa-icon [icon]="closeIcon"></fa-icon>
+      </app-agridata-button>
+    }
+  </div>
 </div>

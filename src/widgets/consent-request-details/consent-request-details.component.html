@@ -1,81 +1,100 @@
 <app-sidepanel
-  [isOpen]="showDetails()"
+  [isOpen]="detailsOpened()"
   (closeSidepanel)="handleCloseDetails()"
-  [preventManualClose]="preventManualClose()"
+  [preventManualClose]="shouldRedirect()"
   [title]="t('sidepanel.title')"
   maxWidth="650px"
   *i18n="let t; prefix: 'consent-request.details'"
 >
-  @if (showDetails()) {
-    <app-error-outlet></app-error-outlet>
-    <div class="overflow-y-auto flex flex-col gap-6 grow">
-      <div>
-        <span class="text-agridata-tertiary-text text-sm font-normal">
-          {{ t('requestDate', { date: formattedRequestDate() }) }} |
-        </span>
-        <app-agridata-badge
-          [text]="badgeText().key | i18n: badgeText().params"
-          [size]="badgeSize.MD"
-          [variant]="badgeVariant()"
-        />
-      </div>
-      <h3 class="text-agridata-primary-text">
-        {{ requestTitle() }}
-      </h3>
-      <div class="flex items-center gap-2">
-        <app-agridata-contact-card
-          [name]="dataConsumerName()"
-          [imageUrl]="requestConsumerLogo()"
-          [secondaryName]="dataConsumerCity()"
-          [size]="AvatarSize.MEDIUM"
-          [skin]="AvatarSkin.LIGHT"
-        />
-      </div>
+  <app-error-outlet></app-error-outlet>
+  <div class="overflow-y-auto flex flex-col gap-6 grow">
+    <div>
+      <span class="text-agridata-tertiary-text text-sm font-normal">
+        {{ t('requestDate', { date: formattedRequestDate() }) }} |
+      </span>
+      <app-agridata-badge
+        [text]="badgeText().key | i18n: badgeText().params"
+        [size]="badgeSize.MD"
+        [variant]="badgeVariant()"
+      />
+    </div>
+    @if (request()?.showStateAsMigrated) {
+      <app-alert [type]="AlertType.INFO">
+        <span class="flex items-center">{{ t('request.migrated') }}</span>
+      </app-alert>
+    }
+    <h3 class="text-agridata-primary-text">
+      {{ requestTitle() }}
+    </h3>
+    <div class="flex items-center gap-2">
+      <app-agridata-contact-card
+        [name]="dataConsumerName()"
+        [imageUrl]="requestConsumerLogo()"
+        [secondaryName]="dataConsumerCity()"
+        [size]="AvatarSize.MEDIUM"
+        [skin]="AvatarSkin.LIGHT"
+      />
+    </div>
 
-      <span class="text-agridata-primary-text font-normal">
-        {{ requestDescription() }}
-      </span>
-      <app-data-request-purpose-accordion
-        [purpose]="requestPurpose()"
-        [products]="requestProducts()"
-      />
-      <app-data-request-contact
-        [phoneNumber]="request()?.dataRequest?.contactPhoneNumber"
-        [email]="request()?.dataRequest?.contactEmailAddress"
-        [organisationName]="request()?.dataRequest?.dataConsumerDisplayName"
-      />
-      <app-data-request-privacy-infos [dataConsumerName]="dataConsumerName()" />
+    <span class="text-agridata-primary-text font-normal">
+      {{ requestDescription() }}
+    </span>
+    <app-data-request-purpose-accordion
+      [purpose]="requestPurpose()"
+      [products]="requestProducts()"
+    />
+    <app-data-request-contact
+      [phoneNumber]="request()?.dataRequest?.contactPhoneNumber"
+      [email]="request()?.dataRequest?.contactEmailAddress"
+      [organisationName]="request()?.dataRequest?.dataConsumerDisplayName"
+    />
+    <app-data-request-privacy-infos [dataConsumerName]="dataConsumerName()" />
+  </div>
+  <div class="justify-center flex flex-col gap-1.5">
+    <div class="flex gap-2">
+      <app-agridata-button
+        class="flex-1"
+        [variant]="ButtonVariants.SecondaryReject"
+        [disabled]="
+          request()?.stateCode === consentRequestStateEnum.Declined ||
+          agridataStateService.isImpersonating()
+        "
+        (onClick)="rejectRequest()"
+        [additionalClass]="'w-full'"
+      >
+        {{ t('actions.reject') }}
+      </app-agridata-button>
+      <app-agridata-button
+        class="flex-1"
+        [variant]="ButtonVariants.PrimaryAccept"
+        [disabled]="
+          request()?.stateCode === consentRequestStateEnum.Granted ||
+          agridataStateService.isImpersonating()
+        "
+        (onClick)="acceptRequest()"
+        [additionalClass]="'w-full'"
+      >
+        {{ t('actions.accept') }}
+      </app-agridata-button>
     </div>
-    <div class="justify-center flex flex-col gap-1.5">
-      <div class="flex gap-2">
-        <app-agridata-button
-          class="flex-1"
-          [variant]="ButtonVariants.SecondaryReject"
-          [disabled]="
-            request()?.stateCode === consentRequestStateEnum.Declined ||
-            agridataStateService.isImpersonating()
-          "
-          (onClick)="rejectRequest()"
-          [additionalClass]="'w-full'"
-        >
-          {{ t('actions.reject') }}
-        </app-agridata-button>
-        <app-agridata-button
-          class="flex-1"
-          [variant]="ButtonVariants.PrimaryAccept"
-          [disabled]="
-            request()?.stateCode === consentRequestStateEnum.Granted ||
-            agridataStateService.isImpersonating()
-          "
-          (onClick)="acceptRequest()"
-          [additionalClass]="'w-full'"
-        >
-          {{ t('actions.accept') }}
-        </app-agridata-button>
-      </div>
-      <span class="w-full flex justify-center text-agridata-tertiary-text text-xs">
-        {{ t('footerInformation') }}
-      </span>
-    </div>
-  }
+    <span class="w-full flex justify-center text-agridata-tertiary-text text-xs">
+      {{ t('footerInformation') }}
+    </span>
+  </div>
 </app-sidepanel>
+@if (showRedirect()) {
+  <app-modal
+    [open]="showRedirect()"
+    [title]="'producer.redirect.headline' | i18n"
+    [showCloseButton]="false"
+  >
+    <div class="text-center" *i18n="let t; prefix: 'producer.redirect'">
+      <div class="flex justify-center mb-4">
+        <p>{{ t('description', { count: countdownValue() }) }}</p>
+      </div>
+      <app-agridata-button (onClick)="redirectDirectly()">
+        {{ t('redirectNow') }}
+      </app-agridata-button>
+    </div>
+  </app-modal>
+}

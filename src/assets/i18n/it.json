@@ -54,6 +54,9 @@
       "requestDate": "Richiesta del {{ date }}",
       "sidepanel": {
         "title": "Visualizzazione dettagliata"
+      },
+      "request": {
+        "migrated": "Tratto da La mia condivisione dei dati agricoli - MAF"
       }
     },
     "toast": {
@@ -305,6 +308,10 @@
       "headline": "Fatto!",
       "description": "Grazie per aver scelto il nostro servizio. Verrai reindirizzato automaticamente tra {{ count }} secondi.",
       "redirectNow": "Direttamente indietro"
+    },
+    "migrationInfo": {
+      "title": "La richiesta di dati di {{ consumerName }} è ora disponibile qui",
+      "description": "Il tuo consenso alla richiesta di dati {{name}} è stato ripreso da “Mia condivisione dei dati agricoli (MAF)”. Puoi trovare la richiesta nella tabella sottostante e, se necessario, modificare il consenso."
     }
   },
   "countries": {
@@ -442,5 +449,6 @@
     "logoBund": {
       "altText": "Immagine con bandiera svizzera e scritta Confederazione Svizzera"
     }
-  }
+  },
+  "appTitle": "Agridata"
 }

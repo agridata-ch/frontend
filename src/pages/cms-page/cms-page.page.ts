@@ -5,6 +5,7 @@ import { faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { TitleService } from '@/app/title.service';
 import { CmsService, StrapiSingleTypeResponse } from '@/entities/cms';
 import { BlockRendererComponent } from '@/features/cms-blocks';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
@@ -35,8 +36,8 @@ export class CmsPage {
   private readonly i18nService = inject(I18nService);
   private readonly router = inject(Router);
   private readonly errorService = inject(ErrorHandlerService);
-
   protected readonly breadcrumbIcon = faArrowRight;
+  private readonly titleService = inject(TitleService);
 
   // binds to the route parameter :slug
   readonly slug = input<string>('');
@@ -50,19 +51,7 @@ export class CmsPage {
 
   protected readonly pageTitle = computed(() => {
     const response = this.cmsPageResource.value() as StrapiSingleTypeResponse;
-    return response.data?.title || '';
-  });
-
-  protected readonly errorEffect = effect(() => {
-    const error = this.cmsPageResource.error();
-    if (error) {
-      if (error?.cause instanceof HttpErrorResponse && error?.cause.status === 404) {
-        this.router.navigate([ROUTE_PATHS.NOT_FOUND], { state: { error: error.message } });
-      } else {
-        this.errorService.handleError(error);
-        this.router.navigate([ROUTE_PATHS.ERROR]);
-      }
-    }
+    return response?.data?.title;
   });
 
   protected readonly pageBlocks = computed(() => {
@@ -78,5 +67,21 @@ export class CmsPage {
   protected readonly footerBlock = computed(() => {
     const response = this.cmsPageResource.value() as StrapiSingleTypeResponse;
     return response.data.footer;
+  });
+
+  protected readonly errorEffect = effect(() => {
+    const error = this.cmsPageResource.error();
+    if (error) {
+      if (error?.cause instanceof HttpErrorResponse && error?.cause.status === 404) {
+        this.router.navigate([ROUTE_PATHS.NOT_FOUND], { state: { error: error.message } }).then();
+      } else {
+        this.errorService.handleError(error);
+        this.router.navigate([ROUTE_PATHS.ERROR]).then();
+      }
+    }
+  });
+
+  private readonly updatePageHtmlTitle = effect(() => {
+    this.titleService.setTranslatedTitle(this.pageTitle());
   });
 }

@@ -54,6 +54,9 @@
       "requestDate": "Anfrage vom {{ date }}",
       "sidepanel": {
         "title": "Detailansicht"
+      },
+      "request": {
+        "migrated": "Übernommen aus Meine Agrardatenfreigabe - MAF"
       }
     },
     "toast": {
@@ -305,6 +308,10 @@
       "headline": "Erledigt!",
       "description": "Besten Dank für Ihre Entscheidung,\u2028Sie werden in {{ count }} Sekunden automatisch zurück geleitet.",
       "redirectNow": "Direkt zurück"
+    },
+    "migrationInfo": {
+      "title": "Die Datenanfrage von {{ consumerName }} ist jetzt hier verfügbar",
+      "description": "Ihre Zustimmung für die Datenanfrage {{name}} wurde aus “Meine Agrardatenfreigaben (MAF)” übernommen.\nSie finden die Anfrage in der untenstehenden Tabelle und können bei Bedarf die Zustimmung ändern."
     }
   },
   "countries": {
@@ -442,5 +449,6 @@
     "logoBund": {
       "altText": "Bild mit Schweizer Flagge und Schrift Schweizerischer Eidgenossenschaft"
     }
-  }
+  },
+  "appTitle": "Agridata"
 }

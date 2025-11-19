@@ -6,6 +6,10 @@ export const environment = {
   cmsContactUrl: 'https://cms.agridata.ch/api/contact',
   canResetTestData: true,
   oidc: {},
-  enableGoogleAnalytics: true,
-  gaMeasurementId: 'G-VPFVTHHTK0',
+  titleEnvPrefix: '',
+  // Google Analytics
+  googleAnalyticsEnabled: true,
+  googleAnalyticsMeasurementId: 'G-W63GH77CQJ',
+  // if true received data can be observed in debug view in GA and it does not affect normal reports
+  googleAnalyticsDebug: false,
 };

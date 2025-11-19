@@ -23,6 +23,10 @@ export class DataRequestService {
     return firstValueFrom(this.apiService.getDataRequests());
   }
 
+  fetchDataRequest(id: string) {
+    return firstValueFrom(this.apiService.getDataRequest(id));
+  }
+
   async createDataRequest(dataRequest: DataRequestUpdateDto): Promise<DataRequestDto> {
     return firstValueFrom(this.apiService.createDataRequestDraft(dataRequest));
   }

@@ -37,6 +37,9 @@ export class I18nService {
   translateSignal(key: string, params?: Record<string, unknown>) {
     return toSignal(this.translocoService.selectTranslate(key, params));
   }
+  selectTranslate(key: string, params?: Record<string, unknown>) {
+    return this.translocoService.selectTranslate(key, params);
+  }
 
   useObjectTranslation(obj: TranslationDto | undefined | null) {
     if (!obj) return '';
