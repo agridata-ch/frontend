@@ -1,3 +1,19 @@
+## [1.4.0](https://github.com/agridata-ch/frontend/compare/v1.3.0...v1.4.0) (2025-11-19)
+
+### Features
+
+- **consent-request-details:** show migration info ([d90f9bb](https://github.com/agridata-ch/frontend/commit/d90f9bba3da791abf4e95dd7fdd55e7130398c34)), closes [DIGIB2-720](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-720)
+- **consent-request:** show migration info ([6162da3](https://github.com/agridata-ch/frontend/commit/6162da378a640b688b831d1e0cb2a7701023cf08)), closes [DIGIB2-719](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-719)
+- **deps:** update dependency node to v24 ([1decf9b](https://github.com/agridata-ch/frontend/commit/1decf9b2a58cbe7c37230fc0d0c16076910cd0f4))
+- **deps:** update renovatebot/github-action action to v44 ([59d5cd3](https://github.com/agridata-ch/frontend/commit/59d5cd3f60654950af56f221da897b5b2e1fda3f))
+- **google-analytics:** adds titles ([8c6fb81](https://github.com/agridata-ch/frontend/commit/8c6fb81f784feb972176a30d028a22447b64c697)), closes [DIGIB2-1020](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1020)
+
+### Bug Fixes
+
+- **consent-details:** fixes detail not opening after user logged in ([ab5e78d](https://github.com/agridata-ch/frontend/commit/ab5e78d63743854db6c96f4bfc44511aec40b53a)), closes [DIGIB2-1042](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1042)
+- **consent-details:** remove redirect_uri in url when details are loaed ([4ee158d](https://github.com/agridata-ch/frontend/commit/4ee158d6a1a6cea95ea09323560708a6801ccbdf)), closes [DIGIB2-1042](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1042)
+- **google-analytics:** fixes reload list when decision is reverted ([734568a](https://github.com/agridata-ch/frontend/commit/734568af903962b2c1ecd7c5d55e9a82e21a9d0b)), closes [DIGIB2-1020](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1020)
+
 ## [1.4.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.4.0-rc.6...v1.4.0-rc.7) (2025-11-19)
 
 ### Bug Fixes
