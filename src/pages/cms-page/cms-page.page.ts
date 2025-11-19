@@ -10,6 +10,7 @@ import { CmsService, StrapiSingleTypeResponse } from '@/entities/cms';
 import { BlockRendererComponent } from '@/features/cms-blocks';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nPipe, I18nService } from '@/shared/i18n';
+import { SeoService } from '@/shared/seo/seo.service';
 import { HeroBlockComponent } from '@/widgets/cms-blocks';
 import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
 
@@ -38,6 +39,7 @@ export class CmsPage {
   private readonly errorService = inject(ErrorHandlerService);
   protected readonly breadcrumbIcon = faArrowRight;
   private readonly titleService = inject(TitleService);
+  private readonly seoService = inject(SeoService);
 
   // binds to the route parameter :slug
   readonly slug = input<string>('');
@@ -69,6 +71,11 @@ export class CmsPage {
     return response.data.footer;
   });
 
+  protected readonly seoBlock = computed(() => {
+    const response = this.cmsPageResource.value() as StrapiSingleTypeResponse;
+    return response.data.seo;
+  });
+
   protected readonly errorEffect = effect(() => {
     const error = this.cmsPageResource.error();
     if (error) {
@@ -83,5 +90,11 @@ export class CmsPage {
 
   private readonly updatePageHtmlTitle = effect(() => {
     this.titleService.setTranslatedTitle(this.pageTitle());
+  });
+
+  private readonly updateSeoEffect = effect(() => {
+    if (this.cmsPageResource.isLoading()) return;
+    const seo = this.seoBlock();
+    this.seoService.updateSeo(seo);
   });
 }

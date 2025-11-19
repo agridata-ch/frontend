@@ -13,6 +13,7 @@ import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
 import { MarkdownPipe } from '@/shared/markdown/markdown.pipe';
+import { SeoService } from '@/shared/seo/seo.service';
 import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
 
 /**
@@ -31,6 +32,8 @@ export class PrivacyPolicyPage {
   private readonly router = inject(Router);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly titleService = inject(TitleService);
+  private readonly seoService = inject(SeoService);
+
   protected readonly privacyPolicyResource = resource({
     params: () => ({ locale: this.i18nService.lang() }),
     loader: ({ params }) => {
@@ -39,6 +42,21 @@ export class PrivacyPolicyPage {
   });
 
   protected readonly privacyPolicyPage = createResourceValueComputed(this.privacyPolicyResource);
+
+  protected readonly content = computed(() => {
+    const response = this.privacyPolicyPage() as StrapiSingleTypeResponseWithContent;
+    return response.data.content;
+  });
+
+  protected readonly footerBlock = computed(() => {
+    const response = this.privacyPolicyPage() as StrapiSingleTypeResponseWithContent;
+    return response.data.footer;
+  });
+
+  protected readonly seoBlock = computed(() => {
+    const response = this.privacyPolicyPage() as StrapiSingleTypeResponse;
+    return response.data.seo;
+  });
 
   protected readonly errorEffect = effect(() => {
     const error = this.privacyPolicyResource.error();
@@ -52,18 +70,16 @@ export class PrivacyPolicyPage {
     }
   });
 
-  protected readonly content = computed(() => {
-    const response = this.privacyPolicyPage() as StrapiSingleTypeResponseWithContent;
-    return response.data.content;
-  });
-
-  protected readonly footerBlock = computed(() => {
-    const response = this.privacyPolicyPage() as StrapiSingleTypeResponseWithContent;
-    return response.data.footer;
-  });
-
   private readonly updatePageHtmlTitle = effect(() => {
     const response = this.privacyPolicyResource.value() as StrapiSingleTypeResponse;
     this.titleService.setTranslatedTitle(response?.data?.title);
+  });
+
+  private readonly updateSeoEffect = effect(() => {
+    if (this.privacyPolicyResource.isLoading()) return;
+    const seo = this.seoBlock();
+    if (seo) {
+      this.seoService.updateSeo(seo);
+    }
   });
 }

@@ -243,6 +243,7 @@ export interface PageData {
   blocks: Block[];
   footer: FooterBlock;
   hero: HeroBlock;
+  seo: SEO;
   slug: string;
   position: number;
 }
@@ -275,4 +276,21 @@ export interface ContactFormData {
   email: string;
   phone?: string;
   message: string;
+}
+
+export interface SEO {
+  metaTitle: string;
+  metaDescription: string;
+  metaImage: Image;
+  openGraph: SeoOpenGraph;
+  keywords: string;
+  structuredData: JSON;
+}
+
+export interface SeoOpenGraph {
+  ogTitle: string;
+  ogDescription: string;
+  ogImage: Image;
+  ogUrl: string;
+  ogType: string;
 }
