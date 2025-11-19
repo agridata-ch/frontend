@@ -1,5 +1,5 @@
 <app-sidepanel
-  [isOpen]="!consentRequestResource.isLoading()"
+  [isOpen]="detailsOpened()"
   (closeSidepanel)="handleCloseDetails()"
   [preventManualClose]="shouldRedirect()"
   [title]="t('sidepanel.title')"

@@ -109,6 +109,7 @@ export class ConsentRequestDetailsComponent {
   private readonly refreshListNeeded = signal(false);
 
   // Computed Signals
+  protected readonly detailsOpened = signal(false);
   protected readonly badgeText = computed(() => {
     const stateCode = this.request()?.stateCode;
     if (stateCode === ConsentRequestStateEnum.Opened)
@@ -180,6 +181,11 @@ export class ConsentRequestDetailsComponent {
   );
 
   // Effects
+  private readonly checkResourceLoadedEffect = effect(() => {
+    if (!this.consentRequestResource.isLoading()) {
+      this.detailsOpened.set(true);
+    }
+  });
   private readonly checkForRedirectEffect = effect(() => {
     const request = this.request();
     const redirectUri = this.activeRoute.snapshot.queryParamMap.get('redirect_uri') ?? undefined;
@@ -204,7 +210,11 @@ export class ConsentRequestDetailsComponent {
 
         // Clean up state to prevent persistence when returning to the page
         // by replacing current history entry with a clean one
-        globalThis.history.replaceState({}, '', globalThis.location.href);
+        globalThis.history.replaceState(
+          {},
+          '',
+          this.agridataStateService.currentRouteWithoutQueryParams(),
+        );
         this.shouldRedirect.set(true);
       } catch (error) {
         console.warn(
