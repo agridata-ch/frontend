@@ -1,3 +1,9 @@
+## [1.4.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.4.0-rc.6...v1.4.0-rc.7) (2025-11-19)
+
+### Bug Fixes
+
+- **consent-details:** remove redirect_uri in url when details are loaed ([4ee158d](https://github.com/agridata-ch/frontend/commit/4ee158d6a1a6cea95ea09323560708a6801ccbdf)), closes [DIGIB2-1042](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1042)
+
 ## [1.4.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.4.0-rc.5...v1.4.0-rc.6) (2025-11-18)
 
 ### Bug Fixes
