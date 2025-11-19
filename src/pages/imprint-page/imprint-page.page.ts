@@ -13,6 +13,7 @@ import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
 import { MarkdownPipe } from '@/shared/markdown/markdown.pipe';
+import { SeoService } from '@/shared/seo/seo.service';
 import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
 
 /**
@@ -31,6 +32,7 @@ export class ImprintPage {
   private readonly router = inject(Router);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly titleService = inject(TitleService);
+  private readonly seoService = inject(SeoService);
 
   protected readonly imprintPageResource = resource({
     params: () => ({ locale: this.i18nService.lang() }),
@@ -40,6 +42,21 @@ export class ImprintPage {
   });
 
   protected readonly imprintPage = createResourceValueComputed(this.imprintPageResource);
+
+  protected readonly content = computed(() => {
+    const response = this.imprintPage() as StrapiSingleTypeResponseWithContent;
+    return response.data.content;
+  });
+
+  protected readonly footerBlock = computed(() => {
+    const response = this.imprintPage() as StrapiSingleTypeResponseWithContent;
+    return response.data.footer;
+  });
+
+  protected readonly seoBlock = computed(() => {
+    const response = this.imprintPage() as StrapiSingleTypeResponse;
+    return response.data.seo;
+  });
 
   protected readonly errorEffect = effect(() => {
     const error = this.imprintPageResource.error();
@@ -53,18 +70,14 @@ export class ImprintPage {
     }
   });
 
-  protected readonly content = computed(() => {
-    const response = this.imprintPage() as StrapiSingleTypeResponseWithContent;
-    return response.data.content;
-  });
-
-  protected readonly footerBlock = computed(() => {
-    const response = this.imprintPage() as StrapiSingleTypeResponseWithContent;
-    return response.data.footer;
-  });
-
   private readonly updatePageHtmlTitle = effect(() => {
     const response = this.imprintPageResource.value() as StrapiSingleTypeResponse;
     this.titleService.setTranslatedTitle(response?.data?.title);
+  });
+
+  private readonly updateSeoEffect = effect(() => {
+    if (this.imprintPageResource.isLoading()) return;
+    const seo = this.seoBlock();
+    this.seoService.updateSeo(seo);
   });
 }

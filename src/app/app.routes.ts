@@ -36,7 +36,6 @@ export const routes: Routes = [
   },
   {
     path: '',
-    title: 'appTitle',
     component: FullWidthLayoutComponent,
     canActivate: [AuthorizationGuard, ImpersonationGuardGuard, ProducerUidGuard, HomeRedirectGuard],
     children: [
