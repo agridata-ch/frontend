@@ -23,8 +23,8 @@ export type MockAuthService = MockifyWithWritableSignals<AuthService, MockAuthSe
  */
 export function createMockAuthService(): MockAuthService {
   const isAuthenticated = signal<boolean>(false);
-  const userData = signal<UserInfoDto | null>(null);
-  const userRoles = signal<string[] | null>(null);
+  const userData = signal<UserInfoDto | undefined>(undefined);
+  const userRoles = signal<string[]>([]);
   const isProducer = signal(false);
   const isConsumer = signal(false);
   const isSupporter = signal(false);
@@ -32,7 +32,7 @@ export function createMockAuthService(): MockAuthService {
   return {
     // Signals
     isAuthenticated,
-    userData,
+    userInfo: userData,
     userRoles,
 
     // Computed signals (keep as simple signals for tests)
@@ -40,17 +40,12 @@ export function createMockAuthService(): MockAuthService {
     isConsumer,
     isSupporter,
 
-    // Effects
-    checkAuthEffect: (() => undefined) as unknown as AuthService['checkAuthEffect'],
-
     // Methods
-    oidcPromise: jest.fn().mockResolvedValue({ isAuthenticated: false }),
     login: jest.fn(),
     logout: jest.fn(),
     getUserFullName: jest.fn().mockReturnValue(''),
     getUserEmail: jest.fn().mockReturnValue(''),
-    setUserRoles: jest.fn(),
-
+    initializeAuth: jest.fn(),
     // test-only writable signals
     __testSignals: { isProducer, isConsumer, isSupporter },
   } satisfies MockAuthService;

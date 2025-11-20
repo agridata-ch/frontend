@@ -28,3 +28,4 @@ export * from './uidDto';
 export * from './uidRegisterAddressDto';
 export * from './uidRegisterOrganisationDto';
 export * from './userInfoDto';
+export * from './userPreferencesDto';

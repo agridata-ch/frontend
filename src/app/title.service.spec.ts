@@ -9,18 +9,18 @@ import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
 describe('TitleService', () => {
   let service: TitleService;
   let i18nService: MockI18nService;
-  let titleService: { setTitle: jest.Mock };
+  let title: { setTitle: jest.Mock };
 
   beforeEach(() => {
     i18nService = createMockI18nService();
-    titleService = {
+    title = {
       setTitle: jest.fn(),
     };
 
     TestBed.configureTestingModule({
       providers: [
         { provide: I18nService, useValue: i18nService },
-        { provide: Title, useValue: titleService },
+        { provide: Title, useValue: title },
       ],
     });
     service = TestBed.inject(TitleService);
@@ -96,7 +96,7 @@ describe('TitleService', () => {
 
     TestBed.tick();
 
-    expect(titleService.setTitle).toHaveBeenCalledWith('New Title - agridata.ch');
+    expect(title.setTitle).toHaveBeenCalledWith('New Title - agridata.ch');
   });
 
   it('should not update html title when route is not set', () => {
@@ -104,7 +104,7 @@ describe('TitleService', () => {
 
     TestBed.tick();
 
-    expect(titleService.setTitle).not.toHaveBeenCalled();
+    expect(title.setTitle).not.toHaveBeenCalled();
   });
 
   it('should retranslate title when language changes', () => {

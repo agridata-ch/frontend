@@ -20,7 +20,7 @@ export class SupporterOverlayComponent {
   private readonly authService = inject(AuthService);
 
   protected userName = computed(() => {
-    const user = this.authService.userData();
+    const user = this.authService.userInfo();
     if (!user) {
       return '';
     }

@@ -86,11 +86,11 @@ export class HeaderWidgetComponent {
   });
 
   readonly isAuthenticated = computed(() => this.authService.isAuthenticated());
-  readonly userData = computed(() => this.authService.userData());
+  readonly userInfo = this.authService.userInfo;
 
   readonly ButtonVariants = ButtonVariants;
 
   login = () => {
-    this.router.navigate([ROUTE_PATHS.LOGIN]);
+    this.router.navigate([ROUTE_PATHS.LOGIN]).then();
   };
 }

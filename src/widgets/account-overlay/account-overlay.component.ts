@@ -39,7 +39,7 @@ export class AccountOverlayComponent {
   readonly agridataStateService = inject(AgridataStateService);
   readonly location = inject(Location);
 
-  readonly userData = input<UserInfoDto | null>(null);
+  readonly userInfo = input<UserInfoDto | undefined>(undefined);
   readonly overlayName = computed(() => {
     return this.authService.getUserFullName();
   });

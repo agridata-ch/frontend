@@ -88,13 +88,13 @@ describe('HeaderWidgetComponent', () => {
       familyName: 'Smith',
       uid: '123',
     };
-    authService.userData.set(fakeUser);
+    authService.userInfo.set(fakeUser);
     createComponent();
-    expect(component.userData()).toBe(fakeUser);
+    expect(component.userInfo()).toBe(fakeUser);
 
-    authService.userData.set(null);
+    authService.userInfo.set(null);
     createComponent();
-    expect(component.userData()).toBeNull();
+    expect(component.userInfo()).toBeNull();
   });
 
   it('login() calls AuthService.login()', () => {

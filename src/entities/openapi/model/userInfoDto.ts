@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UserPreferencesDto } from './userPreferencesDto';
 
 
 /**
@@ -54,5 +55,9 @@ export interface UserInfoDto {
      */
     addressCountry?: string;
     lastLoginDate?: string;
+    /**
+     * Preferences of the user in the frontend
+     */
+    userPreferences?: UserPreferencesDto;
 }
 
