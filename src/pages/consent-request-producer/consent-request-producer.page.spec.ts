@@ -5,7 +5,7 @@ import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { MetaDataService } from '@/entities/api/meta-data-service';
+import { MasterDataService } from '@/entities/api/master-data.service';
 import { ConsentRequestProducerViewDto } from '@/entities/openapi';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { I18nService } from '@/shared/i18n';
@@ -30,15 +30,15 @@ import {
   MockErrorHandlerService,
 } from '@/shared/testing/mocks/mock-error-handler.service';
 import {
-  createMockMetadataService,
-  MockMetaDataService,
-} from '@/shared/testing/mocks/mock-meta-data-service';
+  createMockMasterDataService,
+  MockMasterDataService,
+} from '@/shared/testing/mocks/mock-master-data-service';
 
 describe('ConsentRequestProducerPage - component behavior', () => {
   let fixture: ComponentFixture<ConsentRequestProducerPage>;
   let component: ConsentRequestProducerPage;
   let mockRouter: jest.Mocked<Router>;
-  let metadataService: MockMetaDataService;
+  let metadataService: MockMasterDataService;
   let agridataStateService: MockAgridataStateService;
   let i18nService: MockI18nService;
   let consentRequestService: MockConsentRequestService;
@@ -55,7 +55,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
 
     consentRequestService = createMockConsentRequestService();
     dataRequestService = createMockDataRequestService();
-    metadataService = createMockMetadataService();
+    metadataService = createMockMasterDataService();
     errorService = createMockErrorHandlerService();
     i18nService = createMockI18nService();
     activeRoute = {};
@@ -67,7 +67,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
         { provide: Router, useValue: mockRouter },
         { provide: I18nService, useValue: i18nService },
         { provide: DataRequestService, useValue: dataRequestService },
-        { provide: MetaDataService, useValue: metadataService },
+        { provide: MasterDataService, useValue: metadataService },
         { provide: AgridataStateService, useValue: agridataStateService },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: AnalyticsService, useValue: createMockAnalyticsService() },

@@ -43,7 +43,10 @@ export class NavigationWidgetComponent {
 
   readonly cmsPages = input<PageData[]>([]);
 
-  readonly isNavigationOpen = computed(this.agridataStateService.isNavigationOpen);
+  readonly isNavigationOpen = computed(
+    () => this.agridataStateService.userPreferences()?.mainMenuOpened,
+  );
+
   readonly navIcon = computed(() => (this.isNavigationOpen() ? faChevronLeft : faChevronRight));
   readonly showNavigation = computed(() => this.authService.isAuthenticated());
   readonly userRoles = computed(() => this.authService.userRoles());
@@ -73,7 +76,7 @@ export class NavigationWidgetComponent {
   readonly isAnimating = signal(false);
 
   toggleNavigation = () => {
-    this.agridataStateService.setNavigationState(!this.isNavigationOpen());
+    this.agridataStateService.setMainMenuOpened(!this.isNavigationOpen());
     this.isAnimating.set(true);
     setTimeout(() => this.isAnimating.set(false), 150);
   };

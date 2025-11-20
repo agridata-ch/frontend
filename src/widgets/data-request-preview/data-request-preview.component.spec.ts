@@ -2,12 +2,12 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataRequestService } from '@/entities/api';
-import { MetaDataService } from '@/entities/api/meta-data-service';
+import { MasterDataService } from '@/entities/api/master-data.service';
 import { createMockDataRequestService, MockDataRequestService } from '@/shared/testing/mocks';
 import {
-  createMockMetadataService,
-  MockMetaDataService,
-} from '@/shared/testing/mocks/mock-meta-data-service';
+  createMockMasterDataService,
+  MockMasterDataService,
+} from '@/shared/testing/mocks/mock-master-data-service';
 
 import { DataRequestPreviewComponent } from './data-request-preview.component';
 
@@ -15,16 +15,16 @@ describe('DataRequestPreviewComponent', () => {
   let component: DataRequestPreviewComponent;
   let fixture: ComponentFixture<DataRequestPreviewComponent>;
   let componentRef: ComponentRef<DataRequestPreviewComponent>;
-  let metadataService: MockMetaDataService;
+  let metadataService: MockMasterDataService;
   let dataRequestService: MockDataRequestService;
   beforeEach(async () => {
-    metadataService = createMockMetadataService();
+    metadataService = createMockMasterDataService();
     dataRequestService = createMockDataRequestService();
     await TestBed.configureTestingModule({
       imports: [DataRequestPreviewComponent],
       providers: [
         { provide: DataRequestService, useValue: dataRequestService },
-        { provide: MetaDataService, useValue: metadataService },
+        { provide: MasterDataService, useValue: metadataService },
       ],
     }).compileComponents();
 
