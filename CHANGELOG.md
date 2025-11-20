@@ -1,3 +1,9 @@
+## [1.5.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.4.0...v1.5.0-rc.1) (2025-11-20)
+
+### Features
+
+- **seo:** add seo service ([73aeefe](https://github.com/agridata-ch/frontend/commit/73aeefee33007996c37e8e02f7eb08ed6dc8e174)), closes [DIGIB2-977](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-977)
+
 ## [1.4.0](https://github.com/agridata-ch/frontend/compare/v1.3.0...v1.4.0) (2025-11-19)
 
 ### Features
