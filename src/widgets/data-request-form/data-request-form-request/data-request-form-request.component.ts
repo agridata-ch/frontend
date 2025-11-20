@@ -1,7 +1,7 @@
 import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
-import { MetaDataService } from '@/entities/api/meta-data-service';
+import { MasterDataService } from '@/entities/api/master-data.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { getFormControl } from '@/shared/lib/form.helper';
 import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
@@ -22,7 +22,7 @@ import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
 })
 export class DataRequestFormRequestComponent {
   readonly i18nService = inject(I18nService);
-  readonly metaDataService = inject(MetaDataService);
+  readonly metaDataService = inject(MasterDataService);
 
   readonly form = input<FormGroup>();
   readonly formDisabled = input<boolean>(false);
@@ -33,7 +33,7 @@ export class DataRequestFormRequestComponent {
   readonly getFormControl = getFormControl;
 
   readonly updateProductsEffect = effect(() => {
-    const products = this.metaDataService.getDataProducts();
+    const products = this.metaDataService.dataProducts;
     this.products.set(
       products().map((p) => ({
         value: p.id,

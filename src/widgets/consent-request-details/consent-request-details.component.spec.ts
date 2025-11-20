@@ -9,6 +9,7 @@ import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { MasterDataService } from '@/entities/api/master-data.service';
 import {
   ConsentRequestProducerViewDto,
   ConsentRequestProducerViewDtoDataRequestStateCode,
@@ -29,6 +30,7 @@ import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
 } from '@/shared/testing/mocks/mock-error-handler.service';
+import { createMockMasterDataService } from '@/shared/testing/mocks/mock-master-data-service';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ToastService } from '@/shared/toast';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
@@ -75,6 +77,7 @@ describe('ConsentRequestDetailsComponent', () => {
         { provide: ConsentRequestService, useValue: consentRequestService },
         { provide: AgridataStateService, useValue: agridataStateService },
         { provide: AnalyticsService, useValue: createMockAnalyticsService() },
+        { provide: MasterDataService, useValue: createMockMasterDataService() },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: Router, useValue: mockRouter },

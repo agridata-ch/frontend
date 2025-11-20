@@ -2,7 +2,12 @@ import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ResourceQueryDto, UserInfoDto, UsersService } from '@/entities/openapi';
+import {
+  ResourceQueryDto,
+  UserInfoDto,
+  UserPreferencesDto,
+  UsersService,
+} from '@/entities/openapi';
 import { PageResponseDto, arrayToObjectSortParams, asPageResponse } from '@/shared/lib/api.helper';
 
 /**
@@ -33,4 +38,12 @@ export class UserService {
         .pipe(map((response) => asPageResponse(response))),
     );
   };
+
+  getUserInfo() {
+    return this.apiService.getUserInfo();
+  }
+
+  updateUserPreferences(preferences: UserPreferencesDto) {
+    return firstValueFrom(this.apiService.updateUserPreferences(preferences));
+  }
 }
