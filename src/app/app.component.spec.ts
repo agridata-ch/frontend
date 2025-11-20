@@ -6,6 +6,8 @@ import { Router, NavigationEnd, Scroll as RouterScroll, provideRouter } from '@a
 import { Subject } from 'rxjs';
 
 import { AnalyticsService } from '@/app/analytics.service';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { createMockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state-service';
 import { createMockAnalyticsService } from '@/shared/testing/mocks/mock-analytics-service';
 
 import { AppComponent } from './app.component';
@@ -37,6 +39,7 @@ describe('AppComponent', () => {
         { provide: Router, useValue: mockRouter },
         { provide: ViewportScroller, useValue: mockViewportScroller },
         { provide: AnalyticsService, useValue: createMockAnalyticsService() },
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
       ],
     }).compileComponents();
 

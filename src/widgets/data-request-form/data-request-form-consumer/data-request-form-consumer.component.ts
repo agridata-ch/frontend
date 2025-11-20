@@ -12,7 +12,6 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { UidRegisterService } from '@/entities/api/uid-register.service';
-import { UserInfoDto } from '@/entities/openapi';
 import { COUNTRIES } from '@/shared/constants/constants';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
@@ -67,7 +66,7 @@ export class DataRequestFormConsumerComponent {
     this.uidInfoResource,
     this.errorService,
   );
-  readonly userData = signal<UserInfoDto | null>(this.authService.userData());
+  readonly userInfo = this.authService.userInfo;
   readonly consumerName = signal<string>('');
   readonly consumerDisplayName = signal<string>('');
   readonly consumerUid = signal<string | undefined>(undefined);
@@ -99,7 +98,7 @@ export class DataRequestFormConsumerComponent {
     if (this.uidInfoResource.isLoading()) return;
 
     const uidSearchResult = this.uidInfoResource.error() ? null : this.uidInfoResource.value();
-    const currentUserData = this.userData();
+    const currentUserData = this.userInfo();
     const userFullName = this.userFullName();
 
     // Always proceed with available data - either from UID resource or user data

@@ -2,8 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
 
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
 import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
 
@@ -11,13 +16,16 @@ describe('NavigationWidgetComponent', () => {
   let fixture: ComponentFixture<NavigationWidgetComponent>;
   let component: NavigationWidgetComponent;
   let authService: MockAuthService;
-
+  let stateService: MockAgridataStateService;
   beforeEach(async () => {
     authService = createMockAuthService();
-
+    stateService = createMockAgridataStateService();
     await TestBed.configureTestingModule({
       imports: [NavigationWidgetComponent, RouterLink, RouterLinkActive, FontAwesomeModule],
-      providers: [{ provide: AuthService, useValue: authService }],
+      providers: [
+        { provide: AuthService, useValue: authService },
+        { provide: AgridataStateService, useValue: stateService },
+      ],
     }).compileComponents();
   });
 
@@ -41,34 +49,40 @@ describe('NavigationWidgetComponent', () => {
     createComponent();
 
     component.toggleNavigation();
-    expect(component.isNavigationOpen()).toBe(true);
+    expect(stateService.setMainMenuOpened).toHaveBeenCalledWith(true);
 
+    stateService.__testSignals.userPreferences.update((pref) => ({
+      ...pref,
+      mainMenuOpened: true,
+    }));
+    fixture.detectChanges();
     component.toggleNavigation();
-    expect(component.isNavigationOpen()).toBe(false);
+
+    expect(stateService.setMainMenuOpened).toHaveBeenCalledWith(false);
   });
 
   it('showNavigation is false when AuthService.isAuthenticated() returns false', () => {
-    authService.isAuthenticated.set(false);
+    authService.__testSignals.isAuthenticated.set(false);
     createComponent();
     expect(component.showNavigation()).toBe(false);
   });
 
   it('showNavigation is true when AuthService.isAuthenticated() returns true', () => {
-    authService.isAuthenticated.set(true);
+    authService.__testSignals.isAuthenticated.set(true);
     createComponent();
     expect(component.showNavigation()).toBe(true);
   });
 
   it('userRoles reflects AuthService.userRoles()', () => {
     const roles = ['foo', 'bar'];
-    authService.userRoles.set(roles);
+    authService.__testSignals.userRoles.set(roles);
     createComponent();
     expect(component.userRoles()).toEqual(roles);
   });
 
   describe('navigationItems', () => {
     it('returns empty array when userRoles does not include the specific role', () => {
-      authService.userRoles.set(['some.other.role']);
+      authService.__testSignals.userRoles.set(['some.other.role']);
       createComponent();
 
       const items = component.navigationItems();
@@ -77,7 +91,10 @@ describe('NavigationWidgetComponent', () => {
     });
 
     it('returns the navigation object when userRoles includes "agridata.ch.Agridata_Einwilliger"', () => {
-      authService.userRoles.set([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER, 'another.role']);
+      authService.__testSignals.userRoles.set([
+        USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER,
+        'another.role',
+      ]);
       createComponent();
 
       const items = component.navigationItems();

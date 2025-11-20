@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, resource, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, resource } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { faFileCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -64,9 +64,12 @@ export class ConsentRequestProducerPage {
     defaultValue: [],
   });
 
-  private readonly dismissedMigrationIds = signal<Set<string>>(this.loadDismissedMigrationIds());
-
   readonly locale = computed(() => this.i18nService.lang());
+
+  private readonly dismissedMigrationIds = computed<Set<string>>(() => {
+    const storedIds = this.agridataStateService.userPreferences().dismissedMigratedIds;
+    return storedIds ? new Set(storedIds) : new Set();
+  });
 
   readonly migratedRequests = computed(() =>
     this.consentRequestResource.value().filter((request) => request.showStateAsMigrated),
@@ -83,7 +86,7 @@ export class ConsentRequestProducerPage {
     this.errorService,
   );
 
-  private readonly reloadConsentRequestsEffect = effect(() => {
+  private readonly foreReloadConsentRequestsEffect = effect(() => {
     const nav = this.router.currentNavigation();
     if (nav?.extras?.state?.[FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM]) {
       this.consentRequestResource.reload();
@@ -101,23 +104,10 @@ export class ConsentRequestProducerPage {
   };
 
   closeMigrationInfo(requestId: string) {
-    const currentIds = this.dismissedMigrationIds();
-    const updatedIds = new Set(currentIds);
-    updatedIds.add(requestId);
-    this.dismissedMigrationIds.set(updatedIds);
-    this.saveDismissedMigrationIds(updatedIds);
+    this.agridataStateService.addConfirmedMigratedUids([requestId]);
   }
 
   getMigratedRequestTitle(request: ConsentRequestProducerViewDto): string {
     return this.i18nService.useObjectTranslation(request?.dataRequest?.title);
-  }
-
-  private loadDismissedMigrationIds(): Set<string> {
-    const storedIds = localStorage.getItem(this.DISMISSED_MIGRATIONS_KEY);
-    return storedIds ? new Set(JSON.parse(storedIds)) : new Set();
-  }
-
-  private saveDismissedMigrationIds(ids: Set<string>): void {
-    localStorage.setItem(this.DISMISSED_MIGRATIONS_KEY, JSON.stringify([...ids]));
   }
 }

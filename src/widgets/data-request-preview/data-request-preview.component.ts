@@ -1,6 +1,6 @@
 import { Component, computed, inject, input } from '@angular/core';
 
-import { MetaDataService } from '@/entities/api/meta-data-service';
+import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataProductDto, DataRequestDto } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
@@ -33,9 +33,9 @@ import { AgridataContactCardComponent } from '../agridata-contact-card';
 export class DataRequestPreviewComponent {
   readonly i18nService = inject(I18nService);
   readonly dataRequest = input<DataRequestDto>();
-  readonly metaDataService = inject(MetaDataService);
+  readonly metaDataService = inject(MasterDataService);
 
-  readonly products = this.metaDataService.getDataProducts();
+  readonly products = this.metaDataService.dataProducts;
 
   readonly availableLangs = availableLangs;
   readonly AvatarSize = AvatarSize;

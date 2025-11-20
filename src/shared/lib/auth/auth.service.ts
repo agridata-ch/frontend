@@ -2,9 +2,10 @@ import { DestroyRef, Injectable, computed, effect, inject, signal } from '@angul
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { firstValueFrom } from 'rxjs';
+import { of, switchMap, tap } from 'rxjs';
 
-import { UserInfoDto, UsersService } from '@/entities/openapi';
+import { UserService } from '@/entities/api/user.service';
+import { UserInfoDto } from '@/entities/openapi';
 import { USER_ROLES } from '@/shared/constants/constants';
 
 /**
@@ -16,13 +17,17 @@ import { USER_ROLES } from '@/shared/constants/constants';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly oidcService = inject(OidcSecurityService);
-  private readonly participantService = inject(UsersService);
+  private readonly userService = inject(UserService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
 
-  readonly isAuthenticated = signal<boolean>(false);
-  readonly userData = signal<UserInfoDto | null>(null);
-  readonly userRoles = signal<string[] | null>(null);
+  private readonly _isAuthenticated = signal<boolean>(false);
+  private readonly _userInfo = signal<UserInfoDto | undefined>(undefined);
+  private readonly _userRoles = signal<string[]>([]);
+
+  readonly isAuthenticated = this._isAuthenticated.asReadonly();
+  readonly userInfo = this._userInfo.asReadonly();
+  readonly userRoles = this._userRoles.asReadonly();
 
   readonly isProducer = computed(
     () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) ?? false,
@@ -35,27 +40,12 @@ export class AuthService {
     () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) ?? false,
   );
 
-  readonly checkAuthEffect = effect(() => {
-    if (this.isAuthenticated()) {
-      this.participantService
-        .getUserInfo()
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((userData) => {
-          this.userData.set(userData);
-        });
-    } else {
-      this.userRoles.set(null);
-      this.userData.set(null);
+  private readonly resetUserInfoEffect = effect(() => {
+    if (!this.isAuthenticated()) {
+      this._userRoles.set([]);
+      this._userInfo.set(undefined);
     }
   });
-
-  oidcPromise() {
-    const result = firstValueFrom(this.oidcService.checkAuth());
-    result.then((auth) => {
-      this.isAuthenticated.set(auth.isAuthenticated);
-    });
-    return result;
-  }
 
   login() {
     this.oidcService.authorize();
@@ -66,25 +56,55 @@ export class AuthService {
       .logoff()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/']).then();
       });
   }
 
   getUserFullName() {
-    if (!this.userData()) {
+    if (!this.userInfo()) {
       return '';
     }
-    return `${this.userData()?.givenName ?? ''} ${this.userData()?.familyName ?? ''}`;
+    return `${this.userInfo()?.givenName ?? ''} ${this.userInfo()?.familyName ?? ''}`;
   }
 
   getUserEmail() {
-    if (!this.userData()) {
+    if (!this.userInfo()) {
       return '';
     }
-    return this.userData()?.email ?? '';
+    return this.userInfo()?.email ?? '';
   }
 
-  setUserRoles(roles: string[]) {
-    this.userRoles.set(roles);
+  initializeAuth() {
+    return this.oidcService.checkAuth().pipe(
+      switchMap(({ accessToken, isAuthenticated }) => {
+        let userRoles: string[] = [];
+
+        if (accessToken) {
+          const decoded = this.decodeAccessToken(accessToken);
+          // Keycloak realm roles
+          if (decoded?.realm_access?.roles) {
+            userRoles = userRoles.concat(decoded.realm_access.roles);
+          }
+        }
+        this._userRoles.set(userRoles);
+
+        this._isAuthenticated.set(isAuthenticated);
+
+        if (!isAuthenticated) {
+          return of(undefined);
+        }
+        return this.userService.getUserInfo().pipe(tap((userInfo) => this._userInfo.set(userInfo)));
+      }),
+    );
+  }
+
+  private decodeAccessToken(token: string) {
+    try {
+      const payload = token.split('.')[1];
+      return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
+    } catch {
+      console.error('failed to decode access token');
+      return {};
+    }
   }
 }

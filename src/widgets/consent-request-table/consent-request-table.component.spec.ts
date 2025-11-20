@@ -3,12 +3,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
   ConsentRequestProducerViewDto,
   ConsentRequestProducerViewDtoDataRequestStateCode,
   ConsentRequestStateEnum,
 } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
 import { createMockAnalyticsService } from '@/shared/testing/mocks/mock-analytics-service';
 import {
   createMockConsentRequestService,
@@ -30,12 +35,14 @@ describe('ConsentRequestTableComponent', () => {
   let mockI18nService: jest.Mocked<I18nService>;
   let errorService: MockErrorHandlerService;
   let consentRequestService: MockConsentRequestService;
+  let stateService: MockAgridataStateService;
   const mockConsentRequests: ConsentRequestProducerViewDto[] = [
     {
       id: '1',
       stateCode: ConsentRequestStateEnum.Opened,
       requestDate: '2024-03-20',
       dataRequest: {
+        id: 'dr1',
         title: { de: 'Testanfrage 1' },
         dataConsumerDisplayName: 'Test AG',
         stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Active,
@@ -46,6 +53,7 @@ describe('ConsentRequestTableComponent', () => {
       stateCode: ConsentRequestStateEnum.Granted,
       requestDate: '2024-03-19',
       dataRequest: {
+        id: 'dr2',
         title: { de: 'Testanfrage 2' },
         dataConsumerDisplayName: 'Demo GmbH',
         stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Active,
@@ -65,6 +73,7 @@ describe('ConsentRequestTableComponent', () => {
 
     consentRequestService = createMockConsentRequestService();
     errorService = createMockErrorHandlerService();
+    stateService = createMockAgridataStateService();
     await TestBed.configureTestingModule({
       imports: [
         ConsentRequestTableComponent,
@@ -80,6 +89,7 @@ describe('ConsentRequestTableComponent', () => {
         { provide: ConsentRequestService, useValue: consentRequestService },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: AnalyticsService, useValue: createMockAnalyticsService() },
+        { provide: AgridataStateService, useValue: stateService },
       ],
     }).compileComponents();
 
