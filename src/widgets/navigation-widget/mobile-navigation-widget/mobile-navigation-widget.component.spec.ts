@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { AuthService } from '@/shared/lib/auth';
@@ -23,6 +24,7 @@ describe('MobileNavigationWidgetComponent', () => {
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: AgridataStateService, useValue: stateService },
+        { provide: ActivatedRoute, useValue: {} },
       ],
     }).compileComponents();
 

@@ -11,17 +11,32 @@
   [class.text-blue-700]="type() === AlertType.INFO"
   [class.text-gray-700]="type() === AlertType.NEUTRAL"
 >
-  <fa-icon class="mt-1" size="xl" [icon]="alertIcon()"></fa-icon>
-  <div class="flex gap-4 w-full">
+  <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
+    <fa-icon class="mt-1 hidden lg:block" size="xl" [icon]="alertIcon()"></fa-icon>
+    <div class="flex justify-between w-full lg:hidden">
+      <fa-icon class="mt-1 lg:hidden" size="lg" [icon]="alertIcon()"></fa-icon>
+      @if (showCloseButton()) {
+        <app-agridata-button
+          ariaLabel="common.ariaLabel.close"
+          [variant]="ButtonVariants.Icon"
+          (onClick)="closeAlert.emit(true)"
+        >
+          <fa-icon size="xl" [icon]="closeIcon"></fa-icon>
+        </app-agridata-button>
+      }
+    </div>
     <ng-content></ng-content>
     @if (showCloseButton()) {
-      <app-agridata-button
-        ariaLabel="common.ariaLabel.close"
-        [variant]="ButtonVariants.Icon"
-        (onClick)="closeAlert.emit(true)"
-      >
-        <fa-icon [icon]="closeIcon"></fa-icon>
-      </app-agridata-button>
+      <div class="hidden lg:block">
+        <app-agridata-button
+          class="hidden lg:block"
+          ariaLabel="common.ariaLabel.close"
+          [variant]="ButtonVariants.Icon"
+          (onClick)="closeAlert.emit(true)"
+        >
+          <fa-icon size="xl" [icon]="closeIcon"></fa-icon>
+        </app-agridata-button>
+      </div>
     }
   </div>
 </div>
