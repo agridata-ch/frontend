@@ -1,3 +1,9 @@
+## [1.5.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.2...v1.5.0-rc.3) (2025-11-24)
+
+### Features
+
+- **ui:** mobile ui improvements ([22c193b](https://github.com/agridata-ch/frontend/commit/22c193b342068c5cbfad2867352ae5761f4ab8ad)), closes [DIGIB2-978](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-978)
+
 ## [1.5.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.1...v1.5.0-rc.2) (2025-11-24)
 
 ### Features
