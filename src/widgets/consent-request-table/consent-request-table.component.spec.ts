@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
@@ -25,6 +26,7 @@ import {
 } from '@/shared/testing/mocks/mock-error-handler.service';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ToastService } from '@/shared/toast';
+import { ButtonComponent } from '@/shared/ui/button';
 
 import { ConsentRequestTableComponent } from './consent-request-table.component';
 
@@ -138,12 +140,35 @@ describe('ConsentRequestTableComponent', () => {
     expect(mockToastService.show).toHaveBeenCalled();
   });
 
-  it('should only show consent action for open requests', () => {
-    const openRequestActions = component.getFilteredActions(mockConsentRequests[0]);
-    const grantedRequestActions = component.getFilteredActions(mockConsentRequests[1]);
+  it('should only show consent action for open requests', async () => {
+    jest.spyOn(mockI18nService, 'translate').mockImplementation((key: string) => key);
 
-    expect(openRequestActions.length).toBe(1);
-    expect(grantedRequestActions.length).toBe(0);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const rows = fixture.debugElement.queryAll(By.css('tr'));
+
+    // check accept button on open request
+    const openedRow = rows.filter((row) =>
+      row.nativeElement.textContent?.includes('consent-request.dataRequest.stateCode.OPENED'),
+    );
+    expect(openedRow.length).toBe(1);
+    const acceptButtons = openedRow[0]
+      .queryAll(By.directive(ButtonComponent))
+      .filter((button) =>
+        button.nativeElement.textContent.includes('consent-request.table.tableActions.consent'),
+      );
+    expect(acceptButtons.length).toBe(1);
+
+    // check no accept button on granted request
+    const grantedRows = rows.filter((row) =>
+      row.nativeElement.textContent?.includes('consent-request.dataRequest.stateCode.GRANTED'),
+    );
+    const grantedAcceptButtons = grantedRows[0]
+      .queryAll(By.directive(ButtonComponent))
+      .filter((button) =>
+        button.nativeElement.textContent.includes('consent-request.table.tableActions.consent'),
+      );
+    expect(grantedAcceptButtons.length).toBe(0);
   });
 
   it('should translate object correctly', () => {
@@ -221,16 +246,13 @@ describe('ConsentRequestTableComponent', () => {
   });
 
   it('should execute action callback correctly', () => {
-    const updateSpy = jest.spyOn(component, 'updateConsentRequestState');
-    const actions = component.getFilteredActions(mockConsentRequests[0]);
-    const action = actions[0];
-
-    action.callback();
-
-    expect(updateSpy).toHaveBeenCalledWith(
+    const spy = jest.spyOn(consentRequestService, 'updateConsentRequestStatus');
+    component.updateConsentRequestState(
       mockConsentRequests[0].id,
-      ConsentRequestStateEnum.Granted,
-      undefined,
+      ConsentRequestStateEnum.Declined,
+      'Test Request',
     );
+
+    expect(spy).toHaveBeenCalledWith(mockConsentRequests[0].id, ConsentRequestStateEnum.Declined);
   });
 });

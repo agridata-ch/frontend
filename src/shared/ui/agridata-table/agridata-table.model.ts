@@ -1,6 +1,6 @@
 import { TemplateRef } from '@angular/core';
 
-import { ActionDTO } from '@/shared/ui/agridata-table/table-actions/table-actions.component';
+import { ActionDTO } from '@/shared/ui/agridata-table/table-row-menu/table-row-menu.component';
 
 export enum CellRendererTypes {
   FUNCTION = 'function',
@@ -35,10 +35,11 @@ export interface ColumnDefinition<T> {
 }
 
 export interface TableMetadata<T> {
-  actions?: (item?: T) => ActionDTO[];
+  rowMenuActions?: (item?: T) => ActionDTO[];
   rowAction?: (item: T) => void;
   idColumn: keyof T;
   columns: ColumnDefinition<T>[];
+  showRowActionButton?: boolean;
   highlightFn?: (item: T) => boolean;
 }
 

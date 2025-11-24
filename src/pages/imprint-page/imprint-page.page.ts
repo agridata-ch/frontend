@@ -1,6 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, effect, inject, resource } from '@angular/core';
 import { Router } from '@angular/router';
+import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { TitleService } from '@/app/title.service';
@@ -23,7 +25,7 @@ import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
  */
 @Component({
   selector: 'app-imprint-page',
-  imports: [CmsFooterBlockComponent, MarkdownPipe],
+  imports: [CmsFooterBlockComponent, MarkdownPipe, FaIconComponent],
   templateUrl: './imprint-page.page.html',
 })
 export class ImprintPage {
@@ -80,4 +82,5 @@ export class ImprintPage {
     const seo = this.seoBlock();
     this.seoService.updateSeo(seo);
   });
+  protected readonly faSpinnerThird = faSpinnerThird;
 }

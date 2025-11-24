@@ -23,13 +23,33 @@
       {{ getTranslation(item.dataRequest?.title) }}
     </span>
   </ng-template>
-  <ng-template #dataRequestState [appConsentRequestProducerViewDtoGuard] let-item>
+  <ng-template #consentRequestState [appConsentRequestProducerViewDtoGuard] let-item>
     <app-agridata-badge
       [text]="getTranslatedStateValue(item.stateCode)"
       [variant]="getBadgeVariant(item?.stateCode)"
       [size]="BadgeSize.SM"
     />
   </ng-template>
+  <ng-template #consentRequestAction [appConsentRequestProducerViewDtoGuard] let-item>
+    @if (item.stateCode === ConsentRequestStateEnum.Opened) {
+      <app-agridata-button
+        click-stop-propagation
+        [variant]="ButtonVariants.PrimaryAccept"
+        [disabled]="acceptConsentActionDisabled()"
+        [loading]="showAcceptedLoading()"
+        (onClick)="
+          updateConsentRequestState(
+            item.id,
+            ConsentRequestStateEnum.Granted,
+            getTranslation(item.dataRequest?.title)
+          )
+        "
+      >
+        {{ 'consent-request.table.tableActions.consent' | i18n }}
+      </app-agridata-button>
+    }
+  </ng-template>
+  <
 </app-agridata-client-table>
 <app-consent-request-list
   class="lg:hidden"

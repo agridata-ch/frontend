@@ -1,7 +1,9 @@
 <th
-  class="py-3 px-4 select-none text-slate-500 outline-0 hover:bg-gray-50 cursor-pointer focus:bg-gray-200 text-sm font-semibold"
+  class="py-3 px-4 select-none text-slate-500 outline-0 focus:bg-gray-200 text-sm font-semibold"
   (click)="toggleColumnSort()"
   [class]="columnDefinition().headerCssClasses"
+  [class.hover:bg-gray-50]="columnDefinition().sortable"
+  [class.cursor-pointer]="columnDefinition().sortable"
   (keydown.enter)="toggleColumnSort()"
   [tabindex]="0"
   [attr.aria-label]="'table.header.ariaLabels.sort' | i18n"

@@ -1,6 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, effect, inject, resource } from '@angular/core';
 import { Router } from '@angular/router';
+import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { TitleService } from '@/app/title.service';
@@ -21,7 +23,7 @@ import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
  */
 @Component({
   selector: 'app-landing-page',
-  imports: [BlockRendererComponent, HeroBlockComponent, CmsFooterBlockComponent],
+  imports: [BlockRendererComponent, HeroBlockComponent, CmsFooterBlockComponent, FaIconComponent],
   templateUrl: './landing-page.page.html',
 })
 export class LandingPage {
@@ -89,4 +91,6 @@ export class LandingPage {
     const response = this.landingPage() as StrapiSingleTypeResponse;
     return response?.data?.seo?.metaTitle;
   });
+
+  protected readonly faSpinnerThird = faSpinnerThird;
 }

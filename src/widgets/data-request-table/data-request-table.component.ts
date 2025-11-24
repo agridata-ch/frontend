@@ -108,11 +108,12 @@ export class DataRequestTableComponent {
               type: CellRendererTypes.TEMPLATE,
               template: this.dataRequestStateTemplate(),
             },
+            cellCssClasses: 'whitespace-nowrap',
             sortable: true,
             sortValueFn: (item) => this.getStatusTranslation(item?.stateCode),
           },
         ],
-        actions: this.getFilteredActions,
+        rowMenuActions: this.getFilteredActions,
         rowAction: (item) => this.tableRowAction.emit(item),
       };
     },
@@ -124,15 +125,14 @@ export class DataRequestTableComponent {
     const details = {
       icon: this.eyeIcon,
       label: 'data-request.table.tableActions.details',
-      callback: () => this.tableRowAction.emit(request),
+      callback: async () => this.tableRowAction.emit(request),
     };
     const retreat = {
       icon: this.retreatIcon,
       label: 'data-request.table.tableActions.retreat',
-      callback: () => {
-        this.dataRequestService.retreatDataRequest(request.id!).then(() => {
-          this.dataRequestsResource().reload();
-        });
+      callback: async () => {
+        await this.dataRequestService.retreatDataRequest(request.id);
+        this.dataRequestsResource().reload();
       },
     };
 

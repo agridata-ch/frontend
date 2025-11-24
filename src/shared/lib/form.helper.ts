@@ -1,12 +1,9 @@
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 import { I18nService } from '@/shared/i18n';
+import { FormModel } from '@/widgets/data-request-new';
 
 // Defines a top-level grouping of DTO fields into a named FormGroup
-export interface FieldMap {
-  formGroupName: string;
-  fields: string[];
-}
 
 // Simplified JSON-Schema fragment for validation rules
 export interface JsonSchema {
@@ -110,18 +107,6 @@ function buildValidatorFunctions(
 }
 
 /**
- * Safely retrieve a nested value from the DTO by path, defaulting to the empty string.
- */
-function getDtoValue(dto: Dto, pathSegments: string[], defaultValue: unknown = '') {
-  return pathSegments.reduce<unknown>((current, key) => {
-    if (current && typeof current === 'object' && key in (current as Record<string, unknown>)) {
-      return (current as Record<string, unknown>)[key];
-    }
-    return defaultValue; // Use the provided default value if the path is not found
-  }, dto);
-}
-
-/**
  * Generate translated error message factories for each validator key.
  */
 function buildErrorMessages(
@@ -178,13 +163,11 @@ function buildErrorMessages(
  * @param jsonSchema  Validation schema
  * @param fieldMaps   Mapping to define top-level FormGroup names and their DTO paths
  * @param i18nService Translation service for error messages
- * @param dto         Initial data (defaults to empty object)
  */
 export function buildReactiveForm(
   jsonSchema: JsonSchema,
-  fieldMaps: FieldMap[],
+  fieldMaps: FormModel[],
   i18nService: I18nService,
-  dto: Dto = {},
 ) {
   const rootGroup = new FormGroup({});
 
@@ -192,7 +175,7 @@ export function buildReactiveForm(
     const topGroup = new FormGroup({});
 
     for (const fieldPath of fields) {
-      const pathSegments = fieldPath.split('.');
+      const pathSegments = fieldPath.name.split('.');
       if (pathSegments.length === 0) {
         continue;
       }
@@ -213,11 +196,10 @@ export function buildReactiveForm(
       }
       const { schemaNode, parentRequiredList } = getSchemaNode(jsonSchema, pathSegments);
       const defaultValue = schemaNode.type === 'array' ? [] : '';
-      const initialValue = getDtoValue(dto, pathSegments, defaultValue);
       const validators = buildValidatorFunctions(schemaNode, parentRequiredList, lastSegment);
 
       // Create FormControl with messages
-      const control = new FormControl(initialValue, validators) as FormControlWithMessages;
+      const control = new FormControl(defaultValue, validators) as FormControlWithMessages;
       control.errorMessages = buildErrorMessages(
         schemaNode,
         parentRequiredList,
@@ -283,6 +265,22 @@ export function getFormControl(form: FormGroup, key: string) {
   return form.get(key) as FormControl;
 }
 
+export function setControlValue(
+  form: FormGroup,
+  key: string,
+  value: unknown,
+  onlyIfUndefined = false,
+  emitEvent = true,
+) {
+  const control = form.get(key) as FormControl | null;
+  if (control) {
+    if (onlyIfUndefined && control.value) {
+      return;
+    }
+    control.setValue(value, { emitEvent });
+  }
+}
+
 /**
  * Populates a FormGroup with values from a DTO based on the provided field mappings.
  * Supports nested fields up to one level deep (e.g., 'title.de').
@@ -295,7 +293,7 @@ export function getFormControl(form: FormGroup, key: string) {
 export function populateFormFromDto<T extends Dto>(
   form: FormGroup,
   dto: T | undefined,
-  fieldMaps: FieldMap[],
+  fieldMaps: FormModel[],
   emitEvent = true,
 ) {
   if (!dto) {
@@ -309,10 +307,10 @@ export function populateFormFromDto<T extends Dto>(
     }
 
     item.fields.forEach((field) => {
-      const parts = field.split('.');
+      const parts = field.name.split('.');
       if (parts.length > 2) {
         console.error(
-          `Field ${field} has more than one dot, nested fields deeper than one level are not supported yet.`,
+          `Field ${field.name} has more than one dot, nested fields deeper than one level are not supported yet.`,
         );
         return;
       }
