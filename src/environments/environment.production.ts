@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  instanceName: 'PROD',
   appBaseUrl: 'https://agridata.ch',
   apiBaseUrl: 'https://api.agridata.ch',
   cmsBaseUrl: 'https://cms.agridata.ch',

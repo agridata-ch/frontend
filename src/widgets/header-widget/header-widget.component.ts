@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { CmsService, StrapiCollectionTypeResponse } from '@/entities/cms';
+import { environment } from '@/environments/environment';
 import { LanguageSelectComponent } from '@/features/language-select';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nPipe, I18nService } from '@/shared/i18n';
@@ -42,6 +43,7 @@ export class HeaderWidgetComponent {
   private readonly router = inject(Router);
   private readonly errorHandler = inject(ErrorHandlerService);
   private readonly stateService = inject(AgridataStateService);
+
   protected readonly cmsPagesResource = resource({
     params: () => ({
       isAuthenticated: this.authService.isAuthenticated(),
@@ -77,8 +79,23 @@ export class HeaderWidgetComponent {
   });
 
   readonly isAuthenticated = computed(() => this.authService.isAuthenticated());
-  readonly userInfo = this.authService.userInfo;
 
+  readonly environment = computed(() => (environment.production ? null : environment.instanceName));
+  readonly envColor = computed(() => {
+    console.log('environment', environment);
+    switch (environment?.instanceName) {
+      case 'local':
+        return 'border-t-green-500 ';
+      case 'DEV':
+        return 'border-t-orange-400 ';
+      case 'INT':
+        return 'border-t-blue-600';
+      default:
+        return 'border-t-green-500';
+    }
+  });
+
+  readonly userInfo = this.authService.userInfo;
   readonly ButtonVariants = ButtonVariants;
 
   login = () => {

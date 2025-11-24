@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  instanceName: 'default',
   appBaseUrl: 'http://localhost',
   apiBaseUrl: 'https://localhost',
   cmsBaseUrl: 'https://localhost:1337',
