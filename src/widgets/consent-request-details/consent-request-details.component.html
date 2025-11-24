@@ -59,6 +59,7 @@
           request()?.stateCode === consentRequestStateEnum.Declined ||
           agridataStateService.isImpersonating()
         "
+        [loading]="showRejectedLoading()"
         (onClick)="rejectRequest()"
         [additionalClass]="'w-full'"
       >
@@ -71,6 +72,7 @@
           request()?.stateCode === consentRequestStateEnum.Granted ||
           agridataStateService.isImpersonating()
         "
+        [loading]="showAcceptedLoading()"
         (onClick)="acceptRequest()"
         [additionalClass]="'w-full'"
       >

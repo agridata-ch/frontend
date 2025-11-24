@@ -14,7 +14,11 @@
       `agridata-button agridata-button-${variant()} ${selected() ? 'selected' : ''} ${additionalClass()}`
     "
   >
-    <ng-container [ngTemplateOutlet]="content"></ng-container>
+    @if (loading()) {
+      <fa-icon animation="spin" [icon]="faSpinnerThird"></fa-icon>
+    } @else {
+      <ng-container [ngTemplateOutlet]="content"></ng-container>
+    }
   </button>
 } @else {
   <a

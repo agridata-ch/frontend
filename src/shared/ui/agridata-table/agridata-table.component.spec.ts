@@ -99,7 +99,6 @@ describe('AgridataTableComponent', () => {
       expect(component['nextPageIndex']()).toBe(0);
       expect(component['nextPageSize']()).toBe(PAGE_SIZES[0]);
       expect(component['searchTerm']()).toBe('');
-      expect(component['hoveredRowId']()).toBeNull();
     });
 
     it('should compute page data from data provider', () => {
@@ -166,10 +165,10 @@ describe('AgridataTableComponent', () => {
       expect(tableElement).toBeFalsy();
     });
 
-    it('should render actions column when actions are provided', () => {
+    it('should render row menu when provided', () => {
       const metadataWithActions = {
         ...mockTableMetadata,
-        actions: () => [
+        rowMenuActions: () => [
           {
             label: 'Edit',
             onClick: () => {},
@@ -181,7 +180,7 @@ describe('AgridataTableComponent', () => {
       fixture.componentRef.setInput('tableMetadata', metadataWithActions);
       fixture.detectChanges();
 
-      const actionCells = fixture.debugElement.queryAll(By.css('app-table-actions'));
+      const actionCells = fixture.debugElement.queryAll(By.css('app-table-row-menu'));
       expect(actionCells.length).toBe(3);
     });
 
@@ -413,22 +412,6 @@ describe('AgridataTableComponent', () => {
       firstRow.nativeElement.dispatchEvent(enterEvent);
 
       expect(rowActionSpy).toHaveBeenCalledWith(mockUsers[0]);
-    });
-
-    it('should set hovered row ID on mouse enter', () => {
-      const firstRow = fixture.debugElement.query(By.css('tbody tr'));
-      firstRow.nativeElement.dispatchEvent(new Event('mouseenter'));
-
-      expect(component['hoveredRowId']()).toBe('1');
-    });
-
-    it('should clear hovered row ID on mouse leave', () => {
-      component['hoveredRowId'].set('1');
-
-      const firstRow = fixture.debugElement.query(By.css('tbody tr'));
-      firstRow.nativeElement.dispatchEvent(new Event('mouseleave'));
-
-      expect(component['hoveredRowId']()).toBeNull();
     });
 
     it('should get correct row ID using idColumn', () => {

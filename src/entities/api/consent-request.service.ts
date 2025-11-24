@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
-import { CreateConsentRequestDto } from '@/entities/openapi';
+import { ConsentRequestStateEnum, CreateConsentRequestDto } from '@/entities/openapi';
 import { ConsentRequestsService } from '@/entities/openapi/api/consentRequests.service';
 
 /**
@@ -25,7 +25,7 @@ export class ConsentRequestService {
     return firstValueFrom(this.apiService.getConsentRequest(id));
   }
 
-  async updateConsentRequestStatus(consentRequestId: string, stateCode: string) {
+  async updateConsentRequestStatus(consentRequestId: string, stateCode: ConsentRequestStateEnum) {
     return firstValueFrom(
       this.apiService.updateConsentRequestStatus(consentRequestId, `"${stateCode}"`),
     );

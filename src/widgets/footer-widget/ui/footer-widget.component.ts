@@ -75,9 +75,12 @@ export class FooterWidgetComponent {
   // it is only for testing purposes to reset the test data
   async resetData() {
     if (environment.canResetTestData)
-      await this.testDataService.resetTestData().finally(() => {
-        globalThis.location.reload();
-      });
+      await this.testDataService
+        .resetTestData()
+        .catch()
+        .finally(() => {
+          globalThis.location.reload();
+        });
   }
 
   private shouldLoadBackendInfo(route: string) {

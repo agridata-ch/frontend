@@ -21,7 +21,8 @@
     },
     "ariaLabels": {
       "actions": "Aktionen"
-    }
+    },
+    "rowAction": "Datensatz öffnen"
   },
   "consent-request": {
     "table": {

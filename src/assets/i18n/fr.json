@@ -21,7 +21,8 @@
     },
     "ariaLabels": {
       "actions": "Actions"
-    }
+    },
+    "rowAction": "Ouvrir l'enregistrement"
   },
   "consent-request": {
     "table": {
