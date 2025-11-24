@@ -1,3 +1,9 @@
+## [1.5.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.1...v1.5.0-rc.2) (2025-11-24)
+
+### Features
+
+- **user-preferences:** saves user preferences in backend ([b003119](https://github.com/agridata-ch/frontend/commit/b0031194d38c3d975d49dfb2eb8f415c99600854)), closes [DIGIB2-586](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-586)
+
 ## [1.5.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.4.0...v1.5.0-rc.1) (2025-11-20)
 
 ### Features
