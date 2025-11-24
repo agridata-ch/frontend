@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  instanceName: 'LOK',
   appBaseUrl: 'http://localhost:4200',
   apiBaseUrl: 'http://localhost:8060',
   cmsBaseUrl: 'http://localhost:1337',

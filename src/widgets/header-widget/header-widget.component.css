@@ -1,3 +1,16 @@
 .agridata-logo {
   font-family: 'Caveat', sans-serif;
 }
+
+.env-container {
+  font-family: 'Inclusive Sans', sans-serif;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-top: 100px;
+  border-right: 100px;
+  border-right-color: transparent;
+  z-index: 10;
+}

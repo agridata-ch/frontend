@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  instanceName: 'DEV',
   appBaseUrl: 'https://dev.agridata.ch',
   apiBaseUrl: 'https://api.dev.agridata.ch',
   cmsBaseUrl: 'https://remarkable-growth-2947108bb8.strapiapp.com',
