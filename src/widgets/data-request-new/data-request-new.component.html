@@ -46,6 +46,7 @@
         @if (wizard.currentStep() !== formControlSteps().length - 1) {
           <app-agridata-button
             [variant]="ButtonVariants.Tertiary"
+            [loading]="isSaving()"
             (onClick)="handleSave()"
             [disabled]="formDisabled()"
           >
@@ -54,6 +55,7 @@
           <div class="flex gap-4">
             <app-agridata-button
               [variant]="ButtonVariants.Secondary"
+              [loading]="isSaving()"
               (onClick)="handlePreviousStep()"
               [disabled]="wizard.currentStep() === 0"
             >
@@ -61,12 +63,12 @@
               <span class="ml-2">{{ t('previous') }}</span>
             </app-agridata-button>
             @if (wizard.currentStepId() === FORM_GROUP_NAMES.PRODUCER && !formDisabled()) {
-              <app-agridata-button (onClick)="handleSubmitAndContinue()">
+              <app-agridata-button [loading]="isSaving()" (onClick)="handleSubmitAndContinue()">
                 {{ t('submitAndContinue') }}
                 <fa-icon [icon]="nextIcon"></fa-icon>
               </app-agridata-button>
             } @else {
-              <app-agridata-button (onClick)="handleNextStep()">
+              <app-agridata-button [loading]="isSaving()" (onClick)="handleNextStep()">
                 <span class="mr-2">{{ t('next') }}</span>
                 <fa-icon [icon]="nextIcon"></fa-icon>
               </app-agridata-button>
@@ -75,6 +77,7 @@
         } @else {
           <app-agridata-button
             [variant]="ButtonVariants.Secondary"
+            [loading]="isSaving()"
             (onClick)="handlePreviousStep()"
             [disabled]="wizard.currentStep() === 0"
           >
@@ -83,12 +86,17 @@
           <div class="flex gap-4">
             <app-agridata-button
               [variant]="ButtonVariants.Secondary"
+              [loading]="isSaving()"
               (onClick)="handleSave()"
               [disabled]="formDisabled()"
             >
               {{ t('saveDraft') }}
             </app-agridata-button>
-            <app-agridata-button (onClick)="handleSaveAndComplete()" [disabled]="formDisabled()">
+            <app-agridata-button
+              [loading]="isSaving()"
+              (onClick)="handleSaveAndComplete()"
+              [disabled]="formDisabled()"
+            >
               {{ t('saveAndComplete') }}
             </app-agridata-button>
           </div>

@@ -105,6 +105,9 @@ export class ConsentRequestDetailsComponent {
   protected readonly redirectUrl = signal<string | null>(null);
   protected readonly shouldRedirect = signal<boolean>(false);
   protected readonly showRedirect = signal<boolean>(false);
+  protected readonly showAcceptedLoading = signal(false);
+  protected readonly showRejectedLoading = signal(false);
+
   private readonly onSameNavigationReload = signal(false);
   private readonly refreshListNeeded = signal(false);
 
@@ -173,8 +176,8 @@ export class ConsentRequestDetailsComponent {
       (purpose as Record<string, string>)?.[this.currentLanguage()] ?? ('' as DataRequestPurposeDto)
     );
   });
-  protected readonly requestStateCode: Signal<string> = computed(() =>
-    String(this.request()?.stateCode),
+  protected readonly requestStateCode: Signal<ConsentRequestStateEnum | undefined> = computed(
+    () => this.request()?.stateCode,
   );
   protected readonly requestTitle = computed(() =>
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.title),
@@ -252,7 +255,9 @@ export class ConsentRequestDetailsComponent {
   });
 
   protected async acceptRequest(): Promise<void> {
+    this.showAcceptedLoading.set(true);
     await this.changeConsentRequestState(ConsentRequestStateEnum.Granted);
+    this.showAcceptedLoading.set(false);
   }
 
   protected handleCloseDetails(): void {
@@ -277,11 +282,19 @@ export class ConsentRequestDetailsComponent {
   };
 
   protected async rejectRequest(): Promise<void> {
+    this.showRejectedLoading.set(true);
     await this.changeConsentRequestState(ConsentRequestStateEnum.Declined);
+    this.showRejectedLoading.set(false);
   }
 
   private async changeConsentRequestState(newState: ConsentRequestStateEnum): Promise<void> {
     const id = this.requestId();
+    const currentState = this.requestStateCode();
+    if (!currentState) {
+      throw new Error(
+        `unable to ${newState === ConsentRequestStateEnum.Granted ? 'accept' : 'reject'} consent request: missing current state`,
+      );
+    }
     if (!id) {
       throw new Error(
         `unable to ${newState === ConsentRequestStateEnum.Granted ? 'accept' : 'reject'} consent request: missing id`,
@@ -303,12 +316,12 @@ export class ConsentRequestDetailsComponent {
           name: this.requestTitle(),
         }),
         getToastType(newState),
-        this.prepareUndoAction(id, this.requestStateCode()),
+        this.prepareUndoAction(id, currentState),
       );
     }
   }
 
-  private prepareUndoAction(id: string, stateCode: string) {
+  private prepareUndoAction(id: string, stateCode: ConsentRequestStateEnum) {
     return getUndoAction(() => {
       this.toastService.show(this.i18nService.translate(getToastTitle('')), '');
       this.onSameNavigationReload.set(true);
@@ -316,7 +329,10 @@ export class ConsentRequestDetailsComponent {
     });
   }
 
-  private async updateAndReloadConsentRequestState(id: string, stateCode: string): Promise<void> {
+  private async updateAndReloadConsentRequestState(
+    id: string,
+    stateCode: ConsentRequestStateEnum,
+  ): Promise<void> {
     await this.consentRequestService.updateConsentRequestStatus(id, stateCode);
     this.consentRequestResource?.reload();
     this.refreshListNeeded.set(true);

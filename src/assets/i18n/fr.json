@@ -16,11 +16,13 @@
     "pageSelector": "Entrées par page",
     "header": {
       "ariaLabels": {
-        "sort": "Trier par : {{ sortBy }}"
+        "sort": "Trier par : {{ sortBy }}",
+        "rowActionColumnTitle": "Colonne Actions"
       }
     },
     "ariaLabels": {
-      "actions": "Actions"
+      "actions": "Actions",
+      "rowAction": "Ouvrir l'enregistrement"
     }
   },
   "consent-request": {

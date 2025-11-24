@@ -40,9 +40,16 @@
               (sortChange)="setSingleColumnSort(column, $event)"
             ></app-table-header-cell>
           }
+
+          @if (tableMetadata().rowAction && tableMetadata().showRowActionButton) {
+            <th
+              class="py-3 px-4 w-0"
+              [attr.aria-label]="t('header.ariaLabels.rowActionColumnTitle')"
+            ></th>
+          }
           <!-- Actions Column Header -->
-          @if (tableMetadata().actions) {
-            <th class="py-3 px-4" [attr.aria-label]="t('actions')"></th>
+          @if (tableMetadata().rowMenuActions) {
+            <th class="py-3 px-4 w-0" [attr.aria-label]="t('actions')"></th>
           }
         </tr>
       </thead>
@@ -50,15 +57,12 @@
       <tbody>
         <!-- Data Rows -->
         @for (row of pageData().items; track getRowId(row)) {
-          @let rowId = getRowId(row);
           <tr
             class="hover:bg-agridata-primary-50 cursor-pointer transition-colors duration-150"
             [class.bg-sky-50]="isRowHighlighted(row)"
             [attr.aria-selected]="isRowHighlighted(row)"
             (click)="handleRowClick(row)"
             (keydown.enter)="handleRowClick(row)"
-            (mouseenter)="setHoveredRowId(rowId)"
-            (mouseleave)="setHoveredRowId(null)"
             tabindex="0"
             role="button"
           >
@@ -66,15 +70,24 @@
             @for (column of tableMetadata().columns; track column.name) {
               <app-table-cell [columnDefinition]="column" [row]="row"></app-table-cell>
             }
-
+            @let rowAction = tableMetadata().rowAction;
+            @if (rowAction && tableMetadata().showRowActionButton) {
+              <td class="py-3 px-4 border-t border-gray-200 w-0 whitespace-nowrap">
+                <app-agridata-button
+                  click-stop-propagation
+                  [variant]="ButtonVariants.Icon"
+                  (onClick)="rowAction(row)"
+                  class="action-button"
+                  [ariaLabel]="'table.ariaLabels.rowAction' | i18n"
+                >
+                  <fa-icon size="xl" [icon]="iconRowAction" />
+                </app-agridata-button>
+              </td>
+            }
             <!-- Actions Cell -->
-            @if (tableMetadata().actions) {
-              <td class="py-3 px-4 border-t border-gray-200">
-                <app-table-actions
-                  [actions]="getRowActions(row)"
-                  [isRowHovered]="hoveredRowId() === rowId"
-                  (rowAction)="handleRowClick(row)"
-                ></app-table-actions>
+            @if (tableMetadata().rowMenuActions) {
+              <td class="py-3 px-4 border-t border-gray-200 w-0 whitespace-nowrap">
+                <app-table-row-menu [actions]="getRowActions(row)"></app-table-row-menu>
               </td>
             }
           </tr>

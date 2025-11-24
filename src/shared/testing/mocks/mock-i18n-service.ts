@@ -20,5 +20,6 @@ export function createMockI18nService(): MockI18nService {
     useObjectTranslation: jest.fn().mockImplementation((obj?: TranslationDto) => obj?.de ?? ''),
     lang: signal<string>('de'),
     setActiveLang: jest.fn(),
+    selectTranslate: jest.fn(),
   } satisfies MockI18nService;
 }

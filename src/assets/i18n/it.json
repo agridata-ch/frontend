@@ -16,11 +16,13 @@
     "pageSelector": "Voci per pagina",
     "header": {
       "ariaLabels": {
-        "sort": "Ordina per: {{ sortBy }}"
+        "sort": "Ordina per: {{ sortBy }}",
+        "rowActionColumnTitle": "Azioni Colonna"
       }
     },
     "ariaLabels": {
-      "actions": "Azioni"
+      "actions": "Azioni",
+      "rowAction": "Apri record"
     }
   },
   "consent-request": {
