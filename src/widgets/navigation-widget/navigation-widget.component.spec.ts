@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -25,6 +25,7 @@ describe('NavigationWidgetComponent', () => {
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: AgridataStateService, useValue: stateService },
+        { provide: ActivatedRoute, useValue: {} },
       ],
     }).compileComponents();
   });
