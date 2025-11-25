@@ -1,3 +1,9 @@
+## [1.5.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.5...v1.5.0-rc.6) (2025-11-25)
+
+### Features
+
+- **seo:** improve robots ([f484e02](https://github.com/agridata-ch/frontend/commit/f484e029aad4bae3e86649ceb8a7f0eda7c8dbf4)), closes [DIGIB2-977](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-977)
+
 ## [1.5.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.4...v1.5.0-rc.5) (2025-11-25)
 
 ### Features
