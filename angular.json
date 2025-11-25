@@ -28,19 +28,6 @@
             "index": "src/index.html",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "src/assets",
-                "output": "/assets"
-              },
-              {
-                "glob": "**/*",
-                "input": "public"
-              },
-              "src/robots.txt",
-              "src/sitemap.xml"
-            ],
             "styles": [
               "src/styles.css"
             ],
@@ -51,6 +38,23 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "src/assets",
+                  "output": "/assets"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "public"
+                },
+                {
+                  "glob": "robots.txt",
+                  "input": "src/seo/staging",
+                  "output": "/"
+                },
+                "src/sitemap.xml"
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -62,6 +66,23 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "src/assets",
+                  "output": "/assets"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "public"
+                },
+                {
+                  "glob": "robots.txt",
+                  "input": "src/seo/staging",
+                  "output": "/"
+                },
+                "src/sitemap.xml"
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -83,6 +104,23 @@
                 }
               ],
               "outputHashing": "all",
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "src/assets",
+                  "output": "/assets"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "public"
+                },
+                {
+                  "glob": "robots.txt",
+                  "input": "src/seo/staging",
+                  "output": "/"
+                },
+                "src/sitemap.xml"
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -104,6 +142,23 @@
                 }
               ],
               "outputHashing": "all",
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "src/assets",
+                  "output": "/assets"
+                },
+                {
+                  "glob": "**/*",
+                  "input": "public"
+                },
+                {
+                  "glob": "robots.txt",
+                  "input": "src/seo/prod",
+                  "output": "/"
+                },
+                "src/sitemap.xml"
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
