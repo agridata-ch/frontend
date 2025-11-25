@@ -7,6 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:production": "ng build --configuration production",
+    "build:dev": "ng build --configuration development",
     "watch": "ng build --watch --configuration development",
     "test:unit": "jest",
     "test:coverage": "jest --coverage --no-cache",
