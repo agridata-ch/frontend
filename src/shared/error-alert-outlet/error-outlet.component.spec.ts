@@ -4,10 +4,12 @@ import { By } from '@angular/platform-browser';
 
 import { ErrorDto } from '@/app/error/error-dto';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { createMockErrorHandlerService, MockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler.service';
+import {
+  createMockErrorHandlerService,
+  MockErrorHandlerService,
+} from '@/shared/testing/mocks/mock-error-handler.service';
 
 import { ErrorOutletComponent } from './error-outlet.component';
-
 
 const testError = {
   id: '1',
@@ -18,7 +20,6 @@ const testError = {
   timestamp: new Date(),
   isHandled: false,
 } as ErrorDto;
-
 
 describe('ErrorOutletComponent', () => {
   let fixture: ComponentFixture<ErrorOutletComponent>;
@@ -31,9 +32,7 @@ describe('ErrorOutletComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [ErrorOutletComponent],
-      providers: [
-        { provide: ErrorHandlerService, useValue: errorService },
-      ],
+      providers: [{ provide: ErrorHandlerService, useValue: errorService }],
     }).compileComponents();
     fixture = TestBed.createComponent(ErrorOutletComponent);
     component = fixture.componentInstance;
@@ -50,4 +49,3 @@ describe('ErrorOutletComponent', () => {
     expect(errorService.markAllErrorsOfHandlerAsHandled).toHaveBeenCalledWith('1');
   });
 });
-

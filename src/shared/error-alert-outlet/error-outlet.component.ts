@@ -26,7 +26,7 @@ export class ErrorOutletComponent {
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly closeIcon = faClose;
 
-  protected errors : Signal<ErrorDto[] > | undefined ;
+  protected errors: Signal<ErrorDto[]> | undefined;
 
   readonly initializeEffect = effect((onCleanup) => {
     const handlerId = this.errorService.registerHandler();
@@ -38,10 +38,9 @@ export class ErrorOutletComponent {
       }
     });
     if (handlerId) {
-      this.errors =  this.errorService.getErrorsForHandler(handlerId);
-
+      this.errors = this.errorService.getErrorsForHandler(handlerId);
     }
-  })
+  });
 
   closeErrors(): void {
     const handlerId = this.handlerId();
