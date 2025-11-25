@@ -1,3 +1,9 @@
+## [1.5.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.6...v1.5.0-rc.7) (2025-11-25)
+
+### Bug Fixes
+
+- **seo:** update staging robots.txt ([ebb7703](https://github.com/agridata-ch/frontend/commit/ebb7703b689cbd959421c557a77b9c9ee84100ab))
+
 ## [1.5.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.5...v1.5.0-rc.6) (2025-11-25)
 
 ### Features
