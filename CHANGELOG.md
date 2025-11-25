@@ -1,3 +1,9 @@
+## [1.5.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.4...v1.5.0-rc.5) (2025-11-25)
+
+### Features
+
+- **cms:** improve image-list component ([e977b35](https://github.com/agridata-ch/frontend/commit/e977b35db8eef35d3d782f2c7bb42e81831e7635)), closes [DIGIB2-1010](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1010)
+
 ## [1.5.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.3...v1.5.0-rc.4) (2025-11-25)
 
 ### Features
