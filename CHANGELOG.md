@@ -1,3 +1,9 @@
+## [1.5.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.3...v1.5.0-rc.4) (2025-11-25)
+
+### Features
+
+- **ui:** add env indicator ([559744f](https://github.com/agridata-ch/frontend/commit/559744f73f39afcb9087981f515a012ff5669f86)), closes [DIGIB2-816](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-816)
+
 ## [1.5.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.2...v1.5.0-rc.3) (2025-11-24)
 
 ### Features
