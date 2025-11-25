@@ -18,6 +18,7 @@ import { UserService } from '@/entities/api/user.service';
 import { PageResponseDto, ResourceQueryDto, UserInfoDto } from '@/entities/openapi';
 import { UserInfoDtoDirective } from '@/pages/supporter-page/user-info-dto.directive';
 import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
+import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
@@ -28,7 +29,6 @@ import {
   TableMetadata,
 } from '@/shared/ui/agridata-table';
 import { ButtonComponent } from '@/shared/ui/button';
-import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card/';
 
 /**

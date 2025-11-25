@@ -24,6 +24,7 @@ import { DataRequestDto } from '@/entities/openapi';
 import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
 import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/pages/data-requests-consumer';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import {
   createResourceErrorHandlerEffect,
@@ -38,7 +39,6 @@ import {
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
-import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
 import { AgridataWizardComponent, WizardStep } from '@/widgets/agridata-wizard';
 import {
   DataRequestFormConsumerComponent,

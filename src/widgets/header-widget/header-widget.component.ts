@@ -82,7 +82,6 @@ export class HeaderWidgetComponent {
 
   readonly environment = computed(() => (environment.production ? null : environment.instanceName));
   readonly envColor = computed(() => {
-    console.log('environment', environment);
     switch (environment?.instanceName) {
       case 'local':
         return 'border-t-green-500 ';

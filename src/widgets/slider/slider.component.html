@@ -6,7 +6,7 @@
   >
     <ng-content></ng-content>
   </div>
-  <div class="flex justify-center relative min-h-8">
+  <div class="flex justify-center items-center relative min-h-8">
     <div class="hidden lg:flex items-center">
       @for (page of totalPages(); track $index) {
         <span
@@ -24,6 +24,7 @@
         [disabled]="currentIndex() === 0"
       >
         <fa-icon class="lg:hidden" size="xl" [icon]="iconChevronLeft"></fa-icon>
+
         <fa-icon class="hidden lg:flex" size="lg" [icon]="iconChevronLeft"></fa-icon>
       </app-agridata-button>
       <app-agridata-button

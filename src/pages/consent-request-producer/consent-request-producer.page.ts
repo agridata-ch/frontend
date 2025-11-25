@@ -7,12 +7,12 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ConsentRequestProducerViewDto } from '@/entities/openapi';
+import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import {
   createResourceErrorHandlerEffect,
   createResourceValueComputed,
 } from '@/shared/lib/api.helper';
-import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
 import { AlertComponent, AlertType } from '@/widgets/alert';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 

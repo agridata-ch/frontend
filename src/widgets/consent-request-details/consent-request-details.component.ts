@@ -26,6 +26,7 @@ import {
   getUndoAction,
 } from '@/shared/consent-request';
 import { formatDate } from '@/shared/date';
+import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
 import {
@@ -38,7 +39,6 @@ import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
-import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { AlertComponent, AlertType } from '@/widgets/alert';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';

@@ -8,13 +8,13 @@ import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective } from '@/shared/i18n';
 import {
   createResourceErrorHandlerEffect,
   createResourceValueComputed,
 } from '@/shared/lib/api.helper';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
-import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
 import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-new';
 import { DataRequestTableComponent } from '@/widgets/data-request-table';
 
