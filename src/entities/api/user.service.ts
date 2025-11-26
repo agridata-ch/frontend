@@ -22,8 +22,8 @@ import { PageResponseDto, arrayToObjectSortParams, asPageResponse } from '@/shar
 export class UserService {
   private readonly apiService = inject(UsersService);
 
-  async getAuthorizedUids() {
-    return firstValueFrom(this.apiService.getAuthorizedUids());
+  getAuthorizedUids() {
+    return this.apiService.getAuthorizedUids();
   }
 
   getProducers = (queryDto: ResourceQueryDto): Promise<PageResponseDto<UserInfoDto>> => {

@@ -23,7 +23,7 @@ export class AuthorizationGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
     const requiredRoles: string[] = route.data['roles'] || [];
-    return this.authService.initializeAuth().pipe(
+    return this.authService.initializeUserInfo().pipe(
       map(() => {
         if (!requiredRoles || requiredRoles.length === 0) {
           return true;

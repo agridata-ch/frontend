@@ -11,7 +11,7 @@ import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
 @Injectable({
   providedIn: 'root',
 })
-export class ImpersonationGuardGuard implements CanActivate {
+export class ImpersonationGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot) {
     const ktidp = route.queryParamMap.get(KTIDP_IMPERSONATION_QUERY_PARAM);
     if (ktidp) {

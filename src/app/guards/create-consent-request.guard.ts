@@ -1,12 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
+import { catchError, mergeMap, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { UserService } from '@/entities/api/user.service';
 import { ConsentRequestCreatedDto, CreateConsentRequestDto, UidDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { AuthService } from '@/shared/lib/auth';
 
 /**
  * Guard to create consent requests for a given data request and handle navigation based on the
@@ -27,41 +29,42 @@ export class CreateConsentRequestGuard implements CanActivate {
   private readonly errorService = inject(ErrorHandlerService);
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly agridataStateService = inject(AgridataStateService);
-  private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService);
 
-  async canActivate(route: ActivatedRouteSnapshot) {
+  canActivate(route: ActivatedRouteSnapshot) {
     const { dataRequestUid, uid, redirectUrl } = this.extractRouteParameters(route);
 
     if (!dataRequestUid) {
-      return this.fail(new Error('No dataRequestUid provided in route parameters.'));
+      return of(this.fail(new Error('No dataRequestUid provided in route parameters.')));
     }
 
-    const uidDtos = await this.getUids();
-    if (!uidDtos) {
-      return this.fail(new Error(`user has no uids`));
-    }
+    return this.authService.initializeAuthorizedUids().pipe(
+      mergeMap((uidDtos) => {
+        if (!uidDtos) {
+          return of(this.fail(new Error(`user has no uids`)));
+        }
 
-    if (uid) {
-      if (!this.isValidUid(uid, uidDtos)) {
-        return this.fail(new Error(`Provided uid is not authorized: ${uid}`));
-      }
-      this.agridataStateService.setActiveUid(uid);
-    }
+        if (uid) {
+          if (!this.isValidUid(uid, uidDtos)) {
+            return of(this.fail(new Error(`Provided uid is not authorized: ${uid}`)));
+          }
+          this.agridataStateService.setActiveUid(uid);
+        }
 
-    try {
-      const createConsentRequestDtos = this.buildConsentRequestDtos(dataRequestUid, uidDtos, uid);
-      const consentRequests = await this.createAndValidateConsentRequests(createConsentRequestDtos);
-
-      if (!consentRequests) {
-        return this.fail(
-          new Error(`No consent requests created for dataRequestUid: ${dataRequestUid}`),
+        const createConsentRequestDtos = this.buildConsentRequestDtos(dataRequestUid, uidDtos, uid);
+        return this.consentRequestService.createConsentRequests(createConsentRequestDtos).pipe(
+          map((consentRequests) => {
+            if (!consentRequests || consentRequests.length === 0) {
+              return this.fail(
+                new Error(`No consent requests created for dataRequestUid: ${dataRequestUid}`),
+              );
+            }
+            return this.navigateToConsentRequest(consentRequests, redirectUrl);
+          }),
         );
-      }
-
-      return this.navigateToConsentRequest(consentRequests, redirectUrl);
-    } catch (error) {
-      return this.handleError(error);
-    }
+      }),
+      catchError((error) => of(this.handleError(error))),
+    );
   }
 
   private buildConsentRequestDtos(
@@ -72,19 +75,6 @@ export class CreateConsentRequestGuard implements CanActivate {
     return uid
       ? [{ uid, dataRequestId: dataRequestId }]
       : [...uidDtos].map((userUid) => ({ uid: userUid.uid, dataRequestId: dataRequestId }));
-  }
-
-  private async createAndValidateConsentRequests(
-    createConsentRequestDtos: CreateConsentRequestDto[],
-  ) {
-    const consentRequests =
-      await this.consentRequestService.createConsentRequests(createConsentRequestDtos);
-
-    if (!consentRequests || consentRequests.length === 0) {
-      return null;
-    }
-
-    return consentRequests;
   }
 
   private extractRouteParameters(route: ActivatedRouteSnapshot): {
@@ -106,12 +96,6 @@ export class CreateConsentRequestGuard implements CanActivate {
   private fail(error: Error) {
     this.errorService.handleError(error);
     return this.router.parseUrl(ROUTE_PATHS.ERROR);
-  }
-
-  private async getUids() {
-    return this.agridataStateService.userUidsLoaded()
-      ? this.agridataStateService.userUids()
-      : await this.userService.getAuthorizedUids();
   }
 
   private isValidUid(uid: string, uidDtos: UidDto[]) {

@@ -3,10 +3,10 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 
 import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
 
-import { ImpersonationGuardGuard } from './impersonation.guard';
+import { ImpersonationGuard } from './impersonation.guard';
 
 describe('ImpersonationGuardGuard', () => {
-  let guard: ImpersonationGuardGuard;
+  let guard: ImpersonationGuard;
   let mockActivatedRouteSnapshot: Partial<ActivatedRouteSnapshot>;
 
   beforeEach(() => {
@@ -18,10 +18,10 @@ describe('ImpersonationGuardGuard', () => {
     } as any;
 
     TestBed.configureTestingModule({
-      providers: [ImpersonationGuardGuard],
+      providers: [ImpersonationGuard],
     });
 
-    guard = TestBed.inject(ImpersonationGuardGuard);
+    guard = TestBed.inject(ImpersonationGuard);
   });
 
   it('should be created', () => {

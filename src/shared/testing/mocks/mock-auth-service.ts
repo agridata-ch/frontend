@@ -2,7 +2,7 @@
 
 import { signal, WritableSignal } from '@angular/core';
 
-import { UserInfoDto } from '@/entities/openapi';
+import { UidDto, UserInfoDto } from '@/entities/openapi';
 import { AuthService } from '@/shared/lib/auth/auth.service';
 import { MockifyWithWritableSignals } from '@/shared/testing/mocks/test-model';
 
@@ -16,6 +16,7 @@ export type MockAuthServiceTestSignals = {
   userRoles: WritableSignal<string[]>;
   userInfo: WritableSignal<UserInfoDto | undefined>;
   isAuthenticated: WritableSignal<boolean>;
+  userUids: WritableSignal<UidDto[]>;
 };
 
 export type MockAuthService = MockifyWithWritableSignals<AuthService, MockAuthServiceTestSignals>;
@@ -31,13 +32,14 @@ export function createMockAuthService(): MockAuthService {
   const isProducer = signal(false);
   const isConsumer = signal(false);
   const isSupporter = signal(false);
+  const userUids = signal([]);
 
   return {
     // Signals
     isAuthenticated,
     userInfo,
     userRoles,
-
+    userUids,
     // Computed signals (keep as simple signals for tests)
     isProducer,
     isConsumer,
@@ -49,8 +51,18 @@ export function createMockAuthService(): MockAuthService {
     getUserFullName: jest.fn().mockReturnValue(''),
     getUserEmail: jest.fn().mockReturnValue(''),
     initializeAuth: jest.fn(),
+    initializeUserInfo: jest.fn(),
+    initializeAuthorizedUids: jest.fn(),
     // test-only writable signals
-    __testSignals: { isProducer, isConsumer, isSupporter, userRoles, userInfo, isAuthenticated },
+    __testSignals: {
+      isProducer,
+      isConsumer,
+      isSupporter,
+      userRoles,
+      userInfo,
+      isAuthenticated,
+      userUids,
+    },
   } satisfies MockAuthService;
 }
 

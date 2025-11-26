@@ -31,7 +31,7 @@ export class ConsentRequestService {
     );
   }
 
-  async createConsentRequests(createConsentRequestDto: Array<CreateConsentRequestDto>) {
-    return firstValueFrom(this.apiService.createConsentRequests(createConsentRequestDto));
+  createConsentRequests(createConsentRequestDto: Array<CreateConsentRequestDto>) {
+    return this.apiService.createConsentRequests(createConsentRequestDto);
   }
 }

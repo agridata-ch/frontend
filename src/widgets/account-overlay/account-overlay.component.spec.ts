@@ -2,37 +2,21 @@ import { provideLocationMocks } from '@angular/common/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { UserService } from '@/entities/api/user.service';
-import { UidDto } from '@/entities/openapi';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { AuthService } from '@/shared/lib/auth';
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
 import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 
 import { AccountOverlayComponent } from './account-overlay.component';
-
-const uidDtos: UidDto[] = [
-  {
-    uid: '1',
-    name: 'Alpha',
-  } as UidDto,
-  {
-    uid: '2',
-    name: 'Beta',
-  } as UidDto,
-  {
-    uid: '3',
-    name: undefined, // This will test sorting with undefined names
-  } as UidDto,
-];
-
-const participantService: Partial<UserService> = {
-  getAuthorizedUids: jest.fn().mockReturnValue(Promise.resolve(uidDtos)),
-};
 
 describe('AccountOverlayComponent', () => {
   let component: AccountOverlayComponent;
   let fixture: ComponentFixture<AccountOverlayComponent>;
   let authService: MockAuthService;
-
+  let stateService: MockAgridataStateService;
   const userDataMock = {
     name: 'John Doe',
     email: 'john@example.com',
@@ -40,12 +24,12 @@ describe('AccountOverlayComponent', () => {
 
   beforeEach(async () => {
     authService = createMockAuthService();
-
+    stateService = createMockAgridataStateService();
     await TestBed.configureTestingModule({
       imports: [AccountOverlayComponent],
       providers: [
         { provide: AuthService, useValue: authService },
-        { provide: UserService, useValue: participantService },
+        { provide: AgridataStateService, useValue: stateService },
         provideLocationMocks(),
       ],
     }).compileComponents();
