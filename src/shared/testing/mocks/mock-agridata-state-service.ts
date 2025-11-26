@@ -10,39 +10,44 @@ export type MockAgridataStateServiceTestSignals = {
   currentRoute: WritableSignal<string | undefined>;
   userPreferences: WritableSignal<UserPreferencesDto>;
   activeUid: WritableSignal<string | undefined>;
+  backendInfo: WritableSignal<{ [key: string]: string } | undefined>;
 };
 
 export type MockAgridataStateService = MockifyWithWritableSignals<
   AgridataStateService,
   MockAgridataStateServiceTestSignals
 >;
+export const BE_VERSION = '1.0.0';
 
 export function createMockAgridataStateService(): MockAgridataStateService {
   const currentRouteWithoutQueryParams = signal<string | undefined>(undefined);
   const currentRoute = signal<string | undefined>('/some-page');
-
   const userPreferences = signal<UserPreferencesDto>({
     mainMenuOpened: false,
     dismissedMigratedIds: [],
   });
   const activeUid = signal<string | undefined>(undefined);
+  const backendInfo = signal({ version: BE_VERSION });
   return {
     activeUid,
     currentRoute,
     currentRouteWithoutQueryParams,
     userPreferences,
+    backendInfo,
     getDefaultUid: jest.fn().mockReturnValue(undefined),
     isImpersonating: jest.fn().mockReturnValue(false),
     isNavigationOpen: signal(false),
     routeStart: signal<string | undefined>('/some-page'),
     setActiveUid: jest.fn(),
-    setUids: jest.fn(),
-    userUids: signal([]),
-    userUidsLoaded: signal(false),
     setMainMenuOpened: jest.fn(),
     addConfirmedMigratedUids: jest.fn(),
-
-    __testSignals: { currentRouteWithoutQueryParams, userPreferences, activeUid, currentRoute },
+    __testSignals: {
+      currentRouteWithoutQueryParams,
+      userPreferences,
+      activeUid,
+      currentRoute,
+      backendInfo,
+    },
   } satisfies MockAgridataStateService;
 }
 

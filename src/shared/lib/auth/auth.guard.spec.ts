@@ -5,7 +5,11 @@ import { firstValueFrom, of, throwError } from 'rxjs';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
+import {
+  createMockAuthService,
+  MockAuthService,
+  mockUserInfo,
+} from '@/shared/testing/mocks/mock-auth-service';
 import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
@@ -44,7 +48,7 @@ describe('AuthorizationGuard', () => {
   });
 
   it('allows activation when no roles are required', async () => {
-    authService.initializeAuth.mockReturnValue(of(undefined));
+    authService.initializeUserInfo.mockReturnValue(of(mockUserInfo));
 
     const route = { data: {}, url: [] } as unknown as ActivatedRouteSnapshot;
 
@@ -54,7 +58,7 @@ describe('AuthorizationGuard', () => {
   });
 
   it('denies activation when required role is missing and redirects to forbidden', async () => {
-    authService.initializeAuth.mockReturnValue(of(undefined));
+    authService.initializeUserInfo.mockReturnValue(of(undefined));
     (authService.__testSignals.userRoles as WritableSignal<string[]>).set(['ROLE_USER']);
 
     const route = { data: { roles: ['ROLE_ADMIN'] }, url: [] } as unknown as ActivatedRouteSnapshot;
@@ -66,7 +70,7 @@ describe('AuthorizationGuard', () => {
   });
 
   it('allows activation when user has one of the required roles', async () => {
-    authService.initializeAuth.mockReturnValue(of(undefined));
+    authService.initializeUserInfo.mockReturnValue(of(undefined));
     authService.__testSignals.userRoles.set(['ROLE_ADMIN', 'ROLE_USER']);
 
     const route = { data: { roles: ['ROLE_ADMIN'] }, url: [] } as unknown as ActivatedRouteSnapshot;
@@ -78,7 +82,7 @@ describe('AuthorizationGuard', () => {
 
   it('handles errors from initializeAuth by sending them to errorService and redirecting to error route', async () => {
     const testError = new Error('Test initializeAuth error');
-    authService.initializeAuth.mockReturnValue(throwError(() => testError));
+    authService.initializeUserInfo.mockReturnValue(throwError(() => testError));
 
     const route = { data: {}, url: [] } as unknown as ActivatedRouteSnapshot;
 
@@ -91,7 +95,7 @@ describe('AuthorizationGuard', () => {
 
   it('ignores errors when on error page and returns true', async () => {
     const testError = new Error('Test initializeAuth error');
-    authService.initializeAuth.mockReturnValue(throwError(() => testError));
+    authService.initializeUserInfo.mockReturnValue(throwError(() => testError));
 
     const route = { data: {}, url: [ROUTE_PATHS.ERROR] } as unknown as ActivatedRouteSnapshot;
 

@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
-import { BackendVersionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { TestDataService } from '@/entities/openapi';
 import {
+  BE_VERSION,
   createMockAgridataStateService,
   MockAgridataStateService,
 } from '@/shared/testing/mocks/mock-agridata-state-service';
@@ -13,26 +13,16 @@ import { FooterWidgetComponent } from '@/widgets/footer-widget';
 
 import { version as frontendVersion } from '../../../../package.json';
 
-const beVersion = '1.0.0';
-
-const createMockBackendVersionService = () =>
-  ({
-    fetchBackendVersion: jest.fn().mockResolvedValue({ version: beVersion }),
-  }) satisfies Partial<BackendVersionService>;
-
 describe('FooterWidgetComponent', () => {
   let component: FooterWidgetComponent;
   let fixture: ComponentFixture<FooterWidgetComponent>;
-  let backendVersionService: ReturnType<typeof createMockBackendVersionService>;
   let stateService: MockAgridataStateService;
   beforeEach(async () => {
-    backendVersionService = createMockBackendVersionService();
     stateService = createMockAgridataStateService();
     await TestBed.configureTestingModule({
       imports: [FooterWidgetComponent],
       providers: [
         { provide: AgridataStateService, useValue: stateService },
-        { provide: BackendVersionService, useValue: backendVersionService },
         { provide: TestDataService, useValue: {} },
         { provide: ActivatedRoute, useValue: {} },
       ],
@@ -53,7 +43,7 @@ describe('FooterWidgetComponent', () => {
     await fixture.whenStable();
     const spanEl = fixture.debugElement.queryAll(By.css('.text-agridata-tertiary-text'));
     expect(spanEl[0].nativeElement.textContent).toContain(`FE ${frontendVersion}`);
-    expect(spanEl[0].nativeElement.textContent).toContain(`BE ${beVersion}`);
+    expect(spanEl[0].nativeElement.textContent).toContain(`BE ${BE_VERSION}`);
   });
 
   describe('handleCopyright', () => {

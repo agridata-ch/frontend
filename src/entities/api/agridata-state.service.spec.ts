@@ -2,9 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { NavigationEnd, Router } from '@angular/router';
 import { of } from 'rxjs';
 
+import { BackendInfoService } from '@/entities/api/backend-info.service';
 import { UserService } from '@/entities/api/user.service';
 import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
+import { BE_VERSION } from '@/shared/testing/mocks/mock-agridata-state-service';
 import {
   createMockAuthService,
   MockAuthService,
@@ -14,17 +16,24 @@ import { createMockUserService, MockUserService } from '@/shared/testing/mocks/m
 
 import { AgridataStateService, DISMISSED_MIGRATIONS_KEY } from './agridata-state.service';
 
+const createMockBackendVersionService = () =>
+  ({
+    fetchBackendInfo: jest.fn().mockResolvedValue({ version: BE_VERSION }),
+  }) satisfies Partial<BackendInfoService>;
+
 describe('AgridataStateService', () => {
   let service: AgridataStateService;
   let mockRouter: Partial<Router>;
   let userService: MockUserService;
   let authService: MockAuthService;
+  let backendVersionService: ReturnType<typeof createMockBackendVersionService>;
 
   beforeEach(() => {
     mockRouter = {
       url: '/initial',
       events: of(new NavigationEnd(1, '/initial', '/initial')),
     };
+    backendVersionService = createMockBackendVersionService();
 
     userService = createMockUserService();
     authService = createMockAuthService();
@@ -35,6 +44,7 @@ describe('AgridataStateService', () => {
         { provide: Router, useValue: mockRouter },
         { provide: UserService, useValue: userService },
         { provide: AuthService, useValue: authService },
+        { provide: BackendInfoService, useValue: backendVersionService },
       ],
     });
 
@@ -62,13 +72,6 @@ describe('AgridataStateService', () => {
 
     expect(service.activeUid()).toBe('ABC');
     expect(userService.updateUserPreferences).toHaveBeenCalled();
-  });
-
-  it('setUids sets userUids and marks loaded', () => {
-    service.setUids([{ uid: '1' } as any]);
-
-    expect(service.userUidsLoaded()).toBe(true);
-    expect(service.userUids()).toEqual([{ uid: '1' }]);
   });
 
   it('getDefaultUid returns stored active uid when present otherwise first uid', () => {
