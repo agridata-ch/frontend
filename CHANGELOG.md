@@ -1,3 +1,9 @@
+## [1.5.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.7...v1.5.0-rc.8) (2025-11-26)
+
+### Bug Fixes
+
+- **user-preferences:** improves guards to load userdata only once ([c20ce65](https://github.com/agridata-ch/frontend/commit/c20ce65b2ed68b3dc430cfdb128241654b16ff08)), closes [DIGIB2-586](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-586)
+
 ## [1.5.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.6...v1.5.0-rc.7) (2025-11-25)
 
 ### Bug Fixes
