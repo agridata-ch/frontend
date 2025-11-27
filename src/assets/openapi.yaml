@@ -830,6 +830,31 @@ components:
           examples:
           - 2025-08-27T14:35:00
           description: Date and time when the user last logged into the system.
+        userPreferences:
+          $ref: "#/components/schemas/UserPreferencesDto"
+          type: object
+          description: Preferences of the user in the frontend
+    UserPreferencesDto:
+      type: object
+      properties:
+        mainMenuOpened:
+          type: boolean
+          examples:
+          - true
+          description: If the main menu is opened or closed.
+        activeUid:
+          type: string
+          examples:
+          - CHE123456789
+          description: the active uid of the producer
+        dismissedMigratedIds:
+          type: array
+          examples:
+          - a5b1d2e3-4f6a-2b7c-6d0e-9f1a3b5c7d9e
+          items:
+            type: string
+          description: consent request ids for which we dont want to show migration
+            notices anymore
   securitySchemes:
     SecurityScheme:
       type: openIdConnect
@@ -1508,8 +1533,8 @@ paths:
       tags:
       - Test Data
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
         "401":
           description: Not Authorized
         "403":
@@ -1685,6 +1710,47 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Admin
+  /api/user/v1/preferences:
+    put:
+      description: updates preferences for the currently authenticated user.
+      operationId: updateUserPreferences
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPreferencesDto"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Update User Preferences
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Support
+        - agridata.ch.Agridata_Datenanbieter
   /api/user/v1/producers:
     get:
       description: Retrieves users mathing the given query parameters.
@@ -1879,6 +1945,6 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.2.0
+  version: 1.4.0-rc.2
   description: "This API provides access to the agridata.ch data exchange platform,\
     \ enabling Users to discover, request, approve, and manage data sharing agreements."

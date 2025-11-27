@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /$
-Allow: /cms/
-# Disallow everything else
-Disallow: /
-
-Sitemap: https://agridata.ch/sitemap.xml

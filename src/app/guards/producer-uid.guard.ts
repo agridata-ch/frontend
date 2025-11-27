@@ -1,85 +1,102 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
+import { catchError, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { UserService } from '@/entities/api/user.service';
-import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
+import { UidDto } from '@/entities/openapi';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 
 /**
  * Guard to load the producers authorized uids and set the consent request uid parameter if not present or set active uid if parameter is provided.
  *
- * CommentLastReviewed: 2025-10-13
- *
- * @param route
+ * CommentLastReviewed: 2025-11-26
  */
 @Injectable({
   providedIn: 'root',
 })
 export class ProducerUidGuard implements CanActivate {
-  private readonly router = inject(Router);
-  private readonly participantService = inject(UserService);
+  // Injects
   private readonly agridataStateService = inject(AgridataStateService);
   private readonly authorizationService = inject(AuthService);
   private readonly errorService = inject(ErrorHandlerService);
+  private readonly router = inject(Router);
 
-  async canActivate(route: ActivatedRouteSnapshot): Promise<UrlTree | boolean> {
-    if (
-      !this.authorizationService.isAuthenticated() ||
-      (!this.authorizationService.isProducer() &&
-        !sessionStorage.getItem(KTIDP_IMPERSONATION_QUERY_PARAM))
-    ) {
-      // this filter is only relevant for producers
+  canActivate(route: ActivatedRouteSnapshot): Observable<UrlTree | boolean> {
+    return this.authorizationService.initializeAuthorizedUids().pipe(
+      map((uidDtos) => {
+        return this.validateAndSetUid(route, uidDtos);
+      }),
+      catchError((err) => of(this.processError(err))),
+    );
+  }
+
+  private validateAndSetUid(route: ActivatedRouteSnapshot, uidDtos: UidDto[]): UrlTree | boolean {
+    const userUid = route.paramMap.get('uid') ?? '';
+    const authorizedUids = uidDtos.map((uid) => uid.uid);
+
+    if (userUid) {
+      return this.handleProvidedUid(userUid, authorizedUids);
+    }
+
+    return this.handleMissingUid(route, uidDtos);
+  }
+
+  private handleMissingUid(route: ActivatedRouteSnapshot, uidDtos: UidDto[]): UrlTree | boolean {
+    if (!this.isConsentRequestProducerPath(route)) {
       return true;
     }
-    const userUid = route.paramMap.get('uid') ?? '';
 
-    try {
-      const uidDtos = this.agridataStateService.userUidsLoaded()
-        ? this.agridataStateService.userUids()
-        : await this.participantService.getAuthorizedUids();
-      const uids = uidDtos.map((uid) => uid.uid);
-      this.agridataStateService.setUids(uidDtos);
+    const defaultUid = this.agridataStateService.getDefaultUid(uidDtos);
 
-      // Always ensure userUid is set when available and valid, regardless of route
-      if (userUid) {
-        if (!uids.includes(userUid)) {
-          return this.fail(new Error('invalid url, user does not have access to uid: ' + userUid));
-        }
-
-        // Always set active uid when it's different from current
-        if (userUid !== this.agridataStateService.activeUid()) {
-          this.agridataStateService.setActiveUid(userUid);
-        }
-
-        // as of now we don't check if the user is allowed to access the consent request because uid check is expensive.
-        return true;
-      }
-
-      // If not in CONSENT_REQUEST_PRODUCER_PATH, we don't need to redirect
-      if (route?.parent?.url.at(0)?.path !== ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH) {
-        return true;
-      }
-      const defaultUid = this.agridataStateService.getDefaultUid(uidDtos);
-      if (defaultUid) {
-        this.agridataStateService.setActiveUid(defaultUid);
-        if (route.url[0]?.path === ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_CREATE_SUBPATH) {
-          // if new consent request is created, the createConsentRequestGuard will handle the redirect
-          return true;
-        }
-        return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, defaultUid]);
-      }
-    } catch (err) {
-      return err instanceof Error
-        ? this.fail(err)
-        : this.fail(new Error('Unknown error occurred in producer-uid guard', { cause: err }));
+    if (!defaultUid) {
+      this.errorService.handleError(new Error('user has no authorized uids'));
+      return this.createErrorUrlTree();
     }
+
+    this.agridataStateService.setActiveUid(defaultUid);
+
+    if (this.isConsentRequestCreatePath(route)) {
+      return true;
+    }
+
+    return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, defaultUid]);
+  }
+
+  private handleProvidedUid(userUid: string, authorizedUids: string[]): UrlTree | boolean {
+    if (!authorizedUids.includes(userUid)) {
+      return this.fail(new Error(`invalid url, user does not have access to uid: ${userUid}`));
+    }
+
+    if (userUid !== this.agridataStateService.activeUid()) {
+      this.agridataStateService.setActiveUid(userUid);
+    }
+
+    return true;
+  }
+
+  private isConsentRequestCreatePath(route: ActivatedRouteSnapshot): boolean {
+    return route.url[0]?.path === ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_CREATE_SUBPATH;
+  }
+
+  private isConsentRequestProducerPath(route: ActivatedRouteSnapshot): boolean {
+    return route?.parent?.url.at(0)?.path === ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH;
+  }
+
+  private processError(error: unknown): UrlTree {
+    return error instanceof Error
+      ? this.fail(error)
+      : this.fail(new Error('Unknown error occurred in producer-uid guard', { cause: error }));
+  }
+
+  private createErrorUrlTree(): UrlTree {
     return this.router.parseUrl(ROUTE_PATHS.ERROR);
   }
 
-  private fail(error: Error) {
+  private fail(error: Error): UrlTree {
     this.errorService.handleError(error);
-    return this.router.parseUrl(ROUTE_PATHS.ERROR);
+    return this.createErrorUrlTree();
   }
 }

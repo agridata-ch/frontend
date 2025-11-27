@@ -2,7 +2,7 @@
 
 import { signal, WritableSignal } from '@angular/core';
 
-import { UserInfoDto } from '@/entities/openapi';
+import { UidDto, UserInfoDto } from '@/entities/openapi';
 import { AuthService } from '@/shared/lib/auth/auth.service';
 import { MockifyWithWritableSignals } from '@/shared/testing/mocks/test-model';
 
@@ -13,6 +13,10 @@ export type MockAuthServiceTestSignals = {
   isProducer: WritableSignal<boolean>;
   isConsumer: WritableSignal<boolean>;
   isSupporter: WritableSignal<boolean>;
+  userRoles: WritableSignal<string[]>;
+  userInfo: WritableSignal<UserInfoDto | undefined>;
+  isAuthenticated: WritableSignal<boolean>;
+  userUids: WritableSignal<UidDto[]>;
 };
 
 export type MockAuthService = MockifyWithWritableSignals<AuthService, MockAuthServiceTestSignals>;
@@ -23,40 +27,46 @@ export type MockAuthService = MockifyWithWritableSignals<AuthService, MockAuthSe
  */
 export function createMockAuthService(): MockAuthService {
   const isAuthenticated = signal<boolean>(false);
-  const userData = signal<UserInfoDto | null>(null);
-  const userRoles = signal<string[] | null>(null);
+  const userInfo = signal<UserInfoDto | undefined>(undefined);
+  const userRoles = signal([]);
   const isProducer = signal(false);
   const isConsumer = signal(false);
   const isSupporter = signal(false);
+  const userUids = signal([]);
 
   return {
     // Signals
     isAuthenticated,
-    userData,
+    userInfo,
     userRoles,
-
+    userUids,
     // Computed signals (keep as simple signals for tests)
     isProducer,
     isConsumer,
     isSupporter,
 
-    // Effects
-    checkAuthEffect: (() => undefined) as unknown as AuthService['checkAuthEffect'],
-
     // Methods
-    oidcPromise: jest.fn().mockResolvedValue({ isAuthenticated: false }),
     login: jest.fn(),
     logout: jest.fn(),
     getUserFullName: jest.fn().mockReturnValue(''),
     getUserEmail: jest.fn().mockReturnValue(''),
-    setUserRoles: jest.fn(),
-
+    initializeAuth: jest.fn(),
+    initializeUserInfo: jest.fn(),
+    initializeAuthorizedUids: jest.fn(),
     // test-only writable signals
-    __testSignals: { isProducer, isConsumer, isSupporter },
+    __testSignals: {
+      isProducer,
+      isConsumer,
+      isSupporter,
+      userRoles,
+      userInfo,
+      isAuthenticated,
+      userUids,
+    },
   } satisfies MockAuthService;
 }
 
-export const mockUserData: UserInfoDto = {
+export const mockUserInfo: UserInfoDto = {
   addressCountry: 'CH',
   addressLocality: 'Basel',
   addressPostalCode: '4051',
@@ -67,4 +77,5 @@ export const mockUserData: UserInfoDto = {
   ktIdP: '***081',
   lastLoginDate: '2025-08-29T09:55:33.589684',
   phoneNumber: '+4179123456789',
+  userPreferences: { mainMenuOpened: false, dismissedMigratedIds: [] },
 };

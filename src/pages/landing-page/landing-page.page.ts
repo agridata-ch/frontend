@@ -3,11 +3,13 @@ import { Component, computed, effect, inject, resource } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { TitleService } from '@/app/title.service';
 import { CmsService, StrapiSingleTypeResponse } from '@/entities/cms';
 import { BlockRendererComponent } from '@/features/cms-blocks';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
+import { SeoService } from '@/shared/seo/seo.service';
 import { HeroBlockComponent } from '@/widgets/cms-blocks';
 import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
 
@@ -27,6 +29,8 @@ export class LandingPage {
   private readonly i18nService = inject(I18nService);
   private readonly router = inject(Router);
   private readonly errorService = inject(ErrorHandlerService);
+  private readonly titleService = inject(TitleService);
+  private readonly seoService = inject(SeoService);
 
   protected readonly landingPageResource = resource({
     params: () => ({ locale: this.i18nService.lang() }),
@@ -36,18 +40,6 @@ export class LandingPage {
   });
 
   protected readonly landingPage = createResourceValueComputed(this.landingPageResource);
-
-  protected readonly errorEffect = effect(() => {
-    const error = this.landingPageResource.error();
-    if (error) {
-      if (error?.cause instanceof HttpErrorResponse && error?.cause.status === 404) {
-        this.router.navigate([ROUTE_PATHS.NOT_FOUND], { state: { error: error.message } });
-      } else {
-        this.errorService.handleError(error);
-        this.router.navigate([ROUTE_PATHS.ERROR]);
-      }
-    }
-  });
 
   protected readonly pageBlocks = computed(() => {
     const response = this.landingPage() as StrapiSingleTypeResponse;
@@ -62,5 +54,39 @@ export class LandingPage {
   protected readonly footerBlock = computed(() => {
     const response = this.landingPage() as StrapiSingleTypeResponse;
     return response.data.footer;
+  });
+
+  protected readonly seoBlock = computed(() => {
+    const response = this.landingPage() as StrapiSingleTypeResponse;
+    return response.data.seo;
+  });
+
+  protected readonly errorEffect = effect(() => {
+    const error = this.landingPageResource.error();
+    if (error) {
+      if (error?.cause instanceof HttpErrorResponse && error?.cause.status === 404) {
+        this.router.navigate([ROUTE_PATHS.NOT_FOUND], { state: { error: error.message } });
+      } else {
+        this.errorService.handleError(error);
+        this.router.navigate([ROUTE_PATHS.ERROR]);
+      }
+    }
+  });
+
+  private readonly updatePageHtmlTitle = effect(() => {
+    this.titleService.setTranslatedTitle(this.pageTitle());
+  });
+
+  private readonly updateSeoEffect = effect(() => {
+    if (this.landingPageResource.isLoading()) return;
+    const seo = this.seoBlock();
+    if (seo) {
+      this.seoService.updateSeo(seo);
+    }
+  });
+
+  protected readonly pageTitle = computed(() => {
+    const response = this.landingPage() as StrapiSingleTypeResponse;
+    return response?.data?.seo?.metaTitle;
   });
 }

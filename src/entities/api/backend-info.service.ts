@@ -10,10 +10,10 @@ import { InfoResourceService } from '@/entities/openapi/api/infoResource.service
  * CommentLastReviewed: 2025-08-25
  */
 @Injectable({ providedIn: 'root' })
-export class BackendVersionService {
+export class BackendInfoService {
   private readonly infoResourceService = inject(InfoResourceService);
 
-  fetchBackendVersion() {
+  fetchBackendInfo() {
     return firstValueFrom(this.infoResourceService.qInfoGet());
   }
 }

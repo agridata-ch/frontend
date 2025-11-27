@@ -1,13 +1,17 @@
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, provideRouter, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { CmsService } from '@/entities/cms';
 import { UserInfoDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 import { mockCmsService } from '@/shared/testing/mocks';
+import {
+  createMockAgridataStateService,
+  MockAgridataStateService,
+} from '@/shared/testing/mocks/mock-agridata-state-service';
 import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 import {
   createMockErrorHandlerService,
@@ -15,47 +19,45 @@ import {
 } from '@/shared/testing/mocks/mock-error-handler.service';
 import { HeaderWidgetComponent } from '@/widgets/header-widget';
 
-@Component({
-  selector: 'app-dummy',
-  template: '<p>Dummy</p>',
-})
-class DummyComponent {}
-
 describe('HeaderWidgetComponent', () => {
   let fixture: ComponentFixture<HeaderWidgetComponent>;
   let component: HeaderWidgetComponent;
   let authService: MockAuthService;
   let errorService: MockErrorHandlerService;
   let cmsService: Partial<CmsService>;
-  let router: Router;
-
+  let router: jest.Mocked<Router>;
+  let stateService: MockAgridataStateService;
   beforeEach(async () => {
+    router = {
+      navigate: jest.fn().mockReturnValue(Promise.resolve()),
+      createUrlTree: jest.fn(),
+      serializeUrl: jest.fn(),
+      events: {
+        subscribe: jest.fn(),
+      },
+    } as unknown as jest.Mocked<Router>;
     errorService = createMockErrorHandlerService();
     cmsService = mockCmsService;
-    // create factory mock and provide it so tests can set signals
     authService = createMockAuthService();
+    stateService = createMockAgridataStateService();
+
     await TestBed.configureTestingModule({
       imports: [HeaderWidgetComponent, RouterLink],
       providers: [
-        provideRouter([{ path: ROUTE_PATHS.LOGIN, component: DummyComponent }]),
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: {} },
         { provide: CmsService, useValue: cmsService },
         { provide: ErrorHandlerService, useValue: errorService },
+        { provide: AgridataStateService, useValue: stateService },
+        { provide: Router, useValue: router },
       ],
     }).compileComponents();
-    router = TestBed.inject(Router);
-    jest.clearAllMocks();
-  });
-
-  function createComponent(): void {
     fixture = TestBed.createComponent(HeaderWidgetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  }
+  });
 
   it('should create', () => {
-    createComponent();
     expect(component).toBeTruthy();
   });
 
@@ -72,12 +74,13 @@ describe('HeaderWidgetComponent', () => {
   });
 
   it('isAuthenticated signal reflects AuthService.isAuthenticated()', () => {
-    authService.isAuthenticated.set(false);
-    createComponent();
+    authService.__testSignals.isAuthenticated.set(false);
+    fixture.detectChanges();
     expect(component.isAuthenticated()).toBe(false);
 
-    authService.isAuthenticated.set(true);
-    createComponent();
+    authService.__testSignals.isAuthenticated.set(true);
+    fixture.detectChanges();
+
     expect(component.isAuthenticated()).toBe(true);
   });
 
@@ -88,20 +91,32 @@ describe('HeaderWidgetComponent', () => {
       familyName: 'Smith',
       uid: '123',
     };
-    authService.userData.set(fakeUser);
-    createComponent();
-    expect(component.userData()).toBe(fakeUser);
+    authService.__testSignals.userInfo.set(fakeUser);
+    fixture.detectChanges();
+    expect(component.userInfo()).toBe(fakeUser);
 
-    authService.userData.set(null);
-    createComponent();
-    expect(component.userData()).toBeNull();
+    authService.__testSignals.userInfo.set(undefined);
+    fixture.detectChanges();
+    expect(component.userInfo()).toBeFalsy();
   });
 
   it('login() calls AuthService.login()', () => {
     const navigateSpy = jest.spyOn(router, 'navigate');
-
-    createComponent();
     component.login();
     expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.LOGIN]);
+  });
+
+  it('should return slug (cms page name)', () => {
+    stateService.__testSignals.currentRoute.set('/cms/test');
+    fixture.detectChanges();
+    const currentPage = component.currentCmsPageSlug();
+    expect(currentPage).toBe('test');
+  });
+
+  it('should return null if current page is not cms page', () => {
+    stateService.__testSignals.currentRoute.set('/test');
+    fixture.detectChanges();
+    const currentPage = component.currentCmsPageSlug();
+    expect(currentPage).toBe(null);
   });
 });

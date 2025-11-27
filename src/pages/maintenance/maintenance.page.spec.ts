@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
-import { BackendVersionService } from '@/entities/api';
+import { BackendInfoService } from '@/entities/api';
 import { DummyComponent } from '@/shared/testing/mocks/dummy-components';
 
 import { MaintenancePage } from './maintenance.page';
@@ -10,8 +10,8 @@ const beVersion = '1.0.0';
 
 const createMockBackendVersionService = () =>
   ({
-    fetchBackendVersion: jest.fn().mockResolvedValue({ version: beVersion }),
-  }) satisfies Partial<BackendVersionService>;
+    fetchBackendInfo: jest.fn().mockResolvedValue({ version: beVersion }),
+  }) satisfies Partial<BackendInfoService>;
 
 describe('MaintenancePage', () => {
   let component: MaintenancePage;
@@ -24,7 +24,7 @@ describe('MaintenancePage', () => {
     await TestBed.configureTestingModule({
       imports: [MaintenancePage],
       providers: [
-        { provide: BackendVersionService, useValue: backendVersionService },
+        { provide: BackendInfoService, useValue: backendVersionService },
         provideRouter([{ path: '', component: DummyComponent }]),
       ],
     }).compileComponents();

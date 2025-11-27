@@ -11,7 +11,7 @@ import {
 import {
   createMockAuthService,
   MockAuthService,
-  mockUserData,
+  mockUserInfo,
 } from '@/shared/testing/mocks/mock-auth-service';
 
 import { SupporterOverlayComponent } from './supporter-overlay.component';
@@ -45,12 +45,12 @@ describe('SupporterOverlayComponent', () => {
 
   describe('userName', () => {
     it('should return empty string when no user data', () => {
-      authService.userData.set(null);
+      authService.userInfo.set(null);
       expect(component['userName']()).toBe('');
     });
 
     it('should return combined first and last name when both exist', () => {
-      authService.userData.set({
+      authService.userInfo.set({
         givenName: 'John',
         familyName: 'Doe',
       });
@@ -58,7 +58,7 @@ describe('SupporterOverlayComponent', () => {
     });
 
     it('should return only first name when last name is missing', () => {
-      authService.userData.set({
+      authService.userInfo.set({
         givenName: 'John',
         familyName: '',
       });
@@ -66,7 +66,7 @@ describe('SupporterOverlayComponent', () => {
     });
 
     it('should return only last name when first name is missing', () => {
-      authService.userData.set({
+      authService.userInfo.set({
         givenName: '',
         familyName: 'Doe',
       });
@@ -74,7 +74,7 @@ describe('SupporterOverlayComponent', () => {
     });
 
     it('should handle real user data object', () => {
-      authService.userData.set(mockUserData);
+      authService.userInfo.set(mockUserInfo);
       expect(component['userName']()).toBe('Producer 081');
     });
   });

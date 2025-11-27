@@ -1,61 +1,51 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
 
 import { AuthService } from './auth.service';
 
 /**
  * Implements a route guard that checks authentication and required roles before allowing navigation.
  * Redirects to a forbidden route if access is denied.
+ * Ensures that user preferences are fetched upon successful authorization.
  *
  * CommentLastReviewed: 2025-08-25
  */
 @Injectable({ providedIn: 'root' })
 export class AuthorizationGuard implements CanActivate {
-  private readonly oidcSecurityService = inject(OidcSecurityService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-
-  private decodeAccessToken(token: string) {
-    try {
-      const payload = token.split('.')[1];
-      return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
-    } catch {
-      console.error('failed to decode access token');
-      return {};
-    }
-  }
+  private readonly errorService = inject(ErrorHandlerService);
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
+    const ktidp = route.queryParamMap.get(KTIDP_IMPERSONATION_QUERY_PARAM);
+    if (ktidp) {
+      sessionStorage.setItem(KTIDP_IMPERSONATION_QUERY_PARAM, ktidp);
+    }
     const requiredRoles: string[] = route.data['roles'] || [];
-    return this.oidcSecurityService.checkAuth().pipe(
-      map(({ accessToken, isAuthenticated }) => {
-        let userRoles: string[] = [];
-
-        if (accessToken) {
-          const decoded = this.decodeAccessToken(accessToken);
-          // Keycloak realm roles
-          if (decoded?.realm_access?.roles) {
-            userRoles = userRoles.concat(decoded.realm_access.roles);
-          }
-        }
-        this.authService.setUserRoles(userRoles);
-        this.authService.isAuthenticated.set(isAuthenticated);
-
+    return this.authService.initializeUserInfo().pipe(
+      map(() => {
         if (!requiredRoles || requiredRoles.length === 0) {
-          return true; // No specific roles required, allow access
+          return true;
         }
-
         const hasRole =
-          requiredRoles.length === 0 || requiredRoles.some((role) => userRoles.includes(role));
+          requiredRoles.length === 0 ||
+          requiredRoles.some((role) => this.authService.userRoles().includes(role));
         if (!hasRole) {
           return this.router.parseUrl(ROUTE_PATHS.FORBIDDEN);
         }
         return true;
+      }),
+      catchError((error) => {
+        if (route.url.toString().includes(ROUTE_PATHS.ERROR)) {
+          return of(true);
+        }
+        this.errorService.handleError(error);
+        return of(this.router.parseUrl(ROUTE_PATHS.ERROR));
       }),
     );
   }

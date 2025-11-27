@@ -1,13 +1,26 @@
+@if (environment()) {
+  <div
+    class="absolute top-0 left-0 w-0 h-0 border-t-[100px] border-r-[100px] border-r-transparent z-10"
+    [class]="envColor()"
+  >
+    <span
+      class="absolute -top-[75px] left-[10px] -rotate-45 text-sm font-bold text-black whitespace-nowrap"
+    >
+      {{ environment() }}
+    </span>
+  </div>
+}
 <div class="px-12 flex justify-between bg-agridata-primary-text text-white h-[100px]">
   <a class="agridata-logo text-[40px] flex items-center" routerLink="/">
     <img src="/assets/images/agridata-logo.svg" alt="Agridata Logo" class="h-[45px]" />
   </a>
+
   @if (!isAuthenticated()) {
     <div class="hidden lg:flex items-stretch self-stretch gap-2">
       @for (page of cmsPages(); track page.id) {
         <a [routerLink]="`/cms/${page.slug}`" class="flex items-center px-4 relative text-lg">
           <span>{{ page.title }}</span>
-          @if (currentPage() === page.slug) {
+          @if (currentCmsPageSlug() === page.slug) {
             <div class="absolute inset-x-0 bottom-0 border-b-8 border-white"></div>
           }
         </a>
@@ -19,8 +32,8 @@
       <app-contact-support-info />
     }
     <agridata-language-select />
-    @if (isAuthenticated() && userData()) {
-      <app-account-overlay [userData]="userData()"></app-account-overlay>
+    @if (isAuthenticated() && userInfo()) {
+      <app-account-overlay [userInfo]="userInfo()"></app-account-overlay>
     } @else {
       <app-agridata-button [variant]="ButtonVariants.SecondaryCms" (onClick)="login()">
         {{ 'account.login' | i18n }}

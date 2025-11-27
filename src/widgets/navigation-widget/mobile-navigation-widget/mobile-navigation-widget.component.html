@@ -5,8 +5,12 @@
 >
   <fa-icon [icon]="menuIcon" size="xl" class="text-white group-hover:text-agridata-primary-600" />
 </app-agridata-button>
+<!-- 
+  we have to set h-[calc(var(--vh,1vh)*100)] here to ensure the mobile navigation covers the full height of the viewport,
+  because height: 100dvh; on the parent div does not work as expected
+-->
 <div
-  class="fixed right-0 top-0 bottom-0 z-10 backdrop-brightness-75 shadow-2xl transition-[width] duration-300 ease-in-out max-w-[425px] bg-agridata-primary-text"
+  class="fixed right-0 top-0 bottom-0 z-10 h-[calc(var(--vh,1vh)*100)] backdrop-brightness-75 shadow-2xl transition-[width] duration-300 ease-in-out max-w-[425px] bg-agridata-primary-text"
   [class.w-0]="!isNavigationOpen()"
   [class.w-full]="isNavigationOpen()"
 >
@@ -40,6 +44,9 @@
       </div>
     } @else {
       <div class="flex flex-col gap-8">
+        <a routerLink="/" class="text-xl" (click)="toggleNavigation()">
+          {{ 'navigation.menuItems.home' | i18n }}
+        </a>
         @for (page of cmsPages(); track page.id) {
           <a [routerLink]="`/cms/${page.slug}`" class="text-xl" (click)="toggleNavigation()">
             {{ page.title }}

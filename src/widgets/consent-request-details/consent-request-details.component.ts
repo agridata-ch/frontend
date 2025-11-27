@@ -15,7 +15,7 @@ import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { MetaDataService } from '@/entities/api/meta-data-service';
+import { MasterDataService } from '@/entities/api/master-data.service';
 import { ConsentRequestStateEnum, DataRequestPurposeDto } from '@/entities/openapi';
 import { FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM } from '@/pages/consent-request-producer';
 import { REDIRECT_TIMEOUT } from '@/pages/consent-request-producer/consent-request-producer.page.model';
@@ -26,6 +26,7 @@ import {
   getUndoAction,
 } from '@/shared/consent-request';
 import { formatDate } from '@/shared/date';
+import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
 import {
@@ -38,7 +39,6 @@ import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
-import { ErrorOutletComponent } from '@/styles/error-alert-outlet/error-outlet.component';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { AlertComponent, AlertType } from '@/widgets/alert';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';
@@ -81,7 +81,7 @@ export class ConsentRequestDetailsComponent {
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
-  private readonly metaDataService = inject(MetaDataService);
+  private readonly metaDataService = inject(MasterDataService);
   private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
 
@@ -164,7 +164,7 @@ export class ConsentRequestDetailsComponent {
   protected readonly requestId = computed(() => this.request()?.id);
   protected readonly requestProducts = computed(() =>
     this.metaDataService
-      .getDataProducts()()
+      .dataProducts()
       ?.filter((product) => this.request()?.dataRequest?.products?.includes(product.id)),
   );
   protected readonly requestPurpose = computed(() => {

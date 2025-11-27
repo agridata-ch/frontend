@@ -2,6 +2,8 @@ import { provideLocationMocks } from '@angular/common/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { AuthService } from '@/shared/lib/auth';
+import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
@@ -14,16 +16,22 @@ describe('UidSwitchComponent', () => {
   let component: UidSwitchComponent;
   let fixture: ComponentFixture<UidSwitchComponent>;
   let agridataStateService: MockAgridataStateService;
+  let authService: MockAuthService;
   const activUid = '1';
 
   beforeEach(async () => {
     agridataStateService = createMockAgridataStateService();
+    authService = createMockAuthService();
     await TestBed.configureTestingModule({
       imports: [UidSwitchComponent],
       providers: [
         {
           provide: AgridataStateService,
           useValue: agridataStateService,
+        },
+        {
+          provide: AuthService,
+          useValue: authService,
         },
         provideLocationMocks(),
       ],
@@ -47,7 +55,7 @@ describe('UidSwitchComponent', () => {
 
   it('should compute activeUid from selectedUid and authorizedUids', () => {
     component.selectedUid.set('2');
-    agridataStateService.activeUid.set('1');
+    agridataStateService.__testSignals.activeUid.set('1');
     expect(component.activeUid()).toBe('2');
 
     component.selectedUid.set(null);
@@ -55,7 +63,7 @@ describe('UidSwitchComponent', () => {
   });
 
   it('should return sorted authorizedUids', () => {
-    agridataStateService.userUids.set(mockUids);
+    authService.__testSignals.userUids.set(mockUids);
 
     const sorted = component.sortedUids();
 

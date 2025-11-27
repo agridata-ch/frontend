@@ -1,10 +1,10 @@
 import { Component, computed, inject, resource } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { NavigationEnd, Router, RouterLink } from '@angular/router';
-import { filter, map } from 'rxjs';
+import { Router, RouterLink } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { CmsService, StrapiCollectionTypeResponse } from '@/entities/cms';
+import { environment } from '@/environments/environment';
 import { LanguageSelectComponent } from '@/features/language-select';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nPipe, I18nService } from '@/shared/i18n';
@@ -42,6 +42,7 @@ export class HeaderWidgetComponent {
   private readonly i18nService = inject(I18nService);
   private readonly router = inject(Router);
   private readonly errorHandler = inject(ErrorHandlerService);
+  private readonly stateService = inject(AgridataStateService);
 
   protected readonly cmsPagesResource = resource({
     params: () => ({
@@ -69,16 +70,8 @@ export class HeaderWidgetComponent {
     return [];
   });
 
-  readonly currentUrl = toSignal(
-    this.router.events.pipe(
-      filter((event) => event instanceof NavigationEnd),
-      map(() => this.router.url),
-    ),
-    { initialValue: this.router.url },
-  );
-
-  readonly currentPage = computed(() => {
-    const url = this.currentUrl();
+  readonly currentCmsPageSlug = computed(() => {
+    const url = this.stateService.currentRoute();
     if (url?.startsWith('/cms/')) {
       return url.replace('/cms/', '');
     }
@@ -86,11 +79,25 @@ export class HeaderWidgetComponent {
   });
 
   readonly isAuthenticated = computed(() => this.authService.isAuthenticated());
-  readonly userData = computed(() => this.authService.userData());
 
+  readonly environment = computed(() => (environment.production ? null : environment.instanceName));
+  readonly envColor = computed(() => {
+    switch (environment?.instanceName) {
+      case 'local':
+        return 'border-t-green-500 ';
+      case 'DEV':
+        return 'border-t-orange-400 ';
+      case 'INT':
+        return 'border-t-blue-600';
+      default:
+        return 'border-t-green-500';
+    }
+  });
+
+  readonly userInfo = this.authService.userInfo;
   readonly ButtonVariants = ButtonVariants;
 
   login = () => {
-    this.router.navigate([ROUTE_PATHS.LOGIN]);
+    this.router.navigate([ROUTE_PATHS.LOGIN]).then();
   };
 }

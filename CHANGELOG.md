@@ -1,3 +1,63 @@
+## [1.5.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.9...v1.5.0-rc.10) (2025-11-27)
+
+### Bug Fixes
+
+- **impersonation:** shows impersonated name instead of supporter name ([f16dd9e](https://github.com/agridata-ch/frontend/commit/f16dd9e9867dcff036805d1ac4fe9e8a17f337e6))
+
+## [1.5.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.8...v1.5.0-rc.9) (2025-11-27)
+
+### Bug Fixes
+
+- **user-preferences:** fixes typo in api ([bbea307](https://github.com/agridata-ch/frontend/commit/bbea307e176799f1ae08907853c0df795bdbda2e)), closes [DIGIB2-586](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-586)
+
+## [1.5.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.7...v1.5.0-rc.8) (2025-11-26)
+
+### Bug Fixes
+
+- **user-preferences:** improves guards to load userdata only once ([c20ce65](https://github.com/agridata-ch/frontend/commit/c20ce65b2ed68b3dc430cfdb128241654b16ff08)), closes [DIGIB2-586](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-586)
+
+## [1.5.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.6...v1.5.0-rc.7) (2025-11-25)
+
+### Bug Fixes
+
+- **seo:** update staging robots.txt ([ebb7703](https://github.com/agridata-ch/frontend/commit/ebb7703b689cbd959421c557a77b9c9ee84100ab))
+
+## [1.5.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.5...v1.5.0-rc.6) (2025-11-25)
+
+### Features
+
+- **seo:** improve robots ([f484e02](https://github.com/agridata-ch/frontend/commit/f484e029aad4bae3e86649ceb8a7f0eda7c8dbf4)), closes [DIGIB2-977](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-977)
+
+## [1.5.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.4...v1.5.0-rc.5) (2025-11-25)
+
+### Features
+
+- **cms:** improve image-list component ([e977b35](https://github.com/agridata-ch/frontend/commit/e977b35db8eef35d3d782f2c7bb42e81831e7635)), closes [DIGIB2-1010](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1010)
+
+## [1.5.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.3...v1.5.0-rc.4) (2025-11-25)
+
+### Features
+
+- **ui:** add env indicator ([559744f](https://github.com/agridata-ch/frontend/commit/559744f73f39afcb9087981f515a012ff5669f86)), closes [DIGIB2-816](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-816)
+
+## [1.5.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.2...v1.5.0-rc.3) (2025-11-24)
+
+### Features
+
+- **ui:** mobile ui improvements ([22c193b](https://github.com/agridata-ch/frontend/commit/22c193b342068c5cbfad2867352ae5761f4ab8ad)), closes [DIGIB2-978](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-978)
+
+## [1.5.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.1...v1.5.0-rc.2) (2025-11-24)
+
+### Features
+
+- **user-preferences:** saves user preferences in backend ([b003119](https://github.com/agridata-ch/frontend/commit/b0031194d38c3d975d49dfb2eb8f415c99600854)), closes [DIGIB2-586](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-586)
+
+## [1.5.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.4.0...v1.5.0-rc.1) (2025-11-20)
+
+### Features
+
+- **seo:** add seo service ([73aeefe](https://github.com/agridata-ch/frontend/commit/73aeefee33007996c37e8e02f7eb08ed6dc8e174)), closes [DIGIB2-977](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-977)
+
 ## [1.4.0](https://github.com/agridata-ch/frontend/compare/v1.3.0...v1.4.0) (2025-11-19)
 
 ### Features
