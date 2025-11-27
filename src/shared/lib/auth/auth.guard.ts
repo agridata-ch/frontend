@@ -4,7 +4,7 @@ import { catchError, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
 
 import { AuthService } from './auth.service';
 
@@ -22,6 +22,10 @@ export class AuthorizationGuard implements CanActivate {
   private readonly errorService = inject(ErrorHandlerService);
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
+    const ktidp = route.queryParamMap.get(KTIDP_IMPERSONATION_QUERY_PARAM);
+    if (ktidp) {
+      sessionStorage.setItem(KTIDP_IMPERSONATION_QUERY_PARAM, ktidp);
+    }
     const requiredRoles: string[] = route.data['roles'] || [];
     return this.authService.initializeUserInfo().pipe(
       map(() => {

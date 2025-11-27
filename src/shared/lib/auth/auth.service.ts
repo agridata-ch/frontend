@@ -96,7 +96,6 @@ export class AuthService {
   initializeAuth() {
     return this.oidcService.checkAuth().pipe(
       map(({ accessToken, isAuthenticated }) => {
-        console.log('auth response received');
         if (isAuthenticated && this.isAuthenticated()) {
           return true;
         }
