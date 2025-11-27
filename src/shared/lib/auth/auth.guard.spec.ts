@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { firstValueFrom, of, throwError } from 'rxjs';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
 import {
   createMockAuthService,
   MockAuthService,
@@ -24,6 +24,7 @@ describe('AuthorizationGuard', () => {
   let fakeUrlTree: UrlTree;
   let authService: MockAuthService;
   let errorService: MockErrorHandlerService;
+  let mockActivatedRouteSnapshot: ActivatedRouteSnapshot;
 
   beforeEach(() => {
     // Create a dummy UrlTree; we only check identity in our expectations.
@@ -32,7 +33,13 @@ describe('AuthorizationGuard', () => {
     mockRouter = {
       parseUrl: jest.fn().mockReturnValue(fakeUrlTree),
     };
-
+    mockActivatedRouteSnapshot = {
+      queryParamMap: {
+        get: jest.fn().mockReturnValue(undefined),
+      },
+      data: { roles: [] },
+      url: {},
+    } as unknown as ActivatedRouteSnapshot;
     authService = createMockAuthService();
     errorService = createMockErrorHandlerService();
     TestBed.configureTestingModule({
@@ -50,9 +57,7 @@ describe('AuthorizationGuard', () => {
   it('allows activation when no roles are required', async () => {
     authService.initializeUserInfo.mockReturnValue(of(mockUserInfo));
 
-    const route = { data: {}, url: [] } as unknown as ActivatedRouteSnapshot;
-
-    const result = await firstValueFrom(guard.canActivate(route));
+    const result = await firstValueFrom(guard.canActivate(mockActivatedRouteSnapshot));
 
     expect(result).toBe(true);
   });
@@ -60,10 +65,9 @@ describe('AuthorizationGuard', () => {
   it('denies activation when required role is missing and redirects to forbidden', async () => {
     authService.initializeUserInfo.mockReturnValue(of(undefined));
     (authService.__testSignals.userRoles as WritableSignal<string[]>).set(['ROLE_USER']);
+    mockActivatedRouteSnapshot.data = { roles: ['ROLE_ADMIN'] };
 
-    const route = { data: { roles: ['ROLE_ADMIN'] }, url: [] } as unknown as ActivatedRouteSnapshot;
-
-    const result = await firstValueFrom(guard.canActivate(route));
+    const result = await firstValueFrom(guard.canActivate(mockActivatedRouteSnapshot));
 
     expect(result).toBe(fakeUrlTree);
     expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.FORBIDDEN);
@@ -73,9 +77,9 @@ describe('AuthorizationGuard', () => {
     authService.initializeUserInfo.mockReturnValue(of(undefined));
     authService.__testSignals.userRoles.set(['ROLE_ADMIN', 'ROLE_USER']);
 
-    const route = { data: { roles: ['ROLE_ADMIN'] }, url: [] } as unknown as ActivatedRouteSnapshot;
+    mockActivatedRouteSnapshot.data = { roles: ['ROLE_ADMIN'] };
 
-    const result = await firstValueFrom(guard.canActivate(route));
+    const result = await firstValueFrom(guard.canActivate(mockActivatedRouteSnapshot));
 
     expect(result).toBe(true);
   });
@@ -84,9 +88,7 @@ describe('AuthorizationGuard', () => {
     const testError = new Error('Test initializeAuth error');
     authService.initializeUserInfo.mockReturnValue(throwError(() => testError));
 
-    const route = { data: {}, url: [] } as unknown as ActivatedRouteSnapshot;
-
-    const result = await firstValueFrom(guard.canActivate(route));
+    const result = await firstValueFrom(guard.canActivate(mockActivatedRouteSnapshot));
 
     expect(errorService.handleError).toHaveBeenCalledWith(testError);
     expect(result).toBe(fakeUrlTree);
@@ -96,13 +98,50 @@ describe('AuthorizationGuard', () => {
   it('ignores errors when on error page and returns true', async () => {
     const testError = new Error('Test initializeAuth error');
     authService.initializeUserInfo.mockReturnValue(throwError(() => testError));
+    (mockActivatedRouteSnapshot as any).url = [ROUTE_PATHS.ERROR];
 
-    const route = { data: {}, url: [ROUTE_PATHS.ERROR] } as unknown as ActivatedRouteSnapshot;
-
-    const result = await firstValueFrom(guard.canActivate(route));
+    const result = await firstValueFrom(guard.canActivate(mockActivatedRouteSnapshot));
 
     expect(errorService.handleError).toHaveBeenCalledTimes(0);
     expect(result).toBe(true);
     expect(mockRouter.parseUrl).toHaveBeenCalledTimes(0);
+  });
+
+  it('should set ktidp in sessionStorage when query param is present', () => {
+    // Arrange
+    const testKtidp = 'test-ktidp-value';
+    (mockActivatedRouteSnapshot.queryParamMap?.get as jest.Mock).mockReturnValue(testKtidp);
+    authService.initializeUserInfo.mockReturnValue(of(undefined));
+    sessionStorage.removeItem(KTIDP_IMPERSONATION_QUERY_PARAM);
+
+    // Act
+    guard.canActivate(mockActivatedRouteSnapshot as ActivatedRouteSnapshot);
+
+    // Assert
+    expect(mockActivatedRouteSnapshot.queryParamMap?.get).toHaveBeenCalledWith(
+      KTIDP_IMPERSONATION_QUERY_PARAM,
+    );
+    expect(sessionStorage.getItem(KTIDP_IMPERSONATION_QUERY_PARAM)).toBe(testKtidp);
+
+    // Clean up
+    sessionStorage.removeItem(KTIDP_IMPERSONATION_QUERY_PARAM);
+  });
+
+  it('should not set ktidp in sessionStorage when query param is not present', () => {
+    // Arrange
+
+    authService.initializeUserInfo.mockReturnValue(of(undefined));
+
+    // Clear any previous values
+    sessionStorage.removeItem(KTIDP_IMPERSONATION_QUERY_PARAM);
+
+    // Act
+    guard.canActivate(mockActivatedRouteSnapshot as ActivatedRouteSnapshot);
+
+    // Assert
+    expect(mockActivatedRouteSnapshot.queryParamMap?.get).toHaveBeenCalledWith(
+      KTIDP_IMPERSONATION_QUERY_PARAM,
+    );
+    expect(sessionStorage.getItem(KTIDP_IMPERSONATION_QUERY_PARAM)).toBeNull();
   });
 });
