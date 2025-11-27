@@ -1,0 +1,14 @@
+name: Shai-Hulud 2.0 Detector
+
+on:
+  push:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Shai-Hulud 2.0 Detector
+        uses: gensecaihq/Shai-Hulud-2.0-Detector@v1
