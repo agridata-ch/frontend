@@ -1,3 +1,9 @@
+## [1.5.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.9...v1.5.0-rc.10) (2025-11-27)
+
+### Bug Fixes
+
+- **impersonation:** shows impersonated name instead of supporter name ([f16dd9e](https://github.com/agridata-ch/frontend/commit/f16dd9e9867dcff036805d1ac4fe9e8a17f337e6))
+
 ## [1.5.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.8...v1.5.0-rc.9) (2025-11-27)
 
 ### Bug Fixes
