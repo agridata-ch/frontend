@@ -1,3 +1,9 @@
+## [1.5.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.8...v1.5.0-rc.9) (2025-11-27)
+
+### Bug Fixes
+
+- **user-preferences:** fixes typo in api ([bbea307](https://github.com/agridata-ch/frontend/commit/bbea307e176799f1ae08907853c0df795bdbda2e)), closes [DIGIB2-586](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-586)
+
 ## [1.5.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.5.0-rc.7...v1.5.0-rc.8) (2025-11-26)
 
 ### Bug Fixes
