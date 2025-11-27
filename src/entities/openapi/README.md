@@ -2,7 +2,7 @@
 
 This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 
-The version of the OpenAPI document: 1.3.0-rc.1
+The version of the OpenAPI document: 1.4.0-rc.2
 
 ## Building
 
