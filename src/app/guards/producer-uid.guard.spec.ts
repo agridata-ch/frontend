@@ -7,7 +7,6 @@ import {
   UrlSegment,
   UrlTree,
 } from '@angular/router';
-import { of, throwError } from 'rxjs';
 
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -49,8 +48,8 @@ describe('producerUidGuard', () => {
     uid = '123';
     agridataStateService = createMockAgridataStateService();
     authService = createMockAuthService();
-    authService.initializeUserInfo.mockReturnValue(of(mockUserInfo));
-    authService.initializeAuthorizedUids.mockReturnValue(of([{ uid: uid } as UidDto]));
+    authService.initializeUserInfo.mockResolvedValue(mockUserInfo);
+    authService.initializeAuthorizedUids.mockResolvedValue([{ uid: uid } as UidDto]);
     TestBed.configureTestingModule({
       providers: [
         ProducerUidGuard,
@@ -66,114 +65,103 @@ describe('producerUidGuard', () => {
     expect(producerUidGuard).toBeTruthy();
   });
 
-  it('should return true if uri contains authorized uid', (done) => {
-    producerUidGuard
-      .canActivate(
-        activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', { uid: uid }),
-      )
-      .subscribe((guardResult) => {
-        expect(guardResult).toEqual(true);
-        done();
-      });
+  it('should return true if uri contains authorized uid', async () => {
+    const guardResult = await producerUidGuard.canActivate(
+      activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', { uid: uid }),
+    );
+
+    expect(guardResult).toEqual(true);
   });
 
-  it('should change active uid if different uid is provided', (done) => {
+  it('should change active uid if different uid is provided', async () => {
     const newUid = '444';
     authService.__testSignals.isAuthenticated.set(true);
     authService.__testSignals.userRoles.set([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
     authService.__testSignals.isProducer.set(true);
-    authService.initializeAuthorizedUids.mockReturnValue(of([{ uid: newUid } as UidDto]));
+    authService.initializeAuthorizedUids.mockResolvedValue([{ uid: newUid } as UidDto]);
 
-    producerUidGuard
-      .canActivate(
-        activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', { uid: newUid }),
-      )
-      .subscribe((guardResult) => {
-        expect(guardResult).toEqual(true);
-        expect(agridataStateService.setActiveUid).toHaveBeenCalledWith(newUid);
-        done();
-      });
+    const guardResult = await producerUidGuard.canActivate(
+      activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', { uid: newUid }),
+    );
+
+    expect(guardResult).toEqual(true);
+    expect(agridataStateService.setActiveUid).toHaveBeenCalledWith(newUid);
   });
 
-  it('should rewrite route to consentrequest/uid using set uid', (done) => {
+  it('should rewrite route to consentrequest/uid using set uid', async () => {
     authService.__testSignals.isAuthenticated.set(true);
     authService.__testSignals.userRoles.set([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
     agridataStateService.getDefaultUid.mockReturnValue(uid);
     authService.__testSignals.isProducer.set(true);
 
-    producerUidGuard
-      .canActivate(activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}))
-      .subscribe((guardResult) => {
-        expect(guardResult).toBeInstanceOf(UrlTree);
-        if (guardResult instanceof UrlTree) {
-          expect(guardResult.toString()).toEqual(
-            `/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${uid}`,
-          );
-        }
-        done();
-      });
+    const guardResult = await producerUidGuard.canActivate(
+      activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
+    );
+
+    expect(guardResult).toBeInstanceOf(UrlTree);
+    if (guardResult instanceof UrlTree) {
+      expect(guardResult.toString()).toEqual(
+        `/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${uid}`,
+      );
+    }
   });
 
-  it('should rewrite route to consentrequest/uid using set uid when impersonation is active', (done) => {
+  it('should rewrite route to consentrequest/uid using set uid when impersonation is active', async () => {
     authService.__testSignals.isAuthenticated.set(true);
     authService.__testSignals.userRoles.set([USER_ROLES.AGRIDATA_SUPPORTER]);
     agridataStateService.getDefaultUid.mockReturnValue(uid);
 
     sessionStorage.setItem(KTIDP_IMPERSONATION_QUERY_PARAM, 'fakeKtIdp');
-    producerUidGuard
-      .canActivate(activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}))
-      .subscribe((guardResult) => {
-        expect(guardResult).toBeInstanceOf(UrlTree);
-        if (guardResult instanceof UrlTree) {
-          expect(guardResult.toString()).toEqual(
-            `/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${uid}`,
-          );
-        }
-        sessionStorage.clear();
-        done();
-      });
+
+    const guardResult = await producerUidGuard.canActivate(
+      activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
+    );
+
+    expect(guardResult).toBeInstanceOf(UrlTree);
+    if (guardResult instanceof UrlTree) {
+      expect(guardResult.toString()).toEqual(
+        `/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${uid}`,
+      );
+    }
+    sessionStorage.clear();
   });
 
-  it('should not rewrite route if not on consent request route', (done) => {
+  it('should not rewrite route if not on consent request route', async () => {
     authService.__testSignals.isAuthenticated.set(true);
     authService.__testSignals.userRoles.set([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
-    producerUidGuard.canActivate(activatedRouteSnapshot('', '', {})).subscribe((guardResult) => {
-      expect(guardResult).toEqual(true);
-      done();
-    });
+
+    const guardResult = await producerUidGuard.canActivate(activatedRouteSnapshot('', '', {}));
+
+    expect(guardResult).toEqual(true);
   });
 
-  it('should redirect to error if user doesnt own uid', (done) => {
+  it('should redirect to error if user doesnt own uid', async () => {
     authService.__testSignals.isAuthenticated.set(true);
     authService.__testSignals.userRoles.set([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
     authService.__testSignals.isProducer.set(true);
 
-    producerUidGuard
-      .canActivate(
-        activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', { uid: '999' }),
-      )
-      .subscribe((guardResult) => {
-        expect(guardResult).toBeInstanceOf(UrlTree);
-        if (guardResult instanceof UrlTree) {
-          expect(guardResult.toString()).toEqual(`/${ROUTE_PATHS.ERROR}`);
-        }
-        done();
-      });
+    const guardResult = await producerUidGuard.canActivate(
+      activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', { uid: '999' }),
+    );
+
+    expect(guardResult).toBeInstanceOf(UrlTree);
+    if (guardResult instanceof UrlTree) {
+      expect(guardResult.toString()).toEqual(`/${ROUTE_PATHS.ERROR}`);
+    }
   });
 
-  it('should return error page if api call failed', (done) => {
+  it('should return error page if api call failed', async () => {
     authService.__testSignals.isAuthenticated.set(true);
     authService.__testSignals.isProducer.set(true);
-    authService.initializeAuthorizedUids.mockReturnValue(throwError(() => new Error('api error')));
+    authService.initializeAuthorizedUids.mockRejectedValue(new Error('api error'));
 
-    producerUidGuard
-      .canActivate(activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}))
-      .subscribe((guardResult) => {
-        expect(guardResult).toBeInstanceOf(UrlTree);
-        if (guardResult instanceof UrlTree) {
-          expect(guardResult.toString()).toEqual(`/${ROUTE_PATHS.ERROR}`);
-        }
-        done();
-      });
+    const guardResult = await producerUidGuard.canActivate(
+      activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
+    );
+
+    expect(guardResult).toBeInstanceOf(UrlTree);
+    if (guardResult instanceof UrlTree) {
+      expect(guardResult.toString()).toEqual(`/${ROUTE_PATHS.ERROR}`);
+    }
   });
 });

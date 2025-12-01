@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
-import { catchError, mergeMap, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
@@ -19,52 +18,55 @@ import { AuthService } from '@/shared/lib/auth';
  * data request and navigates to the appropriate consent request detail page based on the active
  * uid or redirects to the consent request producer overview if no matching consent request is found.
  *
- * CommentLastReviewed: 2025-10-23
+ * CommentLastReviewed: 2025-12-01
  */
 @Injectable({
   providedIn: 'root',
 })
 export class CreateConsentRequestGuard implements CanActivate {
-  private readonly router = inject(Router);
-  private readonly errorService = inject(ErrorHandlerService);
-  private readonly consentRequestService = inject(ConsentRequestService);
+  // Injects
   private readonly agridataStateService = inject(AgridataStateService);
   private readonly authService = inject(AuthService);
+  private readonly consentRequestService = inject(ConsentRequestService);
+  private readonly errorService = inject(ErrorHandlerService);
+  private readonly router = inject(Router);
 
-  canActivate(route: ActivatedRouteSnapshot) {
-    const { dataRequestUid, uid, redirectUrl } = this.extractRouteParameters(route);
+  async canActivate(route: ActivatedRouteSnapshot): Promise<UrlTree | boolean> {
+    const { dataRequestUid, redirectUrl, uid } = this.extractRouteParameters(route);
 
     if (!dataRequestUid) {
-      return of(this.fail(new Error('No dataRequestUid provided in route parameters.')));
+      return this.fail(new Error('No dataRequestUid provided in route parameters.'));
     }
 
-    return this.authService.initializeAuthorizedUids().pipe(
-      mergeMap((uidDtos) => {
-        if (!uidDtos) {
-          return of(this.fail(new Error(`user has no uids`)));
-        }
+    try {
+      const uidDtos = await this.authService.initializeAuthorizedUids();
 
-        if (uid) {
-          if (!this.isValidUid(uid, uidDtos)) {
-            return of(this.fail(new Error(`Provided uid is not authorized: ${uid}`)));
-          }
-          this.agridataStateService.setActiveUid(uid);
-        }
+      if (!uidDtos || uidDtos.length === 0) {
+        return this.fail(new Error('user has no uids'));
+      }
 
-        const createConsentRequestDtos = this.buildConsentRequestDtos(dataRequestUid, uidDtos, uid);
-        return this.consentRequestService.createConsentRequests(createConsentRequestDtos).pipe(
-          map((consentRequests) => {
-            if (!consentRequests || consentRequests.length === 0) {
-              return this.fail(
-                new Error(`No consent requests created for dataRequestUid: ${dataRequestUid}`),
-              );
-            }
-            return this.navigateToConsentRequest(consentRequests, redirectUrl);
-          }),
+      if (uid) {
+        if (!this.isValidUid(uid, uidDtos)) {
+          return this.fail(new Error(`Provided uid is not authorized: ${uid}`));
+        }
+        this.agridataStateService.setActiveUid(uid);
+      }
+
+      const createConsentRequestDtos = this.buildConsentRequestDtos(dataRequestUid, uidDtos, uid);
+      const consentRequests = await lastValueFrom(
+        this.consentRequestService.createConsentRequests(createConsentRequestDtos),
+      );
+
+      if (!consentRequests || consentRequests.length === 0) {
+        return this.fail(
+          new Error(`No consent requests created for dataRequestUid: ${dataRequestUid}`),
         );
-      }),
-      catchError((error) => of(this.handleError(error))),
-    );
+      }
+
+      return this.navigateToConsentRequest(consentRequests, redirectUrl);
+    } catch (error) {
+      return this.handleError(error);
+    }
   }
 
   private buildConsentRequestDtos(
@@ -73,14 +75,14 @@ export class CreateConsentRequestGuard implements CanActivate {
     uid?: string,
   ): CreateConsentRequestDto[] {
     return uid
-      ? [{ uid, dataRequestId: dataRequestId }]
-      : [...uidDtos].map((userUid) => ({ uid: userUid.uid, dataRequestId: dataRequestId }));
+      ? [{ dataRequestId, uid }]
+      : [...uidDtos].map((userUid) => ({ dataRequestId, uid: userUid.uid }));
   }
 
   private extractRouteParameters(route: ActivatedRouteSnapshot): {
     dataRequestUid?: string;
-    uid?: string;
     redirectUrl?: string;
+    uid?: string;
   } {
     const dataRequestUid = route.paramMap.get('dataRequestUid') ?? '';
     const uid = route.queryParamMap.get('uid');
@@ -88,24 +90,32 @@ export class CreateConsentRequestGuard implements CanActivate {
 
     return {
       dataRequestUid,
-      uid: uid ?? undefined,
       redirectUrl: redirectUrl ?? undefined,
+      uid: uid ?? undefined,
     };
   }
 
-  private fail(error: Error) {
+  private fail(error: Error): UrlTree {
     this.errorService.handleError(error);
     return this.router.parseUrl(ROUTE_PATHS.ERROR);
   }
 
-  private isValidUid(uid: string, uidDtos: UidDto[]) {
+  private handleError(error: unknown): UrlTree {
+    return error instanceof Error
+      ? this.fail(error)
+      : this.fail(
+          new Error('Unknown error occurred during consent request creation', { cause: error }),
+        );
+  }
+
+  private isValidUid(uid: string, uidDtos: UidDto[]): boolean {
     return uidDtos.some((userUid) => userUid.uid === uid);
   }
 
   private navigateToConsentRequest(
     consentRequests: ConsentRequestCreatedDto[],
     redirectUrl?: string,
-  ) {
+  ): UrlTree {
     const activeUid = this.agridataStateService.activeUid();
 
     if (!activeUid) {
@@ -125,13 +135,5 @@ export class CreateConsentRequestGuard implements CanActivate {
     }
 
     return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);
-  }
-
-  private handleError(error: unknown) {
-    return error instanceof Error
-      ? this.fail(error)
-      : this.fail(
-          new Error('Unknown error occurred during consent request creation', { cause: error }),
-        );
   }
 }

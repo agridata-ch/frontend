@@ -46,7 +46,7 @@ describe('createConsentRequestGuard', () => {
 
   beforeEach(() => {
     authService = createMockAuthService();
-    authService.initializeAuthorizedUids.mockReturnValue(of([{ uid: testUid } as UidDto]));
+    authService.initializeAuthorizedUids.mockResolvedValue([{ uid: testUid } as UidDto]);
     mockRouter = {
       createUrlTree: jest.fn().mockReturnValue(mockUrlTree),
       parseUrl: jest.fn().mockReturnValue(mockErrorUrlTree),
@@ -78,19 +78,18 @@ describe('createConsentRequestGuard', () => {
     expect(createConsentRequestGuard).toBeTruthy();
   });
 
-  it('should redirect to error page when no dataRequestUid is provided', (done) => {
+  it('should redirect to error page when no dataRequestUid is provided', async () => {
     const route = {
       paramMap: convertToParamMap({}),
       queryParamMap: convertToParamMap({}),
     } as ActivatedRouteSnapshot;
 
-    createConsentRequestGuard.canActivate(route).subscribe((result) => {
-      expect(result).toBe(mockErrorUrlTree);
-      done();
-    });
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(result).toBe(mockErrorUrlTree);
   });
 
-  it('should redirect to error page when no consent requests are created', (done) => {
+  it('should redirect to error page when no consent requests are created', async () => {
     const route = {
       paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
       queryParamMap: convertToParamMap({}),
@@ -100,15 +99,14 @@ describe('createConsentRequestGuard', () => {
       { uid: testUid, dataRequestId: testDataRequestUid },
     ];
 
-    createConsentRequestGuard.canActivate(route).subscribe((result) => {
-      expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-      expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.ERROR);
-      expect(result).toBe(mockErrorUrlTree);
-      done();
-    });
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
+    expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.ERROR);
+    expect(result).toBe(mockErrorUrlTree);
   });
 
-  it('should create multiple consent requests and redirect to consent request matching active uid', (done) => {
+  it('should create multiple consent requests and redirect to consent request matching active uid', async () => {
     const route = {
       paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
       queryParamMap: convertToParamMap({}),
@@ -116,7 +114,7 @@ describe('createConsentRequestGuard', () => {
 
     const firstUidDto: UidDto = { uid: '1' };
     const userUids: UidDto[] = [firstUidDto, { uid: '2' }];
-    authService.initializeAuthorizedUids.mockReturnValue(of(userUids));
+    authService.initializeAuthorizedUids.mockResolvedValue(userUids);
 
     agridataStateService.__testSignals.activeUid.set(firstUidDto.uid);
 
@@ -130,18 +128,17 @@ describe('createConsentRequestGuard', () => {
 
     consentRequestService.createConsentRequests.mockReturnValue(of([mockConsentRequest]));
 
-    createConsentRequestGuard.canActivate(route).subscribe((result) => {
-      expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-      expect(mockRouter.createUrlTree).toHaveBeenCalledWith(
-        [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, firstUidDto.uid, testConsentRequestId],
-        { queryParams: {} },
-      );
-      expect(result).toBe(mockUrlTree);
-      done();
-    });
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith(
+      [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, firstUidDto.uid, testConsentRequestId],
+      { queryParams: {} },
+    );
+    expect(result).toBe(mockUrlTree);
   });
 
-  it('when uid parameter set, should create single consent requests and redirect to it', (done) => {
+  it('when uid parameter set, should create single consent requests and redirect to it', async () => {
     const route = {
       paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
       queryParamMap: convertToParamMap({ uid: '1' }),
@@ -154,7 +151,7 @@ describe('createConsentRequestGuard', () => {
       id: testConsentRequestId,
       dataProducerUid: firstUidDto.uid,
     };
-    authService.initializeAuthorizedUids.mockReturnValue(of(userUids));
+    authService.initializeAuthorizedUids.mockResolvedValue(userUids);
 
     agridataStateService.__testSignals.activeUid.set(firstUidDto.uid);
 
@@ -164,18 +161,17 @@ describe('createConsentRequestGuard', () => {
 
     consentRequestService.createConsentRequests.mockReturnValue(of([mockConsentRequest]));
 
-    createConsentRequestGuard.canActivate(route).subscribe((result) => {
-      expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-      expect(mockRouter.createUrlTree).toHaveBeenCalledWith(
-        [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, firstUidDto.uid, testConsentRequestId],
-        { queryParams: {} },
-      );
-      expect(result).toBe(mockUrlTree);
-      done();
-    });
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith(
+      [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, firstUidDto.uid, testConsentRequestId],
+      { queryParams: {} },
+    );
+    expect(result).toBe(mockUrlTree);
   });
 
-  it('should redirect to specific consent request page when a matching consent request is found with a redirectUrl', (done) => {
+  it('should redirect to specific consent request page when a matching consent request is found with a redirectUrl', async () => {
     const testRedirectUri = 'https://example.com/redirect';
     const route = {
       paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
@@ -192,17 +188,16 @@ describe('createConsentRequestGuard', () => {
     ];
     agridataStateService.__testSignals.activeUid.set(testUid);
 
-    createConsentRequestGuard.canActivate(route).subscribe(() => {
-      expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-      expect(mockRouter.createUrlTree).toHaveBeenCalledWith(
-        [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, testUid, testConsentRequestId],
-        { queryParams: { redirect_uri: testRedirectUri } },
-      );
-      done();
-    });
+    await createConsentRequestGuard.canActivate(route);
+
+    expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith(
+      [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, testUid, testConsentRequestId],
+      { queryParams: { redirect_uri: testRedirectUri } },
+    );
   });
 
-  it('should redirect to consent requests overview when no matching consent request is found', (done) => {
+  it('should redirect to consent requests overview when no matching consent request is found', async () => {
     const route = {
       paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
       queryParamMap: convertToParamMap({}),
@@ -216,17 +211,16 @@ describe('createConsentRequestGuard', () => {
       { uid: testUid, dataRequestId: testDataRequestUid },
     ];
 
-    createConsentRequestGuard.canActivate(route).subscribe((result) => {
-      expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-      expect(mockRouter.createUrlTree).toHaveBeenCalledWith([
-        ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
-      ]);
-      expect(result).toBe(mockUrlTree);
-      done();
-    });
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([
+      ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
+    ]);
+    expect(result).toBe(mockUrlTree);
   });
 
-  it('should set active uid when a valid uid is provided in query parameters', (done) => {
+  it('should set active uid when a valid uid is provided in query parameters', async () => {
     const validUid = '123'; // Valid UID from mockUserService
     const route = {
       paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
@@ -240,43 +234,43 @@ describe('createConsentRequestGuard', () => {
     const expectedCreateDto: CreateConsentRequestDto[] = [
       { uid: testUid, dataRequestId: testDataRequestUid },
     ];
-    authService.initializeAuthorizedUids.mockReturnValue(of([{ uid: validUid } as UidDto]));
+    authService.initializeAuthorizedUids.mockResolvedValue([{ uid: validUid } as UidDto]);
 
     agridataStateService.__testSignals.activeUid.set(validUid);
 
-    createConsentRequestGuard.canActivate(route).subscribe((result) => {
-      expect(agridataStateService.setActiveUid).toHaveBeenCalledWith(validUid);
-      expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-      expect(mockRouter.createUrlTree).toHaveBeenCalledWith(
-        [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, validUid, testConsentRequestId],
-        { queryParams: {} },
-      );
-      expect(result).toBe(mockUrlTree);
-      done();
-    });
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(agridataStateService.setActiveUid).toHaveBeenCalledWith(validUid);
+    expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith(
+      [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, validUid, testConsentRequestId],
+      { queryParams: {} },
+    );
+    expect(result).toBe(mockUrlTree);
   });
 
-  it('should redirect to error page when an invalid uid is provided', (done) => {
+  it('should redirect to error page when an invalid uid is provided', async () => {
     const invalidUid = 'invalid-uid'; // This uid does not exist in mockUserService
     const route = {
       paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
       queryParamMap: convertToParamMap({ uid: invalidUid }),
     } as ActivatedRouteSnapshot;
 
-    authService.initializeAuthorizedUids.mockReturnValue(
-      of([{ uid: '1' } as UidDto, { uid: '2' } as UidDto, { uid: testUid } as UidDto]),
-    );
+    authService.initializeAuthorizedUids.mockResolvedValue([
+      { uid: '1' } as UidDto,
+      { uid: '2' } as UidDto,
+      { uid: testUid } as UidDto,
+    ]);
 
-    createConsentRequestGuard.canActivate(route).subscribe((result) => {
-      expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.ERROR);
-      expect(result).toBe(mockErrorUrlTree);
-      // Verify that setActiveUid was not called with the invalid uid
-      expect(agridataStateService.setActiveUid).not.toHaveBeenCalledWith(invalidUid);
-      done();
-    });
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.ERROR);
+    expect(result).toBe(mockErrorUrlTree);
+    // Verify that setActiveUid was not called with the invalid uid
+    expect(agridataStateService.setActiveUid).not.toHaveBeenCalledWith(invalidUid);
   });
 
-  it('should redirect to error page when createConsentRequests throws an error', (done) => {
+  it('should redirect to error page when createConsentRequests throws an error', async () => {
     const route = {
       paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
       queryParamMap: convertToParamMap({}),
@@ -286,15 +280,15 @@ describe('createConsentRequestGuard', () => {
     const expectedCreateDto: CreateConsentRequestDto[] = [
       { uid: testUid, dataRequestId: testDataRequestUid },
     ];
-    createConsentRequestGuard.canActivate(route).subscribe((result) => {
-      expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-      expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.ERROR);
-      expect(result).toBe(mockErrorUrlTree);
-      done();
-    });
+
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
+    expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.ERROR);
+    expect(result).toBe(mockErrorUrlTree);
   });
 
-  it('should redirect to consent requests overview when no activeUid is set', (done) => {
+  it('should redirect to consent requests overview when no activeUid is set', async () => {
     const route = {
       paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
       queryParamMap: convertToParamMap({}),
@@ -309,13 +303,12 @@ describe('createConsentRequestGuard', () => {
     ];
     agridataStateService.__testSignals.activeUid.set(undefined);
 
-    createConsentRequestGuard.canActivate(route).subscribe((result) => {
-      expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-      expect(mockRouter.createUrlTree).toHaveBeenCalledWith([
-        ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
-      ]);
-      expect(result).toBe(mockUrlTree);
-      done();
-    });
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([
+      ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
+    ]);
+    expect(result).toBe(mockUrlTree);
   });
 });
