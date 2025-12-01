@@ -6,7 +6,6 @@ import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { CmsService, StrapiCollectionTypeResponse } from '@/entities/cms';
 import { environment } from '@/environments/environment';
 import { LanguageSelectComponent } from '@/features/language-select';
-import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nPipe, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { AuthService } from '@/shared/lib/auth';
@@ -84,11 +83,11 @@ export class HeaderWidgetComponent {
   readonly envColor = computed(() => {
     switch (environment?.instanceName) {
       case 'local':
-        return 'border-t-green-500 ';
+        return 'border-t-green-500';
       case 'DEV':
-        return 'border-t-orange-400 ';
+        return 'border-t-orange-400';
       case 'INT':
-        return 'border-t-blue-600';
+        return 'border-t-blue-500';
       default:
         return 'border-t-green-500';
     }
@@ -98,6 +97,6 @@ export class HeaderWidgetComponent {
   readonly ButtonVariants = ButtonVariants;
 
   login = () => {
-    this.router.navigate([ROUTE_PATHS.LOGIN]).then();
+    this.authService.login();
   };
 }

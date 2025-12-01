@@ -1,9 +1,7 @@
-import { DestroyRef, Injectable, computed, effect, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { mergeMap, of, shareReplay, tap, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { lastValueFrom } from 'rxjs';
 
 import { UserService } from '@/entities/api/user.service';
 import { UidDto, UserInfoDto } from '@/entities/openapi';
@@ -13,15 +11,16 @@ import { KTIDP_IMPERSONATION_QUERY_PARAM, USER_ROLES } from '@/shared/constants/
  * Manages authentication state, user profile data, and role extraction from tokens. Provides login,
  * logout, and authentication status monitoring with reactive signals.
  *
- * CommentLastReviewed: 2025-10-06
+ * CommentLastReviewed: 2025-12-01
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  // Injects
   private readonly oidcService = inject(OidcSecurityService);
-  private readonly userService = inject(UserService);
   private readonly router = inject(Router);
-  private readonly destroyRef = inject(DestroyRef);
+  private readonly userService = inject(UserService);
 
+  // Signals
   private readonly _isAuthenticated = signal<boolean>(false);
   private readonly _userInfo = signal<UserInfoDto | undefined>(undefined);
   private readonly _userRoles = signal<string[]>([]);
@@ -32,109 +31,81 @@ export class AuthService {
   readonly userRoles = this._userRoles.asReadonly();
   readonly userUids = this._userUids.asReadonly();
 
-  readonly isProducer = computed(
-    () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) ?? false,
-  );
+  // Computed Signals
   readonly isConsumer = computed(
     () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER) ?? false,
   );
-
+  readonly isProducer = computed(
+    () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) ?? false,
+  );
   readonly isSupporter = computed(
     () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) ?? false,
   );
 
+  // Effects
   private readonly resetUserInfoEffect = effect(() => {
     if (!this.isAuthenticated()) {
-      this._userRoles.set([]);
       this._userInfo.set(undefined);
+      this._userRoles.set([]);
+      this._userUids.set([]);
+      this.authCheckPromise = undefined;
+      this.hasRedirectedAfterLogin = false;
+      this.userInfoPromise = undefined;
+      this.userUidsPromise = undefined;
     }
   });
 
-  private readonly userInfo$ = this.userService.getUserInfo().pipe(
-    tap((userInfo) => {
-      this._userInfo.set(userInfo);
-    }),
-    // cache the result as long as at least one subscriber exists (angular router does not seem to unsubscribe on navigation so it will keep state until page reload)
-    shareReplay({ bufferSize: 1, refCount: false }),
-  );
+  // Private properties
+  private authCheckPromise?: Promise<{ accessToken: string; isAuthenticated: boolean }>;
+  private hasRedirectedAfterLogin = false;
+  private userInfoPromise?: Promise<UserInfoDto | undefined>;
+  private userUidsPromise?: Promise<UidDto[]>;
 
-  private readonly authorizedUserUids$ = this.userService.getAuthorizedUids().pipe(
-    tap((uids) => {
-      this._userUids.set(uids);
-    }),
-    // cache the result as long as at least one subscriber exists (angular router does not seem to unsubscribe on navigation so it will keep state until page reload)
-    shareReplay({ bufferSize: 1, refCount: false }),
-  );
-
-  login() {
-    this.oidcService.authorize();
-  }
-
-  logout() {
-    this.oidcService
-      .logoff()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.router.navigate(['/']).then();
-      });
-  }
-
-  getUserFullName() {
-    if (!this.userInfo()) {
-      return '';
-    }
-    return [this.userInfo()?.givenName, this.userInfo()?.familyName].filter(Boolean).join(' ');
-  }
-
-  getUserEmail() {
-    if (!this.userInfo()) {
-      return '';
-    }
+  getUserEmail(): string {
     return this.userInfo()?.email ?? '';
   }
 
-  initializeAuth() {
-    return this.oidcService.checkAuth().pipe(
-      map(({ accessToken, isAuthenticated }) => {
-        console.log('auth response received');
-        if (isAuthenticated && this.isAuthenticated()) {
-          return true;
-        }
-        let userRoles: string[] = [];
-        this._isAuthenticated.set(isAuthenticated);
-
-        if (!isAuthenticated) {
-          return false;
-        }
-        if (accessToken) {
-          const decoded = this.decodeAccessToken(accessToken);
-          // Keycloak realm roles
-          if (decoded?.realm_access?.roles) {
-            userRoles = userRoles.concat(decoded.realm_access.roles);
-          }
-        }
-        this._userRoles.set(userRoles);
-        return true;
-      }),
-    );
+  getUserFullName(): string {
+    const info = this.userInfo();
+    return [info?.givenName, info?.familyName].filter(Boolean).join(' ');
   }
 
-  /**
-   * Initializes and retrieves user information
-   * Ensures that user is authenticated and caches user information preventing unnecessary API call.
-   * Intended to be used by guards (that run in parallel), preventing multiple API calls.
-   *
-   * @returns An observable emitting user infos.
-   */
-  initializeUserInfo() {
-    return this.initializeAuth().pipe(
-      mergeMap((auth) => {
-        if (!auth) {
-          return of(undefined);
-        }
-        return this.userInfo$;
-      }),
-    );
+  async initializeAuth(): Promise<boolean> {
+    // Cache the OIDC checkAuth call to prevent multiple simultaneous calls
+    this.authCheckPromise ??= lastValueFrom(this.oidcService.checkAuth());
+
+    const result = await this.authCheckPromise;
+    const { accessToken, isAuthenticated } = result;
+
+    // Only skip re-initialization if we're authenticated AND already have roles loaded
+    if (isAuthenticated && this.isAuthenticated() && this.userRoles().length > 0) {
+      return true;
+    }
+
+    // If authentication state changed, reset the promise cache
+    if (isAuthenticated !== this.isAuthenticated()) {
+      this.userInfoPromise = undefined;
+      this.userUidsPromise = undefined;
+    }
+
+    this._isAuthenticated.set(isAuthenticated);
+
+    if (!isAuthenticated) {
+      return false;
+    }
+
+    let userRoles: string[] = [];
+    if (accessToken) {
+      const decoded = this.decodeAccessToken(accessToken);
+      const realmAccess = decoded['realm_access'] as { roles?: string[] } | undefined;
+      if (realmAccess?.roles) {
+        userRoles = userRoles.concat(realmAccess.roles);
+      }
+    }
+
+    this._userRoles.set(userRoles);
+
+    return true;
   }
 
   /**
@@ -142,23 +113,65 @@ export class AuthService {
    * Ensures that user is authenticated and user info is loaded. Caches uid information preventing unnecessary API call.
    * Intended to be used by guards (that run in parallel), preventing multiple API calls.
    *
-   * @returns An observable emitting an array of authorized UIDs.
+   * @returns A promise emitting an array of authorized UIDs.
    */
-  initializeAuthorizedUids() {
-    return this.initializeUserInfo().pipe(
-      mergeMap(() => {
-        if (this.shouldSkipAuthorizedUids()) {
-          return throwError(
-            () => new Error('user does not have correct role to fetch authorized uids'),
-          );
-        }
-        const cachedUids = this.userUids();
-        if (cachedUids.length > 0) {
-          return of(cachedUids);
-        }
-        return this.authorizedUserUids$;
-      }),
-    );
+  async initializeAuthorizedUids(): Promise<UidDto[]> {
+    await this.initializeUserInfo();
+
+    if (this.shouldSkipAuthorizedUids()) {
+      throw new Error('user does not have correct role to fetch authorized uids');
+    }
+
+    const cachedUids = this.userUids();
+    if (cachedUids.length > 0) {
+      return cachedUids;
+    }
+
+    this.userUidsPromise ??= lastValueFrom(this.userService.getAuthorizedUids());
+    const uids = await this.userUidsPromise;
+    this._userUids.set(uids);
+
+    return this.userUidsPromise;
+  }
+
+  /**
+   * Initializes and retrieves user information
+   * Ensures that user is authenticated and caches user information preventing unnecessary API call.
+   * Intended to be used by guards (that run in parallel), preventing multiple API calls.
+   *
+   * @returns A promise emitting user infos.
+   */
+  async initializeUserInfo(): Promise<UserInfoDto | undefined> {
+    const auth = await this.initializeAuth();
+
+    if (!auth) {
+      return undefined;
+    }
+
+    this.userInfoPromise ??= lastValueFrom(this.userService.getUserInfo());
+    const userInfo = await this.userInfoPromise;
+    this._userInfo.set(userInfo);
+
+    return this.userInfoPromise;
+  }
+
+  login(): void {
+    this.oidcService.authorize();
+  }
+
+  async logout(): Promise<void> {
+    await lastValueFrom(this.oidcService.logoff());
+    await this.router.navigate(['/']);
+  }
+
+  private decodeAccessToken(token: string): Record<string, unknown> {
+    try {
+      const payload = token.split('.')[1];
+      return JSON.parse(atob(payload.replaceAll('-', '+').replaceAll('_', '/')));
+    } catch {
+      console.error('failed to decode access token');
+      return {};
+    }
   }
 
   private shouldSkipAuthorizedUids(): boolean {
@@ -170,15 +183,5 @@ export class AuthService {
     const isProducer = this.isProducer();
 
     return !isProducer && !isImpersonating;
-  }
-
-  private decodeAccessToken(token: string) {
-    try {
-      const payload = token.split('.')[1];
-      return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
-    } catch {
-      console.error('failed to decode access token');
-      return {};
-    }
   }
 }

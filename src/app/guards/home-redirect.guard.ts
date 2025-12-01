@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, UrlTree } from '@angular/router';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
@@ -11,31 +11,37 @@ import { AuthService } from '@/shared/lib/auth';
  * Consumers go to data requests page.
  * Unauthenticated users stay on the landing page.
  *
- * CommentLastReviewed: 2025-08-27
+ * CommentLastReviewed: 2025-12-01
  */
 @Injectable({
   providedIn: 'root',
 })
 export class HomeRedirectGuard implements CanActivate {
-  private readonly router = inject(Router);
+  // Injects
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   private readonly stateService = inject(AgridataStateService);
 
-  canActivate() {
-    if (!this.authService.isAuthenticated()) {
-      // Allow unauthenticated users to access the landing page
+  async canActivate(): Promise<boolean | UrlTree> {
+    const isAuthenticated = await this.authService.initializeAuth();
+
+    if (!isAuthenticated) {
       return true;
     }
 
     if (this.authService.isProducer() || this.stateService.isImpersonating()) {
+      await this.authService.initializeAuthorizedUids();
       return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);
-    } else if (this.authService.isConsumer()) {
+    }
+
+    if (this.authService.isConsumer()) {
       return this.router.createUrlTree([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH]);
-    } else if (this.authService.isSupporter()) {
+    }
+
+    if (this.authService.isSupporter()) {
       return this.router.createUrlTree([ROUTE_PATHS.SUPPORT_PATH]);
     }
 
-    // Default - stay on the landing page
     return true;
   }
 }
