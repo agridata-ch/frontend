@@ -1,3 +1,10 @@
+## [1.6.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.5.0...v1.6.0-rc.1) (2025-12-02)
+
+### Features
+
+- **auth:** refactor auth service ([fbd11fa](https://github.com/agridata-ch/frontend/commit/fbd11fa38d3fda04e94bcc264ca4ab1da3f34e96)), closes [DIGIB2-586](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-586)
+- **deps:** update actions/checkout action to v6 ([90f708e](https://github.com/agridata-ch/frontend/commit/90f708eb4580414060d5b0f558c963918a3bba31))
+
 ## [1.5.0](https://github.com/agridata-ch/frontend/compare/v1.4.0...v1.5.0) (2025-11-27)
 
 ### Features
