@@ -10,7 +10,8 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { faChevronRight, faSpinner } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faChevronRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ResourceQueryDto } from '@/entities/openapi';
@@ -71,8 +72,8 @@ import {
 export class AgridataTableComponent<T> {
   // Constants
   protected readonly ButtonVariants = ButtonVariants;
-  protected readonly faSpinner = faSpinner;
   protected readonly iconRowAction = faChevronRight;
+  protected readonly faSpinnerThird = faSpinnerThird;
 
   // Input properties
   readonly tableMetadata = input.required<TableMetadata<T>>();

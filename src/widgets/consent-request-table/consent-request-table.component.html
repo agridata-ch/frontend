@@ -2,6 +2,7 @@
 <app-agridata-client-table
   [rawData]="filteredConsentRequests()"
   [tableMetadata]="consentRequestsTableMetaData()"
+  [loading]="consentRequestsResource()?.isLoading()"
   class="hidden lg:block"
 >
   <ng-template #dataRequestConsumer [appConsentRequestProducerViewDtoGuard] let-item>
