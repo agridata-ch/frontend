@@ -6,6 +6,7 @@ import {
   faMagnifyingGlass,
   faSpinner,
 } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { debounceTime, distinctUntilChanged, filter, Subject, takeUntil, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -36,6 +37,8 @@ export class SearchInputComponent implements OnDestroy {
   readonly minSearchLength = input(3);
   readonly debounceTime = input(300);
   readonly isLoading = input<boolean>(false);
+
+  protected readonly faSpinnerThird = faSpinnerThird;
 
   readonly onInput = output<string>();
 

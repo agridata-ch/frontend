@@ -1,3 +1,4 @@
+import { ResourceRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -11,6 +12,7 @@ import {
   ConsentRequestStateEnum,
 } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
+import { MockResources } from '@/shared/testing/mocks';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
@@ -38,6 +40,7 @@ describe('ConsentRequestTableComponent', () => {
   let errorService: MockErrorHandlerService;
   let consentRequestService: MockConsentRequestService;
   let stateService: MockAgridataStateService;
+  let mockResourceRef: ResourceRef<ConsentRequestProducerViewDto[]>;
   const mockConsentRequests: ConsentRequestProducerViewDto[] = [
     {
       id: '1',
@@ -76,6 +79,7 @@ describe('ConsentRequestTableComponent', () => {
     consentRequestService = createMockConsentRequestService();
     errorService = createMockErrorHandlerService();
     stateService = createMockAgridataStateService();
+    mockResourceRef = MockResources.createMockResourceRef(mockConsentRequests);
     await TestBed.configureTestingModule({
       imports: [
         ConsentRequestTableComponent,
@@ -99,10 +103,7 @@ describe('ConsentRequestTableComponent', () => {
     component = fixture.componentInstance;
     fixture.componentRef.setInput('consentRequests', mockConsentRequests);
     // Set the consentRequestsResource input to the fetchConsentRequests ResourceRef
-    fixture.componentRef.setInput(
-      'consentRequestsResource',
-      consentRequestService.fetchConsentRequests,
-    );
+    fixture.componentRef.setInput('consentRequestsResource', mockResourceRef);
     fixture.detectChanges();
   });
 
@@ -185,17 +186,6 @@ describe('ConsentRequestTableComponent', () => {
   });
 
   it('should prepare undo action correctly', async () => {
-    // Create a mock resource with a reload method
-    const mockResourceRef = {
-      reload: jest.fn(),
-      value: jest.fn().mockReturnValue([]),
-      loading: jest.fn().mockReturnValue(false),
-    };
-
-    // Set the input to use our local mock
-    fixture.componentRef.setInput('consentRequestsResource', mockResourceRef);
-    fixture.detectChanges();
-
     const undoAction = component.prepareUndoAction('1');
 
     expect(undoAction).toBeDefined();
