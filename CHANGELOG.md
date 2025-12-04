@@ -1,3 +1,9 @@
+## [1.6.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.1...v1.6.0-rc.2) (2025-12-04)
+
+### Features
+
+- **spinner:** adds spinner to resource related buttons ([c7f13b6](https://github.com/agridata-ch/frontend/commit/c7f13b6c1c3bdc7b0056185581da3d98b3239b57)), closes [DIGIB2-978](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-978)
+
 ## [1.6.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.5.0...v1.6.0-rc.1) (2025-12-02)
 
 ### Features
