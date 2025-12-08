@@ -1,3 +1,9 @@
+## [1.6.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.3...v1.6.0-rc.4) (2025-12-08)
+
+### Features
+
+- **cookie-banner:** add cookie banner ([d5ef62c](https://github.com/agridata-ch/frontend/commit/d5ef62cfa9a861863875459bd740cc693e674662)), closes [DIGIB2-1006](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1006)
+
 ## [1.6.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.2...v1.6.0-rc.3) (2025-12-08)
 
 ### Features
