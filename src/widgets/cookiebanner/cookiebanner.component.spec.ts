@@ -62,14 +62,6 @@ describe('CookiebannerComponent', () => {
       expect(analyticsService.setCookiesAccepted).toHaveBeenCalledWith(true);
     });
 
-    it('should set showCookieBanner to false in localStorage', () => {
-      const setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
-
-      component['acceptCookies']();
-
-      expect(setItemSpy).toHaveBeenCalledWith('showCookieBanner', 'false');
-    });
-
     it('should call closeCookieBanner', () => {
       const closeSpy = jest.spyOn(component as any, 'closeCookieBanner');
 
@@ -88,14 +80,6 @@ describe('CookiebannerComponent', () => {
       expect(analyticsService.setCookiesAccepted).toHaveBeenCalledWith(false);
     });
 
-    it('should set showCookieBanner to false in localStorage', () => {
-      const setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
-
-      component['declineCookies']();
-
-      expect(setItemSpy).toHaveBeenCalledWith('showCookieBanner', 'false');
-    });
-
     it('should call closeCookieBanner', () => {
       const closeSpy = jest.spyOn(component as any, 'closeCookieBanner');
 
@@ -106,12 +90,10 @@ describe('CookiebannerComponent', () => {
   });
 
   describe('closeCookieBanner', () => {
-    it('should set showCookieBanner to false in localStorage', () => {
-      const setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
-
+    it('should call agridataStateService.hideCookieBanner', () => {
       component['closeCookieBanner']();
 
-      expect(setItemSpy).toHaveBeenCalledWith('showCookieBanner', 'false');
+      expect(agridataStateService.hideCookieBanner).toHaveBeenCalled();
     });
   });
 });

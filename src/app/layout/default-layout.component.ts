@@ -1,11 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ToastComponent } from '@/shared/ui/toast';
+import { CookiebannerComponent } from '@/widgets/cookiebanner';
 import { FooterWidgetComponent } from '@/widgets/footer-widget';
 import { HeaderWidgetComponent } from '@/widgets/header-widget';
 import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
+import { NewYearBannerComponent } from '@/widgets/new-year-banner';
 import { SupporterOverlayComponent } from '@/widgets/supporter-overlay/supporter-overlay.component';
 
 /**
@@ -24,7 +27,15 @@ import { SupporterOverlayComponent } from '@/widgets/supporter-overlay/supporter
     FooterWidgetComponent,
     ToastComponent,
     SupporterOverlayComponent,
+    CookiebannerComponent,
+    NewYearBannerComponent,
   ],
   templateUrl: './default-layout.component.html',
 })
-export class DefaultLayoutComponent {}
+export class DefaultLayoutComponent {
+  protected readonly agridataStateService = inject(AgridataStateService);
+
+  protected readonly showCookieBanner = computed(() =>
+    this.agridataStateService.showCookiebanner(),
+  );
+}
