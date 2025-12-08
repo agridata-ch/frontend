@@ -1,3 +1,9 @@
+## [1.6.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.2...v1.6.0-rc.3) (2025-12-08)
+
+### Features
+
+- **spinner:** adds loading to tables ([3fe9aab](https://github.com/agridata-ch/frontend/commit/3fe9aab38defeb4735f67888a785d464eada5314)), closes [DIGIB2-978](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-978)
+
 ## [1.6.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.1...v1.6.0-rc.2) (2025-12-04)
 
 ### Features
