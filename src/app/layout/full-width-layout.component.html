@@ -9,4 +9,7 @@
 
   <app-footer-widget></app-footer-widget>
   <app-toast-container></app-toast-container>
+  @if (showCookieBanner()) {
+    <app-cookiebanner></app-cookiebanner>
+  }
 </div>

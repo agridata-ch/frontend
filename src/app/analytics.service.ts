@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, untracked } from '@angular/core';
+import { effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { debounceTime } from 'rxjs';
@@ -28,8 +28,14 @@ export class AnalyticsService {
   private readonly gaUrl = inject(GA_SCRIPT_URL);
   private readonly translocoService = inject(TranslocoService);
   private readonly titleService = inject(TitleService);
+
+  private readonly analyticsEnabled = signal(
+    environment.googleAnalyticsEnabled && this.getCookiesAccepted(),
+  );
+
   private readonly injectTagEffect = effect(() => {
-    if (!environment.googleAnalyticsEnabled) {
+    const enabled = this.analyticsEnabled();
+    if (!enabled) {
       return;
     }
     if (!environment.googleAnalyticsMeasurementId) {
@@ -51,7 +57,8 @@ export class AnalyticsService {
   });
 
   private readonly trackPageViewsEffect = effect(() => {
-    if (!environment.googleAnalyticsEnabled) {
+    const enabled = this.analyticsEnabled();
+    if (!enabled) {
       return;
     }
     const title = this.titleService.roTranslatedTitle();
@@ -66,7 +73,8 @@ export class AnalyticsService {
     }
   });
   private readonly trackUserLoggedInEffect = effect((onCleanup) => {
-    if (!environment.googleAnalyticsEnabled) {
+    const enabled = this.analyticsEnabled();
+    if (!enabled) {
       return;
     }
     const sub = this.oidcSecurityService.isAuthenticated$
@@ -87,7 +95,7 @@ export class AnalyticsService {
   });
 
   logPageHit(route?: string, title?: string, i18nTitle?: string | undefined): void {
-    if (environment.googleAnalyticsEnabled && typeof gtag === 'function') {
+    if (this.analyticsEnabled() && typeof gtag === 'function') {
       gtag('event', 'page_view', {
         page_path: route,
         page_location: window.location.href,
@@ -99,14 +107,23 @@ export class AnalyticsService {
 
   // Log a custom event
   logEvent(eventName: string, params: Record<string, unknown> = {}): void {
-    if (environment.googleAnalyticsEnabled && typeof gtag === 'function') {
+    if (this.analyticsEnabled() && typeof gtag === 'function') {
       gtag('event', eventName, params);
     }
   }
   // Set user properties for GA4
   setUserProperties(properties: Record<string, unknown>): void {
-    if (environment.googleAnalyticsEnabled && typeof gtag === 'function') {
+    if (this.analyticsEnabled() && typeof gtag === 'function') {
       gtag('set', 'user_properties', properties);
     }
+  }
+
+  setCookiesAccepted(accepted: boolean): void {
+    localStorage.setItem('cookiesAccepted', accepted.toString());
+    this.analyticsEnabled.set(environment.googleAnalyticsEnabled && accepted);
+  }
+
+  getCookiesAccepted(): boolean {
+    return localStorage.getItem('cookiesAccepted') === 'true';
   }
 }

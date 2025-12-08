@@ -1,0 +1,27 @@
+<div
+  class="fixed bottom-0 w-full flex flex-col bg-blue-100 items-center gap-6 p-6 md:p-10 justify-between"
+  *i18n="let t; prefix: 'cookiebanner'"
+>
+  <span class="text-center">
+    {{ t('bannerText') }}
+    <a routerLink="/{{ ROUTE_PATHS.PRIVACY_POLICY_PATH }}" class="underline">
+      {{ t('privacyPolicyLinkText') }}
+    </a>
+  </span>
+  <div class="flex flex-col md:flex-row gap-4">
+    <app-agridata-button
+      (onClick)="acceptCookies()"
+      (keydown.enter)="acceptCookies()"
+      [variant]="ButtonVariants.Secondary"
+    >
+      <span>{{ t('acceptCookies') }}</span>
+    </app-agridata-button>
+    <app-agridata-button
+      (onClick)="declineCookies()"
+      (keydown.enter)="declineCookies()"
+      [variant]="ButtonVariants.Link"
+    >
+      <span>{{ t('declineCookies') }}</span>
+    </app-agridata-button>
+  </div>
+</div>

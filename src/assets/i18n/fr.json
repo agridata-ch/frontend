@@ -452,5 +452,11 @@
       "altText": "Image avec drapeau suisse et inscription Confédération suisse"
     }
   },
-  "appTitle": "Agridata"
+  "appTitle": "Agridata",
+  "cookiebanner": {
+    "bannerText": "Pour améliorer notre offre, nous souhaitons utiliser Google Analytics. Des données d’utilisation peuvent être transmises à Google et y être traitées. Vous pouvez refuser cette analyse et continuer à utiliser le site sans aucune restriction. Vous trouverez de plus amples informations dans notre",
+    "acceptCookies": "Accepter",
+    "declineCookies": "Continuer sans consentement",
+    "privacyPolicyLinkText": "déclaration de confidentialité"
+  }
 }

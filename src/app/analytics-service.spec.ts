@@ -25,6 +25,10 @@ describe('AnalyticsServiceService', () => {
   let translocoService: TranslocoService;
   let titleService: MockTitleService;
   beforeEach(() => {
+    // Clear localStorage and set cookies as accepted for tests
+    localStorage.clear();
+    localStorage.setItem('cookiesAccepted', 'true');
+
     oidcService = {
       checkAuth: jest.fn(),
       isAuthenticated$: of({
@@ -47,6 +51,10 @@ describe('AnalyticsServiceService', () => {
     service = TestBed.inject(AnalyticsService);
     translocoService = TestBed.inject(TranslocoService);
     TestBed.tick();
+  });
+
+  afterEach(() => {
+    localStorage.clear();
   });
 
   it('should be created', () => {
@@ -103,6 +111,116 @@ describe('AnalyticsServiceService', () => {
       page_location: 'http://localhost/',
       page_title: 'new page',
       page_title_key: 'new.page',
+    });
+  });
+
+  describe('setCookiesAccepted', () => {
+    it('should set cookiesAccepted to true in localStorage when accepting', () => {
+      service.setCookiesAccepted(true);
+
+      expect(localStorage.getItem('cookiesAccepted')).toBe('true');
+    });
+
+    it('should set cookiesAccepted to false in localStorage when declining', () => {
+      service.setCookiesAccepted(false);
+
+      expect(localStorage.getItem('cookiesAccepted')).toBe('false');
+    });
+
+    it('should disable analytics when cookies are declined', () => {
+      service.setCookiesAccepted(false);
+      const window = globalThis as unknown as { gtag?: () => void };
+      const gtagSpy = jest.spyOn(window, 'gtag');
+
+      service.logEvent('test_event');
+
+      expect(gtagSpy).not.toHaveBeenCalled();
+    });
+
+    it('should enable analytics when cookies are accepted', () => {
+      // First decline to test re-enabling
+      service.setCookiesAccepted(false);
+      service.setCookiesAccepted(true);
+
+      const window = globalThis as unknown as { gtag?: () => void };
+      const gtagSpy = jest.spyOn(window, 'gtag');
+
+      service.logEvent('test_event');
+
+      expect(gtagSpy).toHaveBeenCalledWith('event', 'test_event', {});
+    });
+  });
+
+  describe('getCookiesAccepted', () => {
+    it('should return true when cookiesAccepted is true in localStorage', () => {
+      localStorage.setItem('cookiesAccepted', 'true');
+
+      expect(service.getCookiesAccepted()).toBe(true);
+    });
+
+    it('should return false when cookiesAccepted is false in localStorage', () => {
+      localStorage.setItem('cookiesAccepted', 'false');
+
+      expect(service.getCookiesAccepted()).toBe(false);
+    });
+
+    it('should return false when cookiesAccepted is not set in localStorage', () => {
+      localStorage.removeItem('cookiesAccepted');
+
+      expect(service.getCookiesAccepted()).toBe(false);
+    });
+  });
+
+  describe('analytics disabled when cookies not accepted', () => {
+    let serviceWithoutCookies: AnalyticsService;
+
+    beforeEach(() => {
+      localStorage.clear();
+      localStorage.setItem('cookiesAccepted', 'false');
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [createTranslocoTestingModule()],
+        providers: [
+          { provide: OidcSecurityService, useValue: oidcService },
+          { provide: AgridataStateService, useValue: stateService },
+          { provide: GA_MEASUREMENT_ID, useValue: '1' },
+          { provide: GA_SCRIPT_URL, useValue: 'test' },
+          { provide: TitleService, useValue: titleService },
+        ],
+      });
+      serviceWithoutCookies = TestBed.inject(AnalyticsService);
+      TestBed.tick();
+    });
+
+    it('should not inject gtag script when cookies are not accepted', () => {
+      const window = globalThis as unknown as { gtag?: () => void };
+      const gtagSpy = jest.spyOn(window, 'gtag');
+
+      // Trigger some analytics actions
+      titleService.__testSignals.roTranslatedTitle.set('test page');
+      TestBed.tick();
+
+      // gtag should not be called because analytics is disabled
+      expect(gtagSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not call gtag when logEvent is called without cookie acceptance', () => {
+      const window = globalThis as unknown as { gtag?: () => void };
+      const gtagSpy = jest.spyOn(window, 'gtag');
+
+      serviceWithoutCookies.logEvent('test_event', { param1: 'value1' });
+
+      expect(gtagSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not set user properties when cookies are not accepted', () => {
+      const window = globalThis as unknown as { gtag?: () => void };
+      const gtagSpy = jest.spyOn(window, 'gtag');
+
+      serviceWithoutCookies.setUserProperties({ test: 'value' });
+
+      expect(gtagSpy).not.toHaveBeenCalled();
     });
   });
 });
