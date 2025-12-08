@@ -1,3 +1,9 @@
+## [1.6.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.4...v1.6.0-rc.5) (2025-12-08)
+
+### Features
+
+- **ui:** uid redirect ([0c6cb8e](https://github.com/agridata-ch/frontend/commit/0c6cb8e1abe94088192c0acb4b0e9629211edae5)), closes [DIGIB2-1082](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1082)
+
 ## [1.6.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.3...v1.6.0-rc.4) (2025-12-08)
 
 ### Features
