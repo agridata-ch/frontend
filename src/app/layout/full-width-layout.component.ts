@@ -7,6 +7,7 @@ import { ToastComponent } from '@/shared/ui/toast';
 import { CookiebannerComponent } from '@/widgets/cookiebanner';
 import { FooterWidgetComponent } from '@/widgets/footer-widget';
 import { HeaderWidgetComponent } from '@/widgets/header-widget';
+import { NewYearBannerComponent } from '@/widgets/new-year-banner';
 
 /**
  * Provides a full-width layout with header, footer, and content area. It disables view
@@ -23,6 +24,7 @@ import { HeaderWidgetComponent } from '@/widgets/header-widget';
     FooterWidgetComponent,
     ToastComponent,
     CookiebannerComponent,
+    NewYearBannerComponent,
   ],
   templateUrl: './full-width-layout.component.html',
   styleUrls: ['./full-width-layout.component.css'],
@@ -34,6 +36,6 @@ export class FullWidthLayoutComponent {
   protected readonly agridataStateService = inject(AgridataStateService);
 
   protected readonly showCookieBanner = computed(() =>
-    this.agridataStateService.getShowCookieBanner(),
+    this.agridataStateService.showCookiebanner(),
   );
 }

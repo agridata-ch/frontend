@@ -35,7 +35,7 @@ export class CookiebannerComponent {
   }
 
   protected closeCookieBanner(): void {
-    localStorage.setItem('showCookieBanner', 'false');
+    this.agridataStateService.hideCookieBanner();
   }
 
   protected declineCookies(): void {

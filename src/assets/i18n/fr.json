@@ -458,5 +458,9 @@
     "acceptCookies": "Accepter",
     "declineCookies": "Continuer sans consentement",
     "privacyPolicyLinkText": "déclaration de confidentialité"
+  },
+  "newYearBanner": {
+    "wishMessage": "L'équipe d'agridata.ch vous souhaite une bonne année!",
+    "title": "Bonne année!"
   }
 }

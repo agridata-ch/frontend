@@ -65,7 +65,7 @@ export class ProducerUidGuard implements CanActivate {
 
   private handleProvidedUid(userUid: string, authorizedUids: string[]): UrlTree | boolean {
     if (!authorizedUids.includes(userUid)) {
-      return this.fail(new Error(`invalid url, user does not have access to uid: ${userUid}`));
+      return this.router.createUrlTree([ROUTE_PATHS.FORBIDDEN]);
     }
 
     if (userUid !== this.agridataStateService.activeUid()) {

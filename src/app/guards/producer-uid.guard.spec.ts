@@ -146,7 +146,7 @@ describe('producerUidGuard', () => {
 
     expect(guardResult).toBeInstanceOf(UrlTree);
     if (guardResult instanceof UrlTree) {
-      expect(guardResult.toString()).toEqual(`/${ROUTE_PATHS.ERROR}`);
+      expect(guardResult.toString()).toEqual(`/${ROUTE_PATHS.FORBIDDEN}`);
     }
   });
 
