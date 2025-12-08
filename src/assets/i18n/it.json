@@ -453,5 +453,11 @@
       "altText": "Immagine con bandiera svizzera e scritta Confederazione Svizzera"
     }
   },
-  "appTitle": "Agridata"
+  "appTitle": "Agridata",
+  "cookiebanner": {
+    "bannerText": "Per migliorare la nostra offerta, vorremmo utilizzare Google Analytics. I dati di utilizzo possono essere trasmessi a Google e lì trattati. È possibile rifiutare l’analisi e continuare a utilizzare il sito senza limitazioni. Per ulteriori informazioni, consultare la nostra",
+    "acceptCookies": "Accetta",
+    "declineCookies": "Continua senza acconsentire",
+    "privacyPolicyLinkText": "Informativa sulla privacy"
+  }
 }
