@@ -1,3 +1,9 @@
+## [1.6.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.5...v1.6.0-rc.6) (2025-12-09)
+
+### Features
+
+- **cooke-banner:** adjusts cookie banner to meet ux specs ([4c2f05d](https://github.com/agridata-ch/frontend/commit/4c2f05df8c7094454897f44bd6dacd12520fac19)), closes [DIGIB2-1006](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1006)
+
 ## [1.6.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.4...v1.6.0-rc.5) (2025-12-08)
 
 ### Features
