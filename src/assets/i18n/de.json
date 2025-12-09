@@ -456,8 +456,8 @@
   "appTitle": "Agridata",
   "cookiebanner": {
     "bannerText": "Zur Verbesserung unseres Angebots nutzen wir Google Analytics, wobei Nutzungsdaten an Google übermittelt und dort verarbeitet werden können. Sie können die Analyse ablehnen und die Website weiterhin uneingeschränkt nutzen. Weitere Informationen finden Sie in unserer",
-    "acceptCookies": "Akzeptieren",
-    "declineCookies": "Weiter ohne Zustimmung",
+    "acceptCookies": "Zulassen",
+    "declineCookies": "Ablehnen",
     "privacyPolicyLinkText": "Datenschutzerklärung"
   },
   "newYearBanner": {

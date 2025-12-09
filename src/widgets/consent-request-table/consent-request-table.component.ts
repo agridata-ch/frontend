@@ -8,6 +8,7 @@ import {
   output,
   signal,
   viewChild,
+  WritableSignal,
 } from '@angular/core';
 
 import { AnalyticsService } from '@/app/analytics.service';
@@ -98,7 +99,7 @@ export class ConsentRequestTableComponent {
   protected readonly dataRequestDateHeader = 'consent-request.dataRequest.date';
   protected readonly stateCodeFilter = signal<string | null>(null);
   protected readonly showAcceptedLoading = signal(false);
-
+  private readonly elementLoadingSignals = new Map<string, WritableSignal<boolean>>();
   protected readonly acceptConsentActionDisabled = computed(() =>
     this.agridataStateService.isImpersonating(),
   );
@@ -198,7 +199,7 @@ export class ConsentRequestTableComponent {
       state: stateCode,
       component: 'table',
     });
-    this.showAcceptedLoading.set(true);
+    this.getElementLoadingSignal(id).set(true);
     await this.consentRequestService
       .updateConsentRequestStatus(id, stateCode)
       .then(() => {
@@ -216,7 +217,7 @@ export class ConsentRequestTableComponent {
       .catch((error) => {
         this.errorService.handleError(error, { i18n: 'consent-request.table.error' });
       });
-    this.showAcceptedLoading.set(false);
+    this.getElementLoadingSignal(id).set(false);
   };
 
   prepareUndoAction(id: string) {
@@ -241,6 +242,15 @@ export class ConsentRequestTableComponent {
   getTranslation(key: TranslationDto | undefined) {
     if (!key) return '';
     return this.i18nService.useObjectTranslation(key);
+  }
+
+  getElementLoadingSignal(id: string): WritableSignal<boolean> {
+    let elementSignal = this.elementLoadingSignals.get(id);
+    if (!elementSignal) {
+      elementSignal = signal(false);
+      this.elementLoadingSignals.set(id, elementSignal);
+    }
+    return elementSignal;
   }
 
   getI18nTranslation(key: string | undefined) {
