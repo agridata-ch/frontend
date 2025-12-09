@@ -37,7 +37,7 @@
         click-stop-propagation
         [variant]="ButtonVariants.PrimaryAccept"
         [disabled]="acceptConsentActionDisabled()"
-        [loading]="showAcceptedLoading()"
+        [loading]="getElementLoadingSignal(item.id)()"
         (onClick)="
           updateConsentRequestState(
             item.id,
