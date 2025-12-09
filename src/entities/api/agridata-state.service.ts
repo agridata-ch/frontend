@@ -12,12 +12,7 @@ import { filter, map } from 'rxjs';
 import { BackendInfoService } from '@/entities/api/backend-info.service';
 import { UserService } from '@/entities/api/user.service';
 import { UidDto, UserPreferencesDto } from '@/entities/openapi';
-import {
-  ACTIVE_UID_FIELD,
-  KTIDP_IMPERSONATION_QUERY_PARAM,
-  NAVIGATION_STATE_OPEN,
-  ROUTE_PATHS,
-} from '@/shared/constants/constants';
+import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 
 export const DISMISSED_MIGRATIONS_KEY = 'dismissedMigrationAlerts';
@@ -43,10 +38,11 @@ export class AgridataStateService {
   // Signals
   private readonly _userPreferences = signal<UserPreferencesDto>({}); // we want to locally track changes before persisting
   private readonly _backendInfo = signal<{ [key: string]: string } | undefined>(undefined);
+  private readonly _showCookiebanner = signal<boolean>(this.shouldShowCookieBanner());
 
   readonly userPreferences = this._userPreferences.asReadonly();
-  readonly isNavigationOpen = signal(this.getNavigationStateOpen());
   readonly backendInfo = this._backendInfo.asReadonly();
+  readonly showCookiebanner = this._showCookiebanner.asReadonly();
   readonly currentRoute = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
@@ -149,12 +145,14 @@ export class AgridataStateService {
     this.userService.updateUserPreferences(this._userPreferences()).then();
   }
 
-  private getStoredUid(): string | undefined {
-    return localStorage.getItem(ACTIVE_UID_FIELD) as string | undefined;
+  hideCookieBanner(): void {
+    localStorage.setItem('showCookieBanner', 'false');
+    this._showCookiebanner.set(false);
   }
 
-  private getNavigationStateOpen() {
-    return localStorage.getItem(NAVIGATION_STATE_OPEN) === 'true';
+  private shouldShowCookieBanner(): boolean {
+    const showBanner = localStorage.getItem('showCookieBanner');
+    return showBanner === null ? true : showBanner === 'true';
   }
 
   /**

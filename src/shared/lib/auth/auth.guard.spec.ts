@@ -1,7 +1,6 @@
 import { WritableSignal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
-import { firstValueFrom, of, throwError } from 'rxjs';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
@@ -55,40 +54,40 @@ describe('AuthorizationGuard', () => {
   });
 
   it('allows activation when no roles are required', async () => {
-    authService.initializeUserInfo.mockReturnValue(of(mockUserInfo));
+    authService.initializeUserInfo.mockResolvedValue(mockUserInfo);
 
-    const result = await firstValueFrom(guard.canActivate(mockActivatedRouteSnapshot));
+    const result = await guard.canActivate(mockActivatedRouteSnapshot);
 
     expect(result).toBe(true);
   });
 
   it('denies activation when required role is missing and redirects to forbidden', async () => {
-    authService.initializeUserInfo.mockReturnValue(of(undefined));
+    authService.initializeUserInfo.mockResolvedValue(undefined);
     (authService.__testSignals.userRoles as WritableSignal<string[]>).set(['ROLE_USER']);
     mockActivatedRouteSnapshot.data = { roles: ['ROLE_ADMIN'] };
 
-    const result = await firstValueFrom(guard.canActivate(mockActivatedRouteSnapshot));
+    const result = await guard.canActivate(mockActivatedRouteSnapshot);
 
     expect(result).toBe(fakeUrlTree);
     expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.FORBIDDEN);
   });
 
   it('allows activation when user has one of the required roles', async () => {
-    authService.initializeUserInfo.mockReturnValue(of(undefined));
+    authService.initializeUserInfo.mockResolvedValue(undefined);
     authService.__testSignals.userRoles.set(['ROLE_ADMIN', 'ROLE_USER']);
 
     mockActivatedRouteSnapshot.data = { roles: ['ROLE_ADMIN'] };
 
-    const result = await firstValueFrom(guard.canActivate(mockActivatedRouteSnapshot));
+    const result = await guard.canActivate(mockActivatedRouteSnapshot);
 
     expect(result).toBe(true);
   });
 
   it('handles errors from initializeAuth by sending them to errorService and redirecting to error route', async () => {
     const testError = new Error('Test initializeAuth error');
-    authService.initializeUserInfo.mockReturnValue(throwError(() => testError));
+    authService.initializeUserInfo.mockRejectedValue(testError);
 
-    const result = await firstValueFrom(guard.canActivate(mockActivatedRouteSnapshot));
+    const result = await guard.canActivate(mockActivatedRouteSnapshot);
 
     expect(errorService.handleError).toHaveBeenCalledWith(testError);
     expect(result).toBe(fakeUrlTree);
@@ -97,25 +96,25 @@ describe('AuthorizationGuard', () => {
 
   it('ignores errors when on error page and returns true', async () => {
     const testError = new Error('Test initializeAuth error');
-    authService.initializeUserInfo.mockReturnValue(throwError(() => testError));
+    authService.initializeUserInfo.mockRejectedValue(testError);
     (mockActivatedRouteSnapshot as any).url = [ROUTE_PATHS.ERROR];
 
-    const result = await firstValueFrom(guard.canActivate(mockActivatedRouteSnapshot));
+    const result = await guard.canActivate(mockActivatedRouteSnapshot);
 
     expect(errorService.handleError).toHaveBeenCalledTimes(0);
     expect(result).toBe(true);
     expect(mockRouter.parseUrl).toHaveBeenCalledTimes(0);
   });
 
-  it('should set ktidp in sessionStorage when query param is present', () => {
+  it('should set ktidp in sessionStorage when query param is present', async () => {
     // Arrange
     const testKtidp = 'test-ktidp-value';
     (mockActivatedRouteSnapshot.queryParamMap?.get as jest.Mock).mockReturnValue(testKtidp);
-    authService.initializeUserInfo.mockReturnValue(of(undefined));
+    authService.initializeUserInfo.mockResolvedValue(undefined);
     sessionStorage.removeItem(KTIDP_IMPERSONATION_QUERY_PARAM);
 
     // Act
-    guard.canActivate(mockActivatedRouteSnapshot as ActivatedRouteSnapshot);
+    await guard.canActivate(mockActivatedRouteSnapshot as ActivatedRouteSnapshot);
 
     // Assert
     expect(mockActivatedRouteSnapshot.queryParamMap?.get).toHaveBeenCalledWith(
@@ -127,16 +126,16 @@ describe('AuthorizationGuard', () => {
     sessionStorage.removeItem(KTIDP_IMPERSONATION_QUERY_PARAM);
   });
 
-  it('should not set ktidp in sessionStorage when query param is not present', () => {
+  it('should not set ktidp in sessionStorage when query param is not present', async () => {
     // Arrange
 
-    authService.initializeUserInfo.mockReturnValue(of(undefined));
+    authService.initializeUserInfo.mockResolvedValue(undefined);
 
     // Clear any previous values
     sessionStorage.removeItem(KTIDP_IMPERSONATION_QUERY_PARAM);
 
     // Act
-    guard.canActivate(mockActivatedRouteSnapshot as ActivatedRouteSnapshot);
+    await guard.canActivate(mockActivatedRouteSnapshot as ActivatedRouteSnapshot);
 
     // Assert
     expect(mockActivatedRouteSnapshot.queryParamMap?.get).toHaveBeenCalledWith(

@@ -1,4 +1,11 @@
-@if (imprintPageResource.isLoading()) { ...Loading CMS } @else {
+@if (imprintPageResource.isLoading()) {
+<fa-icon
+  animation="spin"
+  [icon]="faSpinnerThird"
+  size="3x"
+  class="absolute flex items-center justify-center inset-0"
+></fa-icon>
+} @else {
 <div class="container mx-auto px-10 pb-10 pt-20 flex flex-col items-center">
   <div [innerHTML]="content() | markdown"></div>
 </div>

@@ -1,5 +1,11 @@
-@if (cmsPageResource.isLoading()) { ...Loading CMS } @else if (cmsPageResource.error()) { ...Error
-loading CMS } @else {
+@if (cmsPageResource.isLoading()) {
+<fa-icon
+  animation="spin"
+  [icon]="faSpinnerThird"
+  size="3x"
+  class="absolute flex items-center justify-center inset-0"
+></fa-icon>
+} @else if (cmsPageResource.error()) { ...Error loading CMS } @else {
 <app-hero-block [block]="heroBlock()" />
 <div
   class="flex gap-3 py-6 px-8 text-agridata-primary-text font-medium leading-6 bg-white border-b-agridata-stroke border-b"

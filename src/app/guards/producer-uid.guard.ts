@@ -1,7 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
-import { catchError, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -12,7 +10,7 @@ import { AuthService } from '@/shared/lib/auth';
 /**
  * Guard to load the producers authorized uids and set the consent request uid parameter if not present or set active uid if parameter is provided.
  *
- * CommentLastReviewed: 2025-11-26
+ * CommentLastReviewed: 2025-12-01
  */
 @Injectable({
   providedIn: 'root',
@@ -24,13 +22,13 @@ export class ProducerUidGuard implements CanActivate {
   private readonly errorService = inject(ErrorHandlerService);
   private readonly router = inject(Router);
 
-  canActivate(route: ActivatedRouteSnapshot): Observable<UrlTree | boolean> {
-    return this.authorizationService.initializeAuthorizedUids().pipe(
-      map((uidDtos) => {
-        return this.validateAndSetUid(route, uidDtos);
-      }),
-      catchError((err) => of(this.processError(err))),
-    );
+  async canActivate(route: ActivatedRouteSnapshot): Promise<UrlTree | boolean> {
+    try {
+      const uidDtos = await this.authorizationService.initializeAuthorizedUids();
+      return this.validateAndSetUid(route, uidDtos);
+    } catch (error) {
+      return this.processError(error);
+    }
   }
 
   private validateAndSetUid(route: ActivatedRouteSnapshot, uidDtos: UidDto[]): UrlTree | boolean {
@@ -67,7 +65,7 @@ export class ProducerUidGuard implements CanActivate {
 
   private handleProvidedUid(userUid: string, authorizedUids: string[]): UrlTree | boolean {
     if (!authorizedUids.includes(userUid)) {
-      return this.fail(new Error(`invalid url, user does not have access to uid: ${userUid}`));
+      return this.router.createUrlTree([ROUTE_PATHS.FORBIDDEN]);
     }
 
     if (userUid !== this.agridataStateService.activeUid()) {

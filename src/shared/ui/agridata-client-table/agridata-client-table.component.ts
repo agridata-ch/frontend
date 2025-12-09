@@ -37,21 +37,30 @@ export class AgridataClientTableComponent<T> {
   readonly tableMetadata = input.required<ClientTableMetadata<T>>();
   readonly pageSize = input<number>(10);
   readonly enableSearch = input<boolean>(false);
+  readonly loading = input<boolean | undefined>(false);
   readonly resourceQueryDto = signal<ResourceQueryDto | undefined>(undefined);
 
   readonly fetchData = resource({
     params: () => ({
-      params: this.resourceQueryDto(),
+      queryDto: this.resourceQueryDto(),
       rawData: this.rawData(),
+      loading: this.loading(),
     }),
-    loader: ({ params }) => Promise.resolve(this.computeData(params.rawData, params.params)),
+    loader: ({ params }) => {
+      if (params.loading) {
+        // Because the component that renders this table uses this ressource's loading status we need to return a promise that never resolves as long as the isLoading signal is true.
+        return new Promise<PageResponseDto<T>>(() => {});
+      }
+
+      return Promise.resolve(this.computeData(params.rawData, params.queryDto));
+    },
   });
 
   private computeData(
     data: Array<T> | undefined,
     query: ResourceQueryDto | undefined,
   ): PageResponseDto<T> {
-    const rows = this.rawData() ?? [];
+    const rows = data ?? [];
     const searchedRows = this.applySearch(rows, query?.searchTerm);
     const totalPages = this.calculateTotalPages(searchedRows);
     const currentPage = this.normalizePageIndex(query?.page, totalPages);

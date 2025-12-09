@@ -1,0 +1,38 @@
+<div class="flex flex-row gap-4 justify-end">
+  <app-agridata-button
+    click-stop-propagation
+    [variant]="ButtonVariants.IconOutline"
+    ariaLabel="actions"
+    (onClick)="handleToggle()"
+  >
+    <fa-icon [icon]="iconEllipsis" />
+  </app-agridata-button>
+
+  @if (isOpen()) {
+    <div
+      class="absolute z-10 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
+      (appClickOutside)="handleClickOutside()"
+    >
+      <ul>
+        @for (action of actionWithLoadingSignal(); track action.label) {
+          <li
+            tabindex="0"
+            click-stop-propagation
+            class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer min-w-25 flex flex-row items-center justify-center"
+            (click)="handleActionClick(action)"
+            (keydown.enter)="handleActionClick(action)"
+          >
+            @if (action.loading()) {
+              <fa-icon animation="spin" [icon]="faSpinnerThird"></fa-icon>
+            } @else {
+              @if (action.icon) {
+                <fa-icon [icon]="action.icon" class="mr-2" />
+              }
+              {{ action.label | i18n }}
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

@@ -1,4 +1,6 @@
+import { ResourceRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
@@ -10,6 +12,7 @@ import {
   ConsentRequestStateEnum,
 } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
+import { MockResources } from '@/shared/testing/mocks';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
@@ -25,6 +28,7 @@ import {
 } from '@/shared/testing/mocks/mock-error-handler.service';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ToastService } from '@/shared/toast';
+import { ButtonComponent } from '@/shared/ui/button';
 
 import { ConsentRequestTableComponent } from './consent-request-table.component';
 
@@ -36,6 +40,7 @@ describe('ConsentRequestTableComponent', () => {
   let errorService: MockErrorHandlerService;
   let consentRequestService: MockConsentRequestService;
   let stateService: MockAgridataStateService;
+  let mockResourceRef: ResourceRef<ConsentRequestProducerViewDto[]>;
   const mockConsentRequests: ConsentRequestProducerViewDto[] = [
     {
       id: '1',
@@ -74,6 +79,7 @@ describe('ConsentRequestTableComponent', () => {
     consentRequestService = createMockConsentRequestService();
     errorService = createMockErrorHandlerService();
     stateService = createMockAgridataStateService();
+    mockResourceRef = MockResources.createMockResourceRef(mockConsentRequests);
     await TestBed.configureTestingModule({
       imports: [
         ConsentRequestTableComponent,
@@ -97,10 +103,7 @@ describe('ConsentRequestTableComponent', () => {
     component = fixture.componentInstance;
     fixture.componentRef.setInput('consentRequests', mockConsentRequests);
     // Set the consentRequestsResource input to the fetchConsentRequests ResourceRef
-    fixture.componentRef.setInput(
-      'consentRequestsResource',
-      consentRequestService.fetchConsentRequests,
-    );
+    fixture.componentRef.setInput('consentRequestsResource', mockResourceRef);
     fixture.detectChanges();
   });
 
@@ -138,12 +141,35 @@ describe('ConsentRequestTableComponent', () => {
     expect(mockToastService.show).toHaveBeenCalled();
   });
 
-  it('should only show consent action for open requests', () => {
-    const openRequestActions = component.getFilteredActions(mockConsentRequests[0]);
-    const grantedRequestActions = component.getFilteredActions(mockConsentRequests[1]);
+  it('should only show consent action for open requests', async () => {
+    jest.spyOn(mockI18nService, 'translate').mockImplementation((key: string) => key);
 
-    expect(openRequestActions.length).toBe(1);
-    expect(grantedRequestActions.length).toBe(0);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    const rows = fixture.debugElement.queryAll(By.css('tr'));
+
+    // check accept button on open request
+    const openedRow = rows.filter((row) =>
+      row.nativeElement.textContent?.includes('consent-request.dataRequest.stateCode.OPENED'),
+    );
+    expect(openedRow.length).toBe(1);
+    const acceptButtons = openedRow[0]
+      .queryAll(By.directive(ButtonComponent))
+      .filter((button) =>
+        button.nativeElement.textContent.includes('consent-request.table.tableActions.consent'),
+      );
+    expect(acceptButtons.length).toBe(1);
+
+    // check no accept button on granted request
+    const grantedRows = rows.filter((row) =>
+      row.nativeElement.textContent?.includes('consent-request.dataRequest.stateCode.GRANTED'),
+    );
+    const grantedAcceptButtons = grantedRows[0]
+      .queryAll(By.directive(ButtonComponent))
+      .filter((button) =>
+        button.nativeElement.textContent.includes('consent-request.table.tableActions.consent'),
+      );
+    expect(grantedAcceptButtons.length).toBe(0);
   });
 
   it('should translate object correctly', () => {
@@ -160,17 +186,6 @@ describe('ConsentRequestTableComponent', () => {
   });
 
   it('should prepare undo action correctly', async () => {
-    // Create a mock resource with a reload method
-    const mockResourceRef = {
-      reload: jest.fn(),
-      value: jest.fn().mockReturnValue([]),
-      loading: jest.fn().mockReturnValue(false),
-    };
-
-    // Set the input to use our local mock
-    fixture.componentRef.setInput('consentRequestsResource', mockResourceRef);
-    fixture.detectChanges();
-
     const undoAction = component.prepareUndoAction('1');
 
     expect(undoAction).toBeDefined();
@@ -221,16 +236,13 @@ describe('ConsentRequestTableComponent', () => {
   });
 
   it('should execute action callback correctly', () => {
-    const updateSpy = jest.spyOn(component, 'updateConsentRequestState');
-    const actions = component.getFilteredActions(mockConsentRequests[0]);
-    const action = actions[0];
-
-    action.callback();
-
-    expect(updateSpy).toHaveBeenCalledWith(
+    const spy = jest.spyOn(consentRequestService, 'updateConsentRequestStatus');
+    component.updateConsentRequestState(
       mockConsentRequests[0].id,
-      ConsentRequestStateEnum.Granted,
-      undefined,
+      ConsentRequestStateEnum.Declined,
+      'Test Request',
     );
+
+    expect(spy).toHaveBeenCalledWith(mockConsentRequests[0].id, ConsentRequestStateEnum.Declined);
   });
 });

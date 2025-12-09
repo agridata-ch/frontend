@@ -5,7 +5,6 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { CmsService } from '@/entities/cms';
 import { UserInfoDto } from '@/entities/openapi';
-import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 import { mockCmsService } from '@/shared/testing/mocks';
 import {
@@ -101,9 +100,9 @@ describe('HeaderWidgetComponent', () => {
   });
 
   it('login() calls AuthService.login()', () => {
-    const navigateSpy = jest.spyOn(router, 'navigate');
+    const navigateSpy = jest.spyOn(authService, 'login');
     component.login();
-    expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.LOGIN]);
+    expect(navigateSpy).toHaveBeenCalled();
   });
 
   it('should return slug (cms page name)', () => {

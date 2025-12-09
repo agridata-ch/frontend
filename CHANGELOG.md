@@ -1,3 +1,40 @@
+## [1.6.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.5...v1.6.0-rc.6) (2025-12-09)
+
+### Features
+
+- **cooke-banner:** adjusts cookie banner to meet ux specs ([4c2f05d](https://github.com/agridata-ch/frontend/commit/4c2f05df8c7094454897f44bd6dacd12520fac19)), closes [DIGIB2-1006](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1006)
+
+## [1.6.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.4...v1.6.0-rc.5) (2025-12-08)
+
+### Features
+
+- **ui:** uid redirect ([0c6cb8e](https://github.com/agridata-ch/frontend/commit/0c6cb8e1abe94088192c0acb4b0e9629211edae5)), closes [DIGIB2-1082](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1082)
+
+## [1.6.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.3...v1.6.0-rc.4) (2025-12-08)
+
+### Features
+
+- **cookie-banner:** add cookie banner ([d5ef62c](https://github.com/agridata-ch/frontend/commit/d5ef62cfa9a861863875459bd740cc693e674662)), closes [DIGIB2-1006](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1006)
+
+## [1.6.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.2...v1.6.0-rc.3) (2025-12-08)
+
+### Features
+
+- **spinner:** adds loading to tables ([3fe9aab](https://github.com/agridata-ch/frontend/commit/3fe9aab38defeb4735f67888a785d464eada5314)), closes [DIGIB2-978](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-978)
+
+## [1.6.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.6.0-rc.1...v1.6.0-rc.2) (2025-12-04)
+
+### Features
+
+- **spinner:** adds spinner to resource related buttons ([c7f13b6](https://github.com/agridata-ch/frontend/commit/c7f13b6c1c3bdc7b0056185581da3d98b3239b57)), closes [DIGIB2-978](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-978)
+
+## [1.6.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.5.0...v1.6.0-rc.1) (2025-12-02)
+
+### Features
+
+- **auth:** refactor auth service ([fbd11fa](https://github.com/agridata-ch/frontend/commit/fbd11fa38d3fda04e94bcc264ca4ab1da3f34e96)), closes [DIGIB2-586](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-586)
+- **deps:** update actions/checkout action to v6 ([90f708e](https://github.com/agridata-ch/frontend/commit/90f708eb4580414060d5b0f558c963918a3bba31))
+
 ## [1.5.0](https://github.com/agridata-ch/frontend/compare/v1.4.0...v1.5.0) (2025-11-27)
 
 ### Features

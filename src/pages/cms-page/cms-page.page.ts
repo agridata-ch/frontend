@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, effect, inject, input, resource } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
@@ -97,4 +98,5 @@ export class CmsPage {
     const seo = this.seoBlock();
     this.seoService.updateSeo(seo);
   });
+  protected readonly faSpinnerThird = faSpinnerThird;
 }

@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostBinding, input, output } from '@angular/core';
+import { faSpinner } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 import { ButtonVariants, HrefTarget } from './button.model';
 
@@ -13,7 +16,7 @@ import { ButtonVariants, HrefTarget } from './button.model';
 @Component({
   selector: 'app-agridata-button',
   templateUrl: './button.component.html',
-  imports: [CommonModule],
+  imports: [CommonModule, FaIconComponent],
   styleUrl: './button.component.css',
 })
 export class ButtonComponent {
@@ -23,11 +26,15 @@ export class ButtonComponent {
   tabindex = input<number>(0);
   ariaLabel = input<string>('');
   selected = input<boolean>(false);
+  loading = input<boolean>(false);
   onClick = output<Event>();
   additionalClass = input<string>('');
   href = input<string>('');
   target = input<HrefTarget>(HrefTarget.Self);
   @HostBinding('style.display') display = 'contents';
+
+  protected readonly faSpinner = faSpinner;
+  protected faSpinnerThird = faSpinnerThird;
 
   handleClick(event: Event) {
     event.preventDefault();

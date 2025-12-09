@@ -8,7 +8,7 @@ export const environment = {
   canResetTestData: false,
   titleEnvPrefix: '',
 
-  googleAnalyticsEnabled: false,
+  googleAnalyticsEnabled: true,
   googleAnalyticsMeasurementId: 'G-QPQ6KHCPXS',
   googleAnalyticsDebug: false,
 

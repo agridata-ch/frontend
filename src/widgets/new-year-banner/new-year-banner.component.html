@@ -1,0 +1,37 @@
+@if (showBanner()) {
+  <div class="z-50 animate-slide-up" *i18n="let t; prefix: 'newYearBanner'">
+    <div
+      class="relative overflow-hidden bg-gradient-to-r from-agridata-primary-900 via-agridata-primary-700 to-agridata-primary-900"
+    >
+      <!-- Banner content -->
+      <div class="relative container mx-auto px-4 md:px-6 py-2 md:py-4">
+        <div class="flex items-center justify-between gap-2 md:gap-4">
+          <div class="flex items-center gap-2 md:gap-4 text-white flex-1">
+            <div class="text-md md:text-4xl font-bold animate-pulse">
+              {{ currentYear() }}
+            </div>
+            <div class="flex-1">
+              <div class="md:text-xl font-semibold">🎉 {{ t('title') }} 🎊</div>
+              <div class="text-sm opacity-90 hidden sm:block">
+                {{ t('wishMessage') }}
+              </div>
+            </div>
+            <div class="hidden md:flex gap-2 text-2xl">
+              <span class="animate-sparkle" style="animation-delay: 0s">✨</span>
+              <span class="animate-sparkle" style="animation-delay: 0.3s">🌟</span>
+              <span class="animate-sparkle" style="animation-delay: 0.6s">✨</span>
+            </div>
+          </div>
+
+          <button
+            (click)="handleClose()"
+            class="w-10 h-10 rounded-full hover:bg-white/30 transition-colors flex items-center justify-center shrink-0"
+            aria-label="Close banner"
+          >
+            <fa-icon class="text-white" [icon]="closeIcon"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

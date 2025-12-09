@@ -8,6 +8,7 @@ import {
   output,
   signal,
   viewChild,
+  WritableSignal,
 } from '@angular/core';
 
 import { AnalyticsService } from '@/app/analytics.service';
@@ -19,12 +20,14 @@ import {
   ConsentRequestStateEnum,
   TranslationDto,
 } from '@/entities/openapi';
+import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import {
   getToastMessage,
   getToastTitle,
   getToastType,
   getUndoAction,
 } from '@/shared/consent-request';
+import { I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
 import { ToastService } from '@/shared/toast';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
@@ -32,8 +35,9 @@ import {
   AgridataClientTableComponent,
   ClientTableMetadata,
 } from '@/shared/ui/agridata-client-table';
-import { ActionDTO, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
+import { CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { ConsentRequestFilterComponent } from '@/widgets/consent-request-table/consent-request-filter';
 import { ConsentRequestListComponent } from '@/widgets/consent-request-table/consent-request-list';
@@ -57,6 +61,9 @@ import { ConsentRequestProducerViewDtoDirective } from './consent-request-produc
     AgridataClientTableComponent,
     ConsentRequestProducerViewDtoDirective,
     AgridataContactCardComponent,
+    ButtonComponent,
+    ClickStopPropagationDirective,
+    I18nPipe,
   ],
   templateUrl: './consent-request-table.component.html',
 })
@@ -78,8 +85,10 @@ export class ConsentRequestTableComponent {
     viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('dataRequestConsumer');
   private readonly dataRequestTitleTemplate =
     viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('dataRequestTitle');
-  private readonly dataRequestStateTemplate =
-    viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('dataRequestState');
+  private readonly consentRequestStateTemplate =
+    viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('consentRequestState');
+  private readonly consentRequestActionTemplate =
+    viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('consentRequestAction');
   protected readonly BadgeSize = BadgeSize;
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
@@ -89,31 +98,16 @@ export class ConsentRequestTableComponent {
   protected readonly dataRequestConsumerHeader = 'consent-request.dataRequest.consumerName';
   protected readonly dataRequestDateHeader = 'consent-request.dataRequest.date';
   protected readonly stateCodeFilter = signal<string | null>(null);
+  protected readonly showAcceptedLoading = signal(false);
+  private readonly elementLoadingSignals = new Map<string, WritableSignal<boolean>>();
+  protected readonly acceptConsentActionDisabled = computed(() =>
+    this.agridataStateService.isImpersonating(),
+  );
   readonly filteredConsentRequests = computed(() => {
     return this.consentRequests().filter(
       (request) => !this.stateCodeFilter() || request.stateCode === this.stateCodeFilter(),
     );
   });
-
-  getFilteredActions = (request?: ConsentRequestProducerViewDto): ActionDTO[] => {
-    if (!request) return [];
-    const requestTitle = this.i18nService.useObjectTranslation(request.dataRequest?.title);
-
-    const consent: ActionDTO = {
-      label: 'consent-request.table.tableActions.consent',
-      isDisabled: this.agridataStateService.isImpersonating(),
-      callback: () => {
-        void this.updateConsentRequestState(
-          request.id,
-          ConsentRequestStateEnum.Granted,
-          requestTitle,
-        );
-      },
-      isMainAction: true,
-    };
-
-    return request.stateCode === ConsentRequestStateEnum.Opened ? [consent] : [];
-  };
 
   openDetails = (request?: ConsentRequestProducerViewDto | null) => {
     if (!request) return;
@@ -159,15 +153,25 @@ export class ConsentRequestTableComponent {
           name: this.dataRequestStateHeader,
           renderer: {
             type: CellRendererTypes.TEMPLATE,
-            template: this.dataRequestStateTemplate(),
+            template: this.consentRequestStateTemplate(),
           },
           sortable: true,
           sortValueFn: (item: ConsentRequestProducerViewDto) =>
             this.getTranslatedStateValue(item.stateCode),
         },
+        {
+          name: '',
+          renderer: {
+            type: CellRendererTypes.TEMPLATE,
+            template: this.consentRequestActionTemplate(),
+          },
+          headerCssClasses: 'w-0',
+          cellCssClasses: 'w-0',
+          sortable: false,
+        },
       ],
-      actions: this.getFilteredActions,
       rowAction: this.openDetails,
+      showRowActionButton: true,
       highlightFn: (item) => item.stateCode === ConsentRequestStateEnum.Opened,
       searchFn: (data, searchTerm) =>
         data.filter((item) => this.getTranslation(item.dataRequest?.title).includes(searchTerm)),
@@ -185,13 +189,18 @@ export class ConsentRequestTableComponent {
     this.stateCodeFilter.set(state);
   }
 
-  updateConsentRequestState = async (id: string, stateCode: string, requestName?: string) => {
+  updateConsentRequestState = async (
+    id: string,
+    stateCode: ConsentRequestStateEnum,
+    requestName?: string,
+  ) => {
     this.analyticsService.logEvent('consent_request_state_changed', {
       id: id,
       state: stateCode,
       component: 'table',
     });
-    this.consentRequestService
+    this.getElementLoadingSignal(id).set(true);
+    await this.consentRequestService
       .updateConsentRequestStatus(id, stateCode)
       .then(() => {
         const toastTitle = this.i18nService.translate(getToastTitle(stateCode), {
@@ -208,6 +217,7 @@ export class ConsentRequestTableComponent {
       .catch((error) => {
         this.errorService.handleError(error, { i18n: 'consent-request.table.error' });
       });
+    this.getElementLoadingSignal(id).set(false);
   };
 
   prepareUndoAction(id: string) {
@@ -233,4 +243,21 @@ export class ConsentRequestTableComponent {
     if (!key) return '';
     return this.i18nService.useObjectTranslation(key);
   }
+
+  getElementLoadingSignal(id: string): WritableSignal<boolean> {
+    let elementSignal = this.elementLoadingSignals.get(id);
+    if (!elementSignal) {
+      elementSignal = signal(false);
+      this.elementLoadingSignals.set(id, elementSignal);
+    }
+    return elementSignal;
+  }
+
+  getI18nTranslation(key: string | undefined) {
+    if (!key) return '';
+    return this.i18nService.translate(key);
+  }
+
+  protected readonly ButtonVariants = ButtonVariants;
+  protected readonly ConsentRequestStateEnum = ConsentRequestStateEnum;
 }

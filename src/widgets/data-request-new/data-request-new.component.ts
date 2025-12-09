@@ -15,7 +15,8 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faArrowLeft, faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { debounceTime } from 'rxjs';
+import { TranslocoService } from '@jsverse/transloco';
+import { debounceTime, firstValueFrom } from 'rxjs';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestUpdateDto } from '@/assets/formSchemas/agridata-schemas.json';
@@ -32,9 +33,9 @@ import {
 } from '@/shared/lib/api.helper';
 import {
   buildReactiveForm,
-  Dto,
   flattenFormGroup,
   populateFormFromDto,
+  setControlValue,
 } from '@/shared/lib/form.helper';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService, ToastType } from '@/shared/toast';
@@ -45,7 +46,12 @@ import {
   DataRequestFormProducerComponent,
   DataRequestFormRequestComponent,
 } from '@/widgets/data-request-form';
-import { FORM_COMPLETION_STRATEGIES, FORM_GROUP_NAMES } from '@/widgets/data-request-new';
+import {
+  dataRequestFormsModel,
+  FormModel,
+  FORM_COMPLETION_STRATEGIES,
+  FORM_GROUP_NAMES,
+} from '@/widgets/data-request-new';
 import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
 
 export const DATA_REQUEST_NEW_ID = 'new';
@@ -56,7 +62,7 @@ export const DATA_REQUEST_NEW_ID = 'new';
  * persistence, logo uploads, and translations. It ensures smooth navigation across steps and
  * manages draft, submission, and completion logic.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-12-02
  */
 @Component({
   selector: 'app-data-request-new',
@@ -77,17 +83,61 @@ export const DATA_REQUEST_NEW_ID = 'new';
   templateUrl: './data-request-new.component.html',
 })
 export class DataRequestNewComponent {
-  private readonly i18nService = inject(I18nService);
+  // Injects
   private readonly dataRequestService = inject(DataRequestService);
-  private readonly toastService = inject(ToastService);
-  private readonly router = inject(Router);
-  private readonly errorService = inject(ErrorHandlerService);
   private readonly destroyRef = inject(DestroyRef);
-  // set from route param
+  private readonly errorService = inject(ErrorHandlerService);
+  private readonly i18nService = inject(I18nService);
+  private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
+  private readonly translateService = inject(TranslocoService);
+
+  // Constants
+  protected readonly form = this.createForm();
+  protected readonly ButtonVariants = ButtonVariants;
+  protected readonly FORM_GROUP_NAMES = FORM_GROUP_NAMES;
+  protected readonly ToastType = ToastType;
+  protected readonly nextIcon = faArrowRight;
+  protected readonly previousIcon = faArrowLeft;
+
+  // Input properties
   readonly dataRequestId = input<string | undefined>();
-  // writable signal used if data request is created
-  readonly currentDataRequestId = signal<string | undefined>(undefined);
-  readonly refreshListNeeded = signal(false);
+
+  // Signals
+  protected readonly consumerLabel = this.i18nService.translateSignal(
+    'data-request.wizard.steps.consumer',
+  );
+  protected readonly contractLabel = this.i18nService.translateSignal(
+    'data-request.wizard.steps.contract',
+  );
+  protected readonly completionLabel = this.i18nService.translateSignal(
+    'data-request.wizard.steps.completion',
+  );
+  protected readonly logoFile = signal<File | null>(null);
+  protected readonly previewLabel = this.i18nService.translateSignal(
+    'data-request.wizard.steps.preview',
+  );
+  protected readonly producerLabel = this.i18nService.translateSignal(
+    'data-request.wizard.steps.producer',
+  );
+  protected readonly requestLabel = this.i18nService.translateSignal(
+    'data-request.wizard.steps.request',
+  );
+
+  // contains current data request state
+  protected readonly dataRequest = signal<DataRequestDto | undefined>(undefined);
+  // writable signal used when data request is created
+  protected readonly currentDataRequestId = signal<string | undefined>(undefined);
+  protected readonly isSaving = signal(false);
+  protected readonly refreshListNeeded = signal(false);
+  protected readonly formControlSteps = signal<WizardStep[]>(
+    dataRequestFormsModel.map((step) => ({
+      id: step.formGroupName,
+      label: this.getStepLabelSignal(step.formGroupName),
+      isValid: true,
+      completed: false,
+    })),
+  );
 
   protected readonly dataRequestsResource = resource({
     params: () => ({ id: this.dataRequestId() }),
@@ -99,20 +149,49 @@ export class DataRequestNewComponent {
     },
   });
 
-  // initial data request from resource
-  readonly initialRequest = createResourceValueComputed(this.dataRequestsResource);
+  protected readonly initialRequest = createResourceValueComputed(this.dataRequestsResource);
+
+  protected readonly formDisabled = computed(() => {
+    const request = this.dataRequest();
+    return (
+      !!request?.stateCode &&
+      request.stateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Draft
+    );
+  });
+
+  // Effects (private)
   private readonly errorHandlerEffect = createResourceErrorHandlerEffect(
     this.dataRequestsResource,
     this.errorService,
   );
-  // contains current data request state
-  readonly dataRequest = signal<DataRequestDto | undefined>(undefined);
+
+  private readonly formGroupDisabledEffect = effect(() => {
+    const disabled = this.formDisabled();
+    const form = this.form;
+    form.updateValueAndValidity();
+
+    // disable every form group where controls are available
+    if (form && disabled) {
+      form.disable({ emitEvent: false });
+      dataRequestFormsModel.forEach(({ formGroupName }) => {
+        const fg = form.get(formGroupName) as unknown as FormGroup;
+        if (fg && Object.keys(fg.controls).length > 0) {
+          fg.disable({ emitEvent: false });
+        }
+      });
+    }
+  });
 
   private readonly updateDataRequestFromRessourceEffect = effect(() => {
     const request = this.initialRequest();
-    this.dataRequest.set(request);
-    populateFormFromDto(this.form, request as unknown as Record<string, unknown>, this.formMap);
     if (request?.id) {
+      this.dataRequest.set(request);
+      populateFormFromDto(
+        this.form,
+        request as unknown as Record<string, unknown>,
+        dataRequestFormsModel,
+      );
+      this.form.markAllAsTouched();
       this.updateFormSteps();
     }
   });
@@ -123,114 +202,168 @@ export class DataRequestNewComponent {
     }
   });
 
-  readonly ButtonVariants = ButtonVariants;
-  readonly ToastType = ToastType;
-  readonly nextIcon = faArrowRight;
-  readonly previousIcon = faArrowLeft;
-  readonly FORM_GROUP_NAMES = FORM_GROUP_NAMES;
-
   @ViewChild(AgridataWizardComponent)
-  readonly wizard!: AgridataWizardComponent;
+  protected readonly wizard!: AgridataWizardComponent;
 
-  readonly consumerLabel = this.i18nService.translateSignal('data-request.wizard.steps.consumer');
-  readonly requestLabel = this.i18nService.translateSignal('data-request.wizard.steps.request');
-  readonly previewLabel = this.i18nService.translateSignal('data-request.wizard.steps.preview');
-  readonly producerLabel = this.i18nService.translateSignal('data-request.wizard.steps.producer');
-  readonly contractLabel = this.i18nService.translateSignal('data-request.wizard.steps.contract');
-  readonly completionLabel = this.i18nService.translateSignal(
-    'data-request.wizard.steps.completion',
-  );
+  protected handleClose() {
+    this.router.navigate([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH], {
+      state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: this.refreshListNeeded() },
+    });
+  }
 
-  readonly titlePlaceholderDe = this.i18nService.translateSignal(
-    'data-request.form.request.title.de.placeholder',
-  );
-  readonly titlePlaceholderFr = this.i18nService.translateSignal(
-    'data-request.form.request.title.fr.placeholder',
-  );
-  readonly titlePlaceholderIt = this.i18nService.translateSignal(
-    'data-request.form.request.title.it.placeholder',
-  );
-  readonly descriptionPlaceholderDe = this.i18nService.translateSignal(
-    'data-request.form.request.description.de.placeholder',
-  );
-  readonly descriptionPlaceholderFr = this.i18nService.translateSignal(
-    'data-request.form.request.description.fr.placeholder',
-  );
-  readonly descriptionPlaceholderIt = this.i18nService.translateSignal(
-    'data-request.form.request.description.it.placeholder',
-  );
-  readonly purposePlaceholderDe = this.i18nService.translateSignal(
-    'data-request.form.request.purpose.de.placeholder',
-  );
-  readonly purposePlaceholderFr = this.i18nService.translateSignal(
-    'data-request.form.request.purpose.fr.placeholder',
-  );
-  readonly purposePlaceholderIt = this.i18nService.translateSignal(
-    'data-request.form.request.purpose.it.placeholder',
-  );
+  protected handleNextStep() {
+    if (!this.formDisabled()) this.handleSave();
+    this.wizard.nextStep();
+  }
 
-  readonly formMap = [
-    {
-      formGroupName: FORM_GROUP_NAMES.CONSUMER,
-      fields: [
-        'dataConsumerDisplayName',
-        'dataConsumerCity',
-        'dataConsumerZip',
-        'dataConsumerStreet',
-        'dataConsumerCountry',
-        'contactPhoneNumber',
-        'contactEmailAddress',
-      ],
-      completionStrategy: FORM_COMPLETION_STRATEGIES.FORM_VALIDATION,
-    },
-    {
-      formGroupName: FORM_GROUP_NAMES.REQUEST,
-      fields: [
-        'products',
-        'title.de',
-        'title.fr',
-        'title.it',
-        'description.de',
-        'description.fr',
-        'description.it',
-        'purpose.de',
-        'purpose.fr',
-        'purpose.it',
-      ],
-      completionStrategy: FORM_COMPLETION_STRATEGIES.FORM_VALIDATION,
-    },
-    {
-      formGroupName: FORM_GROUP_NAMES.PREVIEW,
-      fields: [],
-      completionStrategy: FORM_COMPLETION_STRATEGIES.ALWAYS_COMPLETE,
-    },
-    {
-      formGroupName: FORM_GROUP_NAMES.PRODUCER,
-      fields: ['targetGroup'],
-      completionStrategy: FORM_COMPLETION_STRATEGIES.FORM_VALIDATION,
-    },
-    {
-      formGroupName: FORM_GROUP_NAMES.CONTRACT,
-      fields: [],
-      completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
-    },
-    // TODO: Re-enable these steps when their implementation is ready DIGIB2-542
-    // {
-    //   formGroupName: FORM_GROUP_NAMES.COMPLETION,
-    //   fields: [],
-    //   completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
-    // },
-  ];
-  readonly logoFile = signal<File | null>(null);
+  protected handlePreviousStep() {
+    if (!this.formDisabled()) this.handleSave();
+    this.wizard.previousStep();
+  }
 
-  readonly formControlSteps = signal<WizardStep[]>(
-    this.formMap.map((step) => ({
-      id: step.formGroupName,
-      label: this.getStepLabelSignal(step.formGroupName),
-      isValid: true,
-      completed: false,
-    })),
-  );
+  protected handleSave() {
+    if (this.formDisabled()) return;
+
+    const id = this.wizard.currentStepId();
+    const form = this.form;
+    form.get(id)?.markAllAsTouched();
+    this.updateFormSteps(id, form.get(id)?.valid ?? false);
+    return this.createOrSaveDataRequest();
+  }
+
+  protected handleSaveAndComplete() {
+    const form = this.form;
+    form.markAllAsTouched();
+    if (form.invalid) {
+      console.error('Form is invalid, cannot save data request');
+      return;
+    }
+  }
+
+  protected handleSaveLogo(logo: File) {
+    this.logoFile.set(logo);
+    const dataRequestId = this.currentDataRequestId();
+    if (dataRequestId) {
+      this.dataRequestService.uploadLogo(dataRequestId, logo).then(() => {
+        this.logoFile.set(null);
+      });
+    }
+  }
+
+  protected handleStepChange() {
+    if (!this.formDisabled()) this.handleSave();
+  }
+
+  protected async handleSubmitAndContinue() {
+    await this.handleSave();
+
+    this.form.markAllAsTouched();
+    this.updateFormSteps();
+    const dataRequestId = this.currentDataRequestId();
+    if (this.form.valid && dataRequestId) {
+      this.isSaving.set(true);
+      await this.dataRequestService
+        .submitDataRequest(dataRequestId)
+        .then((dataRequest: DataRequestDto) => {
+          this.dataRequest.set(dataRequest);
+          this.wizard.nextStep();
+        })
+        .catch((error) => {
+          this.errorService.handleError(error);
+        })
+        .finally(() => this.isSaving.set(false));
+    } else {
+      console.error('Form is invalid, cannot submit data request');
+    }
+  }
+
+  protected invitationLink() {
+    return `${globalThis.location.origin}/consent-requests/create/${this.currentDataRequestId()}`;
+  }
+
+  private checkExternalCompletion(formGroupName: string): boolean {
+    // Logic for contract and completion steps
+    if (
+      formGroupName === FORM_GROUP_NAMES.CONTRACT ||
+      formGroupName === FORM_GROUP_NAMES.COMPLETION
+    ) {
+      // Example: Check if contract is signed or whatever condition you need
+      return false;
+    }
+    return true;
+  }
+
+  private createForm() {
+    const newForm = buildReactiveForm(
+      DataRequestUpdateDto,
+      dataRequestFormsModel,
+      this.i18nService,
+    );
+
+    dataRequestFormsModel.forEach((form) => {
+      const fg = newForm.get(form.formGroupName) as unknown as FormGroup;
+      fg.statusChanges
+        .pipe(takeUntilDestroyed(this.destroyRef), debounceTime(400))
+        .subscribe(() => {
+          if (fg.dirty) {
+            this.updateFormSteps(form.formGroupName, fg.valid);
+          }
+        });
+      this.updateDefaultValues(form, fg);
+    });
+    return newForm;
+  }
+
+  private updateDefaultValues(form: FormModel, formGroup: FormGroup) {
+    form.fields.forEach((field) => {
+      if (field.i18nDefaultValue) {
+        const control = formGroup.get(field.name);
+        if (control) {
+          firstValueFrom(this.translateService.selectTranslate(field.i18nDefaultValue)).then(
+            (value) => {
+              setControlValue(formGroup, field.name, value, true);
+            },
+          );
+        }
+      }
+    });
+  }
+
+  private async createOrSaveDataRequest() {
+    this.refreshListNeeded.set(true);
+    this.isSaving.set(true);
+    const form = this.form;
+    const flattenForm = flattenFormGroup(form);
+    const dataRequestId = this.currentDataRequestId();
+    if (dataRequestId) {
+      if (this.logoFile()) {
+        await this.dataRequestService.uploadLogo(dataRequestId, this.logoFile()!).then(() => {
+          this.logoFile.set(null);
+        });
+      }
+      await this.dataRequestService
+        .updateDataRequestDetails(dataRequestId, flattenForm)
+        .then((dataRequest: DataRequestDto) => {
+          this.dataRequest.set(dataRequest);
+        })
+        .finally(() => this.isSaving.set(false));
+    } else {
+      await this.dataRequestService
+        .createDataRequest(flattenForm)
+        .then(async (dataRequest: DataRequestDto) => {
+          this.currentDataRequestId.set(dataRequest.id);
+          this.dataRequest.set(dataRequest);
+          if (this.logoFile()) {
+            await this.dataRequestService.uploadLogo(dataRequest.id, this.logoFile()!).then(() => {
+              this.logoFile.set(null);
+            });
+          }
+        })
+        .finally(() => this.isSaving.set(false));
+    }
+
+    this.isSaving.set(false);
+  }
 
   private getStepLabelSignal(formGroupName: string) {
     switch (formGroupName) {
@@ -249,168 +382,28 @@ export class DataRequestNewComponent {
     }
   }
 
-  readonly defaultValues = computed(() => ({
-    title: {
-      de: this.titlePlaceholderDe(),
-      fr: this.titlePlaceholderFr(),
-      it: this.titlePlaceholderIt(),
-    },
-    description: {
-      de: this.descriptionPlaceholderDe(),
-      fr: this.descriptionPlaceholderFr(),
-      it: this.descriptionPlaceholderIt(),
-    },
-    purpose: {
-      de: this.purposePlaceholderDe(),
-      fr: this.purposePlaceholderFr(),
-      it: this.purposePlaceholderIt(),
-    },
-  }));
+  private isStepCompleted(formGroup: FormGroup, formGroupName: string): boolean {
+    const stepConfig = dataRequestFormsModel.find((item) => item.formGroupName === formGroupName);
 
-  readonly formDisabled = computed(() => {
-    const request = this.dataRequest();
-    return (
-      !!request?.stateCode &&
-      request.stateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Draft
-    );
-  });
+    if (!stepConfig) return false;
 
-  readonly form = this.createForm();
-  private createForm() {
-    // Create the form with the current initialData
-    const newForm = buildReactiveForm(
-      DataRequestUpdateDto,
-      this.formMap,
-      this.i18nService,
-      this.defaultValues() as Dto,
-    );
+    switch (stepConfig.completionStrategy) {
+      case FORM_COMPLETION_STRATEGIES.ALWAYS_COMPLETE:
+        // For steps like preview that are considered complete once visited
+        return true;
 
-    // Set up form event handlers
-    this.formMap.forEach(({ formGroupName }) => {
-      const fg = newForm.get(formGroupName) as unknown as FormGroup;
-      fg.statusChanges
-        .pipe(takeUntilDestroyed(this.destroyRef), debounceTime(400))
-        .subscribe(() => {
-          if (fg.dirty) {
-            this.updateFormSteps(formGroupName, fg.valid);
-          }
-        });
-    });
+      case FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY:
+        // Steps 5 & 6 would use this - check external conditions
+        return this.checkExternalCompletion(formGroupName);
 
-    return newForm;
-  }
-
-  formGroupDisabledEffect = effect(() => {
-    const disabled = this.formDisabled();
-    const form = this.form;
-    form.updateValueAndValidity();
-
-    // disable every form group where controls are available
-    if (form && disabled) {
-      form.disable({ emitEvent: false });
-      this.formMap.forEach(({ formGroupName }) => {
-        const fg = form.get(formGroupName) as unknown as FormGroup;
-        if (fg && Object.keys(fg.controls).length > 0) {
-          fg.disable({ emitEvent: false });
-        }
-      });
-    }
-  });
-
-  handleStepChange() {
-    if (!this.formDisabled()) this.handleSave();
-  }
-
-  handlePreviousStep() {
-    if (!this.formDisabled()) this.handleSave();
-    this.wizard.previousStep();
-  }
-
-  handleNextStep() {
-    if (!this.formDisabled()) this.handleSave();
-    this.wizard.nextStep();
-  }
-
-  async handleSave() {
-    if (this.formDisabled()) return;
-
-    const id = this.wizard.currentStepId();
-    const form = this.form;
-    form.get(id)?.markAllAsTouched();
-    this.updateFormSteps(id, form.get(id)?.valid ?? false);
-    await this.createOrSaveDataRequest();
-  }
-
-  async handleSubmitAndContinue() {
-    this.handleSave().then(async () => {
-      const form = this.form;
-      form.markAllAsTouched();
-      this.updateFormSteps();
-      const dataRequestId = this.currentDataRequestId();
-      if (form.valid && dataRequestId) {
-        await this.dataRequestService
-          .submitDataRequest(dataRequestId)
-          .then((dataRequest: DataRequestDto) => {
-            this.dataRequest.set(dataRequest);
-            this.wizard.nextStep();
-          })
-          .catch((error) => {
-            console.error('Error submitting data request:', error);
-            const errorMessage = this.i18nService.translate('data-request.submit.error');
-            this.toastService.show(error.message, errorMessage, ToastType.Error);
-          });
-      } else {
-        console.error('Form is invalid, cannot submit data request');
-      }
-    });
-  }
-  // @Todo this doesn't do anyting will be extended with DIGIB2-308
-  handleSaveAndComplete() {
-    const form = this.form;
-    form.markAllAsTouched();
-    if (form.invalid) {
-      console.error('Form is invalid, cannot save data request');
-      return;
+      case FORM_COMPLETION_STRATEGIES.FORM_VALIDATION:
+      default:
+        // Default strategy - use form validation
+        return formGroup?.valid && Object.keys(formGroup.controls).length > 0;
     }
   }
 
-  async createOrSaveDataRequest() {
-    this.refreshListNeeded.set(true);
-    const form = this.form;
-    const flattenForm = flattenFormGroup(form);
-    const dataRequestId = this.currentDataRequestId();
-    if (dataRequestId) {
-      if (this.logoFile()) {
-        await this.dataRequestService.uploadLogo(dataRequestId, this.logoFile()!).then(() => {
-          this.logoFile.set(null);
-        });
-      }
-      await this.dataRequestService
-        .updateDataRequestDetails(dataRequestId, flattenForm)
-        .then((dataRequest: DataRequestDto) => {
-          this.dataRequest.set(dataRequest);
-        });
-    } else {
-      await this.dataRequestService
-        .createDataRequest(flattenForm)
-        .then(async (dataRequest: DataRequestDto) => {
-          this.currentDataRequestId.set(dataRequest.id);
-          this.dataRequest.set(dataRequest);
-          if (this.logoFile()) {
-            await this.dataRequestService.uploadLogo(dataRequest.id, this.logoFile()!).then(() => {
-              this.logoFile.set(null);
-            });
-          }
-        });
-    }
-  }
-  protected handleClose() {
-    this.router.navigate([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH], {
-      state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: this.refreshListNeeded() },
-    });
-  }
-
-  updateFormSteps(id?: string, valid?: boolean) {
+  private updateFormSteps(id?: string, valid?: boolean) {
     this.formControlSteps.update((steps) =>
       steps.map((step) => {
         if (id && step.id !== id) {
@@ -438,52 +431,5 @@ export class DataRequestNewComponent {
         };
       }),
     );
-  }
-
-  private isStepCompleted(formGroup: FormGroup, formGroupName: string): boolean {
-    const stepConfig = this.formMap.find((item) => item.formGroupName === formGroupName);
-
-    if (!stepConfig) return false;
-
-    switch (stepConfig.completionStrategy) {
-      case FORM_COMPLETION_STRATEGIES.ALWAYS_COMPLETE:
-        // For steps like preview that are considered complete once visited
-        return true;
-
-      case FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY:
-        // Steps 5 & 6 would use this - check external conditions
-        return this.checkExternalCompletion(formGroupName);
-
-      case FORM_COMPLETION_STRATEGIES.FORM_VALIDATION:
-      default:
-        // Default strategy - use form validation
-        return formGroup?.valid && Object.keys(formGroup.controls).length > 0;
-    }
-  }
-
-  private checkExternalCompletion(formGroupName: string): boolean {
-    // Logic for contract and completion steps
-    if (
-      formGroupName === FORM_GROUP_NAMES.CONTRACT ||
-      formGroupName === FORM_GROUP_NAMES.COMPLETION
-    ) {
-      // Example: Check if contract is signed or whatever condition you need
-      return false;
-    }
-    return true;
-  }
-
-  handleSaveLogo(logo: File) {
-    this.logoFile.set(logo);
-    const dataRequestId = this.currentDataRequestId();
-    if (dataRequestId) {
-      this.dataRequestService.uploadLogo(dataRequestId, logo).then(() => {
-        this.logoFile.set(null);
-      });
-    }
-  }
-
-  invitationLink() {
-    return `${globalThis.location.origin}/consent-requests/create/${this.currentDataRequestId()}`;
   }
 }

@@ -16,11 +16,13 @@
     "pageSelector": "Entrées par page",
     "header": {
       "ariaLabels": {
-        "sort": "Trier par : {{ sortBy }}"
+        "sort": "Trier par : {{ sortBy }}",
+        "rowActionColumnTitle": "Colonne Actions"
       }
     },
     "ariaLabels": {
-      "actions": "Actions"
+      "actions": "Actions",
+      "rowAction": "Ouvrir l'enregistrement"
     }
   },
   "consent-request": {
@@ -450,5 +452,15 @@
       "altText": "Image avec drapeau suisse et inscription Confédération suisse"
     }
   },
-  "appTitle": "Agridata"
+  "appTitle": "Agridata",
+  "cookiebanner": {
+    "bannerText": "Pour améliorer notre offre, nous souhaitons utiliser Google Analytics. Des données d’utilisation peuvent être transmises à Google et y être traitées. Vous pouvez refuser cette analyse et continuer à utiliser le site sans aucune restriction. Vous trouverez de plus amples informations dans notre",
+    "acceptCookies": "Autoriser",
+    "declineCookies": "Refuser",
+    "privacyPolicyLinkText": "déclaration de confidentialité"
+  },
+  "newYearBanner": {
+    "wishMessage": "L'équipe d'agridata.ch vous souhaite une bonne année!",
+    "title": "Bonne année!"
+  }
 }

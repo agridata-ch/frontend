@@ -1,4 +1,11 @@
-@if (landingPageResource.isLoading()) { ...Loading CMS } @else {
+@if (landingPageResource.isLoading()) {
+<fa-icon
+  animation="spin"
+  [icon]="faSpinnerThird"
+  size="3x"
+  class="absolute flex items-center justify-center inset-0"
+></fa-icon
+>} @else {
 <app-hero-block [block]="heroBlock()" />
 @for (block of pageBlocks(); track `${block.__component}_${block.id}`) {
 <app-cms-block-renderer [block]="block" [index]="$index"></app-cms-block-renderer>

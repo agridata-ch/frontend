@@ -1,7 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
-import { catchError, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
@@ -13,40 +11,42 @@ import { AuthService } from './auth.service';
  * Redirects to a forbidden route if access is denied.
  * Ensures that user preferences are fetched upon successful authorization.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-12-01
  */
 @Injectable({ providedIn: 'root' })
 export class AuthorizationGuard implements CanActivate {
+  // Injects
   private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
   private readonly errorService = inject(ErrorHandlerService);
+  private readonly router = inject(Router);
 
-  canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
+  async canActivate(route: ActivatedRouteSnapshot): Promise<boolean | UrlTree> {
     const ktidp = route.queryParamMap.get(KTIDP_IMPERSONATION_QUERY_PARAM);
     if (ktidp) {
       sessionStorage.setItem(KTIDP_IMPERSONATION_QUERY_PARAM, ktidp);
     }
-    const requiredRoles: string[] = route.data['roles'] || [];
-    return this.authService.initializeUserInfo().pipe(
-      map(() => {
-        if (!requiredRoles || requiredRoles.length === 0) {
-          return true;
-        }
-        const hasRole =
-          requiredRoles.length === 0 ||
-          requiredRoles.some((role) => this.authService.userRoles().includes(role));
-        if (!hasRole) {
-          return this.router.parseUrl(ROUTE_PATHS.FORBIDDEN);
-        }
+
+    try {
+      await this.authService.initializeUserInfo();
+
+      const requiredRoles: string[] = route.data['roles'] || [];
+      if (!requiredRoles || requiredRoles.length === 0) {
         return true;
-      }),
-      catchError((error) => {
-        if (route.url.toString().includes(ROUTE_PATHS.ERROR)) {
-          return of(true);
-        }
-        this.errorService.handleError(error);
-        return of(this.router.parseUrl(ROUTE_PATHS.ERROR));
-      }),
-    );
+      }
+
+      const hasRole = requiredRoles.some((role) => this.authService.userRoles().includes(role));
+      if (!hasRole) {
+        return this.router.parseUrl(ROUTE_PATHS.FORBIDDEN);
+      }
+
+      return true;
+    } catch (error) {
+      if (route.url.toString().includes(ROUTE_PATHS.ERROR)) {
+        return true;
+      }
+
+      this.errorService.handleError(error as Error);
+      return this.router.parseUrl(ROUTE_PATHS.ERROR);
+    }
   }
 }

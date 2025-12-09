@@ -32,7 +32,11 @@ export class ConsentRequestListComponent {
   protected readonly i18nService = inject(I18nService);
   readonly consentRequests = input<ConsentRequestProducerViewDto[]>();
   readonly openDetails = output<ConsentRequestProducerViewDto>();
-  readonly updateConsentRequestStatus = output<{ id: string; newState: string; title?: string }>();
+  readonly updateConsentRequestStatus = output<{
+    id: string;
+    newState: ConsentRequestStateEnum;
+    title?: string;
+  }>();
 
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;

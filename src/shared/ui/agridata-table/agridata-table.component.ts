@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -9,20 +10,22 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { faSpinner } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faChevronRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ResourceQueryDto } from '@/entities/openapi';
-import { I18nDirective } from '@/shared/i18n';
+import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
+import { I18nDirective, I18nPipe } from '@/shared/i18n';
 import { PageResponseDto } from '@/shared/lib/api.helper';
-import {
-  ActionDTO,
-  TableActionsComponent,
-} from '@/shared/ui/agridata-table/table-actions/table-actions.component';
 import { TableCellComponent } from '@/shared/ui/agridata-table/table-cell/table-cell.component';
 import { TableHeaderCellComponent } from '@/shared/ui/agridata-table/table-header-cell/table-header-cell.component';
 import { TablePaginationComponent } from '@/shared/ui/agridata-table/table-pagination/table-pagination.component';
-import { ButtonVariants } from '@/shared/ui/button';
+import {
+  ActionDTO,
+  TableRowMenuComponent,
+} from '@/shared/ui/agridata-table/table-row-menu/table-row-menu.component';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { EmptyStateComponent } from '@/shared/ui/empty-state/empty-state.component';
 import { SearchInputComponent } from '@/shared/ui/filter-input/search-input.component';
 
@@ -45,13 +48,13 @@ import {
  * - Keyboard navigation support
  * - Action buttons per row
  *
- * CommentLastReviewed: 2025-09-26
+ * CommentLastReviewed: 2025-11-25
  **/
 @Component({
   selector: 'app-agridata-table',
   imports: [
     CommonModule,
-    TableActionsComponent,
+    TableRowMenuComponent,
     FontAwesomeModule,
     SearchInputComponent,
     TableHeaderCellComponent,
@@ -59,13 +62,18 @@ import {
     TablePaginationComponent,
     I18nDirective,
     EmptyStateComponent,
+    ButtonComponent,
+    ClickStopPropagationDirective,
+    I18nPipe,
   ],
   templateUrl: './agridata-table.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AgridataTableComponent<T> {
   // Constants
   protected readonly ButtonVariants = ButtonVariants;
-  protected readonly faSpinner = faSpinner;
+  protected readonly iconRowAction = faChevronRight;
+  protected readonly faSpinnerThird = faSpinnerThird;
 
   // Input properties
   readonly tableMetadata = input.required<TableMetadata<T>>();
@@ -76,7 +84,6 @@ export class AgridataTableComponent<T> {
   readonly queryParameters = model<ResourceQueryDto>();
 
   // Signals
-  protected readonly hoveredRowId = signal<string | null>(null);
   protected readonly searchTerm = signal<string>('');
   protected readonly nextPageIndex = signal<number>(0);
   protected readonly nextPageSize = signal<number>(PAGE_SIZES[0]);
@@ -135,10 +142,6 @@ export class AgridataTableComponent<T> {
     }
   }
 
-  protected setHoveredRowId(rowId: string | null): void {
-    this.hoveredRowId.set(rowId);
-  }
-
   protected getRowId(row: T): string {
     const idColumn = this.tableMetadata().idColumn;
     return String(row[idColumn]);
@@ -150,7 +153,7 @@ export class AgridataTableComponent<T> {
   }
 
   protected getRowActions(row: T): ActionDTO[] {
-    const actionFunctions = this.tableMetadata().actions;
+    const actionFunctions = this.tableMetadata().rowMenuActions;
     if (!actionFunctions) return [];
     return actionFunctions(row);
   }

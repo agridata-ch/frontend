@@ -1,4 +1,5 @@
 <div class="flex flex-col min-h-screen relative">
+  <app-new-year-banner />
   <app-header-widget class="sticky top-0 z-10"></app-header-widget>
 
   <div class="flex flex-1">
@@ -10,4 +11,7 @@
   <app-footer-widget></app-footer-widget>
   <app-toast-container></app-toast-container>
   <app-supporter-overlay></app-supporter-overlay>
+  @if (showCookieBanner()) {
+    <app-cookiebanner></app-cookiebanner>
+  }
 </div>

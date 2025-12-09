@@ -36,11 +36,12 @@ export function createMockAgridataStateService(): MockAgridataStateService {
     backendInfo,
     getDefaultUid: jest.fn().mockReturnValue(undefined),
     isImpersonating: jest.fn().mockReturnValue(false),
-    isNavigationOpen: signal(false),
     routeStart: signal<string | undefined>('/some-page'),
     setActiveUid: jest.fn(),
     setMainMenuOpened: jest.fn(),
     addConfirmedMigratedUids: jest.fn(),
+    hideCookieBanner: jest.fn(),
+    showCookiebanner: signal(true),
     __testSignals: {
       currentRouteWithoutQueryParams,
       userPreferences,
