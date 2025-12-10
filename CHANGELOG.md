@@ -1,3 +1,9 @@
+## [1.6.1](https://github.com/agridata-ch/frontend/compare/v1.6.0...v1.6.1) (2025-12-10)
+
+### Bug Fixes
+
+- **login-screen:** waits for oidc auth to finish before checking if is authenticated ([616bc7d](https://github.com/agridata-ch/frontend/commit/616bc7d2b5a82addb1cd7a81319fcd3674e33a5e))
+
 ## [1.6.0](https://github.com/agridata-ch/frontend/compare/v1.5.0...v1.6.0) (2025-12-09)
 
 ### Features
