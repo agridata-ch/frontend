@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 
 /**
@@ -16,12 +17,10 @@ export class LoginAuthGuard implements CanActivate {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  canActivate() {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/']);
-      return true;
-    } else {
-      return false;
-    }
+  async canActivate() {
+    const authenticated = await this.authService.initializeAuth();
+    return authenticated
+      ? this.router.createUrlTree(['/'])
+      : this.router.createUrlTree([ROUTE_PATHS.FORBIDDEN]);
   }
 }

@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 
@@ -8,12 +9,15 @@ import { LoginAuthGuard } from './login.guard';
 
 describe('LoginAuthGuard', () => {
   let guard: LoginAuthGuard;
-  let mockRouter: { navigate: jest.Mock<Promise<boolean>, [unknown[]]> };
   let authService: MockAuthService;
+  let mockRouter: {
+    createUrlTree: jest.Mock;
+  };
+  const mockUrlTree = 'some url';
 
   beforeEach(() => {
     mockRouter = {
-      navigate: jest.fn().mockResolvedValue(true),
+      createUrlTree: jest.fn().mockReturnValue(mockUrlTree),
     };
 
     authService = createMockAuthService();
@@ -33,21 +37,21 @@ describe('LoginAuthGuard', () => {
     jest.clearAllMocks();
   });
 
-  it('should navigate to "/" and return true when user is authenticated', () => {
-    authService.isAuthenticated.set(true);
+  it('should navigate to "/" and return true when user is authenticated', async () => {
+    authService.initializeAuth.mockResolvedValue(true);
 
-    const result = guard.canActivate();
+    const result = await guard.canActivate();
 
-    expect(result).toBe(true);
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/']);
+    expect(result).toBe(mockUrlTree);
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith(['/']);
   });
 
-  it('should return false and not navigate when user is not authenticated', () => {
-    authService.isAuthenticated.set(false);
+  it('should return false and not navigate when user is not authenticated', async () => {
+    authService.initializeAuth.mockResolvedValue(false);
 
-    const result = guard.canActivate();
+    const result = await guard.canActivate();
 
-    expect(result).toBe(false);
-    expect(mockRouter.navigate).not.toHaveBeenCalled();
+    expect(result).toBe(mockUrlTree);
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([ROUTE_PATHS.FORBIDDEN]);
   });
 });
