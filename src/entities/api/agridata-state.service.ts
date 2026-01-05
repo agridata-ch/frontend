@@ -12,7 +12,7 @@ import { filter, map } from 'rxjs';
 import { BackendInfoService } from '@/entities/api/backend-info.service';
 import { UserService } from '@/entities/api/user.service';
 import { UidDto, UserPreferencesDto } from '@/entities/openapi';
-import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
+import { AGATE_LOGIN_ID_IMPERSONATION_HEADER, ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 
 export const DISMISSED_MIGRATIONS_KEY = 'dismissedMigrationAlerts';
@@ -122,7 +122,7 @@ export class AgridataStateService {
   }
 
   isImpersonating(): boolean {
-    return sessionStorage.getItem(KTIDP_IMPERSONATION_QUERY_PARAM) !== null;
+    return sessionStorage.getItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER) !== null;
   }
 
   setMainMenuOpened(mainMenuOpened: boolean) {

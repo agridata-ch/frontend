@@ -15,6 +15,10 @@ import { UserPreferencesDto } from './userPreferencesDto';
  */
 export interface UserInfoDto { 
     /**
+     * AgateLoginId of the user.
+     */
+    agateLoginId?: string;
+    /**
      * KtIdP of the user. Only set for data producers
      */
     ktIdP?: string;
@@ -59,5 +63,9 @@ export interface UserInfoDto {
      * Preferences of the user in the frontend
      */
     userPreferences?: UserPreferencesDto;
+    /**
+     * Roles of the user at the last login
+     */
+    rolesAtLastLogin?: Array<string>;
 }
 

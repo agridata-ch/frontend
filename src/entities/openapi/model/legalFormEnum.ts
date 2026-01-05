@@ -27,6 +27,7 @@ export const LegalFormEnum = {
     Bezirk: 'BEZIRK',
     Gemeinde: 'GEMEINDE',
     OeffRechtKoerperschaftBetrieb: 'OEFF_RECHT_KOERPERSCHAFT_BETRIEB',
+    Equideneigentuemer: 'EQUIDENEIGENTUEMER',
     Unknown: 'UNKNOWN'
 } as const;
 export type LegalFormEnum = typeof LegalFormEnum[keyof typeof LegalFormEnum];

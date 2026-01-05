@@ -17,7 +17,7 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { UserService } from '@/entities/api/user.service';
 import { PageResponseDto, ResourceQueryDto, UserInfoDto } from '@/entities/openapi';
 import { UserInfoDtoDirective } from '@/pages/supporter-page/user-info-dto.directive';
-import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
+import { AGATE_LOGIN_ID_IMPERSONATION_HEADER } from '@/shared/constants/constants';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
@@ -71,7 +71,7 @@ export class SupporterPageComponent {
 
   protected readonly usersTableMetaData = computed<TableMetadata<UserInfoDto>>(() => {
     return {
-      idColumn: 'ktIdP',
+      idColumn: 'agateLoginId',
       columns: [
         {
           name: this.NAME_HEADER,
@@ -140,7 +140,7 @@ export class SupporterPageComponent {
   }
 
   protected openImpersonationTab(item: UserInfoDto) {
-    const absoluteUrl = `${globalThis.location.origin}?${KTIDP_IMPERSONATION_QUERY_PARAM}=${item.ktIdP}`;
+    const absoluteUrl = `${globalThis.location.origin}?${AGATE_LOGIN_ID_IMPERSONATION_HEADER}=${item.agateLoginId}`;
     globalThis.open(absoluteUrl, '_blank');
   }
 }

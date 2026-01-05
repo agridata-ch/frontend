@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
+import { AGATE_LOGIN_ID_IMPERSONATION_HEADER, ROUTE_PATHS } from '@/shared/constants/constants';
 import {
   createMockAuthService,
   MockAuthService,
@@ -106,41 +106,41 @@ describe('AuthorizationGuard', () => {
     expect(mockRouter.parseUrl).toHaveBeenCalledTimes(0);
   });
 
-  it('should set ktidp in sessionStorage when query param is present', async () => {
+  it('should set header in sessionStorage when query param is present', async () => {
     // Arrange
-    const testKtidp = 'test-ktidp-value';
-    (mockActivatedRouteSnapshot.queryParamMap?.get as jest.Mock).mockReturnValue(testKtidp);
+    const testAgateLoginId = 'test-agateLoginId';
+    (mockActivatedRouteSnapshot.queryParamMap?.get as jest.Mock).mockReturnValue(testAgateLoginId);
     authService.initializeUserInfo.mockResolvedValue(undefined);
-    sessionStorage.removeItem(KTIDP_IMPERSONATION_QUERY_PARAM);
+    sessionStorage.removeItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER);
 
     // Act
     await guard.canActivate(mockActivatedRouteSnapshot as ActivatedRouteSnapshot);
 
     // Assert
     expect(mockActivatedRouteSnapshot.queryParamMap?.get).toHaveBeenCalledWith(
-      KTIDP_IMPERSONATION_QUERY_PARAM,
+      AGATE_LOGIN_ID_IMPERSONATION_HEADER,
     );
-    expect(sessionStorage.getItem(KTIDP_IMPERSONATION_QUERY_PARAM)).toBe(testKtidp);
+    expect(sessionStorage.getItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER)).toBe(testAgateLoginId);
 
     // Clean up
-    sessionStorage.removeItem(KTIDP_IMPERSONATION_QUERY_PARAM);
+    sessionStorage.removeItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER);
   });
 
-  it('should not set ktidp in sessionStorage when query param is not present', async () => {
+  it('should not set header in sessionStorage when query param is not present', async () => {
     // Arrange
 
     authService.initializeUserInfo.mockResolvedValue(undefined);
 
     // Clear any previous values
-    sessionStorage.removeItem(KTIDP_IMPERSONATION_QUERY_PARAM);
+    sessionStorage.removeItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER);
 
     // Act
     await guard.canActivate(mockActivatedRouteSnapshot as ActivatedRouteSnapshot);
 
     // Assert
     expect(mockActivatedRouteSnapshot.queryParamMap?.get).toHaveBeenCalledWith(
-      KTIDP_IMPERSONATION_QUERY_PARAM,
+      AGATE_LOGIN_ID_IMPERSONATION_HEADER,
     );
-    expect(sessionStorage.getItem(KTIDP_IMPERSONATION_QUERY_PARAM)).toBeNull();
+    expect(sessionStorage.getItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER)).toBeNull();
   });
 });
