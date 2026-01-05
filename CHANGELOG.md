@@ -1,3 +1,10 @@
+## [1.7.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.6.1...v1.7.0-rc.1) (2026-01-05)
+
+### Features
+
+- **deps:** update renovatebot/github-action action to v44.2.3 ([eceb1b4](https://github.com/agridata-ch/frontend/commit/eceb1b422791c301ab5e183f49d8d512c06f468d))
+- **deps:** update sonarsource/sonarqube-scan-action action to v7 ([2cea685](https://github.com/agridata-ch/frontend/commit/2cea685307c5e0af6ca956ee7ba0902baad8920c))
+
 ## [1.6.1](https://github.com/agridata-ch/frontend/compare/v1.6.0...v1.6.1) (2025-12-10)
 
 ### Bug Fixes
