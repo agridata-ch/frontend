@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
+import { AGATE_LOGIN_ID_IMPERSONATION_HEADER } from '@/shared/constants/constants';
 import { I18nPipe } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 
@@ -32,7 +32,7 @@ export class SupporterOverlayComponent {
   }
 
   disableSupportMode() {
-    sessionStorage.removeItem(KTIDP_IMPERSONATION_QUERY_PARAM);
+    sessionStorage.removeItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER);
     window.close();
   }
 }

@@ -24,9 +24,6 @@ export const COUNTRIES = {
   LI: 'LI',
 };
 
-export const ACTIVE_UID_FIELD = 'activeUid';
-export const NAVIGATION_STATE_OPEN = 'navigationStateOpen';
-
 export const CMS_BLOCKS = {
   HERO: 'blocks.hero',
   FOOTER: 'blocks.footer',
@@ -45,4 +42,4 @@ export const CMS_BLOCKS = {
 
 export const VIDEO_FORMATS = ['.mp4', '.webm', '.wmv', '.avi', '.mov', '.mkv', '.flv'];
 
-export const KTIDP_IMPERSONATION_QUERY_PARAM = 'ktIdP';
+export const AGATE_LOGIN_ID_IMPERSONATION_HEADER = 'X-Impersonated-AgateLoginId';

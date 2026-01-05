@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 
 import { BackendInfoService } from '@/entities/api/backend-info.service';
 import { UserService } from '@/entities/api/user.service';
-import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
+import { AGATE_LOGIN_ID_IMPERSONATION_HEADER } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 import { BE_VERSION } from '@/shared/testing/mocks/mock-agridata-state-service';
 import {
@@ -53,7 +53,6 @@ describe('AgridataStateService', () => {
 
   afterEach(() => {
     localStorage.removeItem(DISMISSED_MIGRATIONS_KEY);
-    sessionStorage.removeItem('ktidp_impersonation');
   });
 
   it('initializes user preferences when auth userInfo is available', () => {
@@ -90,10 +89,10 @@ describe('AgridataStateService', () => {
   });
 
   it('isImpersonating reads sessionStorage', () => {
-    sessionStorage.setItem(KTIDP_IMPERSONATION_QUERY_PARAM, '1');
+    sessionStorage.setItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER, '1');
     expect(service.isImpersonating()).toBe(true);
 
-    sessionStorage.removeItem(KTIDP_IMPERSONATION_QUERY_PARAM);
+    sessionStorage.removeItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER);
     expect(service.isImpersonating()).toBe(false);
   });
 

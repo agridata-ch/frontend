@@ -4,7 +4,7 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { UserService } from '@/entities/api/user.service';
 import { UserInfoDto } from '@/entities/openapi';
 import { SupporterPageComponent } from '@/pages/supporter-page/supporter-page.component';
-import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
+import { AGATE_LOGIN_ID_IMPERSONATION_HEADER } from '@/shared/constants/constants';
 import { I18nPipe } from '@/shared/i18n';
 import { createMockUserService, MockUserService } from '@/shared/testing/mocks';
 import {
@@ -161,26 +161,26 @@ describe('SupporterPageComponent', () => {
 
     it('should open a new tab with correct impersonation URL', () => {
       const user: UserInfoDto = {
-        ktIdP: 'test-user-123',
+        agateLoginId: 'test-user-123',
       } as UserInfoDto;
 
       component['openImpersonationTab'](user);
 
       expect(windowOpenSpy).toHaveBeenCalledWith(
-        `https://test.example.com?${KTIDP_IMPERSONATION_QUERY_PARAM}=test-user-123`,
+        `https://test.example.com?${AGATE_LOGIN_ID_IMPERSONATION_HEADER}=test-user-123`,
         '_blank',
       );
     });
 
-    it('should handle different ktIdP values', () => {
+    it('should handle different agateLoginId values', () => {
       const user: UserInfoDto = {
-        ktIdP: 'another-user-456',
+        agateLoginId: 'another-user-456',
       } as UserInfoDto;
 
       component['openImpersonationTab'](user);
 
       expect(windowOpenSpy).toHaveBeenCalledWith(
-        `https://test.example.com?${KTIDP_IMPERSONATION_QUERY_PARAM}=another-user-456`,
+        `https://test.example.com?${AGATE_LOGIN_ID_IMPERSONATION_HEADER}=another-user-456`,
         '_blank',
       );
     });

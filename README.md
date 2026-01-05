@@ -70,7 +70,7 @@ We use [semantic-release](https://semantic-release.gitbook.io/semantic-release/)
 We use [openapi-generator](https://openapi-generator.tech/) to generate the API client. The API client is generated from the OpenAPI specification file located in the `src/assets/openapi` folder. The OpenAPI specification file is generated from the backend using [swagger-ui](https://swagger.io/tools/swagger-ui/). The API client is generated using the following command:
 
 ```bash
-npm run generate:api
+npm run api:generate
 ```
 
 The generated API client is located in the `src/app/shared/services` and the models are located in the `src/app/shared/models` folder.
