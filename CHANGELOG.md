@@ -1,3 +1,9 @@
+## [1.7.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.1...v1.7.0-rc.2) (2026-01-06)
+
+### Features
+
+- **admin:** add admin page ([39afdd2](https://github.com/agridata-ch/frontend/commit/39afdd26a117dd5c691a3df6b6f17087eeb64399)), closes [DIGIB2-302](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-302)
+
 ## [1.7.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.6.1...v1.7.0-rc.1) (2026-01-05)
 
 ### Features
