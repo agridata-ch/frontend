@@ -4,7 +4,7 @@ import { DataRequestDto } from '@/entities/openapi';
 
 /**
  * directive to ensure template variable is of type DataRequestDto
- * CommentLastReviewed: 2025-09-23
+ * CommentLastReviewed: 2026-01-06
  */
 @Directive({
   selector: '[appDataRequestDtoGuard]',

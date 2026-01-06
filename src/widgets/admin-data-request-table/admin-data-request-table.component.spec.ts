@@ -17,16 +17,12 @@ import {
 } from '@/shared/testing/mocks';
 import { BadgeVariant } from '@/shared/ui/badge';
 
-import { DataRequestTableComponent } from './data-request-table.component';
-
-function flushPromises() {
-  return new Promise((resolve) => setTimeout(resolve, 0));
-}
+import { AdminDataRequestTableComponent } from './admin-data-request-table.component';
 
 describe('DataRequestTableComponent', () => {
-  let fixture: ComponentFixture<DataRequestTableComponent>;
-  let component: DataRequestTableComponent;
-  let componentRef: ComponentRef<DataRequestTableComponent>;
+  let fixture: ComponentFixture<AdminDataRequestTableComponent>;
+  let component: AdminDataRequestTableComponent;
+  let componentRef: ComponentRef<AdminDataRequestTableComponent>;
   let mockI18nService: jest.Mocked<I18nService>;
   let dataRequestService: MockDataRequestService;
   let dataRequestsResource: Signal<ResourceRef<DataRequestDto[] | undefined>>;
@@ -38,7 +34,7 @@ describe('DataRequestTableComponent', () => {
     dataRequestService = createMockDataRequestService();
     dataRequestsResource = signal(MockResources.createMockResourceRef(mockDataRequests));
     await TestBed.configureTestingModule({
-      imports: [DataRequestTableComponent],
+      imports: [AdminDataRequestTableComponent],
       providers: [
         { provide: I18nService, useValue: mockI18nService },
         { provide: DataRequestService, useValue: dataRequestService },
@@ -46,7 +42,7 @@ describe('DataRequestTableComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DataRequestTableComponent, {
+    fixture = TestBed.createComponent(AdminDataRequestTableComponent, {
       bindings: [
         inputBinding('dataRequestsResource', dataRequestsResource),
         inputBinding('dataRequests', signal(mockDataRequests)),
@@ -60,24 +56,6 @@ describe('DataRequestTableComponent', () => {
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('getFilteredActions returns only details action for most states', () => {
-    const actions = component.getFilteredActions(mockDataRequests[0]);
-    expect(actions.length).toBe(1);
-    expect(actions[0].label).toBe('data-request.table.tableActions.details');
-  });
-
-  it('getFilteredActions returns details and retreat actions for InReview state', () => {
-    const actions = component.getFilteredActions(mockDataRequests[1]);
-    expect(actions.length).toBe(2);
-    expect(actions[0].label).toBe('data-request.table.tableActions.details');
-    expect(actions[1].label).toBe('data-request.table.tableActions.retreat');
-  });
-
-  it('getFilteredActions handles undefined request', () => {
-    const actions = component.getFilteredActions();
-    expect(actions).toEqual([]);
   });
 
   it('should get translated state value', () => {
@@ -102,18 +80,6 @@ describe('DataRequestTableComponent', () => {
     expect(component['getBadgeVariant'](undefined)).toBe(BadgeVariant.DEFAULT);
   });
 
-  it('retreat callback should call service and reload data', async () => {
-    const inReviewRequest = mockDataRequests[1];
-    const actions = component.getFilteredActions(inReviewRequest);
-    const retreatAction = actions[1];
-
-    retreatAction.callback();
-    await flushPromises();
-
-    expect(dataRequestService.retreatDataRequest).toHaveBeenCalledWith(inReviewRequest.id);
-    expect(component.dataRequestsResource()?.reload).toHaveBeenCalled();
-  });
-
   it('should emit action when row action is triggered', () => {
     const emitSpy = jest.spyOn(component.tableRowAction, 'emit');
     const request = mockDataRequests[0];
@@ -129,7 +95,6 @@ describe('DataRequestTableComponent', () => {
 
     expect(metadata.idColumn).toBe('id');
     expect(metadata.columns.length).toBe(5);
-    expect(metadata.columns[0].name).toBe(component['dataRequestHumanFriendlyIdHeader']);
     expect(metadata.columns[0].sortable).toBe(true);
     expect(metadata.columns[0].renderer.type).toBe('template');
   });
@@ -171,17 +136,6 @@ describe('DataRequestTableComponent', () => {
     const submissionDateColumn = metadata.columns[2];
 
     expect(submissionDateColumn.initialSortDirection).toBe('desc');
-  });
-
-  it('details action callback should emit tableRowAction', () => {
-    const emitSpy = jest.spyOn(component.tableRowAction, 'emit');
-    const request = mockDataRequests[0];
-    const actions = component.getFilteredActions(request);
-    const detailsAction = actions[0];
-
-    detailsAction.callback();
-
-    expect(emitSpy).toHaveBeenCalledWith(request);
   });
 
   it('should render submission date correctly', () => {

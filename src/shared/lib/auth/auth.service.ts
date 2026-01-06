@@ -41,6 +41,7 @@ export class AuthService {
   readonly isSupporter = computed(
     () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) ?? false,
   );
+  readonly isAdmin = computed(() => this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) ?? false);
 
   // Effects
   private readonly resetUserInfoEffect = effect(() => {

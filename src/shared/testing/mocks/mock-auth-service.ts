@@ -13,6 +13,7 @@ export type MockAuthServiceTestSignals = {
   isProducer: WritableSignal<boolean>;
   isConsumer: WritableSignal<boolean>;
   isSupporter: WritableSignal<boolean>;
+  isAdmin: WritableSignal<boolean>;
   userRoles: WritableSignal<string[]>;
   userInfo: WritableSignal<UserInfoDto | undefined>;
   isAuthenticated: WritableSignal<boolean>;
@@ -32,6 +33,7 @@ export function createMockAuthService(): MockAuthService {
   const isProducer = signal(false);
   const isConsumer = signal(false);
   const isSupporter = signal(false);
+  const isAdmin = signal(false);
   const userUids = signal([]);
 
   return {
@@ -44,6 +46,7 @@ export function createMockAuthService(): MockAuthService {
     isProducer,
     isConsumer,
     isSupporter,
+    isAdmin,
 
     // Methods
     login: jest.fn(),
@@ -58,6 +61,7 @@ export function createMockAuthService(): MockAuthService {
       isProducer,
       isConsumer,
       isSupporter,
+      isAdmin,
       userRoles,
       userInfo,
       isAuthenticated,

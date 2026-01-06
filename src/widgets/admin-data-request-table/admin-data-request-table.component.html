@@ -3,10 +3,16 @@
   [loading]="dataRequestsResource().isLoading()"
   [tableMetadata]="dataRequestsTableMetaData()"
 >
-  <ng-template #humanFriendlyId [appDataRequestDtoGuard] let-item>
-    <span class="text-agridata-primary-text font-medium" [title]="item.humanFriendlyId ?? ''">
-      {{ item.humanFriendlyId ?? '' }}
-    </span>
+  <ng-template #dataRequestConsumer [appDataRequestDtoGuard] let-item>
+    <div class="flex items-center gap-2">
+      <app-agridata-contact-card
+        [imageUrl]="item.dataConsumerLogoBase64"
+        [name]="item.dataConsumerDisplayName"
+        [secondaryName]="item.dataConsumerCity"
+        [size]="AvatarSize.SMALL"
+        [skin]="AvatarSkin.LIGHT"
+      />
+    </div>
   </ng-template>
   <ng-template #dataRequestTitle [appDataRequestDtoGuard] let-item>
     <span
