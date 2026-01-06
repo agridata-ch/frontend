@@ -462,5 +462,15 @@
   "newYearBanner": {
     "wishMessage": "L'équipe d'agridata.ch vous souhaite une bonne année!",
     "title": "Bonne année!"
+  },
+  "admin": {
+    "data-request": {
+      "consumer": "Requérant de données",
+      "title": "Demande de données",
+      "submissionDate": "Date de soumission",
+      "provider": "Fournisseur de données",
+      "state": "Statut"
+    },
+    "pageTitle": "Demandes de données"
   }
 }

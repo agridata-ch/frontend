@@ -3,6 +3,7 @@ export const ROUTE_PATHS = {
   CONSENT_REQUEST_PRODUCER_CREATE_SUBPATH: 'create',
   DATA_REQUESTS_CONSUMER_PATH: 'data-requests',
   SUPPORT_PATH: 'support',
+  ADMIN_PATH: 'admin',
   CMS_PATH: 'cms',
   IMPRESSUM_PATH: 'cms/imprint',
   PRIVACY_POLICY_PATH: 'cms/privacy-policy',
@@ -17,6 +18,7 @@ export const USER_ROLES = {
   AGRIDATA_CONSENT_REQUESTS_PRODUCER: 'agridata.ch.Agridata_Einwilliger',
   AGRIDATA_DATA_REQUESTS_CONSUMER: 'agridata.ch.Agridata_Datenbezueger',
   AGRIDATA_SUPPORTER: 'agridata.ch.Agridata_Support',
+  AGRIDATA_ADMIN: 'agridata.ch.Agridata_Admin',
 };
 
 export const COUNTRIES = {

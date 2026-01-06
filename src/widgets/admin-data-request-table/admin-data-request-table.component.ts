@@ -8,55 +8,56 @@ import {
   TemplateRef,
   viewChild,
 } from '@angular/core';
-import { faEye, faRotateLeft } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 
-import { DataRequestService } from '@/entities/api';
 import {
   ConsentRequestProducerViewDtoDataRequestStateCode,
   DataRequestDto,
-  DataRequestStateEnum,
 } from '@/entities/openapi';
 import { DataRequestDtoDirective, getBadgeVariant } from '@/shared/data-request';
 import { I18nService } from '@/shared/i18n';
+import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table/agridata-client-table.component';
 import { ClientTableMetadata } from '@/shared/ui/agridata-client-table/client-table-model';
-import { ActionDTO, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
+import { CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
+import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 
 /**
- * Implements the main table logic. It fetches data requests, maps them into table rows, and
- * defines actions such as viewing details or retreating requests. It applies translations to
- * state values, assigns badge variants for visual state indicators, and emits events when a
- * row or action is triggered.
+ * Implements the main table logic. It fetches data requests, maps them into table rows.
+ * It applies translations to state values, assigns badge variants for visual state indicators,
+ * and emits events when a row or action is triggered.
  *
- * CommentLastReviewed: 2025-09-18
+ * CommentLastReviewed: 2026-01-06
  */
 @Component({
-  selector: 'app-data-request-table',
-  templateUrl: './data-request-table.component.html',
-  imports: [AgridataClientTableComponent, AgridataBadgeComponent, DataRequestDtoDirective],
+  selector: 'app-admin-data-request-table',
+  templateUrl: './admin-data-request-table.component.html',
+  imports: [
+    AgridataClientTableComponent,
+    AgridataBadgeComponent,
+    DataRequestDtoDirective,
+    AgridataContactCardComponent,
+  ],
 })
-export class DataRequestTableComponent {
+export class AdminDataRequestTableComponent {
   protected readonly i18nService = inject(I18nService);
-  private readonly dataRequestService = inject(DataRequestService);
 
   readonly dataRequestsResource = input.required<ResourceRef<DataRequestDto[] | undefined>>();
   readonly dataRequests = input.required<DataRequestDto[]>();
   readonly tableRowAction = output<DataRequestDto>();
 
-  protected readonly dataRequestHumanFriendlyIdHeader = 'data-request.humanFriendlyId';
-  protected readonly dataRequestTitleHeader = 'data-request.title';
-  protected readonly dataRequestSubmissionDateHeader = 'data-request.submissionDate';
-  protected readonly dataRequestStateHeader = 'data-request.state';
-  protected readonly dataRequestProviderHeader = 'data-request.provider';
-
-  protected readonly eyeIcon = faEye;
-  protected readonly retreatIcon = faRotateLeft;
+  protected readonly dataRequestConsumerHeader = 'admin.data-request.consumer';
+  protected readonly dataRequestTitleHeader = 'admin.data-request.title';
+  protected readonly dataRequestSubmissionDateHeader = 'admin.data-request.submissionDate';
+  protected readonly dataRequestProviderHeader = 'admin.data-request.provider';
+  protected readonly dataRequestStateHeader = 'admin.data-request.state';
   protected readonly BadgeSize = BadgeSize;
+  protected readonly AvatarSize = AvatarSize;
+  protected readonly AvatarSkin = AvatarSkin;
   protected readonly getBadgeVariant = getBadgeVariant;
 
-  private readonly humanFriendlyIdTemplate =
-    viewChild<TemplateRef<{ $implicit: DataRequestDto }>>('humanFriendlyId');
+  private readonly dataRequestConsumerTemplate =
+    viewChild<TemplateRef<{ $implicit: DataRequestDto }>>('dataRequestConsumer');
   private readonly dataRequestTitleTemplate =
     viewChild<TemplateRef<{ $implicit: DataRequestDto }>>('dataRequestTitle');
   private readonly dataRequestStateTemplate =
@@ -68,13 +69,13 @@ export class DataRequestTableComponent {
         idColumn: 'id',
         columns: [
           {
-            name: this.dataRequestHumanFriendlyIdHeader,
+            name: this.dataRequestConsumerHeader,
             renderer: {
               type: CellRendererTypes.TEMPLATE,
-              template: this.humanFriendlyIdTemplate(),
+              template: this.dataRequestConsumerTemplate(),
             },
             sortable: true,
-            sortValueFn: (item) => item.humanFriendlyId ?? '',
+            sortValueFn: (item) => item?.dataConsumerDisplayName ?? '',
           },
           {
             name: this.dataRequestTitleHeader,
@@ -110,38 +111,14 @@ export class DataRequestTableComponent {
             },
             cellCssClasses: 'whitespace-nowrap',
             sortable: true,
-            sortValueFn: (item) => (item ? this.getStatusTranslation(item?.stateCode) : ''),
+            sortValueFn: (item) => this.getStatusTranslation(item?.stateCode),
           },
         ],
-        rowMenuActions: this.getFilteredActions,
+        showRowActionButton: true,
         rowAction: (item) => this.tableRowAction.emit(item),
       };
     },
   );
-
-  getFilteredActions = (request?: DataRequestDto): ActionDTO[] => {
-    if (!request) return [];
-
-    const details = {
-      icon: this.eyeIcon,
-      label: 'data-request.table.tableActions.details',
-      callback: async () => this.tableRowAction.emit(request),
-    };
-    const retreat = {
-      icon: this.retreatIcon,
-      label: 'data-request.table.tableActions.retreat',
-      callback: async () => {
-        await this.dataRequestService.retreatDataRequest(request.id);
-        this.dataRequestsResource().reload();
-      },
-    };
-
-    if (request.stateCode === DataRequestStateEnum.InReview) {
-      return [details, retreat];
-    }
-
-    return [details];
-  };
 
   protected getStatusTranslation(
     value: ConsentRequestProducerViewDtoDataRequestStateCode | undefined,
