@@ -1,3 +1,9 @@
+## [1.7.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.2...v1.7.0-rc.3) (2026-01-09)
+
+### Features
+
+- **data-request:** add details panel ([3181966](https://github.com/agridata-ch/frontend/commit/318196604af7b65cf6571ed33443bd1138c69817)), closes [DIGIB2-541](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-541)
+
 ## [1.7.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.1...v1.7.0-rc.2) (2026-01-06)
 
 ### Features
