@@ -110,9 +110,9 @@ export class ConsentRequestDetailsComponent {
 
   private readonly onSameNavigationReload = signal(false);
   private readonly refreshListNeeded = signal(false);
+  protected readonly detailsOpened = signal(false);
 
   // Computed Signals
-  protected readonly detailsOpened = signal(false);
   protected readonly badgeText = computed(() => {
     const stateCode = this.request()?.stateCode;
     if (stateCode === ConsentRequestStateEnum.Opened)

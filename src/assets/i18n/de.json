@@ -470,8 +470,17 @@
       "title": "Datenantrag",
       "submissionDate": "Datum der Einreichung",
       "provider": "Datenanbieter",
-      "state": "Status"
+      "state": "Status",
+      "humanFriendlyId": "Antragsnummer"
     },
-    "pageTitle": "Datenanträge"
+    "pageTitle": "Datenanträge",
+    "sidePanelTitle": "Detailansicht",
+    "details": {
+      "title": "Antrag"
+    },
+    "actions": {
+      "accept": "Antrag freigeben",
+      "reject": "Antrag ablehnen"
+    }
   }
 }

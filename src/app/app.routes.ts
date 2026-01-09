@@ -20,6 +20,7 @@ import { SupporterPageComponent } from '@/pages/supporter-page/';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
+import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
 import { DataRequestNewComponent } from '@/widgets/data-request-new';
 
 import { LoginAuthGuard } from './guards/login.guard';
@@ -167,6 +168,13 @@ export const routes: Routes = [
       {
         path: '',
         component: AdminPage,
+        children: [
+          {
+            path: `:dataRequestId`,
+            title: 'admin.sidePanelTitle',
+            component: DataRequestDetailsComponent,
+          },
+        ],
       },
     ],
   },

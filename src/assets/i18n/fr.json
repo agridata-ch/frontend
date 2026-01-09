@@ -469,8 +469,17 @@
       "title": "Demande de données",
       "submissionDate": "Date de soumission",
       "provider": "Fournisseur de données",
-      "state": "Statut"
+      "state": "Statut",
+      "humanFriendlyId": "Numéro de demande"
     },
-    "pageTitle": "Demandes de données"
+    "pageTitle": "Demandes de données",
+    "sidePanelTitle": "Vue détaillée",
+    "details": {
+      "title": "Demande"
+    },
+    "actions": {
+      "accept": "Valider la demande",
+      "reject": "Rejeter la demande"
+    }
   }
 }

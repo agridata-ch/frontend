@@ -1,5 +1,6 @@
 import {
   ConsentRequestProducerViewDtoDataRequestStateCode,
+  DataRequestDto,
   DataRequestStateEnum,
 } from '@/entities/openapi';
 import { BadgeVariant } from '@/shared/ui/badge';
@@ -12,4 +13,13 @@ export function getBadgeVariant(
   if (stateCode === DataRequestStateEnum.ToBeSigned) return BadgeVariant.WARNING;
   if (stateCode === DataRequestStateEnum.Active) return BadgeVariant.SUCCESS;
   return BadgeVariant.DEFAULT;
+}
+
+export function getFieldFromLang<K extends keyof DataRequestDto>(
+  field: K,
+  lang: string,
+  dataRequest: DataRequestDto,
+) {
+  const fieldValue = dataRequest?.[field];
+  return (fieldValue as Record<string, string>)?.[lang] ?? '';
 }

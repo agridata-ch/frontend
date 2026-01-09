@@ -80,9 +80,7 @@ export class PrivacyPolicyPage {
   private readonly updateSeoEffect = effect(() => {
     if (this.privacyPolicyResource.isLoading()) return;
     const seo = this.seoBlock();
-    if (seo) {
-      this.seoService.updateSeo(seo);
-    }
+    this.seoService.updateSeo(seo);
   });
   protected readonly faSpinnerThird = faSpinnerThird;
 }
