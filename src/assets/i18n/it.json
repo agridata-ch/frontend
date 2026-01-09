@@ -470,8 +470,17 @@
       "title": "Richiesta di dati",
       "submissionDate": "Data di presentazione",
       "provider": "Fornitore di dati",
-      "state": "Stato"
+      "state": "Stato",
+      "humanFriendlyId": "Numero di domanda"
     },
-    "pageTitle": "Richieste di dati"
+    "pageTitle": "Richieste di dati",
+    "sidePanelTitle": "Vista dettagliata",
+    "details": {
+      "title": "Richiesta"
+    },
+    "actions": {
+      "accept": "Approvare la richiesta",
+      "reject": "Respingere la richiesta"
+    }
   }
 }

@@ -36,12 +36,13 @@ export type MockDataRequestService = Mockify<DataRequestService>;
  */
 export function createMockDataRequestService(): MockDataRequestService {
   return {
-    fetchDataRequests: jest.fn().mockResolvedValue(mockDataRequests),
-    retreatDataRequest: jest.fn().mockResolvedValue(undefined),
+    approveDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
     createDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
+    fetchDataRequest: jest.fn(),
+    fetchDataRequests: jest.fn().mockResolvedValue(mockDataRequests),
+    retreatDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
+    submitDataRequest: jest.fn().mockResolvedValue(undefined),
     updateDataRequestDetails: jest.fn().mockResolvedValue(undefined),
     uploadLogo: jest.fn().mockResolvedValue(undefined),
-    submitDataRequest: jest.fn().mockResolvedValue(undefined),
-    fetchDataRequest: jest.fn(),
   } satisfies MockDataRequestService;
 }
