@@ -37,6 +37,22 @@
           />
         </div>
       </div>
+      @if (dataRequest()?.stateCode === DataRequestStateEnum.Active) {
+        <div class="flex flex-col">
+          <span class="text-agridata-tertiary-text text-sm">
+            {{ t('data-request.invitationLink') }}
+          </span>
+          <span class="font-bold">
+            {{ invitationLink() }}
+            <fa-icon
+              [icon]="faCopy"
+              class="cursor-pointer hover:text-agridata-primary-600"
+              (click)="copyToClipboard(invitationLink())"
+              (keydown.enter)="copyToClipboard(invitationLink())"
+            ></fa-icon>
+          </span>
+        </div>
+      }
     </div>
     @if (dataRequestResource.isLoading()) {
       <fa-icon
@@ -69,23 +85,34 @@
       </div>
 
       <!-- Footer -->
-      <div class="flex gap-2">
-        <app-agridata-button
-          class="flex-1"
-          [variant]="ButtonVariants.PrimaryAccept"
-          [disabled]="request?.stateCode !== DataRequestStateEnum.InReview"
-          (onClick)="acceptRequest()"
-        >
-          {{ t('actions.accept') }}
-        </app-agridata-button>
-        <app-agridata-button
-          class="flex-1"
-          [variant]="ButtonVariants.SecondaryReject"
-          [disabled]="request?.stateCode !== DataRequestStateEnum.InReview"
-          (onClick)="rejectRequest()"
-        >
-          {{ t('actions.reject') }}
-        </app-agridata-button>
+      <div class="flex gap-2 justify-between">
+        <div class="flex gap-2">
+          <app-agridata-button
+            class="flex-1"
+            [variant]="ButtonVariants.PrimaryAccept"
+            [disabled]="request?.stateCode !== DataRequestStateEnum.InReview"
+            (onClick)="acceptRequest()"
+          >
+            {{ t('actions.accept') }}
+          </app-agridata-button>
+          <app-agridata-button
+            class="flex-1"
+            [variant]="ButtonVariants.SecondaryReject"
+            [disabled]="request?.stateCode !== DataRequestStateEnum.InReview"
+            (onClick)="rejectRequest()"
+          >
+            {{ t('actions.reject') }}
+          </app-agridata-button>
+        </div>
+        @if (request?.stateCode === DataRequestStateEnum.ToBeSigned) {
+          <app-agridata-button
+            class="flex-1"
+            [variant]="ButtonVariants.PrimaryAccept"
+            (onClick)="activateRequest()"
+          >
+            {{ t('actions.activate') }}
+          </app-agridata-button>
+        }
       </div>
     }
   </app-sidepanel>

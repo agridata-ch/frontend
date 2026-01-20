@@ -317,15 +317,19 @@ describe('DataRequestDetailsComponent', () => {
         id: 'test-id',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
       };
+      const router = TestBed.inject(Router);
+
       dataRequestService.retreatDataRequest.mockResolvedValue(mockResponse);
-      const reloadSpy = jest.spyOn(component['dataRequestResource'], 'reload');
+      const routerSpy = jest.spyOn(router, 'navigate');
 
       component['rejectRequest']();
       await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for promise chain
 
       expect(dataRequestService.retreatDataRequest).toHaveBeenCalledWith('test-id');
       expect(component['refreshListNeeded']()).toBe(true);
-      expect(reloadSpy).toHaveBeenCalled();
+      expect(routerSpy).toHaveBeenCalledWith([ROUTE_PATHS.ADMIN_PATH], {
+        state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: true },
+      });
     });
 
     it('should handle errors from retreatDataRequest', async () => {
@@ -340,17 +344,47 @@ describe('DataRequestDetailsComponent', () => {
     });
   });
 
-  describe('getStatusTranslation', () => {
-    it('should return translated status for valid stateCode', () => {
-      const result = component['getStatusTranslation'](
-        ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
-      );
-      expect(result).toBeDefined();
+  describe('activateRequest', () => {
+    it('should call activateRequest and reload resource on success', async () => {
+      const mockResponse: DataRequestDto = {
+        id: 'test-id',
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.ToBeSigned,
+      };
+
+      dataRequestService.activateDataRequest.mockResolvedValue(mockResponse);
+      const reloadSpy = jest.spyOn(component['dataRequestResource'], 'reload');
+
+      component['activateRequest']();
+      await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for promise chain
+
+      expect(dataRequestService.activateDataRequest).toHaveBeenCalledWith('test-id');
+      expect(component['refreshListNeeded']()).toBe(true);
+      expect(reloadSpy).toHaveBeenCalled();
     });
 
-    it('should return empty string for undefined stateCode', () => {
-      const result = component['getStatusTranslation'](undefined);
-      expect(result).toBe('');
+    it('should handle errors from activateDataRequest', async () => {
+      const testError = new Error('Activation failed');
+      dataRequestService.activateDataRequest.mockRejectedValue(testError);
+
+      component['activateRequest']();
+      await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for promise chain
+
+      expect(errorService.handleError).toHaveBeenCalledWith(testError);
+      expect(component['refreshListNeeded']()).toBe(false);
+    });
+
+    describe('getStatusTranslation', () => {
+      it('should return translated status for valid stateCode', () => {
+        const result = component['getStatusTranslation'](
+          ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        );
+        expect(result).toBeDefined();
+      });
+
+      it('should return empty string for undefined stateCode', () => {
+        const result = component['getStatusTranslation'](undefined);
+        expect(result).toBe('');
+      });
     });
   });
 });
