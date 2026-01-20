@@ -1,3 +1,9 @@
+## [1.7.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.3...v1.7.0-rc.4) (2026-01-20)
+
+### Features
+
+- **impersonation:** change impersonation from ktIdP to agateLoginId ([495ca9c](https://github.com/agridata-ch/frontend/commit/495ca9c89576561a5dce6d1a01d3e333629685ac)), closes [DIGIB2-1094](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1094)
+
 ## [1.7.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.2...v1.7.0-rc.3) (2026-01-09)
 
 ### Features
