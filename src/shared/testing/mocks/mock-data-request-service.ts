@@ -41,6 +41,7 @@ export function createMockDataRequestService(): MockDataRequestService {
     fetchDataRequest: jest.fn(),
     fetchDataRequests: jest.fn().mockResolvedValue(mockDataRequests),
     retreatDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
+    activateDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
     submitDataRequest: jest.fn().mockResolvedValue(undefined),
     updateDataRequestDetails: jest.fn().mockResolvedValue(undefined),
     uploadLogo: jest.fn().mockResolvedValue(undefined),

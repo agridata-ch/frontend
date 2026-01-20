@@ -226,6 +226,17 @@
           "placeholder": "Groupe de producteurs de données",
           "helperText": "Exemple : tous les agriculteurs bio"
         }
+      },
+      "contract": {
+        "inReviewAlert": {
+          "title": "Lien d'invitationVotre demande de données a été soumise et est en cours de vérification manuelle par agridata.ch.",
+          "description": "Vous serez informé dès que la vérification sera terminée et que le contrat sera mis en ligne."
+        },
+        "inReviewBox": {
+          "title": "Vous serez informé dès que le contrat sera mis en ligne...",
+          "description": "Dès que votre demande aura été validée par agridata.ch, le contrat sera mis en ligne ici pour signature.",
+          "iconAltText": "Image avec un sablier et une horloge en arrière-plan"
+        }
       }
     },
     "preview": {
@@ -470,7 +481,8 @@
       "submissionDate": "Date de soumission",
       "provider": "Fournisseur de données",
       "state": "Statut",
-      "humanFriendlyId": "Numéro de demande"
+      "humanFriendlyId": "Numéro de demande",
+      "invitationLink": "Lien d'invitation"
     },
     "pageTitle": "Demandes de données",
     "sidePanelTitle": "Vue détaillée",
@@ -479,7 +491,8 @@
     },
     "actions": {
       "accept": "Valider la demande",
-      "reject": "Rejeter la demande"
+      "reject": "Rejeter la demande",
+      "activate": "Activer la demande"
     }
   }
 }

@@ -226,6 +226,17 @@
           "placeholder": "Gruppo di produttori di dati",
           "helperText": "Esempio: tutti gli agricoltori bio"
         }
+      },
+      "contract": {
+        "inReviewAlert": {
+          "title": "Lien d'invitationLa tua richiesta di dati è stata inviata ed è in fase di verifica manuale presso agridata.ch.",
+          "description": "Sarete informati non appena la verifica sarà completata e il contratto sarà pubblicato."
+        },
+        "inReviewBox": {
+          "title": "Sarete informati non appena il contratto sarà pubblicato...",
+          "description": "Non appena la vostra richiesta sarà stata verificata con esito positivo da agridata.ch, il contratto sarà pubblicato qui per la firma.",
+          "iconAltText": "Immagine con una clessidra e un orologio sullo sfondo"
+        }
       }
     },
     "preview": {
@@ -471,7 +482,8 @@
       "submissionDate": "Data di presentazione",
       "provider": "Fornitore di dati",
       "state": "Stato",
-      "humanFriendlyId": "Numero di domanda"
+      "humanFriendlyId": "Numero di domanda",
+      "invitationLink": "Link di invito"
     },
     "pageTitle": "Richieste di dati",
     "sidePanelTitle": "Vista dettagliata",
@@ -480,7 +492,8 @@
     },
     "actions": {
       "accept": "Approvare la richiesta",
-      "reject": "Respingere la richiesta"
+      "reject": "Respingere la richiesta",
+      "activate": "Attiva richiesta"
     }
   }
 }
