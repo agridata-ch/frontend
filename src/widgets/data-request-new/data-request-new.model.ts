@@ -87,10 +87,9 @@ export const dataRequestFormsModel: FormModel[] = [
     fields: [],
     completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
   },
-  // TODO: Re-enable these steps when their implementation is ready DIGIB2-542
-  // {
-  //   formGroupName: FORM_GROUP_NAMES.COMPLETION,
-  //   fields: [],
-  //   completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
-  // },
+  {
+    formGroupName: FORM_GROUP_NAMES.COMPLETION,
+    fields: [],
+    completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
+  },
 ];

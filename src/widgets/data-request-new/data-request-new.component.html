@@ -33,8 +33,7 @@
             <app-data-request-form-producer [form]="form" [formDisabled]="formDisabled()" />
           }
           @case (FORM_GROUP_NAMES.CONTRACT) {
-            <h3>Invitation link</h3>
-            <a href="{{ invitationLink() }}">{{ invitationLink() }}</a>
+            <app-data-request-form-contract [dataRequest]="dataRequest()!" />
           }
           <!-- TODO: Re-enable these steps when their implementation is ready DIGIB2-542 -->
           <!--@case (FORM_GROUP_NAMES.COMPLETION) {
@@ -44,15 +43,29 @@
       </div>
       <div wizardFooter class="contents" *i18n="let t; prefix: 'data-request.wizard'">
         @if (wizard.currentStep() !== formControlSteps().length - 1) {
-          <app-agridata-button
-            [variant]="ButtonVariants.Tertiary"
-            [loading]="isSaving()"
-            (onClick)="handleSave()"
-            [disabled]="formDisabled()"
-          >
-            {{ t('saveDraft') }}
-          </app-agridata-button>
-          <div class="flex gap-4">
+          @if (
+            wizard.currentStepId() !== FORM_GROUP_NAMES.CONTRACT &&
+            wizard.currentStepId() !== FORM_GROUP_NAMES.COMPLETION &&
+            dataRequest()?.stateCode === ConsentRequestDetailViewDtoDataRequestStateCode.Draft
+          ) {
+            <app-agridata-button
+              [variant]="ButtonVariants.Tertiary"
+              [loading]="isSaving()"
+              (onClick)="handleSave()"
+              [disabled]="formDisabled()"
+            >
+              {{ t('saveDraft') }}
+            </app-agridata-button>
+          } @else if (
+            dataRequest()?.stateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Draft &&
+            dataRequest()?.stateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Active
+          ) {
+            <app-agridata-button [variant]="ButtonVariants.Secondary" (onClick)="handleRetreat()">
+              <fa-icon [icon]="retreatIcon"></fa-icon>
+              {{ t('retreatRequest') }}
+            </app-agridata-button>
+          }
+          <div class="flex grow gap-4 justify-end">
             <app-agridata-button
               [variant]="ButtonVariants.Secondary"
               [loading]="isSaving()"
@@ -68,29 +81,25 @@
                 <fa-icon [icon]="nextIcon"></fa-icon>
               </app-agridata-button>
             } @else {
-              <app-agridata-button [loading]="isSaving()" (onClick)="handleNextStep()">
+              <app-agridata-button
+                [loading]="isSaving()"
+                (onClick)="handleNextStep()"
+                [disabled]="isNextStepDisabled()"
+              >
                 <span class="mr-2">{{ t('next') }}</span>
                 <fa-icon [icon]="nextIcon"></fa-icon>
               </app-agridata-button>
             }
           </div>
         } @else {
-          <app-agridata-button
-            [variant]="ButtonVariants.Secondary"
-            [loading]="isSaving()"
-            (onClick)="handlePreviousStep()"
-            [disabled]="wizard.currentStep() === 0"
-          >
-            {{ t('previous') }}
-          </app-agridata-button>
-          <div class="flex gap-4">
+          <div class="flex grow gap-4 justify-end">
             <app-agridata-button
               [variant]="ButtonVariants.Secondary"
               [loading]="isSaving()"
-              (onClick)="handleSave()"
-              [disabled]="formDisabled()"
+              (onClick)="handlePreviousStep()"
+              [disabled]="wizard.currentStep() === 0"
             >
-              {{ t('saveDraft') }}
+              {{ t('previous') }}
             </app-agridata-button>
             <app-agridata-button
               [loading]="isSaving()"

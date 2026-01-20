@@ -57,9 +57,7 @@ export class SeoService {
    * Main entry: call this in your page component when you have the SEO object from Strapi.
    */
   updateSeo(seo: SEO): void {
-    console.log('seo', seo);
     if (!seo) {
-      console.log('reset');
       this.resetSeo();
       return;
     }
@@ -143,7 +141,6 @@ export class SeoService {
 
   /** Ensure a single <link rel="canonical"> with the Strapi URL */
   private setCanonicalUrl(url?: string | null): void {
-    console.log('url', url);
     if (!url) {
       return;
     }
