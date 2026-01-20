@@ -1,3 +1,9 @@
+## [1.7.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.4...v1.7.0-rc.5) (2026-01-20)
+
+### Features
+
+- **data-request:** data-request activation ([de97556](https://github.com/agridata-ch/frontend/commit/de97556cd235b53baf18bb94ad884420a5ab03d6)), closes [DIGIB2-619](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-619)
+
 ## [1.7.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.3...v1.7.0-rc.4) (2026-01-20)
 
 ### Features
