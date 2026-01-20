@@ -471,7 +471,8 @@
       "submissionDate": "Data di presentazione",
       "provider": "Fornitore di dati",
       "state": "Stato",
-      "humanFriendlyId": "Numero di domanda"
+      "humanFriendlyId": "Numero di domanda",
+      "invitationLink": "Link di invito"
     },
     "pageTitle": "Richieste di dati",
     "sidePanelTitle": "Vista dettagliata",
@@ -480,7 +481,8 @@
     },
     "actions": {
       "accept": "Approvare la richiesta",
-      "reject": "Respingere la richiesta"
+      "reject": "Respingere la richiesta",
+      "activate": "Attiva richiesta"
     }
   }
 }

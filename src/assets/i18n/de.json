@@ -471,7 +471,8 @@
       "submissionDate": "Datum der Einreichung",
       "provider": "Datenanbieter",
       "state": "Status",
-      "humanFriendlyId": "Antragsnummer"
+      "humanFriendlyId": "Antragsnummer",
+      "invitationLink": "Einladungslink"
     },
     "pageTitle": "Datenanträge",
     "sidePanelTitle": "Detailansicht",
@@ -480,7 +481,8 @@
     },
     "actions": {
       "accept": "Antrag freigeben",
-      "reject": "Antrag ablehnen"
+      "reject": "Antrag ablehnen",
+      "activate": "Antrag aktivieren"
     }
   }
 }
