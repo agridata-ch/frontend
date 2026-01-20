@@ -274,7 +274,8 @@
       "saveAndComplete": "Enregistrer et soumettre",
       "next": "Suivant",
       "previous": "Retour",
-      "submitAndContinue": "Soumettre la demande et continuer"
+      "submitAndContinue": "Soumettre la demande et continuer",
+      "retreatRequest": "Retirer la demande"
     },
     "submit": {
       "error": "Erreur lors de la soumission de la demande"

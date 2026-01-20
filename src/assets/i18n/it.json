@@ -274,7 +274,8 @@
       "saveAndComplete": "Salva e invia",
       "next": "Avanti",
       "previous": "Indietro",
-      "submitAndContinue": "Invia la richiesta e continua"
+      "submitAndContinue": "Invia la richiesta e continua",
+      "retreatRequest": "Ritirare la richiesta"
     },
     "submit": {
       "error": "Errore durante l'invio della richiesta"

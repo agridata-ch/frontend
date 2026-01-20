@@ -274,7 +274,8 @@
       "saveAndComplete": "Speichern und Einreichen",
       "next": "Weiter",
       "previous": "Zurück",
-      "submitAndContinue": "Antrag einreichen & weiter"
+      "submitAndContinue": "Antrag einreichen & weiter",
+      "retreatRequest": "Antrag zurückziehen"
     },
     "submit": {
       "error": "Fehler beim Einreichen des Antrags"
