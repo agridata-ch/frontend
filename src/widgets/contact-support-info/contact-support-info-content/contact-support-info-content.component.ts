@@ -1,9 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { faEnvelope, faGlobe, faPhone } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { environment } from '@/environments/environment';
-import { I18nDirective } from '@/shared/i18n';
+import { I18nDirective, I18nService } from '@/shared/i18n';
 
 /**
  * Renders the contact support informations. It provides the necessary details for users
@@ -17,8 +17,9 @@ import { I18nDirective } from '@/shared/i18n';
   templateUrl: './contact-support-info-content.component.html',
 })
 export class ContactSupportInfoContentComponent {
-  protected readonly phoneNumber = signal('+41 58 466 15 95');
-  protected readonly email = signal('support@agridata.ch');
+  protected readonly i18nService = inject(I18nService);
+  protected readonly phoneNumber = this.i18nService.translateSignal('support-info.phoneNumber');
+  protected readonly email = this.i18nService.translateSignal('support-info.email');
 
   protected readonly iconPhone = faPhone;
   protected readonly iconEmail = faEnvelope;
