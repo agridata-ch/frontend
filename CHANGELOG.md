@@ -1,3 +1,9 @@
+## [1.7.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.5...v1.7.0-rc.6) (2026-01-21)
+
+### Features
+
+- **data-request:** add contract ([8a342ed](https://github.com/agridata-ch/frontend/commit/8a342ed6958fc5dcf340d4a4c86e79b7aee4420b)), closes [DIGIB2-542](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-542)
+
 ## [1.7.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.4...v1.7.0-rc.5) (2026-01-20)
 
 ### Features
