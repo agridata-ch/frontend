@@ -1,3 +1,9 @@
+## [1.7.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.6...v1.7.0-rc.7) (2026-01-21)
+
+### Features
+
+- **i18n:** add support-info i18n ([eed407d](https://github.com/agridata-ch/frontend/commit/eed407d3098441e58a3fda7ef3ac6248fef01f06)), closes [DIGIB2-1184](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1184)
+
 ## [1.7.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.5...v1.7.0-rc.6) (2026-01-21)
 
 ### Features
