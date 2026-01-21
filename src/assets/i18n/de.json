@@ -339,7 +339,7 @@
       "title": "Hilfe & Support",
       "support": {
         "title": "Support",
-        "openingInfos": "Unsere Zeiten:\nMontag bis Freitag\n08:00 - 17:00 Uhr",
+        "openingInfos": "Unsere Zeiten:\nMontag bis Freitag\n07:00 - 18:00 Uhr",
         "moreInfos": "Weitere Informationen"
       }
     }
@@ -496,5 +496,9 @@
       "reject": "Antrag ablehnen",
       "activate": "Antrag aktivieren"
     }
+  },
+  "support-info": {
+    "phoneNumber": "+41 43 206 02 18",
+    "email": "support@agridata.ch"
   }
 }
