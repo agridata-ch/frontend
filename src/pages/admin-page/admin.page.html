@@ -1,0 +1,13 @@
+<ng-container *i18n="let t; prefix: 'admin'">
+  <h2 class="page-title">
+    <fa-icon [icon]="icon" class="mr-3" />
+    {{ t('pageTitle') }}
+  </h2>
+  <app-error-outlet></app-error-outlet>
+  <router-outlet></router-outlet>
+  <app-admin-data-request-table
+    [dataRequests]="dataRequests()"
+    [dataRequestsResource]="dataRequestsResource"
+    (tableRowAction)="navigateToRequest($event)"
+  ></app-admin-data-request-table>
+</ng-container>

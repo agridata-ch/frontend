@@ -70,6 +70,12 @@ export class NavigationWidgetComponent {
           icon: faUsers,
           route: `/${ROUTE_PATHS.SUPPORT_PATH}`,
         },
+      this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) &&
+        !this.agridataStateService.isImpersonating() && {
+          label: 'admin.pageTitle',
+          icon: faFileCheck,
+          route: `/${ROUTE_PATHS.ADMIN_PATH}`,
+        },
     ].filter(Boolean),
   );
 

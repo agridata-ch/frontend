@@ -226,6 +226,17 @@
           "placeholder": "Gruppo di produttori di dati",
           "helperText": "Esempio: tutti gli agricoltori bio"
         }
+      },
+      "contract": {
+        "inReviewAlert": {
+          "title": "Lien d'invitationLa tua richiesta di dati è stata inviata ed è in fase di verifica manuale presso agridata.ch.",
+          "description": "Sarete informati non appena la verifica sarà completata e il contratto sarà pubblicato."
+        },
+        "inReviewBox": {
+          "title": "Sarete informati non appena il contratto sarà pubblicato...",
+          "description": "Non appena la vostra richiesta sarà stata verificata con esito positivo da agridata.ch, il contratto sarà pubblicato qui per la firma.",
+          "iconAltText": "Immagine con una clessidra e un orologio sullo sfondo"
+        }
       }
     },
     "preview": {
@@ -263,7 +274,8 @@
       "saveAndComplete": "Salva e invia",
       "next": "Avanti",
       "previous": "Indietro",
-      "submitAndContinue": "Invia la richiesta e continua"
+      "submitAndContinue": "Invia la richiesta e continua",
+      "retreatRequest": "Ritirare la richiesta"
     },
     "submit": {
       "error": "Errore durante l'invio della richiesta"
@@ -327,7 +339,7 @@
       "title": "Aiuto e supporto",
       "support": {
         "title": "Assistenza",
-        "openingInfos": "I nostri orari:\nDal lunedì al venerdì\nDalle 08:00 alle 17:00",
+        "openingInfos": "I nostri orari:\nDal lunedì al venerdì\nDalle 07:00 alle 18:00",
         "moreInfos": "Ulteriori informazioni"
       }
     }
@@ -463,5 +475,30 @@
   "newYearBanner": {
     "wishMessage": "Il team di agridata.ch augura un felice anno nuovo!",
     "title": "Buon anno nuovo!"
+  },
+  "admin": {
+    "data-request": {
+      "consumer": "Richiedente",
+      "title": "Richiesta di dati",
+      "submissionDate": "Data di presentazione",
+      "provider": "Fornitore di dati",
+      "state": "Stato",
+      "humanFriendlyId": "Numero di domanda",
+      "invitationLink": "Link di invito"
+    },
+    "pageTitle": "Richieste di dati",
+    "sidePanelTitle": "Vista dettagliata",
+    "details": {
+      "title": "Richiesta"
+    },
+    "actions": {
+      "accept": "Approvare la richiesta",
+      "reject": "Respingere la richiesta",
+      "activate": "Attiva richiesta"
+    }
+  },
+  "support-info": {
+    "phoneNumber": "+41 43 206 02 18",
+    "email": "support@agridata.ch"
   }
 }

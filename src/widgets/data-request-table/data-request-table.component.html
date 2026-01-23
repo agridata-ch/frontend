@@ -11,9 +11,9 @@
   <ng-template #dataRequestTitle [appDataRequestDtoGuard] let-item>
     <span
       class="text-agridata-primary-600 agridata-ellipsis"
-      [title]="getObjTranslation(item?.title)"
+      [title]="this.i18nService.useObjectTranslation(item?.title)"
     >
-      {{ getObjTranslation(item?.title) }}
+      {{ this.i18nService.useObjectTranslation(item?.title) }}
     </span>
   </ng-template>
   <ng-template #dataRequestState [appDataRequestDtoGuard] let-item>

@@ -3,4 +3,5 @@ export type WizardStep = {
   label: string;
   isValid: boolean;
   completed: boolean;
+  disabled?: boolean;
 };

@@ -42,6 +42,10 @@ export class HomeRedirectGuard implements CanActivate {
       return this.router.createUrlTree([ROUTE_PATHS.SUPPORT_PATH]);
     }
 
+    if (this.authService.isAdmin()) {
+      return this.router.createUrlTree([ROUTE_PATHS.ADMIN_PATH]);
+    }
+
     return true;
   }
 }

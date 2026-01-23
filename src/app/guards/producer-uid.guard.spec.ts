@@ -12,7 +12,7 @@ import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UidDto } from '@/entities/openapi';
 import {
-  KTIDP_IMPERSONATION_QUERY_PARAM,
+  AGATE_LOGIN_ID_IMPERSONATION_HEADER,
   ROUTE_PATHS,
   USER_ROLES,
 } from '@/shared/constants/constants';
@@ -111,7 +111,7 @@ describe('producerUidGuard', () => {
     authService.__testSignals.userRoles.set([USER_ROLES.AGRIDATA_SUPPORTER]);
     agridataStateService.getDefaultUid.mockReturnValue(uid);
 
-    sessionStorage.setItem(KTIDP_IMPERSONATION_QUERY_PARAM, 'fakeKtIdp');
+    sessionStorage.setItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER, 'fakeAgateLoginId');
 
     const guardResult = await producerUidGuard.canActivate(
       activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),

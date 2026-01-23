@@ -76,7 +76,7 @@ describe('DataRequestTableComponent', () => {
   });
 
   it('getFilteredActions handles undefined request', () => {
-    const actions = component.getFilteredActions(undefined);
+    const actions = component.getFilteredActions();
     expect(actions).toEqual([]);
   });
 
@@ -114,30 +114,14 @@ describe('DataRequestTableComponent', () => {
     expect(component.dataRequestsResource()?.reload).toHaveBeenCalled();
   });
 
-  // Tests für spezifische Funktionen in der DataRequestTableComponent
-
   it('should emit action when row action is triggered', () => {
     const emitSpy = jest.spyOn(component.tableRowAction, 'emit');
     const request = mockDataRequests[0];
 
-    // Manuell den rowAction von tableMetaData aufrufen
     const metadata = component['dataRequestsTableMetaData']();
     metadata.rowAction!(request);
 
     expect(emitSpy).toHaveBeenCalledWith(request);
-  });
-
-  it('should get translated object correctly', () => {
-    const translationDto = { de: 'Testanfrage', en: 'Test request' };
-    const i18nServiceSpy = jest.spyOn(mockI18nService, 'useObjectTranslation');
-
-    component.getObjTranslation(translationDto);
-
-    expect(i18nServiceSpy).toHaveBeenCalledWith(translationDto);
-  });
-
-  it('should handle undefined translation object in getObjTranslation', () => {
-    expect(component.getObjTranslation(undefined)).toBe('');
   });
 
   it('dataRequestsTableMetaData should have correct structure', () => {
@@ -157,7 +141,6 @@ describe('DataRequestTableComponent', () => {
 
     mockI18nService.useObjectTranslation.mockReturnValue('Translated Title');
 
-    // Prüfen, ob die sortValueFn existiert und korrekt funktioniert
     expect(titleColumn.sortValueFn).toBeDefined();
     if (titleColumn.sortValueFn) {
       const result = titleColumn.sortValueFn(item);
@@ -173,7 +156,6 @@ describe('DataRequestTableComponent', () => {
 
     mockI18nService.translate.mockReturnValue('Translated State');
 
-    // Prüfen, ob die sortValueFn existiert und korrekt funktioniert
     expect(stateColumn.sortValueFn).toBeDefined();
     if (stateColumn.sortValueFn) {
       const result = stateColumn.sortValueFn(item);
@@ -207,7 +189,6 @@ describe('DataRequestTableComponent', () => {
     const submissionDateColumn = metadata.columns[2];
     const item = mockDataRequests[0];
 
-    // Prüfen, ob die cellRenderFn existiert und korrekt funktioniert
     if (submissionDateColumn.renderer.type === 'function') {
       const result = submissionDateColumn.renderer.cellRenderFn(item);
       expect(result).toBe(item.submissionDate);
@@ -220,7 +201,6 @@ describe('DataRequestTableComponent', () => {
     const row = component['dataRequests']()[0];
     expect(row).toBeTruthy();
 
-    // Prüfen, ob die cellRenderFn existiert und korrekt funktioniert
     expect(providerColumn.renderer.type).toEqual('function');
 
     if (providerColumn.renderer.type === 'function') {

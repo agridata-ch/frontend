@@ -7,7 +7,6 @@ import { SEO, SeoOpenGraph, Image } from '@/entities/cms';
 import { environment } from '@/environments/environment';
 
 interface DefaultMetaTags {
-  canonicalURL: string;
   description: string;
   keywords: string;
   'og:description': string;
@@ -37,7 +36,6 @@ export class SeoService {
   // Default meta tags to reset to which are the same as in index.html so we have this minimal duplication which is fine
   // just remember to update both when needed
   private readonly defaultTags: DefaultMetaTags = {
-    canonicalURL: 'https://agridata.ch/',
     description:
       "Der Datenraum für den Schweizer Agrar- und Ernährungssektor L'espace de données pour le secteur agricole et alimentaire suisse Lo spazio di dati della filiera agroalimentare svizzera",
     keywords:

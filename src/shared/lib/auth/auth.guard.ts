@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { KTIDP_IMPERSONATION_QUERY_PARAM, ROUTE_PATHS } from '@/shared/constants/constants';
+import { AGATE_LOGIN_ID_IMPERSONATION_HEADER, ROUTE_PATHS } from '@/shared/constants/constants';
 
 import { AuthService } from './auth.service';
 
@@ -21,9 +21,9 @@ export class AuthorizationGuard implements CanActivate {
   private readonly router = inject(Router);
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<boolean | UrlTree> {
-    const ktidp = route.queryParamMap.get(KTIDP_IMPERSONATION_QUERY_PARAM);
-    if (ktidp) {
-      sessionStorage.setItem(KTIDP_IMPERSONATION_QUERY_PARAM, ktidp);
+    const agateLoginId = route.queryParamMap.get(AGATE_LOGIN_ID_IMPERSONATION_HEADER);
+    if (agateLoginId) {
+      sessionStorage.setItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER, agateLoginId);
     }
 
     try {

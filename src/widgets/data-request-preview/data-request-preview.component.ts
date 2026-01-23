@@ -2,6 +2,7 @@ import { Component, computed, inject, input } from '@angular/core';
 
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataProductDto, DataRequestDto } from '@/entities/openapi';
+import { getFieldFromLang } from '@/shared/data-request';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact/data-request-contact.component';
@@ -32,7 +33,7 @@ import { AgridataContactCardComponent } from '../agridata-contact-card';
 })
 export class DataRequestPreviewComponent {
   readonly i18nService = inject(I18nService);
-  readonly dataRequest = input<DataRequestDto>();
+  readonly dataRequest = input.required<DataRequestDto>();
   readonly metaDataService = inject(MasterDataService);
 
   readonly products = this.metaDataService.dataProducts;
@@ -40,16 +41,11 @@ export class DataRequestPreviewComponent {
   readonly availableLangs = availableLangs;
   readonly AvatarSize = AvatarSize;
   readonly AvatarSkin = AvatarSkin;
+  readonly getFieldFromLang = getFieldFromLang;
 
   readonly productsList = computed(() =>
     this.products()?.filter((product: DataProductDto) =>
       this.dataRequest()?.products?.includes(product.id),
     ),
   );
-
-  getFieldFromLang = <K extends keyof DataRequestDto>(field: K, lang: string) => {
-    const dataRequest = this.dataRequest();
-    const fieldValue = dataRequest?.[field];
-    return (fieldValue as Record<string, string>)?.[lang] ?? '';
-  };
 }

@@ -105,13 +105,21 @@ export class UsersService extends BaseService {
     /**
      * Get Authorized Uids
      * Retrieves all UIDs authorized for the currently authenticated data producer.
+     * @param agateLoginId The agateLoginId of the producer (only relevant for admin users)
+     * @param ktIdP The kt-id-p identifier of the producer (only relevant for admin users)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAuthorizedUids(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<UidDto>>;
-    public getAuthorizedUids(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<UidDto>>>;
-    public getAuthorizedUids(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<UidDto>>>;
-    public getAuthorizedUids(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getAuthorizedUids(agateLoginId?: string, ktIdP?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<UidDto>>;
+    public getAuthorizedUids(agateLoginId?: string, ktIdP?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<UidDto>>>;
+    public getAuthorizedUids(agateLoginId?: string, ktIdP?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<UidDto>>>;
+    public getAuthorizedUids(agateLoginId?: string, ktIdP?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>agateLoginId, 'agate-login-id');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>ktIdP, 'kt-id-p');
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -145,63 +153,7 @@ export class UsersService extends BaseService {
         return this.httpClient.request<Array<UidDto>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                responseType: <any>responseType_,
-                ...(withCredentials ? { withCredentials } : {}),
-                headers: localVarHeaders,
-                observe: observe,
-                transferCache: localVarTransferCache,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get Authorized Uids By Kt Id P
-     * Retrieves all UIDs authorized for the specified ktIdP. Only accessible to admin users.
-     * @param ktIdP 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getAuthorizedUidsByKtIdP(ktIdP: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<UidDto>>;
-    public getAuthorizedUidsByKtIdP(ktIdP: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<UidDto>>>;
-    public getAuthorizedUidsByKtIdP(ktIdP: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<UidDto>>>;
-    public getAuthorizedUidsByKtIdP(ktIdP: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (ktIdP === null || ktIdP === undefined) {
-            throw new Error('Required parameter ktIdP was null or undefined when calling getAuthorizedUidsByKtIdP.');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        // authentication (SecurityScheme) required
-
-        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            'application/json'
-        ]);
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
-
-        const localVarTransferCache: boolean = options?.transferCache ?? true;
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/user/v1/ktIdP/${this.configuration.encodeParam({name: "ktIdP", value: ktIdP, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/authorized-uids`;
-        const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<UidDto>>('get', `${basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

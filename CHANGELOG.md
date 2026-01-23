@@ -1,3 +1,46 @@
+## [1.7.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.6...v1.7.0-rc.7) (2026-01-21)
+
+### Features
+
+- **i18n:** add support-info i18n ([eed407d](https://github.com/agridata-ch/frontend/commit/eed407d3098441e58a3fda7ef3ac6248fef01f06)), closes [DIGIB2-1184](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1184)
+
+## [1.7.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.5...v1.7.0-rc.6) (2026-01-21)
+
+### Features
+
+- **data-request:** add contract ([8a342ed](https://github.com/agridata-ch/frontend/commit/8a342ed6958fc5dcf340d4a4c86e79b7aee4420b)), closes [DIGIB2-542](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-542)
+
+## [1.7.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.4...v1.7.0-rc.5) (2026-01-20)
+
+### Features
+
+- **data-request:** data-request activation ([de97556](https://github.com/agridata-ch/frontend/commit/de97556cd235b53baf18bb94ad884420a5ab03d6)), closes [DIGIB2-619](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-619)
+
+## [1.7.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.3...v1.7.0-rc.4) (2026-01-20)
+
+### Features
+
+- **impersonation:** change impersonation from ktIdP to agateLoginId ([495ca9c](https://github.com/agridata-ch/frontend/commit/495ca9c89576561a5dce6d1a01d3e333629685ac)), closes [DIGIB2-1094](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1094)
+
+## [1.7.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.2...v1.7.0-rc.3) (2026-01-09)
+
+### Features
+
+- **data-request:** add details panel ([3181966](https://github.com/agridata-ch/frontend/commit/318196604af7b65cf6571ed33443bd1138c69817)), closes [DIGIB2-541](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-541)
+
+## [1.7.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.7.0-rc.1...v1.7.0-rc.2) (2026-01-06)
+
+### Features
+
+- **admin:** add admin page ([39afdd2](https://github.com/agridata-ch/frontend/commit/39afdd26a117dd5c691a3df6b6f17087eeb64399)), closes [DIGIB2-302](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-302)
+
+## [1.7.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.6.1...v1.7.0-rc.1) (2026-01-05)
+
+### Features
+
+- **deps:** update renovatebot/github-action action to v44.2.3 ([eceb1b4](https://github.com/agridata-ch/frontend/commit/eceb1b422791c301ab5e183f49d8d512c06f468d))
+- **deps:** update sonarsource/sonarqube-scan-action action to v7 ([2cea685](https://github.com/agridata-ch/frontend/commit/2cea685307c5e0af6ca956ee7ba0902baad8920c))
+
 ## [1.6.1](https://github.com/agridata-ch/frontend/compare/v1.6.0...v1.6.1) (2025-12-10)
 
 ### Bug Fixes

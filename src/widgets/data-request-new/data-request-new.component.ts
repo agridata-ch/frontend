@@ -8,12 +8,17 @@ import {
   input,
   resource,
   signal,
+  untracked,
   ViewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { faArrowLeft, faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import {
+  faArrowLeft,
+  faArrowRight,
+  faRotateLeft,
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslocoService } from '@jsverse/transloco';
 import { debounceTime, firstValueFrom } from 'rxjs';
@@ -38,13 +43,14 @@ import {
   setControlValue,
 } from '@/shared/lib/form.helper';
 import { SidepanelComponent } from '@/shared/sidepanel';
-import { ToastService, ToastType } from '@/shared/toast';
+import { ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AgridataWizardComponent, WizardStep } from '@/widgets/agridata-wizard';
 import {
   DataRequestFormConsumerComponent,
   DataRequestFormProducerComponent,
   DataRequestFormRequestComponent,
+  DataRequestFormContractComponent,
 } from '@/widgets/data-request-form';
 import {
   dataRequestFormsModel,
@@ -79,6 +85,7 @@ export const DATA_REQUEST_NEW_ID = 'new';
     DataRequestFormProducerComponent,
     ErrorOutletComponent,
     SidepanelComponent,
+    DataRequestFormContractComponent,
   ],
   templateUrl: './data-request-new.component.html',
 })
@@ -89,16 +96,18 @@ export class DataRequestNewComponent {
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
   private readonly router = inject(Router);
-  private readonly toastService = inject(ToastService);
   private readonly translateService = inject(TranslocoService);
 
   // Constants
   protected readonly form = this.createForm();
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly FORM_GROUP_NAMES = FORM_GROUP_NAMES;
+  protected readonly ConsentRequestDetailViewDtoDataRequestStateCode =
+    ConsentRequestDetailViewDtoDataRequestStateCode;
   protected readonly ToastType = ToastType;
   protected readonly nextIcon = faArrowRight;
   protected readonly previousIcon = faArrowLeft;
+  protected readonly retreatIcon = faRotateLeft;
 
   // Input properties
   readonly dataRequestId = input<string | undefined>();
@@ -131,12 +140,19 @@ export class DataRequestNewComponent {
   protected readonly isSaving = signal(false);
   protected readonly refreshListNeeded = signal(false);
   protected readonly formControlSteps = signal<WizardStep[]>(
-    dataRequestFormsModel.map((step) => ({
-      id: step.formGroupName,
-      label: this.getStepLabelSignal(step.formGroupName),
-      isValid: true,
-      completed: false,
-    })),
+    dataRequestFormsModel.map((step) => {
+      const isDisabled =
+        step.formGroupName === FORM_GROUP_NAMES.CONTRACT ||
+        step.formGroupName === FORM_GROUP_NAMES.COMPLETION;
+
+      return {
+        id: step.formGroupName,
+        label: this.getStepLabelSignal(step.formGroupName),
+        isValid: true,
+        completed: false,
+        disabled: isDisabled,
+      };
+    }),
   );
 
   protected readonly dataRequestsResource = resource({
@@ -170,15 +186,13 @@ export class DataRequestNewComponent {
     const form = this.form;
     form.updateValueAndValidity();
 
-    // disable every form group where controls are available
-    if (form && disabled) {
-      form.disable({ emitEvent: false });
-      dataRequestFormsModel.forEach(({ formGroupName }) => {
-        const fg = form.get(formGroupName) as unknown as FormGroup;
-        if (fg && Object.keys(fg.controls).length > 0) {
-          fg.disable({ emitEvent: false });
-        }
-      });
+    // disable or enable the entire form based on disabled state
+    if (form) {
+      if (disabled) {
+        form.disable({ emitEvent: false });
+      } else {
+        form.enable({ emitEvent: false });
+      }
     }
   });
 
@@ -213,7 +227,12 @@ export class DataRequestNewComponent {
 
   protected handleNextStep() {
     if (!this.formDisabled()) this.handleSave();
-    this.wizard.nextStep();
+
+    const nextStepDisabled = this.isNextStepDisabled();
+
+    if (!nextStepDisabled) {
+      this.wizard.nextStep();
+    }
   }
 
   protected handlePreviousStep() {
@@ -266,7 +285,11 @@ export class DataRequestNewComponent {
         .submitDataRequest(dataRequestId)
         .then((dataRequest: DataRequestDto) => {
           this.dataRequest.set(dataRequest);
+          this.updateFormSteps();
           this.wizard.nextStep();
+          this.router.navigate([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH, dataRequestId], {
+            state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: this.refreshListNeeded() },
+          });
         })
         .catch((error) => {
           this.errorService.handleError(error);
@@ -277,8 +300,20 @@ export class DataRequestNewComponent {
     }
   }
 
-  protected invitationLink() {
-    return `${globalThis.location.origin}/consent-requests/create/${this.currentDataRequestId()}`;
+  protected async handleRetreat() {
+    this.refreshListNeeded.set(true);
+    const dataRequestId = this.currentDataRequestId();
+    if (!dataRequestId) return;
+    await this.dataRequestService
+      .retreatDataRequest(dataRequestId)
+      .then((dataRequest: DataRequestDto) => {
+        this.dataRequest.set(dataRequest);
+        this.updateFormSteps();
+
+        if (this.wizard.currentStepId() === FORM_GROUP_NAMES.CONTRACT) {
+          this.wizard.previousStep();
+        }
+      });
   }
 
   private checkExternalCompletion(formGroupName: string): boolean {
@@ -404,20 +439,38 @@ export class DataRequestNewComponent {
   }
 
   private updateFormSteps(id?: string, valid?: boolean) {
+    const currentStateCode = untracked(() => this.dataRequest()?.stateCode);
+
     this.formControlSteps.update((steps) =>
       steps.map((step) => {
-        if (id && step.id !== id) {
-          return step;
-        }
-
         const form = this.form;
         const formGroup = form.get(step.id) as unknown as FormGroup;
+
+        let isDisabled = false;
+        if (step.id === FORM_GROUP_NAMES.CONTRACT) {
+          // CONTRACT is disabled if Draft or no stateCode (new request)
+          isDisabled =
+            !currentStateCode ||
+            currentStateCode === ConsentRequestDetailViewDtoDataRequestStateCode.Draft;
+        }
+        if (step.id === FORM_GROUP_NAMES.COMPLETION) {
+          isDisabled = currentStateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Active;
+        }
+
+        // If we're only updating a specific step and this isn't it, only update disabled state
+        if (id && step.id !== id) {
+          return {
+            ...step,
+            disabled: isDisabled,
+          };
+        }
 
         if (formGroup.disabled) {
           return {
             ...step,
             isValid: true,
             completed: true,
+            disabled: isDisabled,
           };
         }
 
@@ -428,8 +481,19 @@ export class DataRequestNewComponent {
           ...step,
           isValid,
           completed: this.isStepCompleted(formGroup, step.id),
+          disabled: isDisabled,
         };
       }),
     );
+  }
+
+  protected isNextStepDisabled(): boolean {
+    // Get the current step index and check if the next step is enabled
+    const steps = this.formControlSteps();
+    const currentStepId = this.wizard?.currentStepId();
+    const currentIndex = steps.findIndex((s) => s.id === currentStepId);
+    const nextStep = steps[currentIndex + 1];
+
+    return nextStep.disabled === true;
   }
 }

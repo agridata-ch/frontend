@@ -7,7 +7,9 @@
         [class.active]="currentStep() === $index"
         [class.completed]="step.completed"
         [class.invalid]="!step.isValid"
+        [class.disabled]="step.disabled"
         (click)="handleClickStep($index)"
+        [disabled]="step.disabled"
       >
         {{ $index + 1 }}
       </button>

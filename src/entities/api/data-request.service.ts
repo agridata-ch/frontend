@@ -57,4 +57,22 @@ export class DataRequestService {
       ),
     );
   }
+
+  async approveDataRequest(dataRequestId: string) {
+    return firstValueFrom(
+      this.apiService.setDataRequestStatus(
+        dataRequestId,
+        JSON.stringify(ConsentRequestDetailViewDtoDataRequestStateCode.ToBeSigned),
+      ),
+    );
+  }
+
+  async activateDataRequest(dataRequestId: string) {
+    return firstValueFrom(
+      this.apiService.setDataRequestStatus(
+        dataRequestId,
+        JSON.stringify(ConsentRequestDetailViewDtoDataRequestStateCode.Active),
+      ),
+    );
+  }
 }

@@ -226,6 +226,17 @@
           "placeholder": "Gruppe von Datenproduzenten",
           "helperText": "Beispiel: alle Bio-Landwirte"
         }
+      },
+      "contract": {
+        "inReviewAlert": {
+          "title": "Ihr Datenantrag wurde eingereicht und ist in manueller Prüfung bei agridata.ch",
+          "description": "Sie werden informiert, sobald die Prüfung abgeschlossen und der Vertrag aufgeschaltet ist."
+        },
+        "inReviewBox": {
+          "title": "Sie werden informiert, sobald der Vertrag aufgeschaltet ist...",
+          "description": "Sobald Ihr Antrag durch agridata.ch erfolgreich geprüft wurde, wird hier der Vertrag zur Unterzeichnung aufgeschaltet.",
+          "iconAltText": "Bild mit einer Sanduhr und einer Uhr im Hintergrund"
+        }
       }
     },
     "preview": {
@@ -263,7 +274,8 @@
       "saveAndComplete": "Speichern und Einreichen",
       "next": "Weiter",
       "previous": "Zurück",
-      "submitAndContinue": "Antrag einreichen & weiter"
+      "submitAndContinue": "Antrag einreichen & weiter",
+      "retreatRequest": "Antrag zurückziehen"
     },
     "submit": {
       "error": "Fehler beim Einreichen des Antrags"
@@ -327,7 +339,7 @@
       "title": "Hilfe & Support",
       "support": {
         "title": "Support",
-        "openingInfos": "Unsere Zeiten:\nMontag bis Freitag\n08:00 - 17:00 Uhr",
+        "openingInfos": "Unsere Zeiten:\nMontag bis Freitag\n07:00 - 18:00 Uhr",
         "moreInfos": "Weitere Informationen"
       }
     }
@@ -463,5 +475,30 @@
   "newYearBanner": {
     "wishMessage": "Das Team von agridata.ch wünscht ein frohes neues Jahr!",
     "title": "Frohes neues Jahr!"
+  },
+  "admin": {
+    "data-request": {
+      "consumer": "Datenbezüger",
+      "title": "Datenantrag",
+      "submissionDate": "Datum der Einreichung",
+      "provider": "Datenanbieter",
+      "state": "Status",
+      "humanFriendlyId": "Antragsnummer",
+      "invitationLink": "Einladungslink"
+    },
+    "pageTitle": "Datenanträge",
+    "sidePanelTitle": "Detailansicht",
+    "details": {
+      "title": "Antrag"
+    },
+    "actions": {
+      "accept": "Antrag freigeben",
+      "reject": "Antrag ablehnen",
+      "activate": "Antrag aktivieren"
+    }
+  },
+  "support-info": {
+    "phoneNumber": "+41 43 206 02 18",
+    "email": "support@agridata.ch"
   }
 }

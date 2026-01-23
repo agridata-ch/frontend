@@ -293,4 +293,109 @@ describe('DataRequestNewComponent', () => {
       expect(errorService.handleError).toHaveBeenCalledWith(testError);
     });
   });
+
+  describe('handleRetreat', () => {
+    it('should set refreshListNeeded to true', async () => {
+      component['currentDataRequestId'].set('test-id-123');
+      const retreatedRequest: DataRequestDto = {
+        id: 'test-id-123',
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      };
+      dataRequestService.retreatDataRequest.mockResolvedValue(retreatedRequest);
+
+      await component['handleRetreat']();
+
+      expect(component['refreshListNeeded']()).toBe(true);
+    });
+
+    it('should return early if no dataRequestId exists', async () => {
+      component['currentDataRequestId'].set(undefined);
+
+      await component['handleRetreat']();
+
+      expect(dataRequestService.retreatDataRequest).not.toHaveBeenCalled();
+    });
+
+    it('should call retreatDataRequest with the current dataRequestId', async () => {
+      component['currentDataRequestId'].set('test-id-456');
+      const retreatedRequest: DataRequestDto = {
+        id: 'test-id-456',
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      };
+      dataRequestService.retreatDataRequest.mockResolvedValue(retreatedRequest);
+
+      await component['handleRetreat']();
+
+      expect(dataRequestService.retreatDataRequest).toHaveBeenCalledWith('test-id-456');
+    });
+
+    it('should update dataRequest signal with retreated data', async () => {
+      component['currentDataRequestId'].set('test-id-789');
+      const retreatedRequest: DataRequestDto = {
+        id: 'test-id-789',
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      };
+      dataRequestService.retreatDataRequest.mockResolvedValue(retreatedRequest);
+
+      await component['handleRetreat']();
+
+      expect(component['dataRequest']()).toEqual(retreatedRequest);
+    });
+
+    it('should call updateFormSteps after retreating', async () => {
+      component['currentDataRequestId'].set('test-id-update');
+      const retreatedRequest: DataRequestDto = {
+        id: 'test-id-update',
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      };
+      dataRequestService.retreatDataRequest.mockResolvedValue(retreatedRequest);
+      const updateFormStepsSpy = jest.spyOn(component as any, 'updateFormSteps');
+
+      await component['handleRetreat']();
+
+      expect(updateFormStepsSpy).toHaveBeenCalled();
+    });
+
+    it('should call wizard.previousStep when current step is CONTRACT', async () => {
+      component['currentDataRequestId'].set('test-id-contract');
+      const retreatedRequest: DataRequestDto = {
+        id: 'test-id-contract',
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      };
+      dataRequestService.retreatDataRequest.mockResolvedValue(retreatedRequest);
+
+      // Wait for wizard to be available
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      // Mock the wizard's currentStepId signal to return CONTRACT
+      component['wizard'].currentStepId.set('contract');
+      const wizardSpy = jest.spyOn(component['wizard'], 'previousStep');
+
+      await component['handleRetreat']();
+
+      expect(wizardSpy).toHaveBeenCalled();
+    });
+
+    it('should not call wizard.previousStep when current step is not CONTRACT', async () => {
+      component['currentDataRequestId'].set('test-id-other');
+      const retreatedRequest: DataRequestDto = {
+        id: 'test-id-other',
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      };
+      dataRequestService.retreatDataRequest.mockResolvedValue(retreatedRequest);
+
+      // Wait for wizard to be available
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      // Mock the wizard's currentStepId signal to return CONSUMER
+      component['wizard'].currentStepId.set('consumer');
+      const wizardSpy = jest.spyOn(component['wizard'], 'previousStep');
+
+      await component['handleRetreat']();
+
+      expect(wizardSpy).not.toHaveBeenCalled();
+    });
+  });
 });

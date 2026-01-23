@@ -30,6 +30,13 @@
   color: white;
 }
 
+.step-bubble.disabled {
+  border-color: var(--color-gray-300);
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-400);
+  cursor: not-allowed;
+}
+
 .step-bubble.active.invalid {
   background-color: white;
   color: var(--color-agridata-secondary-text);

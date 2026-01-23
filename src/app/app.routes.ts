@@ -5,6 +5,7 @@ import { CreateConsentRequestGuard } from '@/app/guards/create-consent-request.g
 import { HomeRedirectGuard } from '@/app/guards/home-redirect.guard';
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { DefaultLayoutComponent, FullWidthLayoutComponent } from '@/app/layout';
+import { AdminPage } from '@/pages/admin-page';
 import { CmsPage } from '@/pages/cms-page';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
@@ -19,6 +20,7 @@ import { SupporterPageComponent } from '@/pages/supporter-page/';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
+import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
 import { DataRequestNewComponent } from '@/widgets/data-request-new';
 
 import { LoginAuthGuard } from './guards/login.guard';
@@ -151,6 +153,28 @@ export const routes: Routes = [
       {
         path: '',
         component: SupporterPageComponent,
+      },
+    ],
+  },
+  {
+    // admin routes
+    path: ROUTE_PATHS.ADMIN_PATH,
+    title: 'admin.pageTitle',
+    component: DefaultLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
+    data: { roles: [USER_ROLES.AGRIDATA_ADMIN] },
+    children: [
+      {
+        path: '',
+        component: AdminPage,
+        children: [
+          {
+            path: `:dataRequestId`,
+            title: 'admin.sidePanelTitle',
+            component: DataRequestDetailsComponent,
+          },
+        ],
       },
     ],
   },

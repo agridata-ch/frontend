@@ -5,7 +5,7 @@ import { lastValueFrom } from 'rxjs';
 
 import { UserService } from '@/entities/api/user.service';
 import { UidDto, UserInfoDto } from '@/entities/openapi';
-import { KTIDP_IMPERSONATION_QUERY_PARAM, USER_ROLES } from '@/shared/constants/constants';
+import { AGATE_LOGIN_ID_IMPERSONATION_HEADER, USER_ROLES } from '@/shared/constants/constants';
 
 /**
  * Manages authentication state, user profile data, and role extraction from tokens. Provides login,
@@ -41,6 +41,7 @@ export class AuthService {
   readonly isSupporter = computed(
     () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) ?? false,
   );
+  readonly isAdmin = computed(() => this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) ?? false);
 
   // Effects
   private readonly resetUserInfoEffect = effect(() => {
@@ -179,7 +180,7 @@ export class AuthService {
       return true;
     }
 
-    const isImpersonating = sessionStorage.getItem(KTIDP_IMPERSONATION_QUERY_PARAM);
+    const isImpersonating = sessionStorage.getItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER);
     const isProducer = this.isProducer();
 
     return !isProducer && !isImpersonating;

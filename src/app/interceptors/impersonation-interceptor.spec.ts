@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { impersonationInterceptor } from '@/app/interceptors/impersonation-interceptor';
 import { environment } from '@/environments/environment';
-import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
+import { AGATE_LOGIN_ID_IMPERSONATION_HEADER } from '@/shared/constants/constants';
 
 describe('impersonationInterceptor', () => {
   let httpClient: HttpClient;
@@ -31,46 +31,46 @@ describe('impersonationInterceptor', () => {
   });
 
   // Your test cases remain the same...
-  it('should add X-Impersonated-KtIdP header when ktIdP is in sessionStorage and URL starts with API base URL', () => {
-    const testKtIdP = 'test-user-id';
-    sessionStorage.setItem(KTIDP_IMPERSONATION_QUERY_PARAM, testKtIdP);
+  it('should add X-Impersonated-AgateLoginId header when header is in sessionStorage and URL starts with API base URL', () => {
+    const testAgateLoginId = 'test-user-id';
+    sessionStorage.setItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER, testAgateLoginId);
 
     // Make request to API URL
     httpClient.get(`${environment.apiBaseUrl}/some-endpoint`).subscribe();
 
     const req = httpMock.expectOne(`${environment.apiBaseUrl}/some-endpoint`);
     expect(req.request.method).toBe('GET');
-    expect(req.request.headers.has('X-Impersonated-KtIdP')).toBeTruthy();
-    expect(req.request.headers.get('X-Impersonated-KtIdP')).toBe(testKtIdP);
+    expect(req.request.headers.has('X-Impersonated-AgateLoginId')).toBeTruthy();
+    expect(req.request.headers.get('X-Impersonated-AgateLoginId')).toBe(testAgateLoginId);
 
     req.flush({});
   });
 
-  it('should not add header when ktIdP is not in sessionStorage', () => {
+  it('should not add header when header is not in sessionStorage', () => {
     httpClient.get(`${environment.apiBaseUrl}/some-endpoint`).subscribe();
 
     const req = httpMock.expectOne(`${environment.apiBaseUrl}/some-endpoint`);
-    expect(req.request.headers.has('X-Impersonated-KtIdP')).toBeFalsy();
+    expect(req.request.headers.has('X-Impersonated-AgateLoginId')).toBeFalsy();
 
     req.flush({});
   });
 
   it('should not add header when URL does not start with API base URL', () => {
-    const testKtIdP = 'test-user-id';
-    sessionStorage.setItem(KTIDP_IMPERSONATION_QUERY_PARAM, testKtIdP);
+    const testAgateLoginId = 'test-user-id';
+    sessionStorage.setItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER, testAgateLoginId);
 
     // Make request to non-API URL
     httpClient.get('https://example.com/some-endpoint').subscribe();
 
     const req = httpMock.expectOne('https://example.com/some-endpoint');
-    expect(req.request.headers.has('X-Impersonated-KtIdP')).toBeFalsy();
+    expect(req.request.headers.has('X-Impersonated-AgateLoginId')).toBeFalsy();
 
     req.flush({});
   });
 
   it('should preserve existing headers when adding impersonation header', () => {
-    const testKtIdP = 'test-user-id';
-    sessionStorage.setItem(KTIDP_IMPERSONATION_QUERY_PARAM, testKtIdP);
+    const testAgateLoginId = 'test-user-id';
+    sessionStorage.setItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER, testAgateLoginId);
 
     // Make request with custom header
     httpClient
@@ -80,8 +80,8 @@ describe('impersonationInterceptor', () => {
       .subscribe();
 
     const req = httpMock.expectOne(`${environment.apiBaseUrl}/some-endpoint`);
-    expect(req.request.headers.has('X-Impersonated-KtIdP')).toBeTruthy();
-    expect(req.request.headers.get('X-Impersonated-KtIdP')).toBe(testKtIdP);
+    expect(req.request.headers.has('X-Impersonated-AgateLoginId')).toBeTruthy();
+    expect(req.request.headers.get('X-Impersonated-AgateLoginId')).toBe(testAgateLoginId);
     expect(req.request.headers.has('Custom-Header')).toBeTruthy();
     expect(req.request.headers.get('Custom-Header')).toBe('test-value');
 

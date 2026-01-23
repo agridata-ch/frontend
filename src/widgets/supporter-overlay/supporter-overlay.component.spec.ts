@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { KTIDP_IMPERSONATION_QUERY_PARAM } from '@/shared/constants/constants';
+import { AGATE_LOGIN_ID_IMPERSONATION_HEADER } from '@/shared/constants/constants';
 import { I18nPipe } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
@@ -89,7 +89,7 @@ describe('SupporterOverlayComponent', () => {
       component.disableSupportMode();
 
       // Assert
-      expect(removeItemSpy).toHaveBeenCalledWith(KTIDP_IMPERSONATION_QUERY_PARAM);
+      expect(removeItemSpy).toHaveBeenCalledWith(AGATE_LOGIN_ID_IMPERSONATION_HEADER);
       expect(windowCloseSpy).toHaveBeenCalled();
 
       // Cleanup
@@ -107,7 +107,7 @@ describe('SupporterOverlayComponent', () => {
       component.disableSupportMode();
 
       // Assert - should call removeItem but not clear
-      expect(sessionStorage.removeItem).toHaveBeenCalledWith(KTIDP_IMPERSONATION_QUERY_PARAM);
+      expect(sessionStorage.removeItem).toHaveBeenCalledWith(AGATE_LOGIN_ID_IMPERSONATION_HEADER);
       expect(sessionStorage.clear).not.toHaveBeenCalled();
 
       // Cleanup
