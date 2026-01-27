@@ -1,0 +1,170 @@
+<div
+  #mailTemplate
+  style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.45; color: #111"
+>
+  <!-- Title / headings -->
+  <h1 style="margin: 0 0 10px 0; font-size: 22px">Subject: Project Update – Week 04</h1>
+  <h2 style="margin: 18px 0 8px 0; font-size: 18px">Hello <strong>Jane</strong>,</h2>
+  <p style="margin: 0 0 12px 0">
+    This is a <strong>rich</strong> email template with <em>common</em> formatting:
+    <u>underline</u>, links, lists, quotes, code snippets, and a table.
+  </p>
+
+  <!-- Links -->
+  <p style="margin: 0 0 12px 0">
+    Links:
+    <a href="https://example.com" style="color: #0b66c3; text-decoration: underline"
+      >Project Dashboard</a
+    >
+    &nbsp;|&nbsp;
+    <a href="https://example.com/spec" style="color: #0b66c3; text-decoration: underline">Spec</a>
+    &nbsp;|&nbsp;
+    <a href="mailto:someone@example.com" style="color: #0b66c3; text-decoration: underline"
+      >Contact</a
+    >
+  </p>
+
+  <hr style="border: 0; border-top: 1px solid #ddd; margin: 14px 0" />
+
+  <!-- Section headings -->
+  <h3 style="margin: 16px 0 8px 0; font-size: 16px">Highlights</h3>
+  <ul style="margin: 0 0 12px 18px; padding: 0">
+    <li>Shipped <strong>v1.8</strong> to staging and validated the main user flows.</li>
+    <li>Reduced bundle size by <em>~12%</em> via lazy-loading and route-level splitting.</li>
+    <li>Added tracking for <u>checkout drop-off</u> and <u>error boundaries</u>.</li>
+  </ul>
+
+  <h3 style="margin: 16px 0 8px 0; font-size: 16px">Next steps</h3>
+  <ol style="margin: 0 0 12px 18px; padding: 0">
+    <li>
+      Review the spec updates (<a
+        href="https://example.com/spec#changes"
+        style="color: #0b66c3; text-decoration: underline"
+        >see changes</a
+      >).
+    </li>
+    <li>Confirm release window and stakeholder sign-off.</li>
+    <li>
+      Run final regression tests.
+      <ul style="margin: 6px 0 0 18px; padding: 0">
+        <li>Smoke tests (critical paths)</li>
+        <li>Accessibility checklist</li>
+        <li>
+          Browser matrix
+          <ul style="margin: 6px 0 0 18px; padding: 0">
+            <li>Chrome / Edge</li>
+            <li>Firefox</li>
+            <li>Safari</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ol>
+
+  <!-- Quote / callout -->
+  <h3 style="margin: 16px 0 8px 0; font-size: 16px">Callout</h3>
+  <blockquote
+    style="
+      margin: 0 0 12px 0;
+      padding: 10px 12px;
+      border-left: 4px solid #0b66c3;
+      background: #f4f8ff;
+    "
+  >
+    “If it’s not tracked, it’s a guess.” — <em>someone wise</em>
+  </blockquote>
+
+  <!-- Inline code + preformatted -->
+  <h3 style="margin: 16px 0 8px 0; font-size: 16px">Technical notes</h3>
+  <p style="margin: 0 0 10px 0">
+    Use
+    <code
+      style="
+        font-family: Consolas, Monaco, monospace;
+        background: #f2f2f2;
+        padding: 1px 4px;
+        border-radius: 3px;
+      "
+      >navigator.clipboard.write()</code
+    >
+    when available, and provide both
+    <code
+      style="
+        font-family: Consolas, Monaco, monospace;
+        background: #f2f2f2;
+        padding: 1px 4px;
+        border-radius: 3px;
+      "
+      >text/html</code
+    >
+    and
+    <code
+      style="
+        font-family: Consolas, Monaco, monospace;
+        background: #f2f2f2;
+        padding: 1px 4px;
+        border-radius: 3px;
+      "
+      >text/plain</code
+    >.
+  </p>
+
+  <!-- Table -->
+  <h3 style="margin: 16px 0 8px 0; font-size: 16px">Status table</h3>
+  <table style="width: 100%; border-collapse: collapse; margin: 0 0 12px 0">
+    <thead>
+      <tr>
+        <th style="text-align: left; border: 1px solid #ddd; padding: 8px; background: #f6f6f6">
+          Item
+        </th>
+        <th style="text-align: left; border: 1px solid #ddd; padding: 8px; background: #f6f6f6">
+          Owner
+        </th>
+        <th style="text-align: left; border: 1px solid #ddd; padding: 8px; background: #f6f6f6">
+          Status
+        </th>
+        <th style="text-align: left; border: 1px solid #ddd; padding: 8px; background: #f6f6f6">
+          ETA
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="border: 1px solid #ddd; padding: 8px">Clipboard rich copy</td>
+        <td style="border: 1px solid #ddd; padding: 8px">Frontend</td>
+        <td style="border: 1px solid #ddd; padding: 8px"><strong>Done</strong></td>
+        <td style="border: 1px solid #ddd; padding: 8px">Jan 25</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ddd; padding: 8px">Email paste QA</td>
+        <td style="border: 1px solid #ddd; padding: 8px">QA</td>
+        <td style="border: 1px solid #ddd; padding: 8px"><em>In progress</em></td>
+        <td style="border: 1px solid #ddd; padding: 8px">Jan 28</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid #ddd; padding: 8px">Release</td>
+        <td style="border: 1px solid #ddd; padding: 8px">Team</td>
+        <td style="border: 1px solid #ddd; padding: 8px"><u>Planned</u></td>
+        <td style="border: 1px solid #ddd; padding: 8px">Feb 01</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Footer / signature -->
+  <p style="margin: 14px 0 0 0">
+    Best regards,<br />
+    <strong>Alex Developer</strong><br />
+    Senior Frontend Engineer<br />
+    <a href="https://example.com" style="color: #0b66c3; text-decoration: underline">example.com</a>
+  </p>
+
+  <p style="margin: 10px 0 0 0; font-size: 12px; color: #555">
+    PS: This template is designed to paste nicely into most mail clients. If Outlook strips
+    something, simplify styles and prefer semantic tags (<strong>&lt;p&gt;</strong>,
+    <strong>&lt;ul&gt;</strong>, <strong>&lt;li&gt;</strong>, <strong>&lt;a&gt;</strong>).
+  </p>
+</div>
+
+<div class="p-10">
+  <a href (click)="copy($event)">Copy template</a>
+</div>

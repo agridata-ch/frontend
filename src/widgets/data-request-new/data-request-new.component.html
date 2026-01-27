@@ -36,9 +36,9 @@
             <app-data-request-form-contract [dataRequest]="dataRequest()!" />
           }
           <!-- TODO: Re-enable these steps when their implementation is ready DIGIB2-542 -->
-          <!--@case (FORM_GROUP_NAMES.COMPLETION) {
-        <span>step 6</span>
-      } -->
+          @case (FORM_GROUP_NAMES.COMPLETION) {
+            <app-data-request-form-completion />
+          }
         }
       </div>
       <div wizardFooter class="contents" *i18n="let t; prefix: 'data-request.wizard'">

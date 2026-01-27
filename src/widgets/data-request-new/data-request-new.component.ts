@@ -60,6 +60,8 @@ import {
 } from '@/widgets/data-request-new';
 import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
 
+import { DataRequestFormCompletionComponent } from '../data-request-form/data-request-form-completion/data-request-form-completion.component';
+
 export const DATA_REQUEST_NEW_ID = 'new';
 
 /**
@@ -86,6 +88,7 @@ export const DATA_REQUEST_NEW_ID = 'new';
     ErrorOutletComponent,
     SidepanelComponent,
     DataRequestFormContractComponent,
+    DataRequestFormCompletionComponent,
   ],
   templateUrl: './data-request-new.component.html',
 })
