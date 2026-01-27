@@ -10,10 +10,9 @@
 }
 @if (pageData().items.length === 0 && !dataProvider().isLoading()) {
   <!-- Empty State -->
-  <div class="flex flex-1">
-    <app-empty-state></app-empty-state>
-  </div>
-} @else {
+  <ng-container *ngTemplateOutlet="emptyStateTemplate()"></ng-container>
+}
+@if (pageData().items.length > 0 || dataProvider().isLoading()) {
   <!-- Main Table Container -->
   <div
     class="rounded-lg border bg-white min-h-50 border-gray-200 relative"

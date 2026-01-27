@@ -3,6 +3,7 @@
   [rawData]="filteredConsentRequests()"
   [tableMetadata]="consentRequestsTableMetaData()"
   [loading]="consentRequestsResource()?.isLoading()"
+  [emptyStateTemplate]="emptyStateTemplate"
   class="hidden lg:block"
 >
   <ng-template #dataRequestConsumer [appConsentRequestProducerViewDtoGuard] let-item>
@@ -50,7 +51,9 @@
       </app-agridata-button>
     }
   </ng-template>
-  <
+  <ng-template #emptyStateTemplate>
+    <app-consent-request-empty-state></app-consent-request-empty-state>
+  </ng-template>
 </app-agridata-client-table>
 <app-consent-request-list
   class="lg:hidden"

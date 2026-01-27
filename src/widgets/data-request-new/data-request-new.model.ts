@@ -13,6 +13,8 @@ export enum FORM_COMPLETION_STRATEGIES {
   EXTERNAL_DEPENDENCY = 'external-dependency',
 }
 
+export const DATA_REQUEST_NEW_ID = 'new';
+
 export type FormField = {
   readonly name: string;
   readonly i18nDefaultValue?: string;

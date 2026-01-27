@@ -57,10 +57,9 @@ import {
   FormModel,
   FORM_COMPLETION_STRATEGIES,
   FORM_GROUP_NAMES,
+  DATA_REQUEST_NEW_ID,
 } from '@/widgets/data-request-new';
 import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
-
-export const DATA_REQUEST_NEW_ID = 'new';
 
 /**
  * Implements the wizard-driven data request creation flow. It manages multiple form groups,

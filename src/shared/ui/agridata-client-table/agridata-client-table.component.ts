@@ -1,4 +1,4 @@
-import { Component, input, resource, signal } from '@angular/core';
+import { Component, input, resource, signal, TemplateRef } from '@angular/core';
 import { compareAsc, compareDesc, isValid, parseISO } from 'date-fns';
 
 import { ResourceQueryDto } from '@/entities/openapi';
@@ -38,6 +38,7 @@ export class AgridataClientTableComponent<T> {
   readonly pageSize = input<number>(10);
   readonly enableSearch = input<boolean>(false);
   readonly loading = input<boolean | undefined>(false);
+  readonly emptyStateTemplate = input<TemplateRef<unknown>>();
   readonly resourceQueryDto = signal<ResourceQueryDto | undefined>(undefined);
 
   readonly fetchData = resource({
