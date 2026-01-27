@@ -84,6 +84,12 @@
         "GRANTED": "Acconsentito",
         "DECLINED": "Rifiutato"
       }
+    },
+    "emptyState": {
+      "title": "Nessuna richiesta disponibile",
+      "message": "Al momento non ci sono richieste di dati attive e non è necessario intraprendere alcuna azione. \nNon appena verrà presentata una prima richiesta di dati, questa verrà visualizzata qui e ne sarete informati.",
+      "additionalInfo": "Per ulteriori informazioni consultare ",
+      "altIcon": "Illustrazione per illustrare le voci vuote"
     }
   },
   "consumer": {
@@ -290,6 +296,11 @@
       "tableActions": {
         "details": "Visualizza",
         "retreat": "Ritira"
+      },
+      "emptyState": {
+        "title": "Nessuna richiesta dati ancora creata",
+        "message": "Invia la tua prima richiesta di dati e ottieni l'accesso ai dati necessari, non appena i produttori dei dati daranno il loro consenso.",
+        "createNewDataRequest": "Richiesta di nuovi dati"
       }
     },
     "provider": "Fornitore di dati",
@@ -454,11 +465,6 @@
   },
   "breadcrumb": {
     "home": "Casa"
-  },
-  "emptyState": {
-    "title": "Nessuna richiesta disponibile",
-    "message": "Al momento non ci sono richieste di dati attive e non è necessario intraprendere alcuna azione. \nNon appena verrà presentata una prima richiesta di dati, questa verrà visualizzata qui e ne sarete informati.",
-    "additionalInfo": "Per ulteriori informazioni consultare "
   },
   "footer": {
     "logoBund": {

@@ -1,0 +1,11 @@
+<ng-container *i18n="let t; prefix: 'consent-request.emptyState'">
+  <app-empty-state [title]="t('title')" [message]="t('message')">
+    <img emptyStateIcon src="assets/images/app-ok.svg" alt="{{ t('altIcon') }}" class="h-[50px]" />
+    <p class="text-sm text-agridata-tertiary-text mt-2" emptyStateAction>
+      {{ t('additionalInfo') }}
+      <a [href]="appBaseUrl" target="_blank" class="text-agridata-primary-600 hover:underline">
+        agridata.ch
+      </a>
+    </p>
+  </app-empty-state></ng-container
+>

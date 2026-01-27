@@ -1,17 +1,11 @@
 <div
-  *i18n="let t; prefix: 'emptyState'"
-  class="py-10 md:py-20 p-6 text-center flex-col flex gap-2 items-center grow h-full rounded-lg border bg-white border-gray-200"
+  class="py-10 md:py-20 p-6 text-center flex-col flex gap-4 items-center grow h-full w-full rounded-lg border bg-white border-gray-200"
 >
-  <img src="assets/images/app-ok.svg" alt="{{ t('title') }}" class="h-[50px]" />
+  <ng-content select="[emptyStateIcon]"></ng-content>
 
-  <h5 class="text-agridata-secondary-text">{{ t('title') }}</h5>
+  <h5 class="text-agridata-secondary-text">{{ title() }}</h5>
   <p class="text-sm text-agridata-tertiary-text">
-    {{ t('message') }}
+    {{ message() }}
   </p>
-  <p class="text-sm text-agridata-tertiary-text mt-2">
-    {{ t('additionalInfo') }}
-    <a [href]="appBaseUrl" target="_blank" class="text-agridata-primary-600 hover:underline">
-      agridata.ch
-    </a>
-  </p>
+  <ng-content select="[emptyStateAction]"></ng-content>
 </div>

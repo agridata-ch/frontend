@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
-
 import { EmptyStateComponent } from './empty-state.component';
 
 describe('EmptyStateComponent', () => {
@@ -11,51 +9,44 @@ describe('EmptyStateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        EmptyStateComponent,
-        createTranslocoTestingModule({
-          langs: {
-            de: {},
-          },
-        }),
-      ],
+      imports: [EmptyStateComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EmptyStateComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the empty state image', () => {
-    const img = fixture.debugElement.query(By.css('img'));
-    expect(img).toBeTruthy();
-    expect(img.nativeElement.src).toContain('assets/images/app-ok.svg');
-    expect(img.nativeElement.alt).toBe('emptyState.title');
-  });
+  it('should display the title when provided', () => {
+    fixture.componentRef.setInput('title', 'Test Title');
+    fixture.detectChanges();
 
-  it('should display the heading text', () => {
     const heading = fixture.debugElement.query(By.css('h5'));
     expect(heading).toBeTruthy();
-    expect(heading.nativeElement.textContent.trim()).toBe('emptyState.title');
+    expect(heading.nativeElement.textContent.trim()).toBe('Test Title');
   });
 
-  it('should display the main description text', () => {
-    const paragraphs = fixture.debugElement.queryAll(By.css('p'));
-    expect(paragraphs.length).toBeGreaterThanOrEqual(1);
-    expect(paragraphs[0].nativeElement.textContent).toContain('emptyState.message');
+  it('should display the message when provided', () => {
+    fixture.componentRef.setInput('message', 'Test Message');
+    fixture.detectChanges();
+
+    const paragraph = fixture.debugElement.query(By.css('p'));
+    expect(paragraph).toBeTruthy();
+    expect(paragraph.nativeElement.textContent.trim()).toBe('Test Message');
   });
 
-  it('should display a link to agridata.ch', () => {
-    const appBaseUrl = component['appBaseUrl'];
-    const link = fixture.debugElement.query(By.css('a'));
-    expect(link).toBeTruthy();
+  it('should display both title and message', () => {
+    fixture.componentRef.setInput('title', 'Empty State Title');
+    fixture.componentRef.setInput('message', 'Empty State Message');
+    fixture.detectChanges();
 
-    // need to add a slash at the end because of how href is resolved
-    expect(link.nativeElement.href).toBe(`${appBaseUrl}/`);
-    expect(link.nativeElement.textContent.trim()).toBe('agridata.ch');
+    const heading = fixture.debugElement.query(By.css('h5'));
+    const paragraph = fixture.debugElement.query(By.css('p'));
+
+    expect(heading.nativeElement.textContent.trim()).toBe('Empty State Title');
+    expect(paragraph.nativeElement.textContent.trim()).toBe('Empty State Message');
   });
 });

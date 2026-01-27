@@ -84,6 +84,12 @@
         "GRANTED": "Zugestimmt",
         "DECLINED": "Abgelehnt"
       }
+    },
+    "emptyState": {
+      "title": "Keine Anfragen vorhanden",
+      "message": "Sie haben derzeit keine aktiven Datenanfragen und müssen aktuell nichts unternehmen. \nSobald eine erste Datenanfrage besteht, wird diese hier angezeigt und Sie werden informiert.",
+      "additionalInfo": "Weitere Informationen finden Sie auf ",
+      "altIcon": "Illustration zur Veranschaulichung leerer Einträge"
     }
   },
   "consumer": {
@@ -290,6 +296,11 @@
       "tableActions": {
         "details": "Anzeigen",
         "retreat": "Zurückziehen"
+      },
+      "emptyState": {
+        "title": "Noch keine Datenanträge erstellt",
+        "message": "Stellen Sie Ihren ersten Datenantrag und erhalten Sie Zugriff auf die benötigten Daten – sobald die Datenproduzenten zustimmen.",
+        "createNewDataRequest": "Neuer Antrag"
       }
     },
     "provider": "Datenanbieter",
@@ -454,11 +465,6 @@
   },
   "breadcrumb": {
     "home": "Home"
-  },
-  "emptyState": {
-    "title": "Keine Anfragen vorhanden",
-    "message": "Sie haben derzeit keine aktiven Datenanfragen und müssen aktuell nichts unternehmen. \nSobald eine erste Datenanfrage besteht, wird diese hier angezeigt und Sie werden informiert.",
-    "additionalInfo": "Weitere Informationen finden Sie auf "
   },
   "footer": {
     "logoBund": {

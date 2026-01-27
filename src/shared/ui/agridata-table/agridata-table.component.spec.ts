@@ -158,11 +158,42 @@ describe('AgridataTableComponent', () => {
       fixture.componentRef.setInput('dataProvider', MockResources.createMockResourceRef(emptyData));
       fixture.detectChanges();
 
-      const emptyStateComponent = fixture.debugElement.query(By.css('app-empty-state'));
-      expect(emptyStateComponent).toBeTruthy();
-
+      // When there's no data and no template, nothing should render
       const tableElement = fixture.debugElement.query(By.css('table'));
       expect(tableElement).toBeFalsy();
+    });
+
+    it('should not render table when no data', () => {
+      const emptyData = { ...mockPageData, items: [], totalItems: 0 };
+
+      fixture.componentRef.setInput('dataProvider', MockResources.createMockResourceRef(emptyData));
+      fixture.detectChanges();
+
+      // The table should not be rendered when there's no data
+      const tableElement = fixture.debugElement.query(By.css('table'));
+      expect(tableElement).toBeFalsy();
+    });
+
+    it('should render table when there is data', () => {
+      fixture.detectChanges();
+
+      // The table should be rendered when there's data
+      const tableElement = fixture.debugElement.query(By.css('table'));
+      expect(tableElement).toBeTruthy();
+    });
+
+    it('should render table when loading even with no data', () => {
+      const emptyData = { ...mockPageData, items: [], totalItems: 0 };
+
+      fixture.componentRef.setInput(
+        'dataProvider',
+        MockResources.createMockResourceRef(emptyData, signal(true)),
+      );
+      fixture.detectChanges();
+
+      // The table should be rendered during loading state
+      const tableElement = fixture.debugElement.query(By.css('table'));
+      expect(tableElement).toBeTruthy();
     });
 
     it('should render row menu when provided', () => {
