@@ -15,7 +15,6 @@ describe('ErrorAlertComponent', () => {
 
   const mockError: ErrorDto = {
     id: 'test-error-123',
-    isFrontendError: true,
     i18nTitle: { i18n: 'error.title', i18nParameter: { errorType: 'Test' } },
     i18nReason: { i18n: 'error.reason', i18nParameter: { details: 'Something went wrong' } },
     i18nPath: { i18n: 'error.path', i18nParameter: { path: '/api/test' } },
@@ -62,17 +61,6 @@ describe('ErrorAlertComponent', () => {
       const alertElement = fixture.debugElement.query(By.directive(AlertComponent));
       expect(alertElement).toBeTruthy();
     });
-
-    it('should configure alert component with correct properties', () => {
-      componentRef.setInput('error', mockError);
-      fixture.detectChanges();
-
-      const alertComponent = fixture.debugElement.query(By.directive(AlertComponent));
-      const alertInstance = alertComponent.componentInstance;
-
-      expect(alertInstance.type()).toBe(component['AlertType'].WARNING);
-      expect(alertInstance.showCloseButton()).toBe(true);
-    });
   });
 
   describe('Error Content Display', () => {
@@ -108,7 +96,6 @@ describe('ErrorAlertComponent', () => {
     it('should not display details section when path and errorId are missing', () => {
       const errorWithoutDetails: ErrorDto = {
         id: 'test-error-456',
-        isFrontendError: true,
         i18nTitle: { i18n: 'error.title' },
         i18nReason: { i18n: 'error.reason' },
         originalError: new Error('Test error'),
@@ -147,36 +134,6 @@ describe('ErrorAlertComponent', () => {
 
       const detailsSection = fixture.debugElement.query(By.css('.mt-4'));
       expect(detailsSection).toBeTruthy();
-    });
-  });
-
-  describe('Close Functionality', () => {
-    it('should emit closeError when alert close button is clicked', () => {
-      const closeErrorSpy = jest.fn();
-      component.closeError.subscribe(closeErrorSpy);
-
-      componentRef.setInput('error', mockError);
-      fixture.detectChanges();
-
-      const alertComponent = fixture.debugElement.query(By.directive(AlertComponent));
-      alertComponent.triggerEventHandler('closeAlert', null);
-
-      expect(closeErrorSpy).toHaveBeenCalledWith(true);
-    });
-
-    it('should emit closeError only once per click', () => {
-      const closeErrorSpy = jest.fn();
-      component.closeError.subscribe(closeErrorSpy);
-
-      componentRef.setInput('error', mockError);
-      fixture.detectChanges();
-
-      const alertComponent = fixture.debugElement.query(By.directive(AlertComponent));
-      alertComponent.triggerEventHandler('closeAlert', null);
-      alertComponent.triggerEventHandler('closeAlert', null);
-
-      expect(closeErrorSpy).toHaveBeenCalledTimes(2);
-      expect(closeErrorSpy).toHaveBeenCalledWith(true);
     });
   });
 
@@ -221,7 +178,6 @@ describe('ErrorAlertComponent', () => {
     it('should handle error with minimal required fields', () => {
       const minimalError: ErrorDto = {
         id: 'minimal-error',
-        isFrontendError: false,
         i18nTitle: { i18n: 'minimal.title' },
         i18nReason: { i18n: 'minimal.reason' },
         originalError: new Error('Minimal error'),

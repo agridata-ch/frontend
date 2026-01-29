@@ -251,7 +251,7 @@ export class DebugService implements OnDestroy {
           : String(originalMessage || 'Unknown error');
 
       const i18nTitle = errorDto.i18nTitle?.i18n || 'Error';
-      const message = `${i18nTitle} - ${formattedMessage} | isFe: ${Boolean(errorDto.isFrontendError)}, handled: ${Boolean(errorDto.isHandled)}`;
+      const message = `${i18nTitle} - ${formattedMessage}, handled: ${Boolean(errorDto.isHandled)}`;
 
       return {
         timestamp: errorDto.timestamp,

@@ -13,7 +13,7 @@ import { filter } from 'rxjs';
 
 import { AnalyticsService } from '@/app/analytics.service';
 import { DebugModalComponent } from '@/features/debug/debug-modal.component';
-import { ErrorModal } from '@/shared/error-modal/error-modal.component';
+import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 
 /**
  * The root Angular component that renders the application shell. It provides the router outlet as
@@ -25,7 +25,7 @@ import { ErrorModal } from '@/shared/error-modal/error-modal.component';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [RouterOutlet, ErrorModal, DebugModalComponent],
+  imports: [RouterOutlet, DebugModalComponent, ErrorOutletComponent],
 })
 export class AppComponent {
   // Injects

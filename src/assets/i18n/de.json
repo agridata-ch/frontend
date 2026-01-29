@@ -461,7 +461,14 @@
       "title": "Es läuft gleich wieder...",
       "message": "Unsere Anwendung ist derzeit wegen Wartungsarbeiten nicht erreichbar.\nWir sind bald wieder online."
     },
-    "reloadPage": "Seite neu laden"
+    "reloadPage": "Seite neu laden",
+    "consentRequest": {
+      "notFound": {
+        "title": "Dieser Link ist ungültig",
+        "message": "Der aufgerufene Link führt zu keinem Antrag. Bitte überprüfen Sie den Link oder kontaktieren Sie die Organisation, die Ihnen diesen Link geschickt hat."
+      },
+      "modalTitle": "Hoppla, etwas hat nicht funktioniert..."
+    }
   },
   "breadcrumb": {
     "home": "Home"

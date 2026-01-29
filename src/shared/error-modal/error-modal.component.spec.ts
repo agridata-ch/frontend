@@ -19,7 +19,6 @@ import { ErrorModal } from './error-modal.component';
 
 const testError = {
   id: '1',
-  isFrontendError: true,
   i18nTitle: { i18n: 'error.title' },
   i18nReason: { i18n: 'error.reason' },
   originalError: new Error('Test error'),

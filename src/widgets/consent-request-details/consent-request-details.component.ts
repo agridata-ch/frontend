@@ -17,8 +17,10 @@ import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { ConsentRequestStateEnum, DataRequestPurposeDto } from '@/entities/openapi';
-import { FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM } from '@/pages/consent-request-producer';
-import { REDIRECT_TIMEOUT } from '@/pages/consent-request-producer/consent-request-producer.page.model';
+import {
+  FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM,
+  REDIRECT_TIMEOUT,
+} from '@/pages/consent-request-producer';
 import {
   getToastMessage,
   getToastTitle,

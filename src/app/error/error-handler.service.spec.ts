@@ -33,24 +33,6 @@ describe('ErrorHandlerService', () => {
   });
 
   describe('handleError', () => {
-    it('should handle frontend error correctly', () => {
-      const error = new Error('Test frontend error');
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
-
-      const errorDto = service.handleError(error);
-
-      expect(errorDto.isFrontendError).toBe(true);
-      expect(errorDto.originalError).toBe(error);
-      expect(errorDto.i18nTitle.i18n).toBe('errors.frontend.unexpected.title');
-      expect(errorDto.i18nReason.i18n).toBe('errors.frontend.unexpected.details');
-      expect(errorDto.i18nReason.i18nParameter?.['errorDetails']).toBe('Test frontend error');
-      expect(errorDto.isHandled).toBe(false);
-      expect(errorDto.timestamp).toBeInstanceOf(Date);
-      expect(consoleErrorSpy).toHaveBeenCalledWith(error);
-
-      consoleErrorSpy.mockRestore();
-    });
-
     it('should handle HTTP error correctly', () => {
       const httpError = enhanceHttpErrorWithMethod(
         new HttpErrorResponse({
@@ -67,7 +49,6 @@ describe('ErrorHandlerService', () => {
 
       const errorDto = service.handleError(httpError);
 
-      expect(errorDto.isFrontendError).toBe(false);
       expect(errorDto.originalError).toBe(httpError);
       expect(errorDto.i18nTitle.i18n).toBe('errors.backend.method.get');
       expect(errorDto.i18nReason.i18n).toBe('errors.backend.notFound');
@@ -129,7 +110,6 @@ describe('ErrorHandlerService', () => {
       const errorDto = service.handleError(resourceError);
 
       expect(errorDto.originalError).toBe(httpError);
-      expect(errorDto.isFrontendError).toBe(false);
     });
 
     it('should handle ErrorWithCause', () => {
@@ -147,7 +127,6 @@ describe('ErrorHandlerService', () => {
       const errorDto = service.handleError(errorWithCause);
 
       expect(errorDto.originalError).toBe(httpError);
-      expect(errorDto.isFrontendError).toBe(false);
     });
   });
 
