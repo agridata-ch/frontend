@@ -461,7 +461,14 @@
       "title": "Tornerà presto...",
       "message": "La nostra applicazione non è attualmente disponibile a causa di lavori di manutenzione.\nTorneremo presto online."
     },
-    "reloadPage": "Ricarica pagina"
+    "reloadPage": "Ricarica pagina",
+    "consentRequest": {
+      "notFound": {
+        "title": "Questo link non è valido",
+        "message": "Il link richiamato non porta ad alcuna richiesta. Controlla il link o contatta l'organizzazione che ti ha inviato questo link."
+      },
+      "modalTitle": "Ops, qualcosa non ha funzionato..."
+    }
   },
   "breadcrumb": {
     "home": "Casa"
@@ -493,7 +500,7 @@
       "invitationLink": "Link di invito"
     },
     "pageTitle": "Richieste di dati",
-    "sidePanelTitle": "Vista dettagliata",
+    "sidePanelTitle": "Visualizzazione dettagliata",
     "details": {
       "title": "Richiesta"
     },

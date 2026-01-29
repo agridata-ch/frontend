@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
@@ -7,6 +8,7 @@ import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ConsentRequestCreatedDto, CreateConsentRequestDto, UidDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 
 /**
@@ -30,6 +32,7 @@ export class CreateConsentRequestGuard implements CanActivate {
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly router = inject(Router);
+  private readonly i18nService = inject(I18nService);
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<UrlTree | boolean> {
     const { dataRequestUid, redirectUrl, uid } = this.extractRouteParameters(route);
@@ -65,6 +68,30 @@ export class CreateConsentRequestGuard implements CanActivate {
 
       return this.navigateToConsentRequest(consentRequests, redirectUrl);
     } catch (error) {
+      if (error instanceof HttpErrorResponse && error.status === 404) {
+        // Navigate first with redirectUrl as query param if it exists
+        const queryParams = redirectUrl ? { redirect_uri: redirectUrl } : {};
+        const activeUid = this.agridataStateService.activeUid();
+        const urlTree = this.router.createUrlTree(
+          [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, activeUid],
+          {
+            queryParams,
+          },
+        );
+
+        setTimeout(() => {
+          // make a custom error to provide a better message
+          const newError = new Error(error.message);
+          this.errorService.handleError(
+            newError,
+            { i18n: 'errors.consentRequest.notFound.message' },
+            { i18n: 'errors.consentRequest.notFound.title' },
+          );
+        }, 100);
+
+        // Delay error handling so the error is registered after navigation and will show on the right page
+        return urlTree;
+      }
       return this.handleError(error);
     }
   }
@@ -111,7 +138,6 @@ export class CreateConsentRequestGuard implements CanActivate {
   private isValidUid(uid: string, uidDtos: UidDto[]): boolean {
     return uidDtos.some((userUid) => userUid.uid === uid);
   }
-
   private navigateToConsentRequest(
     consentRequests: ConsentRequestCreatedDto[],
     redirectUrl?: string,

@@ -1,10 +1,6 @@
 @let err = error();
 @if (err) {
-  <app-alert
-    [type]="error()?.isFrontendError ? AlertType.WARNING : AlertType.ERROR"
-    [showCloseButton]="true"
-    (closeAlert)="closeError.emit(true)"
-  >
+  <app-alert [type]="AlertType.ERROR">
     <div class="flex gap-4 w-full justify-between items-center" *i18n="let t">
       <div class="flex-1">
         <div class="flex justify-between">

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, resource } from '@angular/core';
+import { Component, computed, effect, inject, input, resource, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { faFileCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -8,15 +8,17 @@ import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ConsentRequestProducerViewDto } from '@/entities/openapi';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
-import { I18nDirective, I18nService } from '@/shared/i18n';
+import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
 import {
   createResourceErrorHandlerEffect,
   createResourceValueComputed,
 } from '@/shared/lib/api.helper';
+import { ButtonComponent } from '@/shared/ui/button';
+import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { AlertComponent, AlertType } from '@/widgets/alert';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 
-export const FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM = 'refresh';
+import { FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM } from './consent-request-producer.page.model';
 
 /**
  * Handles the display and interaction of consent requests for producers. It displays a table of
@@ -33,9 +35,12 @@ export const FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM = 'refresh';
     ConsentRequestTableComponent,
     FontAwesomeModule,
     I18nDirective,
+    I18nPipe,
     ErrorOutletComponent,
     AlertComponent,
     RouterOutlet,
+    ModalComponent,
+    ButtonComponent,
   ],
   templateUrl: './consent-request-producer.page.html',
 })
@@ -49,7 +54,6 @@ export class ConsentRequestProducerPage {
   // binds to the route parameter :consentRequestId
   readonly consentRequestId = input<string>();
 
-  private readonly DISMISSED_MIGRATIONS_KEY = 'dismissedMigrationAlerts';
   readonly fileIcon = faFileCheck;
   readonly AlertType = AlertType;
 
@@ -81,6 +85,14 @@ export class ConsentRequestProducerPage {
   });
 
   readonly consentRequests = createResourceValueComputed(this.consentRequestResource, []);
+
+  // Redirect-related signals
+  private readonly redirectUrlFromQuery = signal<string | null>(null);
+  protected readonly hasErrors = computed(() => this.errorService.getAllErrors()().length > 0);
+  protected readonly hasRedirectUrl = computed(() => !!this.redirectUrlFromQuery());
+  protected readonly showRedirect = computed(() => this.hasRedirectUrl() && this.hasErrors());
+  protected readonly redirectUrl = computed(() => this.redirectUrlFromQuery());
+
   private readonly handleFetchConsentRequestErrorsEffect = createResourceErrorHandlerEffect(
     this.consentRequestResource,
     this.errorService,
@@ -91,6 +103,17 @@ export class ConsentRequestProducerPage {
     if (nav?.extras?.state?.[FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM]) {
       this.consentRequestResource.reload();
     }
+  });
+
+  private readonly checkForRedirectEffect = effect(() => {
+    // Make reactive to router URL to detect navigation
+    const redirectUri = this.activeRoute.snapshot.queryParamMap.get('redirect_uri') ?? null;
+    const currentRouteWithoutQueryParams =
+      this.agridataStateService.currentRouteWithoutQueryParams();
+    if (currentRouteWithoutQueryParams) {
+      void this.router.navigateByUrl(currentRouteWithoutQueryParams, { replaceUrl: true });
+    }
+    this.redirectUrlFromQuery.set(redirectUri);
   });
 
   protected navigateToRequest = (request?: ConsentRequestProducerViewDto | null) => {
@@ -110,4 +133,12 @@ export class ConsentRequestProducerPage {
   getMigratedRequestTitle(request: ConsentRequestProducerViewDto): string {
     return this.i18nService.useObjectTranslation(request?.dataRequest?.title);
   }
+
+  protected readonly redirect = (): void => {
+    const url = this.redirectUrl();
+    if (url) {
+      this.redirectUrlFromQuery.set(null);
+      globalThis.location.href = url;
+    }
+  };
 }

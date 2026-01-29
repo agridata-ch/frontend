@@ -20,10 +20,24 @@
     {{ t('pageTitle') }}
   </h2>
 </ng-container>
+@if (!hasRedirectUrl()) {
 <app-error-outlet></app-error-outlet>
+}
 <app-consent-request-table
   [consentRequests]="consentRequests()"
   (tableRowAction)="navigateToRequest($event)"
   [consentRequestsResource]="consentRequestResource"
 />
 <router-outlet></router-outlet>
+@if (hasRedirectUrl()) {
+<app-modal
+  [open]="showRedirect()"
+  [title]="'errors.consentRequest.modalTitle' | i18n"
+  [showCloseButton]="false"
+>
+  <app-error-outlet></app-error-outlet>
+  <div class="text-center" *i18n="let t; prefix: 'producer.redirect'">
+    <app-agridata-button (onClick)="redirect()"> {{ t('redirectNow') }} </app-agridata-button>
+  </div>
+</app-modal>
+}

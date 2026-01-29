@@ -11,9 +11,11 @@ import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
+  createMockActivatedRoute,
   createMockAuthService,
   createMockDataRequestService,
   createMockI18nService,
+  MockActivatedRoute,
   MockAuthService,
   mockConsentRequests,
   MockDataRequestService,
@@ -47,7 +49,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   let consentRequestService: MockConsentRequestService;
   let errorService: MockErrorHandlerService;
   let dataRequestService: MockDataRequestService;
-  let activeRoute: Partial<ActivatedRoute>;
+  let activeRoute: MockActivatedRoute;
   let authService: MockAuthService;
   const activeUid = '123';
 
@@ -55,6 +57,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     mockRouter = {
       navigate: jest.fn().mockResolvedValue(true),
       currentNavigation: jest.fn().mockReturnValue(null),
+      url: '/consent-request-producer',
     } as unknown as jest.Mocked<Router>;
 
     consentRequestService = createMockConsentRequestService();
@@ -63,7 +66,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     errorService = createMockErrorHandlerService();
     i18nService = createMockI18nService();
     authService = createMockAuthService();
-    activeRoute = {};
+    activeRoute = createMockActivatedRoute();
     agridataStateService = createMockAgridataStateService();
     await TestBed.configureTestingModule({
       providers: [
@@ -169,6 +172,33 @@ describe('ConsentRequestProducerPage - component behavior', () => {
       const title = component.getMigratedRequestTitle(migratedRequest);
 
       expect(title).toBe(mockConsentRequests[0].dataRequest?.title?.de);
+    });
+  });
+
+  describe('redirect functionality', () => {
+    it('should redirect to URL and reset redirectUrlFromQuery when redirect is called', () => {
+      const testUrl = 'https://example.com/callback';
+      delete (globalThis as { location?: unknown }).location;
+      globalThis.location = { href: '' } as Location;
+
+      component['redirectUrlFromQuery'].set(testUrl);
+
+      component['redirect']();
+
+      expect(globalThis.location.href).toBe(testUrl);
+      expect(component['redirectUrlFromQuery']()).toBeNull();
+    });
+
+    it('should not redirect when redirectUrl is null', () => {
+      delete (globalThis as { location?: unknown }).location;
+      globalThis.location = { href: 'http://localhost/' } as Location;
+      const originalLocation = globalThis.location.href;
+
+      component['redirectUrlFromQuery'].set(null);
+
+      component['redirect']();
+
+      expect(globalThis.location.href).toBe(originalLocation);
     });
   });
 });
