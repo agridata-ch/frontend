@@ -2,6 +2,7 @@ import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { MasterDataService } from '@/entities/api/master-data.service';
+import { environment } from '@/environments/environment';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { getFormControl } from '@/shared/lib/form.helper';
 import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
@@ -31,6 +32,7 @@ export class DataRequestFormRequestComponent {
 
   readonly ControlTypes = ControlTypes;
   readonly getFormControl = getFormControl;
+  readonly productDataLink = `${environment.appBaseUrl}/cms/data-consumer#dataProduct`;
 
   readonly updateProductsEffect = effect(() => {
     const products = this.metaDataService.dataProducts;

@@ -115,7 +115,8 @@
         },
         "products": {
           "label": "Quel produit de données souhaitez-vous ?",
-          "placeholder": "Sélectionnez les produits pour lesquels vous souhaitez demander des données."
+          "placeholder": "Sélectionnez les produits pour lesquels vous souhaitez demander des données.",
+          "moreInfos": "Plus d'informations"
         },
         "title": {
           "label": "Nom de la demande de données",
