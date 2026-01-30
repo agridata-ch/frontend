@@ -1,3 +1,9 @@
+## [1.8.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.2...v1.8.0-rc.3) (2026-01-30)
+
+### Features
+
+- **data-request:** add link to cms products ([8ce442a](https://github.com/agridata-ch/frontend/commit/8ce442a529f2ee89645752661165331b60f35996)), closes [DIGIB2-212](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-212)
+
 ## [1.8.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.1...v1.8.0-rc.2) (2026-01-30)
 
 ### Features
