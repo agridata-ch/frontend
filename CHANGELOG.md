@@ -1,3 +1,9 @@
+## [1.8.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.3...v1.8.0-rc.4) (2026-01-30)
+
+### Features
+
+- **data-request-preview:** show preview in correct language ([9fcdfc3](https://github.com/agridata-ch/frontend/commit/9fcdfc3d0fa531baa53fdb1738864437704e5027)), closes [DIGIB2-693](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-693)
+
 ## [1.8.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.2...v1.8.0-rc.3) (2026-01-30)
 
 ### Features
