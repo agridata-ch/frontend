@@ -1,3 +1,9 @@
+## [1.8.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.1...v1.8.0-rc.2) (2026-01-30)
+
+### Features
+
+- **consent-request:** add error handling for redirect ([daabaf7](https://github.com/agridata-ch/frontend/commit/daabaf7b03e1c2318fade26e4525bc1910db93ba)), closes [DIGIB2-635](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-635)
+
 ## [1.8.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.7.0...v1.8.0-rc.1) (2026-01-27)
 
 ### Features
