@@ -22,6 +22,7 @@ import { I18nPipe } from '@/shared/i18n';
 })
 export class DataRequestPrivacyInfosComponent {
   readonly dataConsumerName = input<string | null>();
+  readonly lang = input<string>();
 
   readonly editIcon = faFileSignature;
   readonly lockIcon = faLockKeyhole;

@@ -4,10 +4,10 @@
       <fa-icon size="xl" [icon]="privacySection.icon" class="text-agridata-secondary-text mr-2" />
       <div class="flex flex-col">
         <span class="text-agridata-secondary-text font-semibold">
-          {{ privacySection.title | i18n }}
+          {{ privacySection.title | i18n: privacySection.translationParams : lang() }}
         </span>
         <span class="text-agridata-secondary-text text-sm">
-          {{ privacySection.description | i18n: privacySection.translationParams }}
+          {{ privacySection.description | i18n: privacySection.translationParams : lang() }}
         </span>
       </div>
     </div>
