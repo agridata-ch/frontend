@@ -3,7 +3,7 @@ import { Component, computed, inject, input } from '@angular/core';
 
 import { DataProductDto } from '@/entities/openapi';
 import { environment } from '@/environments/environment';
-import { I18nPipe, I18nService } from '@/shared/i18n';
+import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
 
 /**
@@ -15,15 +15,16 @@ import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
  */
 @Component({
   selector: 'app-data-request-purpose-accordion',
-  imports: [I18nPipe, AgridataAccordionComponent, CommonModule],
+  imports: [AgridataAccordionComponent, CommonModule, I18nDirective],
   templateUrl: './data-request-purpose-accordion.component.html',
 })
 export class DataRequestPurposeAccordionComponent {
   readonly i18nService = inject(I18nService);
   readonly purpose = input<string>();
   readonly products = input<DataProductDto[]>();
-  readonly currentLanguage = computed(() => this.i18nService.lang());
+  readonly lang = input<string>();
 
+  readonly currentLanguage = computed(() => this.lang() ?? this.i18nService.lang());
   readonly productsList = computed<DataProductDto[]>(() => {
     const productsValue = this.products();
     if (!productsValue) return [];
