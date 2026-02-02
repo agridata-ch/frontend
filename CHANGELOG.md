@@ -1,3 +1,9 @@
+## [1.8.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.4...v1.8.0-rc.5) (2026-02-02)
+
+### Features
+
+- **docs:** add publiccode.yml ([19504b1](https://github.com/agridata-ch/frontend/commit/19504b1bb87230eb4d82089cf1c9de9f6b411c82))
+
 ## [1.8.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.3...v1.8.0-rc.4) (2026-01-30)
 
 ### Features
