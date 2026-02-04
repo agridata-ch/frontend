@@ -1,14 +1,15 @@
-<div class="relative w-full" (appClickOutside)="handleClickOutside()">
+<div class="relative w-full min-w-0" (appClickOutside)="handleClickOutside()">
   <button
     type="button"
-    class="w-full border border-gray-300 rounded-md px-5 py-3 text-left flex justify-between items-center bg-white"
+    class="w-full border border-gray-300 px-5 py-3 text-left flex justify-between items-center bg-white rounded-md"
+    [class]="customClass()"
     [class.border-red-500]="hasError()"
     (click)="toggleDropdown()"
     [disabled]="disabled()"
   >
     @if (selectedOptions().length > 0) {
-      <div class="flex flex-wrap gap-2">
-        @for (option of selectedOptions(); track option) {
+      <div class="flex flex-wrap gap-2 min-w-0 flex-1">
+        @for (option of selectedOptions(); track option.value) {
           <span
             (click)="onOptionToggle(option.value, $event)"
             (keydown.enter)="onOptionToggle(option.value, $event)"
@@ -29,26 +30,72 @@
         }
       </div>
     } @else {
-      <span class="truncate">{{ placeholder() }}</span>
+      <span class="block truncate flex-1 min-w-0">{{ placeholder() }}</span>
     }
-    <fa-icon [icon]="dropdownIcon()" class="ml-2 text-gray-500" />
+    <fa-icon [icon]="dropdownIcon()" class="ml-2 text-gray-500 flex-shrink-0" />
   </button>
 
   @if (isDropdownOpen()) {
     <div
       class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
     >
-      @for (option of options(); track option.value) {
-        <label class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer">
-          <input
-            type="checkbox"
-            [checked]="isSelected(option.value)"
-            (change)="onOptionToggle(option.value, $event)"
-            class="form-checkbox h-4 w-4 text-blue-600"
-            [disabled]="disabled()"
+      @if (enableSearch()) {
+        <div class="sticky top-0 border-b border-gray-200 bg-white p-2">
+          <app-search-input
+            (onInput)="onSearchInput($event)"
+            [debounceTime]="0"
+            [minSearchLength]="1"
           />
-          <span class="ml-2">{{ option.label }}</span>
-        </label>
+        </div>
+      }
+      @if (!hasFilteredResults()) {
+        <div class="px-3 py-2 text-sm text-gray-500">
+          {{ 'input.formControl.multiSelect.noResults' | i18n }}
+        </div>
+      } @else {
+        @if (isGrouped()) {
+          @for (category of categories(); track category.categoryLabel) {
+            @if (getFilteredCategoryOptions(category).length > 0) {
+              <div [class.opacity-50]="isCategoryDisabled(category)">
+                <div class="text-sm py-2 px-3 text-agridata-tertiary-text">
+                  {{ category.categoryLabel }}
+                </div>
+                <label
+                  class="flex items-center px-3 py-2 hover:bg-gray-100"
+                  [class.cursor-pointer]="!isCategoryDisabled(category)"
+                  [class.cursor-not-allowed]="isCategoryDisabled(category)"
+                  [class.hover:bg-white]="isCategoryDisabled(category)"
+                >
+                  <input
+                    type="checkbox"
+                    [checked]="isCategoryAllSelected(category)"
+                    (change)="onSelectAllToggle(category, $event)"
+                    class="h-4 w-4"
+                    [disabled]="isCategoryDisabled(category)"
+                  />
+                  <span class="ml-2">{{ selectAllLabel() }}</span>
+                </label>
+                @for (option of getFilteredCategoryOptions(category); track option.value) {
+                  <app-agridata-multi-select-option
+                    [control]="control()!"
+                    [option]="option"
+                    (selectOption)="onOptionToggle(option.value, $event.event)"
+                    [disabled]="isCategoryDisabled(category)"
+                  />
+                }
+              </div>
+            }
+          }
+        } @else {
+          @for (option of filteredOptions(); track option.value) {
+            <app-agridata-multi-select-option
+              [control]="control()!"
+              [option]="option"
+              (selectOption)="onOptionToggle(option.value, $event.event)"
+              [disabled]="disabled()"
+            />
+          }
+        }
       }
     </div>
   }

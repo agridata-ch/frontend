@@ -2,7 +2,8 @@
   <button
     #trigger
     type="button"
-    class="w-full border border-gray-300 rounded-md px-5 py-3 text-left flex justify-between items-center"
+    class="w-full border border-gray-300 px-5 py-3 text-left flex justify-between items-center rounded-md"
+    [class]="customClass()"
     [class.border-red-500]="hasError()"
     [class.bg-white]="!disabled()"
     [class.bg-gray-100]="disabled()"

@@ -1,4 +1,12 @@
 export interface MultiSelectOption {
-  value: string | number;
-  label: string;
+  readonly label: string;
+  readonly value: number | string;
 }
+
+export interface MultiSelectCategory {
+  readonly categoryLabel: string;
+  readonly disabled?: boolean;
+  readonly options: MultiSelectOption[];
+}
+
+export const ALL_OPTIONS_PREFIX = 'all-';

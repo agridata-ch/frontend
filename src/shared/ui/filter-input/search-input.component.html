@@ -1,9 +1,10 @@
-<div class="relative w-60 flex items-center" *i18n="let t; prefix: 'input.search'">
+<div class="relative flex items-center" *i18n="let t; prefix: 'input.search'">
   <app-agridata-input
     [(value)]="value"
     [placeholder]="t('placeholder')"
     [inputPrefixIcon]="magnifyingGlassIcon"
     [suffixTemplate]="suffixTemplate"
+    class="w-full"
   ></app-agridata-input>
   <ng-template #suffixTemplate>
     <div class="absolute inset-y-0 right-4 flex items-center gap-2">
