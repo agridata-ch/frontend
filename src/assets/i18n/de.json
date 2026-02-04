@@ -116,7 +116,8 @@
         "products": {
           "label": "Welches Datenprodukt möchten Sie?",
           "placeholder": "Wählen Sie die Produkte aus, für die Sie Daten anfordern möchten.",
-          "moreInfos": "Weitere Infos"
+          "moreInfos": "Weitere Infos",
+          "sublabel": "Sie können Produkte aus nur einer Kategorie gleichzeitig wählen."
         },
         "title": {
           "label": "Antragname Datenanfrage",
@@ -244,6 +245,9 @@
           "description": "Sobald Ihr Antrag durch agridata.ch erfolgreich geprüft wurde, wird hier der Vertrag zur Unterzeichnung aufgeschaltet.",
           "iconAltText": "Bild mit einer Sanduhr und einer Uhr im Hintergrund"
         }
+      },
+      "products": {
+        "allSystems": "Alle Systeme"
       }
     },
     "preview": {
@@ -396,6 +400,11 @@
     "common": {
       "ariaLabel": {
         "open": "Öffnen"
+      }
+    },
+    "formControl": {
+      "multiSelect": {
+        "selectAll": "Alle auswählen"
       }
     }
   },

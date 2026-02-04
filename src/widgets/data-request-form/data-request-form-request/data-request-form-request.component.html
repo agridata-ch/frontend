@@ -3,7 +3,7 @@
   <div class="flex flex-col bg-gray-100 py-6 px-4 rounded-lg gap-6">
     <div class="flex flex-col gap-2">
       <h4>{{ t('request.provider.label') }}</h4>
-      <span class="text-agridata-tertiary-text">{{ t('request.provider.sublabel') }}</span>
+      <span class="text-sm text-agridata-tertiary-text">{{ t('request.provider.sublabel') }}</span>
       <a
         [href]="productDataLink"
         target="_blank"
@@ -13,29 +13,59 @@
       </a>
     </div>
     <div class="grid gap-6 grid-cols-2">
-      <div class="flex flex-col w-full">
+      <div class="flex flex-col">
         <label class="mb-2 font-medium leading-[130%]" for="requestProvider">
           {{ t('request.provider.label') }}
         </label>
         <input
-          class="border rounded-md border-gray-300 px-5 py-3 placeholder-gray-400 w-full mb-6 cursor-not-allowed"
+          class="border rounded-md border-gray-300 px-5 py-3 placeholder-gray-400 w-full mb-1 cursor-not-allowed"
           value="AGIS"
           disabled
           name="requestProvider"
           [disabled]="true"
         />
       </div>
-      <div class="flex flex-col gap-2">
-        <app-form-control
-          [control]="getFormControl(this.form()!, 'request.products')"
-          id="requestProducts"
-          [label]="t('request.products.label')"
-          [placeholder]="t('request.products.placeholder')"
-          [controlType]="ControlTypes.MULTI_SELECT"
-          [options]="products()"
+    </div>
+    <div class="flex flex-col w-full">
+      <div class="flex flex-col gap-1 mb-2">
+        <label
+          class="font-medium leading-[130%] min-w-40"
+          for="requestCategory"
+          [class.text-red-500]="hasProductsError()"
+        >
+          {{ t('request.products.label') }}
+        </label>
+        <span class="text-sm text-agridata-tertiary-text font-medium">{{
+          t('request.products.sublabel')
+        }}</span>
+      </div>
+      <div class="flex w-full">
+        <app-agridata-select
+          [customClass]="'rounded-none rounded-l-md border-r-0 min-w-56'"
           [disabled]="formDisabled()"
+          [hasError]="hasProductsError()"
+          [options]="dataProductsCategories()"
+          [placeholder]="t('request.category.placeholder')"
+          [selectedOption]="selectedCategory()"
+          (selectedOptionChange)="onCategoryChange($event)"
+        />
+        <app-agridata-multi-select
+          class="flex-1"
+          [categories]="productsGrouped()"
+          [control]="getFormControl(this.form()!, 'request.products')"
+          [customClass]="'rounded-none rounded-r-md'"
+          [disabled]="formDisabled()"
+          [hasError]="hasProductsError()"
+          id="requestProducts"
+          [placeholder]="t('request.products.placeholder')"
+          [singleCategorySelection]="true"
         />
       </div>
+      <span class="min-h-[1.5em] block text-gray-700" [class.text-red-500]="hasProductsError()">
+        @if (hasProductsError()) {
+          <span class="text-sm">{{ getProductsErrorMessage() }}</span>
+        }
+      </span>
     </div>
   </div>
   <div>

@@ -1,6 +1,6 @@
 <!-- Search Section -->
 @if (enableSearch()) {
-  <div class="mb-4">
+  <div class="mb-4 w-60">
     <app-search-input
       (onInput)="handleSearchInput($event)"
       [isLoading]="dataProvider().isLoading()"

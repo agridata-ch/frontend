@@ -1,0 +1,15 @@
+<label
+  class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"
+  [class.cursor-pointer]="!disabled()"
+  [class.cursor-not-allowed]="disabled()"
+  [class.hover:bg-white]="disabled()"
+>
+  <input
+    type="checkbox"
+    [checked]="isSelected(option().value)"
+    (change)="selectOption.emit({ value: option().value, event: $event })"
+    class="h-4 w-4"
+    [disabled]="disabled()"
+  />
+  <span class="ml-2">{{ option().label }}</span>
+</label>

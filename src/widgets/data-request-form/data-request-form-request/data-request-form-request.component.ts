@@ -1,11 +1,12 @@
-import { Component, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { environment } from '@/environments/environment';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { getFormControl } from '@/shared/lib/form.helper';
-import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
+import { getErrorMessage, getFormControl } from '@/shared/lib/form.helper';
+import { AgridataMultiSelectComponent } from '@/shared/ui/agridata-multi-select';
+import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
 import { FormControlComponent } from '@/shared/ui/form-control';
 import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
 
@@ -14,33 +15,112 @@ import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
  * into selectable options, and provides form controls for multilingual titles, descriptions,
  * and purposes.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2025-02-03
  */
 @Component({
   selector: 'app-data-request-form-request',
-  imports: [ReactiveFormsModule, FormControlComponent, I18nDirective],
+  imports: [
+    AgridataSelectComponent,
+    FormControlComponent,
+    I18nDirective,
+    ReactiveFormsModule,
+    AgridataMultiSelectComponent,
+  ],
   templateUrl: './data-request-form-request.component.html',
 })
 export class DataRequestFormRequestComponent {
-  readonly i18nService = inject(I18nService);
-  readonly metaDataService = inject(MasterDataService);
+  // Injects
+  private readonly i18nService = inject(I18nService);
+  private readonly metaDataService = inject(MasterDataService);
 
+  // Constants
+  protected readonly ControlTypes = ControlTypes;
+  protected readonly getFormControl = getFormControl;
+  protected readonly productDataLink = `${environment.appBaseUrl}/cms/data-consumer#dataProduct`;
+
+  // Input properties
   readonly form = input<FormGroup>();
   readonly formDisabled = input<boolean>(false);
 
-  readonly products = signal<MultiSelectOption[]>([]);
+  // Signals
+  protected readonly selectedCategory = signal<string | null>(null);
 
-  readonly ControlTypes = ControlTypes;
-  readonly getFormControl = getFormControl;
-  readonly productDataLink = `${environment.appBaseUrl}/cms/data-consumer#dataProduct`;
+  // Computed Signals
+  protected readonly allSystemsLabel = computed(() =>
+    this.i18nService.translate('data-request.form.products.allSystems'),
+  );
 
-  readonly updateProductsEffect = effect(() => {
-    const products = this.metaDataService.dataProducts;
-    this.products.set(
-      products().map((p) => ({
-        value: p.id,
-        label: p.name?.[this.i18nService.lang() as keyof typeof p.name] ?? '',
+  protected readonly dataProductsCategories = computed(() => {
+    const categories = this.metaDataService.dataProductsCategories();
+    return [
+      { label: this.allSystemsLabel(), value: null },
+      ...categories.map((category) => ({
+        label: category.label,
+        value: category.label,
       })),
-    );
+    ];
   });
+
+  protected readonly productsGrouped = computed(() => {
+    const selectedCat = this.selectedCategory();
+    const allProducts = this.metaDataService.dataProducts();
+    const categories = this.metaDataService.dataProductsCategories();
+
+    if (selectedCat === null) {
+      return categories.map((category) => ({
+        categoryLabel: category.label,
+        options: allProducts
+          .filter((product) => product.dataSourceSystemCode === category.label)
+          .map((product) => ({
+            label: product.name?.[this.i18nService.lang() as keyof typeof product.name] ?? '',
+            value: product.id,
+          })),
+      }));
+    }
+
+    const filteredProducts = allProducts
+      .filter((product) => product.dataSourceSystemCode === selectedCat)
+      .map((product) => ({
+        label: product.name?.[this.i18nService.lang() as keyof typeof product.name] ?? '',
+        value: product.id,
+      }));
+
+    return [
+      {
+        categoryLabel: selectedCat,
+        options: filteredProducts,
+      },
+    ];
+  });
+
+  // Effects
+  private readonly categoryChangeEffect = effect(() => {
+    const category = this.selectedCategory();
+    const productsControl = getFormControl(this.form()!, 'request.products');
+    if (productsControl && category !== null) {
+      productsControl.setValue([]);
+    }
+  });
+
+  // Protected methods
+  protected onCategoryChange(value: string | number | null): void {
+    this.selectedCategory.set(value as string | null);
+  }
+
+  protected hasProductsError(): boolean {
+    const control = getFormControl(this.form()!, 'request.products');
+    return (control?.touched && control?.invalid) ?? false;
+  }
+
+  protected getProductsErrorMessage(): string | null {
+    const control = getFormControl(this.form()!, 'request.products');
+    if (control?.touched && control?.invalid) {
+      const errors = control.errors;
+      if (errors) {
+        const errorKey = Object.keys(errors)[0];
+        return getErrorMessage(control, errorKey);
+      }
+    }
+    return null;
+  }
 }
