@@ -1,3 +1,9 @@
+## [1.8.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.5...v1.8.0-rc.6) (2026-02-05)
+
+### Features
+
+- **ui:** multi-select categories ([72b9e4b](https://github.com/agridata-ch/frontend/commit/72b9e4b0a48305e886b42fcaad42d85cf0145a40)), closes [DIGIB2-979](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-979)
+
 ## [1.8.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.4...v1.8.0-rc.5) (2026-02-02)
 
 ### Features
