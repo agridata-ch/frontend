@@ -97,8 +97,20 @@ export class DataRequestFormRequestComponent {
   private readonly categoryChangeEffect = effect(() => {
     const category = this.selectedCategory();
     const productsControl = getFormControl(this.form()!, 'request.products');
-    if (productsControl && category !== null) {
-      productsControl.setValue([]);
+
+    if (!productsControl || category === null) {
+      return;
+    }
+
+    const currentProducts = (productsControl.value as string[]) ?? [];
+    const allProducts = this.metaDataService.dataProducts();
+
+    const validProducts = currentProducts.filter((id) =>
+      allProducts.some((p) => p.id === id && p.dataSourceSystemCode === category),
+    );
+
+    if (validProducts.length !== currentProducts.length) {
+      productsControl.setValue(validProducts);
     }
   });
 

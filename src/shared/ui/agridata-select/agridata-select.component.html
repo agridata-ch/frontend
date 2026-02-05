@@ -21,7 +21,7 @@
   @if (isDropdownOpen()) {
     <div
       #popover
-      class="absolut z-50 w-full bg-white border border-gray-300 rounded-md shadow-lg origin-top-left absolute left-0 bottom-full"
+      class="z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg origin-top-left absolute left-0 bottom-full overflow-hidden"
       [class.origin-top-left]="openAbove()"
       [class.bottom-full]="openAbove()"
       [class.origin-bottom-left]="!openAbove()"
