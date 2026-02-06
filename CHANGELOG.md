@@ -1,3 +1,9 @@
+## [1.8.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.9...v1.8.0-rc.10) (2026-02-06)
+
+### Bug Fixes
+
+- **env:** adds new agridata-testing environment in angular.json ([bbfc8fe](https://github.com/agridata-ch/frontend/commit/bbfc8fe52255757ec2e1c8f7bb00d1c4fd198ca0)), closes [DIGIB2-1213](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1213)
+
 ## [1.8.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.8...v1.8.0-rc.9) (2026-02-06)
 
 ### Features
