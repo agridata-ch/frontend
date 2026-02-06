@@ -1,3 +1,9 @@
+## [1.8.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.7...v1.8.0-rc.8) (2026-02-06)
+
+### Bug Fixes
+
+- **data-request:** fix auto-select ([068e827](https://github.com/agridata-ch/frontend/commit/068e827a71fe99870604c7152168bf164528d426)), closes [DIGIB2-979](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-979)
+
 ## [1.8.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.6...v1.8.0-rc.7) (2026-02-06)
 
 ### Bug Fixes
