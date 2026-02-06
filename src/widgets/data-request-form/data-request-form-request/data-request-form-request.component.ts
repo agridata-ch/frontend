@@ -52,13 +52,17 @@ export class DataRequestFormRequestComponent {
 
   protected readonly dataProductsCategories = computed(() => {
     const categories = this.metaDataService.dataProductsCategories();
-    return [
-      { label: this.allSystemsLabel(), value: null },
-      ...categories.map((category) => ({
-        label: category.label,
-        value: category.label,
-      })),
-    ];
+    const mappedCategories = categories.map((category) => ({
+      label: category.label,
+      value: category.label,
+    }));
+
+    // If only one category, don't show "All" option
+    if (categories.length === 1) {
+      return mappedCategories;
+    }
+
+    return [{ label: this.allSystemsLabel(), value: null }, ...mappedCategories];
   });
 
   protected readonly productsGrouped = computed(() => {
@@ -111,6 +115,13 @@ export class DataRequestFormRequestComponent {
 
     if (validProducts.length !== currentProducts.length) {
       productsControl.setValue(validProducts);
+    }
+  });
+
+  private readonly singleCategoryAutoSelectEffect = effect(() => {
+    const categories = this.metaDataService.dataProductsCategories();
+    if (categories.length === 1 && this.selectedCategory() === null) {
+      this.selectedCategory.set(categories[0].label);
     }
   });
 
