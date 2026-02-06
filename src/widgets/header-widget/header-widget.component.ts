@@ -86,6 +86,8 @@ export class HeaderWidgetComponent {
         return 'border-t-green-500';
       case 'DEV':
         return 'border-t-orange-400';
+      case 'TEST':
+        return 'border-t-purple-400';
       case 'INT':
         return 'border-t-blue-500';
       default:
