@@ -9,6 +9,7 @@ on:
         type: choice
         options:
           - 'develop'
+          - 'testing'
           - 'integration'
           - 'production'
       version:
@@ -27,6 +28,7 @@ jobs:
         run: |
           account_id=$(jq -r --arg env "${{ github.event.inputs.environment }}" '.[$env] // empty' <<< '{
             "develop": "108782064107",
+            "testing": "472294263228",
             "integration": "863518438092",
             "production": "183295418748"
           }')

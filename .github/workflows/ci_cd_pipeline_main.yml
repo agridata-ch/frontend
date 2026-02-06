@@ -34,7 +34,27 @@ jobs:
     with:
       branch-name: 'main'
 
-  build-push-s3:
+  build-push-s3-testing:
+    if: github.ref == 'refs/heads/main'
+    name: '.'
+    uses: ./.github/workflows/reusable__build_push_s3.yml
+    needs: read-version
+    secrets: inherit
+    with:
+      account-id: 472294263228 # testing
+      version: ${{needs.read-version.outputs.version}}
+
+  set-cloudfront-origin-path-testing:
+    if: github.ref == 'refs/heads/main'
+    name: '.'
+    uses: ./.github/workflows/reusable__set_cloudfront_origin_path.yml
+    needs: [read-version, build-push-s3-testing]
+    secrets: inherit
+    with:
+      account-id: 472294263228 # testing
+      cloudfront-origin-path: ${{needs.read-version.outputs.version}}
+
+  build-push-s3-integration:
     if: github.ref == 'refs/heads/main'
     name: '.'
     uses: ./.github/workflows/reusable__build_push_s3.yml
@@ -44,11 +64,11 @@ jobs:
       account-id: 863518438092 # integration
       version: ${{needs.read-version.outputs.version}}
 
-  set-cloudfront-origin-path:
+  set-cloudfront-origin-path-integration:
     if: github.ref == 'refs/heads/main'
     name: '.'
     uses: ./.github/workflows/reusable__set_cloudfront_origin_path.yml
-    needs: [read-version, build-push-s3]
+    needs: [read-version, build-push-s3-integration]
     secrets: inherit
     with:
       account-id: 863518438092 # integration
