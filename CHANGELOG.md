@@ -1,3 +1,9 @@
+## [1.8.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.6...v1.8.0-rc.7) (2026-02-06)
+
+### Bug Fixes
+
+- **data-request:** fix select system via product ([d534dd7](https://github.com/agridata-ch/frontend/commit/d534dd74aa75bb310c963f908cd622b76faa19fd)), closes [DIGIB2-979](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-979)
+
 ## [1.8.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.5...v1.8.0-rc.6) (2026-02-05)
 
 ### Features
