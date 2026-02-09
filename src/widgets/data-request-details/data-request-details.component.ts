@@ -31,7 +31,7 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
 /**
  * Displays detailed information about a data request in a sidepanel
  *
- * CommentLastReviewed: 2026-01-09
+ * CommentLastReviewed: 2026-02-09
  */
 @Component({
   selector: 'app-data-request-details',
@@ -53,16 +53,15 @@ export class DataRequestDetailsComponent {
   // Injects
   private readonly dataRequestService = inject(DataRequestService);
   private readonly errorService = inject(ErrorHandlerService);
-  private readonly router = inject(Router);
   private readonly i18nService = inject(I18nService);
   private readonly metaDataService = inject(MasterDataService);
+  private readonly router = inject(Router);
 
   // Input properties
   readonly dataRequestId = input.required<string>();
 
   // Constants
   protected readonly locale = this.i18nService.lang();
-  protected readonly products = this.metaDataService.dataProducts;
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
   protected readonly BadgeSize = BadgeSize;
@@ -73,24 +72,28 @@ export class DataRequestDetailsComponent {
   protected readonly copyToClipboard = copyToClipboard;
   protected readonly faSpinnerThird = faSpinnerThird;
   protected readonly faCopy = faCopy;
+
   // Signals
   protected readonly refreshListNeeded = signal(false);
 
   // Computed Signals
-  protected dataRequest = computed(() => {
+  protected readonly dataRequest = computed(() => {
     if (this.dataRequestResource.isLoading()) {
       return null;
     }
-    return this.dataRequestResource.value();
+    return this.dataRequestResource.value() ?? null;
   });
   protected readonly formattedSubmissionDate = computed(() =>
     formatDate(this.dataRequest()?.submissionDate),
   );
-  readonly productsList = computed(() =>
-    this.products()?.filter((product: DataProductDto) =>
-      this.dataRequest()?.products?.includes(product.id),
-    ),
-  );
+  protected readonly productsList = computed(() => {
+    const dataRequest = this.dataRequest();
+    if (!dataRequest?.dataProviderId) {
+      return [];
+    }
+    const products = this.metaDataService.getProductsForProvider(dataRequest.dataProviderId);
+    return products.filter((product: DataProductDto) => dataRequest.products?.includes(product.id));
+  });
   protected readonly invitationLink = computed(() => {
     return `${globalThis.location.origin}/consent-requests/create/${this.dataRequestId()}`;
   });
@@ -103,6 +106,13 @@ export class DataRequestDetailsComponent {
   });
 
   // Effects
+  private readonly loadProductsEffect = effect(() => {
+    const providerId = this.dataRequest()?.dataProviderId;
+    if (providerId) {
+      this.metaDataService.fetchProductsByProvider(providerId);
+    }
+  });
+
   private readonly errorHandlerEffect = effect(() => {
     const error = this.dataRequestResource.error();
     if (error) {

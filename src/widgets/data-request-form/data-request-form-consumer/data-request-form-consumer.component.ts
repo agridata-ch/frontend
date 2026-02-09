@@ -9,6 +9,8 @@ import {
   signal,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { UidRegisterService } from '@/entities/api/uid-register.service';
@@ -39,6 +41,7 @@ import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
     AgridataInputComponent,
     ButtonComponent,
     AgridataAvatarComponent,
+    FontAwesomeModule,
   ],
   templateUrl: './data-request-form-consumer.component.html',
 })
@@ -59,6 +62,7 @@ export class DataRequestFormConsumerComponent {
   readonly AvatarSize = AvatarSize;
   readonly AvatarSkin = AvatarSkin;
   readonly getFormControl = getFormControl;
+  readonly faSpinnerThird = faSpinnerThird;
   readonly uidInfoResource = resource({
     loader: () => this.uidSearchService.fetchUidInfosOfCurrentUser(),
   });

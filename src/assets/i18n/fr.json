@@ -111,7 +111,8 @@
         "headline": "Informations sur la référence des données",
         "provider": {
           "label": "Fournisseur de données",
-          "sublabel": "Actuellement, un seul fournisseur de données est disponible. D'autres fournisseurs sont continuellement connectés."
+          "sublabel": "Actuellement, un seul fournisseur de données est disponible. D'autres fournisseurs sont continuellement connectés.",
+          "placeholder": "Sélectionner un fournisseur de données"
         },
         "products": {
           "label": "Quel produit de données souhaitez-vous ?",
@@ -403,7 +404,8 @@
     },
     "formControl": {
       "multiSelect": {
-        "selectAll": "Tout sélectionner"
+        "selectAll": "Tout sélectionner",
+        "noResults": "Aucun résultat"
       }
     }
   },

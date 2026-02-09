@@ -167,11 +167,14 @@ export class ConsentRequestDetailsComponent {
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.description),
   );
   protected readonly requestId = computed(() => this.request()?.id);
-  protected readonly requestProducts = computed(() =>
-    this.metaDataService
-      .dataProducts()
-      ?.filter((product) => this.request()?.dataRequest?.products?.includes(product.id)),
-  );
+  protected readonly requestProducts = computed(() => {
+    const dataRequest = this.request()?.dataRequest;
+    if (!dataRequest?.dataProviderId) {
+      return [];
+    }
+    const products = this.metaDataService.getProductsForProvider(dataRequest.dataProviderId);
+    return products.filter((product) => dataRequest.products?.includes(product.id));
+  });
   protected readonly requestPurpose = computed(() => {
     const purpose = this.request()?.dataRequest?.purpose;
     return (
@@ -189,6 +192,12 @@ export class ConsentRequestDetailsComponent {
   private readonly checkResourceLoadedEffect = effect(() => {
     if (!this.consentRequestResource.isLoading()) {
       this.detailsOpened.set(true);
+    }
+  });
+  private readonly loadProductsEffect = effect(() => {
+    const providerId = this.request()?.dataRequest?.dataProviderId;
+    if (providerId) {
+      this.metaDataService.fetchProductsByProvider(providerId);
     }
   });
   private readonly checkForRedirectEffect = effect(() => {

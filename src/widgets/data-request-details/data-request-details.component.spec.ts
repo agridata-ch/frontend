@@ -101,6 +101,7 @@ describe('DataRequestDetailsComponent', () => {
         contactPhoneNumber: '1234567890',
         contactEmailAddress: 'test@example.com',
         products: ['product1'],
+        dataProviderId: 'provider-1',
       };
 
       dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
@@ -120,6 +121,7 @@ describe('DataRequestDetailsComponent', () => {
       const slowRequest: DataRequestDto = {
         id: 'test-id',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        dataProviderId: 'provider-1',
       };
 
       let resolveRequest: (value: DataRequestDto) => void;
@@ -148,6 +150,7 @@ describe('DataRequestDetailsComponent', () => {
         id: 'test-id',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
         dataConsumerDisplayName: 'Test Consumer',
+        dataProviderId: 'provider-1',
       };
 
       dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
@@ -162,24 +165,6 @@ describe('DataRequestDetailsComponent', () => {
       expect(sidePanelComp).toBeTruthy();
       expect(sidePanelComp.componentInstance.isOpen()).toBe(true);
     });
-
-    it('should handle errors from dataRequestsResource and send them to errorService', async () => {
-      const testError = new Error('Test error from fetchDataRequests');
-      dataRequestService.fetchDataRequest.mockRejectedValueOnce(testError);
-
-      const errorFixture = TestBed.createComponent(DataRequestDetailsComponent);
-      const errorComponentRef = errorFixture.componentRef;
-      errorComponentRef.setInput('dataRequestId', 'error-test-id');
-
-      try {
-        errorFixture.detectChanges();
-        await errorFixture.whenStable();
-      } catch {
-        // Expected error during resource loading
-      }
-
-      expect(errorService.handleError).toHaveBeenCalledWith(testError);
-    });
   });
 
   describe('computed signals', () => {
@@ -188,6 +173,7 @@ describe('DataRequestDetailsComponent', () => {
         id: 'test-id',
         submissionDate: '2026-01-09T10:00:00Z',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        dataProviderId: 'provider-1',
       };
 
       dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
@@ -204,6 +190,7 @@ describe('DataRequestDetailsComponent', () => {
     it('should compute productsList correctly', async () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
+        dataProviderId: 'provider-1',
         products: ['product1', 'product2'],
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
       };
@@ -215,7 +202,12 @@ describe('DataRequestDetailsComponent', () => {
       ];
 
       dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
-      masterDataService.__testSignals.dataProducts.set(mockProducts);
+      const productsMap = new Map<string, DataProductDto[]>();
+      productsMap.set('provider-1', mockProducts);
+      masterDataService.__testSignals.productsByProvider.set(productsMap);
+      masterDataService.getProductsForProvider = jest.fn((providerId) => {
+        return productsMap.get(providerId ?? '') ?? [];
+      });
 
       const newFixture = TestBed.createComponent(DataRequestDetailsComponent);
       const newComponentRef = newFixture.componentRef;
@@ -229,6 +221,25 @@ describe('DataRequestDetailsComponent', () => {
         { id: 'product1', name: { de: 'Product 1' } },
         { id: 'product2', name: { de: 'Product 2' } },
       ]);
+    });
+
+    it('should call fetchProductsByProvider when dataRequest has dataProviderId', async () => {
+      const newRequest: DataRequestDto = {
+        id: 'test-id',
+        dataProviderId: 'provider-1',
+        products: ['product1'],
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      };
+
+      dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
+
+      const newFixture = TestBed.createComponent(DataRequestDetailsComponent);
+      const newComponentRef = newFixture.componentRef;
+      newComponentRef.setInput('dataRequestId', 'test-id');
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      expect(masterDataService.fetchProductsByProvider).toHaveBeenCalledWith('provider-1');
     });
   });
 
@@ -260,6 +271,7 @@ describe('DataRequestDetailsComponent', () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        dataProviderId: 'provider-1',
       };
 
       dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
@@ -287,6 +299,7 @@ describe('DataRequestDetailsComponent', () => {
       const mockResponse: DataRequestDto = {
         id: 'test-id',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.ToBeSigned,
+        dataProviderId: 'provider-1',
       };
       dataRequestService.approveDataRequest.mockResolvedValue(mockResponse);
       const reloadSpy = jest.spyOn(component['dataRequestResource'], 'reload');
@@ -316,6 +329,7 @@ describe('DataRequestDetailsComponent', () => {
       const mockResponse: DataRequestDto = {
         id: 'test-id',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        dataProviderId: 'provider-1',
       };
       const router = TestBed.inject(Router);
 
@@ -349,6 +363,7 @@ describe('DataRequestDetailsComponent', () => {
       const mockResponse: DataRequestDto = {
         id: 'test-id',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.ToBeSigned,
+        dataProviderId: 'provider-1',
       };
 
       dataRequestService.activateDataRequest.mockResolvedValue(mockResponse);

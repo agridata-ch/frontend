@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { DataProductDto } from '@/entities/openapi';
+import { DataProductDto, DataProviderDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
 import {
@@ -53,9 +53,9 @@ const mockDataProducts: DataProductDto[] = [
   },
 ];
 
-const mockCategories = [
-  { label: 'AGIS', value: 'AGIS' },
-  { label: 'TVD', value: 'TVD' },
+const mockProviders: DataProviderDto[] = [
+  { id: 'provider-1', name: { de: 'Provider 1' } },
+  { id: 'provider-2', name: { de: 'Provider 2' } },
 ];
 
 let fixture: ComponentFixture<DataRequestFormRequestComponent>;
@@ -89,13 +89,21 @@ describe('DataRequestFormRequestComponent', () => {
   });
 
   describe('dataProductsCategories', () => {
-    it('should show only "All Systems" option when categories are empty', () => {
-      expect(component['dataProductsCategories']().length).toBe(1);
-      expect(component['dataProductsCategories']()[0].value).toBeNull();
+    it('should return empty array when no products loaded', () => {
+      expect(component['dataProductsCategories']().length).toBe(0);
     });
 
-    it('should include all categories plus "All Systems" option', () => {
-      metadataService.__testSignals.dataProductsCategories.set(mockCategories);
+    it('should include all categories plus "All Systems" option when multiple categories', () => {
+      // Set up products for the selected provider
+      const productsMap = new Map<string, DataProductDto[]>();
+      productsMap.set('provider-1', mockDataProducts);
+      metadataService.__testSignals.productsByProvider.set(productsMap);
+      metadataService.getProductsForProvider = jest.fn((providerId) => {
+        return productsMap.get(providerId ?? '') ?? [];
+      });
+
+      // Select a provider to trigger products loading
+      component['selectedProviderId'].set('provider-1');
       fixture.detectChanges();
 
       const categories = component['dataProductsCategories']();
@@ -104,12 +112,37 @@ describe('DataRequestFormRequestComponent', () => {
       expect(categories[1].value).toBe('AGIS');
       expect(categories[2].value).toBe('TVD');
     });
+
+    it('should not include "All Systems" when only one category', () => {
+      const singleCategoryProducts: DataProductDto[] = [
+        { id: 'product-1', name: { de: 'Produkt 1' }, dataSourceSystemCode: 'AGIS' },
+      ];
+      const productsMap = new Map<string, DataProductDto[]>();
+      productsMap.set('provider-1', singleCategoryProducts);
+      metadataService.__testSignals.productsByProvider.set(productsMap);
+      metadataService.getProductsForProvider = jest.fn((providerId) => {
+        return productsMap.get(providerId ?? '') ?? [];
+      });
+
+      component['selectedProviderId'].set('provider-1');
+      fixture.detectChanges();
+
+      const categories = component['dataProductsCategories']();
+      expect(categories.length).toBe(1);
+      expect(categories[0].value).toBe('AGIS');
+    });
   });
 
   describe('productsGrouped', () => {
     beforeEach(() => {
-      metadataService.__testSignals.dataProducts.set(mockDataProducts);
-      metadataService.__testSignals.dataProductsCategories.set(mockCategories);
+      const productsMap = new Map<string, DataProductDto[]>();
+      productsMap.set('provider-1', mockDataProducts);
+      metadataService.__testSignals.productsByProvider.set(productsMap);
+      metadataService.getProductsForProvider = jest.fn((providerId) => {
+        return productsMap.get(providerId ?? '') ?? [];
+      });
+
+      component['selectedProviderId'].set('provider-1');
       fixture.detectChanges();
     });
 
@@ -162,6 +195,32 @@ describe('DataRequestFormRequestComponent', () => {
       await fixture.whenStable();
 
       expect(productsControl?.value).toEqual([]);
+    });
+  });
+
+  describe('onProviderChange', () => {
+    it('should update selectedProviderId signal', () => {
+      component['onProviderChange']('provider-1');
+      expect(component['selectedProviderId']()).toBe('provider-1');
+    });
+
+    it('should clear products and category when provider changes', () => {
+      const form = component.form()!;
+      const productsControl = form.get('request.products');
+      productsControl?.setValue(['product-1']);
+      component['selectedCategory'].set('AGIS');
+
+      component['onProviderChange']('provider-2');
+
+      expect(productsControl?.value).toEqual([]);
+      expect(component['selectedCategory']()).toBeNull();
+    });
+
+    it('should call fetchProductsByProvider when provider is selected', () => {
+      component['onProviderChange']('provider-1');
+      fixture.detectChanges();
+
+      expect(metadataService.fetchProductsByProvider).toHaveBeenCalledWith('provider-1');
     });
   });
 
@@ -226,6 +285,26 @@ describe('DataRequestFormRequestComponent', () => {
       fixture.detectChanges();
 
       expect(component.formDisabled()).toBe(true);
+    });
+  });
+
+  describe('dataProviderId input', () => {
+    it('should initialize selectedProviderId from input', async () => {
+      componentRef.setInput('dataProviderId', 'provider-1');
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(component['selectedProviderId']()).toBe('provider-1');
+    });
+  });
+
+  describe('singleProviderAutoSelectEffect', () => {
+    it('should auto-select provider when only one provider available', async () => {
+      metadataService.__testSignals.dataProviders.set([mockProviders[0]]);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(component['selectedProviderId']()).toBe('provider-1');
     });
   });
 });

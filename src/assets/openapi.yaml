@@ -115,6 +115,7 @@ components:
           type: object
           required:
           - id
+          - dataProviderId
           - stateCode
           description: Details of the underlying data request
           properties:
@@ -124,6 +125,14 @@ components:
               examples:
               - 3fa85f64-5717-4562-b3fc-2c963f66afb7
               description: Unique identifier of the data request
+            dataProviderId:
+              $ref: "#/components/schemas/UUID"
+              type: string
+              examples:
+              - e37b148b-9a0f-4c2e-80c5-fe9c9416b640
+              description: Unique identifier of the data provider responsible for
+                this data request. This value is derived from the data source systems
+                of the associated data products.
             humanFriendlyId:
               type: string
               examples:
@@ -266,11 +275,16 @@ components:
           - 3fa85f64-5717-4562-b3fc-2c963f66afb7
           description: Unique identifier of the product
         dataSourceSystemCode:
-          $ref: "#/components/schemas/DataSourceSystemEnum"
           type: string
           examples:
           - AGIS
-          description: From which data source system this product originates
+          description: Code of data source system from which this product originates
+        dataSourceSystem:
+          $ref: "#/components/schemas/DataSourceSystemDto"
+          type: object
+          examples:
+          - AGIS
+          description: Code of data source system from which this product originates
         name:
           $ref: "#/components/schemas/TranslationDto"
           type: object
@@ -281,6 +295,49 @@ components:
           $ref: "#/components/schemas/TranslationDto"
           type: object
           description: Description of the product
+    DataProductV2Dto:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+          description: Unique identifier of the product
+        dataSourceSystemCode:
+          type: string
+          examples:
+          - AGIS
+          description: Code of data source system from which this product originates
+        dataSourceSystem:
+          $ref: "#/components/schemas/DataSourceSystemDto"
+          type: object
+          examples:
+          - AGIS
+          description: Code of data source system from which this product originates
+        name:
+          $ref: "#/components/schemas/TranslationDto"
+          type: object
+          examples:
+          - R01
+          description: How this product is categorized
+        description:
+          $ref: "#/components/schemas/TranslationDto"
+          type: object
+          description: Description of the product
+    DataProviderDto:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+        code:
+          type: string
+        name:
+          $ref: "#/components/schemas/TranslationDto"
     DataRequestDescriptionDto:
       type: object
       properties:
@@ -309,6 +366,7 @@ components:
       type: object
       required:
       - id
+      - dataProviderId
       - stateCode
       description: Details of the underlying data request
       properties:
@@ -318,6 +376,14 @@ components:
           examples:
           - 3fa85f64-5717-4562-b3fc-2c963f66afb7
           description: Unique identifier of the data request
+        dataProviderId:
+          $ref: "#/components/schemas/UUID"
+          type: string
+          examples:
+          - e37b148b-9a0f-4c2e-80c5-fe9c9416b640
+          description: Unique identifier of the data provider responsible for this
+            data request. This value is derived from the data source systems of the
+            associated data products.
         humanFriendlyId:
           type: string
           examples:
@@ -530,11 +596,139 @@ components:
             format: uuid
             pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           description: List of data products requested
-    DataSourceSystemEnum:
-      type: string
-      enum:
-      - AGIS
-      - TVD
+    DataRequestV2Dto:
+      type: object
+      required:
+      - id
+      - stateCode
+      description: Data transfer object representing a data request
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+          description: Unique identifier of the data request
+        dataProviderId:
+          $ref: "#/components/schemas/UUID"
+        humanFriendlyId:
+          type: string
+          examples:
+          - GL56
+          description: Human friendly id of the data request
+        submissionDate:
+          type: string
+          format: date
+          examples:
+          - 2025-06-16T11:04:51.823889
+          description: Date and time when the data request was submitted
+        title:
+          $ref: "#/components/schemas/DataRequestTitleDto"
+          type: object
+          description: Title of the data request
+        description:
+          $ref: "#/components/schemas/DataRequestDescriptionDto"
+          type: object
+          description: 'Description of the data request '
+        purpose:
+          $ref: "#/components/schemas/DataRequestPurposeDto"
+          type: object
+          description: Purpose of the data request
+        products:
+          type: array
+          items:
+            type: string
+            format: uuid
+            pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          description: List of data products requested
+        stateCode:
+          type:
+          - string
+          - object
+          enum:
+          - DRAFT
+          - IN_REVIEW
+          - TO_BE_SIGNED
+          - ACTIVE
+          description: State of the data request
+        dataConsumerLegalName:
+          type: string
+          examples:
+          - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
+          maxLength: 255
+          description: LegalName of the data consumer taken from the uid register
+        dataConsumerDisplayName:
+          type: string
+          examples:
+          - Bio Suisse
+          maxLength: 255
+          description: Shorter name of the data consumer defined by the data consumer
+            used when displaying the request to the producer
+        dataConsumerUid:
+          type: string
+          examples:
+          - CHE101708094
+          description: Uid of the data consumer
+        dataConsumerCity:
+          type: string
+          examples:
+          - Basel
+          maxLength: 120
+          description: City of the data consumer
+        dataConsumerZip:
+          type: string
+          examples:
+          - "4052"
+          maxLength: 10
+          description: Zip code of the data consumer
+        dataConsumerStreet:
+          type: string
+          examples:
+          - Peter Merian-Str. 34
+          maxLength: 255
+          description: Street of the data consumer
+        dataConsumerCountry:
+          type: string
+          examples:
+          - CH
+          maxLength: 2
+          description: 2 letter country code of the data consumer
+        contactPhoneNumber:
+          type: string
+          examples:
+          - +41 79 123 45 67
+          maxLength: 50
+          description: Contact phone number for the data request
+        contactEmailAddress:
+          type: string
+          examples:
+          - example@labelorganisation.ch
+          maxLength: 255
+          description: Contact email address for the data request
+        dataConsumerLogoBase64:
+          type: string
+          examples:
+          - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+          description: Base64-encoded logo of the data consumer
+        targetGroup:
+          type: string
+          maxLength: 150
+        validRedirectUriRegex:
+          type: string
+          examples:
+          - ^https:\/\/www\.dummy-label-organisation\/.*$
+          description: Regex of valid redirect_uri
+    DataSourceSystemDto:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+        code:
+          type: string
+        name:
+          $ref: "#/components/schemas/TranslationDto"
     DataTransferResponse:
       type: object
       description: Response containing the requested product data and metadata about
@@ -906,6 +1100,8 @@ tags:
 - name: Data Products
   description: Enables retrieval of available data products that can be requested
     and used by Users in the data sharing process.
+- name: Data Providers
+  description: Enables retrieval of data providers and their available data products.
 - name: Data Requests
   description: "Provides access to data requests for consumers and admins. Consumers\
     \ can create, update, submit, and retrieve their own data requests, while admins\
@@ -1410,6 +1606,172 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
+  /api/agreement/v2/data-requests:
+    get:
+      description: "Retrieves a list of data requests. Admin users receive all data\
+        \ requests, while consumers receive only the data requests they own."
+      operationId: getDataRequestsV2
+      tags:
+      - Data Requests
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataRequestV2Dto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Requests V 2
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+    post:
+      description: Creates a new data request in draft status. Only accessible to
+        users with the consumer role.
+      operationId: createDataRequestDraftV2
+      tags:
+      - Data Requests
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DataRequestUpdateDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataRequestV2Dto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Create Data Request Draft V 2
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+  /api/agreement/v2/data-requests/{id}:
+    put:
+      description: Updates the details of an existing data request. Only accessible
+        to the consumer who owns the data request.
+      operationId: updateDataRequestDetailsV2
+      tags:
+      - Data Requests
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DataRequestUpdateDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataRequestV2Dto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Update Data Request Details V 2
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+    get:
+      description: 'Retrieves a specific data request by its ID. Accessible to admin
+        users or the consumer who owns the data request. '
+      operationId: getDataRequestV2
+      tags:
+      - Data Requests
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataRequestV2Dto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Request V 2
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
   /api/agreement/v2/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests:
     get:
       description: Retrieves all consent requests associated with a specific data
@@ -1455,6 +1817,53 @@ paths:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Consent Requests Of Data Request And Kt Id Pv 2
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+  /api/agreement/v2/data-requests/{id}/status:
+    put:
+      description: sets status of data request. Only accessible to the consumer who
+        owns the data request and to admins. Only specific transitions are allowed.
+      operationId: setDataRequestStatusV2
+      tags:
+      - Data Requests
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DataRequestStateEnum"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataRequestV2Dto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Set Data Request Status V 2
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
@@ -1609,6 +2018,134 @@ paths:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Data Products
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Support
+  /api/products/v1/data-providers:
+    get:
+      description: "Retrieves the list of all available data providers. Accessible\
+        \ to users with the producer, consumer, admin, or provider role."
+      operationId: getDataProviders
+      tags:
+      - Data Providers
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataProviderDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Providers
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Support
+  /api/products/v1/data-providers/{providerId}:
+    get:
+      description: Retrieves a specific data provider.
+      operationId: getDataProviderById
+      tags:
+      - Data Providers
+      parameters:
+      - name: providerId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProviderDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Provider By Id
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Support
+  /api/products/v1/data-providers/{providerId}/products:
+    get:
+      description: Retrieves all data products belonging to a specific data provider.
+      operationId: getDataProductsByProviderId
+      tags:
+      - Data Providers
+      parameters:
+      - name: providerId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataProductV2Dto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Products By Provider Id
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Einwilliger

@@ -37,6 +37,7 @@ describe('DataRequestPreviewComponent', () => {
     // Set required input before detectChanges
     const mockDataRequest: DataRequestDto = {
       id: 'test-id',
+      dataProviderId: 'provider-1',
       stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
       title: { de: 'Test Title' },
       description: { de: 'Test Description' },
@@ -60,15 +61,22 @@ describe('DataRequestPreviewComponent', () => {
 
       const mockDataRequest: DataRequestDto = {
         id: 'test-id',
+        dataProviderId: 'provider-1',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
         products: ['product1'],
       };
 
-      masterDataService.__testSignals.dataProducts.set(mockProducts);
+      const productsMap = new Map<string, DataProductDto[]>();
+      productsMap.set('provider-1', mockProducts);
+      masterDataService.__testSignals.productsByProvider.set(productsMap);
+      masterDataService.getProductsForProvider = jest.fn((providerId) => {
+        return productsMap.get(providerId ?? '') ?? [];
+      });
+
       componentRef.setInput('dataRequest', mockDataRequest);
       fixture.detectChanges();
 
-      const productsList = component.productsList();
+      const productsList = component['productsList']();
       expect(productsList).toHaveLength(1);
       expect(productsList).toEqual([{ id: 'product1', name: { de: 'Product 1' } }]);
     });
@@ -78,15 +86,51 @@ describe('DataRequestPreviewComponent', () => {
 
       const mockDataRequest: DataRequestDto = {
         id: 'test-id',
+        dataProviderId: 'provider-1',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
         products: [],
       };
 
-      masterDataService.__testSignals.dataProducts.set(mockProducts);
+      const productsMap = new Map<string, DataProductDto[]>();
+      productsMap.set('provider-1', mockProducts);
+      masterDataService.__testSignals.productsByProvider.set(productsMap);
+      masterDataService.getProductsForProvider = jest.fn((providerId) => {
+        return productsMap.get(providerId ?? '') ?? [];
+      });
+
       componentRef.setInput('dataRequest', mockDataRequest);
       fixture.detectChanges();
 
-      const productsList = component.productsList();
+      const productsList = component['productsList']();
+      expect(productsList).toHaveLength(0);
+    });
+
+    it('should call fetchProductsByProvider when dataRequest has dataProviderId', () => {
+      const mockDataRequest: DataRequestDto = {
+        id: 'test-id',
+        dataProviderId: 'provider-1',
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        products: ['product1'],
+      };
+
+      componentRef.setInput('dataRequest', mockDataRequest);
+      fixture.detectChanges();
+
+      expect(masterDataService.fetchProductsByProvider).toHaveBeenCalledWith('provider-1');
+    });
+
+    it('should return empty productsList when no dataProviderId', () => {
+      const mockDataRequest: DataRequestDto = {
+        id: 'test-id',
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        products: ['product1'],
+        dataProviderId: '',
+      };
+
+      componentRef.setInput('dataRequest', mockDataRequest);
+      fixture.detectChanges();
+
+      const productsList = component['productsList']();
       expect(productsList).toHaveLength(0);
     });
   });

@@ -1,6 +1,6 @@
 @if (uidInfoResource.isLoading()) {
   <div class="flex items-center justify-center h-full">
-    <span class="text-gray-500">loading</span>
+    <fa-icon animation="spin" [icon]="faSpinnerThird"></fa-icon>
   </div>
 } @else {
   <form

@@ -5,6 +5,7 @@ api.module.ts
 api/api.ts
 api/consentRequests.service.ts
 api/dataProducts.service.ts
+api/dataProviders.service.ts
 api/dataRequests.service.ts
 api/dataTransfer.service.ts
 api/infoResource.service.ts
@@ -25,13 +26,16 @@ model/consentRequestProducerViewDtoDataRequestStateCode.ts
 model/consentRequestStateEnum.ts
 model/createConsentRequestDto.ts
 model/dataProductDto.ts
+model/dataProductV2Dto.ts
+model/dataProviderDto.ts
 model/dataRequestDescriptionDto.ts
 model/dataRequestDto.ts
 model/dataRequestPurposeDto.ts
 model/dataRequestStateEnum.ts
 model/dataRequestTitleDto.ts
 model/dataRequestUpdateDto.ts
-model/dataSourceSystemEnum.ts
+model/dataRequestV2Dto.ts
+model/dataSourceSystemDto.ts
 model/dataTransferResponse.ts
 model/exceptionDto.ts
 model/exceptionDto1.ts

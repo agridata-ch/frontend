@@ -14,11 +14,11 @@ import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
 
 
 /**
- * Details of the underlying data request
+ * Data transfer object representing a data request
  */
-export interface ConsentRequestProducerViewDtoDataRequest { 
+export interface DataRequestV2Dto { 
     id: string;
-    dataProviderId: string;
+    dataProviderId?: string;
     /**
      * Human friendly id of the data request
      */
@@ -90,7 +90,7 @@ export interface ConsentRequestProducerViewDtoDataRequest {
      */
     validRedirectUriRegex?: string;
 }
-export namespace ConsentRequestProducerViewDtoDataRequest {
+export namespace DataRequestV2Dto {
 }
 
 

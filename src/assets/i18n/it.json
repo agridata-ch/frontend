@@ -111,7 +111,8 @@
         "headline": "Informazioni sull’acquisizione di dati",
         "provider": {
           "label": "Fornitore di dati",
-          "sublabel": "Attualmente è disponibile solo un fornitore di dati. Altri fornitori vengono continuamente collegati."
+          "sublabel": "Attualmente è disponibile solo un fornitore di dati. Altri fornitori vengono continuamente collegati.",
+          "placeholder": "Selezionare il fornitore dei dati"
         },
         "products": {
           "label": "Quale prodotto desideri?",
@@ -404,7 +405,8 @@
     },
     "formControl": {
       "multiSelect": {
-        "selectAll": "Seleziona tutto"
+        "selectAll": "Seleziona tutto",
+        "noResults": "Nessun risultato"
       }
     }
   },
