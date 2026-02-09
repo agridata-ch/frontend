@@ -11,14 +11,14 @@ import { DataSourceSystemDto } from './dataSourceSystemDto';
 import { TranslationDto } from './translationDto';
 
 
-export interface DataProductDto { 
+export interface DataProductV2Dto { 
     id: string;
     /**
      * Code of data source system from which this product originates
      */
     dataSourceSystemCode?: string;
     /**
-     * Data source system from which this product originates
+     * Code of data source system from which this product originates
      */
     dataSourceSystem?: DataSourceSystemDto;
     /**

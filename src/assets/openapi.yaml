@@ -10,6 +10,188 @@ components:
           type: string
         farmTypeCode:
           $ref: "#/components/schemas/FarmTypeEnum"
+    ConsentRequestAggregationProducerView:
+      type: object
+      required:
+      - id
+      description: Data transfer object representing an aggregation of consent requests
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          description: Unique identifier of the aggregation. Corresponds to the underlying
+            data request ID.
+        dataProducerUid:
+          type: string
+          examples:
+          - CHE123456789
+          description: UID of the data producer
+        stateCode:
+          $ref: "#/components/schemas/ConsentRequestAggregationStateEnum"
+          type: string
+          description: Aggregated state derived from the states of the underlying
+            consent requests
+        showStateAsMigrated:
+          type: boolean
+          examples:
+          - true
+          description: Indicates whether the aggregated state originates from migrated
+            consent requests
+        lastStateChangeDate:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          examples:
+          - 2025-06-16T11:04:51.823889
+          description: Date and time when the state was changed last
+        requestDate:
+          $ref: "#/components/schemas/LocalDate"
+          type: string
+          examples:
+          - 2025-05-19
+          description: Date when the request was made
+        dataRequest:
+          type: object
+          required:
+          - id
+          - dataProviderId
+          - stateCode
+          description: Details of the underlying data request
+          properties:
+            id:
+              $ref: "#/components/schemas/UUID"
+              type: string
+              examples:
+              - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+              description: Unique identifier of the data request
+            dataProviderId:
+              $ref: "#/components/schemas/UUID"
+              type: string
+              examples:
+              - e37b148b-9a0f-4c2e-80c5-fe9c9416b640
+              description: Unique identifier of the data provider responsible for
+                this data request. This value is derived from the data source systems
+                of the associated data products.
+            humanFriendlyId:
+              type: string
+              examples:
+              - GL56
+              description: Human friendly id of the data request
+            submissionDate:
+              type: string
+              format: date
+              examples:
+              - 2025-06-16T11:04:51.823889
+              description: Date and time when the data request was submitted
+            title:
+              $ref: "#/components/schemas/DataRequestTitleDto"
+              type: object
+              description: Title of the data request
+            description:
+              $ref: "#/components/schemas/DataRequestDescriptionDto"
+              type: object
+              description: 'Description of the data request '
+            purpose:
+              $ref: "#/components/schemas/DataRequestPurposeDto"
+              type: object
+              description: Purpose of the data request
+            products:
+              type: array
+              items:
+                type: string
+                format: uuid
+                pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+              description: List of data products requested
+            stateCode:
+              type:
+              - string
+              - object
+              enum:
+              - DRAFT
+              - IN_REVIEW
+              - TO_BE_SIGNED
+              - ACTIVE
+              description: State of the data request
+            dataConsumerLegalName:
+              type: string
+              examples:
+              - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
+              maxLength: 255
+              description: LegalName of the data consumer taken from the uid register
+            dataConsumerDisplayName:
+              type: string
+              examples:
+              - Bio Suisse
+              maxLength: 255
+              description: Shorter name of the data consumer defined by the data consumer
+                used when displaying the request to the producer
+            dataConsumerUid:
+              type: string
+              examples:
+              - CHE101708094
+              description: Uid of the data consumer
+            dataConsumerCity:
+              type: string
+              examples:
+              - Basel
+              maxLength: 120
+              description: City of the data consumer
+            dataConsumerZip:
+              type: string
+              examples:
+              - "4052"
+              maxLength: 10
+              description: Zip code of the data consumer
+            dataConsumerStreet:
+              type: string
+              examples:
+              - Peter Merian-Str. 34
+              maxLength: 255
+              description: Street of the data consumer
+            dataConsumerCountry:
+              type: string
+              examples:
+              - CH
+              maxLength: 2
+              description: 2 letter country code of the data consumer
+            contactPhoneNumber:
+              type: string
+              examples:
+              - +41 79 123 45 67
+              maxLength: 50
+              description: Contact phone number for the data request
+            contactEmailAddress:
+              type: string
+              examples:
+              - example@labelorganisation.ch
+              maxLength: 255
+              description: Contact email address for the data request
+            dataConsumerLogoBase64:
+              type: string
+              examples:
+              - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+              description: Base64-encoded logo of the data consumer
+            targetGroup:
+              type: string
+              maxLength: 150
+            validRedirectUriRegex:
+              type: string
+              examples:
+              - ^https:\/\/www\.dummy-label-organisation\/.*$
+              description: Regex of valid redirect_uri
+        consentRequests:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConsentRequestProducerViewDto"
+    ConsentRequestAggregationStateEnum:
+      type: string
+      enum:
+      - GRANTED
+      - OPENED
+      - DECLINED
+      - PARTIALLY_GRANTED
+      - PARTIALLY_OPENED
     ConsentRequestConsumerViewDto:
       type: object
       deprecated: true
@@ -75,6 +257,36 @@ components:
           description: UID of the data producer
         isCreated:
           type: boolean
+    ConsentRequestFundamentalViewDto:
+      type: object
+      required:
+      - id
+      - dataRequestId
+      description: Data transfer object representing a consent request
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          description: Unique identifier of the consent request
+        dataRequestId:
+          $ref: "#/components/schemas/UUID"
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+          description: Unique identifier of the corresponding data request
+        dataProducerUid:
+          type: string
+          examples:
+          - CHE123456789
+          description: UID of the data producer
+        stateCode:
+          $ref: "#/components/schemas/ConsentRequestStateEnum"
+          type: string
+          examples:
+          - GRANTED
+          description: State of the consent request
     ConsentRequestProducerViewDto:
       type: object
       required:
@@ -115,6 +327,7 @@ components:
           type: object
           required:
           - id
+          - dataProviderId
           - stateCode
           description: Details of the underlying data request
           properties:
@@ -124,6 +337,14 @@ components:
               examples:
               - 3fa85f64-5717-4562-b3fc-2c963f66afb7
               description: Unique identifier of the data request
+            dataProviderId:
+              $ref: "#/components/schemas/UUID"
+              type: string
+              examples:
+              - e37b148b-9a0f-4c2e-80c5-fe9c9416b640
+              description: Unique identifier of the data provider responsible for
+                this data request. This value is derived from the data source systems
+                of the associated data products.
             humanFriendlyId:
               type: string
               examples:
@@ -266,11 +487,14 @@ components:
           - 3fa85f64-5717-4562-b3fc-2c963f66afb7
           description: Unique identifier of the product
         dataSourceSystemCode:
-          $ref: "#/components/schemas/DataSourceSystemEnum"
           type: string
           examples:
           - AGIS
-          description: From which data source system this product originates
+          description: Code of data source system from which this product originates
+        dataSourceSystem:
+          $ref: "#/components/schemas/DataSourceSystemDto"
+          type: object
+          description: Data source system from which this product originates
         name:
           $ref: "#/components/schemas/TranslationDto"
           type: object
@@ -281,6 +505,17 @@ components:
           $ref: "#/components/schemas/TranslationDto"
           type: object
           description: Description of the product
+    DataProviderDto:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+        code:
+          type: string
+        name:
+          $ref: "#/components/schemas/TranslationDto"
     DataRequestDescriptionDto:
       type: object
       properties:
@@ -309,6 +544,7 @@ components:
       type: object
       required:
       - id
+      - dataProviderId
       - stateCode
       description: Details of the underlying data request
       properties:
@@ -318,6 +554,14 @@ components:
           examples:
           - 3fa85f64-5717-4562-b3fc-2c963f66afb7
           description: Unique identifier of the data request
+        dataProviderId:
+          $ref: "#/components/schemas/UUID"
+          type: string
+          examples:
+          - e37b148b-9a0f-4c2e-80c5-fe9c9416b640
+          description: Unique identifier of the data provider responsible for this
+            data request. This value is derived from the data source systems of the
+            associated data products.
         humanFriendlyId:
           type: string
           examples:
@@ -530,11 +774,17 @@ components:
             format: uuid
             pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           description: List of data products requested
-    DataSourceSystemEnum:
-      type: string
-      enum:
-      - AGIS
-      - TVD
+    DataSourceSystemDto:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+        code:
+          type: string
+        name:
+          $ref: "#/components/schemas/TranslationDto"
     DataTransferResponse:
       type: object
       description: Response containing the requested product data and metadata about
@@ -582,6 +832,7 @@ components:
       - GENERIC
       - UID_MISSING
       - EXTERNAL_SERVICE_ERROR
+      - CONSENT_NOT_GRANTED
       - MAINTENANCE
     FarmTypeEnum:
       type: string
@@ -898,6 +1149,9 @@ components:
       description: Authentication
       openIdConnectUrl: http://localhost:6999/realms/agate/.well-known/openid-configuration
 tags:
+- name: Consent Request Aggregations
+  description: Provides access to aggregated consent requests for data producers.
+    Each aggregation groups consent requests by the data request they belong to.
 - name: Consent Requests
   description: "Provides access to consent requests for data producers, consumers,\
     \ and admins. Data producers can retrieve and update consent requests assigned\
@@ -906,6 +1160,8 @@ tags:
 - name: Data Products
   description: Enables retrieval of available data products that can be requested
     and used by Users in the data sharing process.
+- name: Data Providers
+  description: Enables retrieval of data providers and their available data products.
 - name: Data Requests
   description: "Provides access to data requests for consumers and admins. Consumers\
     \ can create, update, submit, and retrieve their own data requests, while admins\
@@ -915,6 +1171,7 @@ tags:
     \ UID or local BUR local unit Id. Before any data is transferred, the producer\
     \ must have accepted an active data request that includes the requested product.\
     \ This endpoint simply forwards the payload from the source system to the consumer."
+- name: Data Transfer V2
 - name: Test Data
 - name: UID Register Search
   description: Provides access to organisation details retrieved from the official
@@ -923,6 +1180,52 @@ tags:
   description: "Provides access to UIDs and BURs authorized for specific data producers,\
     \ based on their ktIdP or UID."
 paths:
+  /api/agreement/v1/consent-request-aggregations:
+    get:
+      description: "Retrieves aggregated consent requests for the current data producer,\
+        \ grouped by data request."
+      operationId: getConsentRequestAggregations
+      tags:
+      - Consent Request Aggregations
+      parameters:
+      - description: Filter to retrieve consent requests for a specific producer UID.
+        example: CHE101000001
+        name: dataProducerUid
+        required: true
+        in: query
+        schema:
+          type: string
+          pattern: "^(?:CHE|ZZZ)\\d{9}$"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConsentRequestAggregationProducerView"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Consent Request Aggregations
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Support
   /api/agreement/v1/consent-requests:
     get:
       description: Retrieves all consent requests assigned to the currently authenticated
@@ -1576,6 +1879,50 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
+  /api/data-transfer/v2/product/{productId}/data:
+    get:
+      description: "Retrieves data defined by productId. The needed query parameters\
+        \ are depending on the requested productId. Please consult documentation to\
+        \ find the necessary parameters. This endpoint simply forwards the payload\
+        \ from the source system to the consumer.Before any data is transferred, the\
+        \ producer must have accepted an active data request that includes the requested\
+        \ product."
+      operationId: dataTransferV2
+      tags:
+      - Data Transfer V2
+      parameters:
+      - description: productId for which the data is requested
+        example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
+        name: productId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*': {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Data Transfer
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
   /api/products/v1:
     get:
       description: "Retrieves the list of all available data products. Accessible\
@@ -1609,6 +1956,134 @@ paths:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Data Products
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Support
+  /api/products/v1/data-providers:
+    get:
+      description: "Retrieves the list of all available data providers. Accessible\
+        \ to users with the producer, consumer, admin, or provider role."
+      operationId: getDataProviders
+      tags:
+      - Data Providers
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataProviderDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Providers
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Support
+  /api/products/v1/data-providers/{providerId}:
+    get:
+      description: Retrieves a specific data provider.
+      operationId: getDataProviderById
+      tags:
+      - Data Providers
+      parameters:
+      - name: providerId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProviderDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Provider By Id
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Support
+  /api/products/v1/data-providers/{providerId}/products:
+    get:
+      description: Retrieves all data products belonging to a specific data provider.
+      operationId: getDataProductsByProviderId
+      tags:
+      - Data Providers
+      parameters:
+      - name: providerId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataProductDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Products By Provider Id
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Einwilliger
@@ -2007,6 +2482,6 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.5.0
+  version: 1.6.0-rc.4
   description: "This API provides access to the agridata.ch data exchange platform,\
     \ enabling Users to discover, request, approve, and manage data sharing agreements."

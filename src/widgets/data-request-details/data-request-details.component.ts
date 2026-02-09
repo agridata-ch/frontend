@@ -8,11 +8,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import {
-  ConsentRequestProducerViewDtoDataRequestStateCode,
-  DataProductDto,
-  DataRequestStateEnum,
-} from '@/entities/openapi';
+import { DataRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestProducerViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestProducerViewDtoDataRequestStateCode';
 import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/pages/admin-page';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { getBadgeVariant, getFieldFromLang } from '@/shared/data-request';
@@ -62,7 +59,6 @@ export class DataRequestDetailsComponent {
 
   // Constants
   protected readonly locale = this.i18nService.lang();
-  protected readonly products = this.metaDataService.dataProducts;
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
   protected readonly BadgeSize = BadgeSize;
@@ -87,9 +83,9 @@ export class DataRequestDetailsComponent {
     formatDate(this.dataRequest()?.submissionDate),
   );
   readonly productsList = computed(() =>
-    this.products()?.filter((product: DataProductDto) =>
-      this.dataRequest()?.products?.includes(product.id),
-    ),
+    this.metaDataService
+      .getProductsForProvider(this.dataRequest()?.dataProviderId ?? '')
+      ?.filter((product) => this.dataRequest()?.products?.includes(product.id)),
   );
   protected readonly invitationLink = computed(() => {
     return `${globalThis.location.origin}/consent-requests/create/${this.dataRequestId()}`;

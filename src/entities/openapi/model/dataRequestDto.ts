@@ -8,7 +8,6 @@
  * Do not edit the class manually.
  */
 import { DataRequestPurposeDto } from './dataRequestPurposeDto';
-import { ConsentRequestProducerViewDtoDataRequestStateCode } from './consentRequestProducerViewDtoDataRequestStateCode';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
 
@@ -18,6 +17,7 @@ import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
  */
 export interface DataRequestDto { 
     id: string;
+    dataProviderId: string;
     /**
      * Human friendly id of the data request
      */
@@ -42,7 +42,7 @@ export interface DataRequestDto {
      * List of data products requested
      */
     products?: Array<string>;
-    stateCode: ConsentRequestProducerViewDtoDataRequestStateCode;
+    stateCode: string;
     /**
      * LegalName of the data consumer taken from the uid register
      */
@@ -89,7 +89,4 @@ export interface DataRequestDto {
      */
     validRedirectUriRegex?: string;
 }
-export namespace DataRequestDto {
-}
-
 

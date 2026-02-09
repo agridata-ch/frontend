@@ -7,7 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ConsentRequestProducerViewDtoDataRequest } from './consentRequestProducerViewDtoDataRequest';
+import { ConsentRequestAggregationProducerViewDataRequest } from './consentRequestAggregationProducerViewDataRequest';
 import { ConsentRequestStateEnum } from './consentRequestStateEnum';
 
 
@@ -30,7 +30,7 @@ export interface ConsentRequestProducerViewDto {
      */
     lastStateChangeDate?: string;
     requestDate?: string;
-    dataRequest?: ConsentRequestProducerViewDtoDataRequest;
+    dataRequest?: ConsentRequestAggregationProducerViewDataRequest;
 }
 export namespace ConsentRequestProducerViewDto {
 }

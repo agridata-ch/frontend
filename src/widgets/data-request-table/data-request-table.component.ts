@@ -14,11 +14,7 @@ import { faAdd, faEye, faRotateLeft } from '@awesome.me/kit-0b6d1ed528/icons/cla
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DataRequestService } from '@/entities/api';
-import {
-  ConsentRequestProducerViewDtoDataRequestStateCode,
-  DataRequestDto,
-  DataRequestStateEnum,
-} from '@/entities/openapi';
+import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { DataRequestDtoDirective, getBadgeVariant } from '@/shared/data-request';
 import { I18nDirective, I18nService } from '@/shared/i18n';
@@ -163,9 +159,7 @@ export class DataRequestTableComponent {
     return [details];
   };
 
-  protected getStatusTranslation(
-    value: ConsentRequestProducerViewDtoDataRequestStateCode | undefined,
-  ) {
+  protected getStatusTranslation(value: string) {
     if (!value) return '';
     return this.i18nService.translate(`data-request.stateCode.${value}`);
   }
