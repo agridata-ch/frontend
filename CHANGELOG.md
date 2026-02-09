@@ -1,3 +1,10 @@
+## [1.8.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.10...v1.8.0-rc.11) (2026-02-09)
+
+### Features
+
+- **deps:** update aws-actions/configure-aws-credentials action to v6 ([39ffdc5](https://github.com/agridata-ch/frontend/commit/39ffdc5d682de7545b95c9607197ff4cdf426d7c))
+- **deps:** update renovatebot/github-action action to v46 ([92b9e48](https://github.com/agridata-ch/frontend/commit/92b9e48d39b626b5568a11def265eb0df07862c3))
+
 ## [1.8.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.9...v1.8.0-rc.10) (2026-02-06)
 
 ### Bug Fixes
