@@ -1,8 +1,5 @@
-import {
-  ConsentRequestProducerViewDtoDataRequestStateCode,
-  DataRequestDto,
-  DataRequestStateEnum,
-} from '@/entities/openapi';
+import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestProducerViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestProducerViewDtoDataRequestStateCode';
 import { BadgeVariant } from '@/shared/ui/badge';
 
 export function getBadgeVariant(

@@ -111,7 +111,8 @@
         "headline": "Angaben zum Datenbezug",
         "provider": {
           "label": "Datenanbieter",
-          "sublabel": "Aktuell steht nur ein Datenabieter zur Verfügung. Es werden kontinuierlich weitere Anbieter angebunden."
+          "sublabel": "Aktuell steht nur ein Datenabieter zur Verfügung. Es werden kontinuierlich weitere Anbieter angebunden.",
+          "placeholder": "Datenanbieter auswählen"
         },
         "products": {
           "label": "Welches Datenprodukt möchten Sie?",
@@ -404,7 +405,8 @@
     },
     "formControl": {
       "multiSelect": {
-        "selectAll": "Alle auswählen"
+        "selectAll": "Alle auswählen",
+        "noResults": "Keine Ergebnisse"
       }
     }
   },

@@ -10,10 +10,8 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import {
-  ConsentRequestProducerViewDto,
-  ConsentRequestProducerViewDtoDataRequestStateCode,
-} from '@/entities/openapi';
+import { ConsentRequestProducerViewDto } from '@/entities/openapi';
+import { ConsentRequestProducerViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestProducerViewDtoDataRequestStateCode';
 import { REDIRECT_TIMEOUT } from '@/pages/consent-request-producer/consent-request-producer.page.model';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { createMockActivatedRoute, MockActivatedRoute } from '@/shared/testing/mocks';

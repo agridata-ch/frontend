@@ -3,11 +3,8 @@ import { ComponentRef, ResourceRef, Signal, inputBinding, signal } from '@angula
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataRequestService } from '@/entities/api';
-import {
-  ConsentRequestProducerViewDtoDataRequestStateCode,
-  DataRequestDto,
-  DataRequestStateEnum,
-} from '@/entities/openapi';
+import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestProducerViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestProducerViewDtoDataRequestStateCode';
 import { I18nService } from '@/shared/i18n';
 import {
   MockResources,

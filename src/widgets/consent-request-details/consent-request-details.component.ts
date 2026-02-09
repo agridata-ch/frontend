@@ -167,11 +167,11 @@ export class ConsentRequestDetailsComponent {
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.description),
   );
   protected readonly requestId = computed(() => this.request()?.id);
-  protected readonly requestProducts = computed(() =>
-    this.metaDataService
-      .dataProducts()
-      ?.filter((product) => this.request()?.dataRequest?.products?.includes(product.id)),
-  );
+  protected readonly requestProducts = computed(() => {
+    return this.metaDataService
+      .getProductsForProvider(this.request()?.dataRequest?.dataProviderId ?? '')
+      ?.filter((product) => this.request()?.dataRequest?.products?.includes(product.id));
+  });
   protected readonly requestPurpose = computed(() => {
     const purpose = this.request()?.dataRequest?.purpose;
     return (

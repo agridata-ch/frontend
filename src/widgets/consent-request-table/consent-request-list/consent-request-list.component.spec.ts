@@ -1,10 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  ConsentRequestProducerViewDto,
-  ConsentRequestProducerViewDtoDataRequestStateCode,
-  ConsentRequestStateEnum,
-} from '@/entities/openapi';
+import { ConsentRequestProducerViewDto, ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestProducerViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestProducerViewDtoDataRequestStateCode';
 import { I18nService } from '@/shared/i18n';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
@@ -56,6 +53,8 @@ describe('ConsentRequestListComponent', () => {
       dataRequest: {
         title: { de: 'Test Title' },
         stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Active,
+        dataProviderId: 'provider-123',
+        id: 'data-request-123',
       },
     };
 

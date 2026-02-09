@@ -9,10 +9,7 @@ import {
   viewChild,
 } from '@angular/core';
 
-import {
-  ConsentRequestProducerViewDtoDataRequestStateCode,
-  DataRequestDto,
-} from '@/entities/openapi';
+import { DataRequestDto } from '@/entities/openapi';
 import { DataRequestDtoDirective, getBadgeVariant } from '@/shared/data-request';
 import { I18nService } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
@@ -120,9 +117,7 @@ export class AdminDataRequestTableComponent {
     },
   );
 
-  protected getStatusTranslation(
-    value: ConsentRequestProducerViewDtoDataRequestStateCode | undefined,
-  ) {
+  protected getStatusTranslation(value: string) {
     if (!value) return '';
     return this.i18nService.translate(`data-request.stateCode.${value}`);
   }

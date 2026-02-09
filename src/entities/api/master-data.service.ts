@@ -1,10 +1,9 @@
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
-import { DataProductDto, DataProductsService } from '@/entities/openapi';
-import { I18nService } from '@/shared/i18n';
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { DataProductDto, DataProvidersService, DataProviderDto } from '@/entities/openapi';
 import { AuthService } from '@/shared/lib/auth';
-import { MultiSelectCategory, MultiSelectOption } from '@/shared/ui/agridata-multi-select';
 
 /**
  * Service for retrieving masterdata needed across multiple components, such as data products and user preferences.
@@ -17,82 +16,71 @@ import { MultiSelectCategory, MultiSelectOption } from '@/shared/ui/agridata-mul
 export class MasterDataService {
   // Injects
   private readonly authService = inject(AuthService);
-  private readonly dataProductService = inject(DataProductsService);
-  private readonly i18nService = inject(I18nService);
+  private readonly dataProvidersService = inject(DataProvidersService);
+  private readonly errorService = inject(ErrorHandlerService);
 
   // Signals
-  private readonly _dataProducts = signal<DataProductDto[]>([]);
-  readonly dataProducts = this._dataProducts.asReadonly();
-  protected readonly allSystems = this.i18nService.translateSignal(
-    'master-data.products.allSystems',
-  );
-
-  // Computed Signals
-  readonly dataProductsCategories = computed(() => {
-    const grouped = this.dataProductsGrouped();
-    return [
-      ...grouped.map((category) => ({
-        label: category.categoryLabel,
-        value: category.categoryLabel,
-      })),
-    ];
-  });
-
-  readonly dataProductsGrouped = computed(() =>
-    this.groupDataProductsByCategory(this._dataProducts()),
-  );
+  private readonly _dataProviders = signal<DataProviderDto[]>([]);
+  readonly dataProviders = this._dataProviders.asReadonly();
+  private readonly _productsByProvider = signal<Map<string, DataProductDto[]>>(new Map());
 
   // Effects
-  private readonly dataProductFetchEffect = effect(() => {
+  private readonly dataFetchEffect = effect(() => {
     if (this.authService.isAuthenticated()) {
-      this.fetchDataProducts().then((products) => {
-        this._dataProducts.set(products);
-      });
+      this.fetchDataProviders()
+        .then((providers) => this._dataProviders.set(providers))
+        .catch((error) => this.errorService.handleError(error));
     }
   });
 
-  getDataProductsByCategory(category?: string): MultiSelectOption[] {
-    const products = this._dataProducts();
-    const filtered = category
-      ? products.filter((p) => p.dataSourceSystemCode === category)
-      : products;
-
-    return filtered.map((item) => ({
-      label: item.name?.[this.i18nService.lang() as keyof typeof item.name] ?? '',
-      value: item.id,
-    }));
-  }
-
-  getDataProductsGroupedByCategory(category?: string | null): MultiSelectCategory[] {
-    const products = this._dataProducts();
-    const filtered = category
-      ? products.filter((p) => p.dataSourceSystemCode === category)
-      : products;
-
-    return this.groupDataProductsByCategory(filtered);
-  }
-
-  private fetchDataProducts(): Promise<DataProductDto[]> {
-    return firstValueFrom(this.dataProductService.getDataProducts());
-  }
-
-  private groupDataProductsByCategory(products: DataProductDto[]): MultiSelectCategory[] {
-    const grouped = new Map<string, DataProductDto[]>();
-
-    for (const product of products) {
-      const category = product.dataSourceSystemCode ?? 'undefined';
-      if (!grouped.has(category)) {
-        grouped.set(category, []);
-      }
-      grouped.get(category)!.push(product);
+  /**
+   * Fetches products for a provider. If already cached, returns immediately.
+   * Safe to call multiple times - will not refetch if already loaded or loading.
+   * Errors are handled internally via errorService.
+   *
+   * @param providerId - The provider ID to fetch products for
+   */
+  fetchProductsByProvider(providerId: string): void {
+    // Already cached
+    if (this._productsByProvider().has(providerId)) {
+      return;
     }
 
-    return [...grouped.entries()].map(([categoryLabel, items]) => ({
-      categoryLabel,
-      options: items.map((item) => ({
-        label: item.name?.[this.i18nService.lang() as keyof typeof item.name] ?? '',
-        value: item.id,
-      })),
-    }));
+    this.fetchDataProductsByProviderId(providerId)
+      .then((products) => {
+        this._productsByProvider.update((map) => {
+          const newMap = new Map(map);
+          newMap.set(providerId, products);
+          return newMap;
+        });
+      })
+      .catch((error) => {
+        this.errorService.handleError(error);
+      });
+  }
+
+  /**
+   * Gets products for a provider. If not already cached, triggers fetch and returns empty array.
+   *
+   * @param providerId - The provider ID to get products for
+   * @returns Array of products for the provider
+   */
+  getProductsForProvider(providerId: string): DataProductDto[] {
+    const products = this._productsByProvider().get(providerId);
+    if (!products) {
+      this.fetchProductsByProvider(providerId);
+    }
+    return products ?? [];
+  }
+
+  private fetchDataProductsByProviderId(providerId: string): Promise<DataProductDto[]> {
+    if (!providerId) {
+      return Promise.resolve([]);
+    }
+    return firstValueFrom(this.dataProvidersService.getDataProductsByProviderId(providerId));
+  }
+
+  private fetchDataProviders(): Promise<DataProviderDto[]> {
+    return firstValueFrom(this.dataProvidersService.getDataProviders());
   }
 }

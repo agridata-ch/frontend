@@ -24,7 +24,11 @@
             />
           }
           @case (FORM_GROUP_NAMES.REQUEST) {
-            <app-data-request-form-request [form]="form" [formDisabled]="formDisabled()" />
+            <app-data-request-form-request
+              [form]="form"
+              [formDisabled]="formDisabled()"
+              [dataProviderId]="dataRequest()?.dataProviderId"
+            />
           }
           @case (FORM_GROUP_NAMES.PREVIEW) {
             <app-data-request-preview [dataRequest]="dataRequest()!" />
