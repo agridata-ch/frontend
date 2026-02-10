@@ -1,3 +1,9 @@
+## [1.8.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.13...v1.8.0-rc.14) (2026-02-10)
+
+### Bug Fixes
+
+- **multi-select:** fix select-all with search ([2a1cbfe](https://github.com/agridata-ch/frontend/commit/2a1cbfe6c3865b2e5e29b39e2fd0e463e1f667e7)), closes [DIGIB2-979](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-979)
+
 ## [1.8.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.12...v1.8.0-rc.13) (2026-02-10)
 
 ### Features
