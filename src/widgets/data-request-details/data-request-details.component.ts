@@ -9,7 +9,6 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestStateEnum } from '@/entities/openapi';
-import { ConsentRequestProducerViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestProducerViewDtoDataRequestStateCode';
 import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/pages/admin-page';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { getBadgeVariant, getFieldFromLang } from '@/shared/data-request';
@@ -112,9 +111,7 @@ export class DataRequestDetailsComponent {
     });
   }
 
-  protected getStatusTranslation(
-    value: ConsentRequestProducerViewDtoDataRequestStateCode | undefined,
-  ) {
+  protected getStatusTranslation(value?: string) {
     if (!value) return '';
     return this.i18nService.translate(`data-request.stateCode.${value}`);
   }
