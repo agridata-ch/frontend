@@ -1,3 +1,13 @@
+## [1.8.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.11...v1.8.0-rc.12) (2026-02-10)
+
+### Features
+
+- **data-request:** add provider ([4c6857d](https://github.com/agridata-ch/frontend/commit/4c6857dfc505743553df721cba8174b905e17bfc)), closes [DIGIB2-979](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-979)
+
+### Bug Fixes
+
+- **build:** fix type errors for build ([84bada3](https://github.com/agridata-ch/frontend/commit/84bada31c1c5e21c47906feda580112ab11db331))
+
 ## [1.8.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.10...v1.8.0-rc.11) (2026-02-09)
 
 ### Features
