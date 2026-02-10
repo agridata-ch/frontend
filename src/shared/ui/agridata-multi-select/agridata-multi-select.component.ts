@@ -146,8 +146,11 @@ export class AgridataMultiSelectComponent {
     const controlValue = this.control()?.value;
     const currentValues: (string | number)[] = Array.isArray(controlValue) ? controlValue : [];
     const currentSet = new Set<string | number>(currentValues);
-    const categoryOptionValues = category.options.map((o) => o.value);
-    return categoryOptionValues.every((val) => currentSet.has(val));
+    const filteredOptions = this.getFilteredCategoryOptions(category);
+    const categoryOptionValues = filteredOptions.map((o) => o.value);
+    return (
+      categoryOptionValues.length > 0 && categoryOptionValues.every((val) => currentSet.has(val))
+    );
   }
 
   protected isCategoryDisabled(category: MultiSelectCategory): boolean {
@@ -176,7 +179,8 @@ export class AgridataMultiSelectComponent {
     event.stopPropagation();
 
     const checked = (event.target as HTMLInputElement).checked;
-    const categoryOptionValues = category.options.map((o) => o.value);
+    const filteredOptions = this.getFilteredCategoryOptions(category);
+    const categoryOptionValues = filteredOptions.map((o) => o.value);
     const current = Array.isArray(this.control()?.value) ? [...this.control()!.value] : [];
 
     let newValues: (string | number)[];
