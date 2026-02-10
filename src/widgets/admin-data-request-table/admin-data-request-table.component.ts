@@ -117,7 +117,7 @@ export class AdminDataRequestTableComponent {
     },
   );
 
-  protected getStatusTranslation(value: string) {
+  protected getStatusTranslation(value?: string) {
     if (!value) return '';
     return this.i18nService.translate(`data-request.stateCode.${value}`);
   }
