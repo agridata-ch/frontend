@@ -1,0 +1,10 @@
+@if (!isLoading()) {
+  @if (shouldShowActiveComponent()) {
+    <app-data-request-details
+      [dataRequestId]="dataRequestId()"
+      (closeSidepanel)="handleSidepanelClose()"
+    />
+  } @else {
+    <app-data-request-new [initialDataRequest]="dataRequest()" [dataRequestId]="dataRequestId()" />
+  }
+}

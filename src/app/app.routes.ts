@@ -19,9 +19,9 @@ import { PrivacyPolicyPage } from '@/pages/privacy-policy-page';
 import { SupporterPageComponent } from '@/pages/supporter-page/';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
+import { AdminDataRequestDetailsComponent } from '@/widgets/admin-data-request-details';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
-import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
-import { DataRequestNewComponent } from '@/widgets/data-request-new';
+import { DataRequestDetailsWrapperComponent } from '@/widgets/data-request-details-wrapper/data-request-details-wrapper.component';
 
 import { LoginAuthGuard } from './guards/login.guard';
 
@@ -135,7 +135,7 @@ export const routes: Routes = [
           {
             path: `:dataRequestId`,
             title: 'consumer.sidePanelTitle',
-            component: DataRequestNewComponent,
+            component: DataRequestDetailsWrapperComponent,
           },
         ],
       },
@@ -172,7 +172,7 @@ export const routes: Routes = [
           {
             path: `:dataRequestId`,
             title: 'admin.sidePanelTitle',
-            component: DataRequestDetailsComponent,
+            component: AdminDataRequestDetailsComponent,
           },
         ],
       },

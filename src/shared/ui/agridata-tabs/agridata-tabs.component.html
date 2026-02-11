@@ -1,0 +1,22 @@
+<div class="flex border-b border-agridata-stroke gap-10" role="tablist">
+  @for (tab of tabs(); track tab.id) {
+    <button
+      type="button"
+      role="tab"
+      class="px-2 py-3 text-sm font-medium transition-colors -mb-px border-b-3"
+      [class.text-agridata-primary-600]="activeTabId() === tab.id"
+      [class.border-agridata-primary-600]="activeTabId() === tab.id"
+      [class.text-agridata-secondary-text]="activeTabId() !== tab.id"
+      [class.border-transparent]="activeTabId() !== tab.id"
+      [class.hover:text-agridata-primary-600]="!tab.disabled"
+      [class.opacity-50]="tab.disabled"
+      [class.cursor-not-allowed]="tab.disabled"
+      [attr.aria-selected]="activeTabId() === tab.id"
+      [attr.aria-label]="tab.label"
+      [disabled]="tab.disabled"
+      (click)="handleTabClick(tab)"
+    >
+      {{ tab.label }}
+    </button>
+  }
+</div>

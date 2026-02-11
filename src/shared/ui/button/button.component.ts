@@ -27,6 +27,7 @@ export class ButtonComponent {
   ariaLabel = input<string>('');
   selected = input<boolean>(false);
   loading = input<boolean>(false);
+
   onClick = output<Event>();
   additionalClass = input<string>('');
   href = input<string>('');

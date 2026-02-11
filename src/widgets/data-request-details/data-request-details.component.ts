@@ -1,33 +1,32 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, input, resource, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { faCopy } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+  resource,
+  signal,
+} from '@angular/core';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
-import { MasterDataService } from '@/entities/api/master-data.service';
-import { DataRequestStateEnum } from '@/entities/openapi';
-import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/pages/admin-page';
-import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { getBadgeVariant, getFieldFromLang } from '@/shared/data-request';
-import { formatDate } from '@/shared/date';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { SidepanelComponent } from '@/shared/sidepanel';
-import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
-import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
-import { copyToClipboard } from '@/shared/utils';
-import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
-import { DataRequestContactComponent } from '@/widgets/data-request-contact';
-import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
+import { AgridataTabsComponent, Tab } from '@/shared/ui/agridata-tabs';
+
+import { DataRequestDetailsRequestComponent } from './data-request-details-request';
+import { DETAILS_TABS_ID } from './data-request-details.model';
 
 /**
- * Displays detailed information about a data request in a sidepanel
+ * Displays detailed information about a data request in a sidepanel with tabs.
+ * Footer content is projected from the parent via ng-content.
  *
- * CommentLastReviewed: 2026-01-09
+ * CommentLastReviewed: 2026-02-11
  */
 @Component({
   selector: 'app-data-request-details',
@@ -36,12 +35,9 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
     CommonModule,
     ErrorOutletComponent,
     SidepanelComponent,
-    AgridataContactCardComponent,
-    DataRequestPurposeAccordionComponent,
-    DataRequestContactComponent,
-    AgridataBadgeComponent,
+    AgridataTabsComponent,
     FontAwesomeModule,
-    ButtonComponent,
+    DataRequestDetailsRequestComponent,
   ],
   templateUrl: './data-request-details.component.html',
 })
@@ -49,48 +45,48 @@ export class DataRequestDetailsComponent {
   // Injects
   private readonly dataRequestService = inject(DataRequestService);
   private readonly errorService = inject(ErrorHandlerService);
-  private readonly router = inject(Router);
   private readonly i18nService = inject(I18nService);
-  private readonly metaDataService = inject(MasterDataService);
 
   // Input properties
   readonly dataRequestId = input.required<string>();
 
+  // Output properties
+  readonly closeSidepanel = output<void>();
+
   // Constants
-  protected readonly locale = this.i18nService.lang();
-  protected readonly AvatarSize = AvatarSize;
-  protected readonly AvatarSkin = AvatarSkin;
-  protected readonly BadgeSize = BadgeSize;
-  protected readonly ButtonVariants = ButtonVariants;
-  protected readonly DataRequestStateEnum = DataRequestStateEnum;
-  protected readonly getFieldFromLang = getFieldFromLang;
-  protected readonly getBadgeVariant = getBadgeVariant;
-  protected readonly copyToClipboard = copyToClipboard;
   protected readonly faSpinnerThird = faSpinnerThird;
-  protected readonly faCopy = faCopy;
+  protected readonly DETAILS_TABS_ID = DETAILS_TABS_ID;
+
   // Signals
-  protected readonly refreshListNeeded = signal(false);
+  protected readonly activeTabId = signal(DETAILS_TABS_ID.REQUEST);
+  protected readonly requestTabLabel = this.i18nService.translateSignal(
+    'data-request.details.tabs.request',
+  );
+  protected readonly producerTabLabel = this.i18nService.translateSignal(
+    'data-request.details.tabs.producer',
+  );
+  protected readonly contractTabLabel = this.i18nService.translateSignal(
+    'data-request.details.tabs.contract',
+  );
+  protected readonly emailTabLabel = this.i18nService.translateSignal(
+    'data-request.details.tabs.email',
+  );
+  protected readonly tabs = signal<Tab[]>([
+    { id: DETAILS_TABS_ID.REQUEST, label: this.requestTabLabel() },
+    { id: DETAILS_TABS_ID.PRODUCER, label: this.producerTabLabel() },
+    { id: DETAILS_TABS_ID.CONTRACT, label: this.contractTabLabel() },
+    { id: DETAILS_TABS_ID.EMAIL, label: this.emailTabLabel() },
+  ]);
 
   // Computed Signals
-  protected dataRequest = computed(() => {
+  readonly dataRequest = computed(() => {
     if (this.dataRequestResource.isLoading()) {
       return null;
     }
     return this.dataRequestResource.value();
   });
-  protected readonly formattedSubmissionDate = computed(() =>
-    formatDate(this.dataRequest()?.submissionDate),
-  );
-  readonly productsList = computed(() =>
-    this.metaDataService
-      .getProductsForProvider(this.dataRequest()?.dataProviderId ?? '')
-      ?.filter((product) => this.dataRequest()?.products?.includes(product.id)),
-  );
-  protected readonly invitationLink = computed(() => {
-    return `${globalThis.location.origin}/consent-requests/create/${this.dataRequestId()}`;
-  });
 
-  protected readonly dataRequestResource = resource({
+  readonly dataRequestResource = resource({
     params: () => ({ id: this.dataRequestId() }),
     loader: ({ params }) => {
       return this.dataRequestService.fetchDataRequest(params.id);
@@ -105,44 +101,7 @@ export class DataRequestDetailsComponent {
     }
   });
 
-  protected handleClose() {
-    this.router.navigate([ROUTE_PATHS.ADMIN_PATH], {
-      state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: this.refreshListNeeded() },
-    });
-  }
-
-  protected getStatusTranslation(value?: string) {
-    if (!value) return '';
-    return this.i18nService.translate(`data-request.stateCode.${value}`);
-  }
-
-  protected acceptRequest() {
-    this.dataRequestService
-      .approveDataRequest(this.dataRequestId())
-      .then(() => {
-        this.refreshListNeeded.set(true);
-        this.dataRequestResource.reload();
-      })
-      .catch((error) => this.errorService.handleError(error));
-  }
-
-  protected rejectRequest() {
-    this.dataRequestService
-      .retreatDataRequest(this.dataRequestId())
-      .then(() => {
-        this.refreshListNeeded.set(true);
-        this.handleClose();
-      })
-      .catch((error) => this.errorService.handleError(error));
-  }
-
-  protected activateRequest() {
-    this.dataRequestService
-      .activateDataRequest(this.dataRequestId())
-      .then(() => {
-        this.refreshListNeeded.set(true);
-        this.dataRequestResource.reload();
-      })
-      .catch((error) => this.errorService.handleError(error));
+  protected handleSidepanelClose(): void {
+    this.closeSidepanel.emit();
   }
 }

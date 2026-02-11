@@ -311,7 +311,18 @@
     },
     "provider": "Fournisseur de données",
     "submissionDate": "Date de soumission",
-    "humanFriendlyId": "ID"
+    "humanFriendlyId": "ID",
+    "details": {
+      "title": "Demande",
+      "tabs": {
+        "request": "Demande",
+        "producer": "Fournisseurs de données",
+        "contract": "Contrat",
+        "email": "Modèle d'e-mail"
+      },
+      "sidePanelTitle": "Vue détaillée"
+    },
+    "invitationLink": "Lien d'invitation"
   },
   "forms": {
     "error": {
@@ -502,19 +513,10 @@
   },
   "admin": {
     "data-request": {
-      "consumer": "Requérant de données",
-      "title": "Demande de données",
-      "submissionDate": "Date de soumission",
-      "provider": "Fournisseur de données",
-      "state": "Statut",
-      "humanFriendlyId": "Numéro de demande",
-      "invitationLink": "Lien d'invitation"
+      "title": "Demande de données"
     },
     "pageTitle": "Demandes de données",
     "sidePanelTitle": "Vue détaillée",
-    "details": {
-      "title": "Demande"
-    },
     "actions": {
       "accept": "Valider la demande",
       "reject": "Rejeter la demande",

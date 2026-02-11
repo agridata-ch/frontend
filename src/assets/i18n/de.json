@@ -311,7 +311,18 @@
     },
     "provider": "Datenanbieter",
     "submissionDate": "Datum der Einreichung",
-    "humanFriendlyId": "ID"
+    "humanFriendlyId": "ID",
+    "details": {
+      "title": "Antrag",
+      "tabs": {
+        "request": "Antrag",
+        "producer": "Produzenten",
+        "contract": "Vertrag",
+        "email": "E-Mail Vorlage"
+      },
+      "sidePanelTitle": "Detailansicht"
+    },
+    "invitationLink": "Einladungslink"
   },
   "forms": {
     "error": {
@@ -503,19 +514,10 @@
   },
   "admin": {
     "data-request": {
-      "consumer": "Datenbezüger",
-      "title": "Datenantrag",
-      "submissionDate": "Datum der Einreichung",
-      "provider": "Datenanbieter",
-      "state": "Status",
-      "humanFriendlyId": "Antragsnummer",
-      "invitationLink": "Einladungslink"
+      "title": "Datenantrag"
     },
     "pageTitle": "Datenanträge",
     "sidePanelTitle": "Detailansicht",
-    "details": {
-      "title": "Antrag"
-    },
     "actions": {
       "accept": "Antrag freigeben",
       "reject": "Antrag ablehnen",
