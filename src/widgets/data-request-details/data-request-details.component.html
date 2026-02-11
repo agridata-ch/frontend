@@ -1,59 +1,11 @@
-<ng-container *i18n="let t; prefix: 'admin'">
+<ng-container *i18n="let t; prefix: 'data-request.details'">
   <app-sidepanel
     [title]="t('sidePanelTitle')"
     [isOpen]="!dataRequestResource.isLoading()"
-    (closeSidepanel)="handleClose()"
+    (closeSidepanel)="handleSidepanelClose()"
     [maxWidth]="'800px'"
   >
     <app-error-outlet />
-    <!-- Sidepanel metadata -->
-    <div class="flex flex-col gap-4 p-4 bg-agridata-content-gray rounded-lg">
-      <h4>{{ t('details.title') }}</h4>
-      <div class="flex justify-between">
-        <div class="flex flex-col">
-          <span class="text-agridata-tertiary-text text-sm">
-            {{ t('data-request.submissionDate') }}
-          </span>
-          <span class="font-bold">
-            {{ formattedSubmissionDate() }}
-          </span>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-agridata-tertiary-text text-sm">
-            {{ t('data-request.humanFriendlyId') }}
-          </span>
-          <span class="font-bold">
-            {{ dataRequest()?.humanFriendlyId }}
-          </span>
-        </div>
-        <div class="flex flex-col">
-          <span class="text-agridata-tertiary-text text-sm">
-            {{ t('data-request.state') }}
-          </span>
-          <app-agridata-badge
-            [text]="getStatusTranslation(dataRequest()?.stateCode)"
-            [variant]="getBadgeVariant(dataRequest()?.stateCode)"
-            [size]="BadgeSize.SM"
-          />
-        </div>
-      </div>
-      @if (dataRequest()?.stateCode === DataRequestStateEnum.Active) {
-        <div class="flex flex-col">
-          <span class="text-agridata-tertiary-text text-sm">
-            {{ t('data-request.invitationLink') }}
-          </span>
-          <span class="font-bold">
-            {{ invitationLink() }}
-            <fa-icon
-              [icon]="faCopy"
-              class="cursor-pointer hover:text-agridata-primary-600"
-              (click)="copyToClipboard(invitationLink())"
-              (keydown.enter)="copyToClipboard(invitationLink())"
-            ></fa-icon>
-          </span>
-        </div>
-      }
-    </div>
     @if (dataRequestResource.isLoading()) {
       <fa-icon
         animation="spin"
@@ -62,58 +14,33 @@
         class="absolute flex items-center justify-center inset-0"
       ></fa-icon>
     } @else if (dataRequest(); as request) {
-      <div class="flex flex-col gap-4 overflow-y-auto flex-1">
-        <app-agridata-contact-card
-          [imageUrl]="request.dataConsumerLogoBase64"
-          [name]="request.dataConsumerDisplayName"
-          [secondaryName]="request.dataConsumerCity"
-          [size]="AvatarSize.MEDIUM"
-          [skin]="AvatarSkin.LIGHT"
+      <div class="flex-1 overflow-y-auto min-h-0 flex flex-col">
+        <app-agridata-tabs
+          class="sticky top-0 z-10 bg-white"
+          [tabs]="tabs()"
+          [(activeTabId)]="activeTabId"
         />
-        <span class="text-agridata-secondary-text">
-          {{ getFieldFromLang('description', locale, request) }}
-        </span>
-        <app-data-request-purpose-accordion
-          [purpose]="getFieldFromLang('purpose', locale, request)"
-          [products]="productsList()"
-        />
-        <app-data-request-contact
-          [phoneNumber]="request.contactPhoneNumber"
-          [email]="request.contactEmailAddress"
-          [organisationName]="request.dataConsumerDisplayName"
-        />
-      </div>
-
-      <!-- Footer -->
-      <div class="flex gap-2 justify-between">
-        <div class="flex gap-2">
-          <app-agridata-button
-            class="flex-1"
-            [variant]="ButtonVariants.PrimaryAccept"
-            [disabled]="request?.stateCode !== DataRequestStateEnum.InReview"
-            (onClick)="acceptRequest()"
-          >
-            {{ t('actions.accept') }}
-          </app-agridata-button>
-          <app-agridata-button
-            class="flex-1"
-            [variant]="ButtonVariants.SecondaryReject"
-            [disabled]="request?.stateCode !== DataRequestStateEnum.InReview"
-            (onClick)="rejectRequest()"
-          >
-            {{ t('actions.reject') }}
-          </app-agridata-button>
-        </div>
-        @if (request?.stateCode === DataRequestStateEnum.ToBeSigned) {
-          <app-agridata-button
-            class="flex-1"
-            [variant]="ButtonVariants.PrimaryAccept"
-            (onClick)="activateRequest()"
-          >
-            {{ t('actions.activate') }}
-          </app-agridata-button>
+        @if (activeTabId() === DETAILS_TABS_ID.REQUEST) {
+          <app-data-request-details-request [dataRequest]="request" class="py-6" />
+        }
+        @if (activeTabId() === DETAILS_TABS_ID.PRODUCER) {
+          <div class="flex flex-col gap-4 pt-4">
+            <!-- Tab 2 content -->
+          </div>
+        }
+        @if (activeTabId() === DETAILS_TABS_ID.CONTRACT) {
+          <div class="flex flex-col gap-4 pt-4">
+            <!-- Tab 3 content -->
+          </div>
+        }
+        @if (activeTabId() === DETAILS_TABS_ID.EMAIL) {
+          <div class="flex flex-col gap-4 pt-4">
+            <!-- Tab 4 content -->
+          </div>
         }
       </div>
+
+      <ng-content select="[footer]" />
     }
   </app-sidepanel>
 </ng-container>

@@ -311,7 +311,18 @@
     },
     "provider": "Fornitore di dati",
     "submissionDate": "Data di presentazione",
-    "humanFriendlyId": "ID"
+    "humanFriendlyId": "ID",
+    "details": {
+      "title": "Richiesta",
+      "tabs": {
+        "request": "Richiesta",
+        "producer": "Produttori di dati",
+        "contract": "Contratto",
+        "email": "Modello di e-mail"
+      },
+      "sidePanelTitle": "Vista dettagliata"
+    },
+    "invitationLink": "Link di invito"
   },
   "forms": {
     "error": {
@@ -503,19 +514,10 @@
   },
   "admin": {
     "data-request": {
-      "consumer": "Richiedente",
-      "title": "Richiesta di dati",
-      "submissionDate": "Data di presentazione",
-      "provider": "Fornitore di dati",
-      "state": "Stato",
-      "humanFriendlyId": "Numero di domanda",
-      "invitationLink": "Link di invito"
+      "title": "Richiesta di dati"
     },
     "pageTitle": "Richieste di dati",
     "sidePanelTitle": "Visualizzazione dettagliata",
-    "details": {
-      "title": "Richiesta"
-    },
     "actions": {
       "accept": "Approvare la richiesta",
       "reject": "Respingere la richiesta",
