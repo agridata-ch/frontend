@@ -1,3 +1,9 @@
+## [1.8.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.15...v1.8.0-rc.16) (2026-02-12)
+
+### Features
+
+- **testing:** dataTestId for button & table row, instrumented in agridata-table ([dd6ae8b](https://github.com/agridata-ch/frontend/commit/dd6ae8b351cb52bf4bfbc26a8bc22e1c2f80423f)), closes [DIGIB2-1244](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1244)
+
 ## [1.8.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.14...v1.8.0-rc.15) (2026-02-12)
 
 ### Features
