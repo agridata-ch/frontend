@@ -39,6 +39,7 @@ interface ActionWithLoadingSignal extends ActionDTO {
 export class TableRowMenuComponent {
   // Inputs
   public readonly actions = input<ActionDTO[]>([]);
+  public readonly dataTestId = input<string | undefined>();
 
   // Signals
   protected readonly isOpen = signal(false);

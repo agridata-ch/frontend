@@ -8,6 +8,7 @@
     [disabled]="disabled()"
     [tabindex]="tabindex()"
     [attr.aria-label]="ariaLabel()"
+    [attr.data-testid]="dataTestId()"
     (click)="handleClick($event)"
     (keydown.enter)="handleClick($event)"
     [class]="`relative agridata-button agridata-button-${variant()} ${selected() ? 'selected' : ''} ${additionalClass()}`"
@@ -28,6 +29,7 @@
     [href]="href()"
     [target]="target()"
     [tabindex]="tabindex()"
+    [attr.data-testid]="dataTestId()"
     [rel]="'noopener noreferrer'"
     [class]="`agridata-button agridata-button-${variant()} ${selected() ? 'selected' : ''} ${additionalClass()}`"
   >
