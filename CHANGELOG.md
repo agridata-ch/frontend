@@ -1,3 +1,9 @@
+## [1.8.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.14...v1.8.0-rc.15) (2026-02-12)
+
+### Features
+
+- **ui:** add tabs, data-request details ([6572549](https://github.com/agridata-ch/frontend/commit/6572549da926d5d1725b613f6c390c1acc1fad3a)), closes [DIGIB2-642](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-642)
+
 ## [1.8.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.13...v1.8.0-rc.14) (2026-02-10)
 
 ### Bug Fixes
