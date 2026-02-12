@@ -31,6 +31,7 @@ export class ButtonComponent {
   additionalClass = input<string>('');
   href = input<string>('');
   target = input<HrefTarget>(HrefTarget.Self);
+  dataTestId = input<string | undefined>();
   @HostBinding('style.display') display = 'contents';
 
   protected readonly faSpinner = faSpinner;

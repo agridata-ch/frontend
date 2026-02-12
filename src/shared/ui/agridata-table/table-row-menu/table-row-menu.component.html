@@ -3,6 +3,7 @@
     click-stop-propagation
     [variant]="ButtonVariants.IconOutline"
     ariaLabel="actions"
+    [dataTestId]="dataTestId()"
     (onClick)="handleToggle()"
   >
     <fa-icon [icon]="iconEllipsis" />
