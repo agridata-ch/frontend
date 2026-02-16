@@ -1,3 +1,9 @@
+## [1.8.0-rc.17](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.16...v1.8.0-rc.17) (2026-02-16)
+
+### Features
+
+- **deps:** update renovatebot/github-action action to v46.1.1 ([038ffdb](https://github.com/agridata-ch/frontend/commit/038ffdb9c366834e82ecea1f793ff6150682d61d))
+
 ## [1.8.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.15...v1.8.0-rc.16) (2026-02-12)
 
 ### Features
