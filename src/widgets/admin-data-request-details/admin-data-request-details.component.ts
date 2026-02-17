@@ -1,4 +1,4 @@
-import { Component, inject, signal, viewChild } from '@angular/core';
+import { Component, inject, input, signal, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
@@ -26,6 +26,8 @@ export class AdminDataRequestDetailsComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
+  readonly dataRequestId = input.required<string>();
+
   // Constants
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly DataRequestStateEnum = DataRequestStateEnum;
@@ -36,13 +38,9 @@ export class AdminDataRequestDetailsComponent {
   // View Children
   private readonly detailsComponent = viewChild.required(DataRequestDetailsComponent);
 
-  protected get dataRequestId(): string {
-    return this.route.snapshot.params['dataRequestId'];
-  }
-
   protected acceptRequest(): void {
     this.dataRequestService
-      .approveDataRequest(this.dataRequestId)
+      .approveDataRequest(this.dataRequestId())
       .then(() => {
         this.refreshListNeeded.set(true);
         this.detailsComponent().dataRequestResource.reload();
@@ -52,7 +50,7 @@ export class AdminDataRequestDetailsComponent {
 
   protected activateRequest(): void {
     this.dataRequestService
-      .activateDataRequest(this.dataRequestId)
+      .activateDataRequest(this.dataRequestId())
       .then(() => {
         this.refreshListNeeded.set(true);
         this.detailsComponent().dataRequestResource.reload();
@@ -69,7 +67,7 @@ export class AdminDataRequestDetailsComponent {
 
   protected rejectRequest(): void {
     this.dataRequestService
-      .retreatDataRequest(this.dataRequestId)
+      .retreatDataRequest(this.dataRequestId())
       .then(() => {
         this.refreshListNeeded.set(true);
         this.handleClose();

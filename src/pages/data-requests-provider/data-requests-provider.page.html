@@ -1,0 +1,16 @@
+<ng-container *i18n="let t; prefix: 'provider'">
+  <div class="flex justify-between">
+    <h2 class="page-title">
+      <fa-icon [icon]="icon" class="mr-3" />
+      {{ t('pageTitle') }}
+    </h2>
+  </div>
+  <app-error-outlet></app-error-outlet>
+  <router-outlet></router-outlet>
+  <app-data-request-provider-table
+    [dataRequests]="dataRequests()"
+    [dataRequestsResource]="dataRequestsResource"
+    (tableRowAction)="navigateToRequest($event)"
+  ></app-data-request-provider-table>
+</ng-container>
+<div class="flex justify-end"></div>

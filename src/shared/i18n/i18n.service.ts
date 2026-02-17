@@ -41,8 +41,9 @@ export class I18nService {
     return this.translocoService.selectTranslate(key, params);
   }
 
-  useObjectTranslation(obj: TranslationDto | undefined | null) {
+  useObjectTranslation(obj: TranslationDto | undefined | null, lang?: string) {
     if (!obj) return '';
-    return obj[this.lang() as keyof TranslationDto] ?? '';
+    const key = lang ?? this.lang();
+    return (obj[key as keyof TranslationDto] as string) ?? '';
   }
 }

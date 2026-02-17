@@ -155,6 +155,10 @@ export class ConsentRequestDetailsComponent {
   protected readonly dataConsumerName = computed(
     () => this.request()?.dataRequest?.dataConsumerDisplayName,
   );
+  protected readonly dataProvider = computed(() => {
+    const providerId = this.request()?.dataRequest?.dataProviderId;
+    return this.metaDataService.dataProviders().find((provider) => provider.id === providerId);
+  });
   protected readonly formattedLastStateChangeDate = computed(() =>
     formatDate(this.request()?.lastStateChangeDate),
   );

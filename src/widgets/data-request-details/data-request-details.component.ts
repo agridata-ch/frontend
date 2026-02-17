@@ -73,9 +73,10 @@ export class DataRequestDetailsComponent {
   );
   protected readonly tabs = signal<Tab[]>([
     { id: DETAILS_TABS_ID.REQUEST, label: this.requestTabLabel() },
-    { id: DETAILS_TABS_ID.PRODUCER, label: this.producerTabLabel() },
-    { id: DETAILS_TABS_ID.CONTRACT, label: this.contractTabLabel() },
-    { id: DETAILS_TABS_ID.EMAIL, label: this.emailTabLabel() },
+    // TODO: add other tabs when the corresponding components are implemented DIGIB2-547
+    // { id: DETAILS_TABS_ID.PRODUCER, label: this.producerTabLabel() },
+    // { id: DETAILS_TABS_ID.CONTRACT, label: this.contractTabLabel() },
+    // { id: DETAILS_TABS_ID.EMAIL, label: this.emailTabLabel() },
   ]);
 
   // Computed Signals

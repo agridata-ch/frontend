@@ -1,0 +1,34 @@
+<app-agridata-client-table
+  class="block"
+  [rawData]="dataRequests()"
+  [loading]="dataRequestsResource().isLoading()"
+  [tableMetadata]="dataRequestsTableMetaData()"
+  [emptyStateTemplate]="emptyStateTemplate()"
+>
+  <ng-template #humanFriendlyId [appDataRequestDtoGuard] let-item>
+    <span class="text-agridata-primary-text font-medium" [title]="item.humanFriendlyId ?? ''">
+      {{ item.humanFriendlyId ?? '' }}
+    </span>
+  </ng-template>
+  <ng-template #dataRequestTitle [appDataRequestDtoGuard] let-item>
+    <span
+      class="text-agridata-primary-600 agridata-ellipsis"
+      [title]="this.i18nService.useObjectTranslation(item?.title)"
+    >
+      {{ this.i18nService.useObjectTranslation(item?.title) }}
+    </span>
+  </ng-template>
+  <ng-template #dataRequestState [appDataRequestDtoGuard] let-item>
+    <app-agridata-badge
+      [text]="getStatusTranslation(item?.stateCode)"
+      [variant]="getBadgeVariant(item?.stateCode)"
+      [size]="BadgeSize.SM"
+    />
+  </ng-template>
+
+  <ng-template #emptyStateTemplate *i18n="let t; prefix: 'provider.dataRequest.table.emptyState'">
+    <app-empty-state [title]="t('title')" [message]="t('message')">
+      <fa-icon emptyStateIcon [icon]="folderIcon" size="3x" class="text-agridata-tertiary-text" />
+    </app-empty-state>
+  </ng-template>
+</app-agridata-client-table>

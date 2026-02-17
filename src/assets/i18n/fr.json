@@ -261,7 +261,7 @@
       },
       "dataProtection": {
         "title": "Protection des données",
-        "description": "Il existe un contrat entre OFAG et {{ consumerName }} qui règle clairement l'objectif et l'utilisation des données décrits ci-dessus. {{ consumerName }} s'engage à respecter les dispositions de la loi sur la protection des données."
+        "description": "Il existe un contrat entre {{ systemName }} et {{ consumerName }} qui règle clairement l'objectif et l'utilisation des données décrits ci-dessus. {{ consumerName }} s'engage à respecter les dispositions de la loi sur la protection des données."
       },
       "revocation": {
         "title": "Possibilité de révocation",
@@ -322,7 +322,8 @@
       },
       "sidePanelTitle": "Vue détaillée"
     },
-    "invitationLink": "Lien d'invitation"
+    "invitationLink": "Lien d'invitation",
+    "productsSystemCode": "Système"
   },
   "forms": {
     "error": {
@@ -526,5 +527,16 @@
   "support-info": {
     "phoneNumber": "+41 43 206 02 18",
     "email": "support@agridata.ch"
+  },
+  "provider": {
+    "pageTitle": "Demandes de données",
+    "dataRequest": {
+      "table": {
+        "emptyState": {
+          "title": "Aucune demande de données disponible",
+          "message": "Aucune demande de données n'est actuellement active. Dès que des demandes de données actives seront disponibles, elles seront répertoriées ici."
+        }
+      }
+    }
   }
 }

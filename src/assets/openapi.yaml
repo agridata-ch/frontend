@@ -55,7 +55,6 @@ components:
           type: object
           required:
           - id
-          - dataProviderId
           - stateCode
           description: Details of the underlying data request
           properties:
@@ -73,6 +72,10 @@ components:
               description: Unique identifier of the data provider responsible for
                 this data request. This value is derived from the data source systems
                 of the associated data products.
+            dataSourceSystemId:
+              $ref: "#/components/schemas/UUID"
+            dataSourceSystem:
+              $ref: "#/components/schemas/DataSourceSystemDto"
             humanFriendlyId:
               type: string
               examples:
@@ -327,7 +330,6 @@ components:
           type: object
           required:
           - id
-          - dataProviderId
           - stateCode
           description: Details of the underlying data request
           properties:
@@ -345,6 +347,10 @@ components:
               description: Unique identifier of the data provider responsible for
                 this data request. This value is derived from the data source systems
                 of the associated data products.
+            dataSourceSystemId:
+              $ref: "#/components/schemas/UUID"
+            dataSourceSystem:
+              $ref: "#/components/schemas/DataSourceSystemDto"
             humanFriendlyId:
               type: string
               examples:
@@ -544,7 +550,6 @@ components:
       type: object
       required:
       - id
-      - dataProviderId
       - stateCode
       description: Details of the underlying data request
       properties:
@@ -562,6 +567,10 @@ components:
           description: Unique identifier of the data provider responsible for this
             data request. This value is derived from the data source systems of the
             associated data products.
+        dataSourceSystemId:
+          $ref: "#/components/schemas/UUID"
+        dataSourceSystem:
+          $ref: "#/components/schemas/DataSourceSystemDto"
         humanFriendlyId:
           type: string
           examples:
@@ -778,6 +787,7 @@ components:
       type: object
       required:
       - id
+      - dataProvider
       properties:
         id:
           $ref: "#/components/schemas/UUID"
@@ -785,6 +795,8 @@ components:
           type: string
         name:
           $ref: "#/components/schemas/TranslationDto"
+        dataProvider:
+          $ref: "#/components/schemas/DataProviderDto"
     DataTransferResponse:
       type: object
       description: Response containing the requested product data and metadata about
@@ -1226,6 +1238,9 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Einwilliger
         - agridata.ch.Agridata_Support
+      x-api-subset:
+      - Mobile App
+      - agridata.ch Web App
   /api/agreement/v1/consent-requests:
     get:
       description: Retrieves all consent requests assigned to the currently authenticated
@@ -1273,6 +1288,9 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Einwilliger
         - agridata.ch.Agridata_Support
+      x-api-subset:
+      - Mobile App
+      - agridata.ch Web App
     post:
       description: "Creates consent requests for given uids, provided the user actually\
         \ has access to those uids."
@@ -1318,6 +1336,7 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Einwilliger
+      x-api-subset: agridata.ch Web App
   /api/agreement/v1/consent-requests/{id}:
     get:
       description: "Retrieves consent request with {id} if the authenticated data\
@@ -1359,6 +1378,7 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Einwilliger
         - agridata.ch.Agridata_Support
+      x-api-subset: agridata.ch Web App
   /api/agreement/v1/consent-requests/{id}/status:
     put:
       description: Updates the status of a specific consent request. Only accessible
@@ -1403,6 +1423,9 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Einwilliger
+      x-api-subset:
+      - Mobile App
+      - agridata.ch Web App
   /api/agreement/v1/data-requests:
     get:
       description: "Retrieves a list of data requests. Admin users receive all data\
@@ -1440,6 +1463,11 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+      x-api-subset:
+      - agridata.ch Web App
+      - Data Consumer
+      - Data Provider
     post:
       description: Creates a new data request in draft status. Only accessible to
         users with the consumer role.
@@ -1481,6 +1509,7 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}:
     put:
       description: Updates the details of an existing data request. Only accessible
@@ -1529,6 +1558,7 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: agridata.ch Web App
     get:
       description: 'Retrieves a specific data request by its ID. Accessible to admin
         users or the consumer who owns the data request. '
@@ -1569,6 +1599,8 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+      x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests:
     get:
       description: "<strong>This endpoint is deprecated, because it does not return\
@@ -1620,6 +1652,7 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: Data Consumer
   /api/agreement/v1/data-requests/{id}/logo:
     put:
       description: Updates the logo of a specific data request. Only accessible to
@@ -1666,6 +1699,7 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/status:
     put:
       description: sets status of data request. Only accessible to the consumer who
@@ -1713,6 +1747,7 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
   /api/agreement/v2/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests:
     get:
       description: Retrieves all consent requests associated with a specific data
@@ -1762,6 +1797,7 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
+      x-api-subset: Data Consumer
   /api/data-transfer/v1/product/{productId}/data:
     get:
       description: Retrieves data defined by productId. The needed query parameters
@@ -1825,6 +1861,7 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: Data Consumer
   /api/data-transfer/v1/product/{productId}/delta:
     get:
       description: "Returns a list of delta IDs (Producer UIDs) for the specified\
@@ -1879,6 +1916,7 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: Data Consumer
   /api/data-transfer/v2/product/{productId}/data:
     get:
       description: "Retrieves data defined by productId. The needed query parameters\
@@ -1923,6 +1961,7 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: Data Consumer
   /api/products/v1:
     get:
       description: "Retrieves the list of all available data products. Accessible\
@@ -1963,6 +2002,9 @@ paths:
         - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Support
+      x-api-subset:
+      - agridata.ch Web App
+      - Mobile App
   /api/products/v1/data-providers:
     get:
       description: "Retrieves the list of all available data providers. Accessible\
@@ -2003,6 +2045,7 @@ paths:
         - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Support
+      x-api-subset: agridata.ch Web App
   /api/products/v1/data-providers/{providerId}:
     get:
       description: Retrieves a specific data provider.
@@ -2046,6 +2089,7 @@ paths:
         - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Support
+      x-api-subset: agridata.ch Web App
   /api/products/v1/data-providers/{providerId}/products:
     get:
       description: Retrieves all data products belonging to a specific data provider.
@@ -2091,6 +2135,7 @@ paths:
         - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Support
+      x-api-subset: agridata.ch Web App
   /api/test-data/reset:
     post:
       operationId: resetTestData
@@ -2118,6 +2163,7 @@ paths:
       summary: Reset Test Data
       security:
       - SecurityScheme: []
+      x-api-subset: agridata.ch Web App
   /api/uid-register/v1/search:
     get:
       description: Retrieves organisation details from the UID register for the UID
@@ -2153,6 +2199,7 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: agridata.ch Web App
   /api/uid-register/v1/search/{uid}:
     get:
       description: Retrieves organisation details from the UID register using the
@@ -2195,6 +2242,7 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
   /api/user/v1/authorized-uids:
     get:
       description: Retrieves all UIDs authorized for the currently authenticated data
@@ -2247,6 +2295,9 @@ paths:
         - agridata.ch.Agridata_Einwilliger
         - agridata.ch.Agridata_Support
         - agridata.ch.Agridata_Admin
+      x-api-subset:
+      - agridata.ch Web App
+      - Mobile App
   /api/user/v1/preferences:
     put:
       description: updates preferences for the currently authenticated user.
@@ -2288,6 +2339,7 @@ paths:
         - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Support
         - agridata.ch.Agridata_Datenanbieter
+      x-api-subset: agridata.ch Web App
   /api/user/v1/producers:
     get:
       description: Retrieves users mathing the given query parameters.
@@ -2351,6 +2403,7 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Support
+      x-api-subset: agridata.ch Web App
   /api/user/v1/uid/{uid}/authorized-burs:
     get:
       description: Retrieves all BURs authorized for the given UID. Only accessible
@@ -2393,6 +2446,7 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
   /api/user/v1/user-info:
     get:
       description: Retrieves user-info for the currently authenticated user.
@@ -2430,6 +2484,7 @@ paths:
         - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Support
         - agridata.ch.Agridata_Datenanbieter
+      x-api-subset: agridata.ch Web App
   /q/info:
     get:
       responses:
@@ -2482,6 +2537,9 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.6.0-rc.4
-  description: "This API provides access to the agridata.ch data exchange platform,\
-    \ enabling Users to discover, request, approve, and manage data sharing agreements."
+  version: 1.6.0-rc.9
+  description: |-
+    This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
+
+     - **For Data Consumers**: Select this API subset to view only the endpoints relevant to you: [Data Consumer](/q/swagger-ui/?urls.primaryName=Data+Consumer)
+     - **For Data Providers**: Select this API subset to view only the endpoints relevant to you: [Data Providers](/q/swagger-ui/?urls.primaryName=Data+Provider)

@@ -12,6 +12,7 @@ import { MockifyWithWritableSignals } from '@/shared/testing/mocks/test-model';
 export type MockAuthServiceTestSignals = {
   isProducer: WritableSignal<boolean>;
   isConsumer: WritableSignal<boolean>;
+  isDataProvider: WritableSignal<boolean>;
   isSupporter: WritableSignal<boolean>;
   isAdmin: WritableSignal<boolean>;
   userRoles: WritableSignal<string[]>;
@@ -32,6 +33,7 @@ export function createMockAuthService(): MockAuthService {
   const userRoles = signal([]);
   const isProducer = signal(false);
   const isConsumer = signal(false);
+  const isDataProvider = signal(false);
   const isSupporter = signal(false);
   const isAdmin = signal(false);
   const userUids = signal([]);
@@ -45,6 +47,7 @@ export function createMockAuthService(): MockAuthService {
     // Computed signals (keep as simple signals for tests)
     isProducer,
     isConsumer,
+    isDataProvider,
     isSupporter,
     isAdmin,
 
@@ -60,6 +63,7 @@ export function createMockAuthService(): MockAuthService {
     __testSignals: {
       isProducer,
       isConsumer,
+      isDataProvider,
       isSupporter,
       isAdmin,
       userRoles,

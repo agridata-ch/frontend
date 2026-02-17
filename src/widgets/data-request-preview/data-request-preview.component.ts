@@ -41,9 +41,16 @@ export class DataRequestPreviewComponent {
   readonly AvatarSkin = AvatarSkin;
   readonly getFieldFromLang = getFieldFromLang;
 
-  protected readonly productsList = computed(() => {
+  protected readonly dataProvider = computed(() => {
     return this.metaDataService
-      .getProductsForProvider(this.dataRequest()?.dataProviderId)
+      .dataProviders()
+      .find((provider) => provider.id === this.dataRequest().dataProviderId);
+  });
+
+  readonly productsList = computed(() => {
+    if (!this.dataRequest()?.dataProviderId) return [];
+    return this.metaDataService
+      .getProductsForProvider(this.dataRequest().dataProviderId!)
       ?.filter((product) => this.dataRequest()?.products?.includes(product.id));
   });
 }

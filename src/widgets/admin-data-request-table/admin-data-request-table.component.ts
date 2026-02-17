@@ -43,11 +43,11 @@ export class AdminDataRequestTableComponent {
   readonly dataRequests = input.required<DataRequestDto[]>();
   readonly tableRowAction = output<DataRequestDto>();
 
-  protected readonly dataRequestConsumerHeader = 'admin.data-request.consumer';
-  protected readonly dataRequestTitleHeader = 'admin.data-request.title';
-  protected readonly dataRequestSubmissionDateHeader = 'admin.data-request.submissionDate';
-  protected readonly dataRequestProviderHeader = 'admin.data-request.provider';
-  protected readonly dataRequestStateHeader = 'admin.data-request.state';
+  protected readonly dataRequestConsumerHeader = 'data-request.consumerName';
+  protected readonly dataRequestTitleHeader = 'data-request.title';
+  protected readonly dataRequestSubmissionDateHeader = 'data-request.submissionDate';
+  protected readonly dataRequestProviderHeader = 'data-request.provider';
+  protected readonly dataRequestStateHeader = 'data-request.state';
   protected readonly BadgeSize = BadgeSize;
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;

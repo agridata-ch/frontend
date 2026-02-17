@@ -38,11 +38,16 @@ export class SidepanelComponent {
   protected readonly closeIcon = faClose;
   protected readonly sidepanelContent = viewChild<ElementRef>('sidepanelContent');
 
-  protected readonly focusEffect = effect(() => {
-    // for this effect to work properly, we need to have tabindex="-1"
+  protected readonly openEffect = effect((onCleanup) => {
+    // for the focus effect to work properly, we need to have tabindex="-1"
     // on the sidepanelContent div and set focus to it when the sidepanel opens.
+    // Additionally, we want to prevent background scrolling when the sidepanel is open so that's why we add overflow hidden.
     if (this.isOpen()) {
       this.sidepanelContent()?.nativeElement.focus();
+      document.documentElement.style.overflow = 'hidden';
+      onCleanup(() => {
+        document.documentElement.style.overflow = '';
+      });
     }
   });
 

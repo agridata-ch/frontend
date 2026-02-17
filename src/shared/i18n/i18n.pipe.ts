@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Inject, Optional, Pipe } from '@angular/core';
 import {
-  TRANSLOCO_LANG,
   TRANSLOCO_SCOPE,
   TranslocoPipe,
   TranslocoScope,
@@ -14,7 +13,7 @@ export type OrArray<T> = T | T[];
  * in templates, supporting scoped and language-specific contexts while ensuring automatic change
  * detection when language changes.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2026-02-18
  */
 @Pipe({
   name: 'i18n',
@@ -27,11 +26,8 @@ export class I18nPipe extends TranslocoPipe {
     @Optional()
     @Inject(TRANSLOCO_SCOPE)
     providerScope: OrArray<TranslocoScope> | undefined,
-    @Optional()
-    @Inject(TRANSLOCO_LANG)
-    providerLang: string | undefined,
     cdr: ChangeDetectorRef,
   ) {
-    super(service, providerScope, providerLang, cdr);
+    super(service, providerScope, undefined, cdr);
   }
 }

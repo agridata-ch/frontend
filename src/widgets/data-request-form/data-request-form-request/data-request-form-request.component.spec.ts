@@ -55,6 +55,10 @@ const mockDataProducts: DataProductDto[] = [
       id: 'agis-system',
       code: 'AGIS',
       name: { de: 'AGIS System', fr: 'Système AGIS', it: 'Sistema AGIS' },
+      dataProvider: {
+        id: 'provider-1',
+        name: { de: 'Anbieter 1', fr: 'Fournisseur 1', it: 'Fornitore 1' },
+      },
     },
   },
   {
@@ -65,6 +69,10 @@ const mockDataProducts: DataProductDto[] = [
       id: 'agis-system',
       code: 'AGIS',
       name: { de: 'AGIS System', fr: 'Système AGIS', it: 'Sistema AGIS' },
+      dataProvider: {
+        id: 'provider-1',
+        name: { de: 'Anbieter 1', fr: 'Fournisseur 1', it: 'Fornitore 1' },
+      },
     },
   },
   {
@@ -75,6 +83,10 @@ const mockDataProducts: DataProductDto[] = [
       id: 'tvd-system',
       code: 'TVD',
       name: { de: 'TVD System', fr: 'Système TVD', it: 'Sistema TVD' },
+      dataProvider: {
+        id: 'provider-2',
+        name: { de: 'Anbieter 2', fr: 'Fournisseur 2', it: 'Fornitore 2' },
+      },
     },
   },
 ];
