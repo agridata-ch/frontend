@@ -261,7 +261,7 @@
       },
       "dataProtection": {
         "title": "Datenschutz",
-        "description": "Zwischen BLW und {{ consumerName }} besteht ein Vertrag, der den oben beschriebenen Zweck und die Nutzung der Daten eindeutig regelt. {{ consumerName }} ist verpflichtet, die Bestimmungen des Datenschutzgesetzes einzuhalten."
+        "description": "Zwischen {{ systemName }} und {{ consumerName }} besteht ein Vertrag, der den oben beschriebenen Zweck und die Nutzung der Daten eindeutig regelt. {{ consumerName }} ist verpflichtet, die Bestimmungen des Datenschutzgesetzes einzuhalten."
       },
       "revocation": {
         "title": "Änderungsmöglichkeit",
@@ -322,7 +322,8 @@
       },
       "sidePanelTitle": "Detailansicht"
     },
-    "invitationLink": "Einladungslink"
+    "invitationLink": "Einladungslink",
+    "productsSystemCode": "System"
   },
   "forms": {
     "error": {
@@ -527,5 +528,16 @@
   "support-info": {
     "phoneNumber": "+41 43 206 02 18",
     "email": "support@agridata.ch"
+  },
+  "provider": {
+    "pageTitle": "Datenanträge",
+    "dataRequest": {
+      "table": {
+        "emptyState": {
+          "title": "Keine Datenanträge vorhanden",
+          "message": "Aktuell sind keine Datenanträge aktiv. Sobald aktive Datenanträge vorhanden sind, werden diese hier aufgelistet."
+        }
+      }
+    }
   }
 }

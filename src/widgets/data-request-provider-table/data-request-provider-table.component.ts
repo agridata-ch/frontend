@@ -14,7 +14,7 @@ import { faAdd, faEye, faRotateLeft } from '@awesome.me/kit-0b6d1ed528/icons/cla
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DataRequestService } from '@/entities/api';
-import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import { DataRequestDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { DataRequestDtoDirective, getBadgeVariant } from '@/shared/data-request';
 import { I18nDirective, I18nService } from '@/shared/i18n';
@@ -22,7 +22,7 @@ import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table/
 import { ClientTableMetadata } from '@/shared/ui/agridata-client-table/client-table-model';
 import { ActionDTO, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonVariants } from '@/shared/ui/button';
 import { EmptyStateComponent } from '@/shared/ui/empty-state/empty-state.component';
 import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-new';
 
@@ -32,11 +32,11 @@ import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-new';
  * state values, assigns badge variants for visual state indicators, and emits events when a
  * row or action is triggered.
  *
- * CommentLastReviewed: 2025-09-18
+ * CommentLastReviewed: 2026-02-17
  */
 @Component({
-  selector: 'app-data-request-table',
-  templateUrl: './data-request-table.component.html',
+  selector: 'app-data-request-provider-table',
+  templateUrl: './data-request-provider-table.component.html',
   imports: [
     AgridataClientTableComponent,
     AgridataBadgeComponent,
@@ -44,10 +44,9 @@ import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-new';
     I18nDirective,
     EmptyStateComponent,
     FontAwesomeModule,
-    ButtonComponent,
   ],
 })
-export class DataRequestTableComponent {
+export class DataRequestProviderTableComponent {
   protected readonly i18nService = inject(I18nService);
   private readonly dataRequestService = inject(DataRequestService);
   private readonly router = inject(Router);
@@ -60,7 +59,8 @@ export class DataRequestTableComponent {
   protected readonly dataRequestTitleHeader = 'data-request.title';
   protected readonly dataRequestSubmissionDateHeader = 'data-request.submissionDate';
   protected readonly dataRequestStateHeader = 'data-request.state';
-  protected readonly dataRequestProviderHeader = 'data-request.provider';
+  protected readonly dataRequestConsumerHeader = 'data-request.consumerName';
+  protected readonly dataRequestSystemHeader = 'data-request.productsSystemCode';
 
   protected readonly eyeIcon = faEye;
   protected readonly retreatIcon = faRotateLeft;
@@ -112,12 +112,24 @@ export class DataRequestTableComponent {
             sortValueFn: (item) => item.submissionDate ?? '',
           },
           {
-            name: this.dataRequestProviderHeader,
+            name: this.dataRequestConsumerHeader,
             renderer: {
               type: CellRendererTypes.FUNCTION,
-              //TODO: use real provider name when available
-              cellRenderFn: () => 'Agis',
+              cellRenderFn: (item) => item?.dataConsumerDisplayName ?? '',
             },
+            sortable: true,
+            sortValueFn: (item) => item.dataConsumerDisplayName ?? '',
+          },
+          {
+            name: this.dataRequestSystemHeader,
+            renderer: {
+              type: CellRendererTypes.FUNCTION,
+              cellRenderFn: (item) =>
+                this.i18nService.useObjectTranslation(item?.dataSourceSystem?.name),
+            },
+            // sortable: true,
+            // initialSortDirection: SortDirections.DESC,
+            // sortValueFn: (item) => item.dataConsumerDisplayName ?? '',
           },
           {
             name: this.dataRequestStateHeader,
@@ -144,18 +156,6 @@ export class DataRequestTableComponent {
       label: 'data-request.table.tableActions.details',
       callback: async () => this.tableRowAction.emit(request),
     };
-    const retreat = {
-      icon: this.retreatIcon,
-      label: 'data-request.table.tableActions.retreat',
-      callback: async () => {
-        await this.dataRequestService.retreatDataRequest(request.id);
-        this.dataRequestsResource().reload();
-      },
-    };
-
-    if (request.stateCode === DataRequestStateEnum.InReview) {
-      return [details, retreat];
-    }
 
     return [details];
   };

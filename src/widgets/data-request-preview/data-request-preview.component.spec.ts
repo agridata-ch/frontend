@@ -41,6 +41,7 @@ describe('DataRequestPreviewComponent', () => {
       title: { de: 'Test Title' },
       description: { de: 'Test Description' },
       products: ['product1'],
+      dataProviderId: 'provider-1',
     };
     componentRef.setInput('dataRequest', mockDataRequest);
 
@@ -62,6 +63,7 @@ describe('DataRequestPreviewComponent', () => {
         id: 'test-id',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
         products: ['product1'],
+        dataProviderId: 'provider-1',
       };
 
       masterDataService.__testSignals.dataProducts.set(mockProducts);

@@ -17,7 +17,7 @@
     "prepare": "husky",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --build --noEmit",
     "i18n:extract": "transloco-keys-manager extract",
     "i18n:find": "transloco-keys-manager find",
     "i18n:sync": "./src/scripts/sync-translations.sh",

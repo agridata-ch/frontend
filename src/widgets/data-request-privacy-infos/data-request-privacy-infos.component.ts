@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import {
   faFileSignature,
   faLockKeyhole,
@@ -6,7 +6,8 @@ import {
 } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { I18nPipe } from '@/shared/i18n';
+import { DataProviderDto } from '@/entities/openapi';
+import { I18nDirective, I18nService } from '@/shared/i18n';
 
 /**
  * Implements the logic for displaying privacy sections. It defines consent, data protection,
@@ -17,11 +18,14 @@ import { I18nPipe } from '@/shared/i18n';
  */
 @Component({
   selector: 'app-data-request-privacy-infos',
-  imports: [I18nPipe, FontAwesomeModule],
+  imports: [FontAwesomeModule, I18nDirective],
   templateUrl: './data-request-privacy-infos.component.html',
 })
 export class DataRequestPrivacyInfosComponent {
+  readonly i18nService = inject(I18nService);
+
   readonly dataConsumerName = input<string | null>();
+  readonly dataProvider = input<DataProviderDto>();
   readonly lang = input<string>();
 
   readonly editIcon = faFileSignature;
@@ -40,7 +44,10 @@ export class DataRequestPrivacyInfosComponent {
         icon: this.lockIcon,
         title: 'data-request.privacy.dataProtection.title',
         description: 'data-request.privacy.dataProtection.description',
-        translationParams: { consumerName: this.dataConsumerName() },
+        translationParams: {
+          systemName: this.i18nService.useObjectTranslation(this.dataProvider()?.name, this.lang()),
+          consumerName: this.dataConsumerName(),
+        },
       },
       {
         icon: this.repeatIcon,

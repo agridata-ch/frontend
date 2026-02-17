@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DataProviderDto } from './dataProviderDto';
 import { TranslationDto } from './translationDto';
 
 
@@ -14,5 +15,6 @@ export interface DataSourceSystemDto {
     id: string;
     code?: string;
     name?: TranslationDto;
+    dataProvider: DataProviderDto;
 }
 

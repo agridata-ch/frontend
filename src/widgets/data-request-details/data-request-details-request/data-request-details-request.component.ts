@@ -54,11 +54,14 @@ export class DataRequestDetailsRequestComponent {
     return `${globalThis.location.origin}/consent-requests/create/${this.dataRequest().id}`;
   });
 
-  readonly productsList = computed(() =>
-    this.metaDataService
-      .getProductsForProvider(this.dataRequest().dataProviderId)
-      ?.filter((product) => this.dataRequest().products?.includes(product.id)),
-  );
+  readonly productsList = computed(() => {
+    if (!this.dataRequest()?.dataProviderId) return [];
+    return (
+      this.metaDataService
+        .getProductsForProvider(this.dataRequest().dataProviderId!)
+        ?.filter((product) => this.dataRequest().products?.includes(product.id)) || []
+    );
+  });
 
   protected getStatusTranslation(value?: string) {
     if (!value) return '';

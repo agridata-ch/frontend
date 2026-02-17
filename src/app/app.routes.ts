@@ -9,6 +9,7 @@ import { AdminPage } from '@/pages/admin-page';
 import { CmsPage } from '@/pages/cms-page';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
+import { DataRequestsProviderPage } from '@/pages/data-requests-provider';
 import { ErrorPage } from '@/pages/error-page/error-page.component';
 import { ForbiddenPage } from '@/pages/forbidden';
 import { ImprintPage } from '@/pages/imprint-page';
@@ -22,6 +23,7 @@ import { AuthorizationGuard } from '@/shared/lib/auth';
 import { AdminDataRequestDetailsComponent } from '@/widgets/admin-data-request-details';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 import { DataRequestDetailsWrapperComponent } from '@/widgets/data-request-details-wrapper/data-request-details-wrapper.component';
+import { ProviderDataRequestDetailsComponent } from '@/widgets/provider-data-request-details';
 
 import { LoginAuthGuard } from './guards/login.guard';
 
@@ -136,6 +138,27 @@ export const routes: Routes = [
             path: `:dataRequestId`,
             title: 'consumer.sidePanelTitle',
             component: DataRequestDetailsWrapperComponent,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    // provider routes
+    path: ROUTE_PATHS.DATA_REQUESTS_PROVIDER_PATH,
+    component: DefaultLayoutComponent,
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
+    data: { roles: [USER_ROLES.AGRIDATA_DATA_REQUESTS_PROVIDER] },
+    children: [
+      {
+        path: '',
+        title: 'provider.pageTitle',
+        component: DataRequestsProviderPage,
+        children: [
+          {
+            path: `:dataRequestId`,
+            title: 'provider.sidePanelTitle',
+            component: ProviderDataRequestDetailsComponent,
           },
         ],
       },

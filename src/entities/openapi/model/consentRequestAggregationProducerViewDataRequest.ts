@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DataSourceSystemDto } from './dataSourceSystemDto';
 import { DataRequestPurposeDto } from './dataRequestPurposeDto';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
@@ -17,7 +18,9 @@ import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
  */
 export interface ConsentRequestAggregationProducerViewDataRequest { 
     id: string;
-    dataProviderId: string;
+    dataProviderId?: string;
+    dataSourceSystemId?: string;
+    dataSourceSystem?: DataSourceSystemDto;
     /**
      * Human friendly id of the data request
      */
