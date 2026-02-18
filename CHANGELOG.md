@@ -1,3 +1,9 @@
+## [1.8.0-rc.18](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.17...v1.8.0-rc.18) (2026-02-18)
+
+### Features
+
+- **provider:** add provider page ([57f6790](https://github.com/agridata-ch/frontend/commit/57f67904b9d1db167cc19625cbdc3eee636f8c65)), closes [DIGIB2-466](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-466)
+
 ## [1.8.0-rc.17](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.16...v1.8.0-rc.17) (2026-02-16)
 
 ### Features
