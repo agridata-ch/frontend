@@ -1,3 +1,9 @@
+## [1.8.0-rc.19](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.18...v1.8.0-rc.19) (2026-02-19)
+
+### Bug Fixes
+
+- **config:** update budget limits ([20acce7](https://github.com/agridata-ch/frontend/commit/20acce7f9de6b635ae1a25d6bb39015118614112))
+
 ## [1.8.0-rc.18](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.17...v1.8.0-rc.18) (2026-02-18)
 
 ### Features
