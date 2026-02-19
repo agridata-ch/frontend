@@ -45,12 +45,12 @@ describe('SupporterOverlayComponent', () => {
 
   describe('userName', () => {
     it('should return empty string when no user data', () => {
-      authService.userInfo.set(null);
+      authService.__testSignals.userInfo.set(undefined);
       expect(component['userName']()).toBe('');
     });
 
     it('should return combined first and last name when both exist', () => {
-      authService.userInfo.set({
+      authService.__testSignals.userInfo.set({
         givenName: 'John',
         familyName: 'Doe',
       });
@@ -58,7 +58,7 @@ describe('SupporterOverlayComponent', () => {
     });
 
     it('should return only first name when last name is missing', () => {
-      authService.userInfo.set({
+      authService.__testSignals.userInfo.set({
         givenName: 'John',
         familyName: '',
       });
@@ -66,7 +66,7 @@ describe('SupporterOverlayComponent', () => {
     });
 
     it('should return only last name when first name is missing', () => {
-      authService.userInfo.set({
+      authService.__testSignals.userInfo.set({
         givenName: '',
         familyName: 'Doe',
       });
@@ -74,7 +74,7 @@ describe('SupporterOverlayComponent', () => {
     });
 
     it('should handle real user data object', () => {
-      authService.userInfo.set(mockUserInfo);
+      authService.__testSignals.userInfo.set(mockUserInfo);
       expect(component['userName']()).toBe('Producer 081');
     });
   });

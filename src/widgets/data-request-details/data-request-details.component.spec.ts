@@ -2,15 +2,12 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { Router, provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService, UidRegisterService } from '@/entities/api';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { DataProductDto, DataRequestDto } from '@/entities/openapi';
+import { DataRequestDto } from '@/entities/openapi';
 import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
-import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/pages/admin-page';
-import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { SidepanelComponent } from '@/shared/sidepanel';
@@ -58,19 +55,6 @@ describe('DataRequestDetailsComponent', () => {
         { provide: UidRegisterService, useValue: createMockI18nService() },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: MasterDataService, useValue: masterDataService },
-        provideRouter(
-          [
-            {
-              path: `${ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH}/:dataRequestId`,
-              component: DataRequestDetailsComponent,
-            },
-            {
-              path: ROUTE_PATHS.ADMIN_PATH,
-              component: DataRequestDetailsComponent,
-            },
-          ],
-          withComponentInputBinding(),
-        ),
       ],
     }).compileComponents();
 
@@ -95,6 +79,7 @@ describe('DataRequestDetailsComponent', () => {
     it('should update dataRequest when request loaded', async () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
+        dataProviderId: 'test-provider',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
         dataConsumerDisplayName: 'Test Consumer',
         dataConsumerCity: 'Test City',
@@ -119,6 +104,7 @@ describe('DataRequestDetailsComponent', () => {
       // We need to check before it finishes loading
       const slowRequest: DataRequestDto = {
         id: 'test-id',
+        dataProviderId: 'test-provider',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
       };
 
@@ -146,6 +132,7 @@ describe('DataRequestDetailsComponent', () => {
     it('should open panel once data is loaded', async () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
+        dataProviderId: 'test-provider',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
         dataConsumerDisplayName: 'Test Consumer',
       };
@@ -182,83 +169,19 @@ describe('DataRequestDetailsComponent', () => {
     });
   });
 
-  describe('computed signals', () => {
-    it('should compute formattedSubmissionDate correctly', async () => {
-      const newRequest: DataRequestDto = {
-        id: 'test-id',
-        submissionDate: '2026-01-09T10:00:00Z',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
-      };
+  describe('handleSidepanelClose', () => {
+    it('should emit closeSidepanel output', () => {
+      const emitSpy = jest.spyOn(component.closeSidepanel, 'emit');
 
-      dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
+      component['handleSidepanelClose']();
 
-      const newFixture = TestBed.createComponent(DataRequestDetailsComponent);
-      const newComponentRef = newFixture.componentRef;
-      newComponentRef.setInput('dataRequestId', 'test-id');
-      newFixture.detectChanges();
-      await newFixture.whenStable();
-
-      expect(newFixture.componentInstance['formattedSubmissionDate']()).toBeDefined();
-    });
-
-    it('should compute productsList correctly', async () => {
-      const newRequest: DataRequestDto = {
-        id: 'test-id',
-        products: ['product1', 'product2'],
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
-      };
-
-      const mockProducts: DataProductDto[] = [
-        { id: 'product1', name: { de: 'Product 1' } },
-        { id: 'product2', name: { de: 'Product 2' } },
-        { id: 'product3', name: { de: 'Product 3' } },
-      ];
-
-      dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
-      masterDataService.__testSignals.dataProducts.set(mockProducts);
-
-      const newFixture = TestBed.createComponent(DataRequestDetailsComponent);
-      const newComponentRef = newFixture.componentRef;
-      newComponentRef.setInput('dataRequestId', 'test-id');
-      newFixture.detectChanges();
-      await newFixture.whenStable();
-
-      const productsList = newFixture.componentInstance['productsList']();
-      expect(productsList).toHaveLength(2);
-      expect(productsList).toEqual([
-        { id: 'product1', name: { de: 'Product 1' } },
-        { id: 'product2', name: { de: 'Product 2' } },
-      ]);
-    });
-  });
-
-  describe('handleClose', () => {
-    it('should navigate to admin path with refreshListNeeded false by default', () => {
-      const router = TestBed.inject(Router);
-      const routerSpy = jest.spyOn(router, 'navigate');
-
-      component['handleClose']();
-
-      expect(routerSpy).toHaveBeenCalledWith([ROUTE_PATHS.ADMIN_PATH], {
-        state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: false },
-      });
-    });
-
-    it('should navigate to admin path with refreshListNeeded true when set', () => {
-      const router = TestBed.inject(Router);
-      const routerSpy = jest.spyOn(router, 'navigate');
-      component['refreshListNeeded'].set(true);
-
-      component['handleClose']();
-
-      expect(routerSpy).toHaveBeenCalledWith([ROUTE_PATHS.ADMIN_PATH], {
-        state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: true },
-      });
+      expect(emitSpy).toHaveBeenCalled();
     });
 
     it('should be called when sidepanel emits closeSidepanel', async () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
+        dataProviderId: 'test-provider',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
       };
 
@@ -270,121 +193,12 @@ describe('DataRequestDetailsComponent', () => {
       newFixture.detectChanges();
       await newFixture.whenStable();
 
-      const router = TestBed.inject(Router);
-      const routerSpy = jest.spyOn(router, 'navigate');
+      const emitSpy = jest.spyOn(newFixture.componentInstance.closeSidepanel, 'emit');
       const sidepanel = newFixture.debugElement.query(By.directive(SidepanelComponent));
 
       sidepanel.componentInstance.closeSidepanel.emit();
 
-      expect(routerSpy).toHaveBeenCalledWith([ROUTE_PATHS.ADMIN_PATH], {
-        state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: false },
-      });
-    });
-  });
-
-  describe('acceptRequest', () => {
-    it('should call approveDataRequest and reload resource on success', async () => {
-      const mockResponse: DataRequestDto = {
-        id: 'test-id',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.ToBeSigned,
-      };
-      dataRequestService.approveDataRequest.mockResolvedValue(mockResponse);
-      const reloadSpy = jest.spyOn(component['dataRequestResource'], 'reload');
-
-      component['acceptRequest']();
-      await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for promise chain
-
-      expect(dataRequestService.approveDataRequest).toHaveBeenCalledWith('test-id');
-      expect(component['refreshListNeeded']()).toBe(true);
-      expect(reloadSpy).toHaveBeenCalled();
-    });
-
-    it('should handle errors from approveDataRequest', async () => {
-      const testError = new Error('Approval failed');
-      dataRequestService.approveDataRequest.mockRejectedValue(testError);
-
-      component['acceptRequest']();
-      await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for promise chain
-
-      expect(errorService.handleError).toHaveBeenCalledWith(testError);
-      expect(component['refreshListNeeded']()).toBe(false);
-    });
-  });
-
-  describe('rejectRequest', () => {
-    it('should call retreatDataRequest and reload resource on success', async () => {
-      const mockResponse: DataRequestDto = {
-        id: 'test-id',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
-      };
-      const router = TestBed.inject(Router);
-
-      dataRequestService.retreatDataRequest.mockResolvedValue(mockResponse);
-      const routerSpy = jest.spyOn(router, 'navigate');
-
-      component['rejectRequest']();
-      await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for promise chain
-
-      expect(dataRequestService.retreatDataRequest).toHaveBeenCalledWith('test-id');
-      expect(component['refreshListNeeded']()).toBe(true);
-      expect(routerSpy).toHaveBeenCalledWith([ROUTE_PATHS.ADMIN_PATH], {
-        state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: true },
-      });
-    });
-
-    it('should handle errors from retreatDataRequest', async () => {
-      const testError = new Error('Rejection failed');
-      dataRequestService.retreatDataRequest.mockRejectedValue(testError);
-
-      component['rejectRequest']();
-      await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for promise chain
-
-      expect(errorService.handleError).toHaveBeenCalledWith(testError);
-      expect(component['refreshListNeeded']()).toBe(false);
-    });
-  });
-
-  describe('activateRequest', () => {
-    it('should call activateRequest and reload resource on success', async () => {
-      const mockResponse: DataRequestDto = {
-        id: 'test-id',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.ToBeSigned,
-      };
-
-      dataRequestService.activateDataRequest.mockResolvedValue(mockResponse);
-      const reloadSpy = jest.spyOn(component['dataRequestResource'], 'reload');
-
-      component['activateRequest']();
-      await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for promise chain
-
-      expect(dataRequestService.activateDataRequest).toHaveBeenCalledWith('test-id');
-      expect(component['refreshListNeeded']()).toBe(true);
-      expect(reloadSpy).toHaveBeenCalled();
-    });
-
-    it('should handle errors from activateDataRequest', async () => {
-      const testError = new Error('Activation failed');
-      dataRequestService.activateDataRequest.mockRejectedValue(testError);
-
-      component['activateRequest']();
-      await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for promise chain
-
-      expect(errorService.handleError).toHaveBeenCalledWith(testError);
-      expect(component['refreshListNeeded']()).toBe(false);
-    });
-
-    describe('getStatusTranslation', () => {
-      it('should return translated status for valid stateCode', () => {
-        const result = component['getStatusTranslation'](
-          ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
-        );
-        expect(result).toBeDefined();
-      });
-
-      it('should return empty string for undefined stateCode', () => {
-        const result = component['getStatusTranslation'](undefined);
-        expect(result).toBe('');
-      });
+      expect(emitSpy).toHaveBeenCalled();
     });
   });
 });

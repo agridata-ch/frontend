@@ -2,6 +2,7 @@ export const ROUTE_PATHS = {
   CONSENT_REQUEST_PRODUCER_PATH: 'consent-requests',
   CONSENT_REQUEST_PRODUCER_CREATE_SUBPATH: 'create',
   DATA_REQUESTS_CONSUMER_PATH: 'data-requests',
+  DATA_REQUESTS_PROVIDER_PATH: 'data-requests-provider',
   SUPPORT_PATH: 'support',
   ADMIN_PATH: 'admin',
   CMS_PATH: 'cms',
@@ -17,6 +18,7 @@ export const ROUTE_PATHS = {
 export const USER_ROLES = {
   AGRIDATA_CONSENT_REQUESTS_PRODUCER: 'agridata.ch.Agridata_Einwilliger',
   AGRIDATA_DATA_REQUESTS_CONSUMER: 'agridata.ch.Agridata_Datenbezueger',
+  AGRIDATA_DATA_REQUESTS_PROVIDER: 'agridata.ch.Agridata_Datenanbieter',
   AGRIDATA_SUPPORTER: 'agridata.ch.Agridata_Support',
   AGRIDATA_ADMIN: 'agridata.ch.Agridata_Admin',
 };

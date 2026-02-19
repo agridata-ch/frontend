@@ -10,7 +10,8 @@
 
 
 export const DataSourceSystemEnum = {
-    Agis: 'AGIS'
+    Agis: 'AGIS',
+    Tvd: 'TVD'
 } as const;
 export type DataSourceSystemEnum = typeof DataSourceSystemEnum[keyof typeof DataSourceSystemEnum];
 

@@ -84,6 +84,12 @@
         "GRANTED": "Zugestimmt",
         "DECLINED": "Abgelehnt"
       }
+    },
+    "emptyState": {
+      "title": "Keine Anfragen vorhanden",
+      "message": "Sie haben derzeit keine aktiven Datenanfragen und müssen aktuell nichts unternehmen. \nSobald eine erste Datenanfrage besteht, wird diese hier angezeigt und Sie werden informiert.",
+      "additionalInfo": "Weitere Informationen finden Sie auf ",
+      "altIcon": "Illustration zur Veranschaulichung leerer Einträge"
     }
   },
   "consumer": {
@@ -105,11 +111,14 @@
         "headline": "Angaben zum Datenbezug",
         "provider": {
           "label": "Datenanbieter",
-          "sublabel": "Aktuell steht nur ein Datenabieter zur Verfügung. Es werden kontinuierlich weitere Anbieter angebunden."
+          "sublabel": "Aktuell steht nur ein Datenabieter zur Verfügung. Es werden kontinuierlich weitere Anbieter angebunden.",
+          "placeholder": "Datenanbieter auswählen"
         },
         "products": {
           "label": "Welches Datenprodukt möchten Sie?",
-          "placeholder": "Wählen Sie die Produkte aus, für die Sie Daten anfordern möchten."
+          "placeholder": "Wählen Sie die Produkte aus, für die Sie Daten anfordern möchten.",
+          "moreInfos": "Weitere Infos",
+          "sublabel": "Sie können Produkte aus nur einer Kategorie gleichzeitig wählen."
         },
         "title": {
           "label": "Antragname Datenanfrage",
@@ -237,6 +246,9 @@
           "description": "Sobald Ihr Antrag durch agridata.ch erfolgreich geprüft wurde, wird hier der Vertrag zur Unterzeichnung aufgeschaltet.",
           "iconAltText": "Bild mit einer Sanduhr und einer Uhr im Hintergrund"
         }
+      },
+      "products": {
+        "allSystems": "Alle Systeme"
       }
     },
     "preview": {
@@ -249,7 +261,7 @@
       },
       "dataProtection": {
         "title": "Datenschutz",
-        "description": "Zwischen BLW und {{ consumerName }} besteht ein Vertrag, der den oben beschriebenen Zweck und die Nutzung der Daten eindeutig regelt. {{ consumerName }} ist verpflichtet, die Bestimmungen des Datenschutzgesetzes einzuhalten."
+        "description": "Zwischen {{ systemName }} und {{ consumerName }} besteht ein Vertrag, der den oben beschriebenen Zweck und die Nutzung der Daten eindeutig regelt. {{ consumerName }} ist verpflichtet, die Bestimmungen des Datenschutzgesetzes einzuhalten."
       },
       "revocation": {
         "title": "Änderungsmöglichkeit",
@@ -290,11 +302,28 @@
       "tableActions": {
         "details": "Anzeigen",
         "retreat": "Zurückziehen"
+      },
+      "emptyState": {
+        "title": "Noch keine Datenanträge erstellt",
+        "message": "Stellen Sie Ihren ersten Datenantrag und erhalten Sie Zugriff auf die benötigten Daten – sobald die Datenproduzenten zustimmen.",
+        "createNewDataRequest": "Neuer Antrag"
       }
     },
     "provider": "Datenanbieter",
     "submissionDate": "Datum der Einreichung",
-    "humanFriendlyId": "ID"
+    "humanFriendlyId": "ID",
+    "details": {
+      "title": "Antrag",
+      "tabs": {
+        "request": "Antrag",
+        "producer": "Produzenten",
+        "contract": "Vertrag",
+        "email": "E-Mail Vorlage"
+      },
+      "sidePanelTitle": "Detailansicht"
+    },
+    "invitationLink": "Einladungslink",
+    "productsSystemCode": "System"
   },
   "forms": {
     "error": {
@@ -385,6 +414,12 @@
       "ariaLabel": {
         "open": "Öffnen"
       }
+    },
+    "formControl": {
+      "multiSelect": {
+        "selectAll": "Alle auswählen",
+        "noResults": "Keine Ergebnisse"
+      }
     }
   },
   "supporter": {
@@ -450,15 +485,17 @@
       "title": "Es läuft gleich wieder...",
       "message": "Unsere Anwendung ist derzeit wegen Wartungsarbeiten nicht erreichbar.\nWir sind bald wieder online."
     },
-    "reloadPage": "Seite neu laden"
+    "reloadPage": "Seite neu laden",
+    "consentRequest": {
+      "notFound": {
+        "title": "Dieser Link ist ungültig",
+        "message": "Der aufgerufene Link führt zu keinem Antrag. Bitte überprüfen Sie den Link oder kontaktieren Sie die Organisation, die Ihnen diesen Link geschickt hat."
+      },
+      "modalTitle": "Hoppla, etwas hat nicht funktioniert..."
+    }
   },
   "breadcrumb": {
     "home": "Home"
-  },
-  "emptyState": {
-    "title": "Keine Anfragen vorhanden",
-    "message": "Sie haben derzeit keine aktiven Datenanfragen und müssen aktuell nichts unternehmen. \nSobald eine erste Datenanfrage besteht, wird diese hier angezeigt und Sie werden informiert.",
-    "additionalInfo": "Weitere Informationen finden Sie auf "
   },
   "footer": {
     "logoBund": {
@@ -478,19 +515,10 @@
   },
   "admin": {
     "data-request": {
-      "consumer": "Datenbezüger",
-      "title": "Datenantrag",
-      "submissionDate": "Datum der Einreichung",
-      "provider": "Datenanbieter",
-      "state": "Status",
-      "humanFriendlyId": "Antragsnummer",
-      "invitationLink": "Einladungslink"
+      "title": "Datenantrag"
     },
     "pageTitle": "Datenanträge",
     "sidePanelTitle": "Detailansicht",
-    "details": {
-      "title": "Antrag"
-    },
     "actions": {
       "accept": "Antrag freigeben",
       "reject": "Antrag ablehnen",
@@ -500,5 +528,16 @@
   "support-info": {
     "phoneNumber": "+41 43 206 02 18",
     "email": "support@agridata.ch"
+  },
+  "provider": {
+    "pageTitle": "Datenanträge",
+    "dataRequest": {
+      "table": {
+        "emptyState": {
+          "title": "Keine Datenanträge vorhanden",
+          "message": "Aktuell sind keine Datenanträge aktiv. Sobald aktive Datenanträge vorhanden sind, werden diese hier aufgelistet."
+        }
+      }
+    }
   }
 }

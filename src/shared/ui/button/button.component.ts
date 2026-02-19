@@ -27,10 +27,12 @@ export class ButtonComponent {
   ariaLabel = input<string>('');
   selected = input<boolean>(false);
   loading = input<boolean>(false);
+
   onClick = output<Event>();
   additionalClass = input<string>('');
   href = input<string>('');
   target = input<HrefTarget>(HrefTarget.Self);
+  dataTestId = input<string | undefined>();
   @HostBinding('style.display') display = 'contents';
 
   protected readonly faSpinner = faSpinner;

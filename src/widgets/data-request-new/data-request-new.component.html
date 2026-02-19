@@ -1,7 +1,7 @@
 <ng-container *i18n="let t; prefix: 'consumer'">
   <app-sidepanel
     [title]="t('sidePanelTitle')"
-    [isOpen]="!dataRequestsResource.isLoading()"
+    [isOpen]="true"
     (closeSidepanel)="handleClose()"
     [maxWidth]="'75%'"
     [backgroundColor]="'#efefef'"
@@ -24,7 +24,11 @@
             />
           }
           @case (FORM_GROUP_NAMES.REQUEST) {
-            <app-data-request-form-request [form]="form" [formDisabled]="formDisabled()" />
+            <app-data-request-form-request
+              [form]="form"
+              [formDisabled]="formDisabled()"
+              [dataProviderId]="dataRequest()?.dataProviderId"
+            />
           }
           @case (FORM_GROUP_NAMES.PREVIEW) {
             <app-data-request-preview [dataRequest]="dataRequest()!" />
@@ -44,9 +48,10 @@
       <div wizardFooter class="contents" *i18n="let t; prefix: 'data-request.wizard'">
         @if (wizard.currentStep() !== formControlSteps().length - 1) {
           @if (
-            wizard.currentStepId() !== FORM_GROUP_NAMES.CONTRACT &&
-            wizard.currentStepId() !== FORM_GROUP_NAMES.COMPLETION &&
-            dataRequest()?.stateCode === ConsentRequestDetailViewDtoDataRequestStateCode.Draft
+            (wizard.currentStepId() !== FORM_GROUP_NAMES.CONTRACT &&
+              wizard.currentStepId() !== FORM_GROUP_NAMES.COMPLETION &&
+              dataRequest()?.stateCode === ConsentRequestDetailViewDtoDataRequestStateCode.Draft) ||
+            dataRequest()?.stateCode === null
           ) {
             <app-agridata-button
               [variant]="ButtonVariants.Tertiary"
@@ -57,6 +62,7 @@
               {{ t('saveDraft') }}
             </app-agridata-button>
           } @else if (
+            dataRequest()?.stateCode &&
             dataRequest()?.stateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Draft &&
             dataRequest()?.stateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Active
           ) {

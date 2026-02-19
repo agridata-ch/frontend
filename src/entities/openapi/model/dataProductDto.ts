@@ -7,16 +7,20 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DataSourceSystemEnum } from './dataSourceSystemEnum';
+import { DataSourceSystemDto } from './dataSourceSystemDto';
 import { TranslationDto } from './translationDto';
 
 
 export interface DataProductDto { 
     id: string;
     /**
-     * From which data source system this product originates
+     * Code of data source system from which this product originates
      */
-    dataSourceSystemCode?: DataSourceSystemEnum;
+    dataSourceSystemCode?: string;
+    /**
+     * Data source system from which this product originates
+     */
+    dataSourceSystem?: DataSourceSystemDto;
     /**
      * How this product is categorized
      */
@@ -26,7 +30,4 @@ export interface DataProductDto {
      */
     description?: TranslationDto;
 }
-export namespace DataProductDto {
-}
-
 

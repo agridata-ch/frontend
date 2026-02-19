@@ -6,11 +6,8 @@ import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import {
-  ConsentRequestProducerViewDto,
-  ConsentRequestProducerViewDtoDataRequestStateCode,
-  ConsentRequestStateEnum,
-} from '@/entities/openapi';
+import { ConsentRequestProducerViewDto, ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestProducerViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestProducerViewDtoDataRequestStateCode';
 import { I18nService } from '@/shared/i18n';
 import { MockResources } from '@/shared/testing/mocks';
 import {
@@ -51,6 +48,7 @@ describe('ConsentRequestTableComponent', () => {
         title: { de: 'Testanfrage 1' },
         dataConsumerDisplayName: 'Test AG',
         stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Active,
+        dataProviderId: 'dp1',
       },
     },
     {
@@ -62,6 +60,7 @@ describe('ConsentRequestTableComponent', () => {
         title: { de: 'Testanfrage 2' },
         dataConsumerDisplayName: 'Demo GmbH',
         stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Active,
+        dataProviderId: 'dp2',
       },
     },
   ];

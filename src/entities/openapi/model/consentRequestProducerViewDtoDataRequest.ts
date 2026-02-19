@@ -18,6 +18,7 @@ import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
  */
 export interface ConsentRequestProducerViewDtoDataRequest { 
     id: string;
+    dataProviderId: string;
     /**
      * Human friendly id of the data request
      */

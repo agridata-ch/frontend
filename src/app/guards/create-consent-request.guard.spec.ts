@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap, Router, UrlTree } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { CreateConsentRequestGuard } from '@/app/guards/create-consent-request.guard';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -18,6 +20,10 @@ import {
   createMockConsentRequestService,
   MockConsentRequestService,
 } from '@/shared/testing/mocks/mock-consent-request-service';
+import {
+  createMockErrorHandlerService,
+  MockErrorHandlerService,
+} from '@/shared/testing/mocks/mock-error-handler.service';
 
 import { ProducerUidGuard } from './producer-uid.guard';
 
@@ -25,6 +31,7 @@ describe('createConsentRequestGuard', () => {
   let createConsentRequestGuard: CreateConsentRequestGuard;
   let consentRequestService: MockConsentRequestService;
   let authService: MockAuthService;
+  let errorService: MockErrorHandlerService;
   const testUid = '123';
   const testDataRequestUid = 'test-data-request';
   const testConsentRequestId = 'test-consent-request-id';
@@ -47,6 +54,7 @@ describe('createConsentRequestGuard', () => {
   beforeEach(() => {
     authService = createMockAuthService();
     authService.initializeAuthorizedUids.mockResolvedValue([{ uid: testUid } as UidDto]);
+    errorService = createMockErrorHandlerService();
     mockRouter = {
       createUrlTree: jest.fn().mockReturnValue(mockUrlTree),
       parseUrl: jest.fn().mockReturnValue(mockErrorUrlTree),
@@ -66,6 +74,7 @@ describe('createConsentRequestGuard', () => {
         { provide: ConsentRequestService, useValue: consentRequestService },
         { provide: AuthService, useValue: authService },
         { provide: AgridataStateService, useValue: agridataStateService },
+        { provide: ErrorHandlerService, useValue: errorService },
         { provide: ProducerUidGuard, useValue: mockProducerUidGuard },
         { provide: Router, useValue: mockRouter },
       ],
@@ -302,6 +311,7 @@ describe('createConsentRequestGuard', () => {
       { uid: testUid, dataRequestId: testDataRequestUid },
     ];
     agridataStateService.__testSignals.activeUid.set(undefined);
+    mockRouter.createUrlTree.mockClear();
 
     const result = await createConsentRequestGuard.canActivate(route);
 
@@ -310,5 +320,81 @@ describe('createConsentRequestGuard', () => {
       ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
     ]);
     expect(result).toBe(mockUrlTree);
+  });
+
+  describe('404 error handling with redirect', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it('should navigate to producer page with redirect_uri query param on 404 error', async () => {
+      const testRedirectUri = 'https://example.com/callback';
+      const route = {
+        paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
+        queryParamMap: convertToParamMap({ redirect_uri: testRedirectUri }),
+      } as ActivatedRouteSnapshot;
+
+      const httpError = new HttpErrorResponse({ status: 404, statusText: 'Not Found' });
+      consentRequestService.createConsentRequests.mockReturnValue(throwError(() => httpError));
+      agridataStateService.__testSignals.activeUid.set(testUid);
+
+      const result = await createConsentRequestGuard.canActivate(route);
+
+      expect(mockRouter.createUrlTree).toHaveBeenCalledWith(
+        [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, testUid],
+        { queryParams: { redirect_uri: testRedirectUri } },
+      );
+      expect(result).toBe(mockUrlTree);
+    });
+
+    it('should navigate to producer page without query params when no redirect_uri on 404 error', async () => {
+      const route = {
+        paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
+        queryParamMap: convertToParamMap({}),
+      } as ActivatedRouteSnapshot;
+
+      const httpError = new HttpErrorResponse({ status: 404, statusText: 'Not Found' });
+      consentRequestService.createConsentRequests.mockReturnValue(throwError(() => httpError));
+      agridataStateService.__testSignals.activeUid.set(testUid);
+
+      const result = await createConsentRequestGuard.canActivate(route);
+
+      expect(mockRouter.createUrlTree).toHaveBeenCalledWith(
+        [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, testUid],
+        { queryParams: {} },
+      );
+      expect(result).toBe(mockUrlTree);
+    });
+
+    it('should handle error with custom title and message after setTimeout on 404', async () => {
+      const route = {
+        paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
+        queryParamMap: convertToParamMap({}),
+      } as ActivatedRouteSnapshot;
+
+      const httpError = new HttpErrorResponse({
+        status: 404,
+        statusText: 'Not Found',
+        error: { message: 'Data request not found' },
+      });
+      consentRequestService.createConsentRequests.mockReturnValue(throwError(() => httpError));
+      agridataStateService.__testSignals.activeUid.set(testUid);
+
+      await createConsentRequestGuard.canActivate(route);
+
+      expect(errorService.handleError).not.toHaveBeenCalled();
+
+      jest.advanceTimersByTime(100);
+
+      expect(errorService.handleError).toHaveBeenCalledWith(
+        expect.any(Error),
+        { i18n: 'errors.consentRequest.notFound.message' },
+        { i18n: 'errors.consentRequest.notFound.title' },
+      );
+    });
   });
 });

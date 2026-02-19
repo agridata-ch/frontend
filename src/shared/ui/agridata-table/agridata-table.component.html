@@ -1,6 +1,6 @@
 <!-- Search Section -->
 @if (enableSearch()) {
-  <div class="mb-4">
+  <div class="mb-4 w-60">
     <app-search-input
       (onInput)="handleSearchInput($event)"
       [isLoading]="dataProvider().isLoading()"
@@ -10,10 +10,9 @@
 }
 @if (pageData().items.length === 0 && !dataProvider().isLoading()) {
   <!-- Empty State -->
-  <div class="flex flex-1">
-    <app-empty-state></app-empty-state>
-  </div>
-} @else {
+  <ng-container *ngTemplateOutlet="emptyStateTemplate()"></ng-container>
+}
+@if (pageData().items.length > 0 || dataProvider().isLoading()) {
   <!-- Main Table Container -->
   <div
     class="rounded-lg border bg-white min-h-50 border-gray-200 relative"
@@ -89,7 +88,10 @@
             <!-- Actions Cell -->
             @if (tableMetadata().rowMenuActions) {
               <td class="py-3 px-4 border-t border-gray-200 w-0 whitespace-nowrap">
-                <app-table-row-menu [actions]="getRowActions(row)"></app-table-row-menu>
+                <app-table-row-menu
+                  [actions]="getRowActions(row)"
+                  [dataTestId]="'row-menu-' + $index"
+                ></app-table-row-menu>
               </td>
             }
           </tr>

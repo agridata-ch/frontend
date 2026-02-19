@@ -1,3 +1,122 @@
+## [1.8.0-rc.19](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.18...v1.8.0-rc.19) (2026-02-19)
+
+### Bug Fixes
+
+- **config:** update budget limits ([20acce7](https://github.com/agridata-ch/frontend/commit/20acce7f9de6b635ae1a25d6bb39015118614112))
+
+## [1.8.0-rc.18](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.17...v1.8.0-rc.18) (2026-02-18)
+
+### Features
+
+- **provider:** add provider page ([57f6790](https://github.com/agridata-ch/frontend/commit/57f67904b9d1db167cc19625cbdc3eee636f8c65)), closes [DIGIB2-466](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-466)
+
+## [1.8.0-rc.17](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.16...v1.8.0-rc.17) (2026-02-16)
+
+### Features
+
+- **deps:** update renovatebot/github-action action to v46.1.1 ([038ffdb](https://github.com/agridata-ch/frontend/commit/038ffdb9c366834e82ecea1f793ff6150682d61d))
+
+## [1.8.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.15...v1.8.0-rc.16) (2026-02-12)
+
+### Features
+
+- **testing:** dataTestId for button & table row, instrumented in agridata-table ([dd6ae8b](https://github.com/agridata-ch/frontend/commit/dd6ae8b351cb52bf4bfbc26a8bc22e1c2f80423f)), closes [DIGIB2-1244](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1244)
+
+## [1.8.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.14...v1.8.0-rc.15) (2026-02-12)
+
+### Features
+
+- **ui:** add tabs, data-request details ([6572549](https://github.com/agridata-ch/frontend/commit/6572549da926d5d1725b613f6c390c1acc1fad3a)), closes [DIGIB2-642](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-642)
+
+## [1.8.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.13...v1.8.0-rc.14) (2026-02-10)
+
+### Bug Fixes
+
+- **multi-select:** fix select-all with search ([2a1cbfe](https://github.com/agridata-ch/frontend/commit/2a1cbfe6c3865b2e5e29b39e2fd0e463e1f667e7)), closes [DIGIB2-979](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-979)
+
+## [1.8.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.12...v1.8.0-rc.13) (2026-02-10)
+
+### Features
+
+- **core:** update dependencies ([fe005fa](https://github.com/agridata-ch/frontend/commit/fe005faf1309ce297bb68036b245c9c7f92fcd5d)), closes [DIGIB2-1169](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1169)
+
+## [1.8.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.11...v1.8.0-rc.12) (2026-02-10)
+
+### Features
+
+- **data-request:** add provider ([4c6857d](https://github.com/agridata-ch/frontend/commit/4c6857dfc505743553df721cba8174b905e17bfc)), closes [DIGIB2-979](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-979)
+
+### Bug Fixes
+
+- **build:** fix type errors for build ([84bada3](https://github.com/agridata-ch/frontend/commit/84bada31c1c5e21c47906feda580112ab11db331))
+
+## [1.8.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.10...v1.8.0-rc.11) (2026-02-09)
+
+### Features
+
+- **deps:** update aws-actions/configure-aws-credentials action to v6 ([39ffdc5](https://github.com/agridata-ch/frontend/commit/39ffdc5d682de7545b95c9607197ff4cdf426d7c))
+- **deps:** update renovatebot/github-action action to v46 ([92b9e48](https://github.com/agridata-ch/frontend/commit/92b9e48d39b626b5568a11def265eb0df07862c3))
+
+## [1.8.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.9...v1.8.0-rc.10) (2026-02-06)
+
+### Bug Fixes
+
+- **env:** adds new agridata-testing environment in angular.json ([bbfc8fe](https://github.com/agridata-ch/frontend/commit/bbfc8fe52255757ec2e1c8f7bb00d1c4fd198ca0)), closes [DIGIB2-1213](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1213)
+
+## [1.8.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.8...v1.8.0-rc.9) (2026-02-06)
+
+### Features
+
+- **env:** adds new agridata-testing environment ([1bf93a9](https://github.com/agridata-ch/frontend/commit/1bf93a96963064fc6c737f587f09d0433a83dddf)), closes [DIGIB2-1213](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1213)
+
+## [1.8.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.7...v1.8.0-rc.8) (2026-02-06)
+
+### Bug Fixes
+
+- **data-request:** fix auto-select ([068e827](https://github.com/agridata-ch/frontend/commit/068e827a71fe99870604c7152168bf164528d426)), closes [DIGIB2-979](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-979)
+
+## [1.8.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.6...v1.8.0-rc.7) (2026-02-06)
+
+### Bug Fixes
+
+- **data-request:** fix select system via product ([d534dd7](https://github.com/agridata-ch/frontend/commit/d534dd74aa75bb310c963f908cd622b76faa19fd)), closes [DIGIB2-979](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-979)
+
+## [1.8.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.5...v1.8.0-rc.6) (2026-02-05)
+
+### Features
+
+- **ui:** multi-select categories ([72b9e4b](https://github.com/agridata-ch/frontend/commit/72b9e4b0a48305e886b42fcaad42d85cf0145a40)), closes [DIGIB2-979](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-979)
+
+## [1.8.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.4...v1.8.0-rc.5) (2026-02-02)
+
+### Features
+
+- **docs:** add publiccode.yml ([19504b1](https://github.com/agridata-ch/frontend/commit/19504b1bb87230eb4d82089cf1c9de9f6b411c82))
+
+## [1.8.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.3...v1.8.0-rc.4) (2026-01-30)
+
+### Features
+
+- **data-request-preview:** show preview in correct language ([9fcdfc3](https://github.com/agridata-ch/frontend/commit/9fcdfc3d0fa531baa53fdb1738864437704e5027)), closes [DIGIB2-693](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-693)
+
+## [1.8.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.2...v1.8.0-rc.3) (2026-01-30)
+
+### Features
+
+- **data-request:** add link to cms products ([8ce442a](https://github.com/agridata-ch/frontend/commit/8ce442a529f2ee89645752661165331b60f35996)), closes [DIGIB2-212](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-212)
+
+## [1.8.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.8.0-rc.1...v1.8.0-rc.2) (2026-01-30)
+
+### Features
+
+- **consent-request:** add error handling for redirect ([daabaf7](https://github.com/agridata-ch/frontend/commit/daabaf7b03e1c2318fade26e4525bc1910db93ba)), closes [DIGIB2-635](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-635)
+
+## [1.8.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.7.0...v1.8.0-rc.1) (2026-01-27)
+
+### Features
+
+- **empty-state:** add empty-state ([96fd8d2](https://github.com/agridata-ch/frontend/commit/96fd8d2bdde2990ae95eb8badbb7323a0192315e)), closes [DIGIB2-561](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-561)
+
 ## [1.7.0](https://github.com/agridata-ch/frontend/compare/v1.6.1...v1.7.0) (2026-01-23)
 
 ### Features

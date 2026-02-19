@@ -58,7 +58,7 @@
         "title": "Visualizzazione dettagliata"
       },
       "request": {
-        "migrated": "Tratto da La mia condivisione dei dati agricoli - MAF"
+        "migrated": "Ripreso da «Mia condivisione dei dati agricoli – MAF»"
       }
     },
     "toast": {
@@ -84,6 +84,12 @@
         "GRANTED": "Acconsentito",
         "DECLINED": "Rifiutato"
       }
+    },
+    "emptyState": {
+      "title": "Nessuna richiesta disponibile",
+      "message": "Al momento non ci sono richieste di dati attive e non è necessario intraprendere alcuna azione. \nNon appena verrà presentata una prima richiesta di dati, questa verrà visualizzata qui e ne sarai informato.",
+      "additionalInfo": "Per maggiorni informazioni consulta ",
+      "altIcon": "Illustrazione per illustrare le voci vuote"
     }
   },
   "consumer": {
@@ -105,11 +111,14 @@
         "headline": "Informazioni sull’acquisizione di dati",
         "provider": {
           "label": "Fornitore di dati",
-          "sublabel": "Attualmente è disponibile solo un fornitore di dati. Altri fornitori vengono continuamente collegati."
+          "sublabel": "Attualmente è disponibile solo un fornitore di dati. Altri fornitori vengono continuamente collegati.",
+          "placeholder": "Selezionare il fornitore dei dati"
         },
         "products": {
           "label": "Quale prodotto desideri?",
-          "placeholder": "Seleziona i prodotti per i quali desideri richiedere dati."
+          "placeholder": "Seleziona i prodotti per i quali desideri richiedere dati.",
+          "moreInfos": "Ulteriori informazioni",
+          "sublabel": "È possibile selezionare prodotti appartenenti a una sola categoria alla volta."
         },
         "title": {
           "label": "Nome della richiesta Richiesta di dati",
@@ -229,14 +238,17 @@
       },
       "contract": {
         "inReviewAlert": {
-          "title": "Lien d'invitationLa tua richiesta di dati è stata inviata ed è in fase di verifica manuale presso agridata.ch.",
-          "description": "Sarete informati non appena la verifica sarà completata e il contratto sarà pubblicato."
+          "title": "La tua richiesta di dati è stata inviata ed è in fase di verifica manuale presso agridata.ch.",
+          "description": "Sarai informato non appena la verifica sarà completata e il contratto sarà pubblicato."
         },
         "inReviewBox": {
-          "title": "Sarete informati non appena il contratto sarà pubblicato...",
-          "description": "Non appena la vostra richiesta sarà stata verificata con esito positivo da agridata.ch, il contratto sarà pubblicato qui per la firma.",
+          "title": "Sarai informato non appena il contratto sarà pubblicato...",
+          "description": "Non appena la tua richiesta sarà stata verificata con esito positivo da agridata.ch, il contratto sarà pubblicato qui per la firma.",
           "iconAltText": "Immagine con una clessidra e un orologio sullo sfondo"
         }
+      },
+      "products": {
+        "allSystems": "Tutti i sistemi"
       }
     },
     "preview": {
@@ -249,7 +261,7 @@
       },
       "dataProtection": {
         "title": "Protezione dei dati",
-        "description": "Tra UFAG e {{ consumerName }} esiste un contratto che regola in modo inequivocabile lo scopo e l'utilizzo dei dati sopra descritti. {{ consumerName }} è tenuto a rispettare le disposizioni della legge sulla protezione dei dati."
+        "description": "Tra {{ systemName }} e {{ consumerName }} esiste un contratto che regola in modo inequivocabile lo scopo e l'utilizzo dei dati sopra descritti. {{ consumerName }} è tenuto a rispettare le disposizioni della legge sulla protezione dei dati."
       },
       "revocation": {
         "title": "Possibilità di modifica",
@@ -275,7 +287,7 @@
       "next": "Avanti",
       "previous": "Indietro",
       "submitAndContinue": "Invia la richiesta e continua",
-      "retreatRequest": "Ritirare la richiesta"
+      "retreatRequest": "Revoca la richiesta"
     },
     "submit": {
       "error": "Errore durante l'invio della richiesta"
@@ -290,11 +302,28 @@
       "tableActions": {
         "details": "Visualizza",
         "retreat": "Ritira"
+      },
+      "emptyState": {
+        "title": "Nessuna richiesta di dati creata",
+        "message": "Invia la tua prima richiesta di dati e ottieni l'accesso ai dati necessari non appena i produttori dei dati avranno dato il loro consenso.",
+        "createNewDataRequest": "Richiesta di nuovi dati"
       }
     },
     "provider": "Fornitore di dati",
     "submissionDate": "Data di presentazione",
-    "humanFriendlyId": "ID"
+    "humanFriendlyId": "ID",
+    "details": {
+      "title": "Richiesta",
+      "tabs": {
+        "request": "Richiesta",
+        "producer": "Produttori di dati",
+        "contract": "Contratto",
+        "email": "Modello di e-mail"
+      },
+      "sidePanelTitle": "Vista dettagliata"
+    },
+    "invitationLink": "Link di invito",
+    "productsSystemCode": "Sistema"
   },
   "forms": {
     "error": {
@@ -312,7 +341,7 @@
     "menuItems": {
       "helpAndSupport": "Aiuto e supporto",
       "notifications": "Notifiche",
-      "imprint": "Impressum",
+      "imprint": "Colophon",
       "privacyPolicy": "Basi legali",
       "home": "Pagina iniziale"
     }
@@ -321,7 +350,7 @@
     "pageTitle": "Richiesta di dati",
     "redirect": {
       "headline": "Fatto!",
-      "description": "Grazie per aver scelto il nostro servizio. Verrai reindirizzato automaticamente tra {{ count }} secondi.",
+      "description": "Grazie per aver scelto il nostro serviziodi aver effettuato la tua scelta. Verrai reindirizzato automaticamente tra {{ count }} secondi.",
       "redirectNow": "Direttamente indietro"
     },
     "migrationInfo": {
@@ -338,9 +367,9 @@
     "helpAndSupport": {
       "title": "Aiuto e supporto",
       "support": {
-        "title": "Assistenza",
-        "openingInfos": "I nostri orari:\nDal lunedì al venerdì\nDalle 07:00 alle 18:00",
-        "moreInfos": "Ulteriori informazioni"
+        "title": "Supporto",
+        "openingInfos": "I nostri orari:\ndal lunedì al venerdì\ndalle 07.00 alle 18.00",
+        "moreInfos": "Maggiori informazioni"
       }
     }
   },
@@ -355,7 +384,7 @@
       "label": "Organizzazione (facoltativo)"
     },
     "email": {
-      "label": "E-Mail"
+      "label": "e-Mail"
     },
     "phone": {
       "label": "Numero di telefono (facoltativo)",
@@ -363,7 +392,7 @@
     },
     "submit": "Invia richiesta",
     "message": {
-      "label": "La vostra richiesta"
+      "label": "La tua richiesta"
     },
     "success": {
       "title": "Messaggio inviato",
@@ -384,6 +413,12 @@
     "common": {
       "ariaLabel": {
         "open": "Apri"
+      }
+    },
+    "formControl": {
+      "multiSelect": {
+        "selectAll": "Seleziona tutto",
+        "noResults": "Nessun risultato"
       }
     }
   },
@@ -422,7 +457,7 @@
       "errorId": "ID errore: {{errorId}}",
       "path": "Percorso: {{method}}: {{path}}",
       "generic": {
-        "title": "Si è verificato un errore del server"
+        "title": "Si sono verificati degli errori del server"
       },
       "internalServerError": "Riprova più tardi o contatta l'assistenzail supporto",
       "badRequest": "Si è verificato un errore durante l'elaborazione della tua richiesta. Controlla i dati inseriti e riprova.",
@@ -450,15 +485,17 @@
       "title": "Tornerà presto...",
       "message": "La nostra applicazione non è attualmente disponibile a causa di lavori di manutenzione.\nTorneremo presto online."
     },
-    "reloadPage": "Ricarica pagina"
+    "reloadPage": "Ricarica pagina",
+    "consentRequest": {
+      "notFound": {
+        "title": "Questo link non è valido",
+        "message": "Il link richiamato non porta ad alcuna richiesta. Controlla il link o contatta l'organizzazione che ti ha inviato questo link."
+      },
+      "modalTitle": "Ops, qualcosa non ha funzionato..."
+    }
   },
   "breadcrumb": {
     "home": "Casa"
-  },
-  "emptyState": {
-    "title": "Nessuna richiesta disponibile",
-    "message": "Al momento non ci sono richieste di dati attive e non è necessario intraprendere alcuna azione. \nNon appena verrà presentata una prima richiesta di dati, questa verrà visualizzata qui e ne sarete informati.",
-    "additionalInfo": "Per ulteriori informazioni consultare "
   },
   "footer": {
     "logoBund": {
@@ -467,10 +504,10 @@
   },
   "appTitle": "Agridata",
   "cookiebanner": {
-    "bannerText": "Per migliorare la nostra offerta, vorremmo utilizzare Google Analytics. I dati di utilizzo possono essere trasmessi a Google e lì trattati. È possibile rifiutare l’analisi e continuare a utilizzare il sito senza limitazioni. Per ulteriori informazioni, consultare la nostra",
-    "acceptCookies": "Consenti",
-    "declineCookies": "Rifiutare",
-    "privacyPolicyLinkText": "Informativa sulla privacy"
+    "bannerText": "Per migliorare la nostra offerta utilizziamo Google Analytics che consente di trasmettere i dati di utilizzo a Google, dove vengono trattati. È possibile rifiutare l’analisi e continuare a utilizzare il sito senza limitazioni. Per maggiori informazioni, consulta la nostra",
+    "acceptCookies": "Acconsenti",
+    "declineCookies": "Rifiuta",
+    "privacyPolicyLinkText": "Informativa sulla privacyprotezione dei dati"
   },
   "newYearBanner": {
     "wishMessage": "Il team di agridata.ch augura un felice anno nuovo!",
@@ -478,19 +515,10 @@
   },
   "admin": {
     "data-request": {
-      "consumer": "Richiedente",
-      "title": "Richiesta di dati",
-      "submissionDate": "Data di presentazione",
-      "provider": "Fornitore di dati",
-      "state": "Stato",
-      "humanFriendlyId": "Numero di domanda",
-      "invitationLink": "Link di invito"
+      "title": "Richiesta di dati"
     },
     "pageTitle": "Richieste di dati",
-    "sidePanelTitle": "Vista dettagliata",
-    "details": {
-      "title": "Richiesta"
-    },
+    "sidePanelTitle": "Visualizzazione dettagliata",
     "actions": {
       "accept": "Approvare la richiesta",
       "reject": "Respingere la richiesta",
@@ -500,5 +528,16 @@
   "support-info": {
     "phoneNumber": "+41 43 206 02 18",
     "email": "support@agridata.ch"
+  },
+  "provider": {
+    "pageTitle": "Richieste di dati",
+    "dataRequest": {
+      "table": {
+        "emptyState": {
+          "title": "Nessuna richiesta di dati disponibile",
+          "message": "Al momento non ci sono richieste di dati attive. Non appena saranno disponibili richieste di dati attive, queste verranno elencate qui."
+        }
+      }
+    }
   }
 }

@@ -35,6 +35,9 @@ export class AuthService {
   readonly isConsumer = computed(
     () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER) ?? false,
   );
+  readonly isDataProvider = computed(
+    () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_PROVIDER) ?? false,
+  );
   readonly isProducer = computed(
     () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) ?? false,
   );

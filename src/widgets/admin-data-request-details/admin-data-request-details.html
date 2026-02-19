@@ -1,0 +1,37 @@
+<ng-container *i18n="let t; prefix: 'admin'">
+  <app-data-request-details
+    [dataRequestId]="dataRequestId()"
+    (closeSidepanel)="handleClose()"
+    #details
+  >
+    <div footer class="flex gap-2 justify-between">
+      <div class="flex gap-2">
+        <app-agridata-button
+          class="flex-1"
+          [variant]="ButtonVariants.PrimaryAccept"
+          [disabled]="details.dataRequest()?.stateCode !== DataRequestStateEnum.InReview"
+          (onClick)="acceptRequest()"
+        >
+          {{ t('actions.accept') }}
+        </app-agridata-button>
+        <app-agridata-button
+          class="flex-1"
+          [variant]="ButtonVariants.SecondaryReject"
+          [disabled]="details.dataRequest()?.stateCode !== DataRequestStateEnum.InReview"
+          (onClick)="rejectRequest()"
+        >
+          {{ t('actions.reject') }}
+        </app-agridata-button>
+      </div>
+      @if (details.dataRequest()?.stateCode === DataRequestStateEnum.ToBeSigned) {
+      <app-agridata-button
+        class="flex-1"
+        [variant]="ButtonVariants.PrimaryAccept"
+        (onClick)="activateRequest()"
+      >
+        {{ t('actions.activate') }}
+      </app-agridata-button>
+      }
+    </div>
+  </app-data-request-details>
+</ng-container>

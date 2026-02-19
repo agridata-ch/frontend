@@ -8,20 +8,23 @@ import {
   TemplateRef,
   viewChild,
 } from '@angular/core';
-import { faEye, faRotateLeft } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { Router } from '@angular/router';
+import { faFolderOpen } from '@awesome.me/kit-0b6d1ed528/icons/classic/light';
+import { faAdd, faEye, faRotateLeft } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DataRequestService } from '@/entities/api';
-import {
-  ConsentRequestProducerViewDtoDataRequestStateCode,
-  DataRequestDto,
-  DataRequestStateEnum,
-} from '@/entities/openapi';
+import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { DataRequestDtoDirective, getBadgeVariant } from '@/shared/data-request';
-import { I18nService } from '@/shared/i18n';
+import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table/agridata-client-table.component';
 import { ClientTableMetadata } from '@/shared/ui/agridata-client-table/client-table-model';
 import { ActionDTO, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { EmptyStateComponent } from '@/shared/ui/empty-state/empty-state.component';
+import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-new';
 
 /**
  * Implements the main table logic. It fetches data requests, maps them into table rows, and
@@ -34,11 +37,20 @@ import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 @Component({
   selector: 'app-data-request-table',
   templateUrl: './data-request-table.component.html',
-  imports: [AgridataClientTableComponent, AgridataBadgeComponent, DataRequestDtoDirective],
+  imports: [
+    AgridataClientTableComponent,
+    AgridataBadgeComponent,
+    DataRequestDtoDirective,
+    I18nDirective,
+    EmptyStateComponent,
+    FontAwesomeModule,
+    ButtonComponent,
+  ],
 })
 export class DataRequestTableComponent {
   protected readonly i18nService = inject(I18nService);
   private readonly dataRequestService = inject(DataRequestService);
+  private readonly router = inject(Router);
 
   readonly dataRequestsResource = input.required<ResourceRef<DataRequestDto[] | undefined>>();
   readonly dataRequests = input.required<DataRequestDto[]>();
@@ -53,7 +65,10 @@ export class DataRequestTableComponent {
   protected readonly eyeIcon = faEye;
   protected readonly retreatIcon = faRotateLeft;
   protected readonly BadgeSize = BadgeSize;
+  protected readonly ButtonVariants = ButtonVariants;
   protected readonly getBadgeVariant = getBadgeVariant;
+  protected readonly folderIcon = faFolderOpen;
+  protected readonly addIcon = faAdd;
 
   private readonly humanFriendlyIdTemplate =
     viewChild<TemplateRef<{ $implicit: DataRequestDto }>>('humanFriendlyId');
@@ -61,6 +76,7 @@ export class DataRequestTableComponent {
     viewChild<TemplateRef<{ $implicit: DataRequestDto }>>('dataRequestTitle');
   private readonly dataRequestStateTemplate =
     viewChild<TemplateRef<{ $implicit: DataRequestDto }>>('dataRequestState');
+  protected readonly emptyStateTemplate = viewChild<TemplateRef<unknown>>('emptyStateTemplate');
 
   protected readonly dataRequestsTableMetaData = computed<ClientTableMetadata<DataRequestDto>>(
     () => {
@@ -99,6 +115,7 @@ export class DataRequestTableComponent {
             name: this.dataRequestProviderHeader,
             renderer: {
               type: CellRendererTypes.FUNCTION,
+              //TODO: use real provider name when available
               cellRenderFn: () => 'Agis',
             },
           },
@@ -143,10 +160,12 @@ export class DataRequestTableComponent {
     return [details];
   };
 
-  protected getStatusTranslation(
-    value: ConsentRequestProducerViewDtoDataRequestStateCode | undefined,
-  ) {
+  protected getStatusTranslation(value?: string) {
     if (!value) return '';
     return this.i18nService.translate(`data-request.stateCode.${value}`);
   }
+
+  protected newRequest = () => {
+    this.router.navigate([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH, DATA_REQUEST_NEW_ID]).then();
+  };
 }

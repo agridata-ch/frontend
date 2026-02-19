@@ -1,7 +1,7 @@
 import { Component, computed, inject, input } from '@angular/core';
 
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { DataProductDto, DataRequestDto } from '@/entities/openapi';
+import { DataRequestDto } from '@/entities/openapi';
 import { getFieldFromLang } from '@/shared/data-request';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
@@ -36,16 +36,21 @@ export class DataRequestPreviewComponent {
   readonly dataRequest = input.required<DataRequestDto>();
   readonly metaDataService = inject(MasterDataService);
 
-  readonly products = this.metaDataService.dataProducts;
-
   readonly availableLangs = availableLangs;
   readonly AvatarSize = AvatarSize;
   readonly AvatarSkin = AvatarSkin;
   readonly getFieldFromLang = getFieldFromLang;
 
-  readonly productsList = computed(() =>
-    this.products()?.filter((product: DataProductDto) =>
-      this.dataRequest()?.products?.includes(product.id),
-    ),
-  );
+  protected readonly dataProvider = computed(() => {
+    return this.metaDataService
+      .dataProviders()
+      .find((provider) => provider.id === this.dataRequest().dataProviderId);
+  });
+
+  readonly productsList = computed(() => {
+    if (!this.dataRequest()?.dataProviderId) return [];
+    return this.metaDataService
+      .getProductsForProvider(this.dataRequest().dataProviderId!)
+      ?.filter((product) => this.dataRequest()?.products?.includes(product.id));
+  });
 }

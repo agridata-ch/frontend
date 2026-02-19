@@ -1,34 +1,86 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
-import { DataProductDto, DataProductsService } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { DataProductDto, DataProvidersService, DataProviderDto } from '@/entities/openapi';
 import { AuthService } from '@/shared/lib/auth';
 
 /**
- * Service for retrieving mastardata needed across multiple components, such as data products and user preferences.
+ * Service for retrieving masterdata needed across multiple components, such as data products and user preferences.
  *
- * CommentLastReviewed: 2025-11-20
+ * CommentLastReviewed: 2026-02-03
  */
 @Injectable({
   providedIn: 'root',
 })
 export class MasterDataService {
+  // Injects
   private readonly authService = inject(AuthService);
-  private readonly dataProductService = inject(DataProductsService);
+  private readonly dataProvidersService = inject(DataProvidersService);
+  private readonly errorService = inject(ErrorHandlerService);
 
-  private readonly _dataProducts = signal<Array<DataProductDto>>([]);
+  // Signals
+  private readonly _dataProviders = signal<DataProviderDto[]>([]);
+  readonly dataProviders = this._dataProviders.asReadonly();
+  private readonly _productsByProvider = signal<Map<string, DataProductDto[]>>(new Map());
 
-  readonly dataProducts = this._dataProducts.asReadonly();
-
-  private readonly dataProductFetchEffect = effect(() => {
+  // Effects
+  private readonly dataFetchEffect = effect(() => {
     if (this.authService.isAuthenticated()) {
-      this.fetchDataProducts().then((products) => {
-        this._dataProducts.set(products);
-      });
+      this.fetchDataProviders()
+        .then((providers) => this._dataProviders.set(providers))
+        .catch((error) => this.errorService.handleError(error));
     }
   });
 
-  private fetchDataProducts() {
-    return firstValueFrom(this.dataProductService.getDataProducts());
+  /**
+   * Fetches products for a provider. If already cached, returns immediately.
+   * Safe to call multiple times - will not refetch if already loaded or loading.
+   * Errors are handled internally via errorService.
+   *
+   * @param providerId - The provider ID to fetch products for
+   */
+  fetchProductsByProvider(providerId: string): void {
+    // Already cached
+    if (this._productsByProvider().has(providerId)) {
+      return;
+    }
+
+    this.fetchDataProductsByProviderId(providerId)
+      .then((products) => {
+        this._productsByProvider.update((map) => {
+          const newMap = new Map(map);
+          newMap.set(providerId, products);
+          return newMap;
+        });
+      })
+      .catch((error) => {
+        this.errorService.handleError(error);
+      });
+  }
+
+  /**
+   * Gets products for a provider. If not already cached, triggers fetch and returns empty array.
+   *
+   * @param providerId - The provider ID to get products for
+   * @returns Array of products for the provider
+   */
+  getProductsForProvider(providerId: string): DataProductDto[] {
+    const products = this._productsByProvider().get(providerId);
+    if (!products) {
+      this.fetchProductsByProvider(providerId);
+    }
+    return products ?? [];
+  }
+
+  private fetchDataProductsByProviderId(providerId: string): Promise<DataProductDto[]> {
+    if (!providerId) {
+      return Promise.resolve([]);
+    }
+    return firstValueFrom(this.dataProvidersService.getDataProductsByProviderId(providerId));
+  }
+
+  private fetchDataProviders(): Promise<DataProviderDto[]> {
+    return firstValueFrom(this.dataProvidersService.getDataProviders());
   }
 }

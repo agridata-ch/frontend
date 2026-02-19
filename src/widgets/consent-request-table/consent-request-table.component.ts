@@ -20,6 +20,7 @@ import {
   ConsentRequestStateEnum,
   TranslationDto,
 } from '@/entities/openapi';
+import { environment } from '@/environments/environment';
 import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import {
   getToastMessage,
@@ -39,6 +40,7 @@ import { CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
+import { ConsentRequestEmptyStateComponent } from '@/widgets/consent-request-empty-state';
 import { ConsentRequestFilterComponent } from '@/widgets/consent-request-table/consent-request-filter';
 import { ConsentRequestListComponent } from '@/widgets/consent-request-table/consent-request-list';
 
@@ -64,6 +66,7 @@ import { ConsentRequestProducerViewDtoDirective } from './consent-request-produc
     ButtonComponent,
     ClickStopPropagationDirective,
     I18nPipe,
+    ConsentRequestEmptyStateComponent,
   ],
   templateUrl: './consent-request-table.component.html',
 })
@@ -89,9 +92,12 @@ export class ConsentRequestTableComponent {
     viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('consentRequestState');
   private readonly consentRequestActionTemplate =
     viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('consentRequestAction');
+  protected readonly emptyStateTemplate = viewChild<TemplateRef<unknown>>('emptyStateTemplate');
+
   protected readonly BadgeSize = BadgeSize;
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
+  protected readonly appBaseUrl = environment.appBaseUrl;
 
   protected readonly dataRequestTitleHeader = 'consent-request.dataRequest.title';
   protected readonly dataRequestStateHeader = 'consent-request.dataRequest.state';

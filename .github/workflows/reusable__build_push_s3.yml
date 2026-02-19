@@ -25,6 +25,7 @@ jobs:
         run: |
           configuration=$(jq -r --arg id "${{ inputs.account-id }}" '.[$id] // empty' <<< '{
           "108782064107": "development",
+          "472294263228": "testing",
           "863518438092": "integration",
           "183295418748": "production"
           }')
@@ -37,6 +38,7 @@ jobs:
 
           bucket_name=$(jq -r --arg id "${{ inputs.account-id }}" '.[$id] // empty' <<< '{
           "108782064107": "agridata-s3-entwicklung-frontend",
+          "472294263228": "agridata-s3-testing-frontend",
           "863518438092": "agridata-s3-integration-frontend",
           "183295418748": "agridata-s3-frontend"
           }')
@@ -54,7 +56,7 @@ jobs:
           ref: 'v${{ inputs.version }}'
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v5
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: arn:aws:iam::${{ inputs.account-id }}:role/agridata-application-deployment-role
           aws-region: ${{ env.AWS_REGION }}

@@ -3,7 +3,7 @@
   *i18n="let t; prefix: 'consent-request'"
 >
   @if (consentRequests()?.length === 0) {
-    <app-empty-state></app-empty-state>
+    <app-consent-request-empty-state></app-consent-request-empty-state>
   }
 
   @for (request of consentRequests(); track request.id) {

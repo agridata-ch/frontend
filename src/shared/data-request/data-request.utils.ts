@@ -1,13 +1,7 @@
-import {
-  ConsentRequestProducerViewDtoDataRequestStateCode,
-  DataRequestDto,
-  DataRequestStateEnum,
-} from '@/entities/openapi';
+import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { BadgeVariant } from '@/shared/ui/badge';
 
-export function getBadgeVariant(
-  stateCode: ConsentRequestProducerViewDtoDataRequestStateCode | undefined,
-) {
+export function getBadgeVariant(stateCode?: string) {
   if (stateCode === DataRequestStateEnum.Draft) return BadgeVariant.INFO;
   if (stateCode === DataRequestStateEnum.InReview) return BadgeVariant.INFO;
   if (stateCode === DataRequestStateEnum.ToBeSigned) return BadgeVariant.WARNING;

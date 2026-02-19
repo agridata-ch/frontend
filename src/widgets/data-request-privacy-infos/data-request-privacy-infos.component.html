@@ -2,12 +2,12 @@
   @for (privacySection of privacySections(); track privacySection.description) {
     <div class="flex">
       <fa-icon size="xl" [icon]="privacySection.icon" class="text-agridata-secondary-text mr-2" />
-      <div class="flex flex-col">
+      <div class="flex flex-col" *i18n="let t; lang: lang()">
         <span class="text-agridata-secondary-text font-semibold">
-          {{ privacySection.title | i18n }}
+          {{ t(privacySection.title) }}
         </span>
         <span class="text-agridata-secondary-text text-sm">
-          {{ privacySection.description | i18n: privacySection.translationParams }}
+          {{ t(privacySection.description, privacySection.translationParams) }}
         </span>
       </div>
     </div>

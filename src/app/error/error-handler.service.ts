@@ -4,7 +4,6 @@ import { Injectable, OnDestroy, type Signal, signal, WritableSignal } from '@ang
 import { ErrorDto, TranslationItem } from '@/app/error/error-dto';
 import { getErrorMethod } from '@/app/interceptors/error-http-interceptor';
 import { ExceptionDto } from '@/entities/openapi';
-import { environment } from '@/environments/environment';
 
 export interface ResourceValueError extends Error {
   cause: ErrorWithCause;
@@ -55,7 +54,11 @@ export class ErrorHandlerService implements OnDestroy {
     this.startCleanupInterval();
   }
 
-  handleError(error: Error | HttpErrorResponse, reason?: TranslationItem): ErrorDto {
+  handleError(
+    error: Error | HttpErrorResponse,
+    reason?: TranslationItem,
+    title?: TranslationItem,
+  ): ErrorDto {
     if (this.isResourceValueError(error)) {
       error = error.cause.cause;
     }
@@ -63,14 +66,14 @@ export class ErrorHandlerService implements OnDestroy {
       error = error.cause;
     }
     console.error(error);
-    const errorDto = this.createErrorDto(error, reason);
+    const errorDto = this.createErrorDto(error, reason, title);
     this.addError(errorDto);
 
     // Assign to most recently registered handler or global
     const targetQueueId = this.getActiveQueueId();
     const targetQueue = this.errorQueues.get(targetQueueId);
 
-    if (targetQueue && !this.isFeErrorInProduction(errorDto)) {
+    if (targetQueue) {
       targetQueue.update((errors) => [...errors, errorDto]);
     }
 
@@ -168,10 +171,14 @@ export class ErrorHandlerService implements OnDestroy {
     this.allErrors.update((errors) => [...errors, error]);
   }
 
-  private createErrorDto(error: Error | HttpErrorResponse, reason?: TranslationItem): ErrorDto {
+  private createErrorDto(
+    error: Error | HttpErrorResponse,
+    reason?: TranslationItem,
+    title?: TranslationItem,
+  ): ErrorDto {
     const isFeError = !(error instanceof HttpErrorResponse);
 
-    const i18nTitle: TranslationItem = { i18n: 'errors.frontend.unexpected.title' };
+    const i18nTitle: TranslationItem = title ?? { i18n: 'errors.frontend.unexpected.title' };
     const i18nReason: TranslationItem = { i18n: 'errors.frontend.unexpected.details' };
     let i18nPath: TranslationItem | undefined;
     let i18nErrorId: TranslationItem | undefined;
@@ -186,7 +193,9 @@ export class ErrorHandlerService implements OnDestroy {
     } else {
       url = error.url ?? undefined;
       method = getErrorMethod(error);
-      i18nTitle.i18n = this.get18nMessageByMethod(method);
+      if (!title) {
+        i18nTitle.i18n = this.get18nMessageByMethod(method);
+      }
       i18nReason.i18n = this.get18nMessageByStatus(error.status);
       i18nReason.i18nParameter = { status: error.status.toString() };
       i18nPath = this.getPathTranslationItem(url, method);
@@ -201,7 +210,6 @@ export class ErrorHandlerService implements OnDestroy {
 
     return {
       id: this.generateErrorId(error),
-      isFrontendError: isFeError,
       i18nTitle: i18nTitle,
       i18nReason: reason ?? i18nReason,
       i18nPath: i18nPath,
@@ -317,9 +325,5 @@ export class ErrorHandlerService implements OnDestroy {
       i18n = `errors.backend.method.${method.toLowerCase()}`;
     }
     return i18n;
-  }
-
-  private isFeErrorInProduction(error: ErrorDto) {
-    return error.isFrontendError && environment.production;
   }
 }

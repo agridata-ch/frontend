@@ -6,7 +6,6 @@ import {
   effect,
   inject,
   input,
-  resource,
   signal,
   untracked,
   ViewChild,
@@ -33,10 +32,6 @@ import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import {
-  createResourceErrorHandlerEffect,
-  createResourceValueComputed,
-} from '@/shared/lib/api.helper';
-import {
   buildReactiveForm,
   flattenFormGroup,
   populateFormFromDto,
@@ -57,10 +52,9 @@ import {
   FormModel,
   FORM_COMPLETION_STRATEGIES,
   FORM_GROUP_NAMES,
+  DATA_REQUEST_NEW_ID,
 } from '@/widgets/data-request-new';
 import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
-
-export const DATA_REQUEST_NEW_ID = 'new';
 
 /**
  * Implements the wizard-driven data request creation flow. It manages multiple form groups,
@@ -111,6 +105,7 @@ export class DataRequestNewComponent {
 
   // Input properties
   readonly dataRequestId = input<string | undefined>();
+  readonly initialDataRequest = input<DataRequestDto | undefined>();
 
   // Signals
   protected readonly consumerLabel = this.i18nService.translateSignal(
@@ -155,18 +150,6 @@ export class DataRequestNewComponent {
     }),
   );
 
-  protected readonly dataRequestsResource = resource({
-    params: () => ({ id: this.dataRequestId() }),
-    loader: ({ params }) => {
-      if (!params?.id || params.id === DATA_REQUEST_NEW_ID) {
-        return Promise.resolve(undefined);
-      }
-      return this.dataRequestService.fetchDataRequest(params.id);
-    },
-  });
-
-  protected readonly initialRequest = createResourceValueComputed(this.dataRequestsResource);
-
   protected readonly formDisabled = computed(() => {
     const request = this.dataRequest();
     return (
@@ -176,11 +159,6 @@ export class DataRequestNewComponent {
   });
 
   // Effects (private)
-  private readonly errorHandlerEffect = createResourceErrorHandlerEffect(
-    this.dataRequestsResource,
-    this.errorService,
-  );
-
   private readonly formGroupDisabledEffect = effect(() => {
     const disabled = this.formDisabled();
     const form = this.form;
@@ -196,8 +174,8 @@ export class DataRequestNewComponent {
     }
   });
 
-  private readonly updateDataRequestFromRessourceEffect = effect(() => {
-    const request = this.initialRequest();
+  private readonly updateDataRequestFromInputEffect = effect(() => {
+    const request = this.initialDataRequest();
     if (request?.id) {
       this.dataRequest.set(request);
       populateFormFromDto(

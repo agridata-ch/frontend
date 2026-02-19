@@ -3,19 +3,18 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ActivatedRoute, ActivatedRouteSnapshot, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import {
-  ConsentRequestProducerViewDto,
-  ConsentRequestProducerViewDtoDataRequestStateCode,
-} from '@/entities/openapi';
+import { ConsentRequestProducerViewDto } from '@/entities/openapi';
+import { ConsentRequestProducerViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestProducerViewDtoDataRequestStateCode';
 import { REDIRECT_TIMEOUT } from '@/pages/consent-request-producer/consent-request-producer.page.model';
 import { SidepanelComponent } from '@/shared/sidepanel';
+import { createMockActivatedRoute, MockActivatedRoute } from '@/shared/testing/mocks';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
@@ -44,19 +43,13 @@ describe('ConsentRequestDetailsComponent', () => {
   let agridataStateService: MockAgridataStateService;
   let errorService: MockErrorHandlerService;
   let mockRouter: Router;
-  let activeRoute: ActivatedRoute;
+  let activeRoute: MockActivatedRoute;
   beforeEach(async () => {
     toastService = { show: jest.fn() };
     agridataStateService = createMockAgridataStateService();
     consentRequestService = createMockConsentRequestService();
     errorService = createMockErrorHandlerService();
-    activeRoute = {
-      snapshot: {
-        queryParamMap: {
-          get: jest.fn().mockReturnValue('stuff'),
-        } as unknown as ParamMap,
-      } as unknown as ActivatedRouteSnapshot,
-    } as unknown as ActivatedRoute;
+    activeRoute = createMockActivatedRoute();
     mockRouter = {
       navigate: jest.fn().mockResolvedValue(true),
     } as unknown as jest.Mocked<Router>;

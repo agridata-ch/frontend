@@ -15,7 +15,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
 import { I18nPipe } from '@/shared/i18n';
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
-import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
+
+import { SelectOption } from './agridata-select.model';
 
 /**
  * Implements the select field logic. It manages dropdown state, tracks the selected option, and
@@ -35,12 +36,13 @@ export class AgridataSelectComponent {
   protected readonly trigger = viewChild<ElementRef>('trigger');
 
   readonly control = input<FormControlWithMessages>();
-  readonly options = input<MultiSelectOption[]>([]);
-  readonly placeholder = input<string>('');
-  readonly hasError = input<boolean>(false);
+  readonly customClass = input<string>('');
   readonly disabled = input<boolean>(false);
+  readonly hasError = input<boolean>(false);
+  readonly options = input<SelectOption[]>([]);
+  readonly placeholder = input<string>('');
 
-  readonly selectedOption = model<MultiSelectOption['value'] | null>(null);
+  readonly selectedOption = model<number | string | null>(null);
 
   protected readonly chevronDown = faChevronDown;
   protected readonly chevronUp = faChevronUp;
@@ -72,7 +74,7 @@ export class AgridataSelectComponent {
     this.isDropdownOpen.update((o) => !o);
   }
 
-  isSelected(id: string | number) {
+  isSelected(id: string | number | null) {
     return this.control()?.value === id;
   }
 
@@ -80,7 +82,7 @@ export class AgridataSelectComponent {
     return this.options().find((o) => o.value === this.selectedOption())?.label ?? null;
   }
 
-  handleOptionSelect(value: string | number, event: Event) {
+  handleOptionSelect(value: string | number | null, event: Event) {
     event.stopPropagation();
     this.selectedOption.set(value);
     this.control()?.setValue(value);

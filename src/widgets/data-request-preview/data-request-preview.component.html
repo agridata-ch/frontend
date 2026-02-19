@@ -1,6 +1,6 @@
-<div class="flex flex-col gap-8" *i18n="let t; prefix: 'data-request.preview'">
+<div class="flex flex-col gap-8">
   @for (lang of availableLangs; track lang) {
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4" *i18n="let t; prefix: 'data-request.preview'; lang: lang">
       <h2>{{ `${t('title')} ${lang.toUpperCase()}` }}</h2>
       <div class="flex flex-col gap-6 border border-agridata-stroke rounded-lg p-6">
         <h3>{{ getFieldFromLang('title', lang, dataRequest()) }}</h3>
@@ -19,14 +19,18 @@
         <app-data-request-purpose-accordion
           [purpose]="getFieldFromLang('purpose', lang, dataRequest())"
           [products]="productsList()"
+          [lang]="lang"
         />
         <app-data-request-contact
           [phoneNumber]="dataRequest().contactPhoneNumber"
           [email]="dataRequest().contactEmailAddress"
           [organisationName]="dataRequest().dataConsumerDisplayName"
+          [lang]="lang"
         />
         <app-data-request-privacy-infos
           [dataConsumerName]="dataRequest().dataConsumerDisplayName"
+          [dataProvider]="dataProvider()"
+          [lang]="lang"
         />
       </div>
     </div>

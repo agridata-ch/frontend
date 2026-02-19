@@ -2,6 +2,8 @@
   [tableMetadata]="tableMetadata()"
   [dataProvider]="fetchData"
   [enableSearch]="enableSearch()"
+  [emptyStateTemplate]="emptyStateTemplate()"
   [(queryParameters)]="resourceQueryDto"
 >
+  <ng-content></ng-content>
 </app-agridata-table>

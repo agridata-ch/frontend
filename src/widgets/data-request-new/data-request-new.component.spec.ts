@@ -258,15 +258,13 @@ describe('DataRequestNewComponent', () => {
     });
   });
 
-  describe('updateDataRequestFromRessourceEffect', () => {
-    it('should update dataRequest when request loaded', async () => {
+  describe('updateDataRequestFromInputEffect', () => {
+    it('should update dataRequest when initialDataRequest is set', async () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
         stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
       };
-      componentRef.setInput('dataRequestId', 'test-id');
-
-      dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
+      componentRef.setInput('initialDataRequest', newRequest);
 
       fixture.detectChanges();
       await fixture.whenStable();
@@ -280,17 +278,6 @@ describe('DataRequestNewComponent', () => {
       const sidePanelComp = fixture.debugElement.query(By.directive(SidepanelComponent));
       expect(sidePanelComp).toBeTruthy();
       expect(sidePanelComp.componentInstance.isOpen()).toBe(true);
-    });
-
-    it('should handle errors from dataRequestsResource and send them to errorService', async () => {
-      const testError = new Error('Test error from fetchDataRequests');
-      dataRequestService.fetchDataRequest.mockRejectedValueOnce(testError);
-      componentRef.setInput('dataRequestId', 'test-id');
-
-      fixture.detectChanges();
-      await fixture.whenStable();
-
-      expect(errorService.handleError).toHaveBeenCalledWith(testError);
     });
   });
 

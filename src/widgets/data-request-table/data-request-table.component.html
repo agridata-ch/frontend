@@ -1,7 +1,9 @@
 <app-agridata-client-table
+  class="block"
   [rawData]="dataRequests()"
   [loading]="dataRequestsResource().isLoading()"
   [tableMetadata]="dataRequestsTableMetaData()"
+  [emptyStateTemplate]="emptyStateTemplate()"
 >
   <ng-template #humanFriendlyId [appDataRequestDtoGuard] let-item>
     <span class="text-agridata-primary-text font-medium" [title]="item.humanFriendlyId ?? ''">
@@ -22,5 +24,20 @@
       [variant]="getBadgeVariant(item?.stateCode)"
       [size]="BadgeSize.SM"
     />
+  </ng-template>
+
+  <ng-template #emptyStateTemplate *i18n="let t; prefix: 'data-request.table.emptyState'">
+    <app-empty-state [title]="t('title')" [message]="t('message')">
+      <fa-icon emptyStateIcon [icon]="folderIcon" size="3x" class="text-agridata-tertiary-text" />
+      <app-agridata-button
+        emptyStateAction
+        (onClick)="newRequest()"
+        (keydown.enter)="newRequest()"
+        [variant]="ButtonVariants.Primary"
+      >
+        <fa-icon [icon]="addIcon" class="mr-2" />
+        {{ t('createNewDataRequest') }}
+      </app-agridata-button>
+    </app-empty-state>
   </ng-template>
 </app-agridata-client-table>

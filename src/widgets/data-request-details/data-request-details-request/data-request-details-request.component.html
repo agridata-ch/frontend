@@ -1,0 +1,72 @@
+<div class="flex flex-col gap-8" *i18n="let t; prefix: 'data-request'">
+  <div class="flex flex-col gap-4 p-4 bg-agridata-content-gray rounded-lg">
+    <h4>{{ t('details.title') }}</h4>
+    <div class="flex justify-between">
+      <div class="flex flex-col">
+        <span class="text-agridata-tertiary-text text-sm">
+          {{ t('submissionDate') }}
+        </span>
+        <span class="font-bold">
+          {{ formattedSubmissionDate() }}
+        </span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-agridata-tertiary-text text-sm">
+          {{ t('humanFriendlyId') }}
+        </span>
+        <span class="font-bold">
+          {{ dataRequest().humanFriendlyId }}
+        </span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-agridata-tertiary-text text-sm">
+          {{ t('state') }}
+        </span>
+        <app-agridata-badge
+          [text]="getStatusTranslation(dataRequest().stateCode)"
+          [variant]="getBadgeVariant(dataRequest().stateCode)"
+          [size]="BadgeSize.SM"
+        />
+      </div>
+    </div>
+    @if (dataRequest().stateCode === DataRequestStateEnum.Active) {
+      <div class="flex flex-col">
+        <span class="text-agridata-tertiary-text text-sm">
+          {{ t('invitationLink') }}
+        </span>
+        <span class="font-bold">
+          {{ invitationLink() }}
+          <fa-icon
+            [icon]="faCopy"
+            class="cursor-pointer hover:text-agridata-primary-600"
+            (click)="copyToClipboard(invitationLink())"
+            (keydown.enter)="copyToClipboard(invitationLink())"
+          ></fa-icon>
+        </span>
+      </div>
+    }
+  </div>
+  <div class="flex flex-col gap-8 flex-1">
+    <div class="flex flex-col gap-4">
+      <app-agridata-contact-card
+        [imageUrl]="dataRequest().dataConsumerLogoBase64"
+        [name]="dataRequest().dataConsumerDisplayName"
+        [secondaryName]="dataRequest().dataConsumerCity"
+        [size]="AvatarSize.MEDIUM"
+        [skin]="AvatarSkin.LIGHT"
+      />
+      <span class="text-agridata-secondary-text">
+        {{ getFieldFromLang('description', locale, dataRequest()) }}
+      </span>
+    </div>
+    <app-data-request-purpose-accordion
+      [purpose]="getFieldFromLang('purpose', locale, dataRequest())"
+      [products]="productsList()"
+    />
+    <app-data-request-contact
+      [phoneNumber]="dataRequest().contactPhoneNumber"
+      [email]="dataRequest().contactEmailAddress"
+      [organisationName]="dataRequest().dataConsumerDisplayName"
+    />
+  </div>
+</div>

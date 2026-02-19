@@ -1,0 +1,46 @@
+publiccodeYmlVersion: 0.5.0
+name: agridata.ch Frontend
+url: https://github.com/agridata-ch/frontend
+releaseDate: 2026-01-01
+platforms:
+  - web
+categories:
+  - application-development
+developmentStatus: beta
+softwareType: standalone/web
+organisation:
+  uri: https://ld.admin.ch/office/VI.1.5
+  name: Bundesamt für Landwirtschaft (BLW)
+description:
+  en:
+    localisedName: agridata.ch Frontend
+    shortDescription: Data transfer service for the secure and trustworthy sharing
+      of data within the Swiss agriculture and food sector
+    longDescription: agridata.ch is the foundation for the Swiss agricultural and
+      food sector’s data space. It provides a secure, efficient, and trustworthy
+      data transfer service that enables interoperability and supports the
+      once-only principle (data is collected once at the source and reused
+      across participants).
+    documentation: https://agridata.ch/
+    apiDocumentation: https://github.com/agridata-ch/.github/wiki
+    features:
+      - Data Space
+      - Data Transfer
+      - Data Products
+      - Consent Management
+      - Data Request Management
+legal:
+  license: MIT
+maintenance:
+  type: internal
+  contacts:
+    - name: Bengt Gade
+      email: bengt.gade@blw.admin.ch
+    - name: Samuel Imboden
+      email: samuel.imboden@blw.admin.ch
+localisation:
+  localisationReady: true
+  availableLanguages:
+    - de
+    - fr
+    - it

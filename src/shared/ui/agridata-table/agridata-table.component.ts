@@ -8,6 +8,7 @@ import {
   model,
   ResourceRef,
   signal,
+  TemplateRef,
   WritableSignal,
 } from '@angular/core';
 import { faChevronRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
@@ -26,7 +27,6 @@ import {
   TableRowMenuComponent,
 } from '@/shared/ui/agridata-table/table-row-menu/table-row-menu.component';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
-import { EmptyStateComponent } from '@/shared/ui/empty-state/empty-state.component';
 import { SearchInputComponent } from '@/shared/ui/filter-input/search-input.component';
 
 import {
@@ -61,7 +61,6 @@ import {
     TableCellComponent,
     TablePaginationComponent,
     I18nDirective,
-    EmptyStateComponent,
     ButtonComponent,
     ClickStopPropagationDirective,
     I18nPipe,
@@ -79,6 +78,7 @@ export class AgridataTableComponent<T> {
   readonly tableMetadata = input.required<TableMetadata<T>>();
   readonly dataProvider = input.required<ResourceRef<PageResponseDto<T> | undefined>>();
   readonly enableSearch = input<boolean>(false);
+  readonly emptyStateTemplate = input<TemplateRef<unknown>>();
 
   // Model properties
   readonly queryParameters = model<ResourceQueryDto>();

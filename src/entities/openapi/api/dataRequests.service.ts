@@ -113,23 +113,23 @@ export class DataRequestsService extends BaseService {
     }
 
     /**
-     * Get Consent Requests Of Data Request
-     * &lt;strong&gt;This endpoint is deprecated. Please use [data-requests/{id}/consent-requests](#/Data%20Requests/getConsentRequestsOfDataRequestAndProducer) instead.&lt;/strong&gt;&lt;br&gt;&lt;br&gt;Retrieves all consent requests associated with a specific data request. Accessible to the consumer who owns the data request.
+     * Get Consent Requests Of Data Request And Kt Id P
+     * &lt;strong&gt;This endpoint is deprecated, because it does not return the name of the UIDs. Please use [/v2/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests](#/Data%20Requests/getConsentRequestsOfDataRequestAndKtIdPv2) instead.&lt;/strong&gt;&lt;br&gt;&lt;br&gt;Retrieves all consent requests associated with a specific data request and kt-id-p. Accessible to the consumer who owns the data request.
      * @param id 
      * @param ktIdP 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @deprecated
      */
-    public getConsentRequestsOfDataRequest(id: string, ktIdP: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ConsentRequestConsumerViewDto>>;
-    public getConsentRequestsOfDataRequest(id: string, ktIdP: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ConsentRequestConsumerViewDto>>>;
-    public getConsentRequestsOfDataRequest(id: string, ktIdP: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ConsentRequestConsumerViewDto>>>;
-    public getConsentRequestsOfDataRequest(id: string, ktIdP: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getConsentRequestsOfDataRequestAndKtIdP(id: string, ktIdP: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ConsentRequestConsumerViewDto>>;
+    public getConsentRequestsOfDataRequestAndKtIdP(id: string, ktIdP: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ConsentRequestConsumerViewDto>>>;
+    public getConsentRequestsOfDataRequestAndKtIdP(id: string, ktIdP: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ConsentRequestConsumerViewDto>>>;
+    public getConsentRequestsOfDataRequestAndKtIdP(id: string, ktIdP: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getConsentRequestsOfDataRequest.');
+            throw new Error('Required parameter id was null or undefined when calling getConsentRequestsOfDataRequestAndKtIdP.');
         }
         if (ktIdP === null || ktIdP === undefined) {
-            throw new Error('Required parameter ktIdP was null or undefined when calling getConsentRequestsOfDataRequest.');
+            throw new Error('Required parameter ktIdP was null or undefined when calling getConsentRequestsOfDataRequestAndKtIdP.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -175,27 +175,23 @@ export class DataRequestsService extends BaseService {
     }
 
     /**
-     * Get Consent Requests Of Data Request And Producer
-     * Returns the consent requests for a given data request, filtered by producer identifiers. &lt;br&gt;&lt;br&gt; Admin users can retrieve consent requests for any data request. Consumers users can only retrieve consent requests for data requests they own. &lt;br&gt;&lt;br&gt; Both query parameters are optional, but at least one must be provided:&lt;br&gt; If neither \&quot;kt-id-p\&quot; nor \&quot;agate-login-id\&quot; is provided, an empty list is returned.&lt;br&gt; If \&quot;kt-id-p\&quot; is provided, consent requests related to the farmer (KT_ID_P) are returned.&lt;br&gt; If \&quot;agate-login-id\&quot; is provided, consent requests related to the equid owner (AgateLoginId) are returned.&lt;br&gt; If both are provided, the result contains the union of both sets.
+     * Get Consent Requests Of Data Request And Kt Id Pv 2
+     * Retrieves all consent requests associated with a specific data request and kt-id-p. Accessible to the consumer who owns the data request and for admin users.
      * @param id 
-     * @param agateLoginId 
      * @param ktIdP 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getConsentRequestsOfDataRequestAndProducer(id: string, agateLoginId?: string, ktIdP?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ConsentRequestConsumerViewV2Dto>>;
-    public getConsentRequestsOfDataRequestAndProducer(id: string, agateLoginId?: string, ktIdP?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ConsentRequestConsumerViewV2Dto>>>;
-    public getConsentRequestsOfDataRequestAndProducer(id: string, agateLoginId?: string, ktIdP?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ConsentRequestConsumerViewV2Dto>>>;
-    public getConsentRequestsOfDataRequestAndProducer(id: string, agateLoginId?: string, ktIdP?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getConsentRequestsOfDataRequestAndKtIdPv2(id: string, ktIdP: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ConsentRequestConsumerViewV2Dto>>;
+    public getConsentRequestsOfDataRequestAndKtIdPv2(id: string, ktIdP: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ConsentRequestConsumerViewV2Dto>>>;
+    public getConsentRequestsOfDataRequestAndKtIdPv2(id: string, ktIdP: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ConsentRequestConsumerViewV2Dto>>>;
+    public getConsentRequestsOfDataRequestAndKtIdPv2(id: string, ktIdP: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getConsentRequestsOfDataRequestAndProducer.');
+            throw new Error('Required parameter id was null or undefined when calling getConsentRequestsOfDataRequestAndKtIdPv2.');
         }
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>agateLoginId, 'agate-login-id');
-        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>ktIdP, 'kt-id-p');
+        if (ktIdP === null || ktIdP === undefined) {
+            throw new Error('Required parameter ktIdP was null or undefined when calling getConsentRequestsOfDataRequestAndKtIdPv2.');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -224,12 +220,11 @@ export class DataRequestsService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/agreement/v1/data-requests/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/consent-requests`;
+        let localVarPath = `/api/agreement/v2/data-requests/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/kt-id-p/${this.configuration.encodeParam({name: "ktIdP", value: ktIdP, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/consent-requests`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<ConsentRequestConsumerViewV2Dto>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

@@ -17,8 +17,10 @@ import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { ConsentRequestStateEnum, DataRequestPurposeDto } from '@/entities/openapi';
-import { FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM } from '@/pages/consent-request-producer';
-import { REDIRECT_TIMEOUT } from '@/pages/consent-request-producer/consent-request-producer.page.model';
+import {
+  FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM,
+  REDIRECT_TIMEOUT,
+} from '@/pages/consent-request-producer';
 import {
   getToastMessage,
   getToastTitle,
@@ -153,6 +155,10 @@ export class ConsentRequestDetailsComponent {
   protected readonly dataConsumerName = computed(
     () => this.request()?.dataRequest?.dataConsumerDisplayName,
   );
+  protected readonly dataProvider = computed(() => {
+    const providerId = this.request()?.dataRequest?.dataProviderId;
+    return this.metaDataService.dataProviders().find((provider) => provider.id === providerId);
+  });
   protected readonly formattedLastStateChangeDate = computed(() =>
     formatDate(this.request()?.lastStateChangeDate),
   );
@@ -165,11 +171,11 @@ export class ConsentRequestDetailsComponent {
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.description),
   );
   protected readonly requestId = computed(() => this.request()?.id);
-  protected readonly requestProducts = computed(() =>
-    this.metaDataService
-      .dataProducts()
-      ?.filter((product) => this.request()?.dataRequest?.products?.includes(product.id)),
-  );
+  protected readonly requestProducts = computed(() => {
+    return this.metaDataService
+      .getProductsForProvider(this.request()?.dataRequest?.dataProviderId ?? '')
+      ?.filter((product) => this.request()?.dataRequest?.products?.includes(product.id));
+  });
   protected readonly requestPurpose = computed(() => {
     const purpose = this.request()?.dataRequest?.purpose;
     return (

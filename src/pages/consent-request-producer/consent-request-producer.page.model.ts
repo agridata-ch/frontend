@@ -1,1 +1,2 @@
 export const REDIRECT_TIMEOUT = 4000;
+export const FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM = 'refresh';

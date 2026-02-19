@@ -26,11 +26,13 @@
   }
   @if (controlType() === ControlTypes.MULTI_SELECT) {
     <app-agridata-multi-select
+      [categories]="categories()"
       [control]="control()"
+      [disabled]="disabled()"
+      [hasError]="hasError()"
       [options]="options()"
       [placeholder]="placeholder()"
-      [hasError]="hasError()"
-      [disabled]="disabled()"
+      [singleCategorySelection]="singleCategorySelection()"
     />
   }
   @if (controlType() === ControlTypes.TEXT_AREA) {
