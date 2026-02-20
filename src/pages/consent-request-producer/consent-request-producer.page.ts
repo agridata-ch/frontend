@@ -1,4 +1,13 @@
-import { Component, computed, effect, inject, input, resource, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  resource,
+  signal,
+  untracked,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { faFileCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -93,37 +102,33 @@ export class ConsentRequestProducerPage {
   protected readonly showRedirect = computed(() => this.hasRedirectUrl() && this.hasErrors());
   protected readonly redirectUrl = computed(() => this.redirectUrlFromQuery());
 
-  private readonly handleFetchConsentRequestErrorsEffect = createResourceErrorHandlerEffect(
-    this.consentRequestResource,
-    this.errorService,
-  );
+  private readonly checkForRedirectEffect = effect(() => {
+    const redirectUri = this.activeRoute.snapshot.queryParamMap.get('redirect_uri') ?? null;
+    if (redirectUri) {
+      this.redirectUrlFromQuery.set(redirectUri);
+      // Use untracked read to avoid making the effect reactive to route changes
+      const cleanUrl = untracked(() => this.agridataStateService.currentRouteWithoutQueryParams());
+      // Replace the URL to remove the query parameter without reloading the page to prevent potential redirect loops
+      globalThis.history.replaceState({}, '', cleanUrl);
+    }
+  });
 
-  private readonly foreReloadConsentRequestsEffect = effect(() => {
+  private readonly forceReloadConsentRequestsEffect = effect(() => {
     const nav = this.router.currentNavigation();
     if (nav?.extras?.state?.[FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM]) {
       this.consentRequestResource.reload();
     }
   });
 
-  private readonly checkForRedirectEffect = effect(() => {
-    // Make reactive to router URL to detect navigation
-    const redirectUri = this.activeRoute.snapshot.queryParamMap.get('redirect_uri') ?? null;
-    const currentRouteWithoutQueryParams =
-      this.agridataStateService.currentRouteWithoutQueryParams();
-    if (currentRouteWithoutQueryParams) {
-      void this.router.navigateByUrl(currentRouteWithoutQueryParams, { replaceUrl: true });
-    }
-    this.redirectUrlFromQuery.set(redirectUri);
-  });
+  private readonly handleFetchConsentRequestErrorsEffect = createResourceErrorHandlerEffect(
+    this.consentRequestResource,
+    this.errorService,
+  );
 
   protected navigateToRequest = (request?: ConsentRequestProducerViewDto | null) => {
     if (request?.id) {
       this.router.navigate([request.id], { relativeTo: this.activeRoute }).then();
     }
-  };
-
-  reloadConsentRequests = () => {
-    this.consentRequestResource.reload();
   };
 
   closeMigrationInfo(requestId: string) {
