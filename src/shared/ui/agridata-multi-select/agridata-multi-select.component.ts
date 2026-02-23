@@ -18,7 +18,7 @@ import {
 } from '@/shared/ui/agridata-multi-select';
 
 import { AgridataMultiSelectOptionComponent } from './agridata-multi-select-option/agridata-multi-select-option.component';
-import { SearchInputComponent } from '../filter-input/search-input.component';
+import { SearchInputComponent } from '../search-input/search-input.component';
 
 /**
  * Implements the multi-select logic. It manages dropdown state, tracks selected options, and

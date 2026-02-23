@@ -181,3 +181,11 @@ We use a custom font awesome kit that only contains the icons that we need. To a
 ```bash
 npm install --save '@awesome.me/kit-0b6d1ed528@latest'
 ```
+
+## Storybook
+
+We use Storybook for our UI components. You can run Storybook with the following command:
+
+```bash 
+npm run storybook
+```

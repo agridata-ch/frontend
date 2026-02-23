@@ -29,7 +29,9 @@
     "api:fetch:local": "curl -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\" \"http://localhost:8060/q/openapi\" -o src/assets/openapi.yaml",
     "api:sync:local": "npm run api:fetch:local && npm run api:generate",
     "api:sync:dev": "npm run api:fetch:dev && npm run api:generate",
-    "sourcemap:analyze": "ng build --source-map && npx source-map-explorer dist/frontend/**/*.js --no-border-checks"
+    "sourcemap:analyze": "ng build --source-map && npx source-map-explorer dist/frontend/**/*.js --no-border-checks",
+    "storybook": "ng run frontend:storybook",
+    "build-storybook": "ng run frontend:build-storybook"
   },
   "private": true,
   "dependencies": {
@@ -94,7 +96,16 @@
     "tailwindcss": "4.1.18",
     "ts-node": "10.9.2",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.55.0"
+    "typescript-eslint": "8.55.0",
+    "storybook": "^10.2.10",
+    "@storybook/angular": "^10.2.10",
+    "@storybook/addon-a11y": "^10.2.10",
+    "@storybook/addon-docs": "^10.2.10",
+    "@storybook/addon-onboarding": "^10.2.10",
+    "@angular-devkit/build-angular": "20.3.16",
+    "@angular-devkit/architect": "0.2003.16",
+    "@angular-devkit/core": "20.3.16",
+    "eslint-plugin-storybook": "^10.2.10"
   },
   "config": {
     "commitizen": {
