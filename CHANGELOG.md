@@ -1,3 +1,9 @@
+## [1.8.1-rc.1](https://github.com/agridata-ch/frontend/compare/v1.8.0...v1.8.1-rc.1) (2026-02-20)
+
+### Bug Fixes
+
+- **producer-redirect:** fix redirect ([7590239](https://github.com/agridata-ch/frontend/commit/7590239ea045489fa290ce65256cd45958c70d82)), closes [DIGIB2-1250](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1250)
+
 ## [1.8.0](https://github.com/agridata-ch/frontend/compare/v1.7.0...v1.8.0) (2026-02-19)
 
 ### Features

@@ -1,7 +1,9 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 
 import { AnalyticsService } from '@/app/analytics.service';
+import { ErrorDto } from '@/app/error/error-dto';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -98,12 +100,6 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     expect(navSpy).toHaveBeenCalledWith([req.id], { relativeTo: activeRoute });
   });
 
-  it('reloadConsentRequests calls consentRequests.reload', () => {
-    const reloadSpy = jest.spyOn(component.consentRequestResource, 'reload');
-    component.reloadConsentRequests();
-    expect(reloadSpy).toHaveBeenCalled();
-  });
-
   it('should handle errors from consentRequestResource and send them to errorService', async () => {
     const testError = new Error('Test error from fetchConsentRequests');
     consentRequestService.fetchConsentRequests.mockRejectedValueOnce(testError);
@@ -176,6 +172,57 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   });
 
   describe('redirect functionality', () => {
+    it('should set redirectUrlFromQuery and call history.replaceState when redirect_uri is present in query params', () => {
+      const redirectUri = 'https://example.com/callback';
+      const cleanRoute = '/consent-request-producer';
+      agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(cleanRoute);
+      // Mutate the shared mock so the new component instance reads redirect_uri from the snapshot
+      activeRoute.snapshot.queryParamMap = convertToParamMap({ redirect_uri: redirectUri });
+      // getAllErrors must return a signal so the computed hasErrors does not throw
+      errorService.getAllErrors.mockReturnValue(signal([]));
+      const replaceStateSpy = jest.spyOn(globalThis.history, 'replaceState');
+
+      const redirectFixture = TestBed.createComponent(ConsentRequestProducerPage);
+      redirectFixture.detectChanges();
+
+      expect(redirectFixture.componentInstance['redirectUrlFromQuery']()).toBe(redirectUri);
+      expect(redirectFixture.componentInstance['hasRedirectUrl']()).toBe(true);
+      expect(replaceStateSpy).toHaveBeenCalledWith({}, '', cleanRoute);
+
+      replaceStateSpy.mockRestore();
+    });
+
+    it('should not set redirectUrlFromQuery when no redirect_uri query param is present', () => {
+      expect(component['redirectUrlFromQuery']()).toBeNull();
+      expect(component['hasRedirectUrl']()).toBe(false);
+    });
+
+    it('should show redirect modal when redirectUrl and errors are present', () => {
+      component['redirectUrlFromQuery'].set('https://example.com/callback');
+      errorService.getAllErrors.mockReturnValue(
+        signal([
+          {
+            id: '1',
+            i18nTitle: { i18n: 'error.title' },
+            i18nReason: { i18n: 'error.reason' },
+            originalError: new Error('test'),
+            timestamp: new Date(),
+            isHandled: false,
+          },
+        ] as ErrorDto[]),
+      );
+
+      expect(component['showRedirect']()).toBe(true);
+    });
+
+    it('should not show redirect modal when redirectUrl is present but no errors exist', () => {
+      component['redirectUrlFromQuery'].set('https://example.com/callback');
+      errorService.getAllErrors.mockReturnValue(signal([]));
+
+      expect(component['hasRedirectUrl']()).toBe(true);
+      expect(component['showRedirect']()).toBe(false);
+    });
+
     it('should redirect to URL and reset redirectUrlFromQuery when redirect is called', () => {
       const testUrl = 'https://example.com/callback';
       delete (globalThis as { location?: unknown }).location;
