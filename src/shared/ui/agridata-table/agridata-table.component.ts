@@ -27,7 +27,7 @@ import {
   TableRowMenuComponent,
 } from '@/shared/ui/agridata-table/table-row-menu/table-row-menu.component';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
-import { SearchInputComponent } from '@/shared/ui/filter-input/search-input.component';
+import { SearchInputComponent } from '@/shared/ui/search-input/search-input.component';
 
 import {
   ColumnDefinition,
