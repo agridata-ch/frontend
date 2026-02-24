@@ -1,3 +1,9 @@
+## [1.9.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.8.1...v1.9.0-rc.1) (2026-02-24)
+
+### Features
+
+- **storybook:** add storybook ([9c9cbcc](https://github.com/agridata-ch/frontend/commit/9c9cbcc63b7ea0235404b5213738ab95b5ed8fbc)), closes [DIGIB2-1235](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1235)
+
 ## [1.8.1](https://github.com/agridata-ch/frontend/compare/v1.8.0...v1.8.1) (2026-02-23)
 
 ### Bug Fixes
