@@ -538,5 +538,33 @@
         }
       }
     }
+  },
+  "product-tour": {
+    "nextBtnText": "Continuer",
+    "doneBtnText": "Terminé",
+    "progressText": "Étape {{ current }} sur {{ total }}",
+    "consentRequestsTour": {
+      "intro": {
+        "title": "Bienvenue sur agridata.ch!",
+        "description": "Bonjour ! Je m'appelle Max, je suis votre assistant numérique.\nSouhaitez-vous faire un petit tour d'horizon de vos demandes ?\n\nEn seulement 1 minute, je vais vous montrer comment gérer vos demandes de données.",
+        "imageAlt": "Illustration d'une tête avec un casque audio",
+        "skipTour": "peut-être plus tard",
+        "startTour": "Commencer la visite"
+      },
+      "consentRequests": {
+        "title": "Vos demandes",
+        "description": "Vous pouvez voir ici toutes les demandes de données émanant des utilisateurs de données.\n\nEn cliquant sur une demande, vous pouvez voir tous les détails la concernant."
+      },
+      "dataRequestPurpose": {
+        "title": "Objet de la demande",
+        "description": "Dans la zone bleu clair, vous pouvez voir exactement à quoi vos données sont destinées. La transparence est importante pour nous!"
+      },
+      "consentRequestConsent": {
+        "title": "prendre une décision",
+        "description": "Les boutons verts et rouges vous permettent d'accepter ou de refuser la demande. Vous gardez toujours le contrôle!"
+      }
+    },
+    "startTour": "Commencer la visite",
+    "title": "Instructions"
   }
 }

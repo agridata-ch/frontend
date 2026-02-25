@@ -1,0 +1,16 @@
+<div class="flex flex-col gap-2" *i18n="let t; prefix: 'product-tour'">
+  <span class="font-semibold">{{ t('title') }}</span>
+  <div
+    class="flex flex-col lg:border border-agridata-stroke rounded-lg divide-y divide-agridata-stroke"
+  >
+    <a
+      (click)="startTour()"
+      (keydown.enter)="startTour()"
+      target="_blank"
+      class="lg:text-agridata-primary-600 hover:underline group p-4 cursor-pointer"
+    >
+      <fa-icon [icon]="progressIcon" class="mr-1 lg:group-hover:underline" />
+      <span>{{ t('startTour') }}</span>
+    </a>
+  </div>
+</div>

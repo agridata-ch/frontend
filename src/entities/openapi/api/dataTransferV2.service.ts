@@ -39,16 +39,21 @@ export class DataTransferV2Service extends BaseService {
      * Data Transfer
      * Retrieves data defined by productId. The needed query parameters are depending on the requested productId. Please consult documentation to find the necessary parameters. This endpoint simply forwards the payload from the source system to the consumer.Before any data is transferred, the producer must have accepted an active data request that includes the requested product.
      * @param productId productId for which the data is requested
+     * @param queryParams Additional query parameters. The needed query parameters are depending on the requested productId. Please consult documentation to find the necessary parameters.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public dataTransferV2(productId: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public dataTransferV2(productId: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public dataTransferV2(productId: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public dataTransferV2(productId: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public dataTransferV2(productId: string, queryParams?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public dataTransferV2(productId: string, queryParams?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public dataTransferV2(productId: string, queryParams?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public dataTransferV2(productId: string, queryParams?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (productId === null || productId === undefined) {
             throw new Error('Required parameter productId was null or undefined when calling dataTransferV2.');
         }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>queryParams, 'queryParams');
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -83,6 +88,7 @@ export class DataTransferV2Service extends BaseService {
         return this.httpClient.request<any>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

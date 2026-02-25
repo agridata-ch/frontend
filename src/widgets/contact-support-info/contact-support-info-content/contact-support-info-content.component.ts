@@ -4,6 +4,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { environment } from '@/environments/environment';
 import { I18nDirective, I18nService } from '@/shared/i18n';
+import { ConsentRequestsTourTriggerComponent } from '@/widgets/consent-requests-tour';
 
 /**
  * Renders the contact support informations. It provides the necessary details for users
@@ -13,7 +14,7 @@ import { I18nDirective, I18nService } from '@/shared/i18n';
  */
 @Component({
   selector: 'app-contact-support-info-content',
-  imports: [FontAwesomeModule, I18nDirective],
+  imports: [FontAwesomeModule, I18nDirective, ConsentRequestsTourTriggerComponent],
   templateUrl: './contact-support-info-content.component.html',
 })
 export class ContactSupportInfoContentComponent {
