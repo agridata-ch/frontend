@@ -31,7 +31,7 @@
     "api:sync:dev": "npm run api:fetch:dev && npm run api:generate",
     "sourcemap:analyze": "ng build --source-map && npx source-map-explorer dist/frontend/**/*.js --no-border-checks",
     "storybook": "ng run frontend:storybook",
-    "build-storybook": "ng run frontend:build-storybook"
+    "build:storybook": "ng run frontend:build-storybook"
   },
   "private": true,
   "dependencies": {
@@ -44,11 +44,15 @@
     "@angular/router": "20.3.5",
     "@awesome.me/kit-0b6d1ed528": "^1.0.18",
     "@jsverse/transloco": "8.2.1",
+    "driver.js": "^1.4.0",
     "rxjs": "7.8.2",
     "tslib": "2.8.1"
   },
   "devDependencies": {
     "@angular-builders/jest": "20.0.0",
+    "@angular-devkit/architect": "0.2003.16",
+    "@angular-devkit/build-angular": "20.3.16",
+    "@angular-devkit/core": "20.3.16",
     "@angular-eslint/eslint-plugin": "20.4.0",
     "@angular-eslint/eslint-plugin-template": "20.4.0",
     "@angular-eslint/template-parser": "20.4.0",
@@ -65,6 +69,10 @@
     "@semantic-release/git": "10.0.1",
     "@semantic-release/github": "12.0.5",
     "@semantic-release/release-notes-generator": "14.1.0",
+    "@storybook/addon-a11y": "10.2.10",
+    "@storybook/addon-docs": "10.2.10",
+    "@storybook/addon-onboarding": "10.2.10",
+    "@storybook/angular": "10.2.10",
     "@tailwindcss/postcss": "4.1.18",
     "@types/jest": "30.0.0",
     "angular-auth-oidc-client": "20.0.2",
@@ -80,6 +88,7 @@
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsdoc": "62.5.4",
     "eslint-plugin-security": "3.0.1",
+    "eslint-plugin-storybook": "10.2.10",
     "eslint-plugin-unicorn": "62.0.0",
     "eslint-plugin-unused-imports": "4.4.1",
     "globals": "17.3.0",
@@ -93,19 +102,11 @@
     "pretty-quick": "4.2.2",
     "semantic-release": "25.0.3",
     "source-map-explorer": "2.5.3",
+    "storybook": "10.2.10",
     "tailwindcss": "4.1.18",
     "ts-node": "10.9.2",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.55.0",
-    "storybook": "^10.2.10",
-    "@storybook/angular": "^10.2.10",
-    "@storybook/addon-a11y": "^10.2.10",
-    "@storybook/addon-docs": "^10.2.10",
-    "@storybook/addon-onboarding": "^10.2.10",
-    "@angular-devkit/build-angular": "20.3.16",
-    "@angular-devkit/architect": "0.2003.16",
-    "@angular-devkit/core": "20.3.16",
-    "eslint-plugin-storybook": "^10.2.10"
+    "typescript-eslint": "8.55.0"
   },
   "config": {
     "commitizen": {

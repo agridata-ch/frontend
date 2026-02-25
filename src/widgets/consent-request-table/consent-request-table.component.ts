@@ -124,6 +124,7 @@ export class ConsentRequestTableComponent {
     ClientTableMetadata<ConsentRequestProducerViewDto>
   >(() => {
     return {
+      tableId: 'consent-requests-table',
       idColumn: 'id',
       columns: [
         {

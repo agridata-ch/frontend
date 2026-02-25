@@ -41,6 +41,7 @@ export interface TableMetadata<T> {
   columns: ColumnDefinition<T>[];
   showRowActionButton?: boolean;
   highlightFn?: (item: T) => boolean;
+  tableId?: string;
 }
 
 export enum SortDirections {

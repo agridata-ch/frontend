@@ -26,6 +26,7 @@ import { ButtonComponent } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { AlertComponent, AlertType } from '@/widgets/alert';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
+import { ConsentRequestsTourIntroComponent } from '@/widgets/consent-requests-tour/consent-requests-tour-intro/consent-requests-tour-intro.component';
 
 import { FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM } from './consent-request-producer.page.model';
 
@@ -50,6 +51,7 @@ import { FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM } from './consent-request-pro
     RouterOutlet,
     ModalComponent,
     ButtonComponent,
+    ConsentRequestsTourIntroComponent,
   ],
   templateUrl: './consent-request-producer.page.html',
 })
@@ -92,6 +94,18 @@ export class ConsentRequestProducerPage {
     const dismissedIds = this.dismissedMigrationIds();
     return this.migratedRequests().filter((request) => !dismissedIds.has(request.id));
   });
+
+  readonly showTourIntro = computed(() => {
+    const userPreferences = this.agridataStateService.userPreferences();
+    return (
+      !userPreferences.hasSeenConsentRequestTourIntro &&
+      this.consentRequestResource.value().length > 0
+    );
+  });
+
+  closeTourIntro() {
+    this.agridataStateService.saveTourIntroSeen(true);
+  }
 
   readonly consentRequests = createResourceValueComputed(this.consentRequestResource, []);
 

@@ -1,0 +1,99 @@
+:not(body):has(> .driver-active-element) {
+  /* We need to override this because driver js use important.. usually you don't use !important */
+  overflow: visible !important;
+}
+
+.driver-product-tour-theme {
+  background-color: white;
+  border-radius: 16px;
+  padding: 40px;
+  /* We need to override this because driver js sets display block as inline style after everything is rendered.. usually you don't use !important */
+  display: flex !important;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 24px;
+  white-space: pre-line;
+  width: 450px;
+  max-width: unset;
+}
+
+.driver-product-tour-theme .driver-popover-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+  .driver-popover-title {
+    
+  }
+
+  .driver-popover-description { 
+
+  }
+
+
+
+  .driver-product-tour-theme .driver-popover-footer button {
+    border: 1px solid;
+    border-radius: 0.375rem; /* ~6px */
+    padding: 0.875rem 1.75rem; /* ~13px top/bottom, ~28px left/right */
+    cursor: pointer;
+    outline-width: 4px;
+    font-weight: 600;
+
+    text-shadow: none;
+  }
+
+  .driver-product-tour-theme .driver-popover-footer .driver-popover-next-btn {
+    color: white;
+    border-color: var(--color-agridata-primary-600);
+    background-color: var(--color-agridata-primary-600);
+  }
+
+   .driver-product-tour-theme .driver-popover-footer .skip-btn {
+    color: var(--color-agridata-primary-600);
+    border-color: var(--color-agridata-primary-600);
+    background-color: transparent;
+    justify-self: flex-start;
+  }
+
+  .driver-product-tour-theme .driver-popover-footer .driver-popover-next-btn:hover {
+    background-color: var(--color-agridata-primary-400);
+    border-color: var(--color-agridata-primary-400);
+  }
+  
+  .driver-product-tour-theme .driver-popover-footer .skip-btn:hover {
+  border-color: var(--color-agridata-primary-400);
+  color: var(--color-agridata-primary-400);
+  }
+
+  .driver-popover-arrow-side-bottom.driver-popover-arrow-align-start {
+    border: 20px solid #fff;
+    border-left-color: transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    left: calc(50% - 20px);
+  }
+
+  .driver-popover-arrow-side-left.driver-popover-arrow-align-start {
+    border: 20px solid #fff;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-top-color: transparent;
+    top: calc(50% - 20px);
+  }
+
+    .driver-popover-arrow-side-left.driver-popover-arrow-align-end {
+    border: 20px solid #fff;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-top-color: transparent;
+  }
+
+  .driver-popover-arrow-side-top.driver-popover-arrow-align-start {
+    border: 20px solid #fff;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+    left: calc(50% - 20px);
+  }

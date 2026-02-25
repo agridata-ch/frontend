@@ -133,6 +133,14 @@ export class AgridataStateService {
     this.userService.updateUserPreferences(this._userPreferences()).then();
   }
 
+  saveTourIntroSeen(tourIntroSeen: boolean) {
+    this._userPreferences.update((prefs) => ({
+      ...prefs,
+      hasSeenConsentRequestTourIntro: tourIntroSeen,
+    }));
+    this.userService.updateUserPreferences(this._userPreferences()).then();
+  }
+
   addConfirmedMigratedUids(confirmedUids: string[]) {
     this._userPreferences.update((prefs) => {
       const dismissedMigratedIds = prefs.dismissedMigratedIds || [];
