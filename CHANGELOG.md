@@ -1,3 +1,9 @@
+## [1.9.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.1...v1.9.0-rc.2) (2026-02-26)
+
+### Features
+
+- **storybook:** add build and deploy pipeline for the storybook ([fa6ed88](https://github.com/agridata-ch/frontend/commit/fa6ed8849b22d2e0eafe142029c4f75d468b6eb5)), closes [DIGIB2-1257](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1257)
+
 ## [1.9.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.8.1...v1.9.0-rc.1) (2026-02-24)
 
 ### Features
