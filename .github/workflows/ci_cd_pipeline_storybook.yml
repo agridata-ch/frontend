@@ -1,0 +1,105 @@
+name: Storybook Deploy
+
+on:
+  push:
+    branches: [develop]
+
+env:
+  AWS_REGION: eu-central-2
+  ACCOUNT_ID: 183295418748 # production
+  S3_BUCKET: agridata-storybook
+  CLOUDFRONT_DISTRIBUTION_DESCRIPTION: agridata:cloudfront-storybook
+
+jobs:
+  build-push-s3:
+    name: Build Storybook and push to S3
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::${{ env.ACCOUNT_ID }}:role/agridata-storybook-deployment-role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: npm ci
+        run: npm ci --ignore-scripts
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      - name: Create robots.txt (no indexing)
+        run: |
+          cat > storybook-static/robots.txt << 'EOF'
+          User-agent: *
+          Disallow: /
+          EOF
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync storybook-static/ \
+            "s3://${{ env.S3_BUCKET }}/" \
+            --region "${{ env.AWS_REGION }}" \
+            --delete \
+            --exclude "sitemap.xml"
+
+  invalidate-cloudfront:
+    name: Invalidate CloudFront cache
+    needs: build-push-s3
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::${{ env.ACCOUNT_ID }}:role/agridata-storybook-deployment-role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Invalidate CloudFront cache
+        run: |
+          set -euo pipefail
+
+          echo "Resolving CloudFront distribution by Description='${CLOUDFRONT_DISTRIBUTION_DESCRIPTION}'..."
+
+          MATCHING_IDS_JSON=$(aws cloudfront list-distributions \
+            --query "DistributionList.Items[?Comment==\`${CLOUDFRONT_DISTRIBUTION_DESCRIPTION}\`].Id" \
+            --output json)
+
+          mapfile -t IDS < <(jq -r '.[]' <<< "$MATCHING_IDS_JSON")
+
+          if [ "${#IDS[@]}" -eq 0 ]; then
+            echo "Error: No CloudFront distribution found with Description='${CLOUDFRONT_DISTRIBUTION_DESCRIPTION}'." >&2
+            exit 1
+          elif [ "${#IDS[@]}" -gt 1 ]; then
+            echo "Error: Multiple distributions found with Description='${CLOUDFRONT_DISTRIBUTION_DESCRIPTION}'." >&2
+            printf ' - %s\n' "${IDS[@]}" >&2
+            exit 1
+          fi
+
+          DISTRIBUTION_ID="${IDS[0]}"
+          echo "Resolved distribution ID: ${DISTRIBUTION_ID}"
+
+          aws cloudfront create-invalidation \
+            --distribution-id "$DISTRIBUTION_ID" \
+            --paths "/*"
