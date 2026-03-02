@@ -1,3 +1,9 @@
+## [1.9.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.2...v1.9.0-rc.3) (2026-03-02)
+
+### Bug Fixes
+
+- **data-request:** fix routing ([dc67d07](https://github.com/agridata-ch/frontend/commit/dc67d0762f5af11490d9280ff7b3700f5ac14e1d)), closes [DIGIB2-1253](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1253)
+
 ## [1.9.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.1...v1.9.0-rc.2) (2026-02-26)
 
 ### Features
