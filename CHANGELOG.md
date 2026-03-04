@@ -1,3 +1,9 @@
+## [1.9.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.3...v1.9.0-rc.4) (2026-03-04)
+
+### Features
+
+- **product-tour:** add driver.js ([e16bf9c](https://github.com/agridata-ch/frontend/commit/e16bf9c5b8b5bc44c92647dd7d2fdfe2126553b8))
+
 ## [1.9.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.2...v1.9.0-rc.3) (2026-03-02)
 
 ### Bug Fixes
