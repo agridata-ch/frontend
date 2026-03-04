@@ -1,3 +1,9 @@
+## [1.9.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.4...v1.9.0-rc.5) (2026-03-04)
+
+### Bug Fixes
+
+- **product-tour:** save tour on start ([e503a3c](https://github.com/agridata-ch/frontend/commit/e503a3c4b2106cf342501b656ebadd7b30ac99cd)), closes [DIGIB2-524](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-524)
+
 ## [1.9.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.3...v1.9.0-rc.4) (2026-03-04)
 
 ### Features
