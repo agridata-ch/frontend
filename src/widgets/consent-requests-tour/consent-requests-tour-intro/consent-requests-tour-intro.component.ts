@@ -1,4 +1,4 @@
-import { Component, inject, Injector, output, signal } from '@angular/core';
+import { Component, EnvironmentInjector, inject, output, signal } from '@angular/core';
 
 import { buildConsentRequestTourSteps } from '@/shared/consent-request';
 import { I18nDirective, I18nService } from '@/shared/i18n';
@@ -17,11 +17,11 @@ import { ModalComponent } from '@/shared/ui/modal/modal.component';
   templateUrl: './consent-requests-tour-intro.component.html',
 })
 export class ConsentRequestsTourIntroComponent {
+  private readonly environmentInjector = inject(EnvironmentInjector);
   private readonly i18nService = inject(I18nService);
-  private readonly injector = inject(Injector);
   private readonly productTourService = inject(ProductTourService);
 
-  protected readonly skipTourCallback = output();
+  protected readonly closeTourIntroCallback = output();
 
   protected readonly showModal = signal(true);
 
@@ -29,11 +29,14 @@ export class ConsentRequestsTourIntroComponent {
 
   protected closeTourIntro() {
     this.showModal.set(false);
-    this.skipTourCallback.emit();
+    this.closeTourIntroCallback.emit();
   }
 
   protected startTour() {
     this.showModal.set(false);
-    this.productTourService.start(buildConsentRequestTourSteps(this.i18nService, this.injector));
+    this.closeTourIntroCallback.emit();
+    this.productTourService.start(
+      buildConsentRequestTourSteps(this.i18nService, this.environmentInjector),
+    );
   }
 }
