@@ -1,4 +1,4 @@
-import { afterEveryRender, Injector } from '@angular/core';
+import { afterEveryRender, EnvironmentInjector } from '@angular/core';
 import { DriveStep } from 'driver.js';
 
 import { ConsentRequestStateEnum } from '@/entities/openapi';
@@ -48,11 +48,11 @@ export function getUndoAction(undoAction: () => void) {
 
 export function buildConsentRequestTourSteps(
   i18nService: I18nService,
-  injector: Injector,
+  injector: EnvironmentInjector,
 ): DriveStep[] {
   return [
     {
-      element: '#consent-requests-table-row-0',
+      element: () => getTableOrListElement(),
       popover: {
         description: i18nService.translate(
           'product-tour.consentRequestsTour.consentRequests.description',
@@ -92,7 +92,11 @@ export function buildConsentRequestTourSteps(
   ];
 }
 
-function moveNextWhenReady(selector: string, moveNext: () => void, injector: Injector): void {
+function moveNextWhenReady(
+  selector: string,
+  moveNext: () => void,
+  injector: EnvironmentInjector,
+): void {
   const ref = afterEveryRender(
     () => {
       if (!document.querySelector(selector)) return;
@@ -100,5 +104,30 @@ function moveNextWhenReady(selector: string, moveNext: () => void, injector: Inj
       moveNext();
     },
     { injector },
+  );
+}
+
+function getTableOrListElement(): HTMLElement {
+  const tableElement = document.querySelector<HTMLElement>('#consent-requests-table-row-0');
+  const listElement = document.querySelector<HTMLElement>('#consent-requests-list-item-0');
+
+  // Return whichever is visible (not hidden by Tailwind responsive classes)
+  if (tableElement && isElementVisible(tableElement)) {
+    return tableElement;
+  }
+  if (listElement && isElementVisible(listElement)) {
+    return listElement;
+  }
+
+  return tableElement ?? listElement ?? document.body;
+}
+
+function isElementVisible(element: HTMLElement): boolean {
+  const style = globalThis.getComputedStyle(element);
+  return (
+    style.display !== 'none' &&
+    style.visibility !== 'hidden' &&
+    Number.parseFloat(style.opacity) !== 0 &&
+    element.offsetParent !== null
   );
 }

@@ -15,6 +15,10 @@
   white-space: pre-line;
   width: 450px;
   max-width: unset;
+
+  @media screen and (max-width: 768px) {
+    max-width: 90%;
+  }
 }
 
 .driver-product-tour-theme .driver-popover-inner {
@@ -22,15 +26,6 @@
   flex-direction: column;
   gap: 24px;
 }
-
-  .driver-popover-title {
-    
-  }
-
-  .driver-popover-description { 
-
-  }
-
 
 
   .driver-product-tour-theme .driver-popover-footer button {
@@ -80,7 +75,6 @@
     border-right-color: transparent;
     border-bottom-color: transparent;
     border-top-color: transparent;
-    top: calc(50% - 20px);
   }
 
     .driver-popover-arrow-side-left.driver-popover-arrow-align-end {
@@ -96,4 +90,18 @@
     border-bottom-color: transparent;
     border-right-color: transparent;
     left: calc(50% - 20px);
+  }
+
+  .driver-popover-arrow-side-top.driver-popover-arrow-align-end {
+    border: 20px solid #fff;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+  }
+
+  .driver-popover-arrow-side-bottom.driver-popover-arrow-align-end {
+    border: 20px solid #fff;
+    border-left-color: transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
   }

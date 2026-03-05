@@ -8,6 +8,7 @@
 
   @for (request of consentRequests(); track request.id) {
     <div
+      [attr.id]="'consent-requests-list-item-' + $index"
       (click)="handleClick(request)"
       (keydown.enter)="handleClick(request)"
       class="flex flex-col gap-4 p-4 pl-6 hover:bg-agridata-primary-50 cursor-pointer group"

@@ -12,9 +12,10 @@
     </span>
   </button>
   <app-popover [isOpen]="showPopover()" class="hidden lg:block">
-    <app-contact-support-info-content />
+    <app-contact-support-info-content (closeOverlay)="closeOverlay()" />
   </app-popover>
   <app-contact-support-info-content
     class="border border-agridata-stroke rounded-lg lg:hidden flex"
+    (closeOverlay)="toggleMobileNavigation.emit()"
   />
 </div>
