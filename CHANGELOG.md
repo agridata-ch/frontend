@@ -1,3 +1,9 @@
+## [1.9.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.5...v1.9.0-rc.6) (2026-03-05)
+
+### Bug Fixes
+
+- **product-tour:** fix mobile-tour ([3332f8b](https://github.com/agridata-ch/frontend/commit/3332f8bc8948c760d928b4512a847b15580c8a70)), closes [DIGIB2-524](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-524)
+
 ## [1.9.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.4...v1.9.0-rc.5) (2026-03-04)
 
 ### Bug Fixes
