@@ -1,3 +1,4 @@
+import { EnvironmentInjector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ConsentRequestStateEnum } from '@/entities/openapi';
@@ -100,26 +101,23 @@ describe('Toast Utilities', () => {
     });
 
     it('should return exactly 3 steps', () => {
-      const { Injector } = jest.requireActual('@angular/core') as typeof import('@angular/core');
-      const injector = TestBed.inject(Injector);
-      const steps = buildConsentRequestTourSteps(i18nService, injector);
+      const injector = TestBed.inject(EnvironmentInjector);
+      const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
       expect(steps).toHaveLength(3);
     });
 
     it('should target the correct element selectors', () => {
-      const { Injector } = jest.requireActual('@angular/core') as typeof import('@angular/core');
-      const injector = TestBed.inject(Injector);
-      const steps = buildConsentRequestTourSteps(i18nService, injector);
+      const injector = TestBed.inject(EnvironmentInjector);
+      const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
 
-      expect(steps[0].element).toBe('#consent-requests-table-row-0');
+      expect(typeof steps[0].element).toBe('function');
       expect(steps[1].element).toBe('#data-request-purpose-accordion');
       expect(steps[2].element).toBe('#consent-request-footer');
     });
 
     it('should translate all popover titles and descriptions', () => {
-      const { Injector } = jest.requireActual('@angular/core') as typeof import('@angular/core');
-      const injector = TestBed.inject(Injector);
-      buildConsentRequestTourSteps(i18nService, injector);
+      const injector = TestBed.inject(EnvironmentInjector);
+      buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
 
       expect(i18nService.translate).toHaveBeenCalledWith(
         'product-tour.consentRequestsTour.consentRequests.title',
@@ -142,24 +140,70 @@ describe('Toast Utilities', () => {
     });
 
     it('should call element.click() in onNextClick of first step', () => {
-      const { Injector } = jest.requireActual('@angular/core') as typeof import('@angular/core');
-      const injector = TestBed.inject(Injector);
-      const steps = buildConsentRequestTourSteps(i18nService, injector);
+      const injector = TestBed.inject(EnvironmentInjector);
+      const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
 
       const mockElement = document.createElement('div');
       mockElement.id = 'consent-requests-table-row-0';
+      mockElement.style.display = 'block';
+      mockElement.style.visibility = 'visible';
+      mockElement.style.opacity = '1';
       document.body.appendChild(mockElement);
       const clickSpy = jest.spyOn(mockElement, 'click');
 
       const moveNext = jest.fn();
       const opts = { driver: { moveNext } } as unknown as Parameters<
-        NonNullable<(typeof steps)[0]['popover']['onNextClick']>
+        NonNullable<NonNullable<(typeof steps)[0]['popover']>['onNextClick']>
       >[2];
 
-      steps[0].popover.onNextClick?.(null, null as never, opts);
+      steps[0].popover?.onNextClick?.(mockElement, null as never, opts);
 
       expect(clickSpy).toHaveBeenCalled();
-      document.body.removeChild(mockElement);
+      mockElement.remove();
+    });
+
+    it('should resolve table element when both table and list elements exist and table is visible', () => {
+      // Clean DOM first
+      document
+        .querySelectorAll('#consent-requests-table-row-0, #consent-requests-list-item-0')
+        .forEach((el) => el.remove());
+
+      const injector = TestBed.inject(EnvironmentInjector);
+      const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
+
+      const tableElement = document.createElement('div');
+      tableElement.id = 'consent-requests-table-row-0';
+      tableElement.style.display = 'block';
+      tableElement.style.visibility = 'visible';
+      tableElement.style.opacity = '1';
+      document.body.appendChild(tableElement);
+
+      const listElement = document.createElement('div');
+      listElement.id = 'consent-requests-list-item-0';
+      listElement.style.display = 'block';
+      listElement.style.visibility = 'visible';
+      listElement.style.opacity = '1';
+      document.body.appendChild(listElement);
+
+      const resolvedElement = (steps[0].element as () => HTMLElement)();
+
+      expect(resolvedElement).toBe(tableElement);
+      tableElement.remove();
+      listElement.remove();
+    });
+
+    it('should resolve to document.body when neither table nor list element is visible', () => {
+      // Clean up any leftover elements from previous tests
+      document
+        .querySelectorAll('#consent-requests-table-row-0, #consent-requests-list-item-0')
+        .forEach((el) => el.remove());
+
+      const injector = TestBed.inject(EnvironmentInjector);
+      const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
+
+      const resolvedElement = (steps[0].element as () => HTMLElement)();
+
+      expect(resolvedElement).toBe(document.body);
     });
   });
 });

@@ -1,4 +1,4 @@
-import { Component, inject, Injector } from '@angular/core';
+import { Component, EnvironmentInjector, inject, output } from '@angular/core';
 import { faArrowProgress } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DriveStep } from 'driver.js';
@@ -21,16 +21,22 @@ import { ButtonVariants } from '@/shared/ui/button';
 })
 export class ConsentRequestsTourTriggerComponent {
   // Injects
+  private readonly environmentInjector = inject(EnvironmentInjector);
   private readonly i18nService = inject(I18nService);
-  private readonly injector = inject(Injector);
   private readonly productTourService = inject(ProductTourService);
+
+  protected readonly closeOverlay = output();
 
   // Constants
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly progressIcon = faArrowProgress;
 
   protected startTour() {
-    const steps: DriveStep[] = buildConsentRequestTourSteps(this.i18nService, this.injector);
+    this.closeOverlay.emit();
+    const steps: DriveStep[] = buildConsentRequestTourSteps(
+      this.i18nService,
+      this.environmentInjector,
+    );
     this.productTourService.start(steps);
   }
 }

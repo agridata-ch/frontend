@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import { faQuestionCircle } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -9,6 +9,7 @@ import { ContactSupportInfoContentComponent } from '@/widgets/contact-support-in
 
 /**
  * Implements the visibility of the support information popover and handles user interactions
+ * use toggleMobileNavigation to close the mobile navigation when the product tour is triggered from the support info popover.
  *
  * CommentLastReviewed: 2025-09-08
  */
@@ -24,6 +25,8 @@ import { ContactSupportInfoContentComponent } from '@/widgets/contact-support-in
   templateUrl: './contact-support-info.component.html',
 })
 export class ContactSupportInfoComponent {
+  protected readonly toggleMobileNavigation = output();
+
   protected readonly showPopover = signal(false);
 
   protected readonly iconQuestion = faQuestionCircle;
