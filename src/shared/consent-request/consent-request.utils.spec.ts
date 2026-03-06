@@ -1,4 +1,4 @@
-import { EnvironmentInjector } from '@angular/core';
+import { ApplicationRef, EnvironmentInjector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ConsentRequestStateEnum } from '@/entities/openapi';
@@ -205,5 +205,154 @@ describe('Toast Utilities', () => {
 
       expect(resolvedElement).toBe(document.body);
     });
+  });
+});
+
+describe('moveNextWhenReady (via onNextClick)', () => {
+  type OnNextClickOpts = Parameters<
+    NonNullable<
+      NonNullable<ReturnType<typeof buildConsentRequestTourSteps>[0]['popover']>['onNextClick']
+    >
+  >[2];
+
+  let i18nService: MockI18nService;
+  let injector: EnvironmentInjector;
+  let appRef: ApplicationRef;
+  let accordion: HTMLDivElement;
+
+  beforeEach(() => {
+    i18nService = createMockI18nService();
+
+    TestBed.configureTestingModule({
+      providers: [{ provide: I18nService, useValue: i18nService }],
+    });
+
+    injector = TestBed.inject(EnvironmentInjector);
+    appRef = TestBed.inject(ApplicationRef);
+
+    accordion = document.createElement('div');
+    accordion.id = 'data-request-purpose-accordion';
+    document.body.appendChild(accordion);
+
+    // jsdom does not implement getAnimations; define a configurable stub so we can override per-test
+    Object.defineProperty(Element.prototype, 'getAnimations', {
+      configurable: true,
+      writable: true,
+      value: jest.fn().mockReturnValue([]),
+    });
+  });
+
+  afterEach(() => {
+    accordion.remove();
+    delete (Element.prototype as Partial<typeof Element.prototype>).getAnimations;
+    jest.restoreAllMocks();
+  });
+
+  it('should call moveNext after element appears and has no animations', async () => {
+    const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
+    const moveNext = jest.fn();
+    const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
+
+    // Register the afterEveryRender hook using the real (async) rAF so Angular's
+    // internal scheduler is not made synchronous during registration.
+    steps[0].popover?.onNextClick?.(accordion, null as never, opts);
+
+    // Only now make rAF synchronous so the implementation's rAF call fires
+    // immediately when appRef.tick() runs the afterEveryRender callback.
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+      cb(0);
+      return 0;
+    });
+
+    appRef.tick();
+    await Promise.resolve(); // flush waitForAnimations microtask
+
+    expect(moveNext).toHaveBeenCalledTimes(1);
+  });
+
+  it('should wait for all animations to settle before calling moveNext', async () => {
+    let resolveAnimation!: () => void;
+    const animationFinished = new Promise<Animation>(
+      (res) => (resolveAnimation = () => res({} as Animation)),
+    );
+    (Element.prototype.getAnimations as jest.Mock).mockReturnValue([
+      { finished: animationFinished } as unknown as Animation,
+    ]);
+
+    const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
+    const moveNext = jest.fn();
+    const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
+
+    steps[0].popover?.onNextClick?.(accordion, null as never, opts);
+
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+      cb(0);
+      return 0;
+    });
+
+    appRef.tick();
+    await Promise.resolve();
+
+    // Animation still running — moveNext must not have been called yet
+    expect(moveNext).not.toHaveBeenCalled();
+
+    resolveAnimation();
+    await Promise.resolve(); // allSettled resolves
+    await Promise.resolve(); // .then(() => undefined) resolves
+    await Promise.resolve(); // .then(() => moveNext()) resolves
+
+    expect(moveNext).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call moveNext even when an animation is cancelled (rejected)', async () => {
+    const rejectedAnimation = Promise.reject(new Error('animation cancelled'));
+    // Attach a no-op catch so Jest doesn't treat this as an unhandled rejection;
+    // the implementation uses Promise.allSettled which handles it gracefully.
+    void rejectedAnimation.catch(() => {});
+    (Element.prototype.getAnimations as jest.Mock).mockReturnValue([
+      { finished: rejectedAnimation } as unknown as Animation,
+    ]);
+
+    const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
+    const moveNext = jest.fn();
+    const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
+
+    steps[0].popover?.onNextClick?.(accordion, null as never, opts);
+
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+      cb(0);
+      return 0;
+    });
+
+    appRef.tick();
+
+    await Promise.allSettled([rejectedAnimation]);
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(moveNext).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not call moveNext before the element is present in the DOM', async () => {
+    accordion.remove();
+
+    const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
+    const moveNext = jest.fn();
+    const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
+
+    steps[0].popover?.onNextClick?.(document.body, null as never, opts);
+
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+      cb(0);
+      return 0;
+    });
+
+    appRef.tick();
+    await Promise.resolve();
+
+    expect(moveNext).not.toHaveBeenCalled();
+
+    // Restore element so afterEach cleanup doesn't throw
+    document.body.appendChild(accordion);
   });
 });
