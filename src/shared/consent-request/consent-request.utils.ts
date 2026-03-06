@@ -102,11 +102,6 @@ function moveNextWhenReady(
       const element = document.querySelector(selector);
       if (!element) return;
       ref.destroy();
-      // Poll until the element's layout position has stabilised before letting
-      // driver.js calculate the popover position. Using getBoundingClientRect
-      // instead of the Web Animations API because CSS transitions only appear in
-      // getAnimations() while they are actively running — on prod they may not
-      // have registered yet (or may already be done) when afterEveryRender fires.
       waitForStablePosition(element).then(() => moveNext());
     },
     { injector },
@@ -125,17 +120,25 @@ function waitForStablePosition(element: Element, maxFrames = 120): Promise<void>
         let totalFrames = 0;
 
         function checkFrame() {
-          const current = element.getBoundingClientRect().left;
+          const rect = element.getBoundingClientRect();
+          const current = rect.left;
           totalFrames++;
 
-          if (current === prev) {
+          // The element may live inside a ng-content-projected sidepanel that starts
+          // with w-0 (overflow:hidden, fixed right-0). When the panel is closed its
+          // children sit at left ≈ window.innerWidth — visually clipped but still
+          // present in the DOM. Only consider the position stable once the element
+          // is actually inside the visible viewport.
+          const isInViewport = rect.left < window.innerWidth;
+
+          if (isInViewport && Math.abs(current - prev) < 0.5) {
             stableFrames++;
           } else {
             stableFrames = 0;
             prev = current;
           }
 
-          if (stableFrames >= 2 || totalFrames >= maxFrames) {
+          if ((isInViewport && stableFrames >= 2) || totalFrames >= maxFrames) {
             resolve();
           } else {
             requestAnimationFrame(checkFrame);

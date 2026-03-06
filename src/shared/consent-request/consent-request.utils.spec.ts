@@ -285,9 +285,73 @@ describe('moveNextWhenReady (via onNextClick)', () => {
     expect(moveNext).toHaveBeenCalledTimes(1);
   });
 
+  it('should treat sub-pixel differences (< 0.5px) as stable to handle HiDPI rendering', async () => {
+    // Simulate subpixel float noise at the final resting position
+    const positions = [50.0, 50.0001, 50.0002];
+    let posIndex = 0;
+    jest.spyOn(accordion, 'getBoundingClientRect').mockImplementation(
+      () =>
+        ({
+          left: positions[Math.min(posIndex++, positions.length - 1)],
+          top: 0,
+          right: 200,
+          bottom: 100,
+          width: 150,
+          height: 100,
+          x: 0,
+          y: 0,
+          toJSON: () => ({}),
+        }) as DOMRect,
+    );
+
+    const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
+    const moveNext = jest.fn();
+    const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
+
+    steps[0].popover?.onNextClick?.(accordion, null as never, opts);
+    const { flushRaf } = installRafQueue();
+    appRef.tick();
+
+    // Should resolve despite sub-pixel differences because |diff| < 0.5
+    flushRaf(4);
+    await Promise.resolve();
+
+    expect(moveNext).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not resolve while element left >= window.innerWidth (panel still closed via w-0)', async () => {
+    // Simulate the element being ng-content-projected inside a closed w-0 sidepanel:
+    // getBoundingClientRect().left equals window.innerWidth (behind the right viewport edge)
+    jest.spyOn(accordion, 'getBoundingClientRect').mockReturnValue({
+      left: window.innerWidth,
+      top: 0,
+      right: window.innerWidth,
+      bottom: 100,
+      width: 0,
+      height: 100,
+      x: window.innerWidth,
+      y: 0,
+      toJSON: () => ({}),
+    } as DOMRect);
+
+    const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
+    const moveNext = jest.fn();
+    const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
+
+    steps[0].popover?.onNextClick?.(accordion, null as never, opts);
+    const { flushRaf } = installRafQueue();
+    appRef.tick();
+
+    // Flush many frames — position is "stable" at window.innerWidth but not in viewport
+    flushRaf(10);
+    await Promise.resolve();
+
+    expect(moveNext).not.toHaveBeenCalled();
+  });
+
   it('should defer moveNext while the element is sliding, call it once position is stable', async () => {
     // Simulate a slide-in: element starts off to the right, then moves into viewport
-    const positions = [200, 150, 100, 50, 50, 50];
+    const positions = [window.innerWidth, window.innerWidth - 100, 300, 200, 100, 100, 100];
     let posIndex = 0;
     jest.spyOn(accordion, 'getBoundingClientRect').mockImplementation(
       () =>
@@ -312,11 +376,11 @@ describe('moveNextWhenReady (via onNextClick)', () => {
     const { flushRaf } = installRafQueue();
     appRef.tick();
 
-    // 2 skips + 3 position changes — still moving
-    flushRaf(5);
+    // 2 skips + 4 position changes (one off-screen + 3 in viewport moving) — still moving
+    flushRaf(6);
     expect(moveNext).not.toHaveBeenCalled();
 
-    // 2 consecutive stable frames → resolve
+    // 2 consecutive stable frames at final position → resolve
     flushRaf(2);
     await Promise.resolve();
 
