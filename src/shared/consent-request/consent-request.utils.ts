@@ -97,35 +97,55 @@ function moveNextWhenReady(
   moveNext: () => void,
   injector: EnvironmentInjector,
 ): void {
-  const ref = afterEveryRender(
+  const ref: ReturnType<typeof afterEveryRender> = afterEveryRender(
     () => {
       const element = document.querySelector(selector);
       if (!element) return;
       ref.destroy();
-      // Wait one rAF so any CSS transitions triggered by this render have started,
-      // then wait for all animations on the element and its ancestors to finish
-      // before letting driver.js calculate the popover position.
-      requestAnimationFrame(() => waitForAnimations(element).then(() => moveNext()));
+      // Poll until the element's layout position has stabilised before letting
+      // driver.js calculate the popover position. Using getBoundingClientRect
+      // instead of the Web Animations API because CSS transitions only appear in
+      // getAnimations() while they are actively running — on prod they may not
+      // have registered yet (or may already be done) when afterEveryRender fires.
+      waitForStablePosition(element).then(() => moveNext());
     },
     { injector },
   );
 }
 
-function waitForAnimations(element: Element): Promise<void> {
-  const animations: Animation[] = [];
-  let current: Element | null = element;
+function waitForStablePosition(element: Element, maxFrames = 120): Promise<void> {
+  return new Promise((resolve) => {
+    // Two rAF skips before measuring: the first ensures Angular's DOM changes
+    // are painted so CSS transitions have a chance to start; the second gives
+    // us a base measurement taken after the transition is in motion.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        let prev = element.getBoundingClientRect().left;
+        let stableFrames = 0;
+        let totalFrames = 0;
 
-  while (current) {
-    animations.push(...current.getAnimations());
-    current = current.parentElement;
-  }
+        function checkFrame() {
+          const current = element.getBoundingClientRect().left;
+          totalFrames++;
 
-  if (animations.length === 0) {
-    return Promise.resolve();
-  }
+          if (current === prev) {
+            stableFrames++;
+          } else {
+            stableFrames = 0;
+            prev = current;
+          }
 
-  // allSettled so cancelled/interrupted animations don't block the tour
-  return Promise.allSettled(animations.map((a) => a.finished)).then(() => undefined);
+          if (stableFrames >= 2 || totalFrames >= maxFrames) {
+            resolve();
+          } else {
+            requestAnimationFrame(checkFrame);
+          }
+        }
+
+        requestAnimationFrame(checkFrame);
+      });
+    });
+  });
 }
 
 function getTableOrListElement(): HTMLElement {

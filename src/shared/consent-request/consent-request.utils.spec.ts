@@ -233,107 +233,97 @@ describe('moveNextWhenReady (via onNextClick)', () => {
     accordion = document.createElement('div');
     accordion.id = 'data-request-purpose-accordion';
     document.body.appendChild(accordion);
-
-    // jsdom does not implement getAnimations; define a configurable stub so we can override per-test
-    Object.defineProperty(Element.prototype, 'getAnimations', {
-      configurable: true,
-      writable: true,
-      value: jest.fn().mockReturnValue([]),
-    });
   });
 
   afterEach(() => {
     accordion.remove();
-    delete (Element.prototype as Partial<typeof Element.prototype>).getAnimations;
     jest.restoreAllMocks();
   });
 
-  it('should call moveNext after element appears and has no animations', async () => {
+  /** Queue-based rAF helper: install AFTER onNextClick so Angular's scheduler is unaffected. */
+  function installRafQueue(): { flushRaf: (frames: number) => void } {
+    const queue: FrameRequestCallback[] = [];
+    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+      queue.push(cb);
+      return queue.length;
+    });
+    return {
+      flushRaf(frames: number) {
+        for (let i = 0; i < frames; i++) {
+          const batch = queue.splice(0);
+          batch.forEach((cb) => cb(0));
+        }
+      },
+    };
+  }
+
+  it('should call moveNext after element position stabilises (no animation)', async () => {
+    jest.spyOn(accordion, 'getBoundingClientRect').mockReturnValue({
+      left: 50,
+      top: 0,
+      right: 200,
+      bottom: 100,
+      width: 150,
+      height: 100,
+      x: 50,
+      y: 0,
+      toJSON: () => ({}),
+    } as DOMRect);
+
     const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
     const moveNext = jest.fn();
     const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
 
-    // Register the afterEveryRender hook using the real (async) rAF so Angular's
-    // internal scheduler is not made synchronous during registration.
     steps[0].popover?.onNextClick?.(accordion, null as never, opts);
-
-    // Only now make rAF synchronous so the implementation's rAF call fires
-    // immediately when appRef.tick() runs the afterEveryRender callback.
-    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
-      cb(0);
-      return 0;
-    });
-
+    const { flushRaf } = installRafQueue();
     appRef.tick();
-    await Promise.resolve(); // flush waitForAnimations microtask
+
+    // rAF-1 (skip) → rAF-2 (measure prev=50) → checkFrame(sf=1) → checkFrame(sf=2 → resolve)
+    flushRaf(4);
+    await Promise.resolve();
 
     expect(moveNext).toHaveBeenCalledTimes(1);
   });
 
-  it('should wait for all animations to settle before calling moveNext', async () => {
-    let resolveAnimation!: () => void;
-    const animationFinished = new Promise<Animation>(
-      (res) => (resolveAnimation = () => res({} as Animation)),
+  it('should defer moveNext while the element is sliding, call it once position is stable', async () => {
+    // Simulate a slide-in: element starts off to the right, then moves into viewport
+    const positions = [200, 150, 100, 50, 50, 50];
+    let posIndex = 0;
+    jest.spyOn(accordion, 'getBoundingClientRect').mockImplementation(
+      () =>
+        ({
+          left: positions[Math.min(posIndex++, positions.length - 1)],
+          top: 0,
+          right: 300,
+          bottom: 100,
+          width: 100,
+          height: 100,
+          x: 0,
+          y: 0,
+          toJSON: () => ({}),
+        }) as DOMRect,
     );
-    (Element.prototype.getAnimations as jest.Mock).mockReturnValue([
-      { finished: animationFinished } as unknown as Animation,
-    ]);
 
     const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
     const moveNext = jest.fn();
     const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
 
     steps[0].popover?.onNextClick?.(accordion, null as never, opts);
-
-    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
-      cb(0);
-      return 0;
-    });
-
+    const { flushRaf } = installRafQueue();
     appRef.tick();
-    await Promise.resolve();
 
-    // Animation still running — moveNext must not have been called yet
+    // 2 skips + 3 position changes — still moving
+    flushRaf(5);
     expect(moveNext).not.toHaveBeenCalled();
 
-    resolveAnimation();
-    await Promise.resolve(); // allSettled resolves
-    await Promise.resolve(); // .then(() => undefined) resolves
-    await Promise.resolve(); // .then(() => moveNext()) resolves
-
-    expect(moveNext).toHaveBeenCalledTimes(1);
-  });
-
-  it('should call moveNext even when an animation is cancelled (rejected)', async () => {
-    const rejectedAnimation = Promise.reject(new Error('animation cancelled'));
-    // Attach a no-op catch so Jest doesn't treat this as an unhandled rejection;
-    // the implementation uses Promise.allSettled which handles it gracefully.
-    void rejectedAnimation.catch(() => {});
-    (Element.prototype.getAnimations as jest.Mock).mockReturnValue([
-      { finished: rejectedAnimation } as unknown as Animation,
-    ]);
-
-    const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
-    const moveNext = jest.fn();
-    const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
-
-    steps[0].popover?.onNextClick?.(accordion, null as never, opts);
-
-    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
-      cb(0);
-      return 0;
-    });
-
-    appRef.tick();
-
-    await Promise.allSettled([rejectedAnimation]);
-    await Promise.resolve();
+    // 2 consecutive stable frames → resolve
+    flushRaf(2);
     await Promise.resolve();
 
     expect(moveNext).toHaveBeenCalledTimes(1);
   });
 
-  it('should not call moveNext before the element is present in the DOM', async () => {
+  it('should not call moveNext when the target element is not yet in the DOM', async () => {
     accordion.remove();
 
     const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
@@ -342,12 +332,10 @@ describe('moveNextWhenReady (via onNextClick)', () => {
 
     steps[0].popover?.onNextClick?.(document.body, null as never, opts);
 
-    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
-      cb(0);
-      return 0;
-    });
+    const { flushRaf } = installRafQueue();
+    appRef.tick(); // querySelector returns null → early return, no rAF scheduled
 
-    appRef.tick();
+    flushRaf(10); // nothing in the queue, moveNext must not have been triggered
     await Promise.resolve();
 
     expect(moveNext).not.toHaveBeenCalled();
