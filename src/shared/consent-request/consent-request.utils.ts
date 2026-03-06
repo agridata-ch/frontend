@@ -59,7 +59,7 @@ export function buildConsentRequestTourSteps(
         ),
         title: i18nService.translate('product-tour.consentRequestsTour.consentRequests.title'),
         onNextClick: (_element, _step, opts) => {
-          const element = document.querySelector<HTMLElement>('#consent-requests-table-row-0');
+          const element = getTableOrListElement();
           element?.click();
           moveNextWhenReady(
             '#data-request-purpose-accordion',
@@ -99,12 +99,33 @@ function moveNextWhenReady(
 ): void {
   const ref = afterEveryRender(
     () => {
-      if (!document.querySelector(selector)) return;
+      const element = document.querySelector(selector);
+      if (!element) return;
       ref.destroy();
-      moveNext();
+      // Wait one rAF so any CSS transitions triggered by this render have started,
+      // then wait for all animations on the element and its ancestors to finish
+      // before letting driver.js calculate the popover position.
+      requestAnimationFrame(() => waitForAnimations(element).then(() => moveNext()));
     },
     { injector },
   );
+}
+
+function waitForAnimations(element: Element): Promise<void> {
+  const animations: Animation[] = [];
+  let current: Element | null = element;
+
+  while (current) {
+    animations.push(...current.getAnimations());
+    current = current.parentElement;
+  }
+
+  if (animations.length === 0) {
+    return Promise.resolve();
+  }
+
+  // allSettled so cancelled/interrupted animations don't block the tour
+  return Promise.allSettled(animations.map((a) => a.finished)).then(() => undefined);
 }
 
 function getTableOrListElement(): HTMLElement {
