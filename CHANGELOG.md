@@ -1,3 +1,9 @@
+## [1.9.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.6...v1.9.0-rc.7) (2026-03-06)
+
+### Bug Fixes
+
+- **product-tour:** fix rendering after router change ([c737527](https://github.com/agridata-ch/frontend/commit/c7375278c46157ae0eb9f66dbc5fc1b9502e41f9)), closes [DIGIB2-524](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-524)
+
 ## [1.9.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.5...v1.9.0-rc.6) (2026-03-05)
 
 ### Bug Fixes
