@@ -1,3 +1,9 @@
+## [1.9.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.7...v1.9.0-rc.8) (2026-03-06)
+
+### Bug Fixes
+
+- **product-tour:** wait before move next ([87351dd](https://github.com/agridata-ch/frontend/commit/87351ddb0c13000a52593884313993d0a8e789c9)), closes [DIGIB2-524](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-524)
+
 ## [1.9.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.6...v1.9.0-rc.7) (2026-03-06)
 
 ### Bug Fixes
