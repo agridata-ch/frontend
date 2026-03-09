@@ -96,7 +96,7 @@
     "pageTitle": "Datenanträge",
     "createNewDataRequest": "Neuer Antrag",
     "sidePanelTitle": "Neuer Datenantrag erfassen",
-    "draftLimitReached": "Sie haben bereits 10 Entwürfe. Bitte schliessen Sie vorhandene Entwürfe ab oder löschen Sie diese, bevor Sie einen neuen Antrag erstellen."
+    "draftLimitReached": "Aktion nicht möglich. Es befinden sich mehr als 10 Anträge im Status Entwurf."
   },
   "data-request": {
     "consumerName": "Datenbezüger",

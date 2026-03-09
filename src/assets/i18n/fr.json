@@ -96,7 +96,7 @@
     "pageTitle": "Demandes de données",
     "createNewDataRequest": "Nouvelle demande de données",
     "sidePanelTitle": "Saisir une nouvelle demande de données",
-    "draftLimitReached": "Vous avez déjà 10 brouillons. Veuillez terminer ou supprimer les brouillons existants avant de créer une nouvelle demande."
+    "draftLimitReached": "Action impossible. Il y a plus de 10 demandes au statut Brouillon."
   },
   "data-request": {
     "consumerName": "Requérant de données",

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { createMockDataRequestService, MockDataRequestService } from '@/shared/testing/mocks';
 import {
@@ -159,5 +160,27 @@ describe('DataRequestsConsumerPage - component behavior', () => {
     await fixture.whenStable();
 
     expect(reloadSpy).not.toHaveBeenCalled();
+  });
+
+  it('should set isButtonDisabled based on loaded draft count threshold', async () => {
+    const createDraftRequests = (count: number): DataRequestDto[] =>
+      Array.from({ length: count }, (_, index) => ({
+        id: `request-${index}`,
+        stateCode: DataRequestStateEnum.Draft,
+      }));
+
+    dataRequestService.fetchDataRequests.mockResolvedValueOnce(createDraftRequests(9));
+    const belowLimitFixture = TestBed.createComponent(DataRequestsConsumerPage);
+    belowLimitFixture.detectChanges();
+    await belowLimitFixture.whenStable();
+
+    expect(belowLimitFixture.componentInstance['isButtonDisabled']()).toBe(false);
+
+    dataRequestService.fetchDataRequests.mockResolvedValueOnce(createDraftRequests(10));
+    const atLimitFixture = TestBed.createComponent(DataRequestsConsumerPage);
+    atLimitFixture.detectChanges();
+    await atLimitFixture.whenStable();
+
+    expect(atLimitFixture.componentInstance['isButtonDisabled']()).toBe(true);
   });
 });

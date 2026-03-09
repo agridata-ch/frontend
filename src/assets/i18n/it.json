@@ -96,7 +96,7 @@
     "pageTitle": "Richieste di dati",
     "createNewDataRequest": "Richiesta di nuovi dati",
     "sidePanelTitle": "Inserisci una nuova richiesta di dati",
-    "draftLimitReached": "Hai già 10 bozze. Chiudi o elimina le bozze esistenti prima di creare una nuova richiesta."
+    "draftLimitReached": "Azione non possibile. Ci sono più di 10 richieste nello stato Bozza."
   },
   "data-request": {
     "consumerName": "Richiedente",
