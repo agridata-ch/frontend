@@ -95,7 +95,8 @@
   "consumer": {
     "pageTitle": "Richieste di dati",
     "createNewDataRequest": "Richiesta di nuovi dati",
-    "sidePanelTitle": "Inserisci una nuova richiesta di dati"
+    "sidePanelTitle": "Inserisci una nuova richiesta di dati",
+    "draftLimitReached": "Hai già 10 bozze. Chiudi o elimina le bozze esistenti prima di creare una nuova richiesta."
   },
   "data-request": {
     "consumerName": "Richiedente",
@@ -547,22 +548,22 @@
     "consentRequestsTour": {
       "intro": {
         "title": "Benvenuti su agridata.ch!",
-        "description": "Ciao! Sono Max, il tuo assistente digitale.\nTi va di fare un breve tour della panoramica delle tue richieste?\n\nIn solo 1 minuto ti mostrerò come gestire le richieste di dati.",
+        "description": "Buongiorno! Sono Max, il suo assistente digitale.\nVuole vedere rapidamente come gestire in modo efficiente le sue richieste di dati?\n\nLe mostro in un minuto dove trovare tutto ciò che è importa.",
         "imageAlt": "Illustrazione di una testa con cuffie",
-        "skipTour": "forse più tardi",
+        "skipTour": "Ignora",
         "startTour": "Inizia il tour"
       },
       "consentRequests": {
-        "title": "Le vostre richieste",
-        "description": "Qui puoi vedere tutte le richieste di dati da parte degli utenti.\n\nCliccando su una richiesta, puoi vedere tutti i dettagli."
+        "title": "Le vostre richiesta die dati",
+        "description": "Qui trova tutte le richieste dei destinatari dei dati a colpo d'occhio.\n\nBasta cliccare su una richiesta per visualizzarne tutti i dettagli."
       },
       "dataRequestPurpose": {
-        "title": "Scopo della richiesta",
-        "description": "Nell'area azzurra potete vedere esattamente per cosa saranno utilizzati i vostri dati. La trasparenza è importante per noi!"
+        "title": "Scopo dell'utilizzo dei dati",
+        "description": "Scopra qui perché vengono richiesti i suoi dati e quale valore aggiunto concreto ne ottiene.\n\nVuole sapere esattamente quali informazioni vengono trasmesse? Basta cliccare su \"Dati trasmessi:\"."
       },
       "consentRequestConsent": {
         "title": "Prendere una decisione",
-        "description": "Con i pulsanti verde e rosso puoi accettare o rifiutare la richiesta. Hai sempre il controllo!"
+        "description": "Utilizzi i pulsanti per scegliere: Verde per accettare, Rosso per rifiutare. Mantenga sempre il pieno controllo e possa modificare la sua scelta in qualsiasi momento."
       }
     },
     "startTour": "Inizia il tour",

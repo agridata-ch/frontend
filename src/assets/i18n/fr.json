@@ -95,7 +95,8 @@
   "consumer": {
     "pageTitle": "Demandes de données",
     "createNewDataRequest": "Nouvelle demande de données",
-    "sidePanelTitle": "Saisir une nouvelle demande de données"
+    "sidePanelTitle": "Saisir une nouvelle demande de données",
+    "draftLimitReached": "Vous avez déjà 10 brouillons. Veuillez terminer ou supprimer les brouillons existants avant de créer une nouvelle demande."
   },
   "data-request": {
     "consumerName": "Requérant de données",
@@ -546,22 +547,22 @@
     "consentRequestsTour": {
       "intro": {
         "title": "Bienvenue sur agridata.ch!",
-        "description": "Bonjour ! Je m'appelle Max, je suis votre assistant numérique.\nSouhaitez-vous faire un petit tour d'horizon de vos demandes ?\n\nEn seulement 1 minute, je vais vous montrer comment gérer vos demandes de données.",
+        "description": "Bonjour ! Je suis Max, votre compagnon numérique.\nSouhaitez-vous découvrir rapidement comment gérer efficacement vos demandes de données ?\n\nJe vous montre en une minute où trouver l'essentiel.",
         "imageAlt": "Illustration d'une tête avec un casque audio",
-        "skipTour": "peut-être plus tard",
+        "skipTour": "Passer",
         "startTour": "Commencer la visite"
       },
       "consentRequests": {
         "title": "Vos demandes",
-        "description": "Vous pouvez voir ici toutes les demandes de données émanant des utilisateurs de données.\n\nEn cliquant sur une demande, vous pouvez voir tous les détails la concernant."
+        "description": "Vous trouverez ici toutes les demandes des destinataires de données en un coup d'œil.\n\nCliquez simplement sur une demande pour en voir tous les détails."
       },
       "dataRequestPurpose": {
-        "title": "Objet de la demande",
-        "description": "Dans la zone bleu clair, vous pouvez voir exactement à quoi vos données sont destinées. La transparence est importante pour nous!"
+        "title": "But de l'utilisation des données",
+        "description": "Découvrez ici pourquoi vos données sont demandées et quelle est la valeur ajoutée concrète pour vous.\n\nVous voulez savoir exactement quelles informations sont transmises ? Cliquez simplement sur « Données transmises : ».!"
       },
       "consentRequestConsent": {
         "title": "prendre une décision",
-        "description": "Les boutons verts et rouges vous permettent d'accepter ou de refuser la demande. Vous gardez toujours le contrôle!"
+        "description": "Utilisez les boutons pour choisir : Vert pour accepter, Rouge pour refuser. Vous gardez toujours le contrôle total et pouvez modifier votre choix ultérieurement."
       }
     },
     "startTour": "Commencer la visite",
