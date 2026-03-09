@@ -1,3 +1,9 @@
+## [1.9.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.9...v1.9.0-rc.10) (2026-03-09)
+
+### Bug Fixes
+
+- **product-tour:** show product tour only on main route ([1b033a2](https://github.com/agridata-ch/frontend/commit/1b033a2134fd8a383a854b29a890120ea7e580ff)), closes [DIGIB2-524](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-524)
+
 ## [1.9.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.8...v1.9.0-rc.9) (2026-03-06)
 
 ### Bug Fixes
