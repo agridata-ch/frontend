@@ -95,7 +95,8 @@
   "consumer": {
     "pageTitle": "Datenanträge",
     "createNewDataRequest": "Neuer Antrag",
-    "sidePanelTitle": "Neuer Datenantrag erfassen"
+    "sidePanelTitle": "Neuer Datenantrag erfassen",
+    "draftLimitReached": "Sie haben bereits 10 Entwürfe. Bitte schliessen Sie vorhandene Entwürfe ab oder löschen Sie diese, bevor Sie einen neuen Antrag erstellen."
   },
   "data-request": {
     "consumerName": "Datenbezüger",
@@ -547,22 +548,22 @@
     "consentRequestsTour": {
       "intro": {
         "title": "Willkommen bei agridata.ch!",
-        "description": "Hallo! Ich bin Max, Ihr digitaler Begleiter.\nMöchten Sie eine kurze Tour durch Ihre Anträge Übersicht?\n\nIn nur 1 Minuten zeige ich Ihnen, wie Sie Datenanfragen verwalten.",
+        "description": "Hallo! Ich bin Max, Ihr digitaler Begleiter.\nMöchten Sie kurz sehen, wie Sie Ihre Datenanfragen effizient verwalten?\n\nIch zeige Ihnen in nur einer Minute, wo Sie alles Wichtige finden.",
         "imageAlt": "Illustration von einem Kopf mit einem Headset",
-        "skipTour": "vielleicht später",
+        "skipTour": "Überspringen",
         "startTour": "Tour starten"
       },
       "consentRequests": {
-        "title": "Ihre Anträge",
-        "description": "Hier sehen Sie alle Datenanfragen von Datenbezügern.\n\nMit einem Klick auf einen Antrag, sehen Sie alle Details dazu."
+        "title": "Ihre Datenanfragen",
+        "description": "Hier finden Sie alle Anfragen von Datenbezügern auf einen Blick.\n\nKlicken Sie einfach auf eine Anfrage, um alle Details dazu einzusehen."
       },
       "dataRequestPurpose": {
-        "title": "Zweck der Anfrage",
-        "description": "Im helblauen Bereich sehen Sie genau, wofür Ihre Daten verwendet werden sollen. Transparenz ist uns wichtig!"
+        "title": "Zweck der Datennutzung",
+        "description": "Erfahren Sie hier, warum Ihre Daten angefragt werden und welchen konkreten Mehrwert Sie davon haben.\n\nSie möchten genau wissen, welche Informationen übermittelt werden? Klicken Sie dazu einfach auf „Folgende Daten werden übermittelt:“."
       },
       "consentRequestConsent": {
         "title": "Entscheidung treffen",
-        "description": "Mit den grünen und roten Buttons können Sie die Anfrage annehmen oder ablehnen. Sie behalten immer die Kontrolle!"
+        "description": "Mit den Buttons wählen Sie: Grün zum Zustimmen, Rot zum Ablehnen. Sie behalten immer die volle Kontrolle und können Ihre Wahl später einfach wieder ändern."
       }
     },
     "startTour": "Tour starten",

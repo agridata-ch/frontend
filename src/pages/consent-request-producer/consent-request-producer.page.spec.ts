@@ -1,6 +1,7 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, NavigationEnd, Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorDto } from '@/app/error/error-dto';
@@ -56,10 +57,12 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   const activeUid = '123';
 
   beforeEach(async () => {
+    const routerEvents$ = new Subject<NavigationEnd>();
     mockRouter = {
       navigate: jest.fn().mockResolvedValue(true),
       currentNavigation: jest.fn().mockReturnValue(null),
       url: '/consent-request-producer',
+      events: routerEvents$.asObservable(),
     } as unknown as jest.Mocked<Router>;
 
     consentRequestService = createMockConsentRequestService();

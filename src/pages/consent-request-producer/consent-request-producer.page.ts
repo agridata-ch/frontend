@@ -1,16 +1,9 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  input,
-  resource,
-  signal,
-  untracked,
-} from '@angular/core';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { Component, computed, effect, inject, resource, signal, untracked } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { faFileCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { filter, map, startWith } from 'rxjs';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
@@ -37,7 +30,7 @@ import { FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM } from './consent-request-pro
  * it also handles the redirect to an external URL if specified in the route state and validated against
  * the request's valid redirect URI regex.
  *
- * CommentLastReviewed: 2025-10-08
+ * CommentLastReviewed: 2026-03-09
  */
 @Component({
   selector: 'app-consent-request-producer-page',
@@ -62,8 +55,18 @@ export class ConsentRequestProducerPage {
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
   private readonly activeRoute = inject(ActivatedRoute);
-  // binds to the route parameter :consentRequestId
-  readonly consentRequestId = input<string>();
+
+  // :consentRequestId is a child route param (ConsentRequestDetailsComponent), not this
+  // component's own route param, so input() never gets bound — read it from the child route because we use it to show the product-tour or not
+  protected readonly consentRequestId = toSignal(
+    this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      startWith(null),
+      map(
+        () => this.activeRoute.firstChild?.snapshot.paramMap.get('consentRequestId') ?? undefined,
+      ),
+    ),
+  );
 
   readonly fileIcon = faFileCheck;
   readonly AlertType = AlertType;
@@ -97,7 +100,10 @@ export class ConsentRequestProducerPage {
 
   readonly showTourIntro = computed(() => {
     const userPreferences = this.agridataStateService.userPreferences();
+    // don't show the tour intro if there is a consent request id in the route (so we don't interrupt the user when they are navigating directly to a specific request)
+    // or if the user has already seen the tour intro or if there are no consent requests
     return (
+      !this.consentRequestId() &&
       !userPreferences.hasSeenConsentRequestTourIntro &&
       this.consentRequestResource.value().length > 0
     );
