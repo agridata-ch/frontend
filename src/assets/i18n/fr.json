@@ -302,12 +302,27 @@
     "table": {
       "tableActions": {
         "details": "Afficher",
-        "retreat": "Retrait"
+        "retreat": "Retrait",
+        "delete": "Supprimer"
       },
       "emptyState": {
         "title": "Aucune demande de données n'a encore été créée",
         "message": "Soumettez votre première demande de données et accédez aux données dont vous avez besoin, dès que les producteurs de données auront donné leur accord.",
         "createNewDataRequest": "Nouvelle demande de données"
+      },
+      "deleteRequest": {
+        "title": "Supprimer une demande de données",
+        "description": "Voulez-vous vraiment supprimer la demande \"{{ title }}\"?",
+        "cancel": "Annuler",
+        "delete": "Supprimer",
+        "success": {
+          "title": "Suppression réussie",
+          "message": "La demande \"{{ title }}\" a été supprimée avec succès."
+        },
+        "error": {
+          "title": "Échec de la suppression",
+          "message": "La demande \"{{ title }}\" n'a pas pu être supprimée.\nMessage d'erreur : {{ error }}"
+        }
       }
     },
     "provider": "Fournisseur de données",

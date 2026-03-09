@@ -302,12 +302,27 @@
     "table": {
       "tableActions": {
         "details": "Visualizza",
-        "retreat": "Ritira"
+        "retreat": "Ritira",
+        "delete": "Elimina"
       },
       "emptyState": {
         "title": "Nessuna richiesta di dati creata",
         "message": "Invia la tua prima richiesta di dati e ottieni l'accesso ai dati necessari non appena i produttori dei dati avranno dato il loro consenso.",
         "createNewDataRequest": "Richiesta di nuovi dati"
+      },
+      "deleteRequest": {
+        "title": "Cancella richiesta dati",
+        "description": "Vuoi davvero eliminare la richiesta \"{{ title }}\"?",
+        "cancel": "Annulla",
+        "delete": "Elimina",
+        "success": {
+          "title": "Eliminazione riuscita",
+          "message": "La richiesta \"{{ title }}\" è stata eliminata con successo."
+        },
+        "error": {
+          "title": "Eliminazione non riuscita",
+          "message": "Non è stato possibile eliminare la richiesta \"{{ title }}\".\nMessaggio di errore: {{ error }}"
+        }
       }
     },
     "provider": "Fornitore di dati",

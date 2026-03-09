@@ -41,3 +41,22 @@
     </app-empty-state>
   </ng-template>
 </app-agridata-client-table>
+<app-modal
+  [open]="showDeleteModal()"
+  [title]="'data-request.table.deleteRequest.title' | i18n"
+  (closed)="cancelDelete()"
+>
+  <div class="text-center" *i18n="let t; prefix: 'data-request.table.deleteRequest'">
+    <div class="flex justify-center mb-4">
+      <p>{{ t('description', { title: requestToDeleteTitle() }) }}</p>
+    </div>
+    <div class="flex justify-between gap-2">
+      <app-agridata-button (onClick)="cancelDelete()" [variant]="ButtonVariants.Secondary">
+        {{ t('cancel') }}
+      </app-agridata-button>
+      <app-agridata-button (onClick)="deleteRequest()" [variant]="ButtonVariants.Primary">
+        {{ t('delete') }}
+      </app-agridata-button>
+    </div>
+  </div>
+</app-modal>

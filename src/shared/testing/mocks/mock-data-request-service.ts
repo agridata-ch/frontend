@@ -38,6 +38,7 @@ export function createMockDataRequestService(): MockDataRequestService {
   return {
     approveDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
     createDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
+    deleteDataRequest: jest.fn().mockResolvedValue(undefined),
     fetchDataRequest: jest.fn(),
     fetchDataRequests: jest.fn().mockResolvedValue(mockDataRequests),
     retreatDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
