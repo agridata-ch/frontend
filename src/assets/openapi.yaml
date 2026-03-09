@@ -1493,7 +1493,8 @@ paths:
       - Data Provider
     post:
       description: Creates a new data request in draft status. Only accessible to
-        users with the consumer role.
+        users with the consumer role. Disallows creating more than 10 draft requests
+        per consumer.
       operationId: createDataRequestDraft
       tags:
       - Data Requests
@@ -1623,6 +1624,44 @@ paths:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenanbieter
+      x-api-subset: agridata.ch Web App
+    delete:
+      description: Deletes a data request
+      operationId: deleteDataRequest
+      tags:
+      - Data Requests
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Delete Data Request
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests:
     get:
@@ -2611,7 +2650,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.7.0-rc.6
+  version: 1.7.0-rc.8
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

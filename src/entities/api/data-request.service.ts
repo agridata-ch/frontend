@@ -35,6 +35,10 @@ export class DataRequestService {
     return firstValueFrom(this.apiService.updateDataRequestDetails(dataRequestId, dataRequest));
   }
 
+  async deleteDataRequest(dataRequestId: string) {
+    return firstValueFrom(this.apiService.deleteDataRequest(dataRequestId));
+  }
+
   async uploadLogo(dataRequestId: string, logo: File) {
     const logoBlob = new Blob([logo], { type: logo.type });
     return firstValueFrom(this.apiService.updateDataRequestLogo(dataRequestId, logoBlob));

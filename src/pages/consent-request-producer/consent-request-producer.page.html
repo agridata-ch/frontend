@@ -40,6 +40,6 @@
     <app-agridata-button (onClick)="redirect()"> {{ t('redirectNow') }} </app-agridata-button>
   </div>
 </app-modal>
-} @if (showTourIntro()) {
+} @if (!showRedirect() && showTourIntro()) {
 <app-consent-requests-tour-intro (closeTourIntroCallback)="closeTourIntro()" />
 }
