@@ -23,7 +23,7 @@ import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { DataRequestDtoDirective, getBadgeVariant } from '@/shared/data-request';
-import { I18nDirective, I18nService, I18nPipe } from '@/shared/i18n';
+import { I18nService, I18nPipe, I18nDirective } from '@/shared/i18n';
 import { ToastService, ToastType } from '@/shared/toast';
 import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table/agridata-client-table.component';
 import { ClientTableMetadata } from '@/shared/ui/agridata-client-table/client-table-model';
@@ -48,13 +48,14 @@ import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-new';
   imports: [
     AgridataClientTableComponent,
     AgridataBadgeComponent,
+    ButtonComponent,
     DataRequestDtoDirective,
-    I18nDirective,
     EmptyStateComponent,
     FontAwesomeModule,
     ButtonComponent,
     ModalComponent,
     I18nPipe,
+    I18nDirective,
   ],
 })
 export class DataRequestTableComponent {
