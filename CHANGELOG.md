@@ -1,3 +1,9 @@
+## [1.9.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.12...v1.9.0-rc.13) (2026-03-10)
+
+### Bug Fixes
+
+- **consent-request:** fix button alignment ([5c65bab](https://github.com/agridata-ch/frontend/commit/5c65bab0fc82c4975c303ce06b611ad3fd632b7f))
+
 ## [1.9.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.11...v1.9.0-rc.12) (2026-03-10)
 
 ### Features
