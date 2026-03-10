@@ -3,7 +3,7 @@
 </ng-template>
 
 @if (!href()) {
-  <div [title]="disabled() ? disabledInfo() : ''">
+  <div class="contents" [title]="disabled() ? disabledInfo() : ''">
     <button
       [type]="type()"
       [disabled]="disabled()"
