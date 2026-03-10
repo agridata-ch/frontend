@@ -1,3 +1,9 @@
+## [1.9.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.10...v1.9.0-rc.11) (2026-03-10)
+
+### Features
+
+- **data-request:** delete data-request ([12ed53a](https://github.com/agridata-ch/frontend/commit/12ed53a1a17ea6ad715d595874d8f9010c33ef3f)), closes [DIGIB2-1188](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1188)
+
 ## [1.9.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.9...v1.9.0-rc.10) (2026-03-09)
 
 ### Bug Fixes
