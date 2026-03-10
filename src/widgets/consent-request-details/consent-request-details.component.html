@@ -56,7 +56,6 @@
   <div class="justify-center flex flex-col gap-1.5" id="consent-request-footer">
     <div class="flex gap-2">
       <app-agridata-button
-        class="flex-1"
         [variant]="ButtonVariants.SecondaryReject"
         [disabled]="
           request()?.stateCode === consentRequestStateEnum.Declined ||
@@ -69,7 +68,6 @@
         {{ t('actions.reject') }}
       </app-agridata-button>
       <app-agridata-button
-        class="flex-1"
         [variant]="ButtonVariants.PrimaryAccept"
         [disabled]="
           request()?.stateCode === consentRequestStateEnum.Granted ||

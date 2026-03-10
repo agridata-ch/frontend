@@ -4,16 +4,18 @@
       <fa-icon [icon]="icon" class="mr-3" />
       {{ t('pageTitle') }}
     </h2>
-    <app-agridata-button
-      (onClick)="newRequest()"
-      (keydown.enter)="newRequest()"
-      [disabled]="isButtonDisabled()"
-      [variant]="ButtonVariants.Primary"
-      [disabledInfo]="t('draftLimitReached')"
-    >
-      <fa-icon [icon]="buttonIcon" class="mr-2" />
-      <span>{{ t('createNewDataRequest') }}</span>
-    </app-agridata-button>
+    <div>
+      <app-agridata-button
+        (onClick)="newRequest()"
+        (keydown.enter)="newRequest()"
+        [disabled]="isButtonDisabled()"
+        [variant]="ButtonVariants.Primary"
+        [disabledInfo]="t('draftLimitReached')"
+      >
+        <fa-icon [icon]="buttonIcon" class="mr-2" />
+        <span>{{ t('createNewDataRequest') }}</span>
+      </app-agridata-button>
+    </div>
   </div>
   <app-error-outlet></app-error-outlet>
   <router-outlet></router-outlet>
