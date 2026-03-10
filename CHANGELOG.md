@@ -1,3 +1,9 @@
+## [1.9.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.11...v1.9.0-rc.12) (2026-03-10)
+
+### Features
+
+- **data-request:** restrict data request creation ([8295c3f](https://github.com/agridata-ch/frontend/commit/8295c3f0bafedb32ee8be63efbf38aa235df369d)), closes [DIGIB2-1187](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1187)
+
 ## [1.9.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.10...v1.9.0-rc.11) (2026-03-10)
 
 ### Features
