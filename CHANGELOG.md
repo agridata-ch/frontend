@@ -1,3 +1,24 @@
+## [1.9.0](https://github.com/agridata-ch/frontend/compare/v1.8.1...v1.9.0) (2026-03-13)
+
+### Features
+
+- **data-request:** delete data-request ([12ed53a](https://github.com/agridata-ch/frontend/commit/12ed53a1a17ea6ad715d595874d8f9010c33ef3f)), closes [DIGIB2-1188](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1188)
+- **data-request:** restrict data request creation ([8295c3f](https://github.com/agridata-ch/frontend/commit/8295c3f0bafedb32ee8be63efbf38aa235df369d)), closes [DIGIB2-1187](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1187)
+- **product-tour:** add driver.js ([e16bf9c](https://github.com/agridata-ch/frontend/commit/e16bf9c5b8b5bc44c92647dd7d2fdfe2126553b8))
+- **storybook:** add build and deploy pipeline for the storybook ([fa6ed88](https://github.com/agridata-ch/frontend/commit/fa6ed8849b22d2e0eafe142029c4f75d468b6eb5)), closes [DIGIB2-1257](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1257)
+- **storybook:** add storybook ([9c9cbcc](https://github.com/agridata-ch/frontend/commit/9c9cbcc63b7ea0235404b5213738ab95b5ed8fbc)), closes [DIGIB2-1235](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1235)
+
+### Bug Fixes
+
+- **consent-request:** fix button alignment ([5c65bab](https://github.com/agridata-ch/frontend/commit/5c65bab0fc82c4975c303ce06b611ad3fd632b7f))
+- **data-request:** fix routing ([dc67d07](https://github.com/agridata-ch/frontend/commit/dc67d0762f5af11490d9280ff7b3700f5ac14e1d)), closes [DIGIB2-1253](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1253)
+- **product-tour:** fix mobile-tour ([3332f8b](https://github.com/agridata-ch/frontend/commit/3332f8bc8948c760d928b4512a847b15580c8a70)), closes [DIGIB2-524](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-524)
+- **product-tour:** fix rendering after router change ([c737527](https://github.com/agridata-ch/frontend/commit/c7375278c46157ae0eb9f66dbc5fc1b9502e41f9)), closes [DIGIB2-524](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-524)
+- **product-tour:** save tour on start ([e503a3c](https://github.com/agridata-ch/frontend/commit/e503a3c4b2106cf342501b656ebadd7b30ac99cd)), closes [DIGIB2-524](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-524)
+- **product-tour:** show product tour only on main route ([1b033a2](https://github.com/agridata-ch/frontend/commit/1b033a2134fd8a383a854b29a890120ea7e580ff)), closes [DIGIB2-524](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-524)
+- **product-tour:** wait before move next ([2e14512](https://github.com/agridata-ch/frontend/commit/2e14512fca6deb69b3a45be041f179f9baed2a30)), closes [DIGIB2-524](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-524)
+- **product-tour:** wait before move next ([87351dd](https://github.com/agridata-ch/frontend/commit/87351ddb0c13000a52593884313993d0a8e789c9)), closes [DIGIB2-524](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-524)
+
 ## [1.9.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.9.0-rc.12...v1.9.0-rc.13) (2026-03-10)
 
 ### Bug Fixes
