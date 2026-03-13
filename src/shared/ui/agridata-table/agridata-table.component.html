@@ -15,7 +15,7 @@
 @if (pageData().items.length > 0 || dataProvider().isLoading()) {
   <!-- Main Table Container -->
   <div
-    class="rounded-lg border bg-white min-h-50 border-gray-200 relative"
+    class="rounded-lg border bg-white min-h-24 border-gray-200 relative"
     *i18n="let t; prefix: 'table'"
   >
     @if (dataProvider().isLoading()) {
@@ -30,7 +30,7 @@
       </div>
     }
 
-    <table class="table-auto w-full bg-white rounded-lg">
+    <table class="table-auto w-full bg-white rounded-lg" [attr.id]="tableMetadata().tableId">
       <!-- Table Header -->
       <thead class="text-left border-b border-gray-200">
         <tr>
@@ -62,6 +62,7 @@
             class="hover:bg-agridata-primary-50 cursor-pointer transition-colors duration-150"
             [class.bg-sky-50]="isRowHighlighted(row)"
             [attr.aria-selected]="isRowHighlighted(row)"
+            [attr.id]="tableMetadata().tableId + '-row-' + $index"
             (click)="handleRowClick(row)"
             (keydown.enter)="handleRowClick(row)"
             tabindex="0"

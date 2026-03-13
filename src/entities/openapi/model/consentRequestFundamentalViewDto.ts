@@ -21,6 +21,12 @@ export interface ConsentRequestFundamentalViewDto {
      */
     dataProducerUid?: string;
     /**
+     * BUR of the data producer
+     */
+    dataProducerBur?: string;
+    uidBurRelationSince?: string;
+    uidBurRelationUntil?: string;
+    /**
      * State of the consent request
      */
     stateCode?: ConsentRequestStateEnum;

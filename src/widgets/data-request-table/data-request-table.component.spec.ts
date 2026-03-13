@@ -11,7 +11,10 @@ import {
   mockDataRequests,
   createMockDataRequestService,
   MockDataRequestService,
+  createMockToastService,
+  MockToastService,
 } from '@/shared/testing/mocks';
+import { ToastService, ToastType } from '@/shared/toast';
 import { BadgeVariant } from '@/shared/ui/badge';
 
 import { DataRequestTableComponent } from './data-request-table.component';
@@ -26,6 +29,7 @@ describe('DataRequestTableComponent', () => {
   let componentRef: ComponentRef<DataRequestTableComponent>;
   let mockI18nService: jest.Mocked<I18nService>;
   let dataRequestService: MockDataRequestService;
+  let toastService: MockToastService;
   let dataRequestsResource: Signal<ResourceRef<DataRequestDto[] | undefined>>;
   beforeEach(async () => {
     mockI18nService = {
@@ -33,12 +37,14 @@ describe('DataRequestTableComponent', () => {
       useObjectTranslation: jest.fn(),
     } as unknown as jest.Mocked<I18nService>;
     dataRequestService = createMockDataRequestService();
+    toastService = createMockToastService();
     dataRequestsResource = signal(MockResources.createMockResourceRef(mockDataRequests));
     await TestBed.configureTestingModule({
       imports: [DataRequestTableComponent],
       providers: [
         { provide: I18nService, useValue: mockI18nService },
         { provide: DataRequestService, useValue: dataRequestService },
+        { provide: ToastService, useValue: toastService },
         provideHttpClient(),
       ],
     }).compileComponents();
@@ -59,14 +65,19 @@ describe('DataRequestTableComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('getFilteredActions returns only details action for most states', () => {
-    const actions = component.getFilteredActions(mockDataRequests[0]);
+  it('getFilteredActions returns only details action for states other than InReview and Draft', () => {
+    const toBeSignedRequest = mockDataRequests.find(
+      (r) => r.stateCode === DataRequestStateEnum.ToBeSigned,
+    )!;
+    const actions = component.getFilteredActions(toBeSignedRequest);
     expect(actions.length).toBe(1);
     expect(actions[0].label).toBe('data-request.table.tableActions.details');
   });
 
   it('getFilteredActions returns details and retreat actions for InReview state', () => {
-    const actions = component.getFilteredActions(mockDataRequests[1]);
+    const actions = component.getFilteredActions(
+      mockDataRequests.find((r) => r.stateCode === DataRequestStateEnum.InReview)!,
+    );
     expect(actions.length).toBe(2);
     expect(actions[0].label).toBe('data-request.table.tableActions.details');
     expect(actions[1].label).toBe('data-request.table.tableActions.retreat');
@@ -100,7 +111,9 @@ describe('DataRequestTableComponent', () => {
   });
 
   it('retreat callback should call service and reload data', async () => {
-    const inReviewRequest = mockDataRequests[1];
+    const inReviewRequest = mockDataRequests.find(
+      (r) => r.stateCode === DataRequestStateEnum.InReview,
+    )!;
     const actions = component.getFilteredActions(inReviewRequest);
     const retreatAction = actions[1];
 
@@ -172,7 +185,7 @@ describe('DataRequestTableComponent', () => {
 
   it('details action callback should emit tableRowAction', () => {
     const emitSpy = jest.spyOn(component.tableRowAction, 'emit');
-    const request = mockDataRequests[0];
+    const request = mockDataRequests.find((r) => r.stateCode === DataRequestStateEnum.Draft)!;
     const actions = component.getFilteredActions(request);
     const detailsAction = actions[0];
 
@@ -204,5 +217,89 @@ describe('DataRequestTableComponent', () => {
       const result = providerColumn.renderer.cellRenderFn(row);
       expect(result).toBe('Agis');
     }
+  });
+
+  it('getFilteredActions returns details and delete actions for Draft state', () => {
+    const draftRequest = mockDataRequests.find((r) => r.stateCode === DataRequestStateEnum.Draft)!;
+    const actions = component.getFilteredActions(draftRequest);
+
+    expect(actions.length).toBe(2);
+    expect(actions[0].label).toBe('data-request.table.tableActions.details');
+    expect(actions[1].label).toBe('data-request.table.tableActions.delete');
+  });
+
+  it('delete action callback sets requestToDelete and opens modal', async () => {
+    const draftRequest = mockDataRequests.find((r) => r.stateCode === DataRequestStateEnum.Draft)!;
+    const actions = component.getFilteredActions(draftRequest);
+    const deleteAction = actions[1];
+
+    deleteAction.callback();
+    await flushPromises();
+
+    expect(component['requestToDelete']()).toBe(draftRequest);
+    expect(component['showDeleteModal']()).toBe(true);
+  });
+
+  it('cancelDelete resets requestToDelete and closes modal', () => {
+    component['requestToDelete'].set(mockDataRequests[0]);
+    component['showDeleteModal'].set(true);
+
+    component['cancelDelete']();
+
+    expect(component['requestToDelete']()).toBeNull();
+    expect(component['showDeleteModal']()).toBe(false);
+  });
+
+  it('requestToDeleteTitle returns empty string when no request is set', () => {
+    component['requestToDelete'].set(null);
+    expect(component['requestToDeleteTitle']()).toBe('');
+  });
+
+  it('requestToDeleteTitle returns translated title when request is set', () => {
+    mockI18nService.useObjectTranslation.mockReturnValue('Request A');
+    component['requestToDelete'].set(mockDataRequests[0]);
+
+    expect(component['requestToDeleteTitle']()).toBe('Request A');
+    expect(mockI18nService.useObjectTranslation).toHaveBeenCalledWith(mockDataRequests[0].title);
+  });
+
+  it('deleteRequest calls service, shows success toast, reloads and resets state', async () => {
+    mockI18nService.translate.mockReturnValue('translated');
+    mockI18nService.useObjectTranslation.mockReturnValue('Request A');
+    const draftRequest = mockDataRequests.find((r) => r.stateCode === DataRequestStateEnum.Draft)!;
+    component['requestToDelete'].set(draftRequest);
+    component['showDeleteModal'].set(true);
+
+    await component['deleteRequest']();
+
+    expect(dataRequestService.deleteDataRequest).toHaveBeenCalledWith(draftRequest.id);
+    expect(toastService.show).toHaveBeenCalledWith('translated', 'translated', ToastType.Success);
+    expect(component['dataRequestsResource']().reload).toHaveBeenCalled();
+    expect(component['requestToDelete']()).toBeNull();
+    expect(component['showDeleteModal']()).toBe(false);
+  });
+
+  it('deleteRequest does nothing when requestToDelete is null', async () => {
+    component['requestToDelete'].set(null);
+
+    await component['deleteRequest']();
+
+    expect(dataRequestService.deleteDataRequest).not.toHaveBeenCalled();
+  });
+
+  it('deleteRequest shows error toast and resets state on failure', async () => {
+    const testError = new Error('delete failed');
+    dataRequestService.deleteDataRequest.mockRejectedValueOnce(testError);
+    mockI18nService.translate.mockReturnValue('translated');
+    mockI18nService.useObjectTranslation.mockReturnValue('Request A');
+    const draftRequest = mockDataRequests.find((r) => r.stateCode === DataRequestStateEnum.Draft)!;
+    component['requestToDelete'].set(draftRequest);
+    component['showDeleteModal'].set(true);
+
+    await component['deleteRequest']();
+
+    expect(toastService.show).toHaveBeenCalledWith('translated', 'translated', ToastType.Error);
+    expect(component['requestToDelete']()).toBeNull();
+    expect(component['showDeleteModal']()).toBe(false);
   });
 });

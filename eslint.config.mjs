@@ -1,9 +1,12 @@
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
+
 import angularEslintTemplate from '@angular-eslint/eslint-plugin-template';
 import angularTemplateParser from '@angular-eslint/template-parser';
 import { defineConfig } from 'eslint/config';
 import importPlugin from 'eslint-plugin-import';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import securityPlugin from 'eslint-plugin-security';
+import storybook from 'eslint-plugin-storybook';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import unusedImports from 'eslint-plugin-unused-imports';
 import tseslint from 'typescript-eslint';
@@ -50,8 +53,7 @@ export default defineConfig([
         typescript: {},
       },
     },
-  },
-  // Add security plugin rules
+  }, // Add security plugin rules
   {
     files: ['**/*.{js,mjs,cjs,ts}'],
     plugins: {
@@ -71,8 +73,7 @@ export default defineConfig([
       'security/detect-non-literal-require': 'warn',
       'security/detect-non-literal-regexp': 'warn',
     },
-  },
-  // Add unicorn plugin rules
+  }, // Add unicorn plugin rules
   {
     files: ['**/*.{js,mjs,cjs,ts}'],
     plugins: {
@@ -92,8 +93,7 @@ export default defineConfig([
       'unicorn/no-unreadable-array-destructuring': 'warn',
       'unicorn/no-empty-file': 'warn',
     },
-  },
-  // Relax rules for test files
+  }, // Relax rules for test files
   {
     files: ['**/*.spec.ts'],
     rules: {
@@ -102,9 +102,7 @@ export default defineConfig([
       // Disable other rules that might be too restrictive for tests
       '@typescript-eslint/no-non-null-assertion': 'off',
     },
-  },
-
-  // Add Angular template accessibility rules
+  }, // Add Angular template accessibility rules
   {
     files: ['**/*.html'],
     plugins: {
@@ -133,8 +131,7 @@ export default defineConfig([
       '@angular-eslint/template/no-autofocus': 'error',
       '@angular-eslint/template/no-positive-tabindex': 'error',
     },
-  },
-  // Add comment rules
+  }, // Add comment rules
   {
     files: ['**/*.{js,mjs,cjs,ts}'],
     ignores: ['**/*.spec.ts'],
@@ -164,4 +161,5 @@ export default defineConfig([
       ],
     },
   },
+  ...storybook.configs['flat/recommended'],
 ]);

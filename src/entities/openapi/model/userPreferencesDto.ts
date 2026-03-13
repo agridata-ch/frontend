@@ -22,5 +22,9 @@ export interface UserPreferencesDto {
      * consent request ids for which we dont want to show migration notices anymore
      */
     dismissedMigratedIds?: Array<string>;
+    /**
+     * Indicates whether the user has already seen the consent request feature tour introduction.
+     */
+    hasSeenConsentRequestTourIntro?: boolean;
 }
 

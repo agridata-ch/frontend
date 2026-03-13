@@ -55,7 +55,7 @@
       </div>
     }
     @if (isAuthenticated()) {
-      <app-contact-support-info />
+      <app-contact-support-info (toggleMobileNavigation)="toggleNavigation()" />
     }
     <agridata-language-select />
     <hr class="text-agridata-tertiary-text" />

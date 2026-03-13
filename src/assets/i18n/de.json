@@ -95,7 +95,8 @@
   "consumer": {
     "pageTitle": "Datenanträge",
     "createNewDataRequest": "Neuer Antrag",
-    "sidePanelTitle": "Neuer Datenantrag erfassen"
+    "sidePanelTitle": "Neuer Datenantrag erfassen",
+    "draftLimitReached": "Aktion nicht möglich. Es befinden sich mehr als 10 Anträge im Status Entwurf."
   },
   "data-request": {
     "consumerName": "Datenbezüger",
@@ -301,12 +302,27 @@
     "table": {
       "tableActions": {
         "details": "Anzeigen",
-        "retreat": "Zurückziehen"
+        "retreat": "Zurückziehen",
+        "delete": "Löschen"
       },
       "emptyState": {
         "title": "Noch keine Datenanträge erstellt",
         "message": "Stellen Sie Ihren ersten Datenantrag und erhalten Sie Zugriff auf die benötigten Daten – sobald die Datenproduzenten zustimmen.",
         "createNewDataRequest": "Neuer Antrag"
+      },
+      "deleteRequest": {
+        "title": "Datenantrag löschen",
+        "description": "Wollen Sie den Antrag \"{{ title }}\" wirklich löschen?",
+        "cancel": "Abbrechen",
+        "delete": "Löschen",
+        "success": {
+          "title": "Löschen erfolgreich",
+          "message": "Der Antrag \"{{ title }}\" wurde erfolgreich gelöscht."
+        },
+        "error": {
+          "title": "Löschen fehlgeschlagen",
+          "message": "Der Antrag \"{{ title }}\" konnte nicht gelöscht werden.\nFehlermeldung: {{ error }}"
+        }
       }
     },
     "provider": "Datenanbieter",
@@ -539,5 +555,33 @@
         }
       }
     }
+  },
+  "product-tour": {
+    "nextBtnText": "Weiter",
+    "doneBtnText": "Fertig",
+    "progressText": "Schritt {{ current }} von {{ total }}",
+    "consentRequestsTour": {
+      "intro": {
+        "title": "Willkommen bei agridata.ch!",
+        "description": "Hallo! Ich bin Max, Ihr digitaler Begleiter.\nMöchten Sie kurz sehen, wie Sie Ihre Datenanfragen effizient verwalten?\n\nIch zeige Ihnen in nur einer Minute, wo Sie alles Wichtige finden.",
+        "imageAlt": "Illustration von einem Kopf mit einem Headset",
+        "skipTour": "Überspringen",
+        "startTour": "Tour starten"
+      },
+      "consentRequests": {
+        "title": "Ihre Datenanfragen",
+        "description": "Hier finden Sie alle Anfragen von Datenbezügern auf einen Blick.\n\nKlicken Sie einfach auf eine Anfrage, um alle Details dazu einzusehen."
+      },
+      "dataRequestPurpose": {
+        "title": "Zweck der Datennutzung",
+        "description": "Erfahren Sie hier, warum Ihre Daten angefragt werden und welchen konkreten Mehrwert Sie davon haben.\n\nSie möchten genau wissen, welche Informationen übermittelt werden? Klicken Sie dazu einfach auf „Folgende Daten werden übermittelt:“."
+      },
+      "consentRequestConsent": {
+        "title": "Entscheidung treffen",
+        "description": "Mit den Buttons wählen Sie: Grün zum Zustimmen, Rot zum Ablehnen. Sie behalten immer die volle Kontrolle und können Ihre Wahl später einfach wieder ändern."
+      }
+    },
+    "startTour": "Tour starten",
+    "title": "Anleitung"
   }
 }

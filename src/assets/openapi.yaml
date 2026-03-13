@@ -284,6 +284,23 @@ components:
           examples:
           - CHE123456789
           description: UID of the data producer
+        dataProducerBur:
+          type: string
+          examples:
+          - A123456
+          description: BUR of the data producer
+        uidBurRelationSince:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          examples:
+          - 2024-06-16T11:04:51.823889
+          description: Date and time when the relation of bur and uid started
+        uidBurRelationUntil:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          examples:
+          - 2025-06-16T11:04:51.823889
+          description: Date and time when the relation of bur and uid ended
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
           type: string
@@ -1150,11 +1167,17 @@ components:
         dismissedMigratedIds:
           type: array
           examples:
-          - a5b1d2e3-4f6a-2b7c-6d0e-9f1a3b5c7d9e
+          - - a5b1d2e3-4f6a-2b7c-6d0e-9f1a3b5c7d9e
           items:
             type: string
           description: consent request ids for which we dont want to show migration
             notices anymore
+        hasSeenConsentRequestTourIntro:
+          type: boolean
+          examples:
+          - true
+          description: Indicates whether the user has already seen the consent request
+            feature tour introduction.
   securitySchemes:
     SecurityScheme:
       type: openIdConnect
@@ -1470,7 +1493,8 @@ paths:
       - Data Provider
     post:
       description: Creates a new data request in draft status. Only accessible to
-        users with the consumer role.
+        users with the consumer role. Disallows creating more than 10 draft requests
+        per consumer.
       operationId: createDataRequestDraft
       tags:
       - Data Requests
@@ -1600,6 +1624,44 @@ paths:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenanbieter
+      x-api-subset: agridata.ch Web App
+    delete:
+      description: Deletes a data request
+      operationId: deleteDataRequest
+      tags:
+      - Data Requests
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Delete Data Request
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests:
     get:
@@ -1804,6 +1866,7 @@ paths:
         are depending on the requested productId. Please consult documentation to
         find the necessary parameters
       operationId: dataTransfer
+      deprecated: true
       tags:
       - Data Transfer
       parameters:
@@ -1936,6 +1999,17 @@ paths:
         required: true
         schema:
           $ref: "#/components/schemas/UUID"
+      - description: Additional query parameters. The needed query parameters are
+          depending on the requested productId. Please consult documentation to find
+          the necessary parameters.
+        examples:
+          uid:
+            value:
+              uid: CHE123456789
+        name: queryParams
+        schema:
+          type: object
+        in: query
       responses:
         "200":
           description: OK
@@ -2135,6 +2209,45 @@ paths:
         - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Support
+      x-api-subset: agridata.ch Web App
+  /api/test-data/execute:
+    post:
+      operationId: executeSqlScript
+      tags:
+      - Test Data
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        "201":
+          description: Created
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Execute
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/test-data/reset:
     post:
@@ -2537,7 +2650,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.6.0-rc.9
+  version: 1.7.0-rc.8
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

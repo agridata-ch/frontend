@@ -39,6 +39,7 @@ export class AgridataClientTableComponent<T> {
   readonly enableSearch = input<boolean>(false);
   readonly loading = input<boolean | undefined>(false);
   readonly emptyStateTemplate = input<TemplateRef<unknown>>();
+
   readonly resourceQueryDto = signal<ResourceQueryDto | undefined>(undefined);
 
   readonly fetchData = resource({

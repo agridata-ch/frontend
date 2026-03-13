@@ -8,7 +8,9 @@
       <app-agridata-button
         (onClick)="newRequest()"
         (keydown.enter)="newRequest()"
+        [disabled]="isButtonDisabled()"
         [variant]="ButtonVariants.Primary"
+        [disabledInfo]="t('draftLimitReached')"
       >
         <fa-icon [icon]="buttonIcon" class="mr-2" />
         <span>{{ t('createNewDataRequest') }}</span>

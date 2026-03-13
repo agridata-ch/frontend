@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import {
   Component,
   computed,
@@ -91,6 +91,7 @@ export class DataRequestNewComponent {
   private readonly i18nService = inject(I18nService);
   private readonly router = inject(Router);
   private readonly translateService = inject(TranslocoService);
+  private readonly location = inject(Location);
 
   // Constants
   protected readonly form = this.createForm();
@@ -265,9 +266,6 @@ export class DataRequestNewComponent {
           this.dataRequest.set(dataRequest);
           this.updateFormSteps();
           this.wizard.nextStep();
-          this.router.navigate([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH, dataRequestId], {
-            state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: this.refreshListNeeded() },
-          });
         })
         .catch((error) => {
           this.errorService.handleError(error);
@@ -366,6 +364,12 @@ export class DataRequestNewComponent {
         .then(async (dataRequest: DataRequestDto) => {
           this.currentDataRequestId.set(dataRequest.id);
           this.dataRequest.set(dataRequest);
+          // we use location here to avoid routing to update the url with the new id
+          // so that if the user refreshes the page, we can load the correct data request
+          // instead of creating a new one
+          this.location.replaceState(
+            `${ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH}/${dataRequest.id}`,
+          );
           if (this.logoFile()) {
             await this.dataRequestService.uploadLogo(dataRequest.id, this.logoFile()!).then(() => {
               this.logoFile.set(null);
@@ -374,7 +378,6 @@ export class DataRequestNewComponent {
         })
         .finally(() => this.isSaving.set(false));
     }
-
     this.isSaving.set(false);
   }
 

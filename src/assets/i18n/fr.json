@@ -95,7 +95,8 @@
   "consumer": {
     "pageTitle": "Demandes de données",
     "createNewDataRequest": "Nouvelle demande de données",
-    "sidePanelTitle": "Saisir une nouvelle demande de données"
+    "sidePanelTitle": "Saisir une nouvelle demande de données",
+    "draftLimitReached": "Action impossible. Il y a plus de 10 demandes au statut Brouillon."
   },
   "data-request": {
     "consumerName": "Requérant de données",
@@ -301,12 +302,27 @@
     "table": {
       "tableActions": {
         "details": "Afficher",
-        "retreat": "Retrait"
+        "retreat": "Retrait",
+        "delete": "Supprimer"
       },
       "emptyState": {
         "title": "Aucune demande de données n'a encore été créée",
         "message": "Soumettez votre première demande de données et accédez aux données dont vous avez besoin, dès que les producteurs de données auront donné leur accord.",
         "createNewDataRequest": "Nouvelle demande de données"
+      },
+      "deleteRequest": {
+        "title": "Supprimer une demande de données",
+        "description": "Voulez-vous vraiment supprimer la demande \"{{ title }}\"?",
+        "cancel": "Annuler",
+        "delete": "Supprimer",
+        "success": {
+          "title": "Suppression réussie",
+          "message": "La demande \"{{ title }}\" a été supprimée avec succès."
+        },
+        "error": {
+          "title": "Échec de la suppression",
+          "message": "La demande \"{{ title }}\" n'a pas pu être supprimée.\nMessage d'erreur : {{ error }}"
+        }
       }
     },
     "provider": "Fournisseur de données",
@@ -538,5 +554,33 @@
         }
       }
     }
+  },
+  "product-tour": {
+    "nextBtnText": "Continuer",
+    "doneBtnText": "Terminé",
+    "progressText": "Étape {{ current }} sur {{ total }}",
+    "consentRequestsTour": {
+      "intro": {
+        "title": "Bienvenue sur agridata.ch!",
+        "description": "Bonjour ! Je suis Max, votre compagnon numérique.\nSouhaitez-vous découvrir rapidement comment gérer efficacement vos demandes de données ?\n\nJe vous montre en une minute où trouver l'essentiel.",
+        "imageAlt": "Illustration d'une tête avec un casque audio",
+        "skipTour": "Passer",
+        "startTour": "Commencer la visite"
+      },
+      "consentRequests": {
+        "title": "Vos demandes",
+        "description": "Vous trouverez ici toutes les demandes des destinataires de données en un coup d'œil.\n\nCliquez simplement sur une demande pour en voir tous les détails."
+      },
+      "dataRequestPurpose": {
+        "title": "But de l'utilisation des données",
+        "description": "Découvrez ici pourquoi vos données sont demandées et quelle est la valeur ajoutée concrète pour vous.\n\nVous voulez savoir exactement quelles informations sont transmises ? Cliquez simplement sur « Données transmises : ».!"
+      },
+      "consentRequestConsent": {
+        "title": "prendre une décision",
+        "description": "Utilisez les boutons pour choisir : Vert pour accepter, Rouge pour refuser. Vous gardez toujours le contrôle total et pouvez modifier votre choix ultérieurement."
+      }
+    },
+    "startTour": "Commencer la visite",
+    "title": "Instructions"
   }
 }

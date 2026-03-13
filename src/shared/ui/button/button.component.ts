@@ -27,6 +27,7 @@ export class ButtonComponent {
   ariaLabel = input<string>('');
   selected = input<boolean>(false);
   loading = input<boolean>(false);
+  disabledInfo = input<string>('');
 
   onClick = output<Event>();
   additionalClass = input<string>('');

@@ -1,4 +1,4 @@
-import { Component, effect, inject, resource } from '@angular/core';
+import { Component, computed, effect, inject, resource } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { faDatabase, faPlus } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -6,7 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { DataRequestDto } from '@/entities/openapi';
+import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective } from '@/shared/i18n';
@@ -30,11 +30,11 @@ export const FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM = 'refresh';
 @Component({
   selector: 'app-data-requests-consumer-page',
   imports: [
-    FontAwesomeModule,
-    I18nDirective,
     ButtonComponent,
     DataRequestTableComponent,
     ErrorOutletComponent,
+    FontAwesomeModule,
+    I18nDirective,
     RouterOutlet,
   ],
   templateUrl: './data-requests-consumer.page.html',
@@ -48,11 +48,18 @@ export class DataRequestsConsumerPage {
   protected readonly buttonIcon = faPlus;
   protected readonly icon = faDatabase;
   protected readonly stateService = inject(AgridataStateService);
+
   protected readonly dataRequestsResource = resource({
     loader: () => this.dataRequestService.fetchDataRequests(),
     defaultValue: [],
   });
   protected readonly dataRequests = createResourceValueComputed(this.dataRequestsResource, []);
+  protected readonly isButtonDisabled = computed(
+    () =>
+      this.dataRequests().filter((request) => request.stateCode === DataRequestStateEnum.Draft)
+        .length >= 10,
+  );
+
   private readonly errorHandlerEffect = createResourceErrorHandlerEffect(
     this.dataRequestsResource,
     this.errorService,

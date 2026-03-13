@@ -1,0 +1,27 @@
+<app-modal [open]="showModal()" [title]="''" (closed)="closeTourIntro()">
+  <div class="flex flex-col gap-6" *i18n="let t; prefix: 'product-tour.consentRequestsTour.intro'">
+    <img
+      src="/assets/images/product-tour-start.svg"
+      [alt]="t('imageAlt')"
+      class="rounded-lg w-36 h-36 self-center"
+    />
+    <span class="text-lg font-bold text-center">{{ t('title') }}</span>
+    <span class="whitespace-pre-line text-center">{{ t('description') }}</span>
+    <div class="flex gap-2 justify-between">
+      <app-agridata-button
+        [variant]="ButtonVariants.Secondary"
+        (onClick)="closeTourIntro()"
+        (keydown.enter)="closeTourIntro()"
+      >
+        {{ t('skipTour') }}
+      </app-agridata-button>
+      <app-agridata-button
+        [variant]="ButtonVariants.Primary"
+        (onClick)="startTour()"
+        (keydown.enter)="startTour()"
+      >
+        {{ t('startTour') }}
+      </app-agridata-button>
+    </div>
+  </div>
+</app-modal>
