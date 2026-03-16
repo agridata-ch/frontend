@@ -1,3 +1,9 @@
+## [1.10.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.9.0...v1.10.0-rc.1) (2026-03-16)
+
+### Features
+
+- **multi-select:** option can now be deprecated ([4034b7b](https://github.com/agridata-ch/frontend/commit/4034b7b0bf86a3fc528f278166b57ac243e7d7b6)), closes [DIGIB2-1200](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1200)
+
 ## [1.9.0](https://github.com/agridata-ch/frontend/compare/v1.8.1...v1.9.0) (2026-03-13)
 
 ### Features
