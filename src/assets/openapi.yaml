@@ -289,18 +289,18 @@ components:
           examples:
           - A123456
           description: BUR of the data producer
-        uidBurRelationSince:
-          $ref: "#/components/schemas/LocalDateTime"
+        grantedDataPeriodFrom:
+          $ref: "#/components/schemas/LocalDate"
           type: string
           examples:
-          - 2024-06-16T11:04:51.823889
-          description: Date and time when the relation of bur and uid started
-        uidBurRelationUntil:
-          $ref: "#/components/schemas/LocalDateTime"
+          - 2024-06-16
+          description: Start of the data period that is granted by this consent
+        grantedDataPeriodTo:
+          $ref: "#/components/schemas/LocalDate"
           type: string
           examples:
-          - 2025-06-16T11:04:51.823889
-          description: Date and time when the relation of bur and uid ended
+          - 2025-06-16
+          description: End of the data period that is granted by this consent
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
           type: string
@@ -528,6 +528,12 @@ components:
           $ref: "#/components/schemas/TranslationDto"
           type: object
           description: Description of the product
+        deprecatedSince:
+          $ref: "#/components/schemas/LocalDateTime"
+          type: string
+          examples:
+          - 2026-03-06T00:00:00
+          description: Timestamp indicating when the product was marked as deprecated.
     DataProviderDto:
       type: object
       required:
@@ -927,12 +933,46 @@ components:
       properties:
         items:
           type: array
-          examples:
-          - - id: 1
-              name: Item A
-            - id: 2
-              name: Item B
           items: {}
+          description: List of items on the current page.
+        totalItems:
+          type: integer
+          format: int64
+          examples:
+          - 42
+          description: Total number of items across all pages.
+        totalPages:
+          type: integer
+          format: int32
+          examples:
+          - 5
+          description: Total number of pages available.
+        currentPage:
+          type: integer
+          format: int32
+          examples:
+          - 1
+          description: Current page number (0-based ).
+        pageSize:
+          type: integer
+          format: int32
+          examples:
+          - 10
+          description: Number of items per page.
+    PageResponseDtoConsentRequestFundamentalViewDto:
+      type: object
+      required:
+      - items
+      - totalItems
+      - totalPages
+      - currentPage
+      - pageSize
+      description: Generic paginated response wrapper.
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConsentRequestFundamentalViewDto"
           description: List of items on the current page.
         totalItems:
           type: integer
@@ -970,11 +1010,6 @@ components:
       properties:
         items:
           type: array
-          examples:
-          - - id: 1
-              name: Item A
-            - id: 2
-              name: Item B
           items:
             $ref: "#/components/schemas/UserInfoDto"
           description: List of items on the current page.
@@ -1009,7 +1044,6 @@ components:
           type: integer
           format: int32
           description: page number
-          maximum: 100
           minimum: 0
         size:
           type: integer
@@ -1663,6 +1697,68 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
       x-api-subset: agridata.ch Web App
+  /api/agreement/v1/data-requests/{id}/consent-requests:
+    get:
+      description: Retrieves the consent requests of a specific data request. Accessible
+        to the provider who owns the data request.
+      operationId: getConsentRequestsOfDataRequest
+      tags:
+      - Data Requests
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: lastModifiedFrom
+        in: query
+        schema:
+          allOf:
+          - $ref: "#/components/schemas/LocalDateTime"
+          - default: 1970-01-01T00:00:00
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          maximum: 1000
+          minimum: 1
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageResponseDtoConsentRequestFundamentalViewDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Consent Requests Of Data Request
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+      x-api-subset: Data Provider
   /api/agreement/v1/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests:
     get:
       description: "<strong>This endpoint is deprecated, because it does not return\
@@ -2467,7 +2563,6 @@ paths:
           format: int32
           description: page number
           default: 0
-          maximum: 100
           minimum: 0
       - name: searchTerm
         in: query
@@ -2650,7 +2745,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.7.0-rc.8
+  version: 1.7.0
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

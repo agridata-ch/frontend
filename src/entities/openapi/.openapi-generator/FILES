@@ -46,6 +46,7 @@ model/farmTypeEnum.ts
 model/legalFormEnum.ts
 model/models.ts
 model/pageResponseDto.ts
+model/pageResponseDtoConsentRequestFundamentalViewDto.ts
 model/pageResponseDtoUserInfoDto.ts
 model/resourceQueryDto.ts
 model/translationDto.ts

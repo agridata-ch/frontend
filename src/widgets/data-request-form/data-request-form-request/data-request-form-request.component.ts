@@ -250,10 +250,15 @@ export class DataRequestFormRequestComponent {
     return null;
   }
 
-  private mapProductToOption(product: DataProductDto): { label: string; value: string } {
+  private mapProductToOption(product: DataProductDto): {
+    label: string;
+    value: string;
+    deprecated: boolean;
+  } {
     return {
       label: product.name?.[this.i18nService.lang() as keyof typeof product.name] ?? '',
       value: product.id,
+      deprecated: product.deprecatedSince !== null,
     };
   }
 }

@@ -25,6 +25,7 @@ export * from './exceptionEnum';
 export * from './farmTypeEnum';
 export * from './legalFormEnum';
 export * from './pageResponseDto';
+export * from './pageResponseDtoConsentRequestFundamentalViewDto';
 export * from './pageResponseDtoUserInfoDto';
 export * from './resourceQueryDto';
 export * from './translationDto';
