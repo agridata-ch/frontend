@@ -1,6 +1,7 @@
 export interface MultiSelectOption {
   readonly label: string;
   readonly value: number | string;
+  readonly deprecated?: boolean;
 }
 
 export interface MultiSelectCategory {

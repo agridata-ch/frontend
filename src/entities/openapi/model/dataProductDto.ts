@@ -29,5 +29,6 @@ export interface DataProductDto {
      * Description of the product
      */
     description?: TranslationDto;
+    deprecatedSince?: string;
 }
 

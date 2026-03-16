@@ -25,7 +25,7 @@ import { SearchInputComponent } from '../search-input/search-input.component';
  * synchronizes values with Angular reactive form controls. It provides user interactions such
  * as toggling selections, removing items, and closing the dropdown when clicking outside.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2026-03-16
  */
 @Component({
   selector: 'app-agridata-multi-select',
@@ -99,10 +99,11 @@ export class AgridataMultiSelectComponent {
   );
 
   protected readonly filteredOptions = computed(() => {
+    const activeOptions = this.options().filter((option) => !option.deprecated);
     const term = this.searchTerm().toLowerCase().trim();
-    if (!term) return this.options();
+    if (!term) return activeOptions;
 
-    return this.options().filter((option) => option.label.toLowerCase().includes(term));
+    return activeOptions.filter((option) => option.label.toLowerCase().includes(term));
   });
 
   protected readonly filteredAllOptions = computed<MultiSelectOption[]>(() => {
@@ -132,10 +133,11 @@ export class AgridataMultiSelectComponent {
 
   // Protected methods
   protected getFilteredCategoryOptions(category: MultiSelectCategory): MultiSelectOption[] {
+    const activeOptions = category.options.filter((option) => !option.deprecated);
     const term = this.searchTerm().toLowerCase().trim();
-    if (!term) return category.options;
+    if (!term) return activeOptions;
 
-    return category.options.filter((option) => option.label.toLowerCase().includes(term));
+    return activeOptions.filter((option) => option.label.toLowerCase().includes(term));
   }
 
   protected handleClickOutside(): void {

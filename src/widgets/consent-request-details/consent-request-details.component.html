@@ -7,7 +7,7 @@
   *i18n="let t; prefix: 'consent-request.details'"
 >
   <app-error-outlet></app-error-outlet>
-  <div class="overflow-y-auto flex flex-col gap-6 grow pb-2">
+  <div class="overflow-y-auto flex flex-col gap-6 grow pb-6">
     <div>
       <span class="text-agridata-tertiary-text text-sm font-normal">
         {{ t('requestDate', { date: formattedRequestDate() }) }} |
@@ -53,7 +53,10 @@
       [dataProvider]="dataProvider()"
     />
   </div>
-  <div class="justify-center flex flex-col gap-1.5" id="consent-request-footer">
+  <div
+    class="-mt-6 justify-center flex flex-col gap-1.5 pt-6 bg-linear-to-t from-white via-white via-80%"
+    id="consent-request-footer"
+  >
     <div class="flex gap-2">
       <app-agridata-button
         [variant]="ButtonVariants.SecondaryReject"
