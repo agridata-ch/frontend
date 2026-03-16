@@ -1,3 +1,9 @@
+## [1.10.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.1...v1.10.0-rc.2) (2026-03-16)
+
+### Bug Fixes
+
+- **cache:** fix caching issue by adding query param to i18n assets ([9e5719b](https://github.com/agridata-ch/frontend/commit/9e5719b24b0c9532411e7cf489bf4ad3fc2f9195))
+
 ## [1.10.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.9.0...v1.10.0-rc.1) (2026-03-16)
 
 ### Features
