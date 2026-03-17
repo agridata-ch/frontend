@@ -1,3 +1,10 @@
+## [1.10.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.2...v1.10.0-rc.3) (2026-03-17)
+
+### Features
+
+- **data-request-contract:** add contract view ([5b01a50](https://github.com/agridata-ch/frontend/commit/5b01a50a845edbda8fbb0375f50ec3a967ffee05)), closes [DIGIB2-1275](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1275)
+- **deps:** update actions/create-github-app-token action to v3 ([ba3e4ac](https://github.com/agridata-ch/frontend/commit/ba3e4ac7196266869238a3e9ec39bd89f099a624))
+
 ## [1.10.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.1...v1.10.0-rc.2) (2026-03-16)
 
 ### Bug Fixes
