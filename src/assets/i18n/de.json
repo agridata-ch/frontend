@@ -339,7 +339,29 @@
       "sidePanelTitle": "Detailansicht"
     },
     "invitationLink": "Einladungslink",
-    "productsSystemCode": "System"
+    "productsSystemCode": "System",
+    "contractSigning": {
+      "title": "Vertrag unterzeichnen",
+      "contract": {
+        "title": "Vertrag",
+        "description": "Unterzeichnen Sie den Vertrag zwischen {{ consumer }} und {{ provider }}. Sobald beide Vertragspartner je zweimal unterzeichnet haben, startet der Datenaustausch automatisch.",
+        "signing": {
+          "info": "Pro Vertragspartner sind zwei Unterschriften erforderlich. Stellen Sie sicher, dass auch eine zweite zeichnungsberechtigte Person aus {{ company }} den Vertrag unterzeichnet."
+        }
+      },
+      "signatureInput": {
+        "signature": {
+          "dataConsumer": "Unterzeichnung Datenbezüger",
+          "dataProvider": "Unterzeichnung Datenanbieter"
+        },
+        "badgeText": "Person {{ position }}",
+        "agbText": "Mit meiner Unterzeichnung bestätige ich die [Allgemeinen Geschäftsbedingungen] gelesen zu haben.",
+        "inReviewBox": {
+          "description": "Unterzeichnung noch ausstehend...",
+          "iconAltText": "Bild mit einer Sanduhr und einer Uhr im Hintergrund"
+        }
+      }
+    }
   },
   "forms": {
     "error": {

@@ -1,0 +1,36 @@
+<div
+  class="flex flex-col gap-4 p-4 border border-agridata-stroke rounded-lg bg-white"
+  *i18n="let t; prefix: 'data-request.contractSigning.signatureInput'"
+>
+  <div class="flex gap-1 items-center">
+    <span class="flex-1 text-sm text-agridata-secondary-text font-medium">
+      {{ isDataConsumer ? t('signature.dataConsumer') : t('signature.dataProvider') }}
+    </span>
+    <app-agridata-badge [text]="t('badgeText', { position: position() })" />
+  </div>
+
+  @if (locked()) {
+    <div class="flex flex-col gap-4 justify-center rounded-lg py-6">
+      <img
+        src="assets/images/data-request-timer.svg"
+        [alt]="t('inReviewBox.iconAltText')"
+        class="h-10"
+      />
+      <span class="text-center">{{ t('inReviewBox.description') }}</span>
+    </div>
+  } @else {
+    <div class="flex gap-3 p-2 items-center bg-agridata-content-gray rounded-lg">
+      <app-agridata-toggle [(checked)]="agbChecked" />
+      <span>
+        {{ agbParts().before }}
+        <a
+          href="https://agridata.ch"
+          target="_blank"
+          class="underline hover:text-agridata-primary-600"
+          >{{ agbParts().linkText }}</a
+        >
+        {{ agbParts().after }}
+      </span>
+    </div>
+  }
+</div>

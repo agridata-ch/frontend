@@ -91,5 +91,6 @@ export interface DataRequestDto {
      * Regex of valid redirect_uri
      */
     validRedirectUriRegex?: string;
+    currentContractRevisionId?: string;
 }
 

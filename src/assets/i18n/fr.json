@@ -339,7 +339,29 @@
       "sidePanelTitle": "Vue détaillée"
     },
     "invitationLink": "Lien d'invitation",
-    "productsSystemCode": "Système"
+    "productsSystemCode": "Système",
+    "contractSigning": {
+      "title": "Signer le contrat",
+      "contract": {
+        "title": "Contrat",
+        "description": "Signez le contrat entre {{ consumer }} et {{ provider }}. Dès que les deux parties auront signé le contrat à deux reprises, l'échange de données commencera automatiquement.",
+        "signing": {
+          "info": "Deux signatures sont requises pour chaque partie contractante. Veuillez vous assurer qu'une deuxième personne habilitée à signer au nom de {{ company }} signe également le contrat."
+        }
+      },
+      "signatureInput": {
+        "signature": {
+          "dataConsumer": "Signature des destinataires des données",
+          "dataProvider": "Signature des fournisseur de données"
+        },
+        "badgeText": "Personne {{ position }}",
+        "agbText": "En apposant ma signature, je certifie avoir pris connaissance des [conditions générales].",
+        "inReviewBox": {
+          "description": "Signature en attente...",
+          "iconAltText": "Image avec un sablier et une horloge en arrière-plan"
+        }
+      }
+    }
   },
   "forms": {
     "error": {

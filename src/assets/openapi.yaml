@@ -183,6 +183,10 @@ components:
               examples:
               - ^https:\/\/www\.dummy-label-organisation\/.*$
               description: Regex of valid redirect_uri
+            currentContractRevisionId:
+              $ref: "#/components/schemas/UUID"
+              type: string
+              description: Id of current contract revision
         consentRequests:
           type: array
           items:
@@ -475,6 +479,10 @@ components:
               examples:
               - ^https:\/\/www\.dummy-label-organisation\/.*$
               description: Regex of valid redirect_uri
+            currentContractRevisionId:
+              $ref: "#/components/schemas/UUID"
+              type: string
+              description: Id of current contract revision
     ConsentRequestStateEnum:
       type: string
       enum:
@@ -488,6 +496,48 @@ components:
         - OPENED: Consent request is open and awaiting response
         - DECLINED: Consent has been declined
         - NOT_CREATED: Placeholder to indicate that no consent request exists yet for a given UID.
+    ContractRevisionDto:
+      type: object
+      required:
+      - id
+      - dataRequestId
+      - dataConsumerName
+      - dataConsumerCity
+      - dataProviderName
+      - dataRequestContext
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          type: string
+          examples:
+          - 24945B85-6E53-4059-8FB4-C0B0AC4FFD47
+          description: Unique identifier of the data request
+        dataRequestId:
+          $ref: "#/components/schemas/UUID"
+          type: string
+          examples:
+          - 0D74F63F-9491-4B9B-80BA-0CA43A1A3A6F
+          description: Identifier of the associated data request
+        dataConsumerName:
+          type: string
+          examples:
+          - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
+          description: LegalName of the data consumer taken from the uid register
+        dataConsumerCity:
+          type: string
+          examples:
+          - Basel
+          description: City of the data consumer
+        dataProviderName:
+          type: string
+          examples:
+          - BLW
+          description: Name of the data provider
+        dataRequestContext:
+          $ref: "#/components/schemas/DataRequestContextDto"
+          type: object
+          description: "Contextual information from the parent data request (e.g.\
+            \ logo, reduced metadata)"
     CreateConsentRequestDto:
       type: object
       required:
@@ -545,6 +595,16 @@ components:
           type: string
         name:
           $ref: "#/components/schemas/TranslationDto"
+    DataRequestContextDto:
+      type: object
+      description: Data transfer object representing a minimal version of a data request
+        for UI/UX use.
+      properties:
+        dataConsumerLogoBase64:
+          type: string
+          examples:
+          - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+          description: Base64-encoded logo of the data consumer
     DataRequestDescriptionDto:
       type: object
       properties:
@@ -701,6 +761,10 @@ components:
           examples:
           - ^https:\/\/www\.dummy-label-organisation\/.*$
           description: Regex of valid redirect_uri
+        currentContractRevisionId:
+          $ref: "#/components/schemas/UUID"
+          type: string
+          description: Id of current contract revision
     DataRequestPurposeDto:
       type: object
       properties:
@@ -1226,6 +1290,8 @@ tags:
     \ and admins. Data producers can retrieve and update consent requests assigned\
     \ to them, consumers can access consent requests linked to their data requests,\
     \ and admins have full access to all consent requests."
+- name: Contract Revisions
+  description: Provides access to contract revisions for consumers
 - name: Data Products
   description: Enables retrieval of available data products that can be requested
     and used by Users in the data sharing process.
@@ -1483,6 +1549,47 @@ paths:
       x-api-subset:
       - Mobile App
       - agridata.ch Web App
+  /api/agreement/v1/contract-revisions/{id}:
+    get:
+      description: Retrieves a specific contract revisionby its ID. Accessible by
+        the consumerthat owns the associated datarequest.
+      operationId: getContractRevision
+      tags:
+      - Contract Revisions
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContractRevisionDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Contract Revision
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests:
     get:
       description: "Retrieves a list of data requests. Admin users receive all data\
@@ -2745,7 +2852,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.7.0
+  version: 1.8.0-rc.3
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

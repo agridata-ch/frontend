@@ -1,0 +1,41 @@
+@if (contractResource.isLoading()) {
+  <fa-icon
+    animation="spin"
+    [icon]="faSpinnerThird"
+    size="3x"
+    class="absolute flex items-center justify-center inset-0"
+  ></fa-icon>
+} @else {
+  <div class="flex flex-col gap-6 h-full" *i18n="let t; prefix: 'data-request.contractSigning'">
+    <h3>{{ t('title') }}</h3>
+    <h4>{{ t('contract.title') }}</h4>
+    <span class="text-lg">
+      {{
+        t('contract.description', {
+          consumer: contract()?.dataConsumerName,
+          provider: contract()?.dataProviderName,
+        })
+      }}
+    </span>
+    <div class="flex flex-col gap-6 p-6 bg-agridata-content-gray rounded-lg">
+      <app-agridata-contact-card
+        [name]="companyName()"
+        [secondaryName]="contract()?.dataConsumerCity"
+        [imageUrl]="contract()?.dataRequestContext?.dataConsumerLogoBase64"
+        [size]="AvatarSize.MEDIUM"
+        [skin]="AvatarSkin.LIGHT"
+      />
+      <span class="text-gray-700">
+        {{
+          t('contract.signing.info', {
+            company: companyName(),
+          })
+        }}
+      </span>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <app-contract-signature-input />
+        <app-contract-signature-input [locked]="true" [position]="2" />
+      </div>
+    </div>
+  </div>
+}

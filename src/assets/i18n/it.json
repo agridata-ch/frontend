@@ -339,7 +339,29 @@
       "sidePanelTitle": "Vista dettagliata"
     },
     "invitationLink": "Link di invito",
-    "productsSystemCode": "Sistema"
+    "productsSystemCode": "Sistema",
+    "contractSigning": {
+      "title": "Firmare il contratto",
+      "contract": {
+        "title": "Contratto",
+        "description": "Firmate il contratto tra {{ consumer }} e {{ provider }}. Non appena entrambe le parti contraenti avranno firmato due volte, lo scambio di dati avrà inizio automaticamente.",
+        "signing": {
+          "info": "Sono necessarie due firme per ciascuna parte contraente. Assicurarsi che anche una seconda persona autorizzata alla firma da parte di {{ company }} firmi il contratto."
+        }
+      },
+      "signatureInput": {
+        "signature": {
+          "dataConsumer": "Firma dei destinatari dei dati",
+          "dataProvider": "Firma dei fornitore di dati"
+        },
+        "badgeText": "Persona {{ position }}",
+        "agbText": "Con la mia firma confermo di aver letto le [Condizioni generali di contratto].",
+        "inReviewBox": {
+          "description": "Firma ancora in sospeso...",
+          "iconAltText": "Immagine con una clessidra e un orologio sullo sfondo"
+        }
+      }
+    }
   },
   "forms": {
     "error": {
