@@ -222,7 +222,7 @@ describe('DataRequestNewComponent', () => {
   describe('handleSubmitAndContinue', () => {
     beforeEach(() => {
       const form = component['form'];
-      jest.spyOn(component['wizard'] as any, 'nextStep').mockImplementation();
+      jest.spyOn(component['wizard']() as any, 'nextStep').mockImplementation();
       jest.spyOn(console, 'error').mockImplementation();
       jest.spyOn(component as any, 'handleSave').mockImplementation(() => Promise.resolve());
       jest.spyOn(form, 'markAllAsTouched').mockImplementation();
@@ -356,8 +356,8 @@ describe('DataRequestNewComponent', () => {
       fixture.detectChanges();
 
       // Mock the wizard's currentStepId signal to return CONTRACT
-      component['wizard'].currentStepId.set('contract');
-      const wizardSpy = jest.spyOn(component['wizard'], 'previousStep');
+      component['wizard']()!.currentStepId.set('contract');
+      const wizardSpy = jest.spyOn(component['wizard']()!, 'previousStep');
 
       await component['handleRetreat']();
 
@@ -377,8 +377,8 @@ describe('DataRequestNewComponent', () => {
       fixture.detectChanges();
 
       // Mock the wizard's currentStepId signal to return CONSUMER
-      component['wizard'].currentStepId.set('consumer');
-      const wizardSpy = jest.spyOn(component['wizard'], 'previousStep');
+      component['wizard']()!.currentStepId.set('consumer');
+      const wizardSpy = jest.spyOn(component['wizard']()!, 'previousStep');
 
       await component['handleRetreat']();
 

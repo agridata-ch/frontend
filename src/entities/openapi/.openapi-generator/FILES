@@ -5,6 +5,7 @@ api.module.ts
 api/api.ts
 api/consentRequestAggregations.service.ts
 api/consentRequests.service.ts
+api/contractRevisions.service.ts
 api/dataProducts.service.ts
 api/dataProviders.service.ts
 api/dataRequests.service.ts
@@ -28,9 +29,11 @@ model/consentRequestCreatedDto.ts
 model/consentRequestFundamentalViewDto.ts
 model/consentRequestProducerViewDto.ts
 model/consentRequestStateEnum.ts
+model/contractRevisionDto.ts
 model/createConsentRequestDto.ts
 model/dataProductDto.ts
 model/dataProviderDto.ts
+model/dataRequestContextDto.ts
 model/dataRequestDescriptionDto.ts
 model/dataRequestDto.ts
 model/dataRequestPurposeDto.ts

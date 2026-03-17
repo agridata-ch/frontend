@@ -1,0 +1,29 @@
+<label
+  class="inline-flex items-center gap-3 group"
+  [class.cursor-pointer]="!disabled()"
+  [class.cursor-not-allowed]="disabled()"
+>
+  <input
+    type="checkbox"
+    class="sr-only"
+    [(ngModel)]="checked"
+    [disabled]="disabled()"
+    [attr.aria-label]="ariaLabel() || label() || null"
+  />
+  <div
+    class="relative w-12.5 h-6.5 rounded-full transition-colors group-has-focus-visible:outline-2"
+    [class.bg-agridata-primary-600]="checked()"
+    [class.bg-gray-300]="!checked()"
+    [class.opacity-50]="disabled()"
+  >
+    <span
+      class="absolute top-1 left-1 w-4.5 h-4.5 bg-white rounded-full shadow-sm transition-transform"
+      [class.translate-x-[24px]]="checked()"
+    ></span>
+  </div>
+  @if (label()) {
+    <span class="text-sm text-agridata-primary-text" [class.opacity-50]="disabled()">
+      {{ label() }}
+    </span>
+  }
+</label>

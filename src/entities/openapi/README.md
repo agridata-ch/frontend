@@ -2,7 +2,7 @@
 
 This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.   - **For Data Consumers**: Select this API subset to view only the endpoints relevant to you: [Data Consumer](/q/swagger-ui/?urls.primaryName=Data+Consumer)  - **For Data Providers**: Select this API subset to view only the endpoints relevant to you: [Data Providers](/q/swagger-ui/?urls.primaryName=Data+Provider)
 
-The version of the OpenAPI document: 1.7.0
+The version of the OpenAPI document: 1.8.0-rc.3
 
 ## Building
 

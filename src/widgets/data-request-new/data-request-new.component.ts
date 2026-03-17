@@ -8,7 +8,7 @@ import {
   input,
   signal,
   untracked,
-  ViewChild,
+  viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -160,6 +160,20 @@ export class DataRequestNewComponent {
   });
 
   // Effects (private)
+  private readonly setInitialWizardStepEffect = effect(() => {
+    const wizard = this.wizard();
+    untracked(() => {
+      if (
+        wizard &&
+        this.dataRequest()?.stateCode === ConsentRequestDetailViewDtoDataRequestStateCode.ToBeSigned
+      ) {
+        wizard.handleChangeStep(
+          this.formControlSteps().findIndex((step) => step.id === FORM_GROUP_NAMES.CONTRACT) || 0,
+        );
+      }
+    });
+  });
+
   private readonly formGroupDisabledEffect = effect(() => {
     const disabled = this.formDisabled();
     const form = this.form;
@@ -195,8 +209,7 @@ export class DataRequestNewComponent {
     }
   });
 
-  @ViewChild(AgridataWizardComponent)
-  protected readonly wizard!: AgridataWizardComponent;
+  protected readonly wizard = viewChild(AgridataWizardComponent);
 
   protected handleClose() {
     this.router.navigate([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH], {
@@ -210,22 +223,24 @@ export class DataRequestNewComponent {
     const nextStepDisabled = this.isNextStepDisabled();
 
     if (!nextStepDisabled) {
-      this.wizard.nextStep();
+      this.wizard()?.nextStep();
     }
   }
 
   protected handlePreviousStep() {
     if (!this.formDisabled()) this.handleSave();
-    this.wizard.previousStep();
+    this.wizard()?.previousStep();
   }
 
   protected handleSave() {
     if (this.formDisabled()) return;
 
-    const id = this.wizard.currentStepId();
+    const id = this.wizard()?.currentStepId();
+    if (!id) return;
+
     const form = this.form;
-    form.get(id)?.markAllAsTouched();
-    this.updateFormSteps(id, form.get(id)?.valid ?? false);
+    form.get(id ?? '')?.markAllAsTouched();
+    this.updateFormSteps(id, form.get(id ?? '')?.valid ?? false);
     return this.createOrSaveDataRequest();
   }
 
@@ -265,7 +280,7 @@ export class DataRequestNewComponent {
         .then((dataRequest: DataRequestDto) => {
           this.dataRequest.set(dataRequest);
           this.updateFormSteps();
-          this.wizard.nextStep();
+          this.wizard()?.nextStep();
         })
         .catch((error) => {
           this.errorService.handleError(error);
@@ -286,8 +301,8 @@ export class DataRequestNewComponent {
         this.dataRequest.set(dataRequest);
         this.updateFormSteps();
 
-        if (this.wizard.currentStepId() === FORM_GROUP_NAMES.CONTRACT) {
-          this.wizard.previousStep();
+        if (this.wizard()?.currentStepId() === FORM_GROUP_NAMES.CONTRACT) {
+          this.wizard()?.previousStep();
         }
       });
   }
@@ -471,7 +486,7 @@ export class DataRequestNewComponent {
   protected isNextStepDisabled(): boolean {
     // Get the current step index and check if the next step is enabled
     const steps = this.formControlSteps();
-    const currentStepId = this.wizard?.currentStepId();
+    const currentStepId = this.wizard()?.currentStepId();
     const currentIndex = steps.findIndex((s) => s.id === currentStepId);
     const nextStep = steps[currentIndex + 1];
 

@@ -91,5 +91,6 @@ export interface ConsentRequestAggregationProducerViewDataRequest {
      * Regex of valid redirect_uri
      */
     validRedirectUriRegex?: string;
+    currentContractRevisionId?: string;
 }
 
