@@ -336,7 +336,13 @@
         "contract": "Vertrag",
         "email": "E-Mail Vorlage"
       },
-      "sidePanelTitle": "Detailansicht"
+      "sidePanelTitle": "Detailansicht",
+      "redirectUriRegex": {
+        "title": "Regel Automatische Weiterleitung",
+        "description": "Definiert, auf welche redirect_uri nach einem Entscheid weitergeleitet werden darf.",
+        "label": "Regex für gültige redirect_uri",
+        "save": "Speichern"
+      }
     },
     "invitationLink": "Einladungslink",
     "productsSystemCode": "System",

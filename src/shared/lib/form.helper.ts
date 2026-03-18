@@ -332,3 +332,17 @@ export function populateFormFromDto<T extends Dto>(
     });
   });
 }
+
+export function createFormControl(
+  initialValue: string,
+  validators: Array<Validators | ValidatorFn> = [],
+  errorMessages: Record<string, () => string> = {},
+): FormControlWithMessages {
+  const control = new FormControl(
+    initialValue,
+    validators as ValidatorFn[],
+  ) as FormControlWithMessages;
+  control.errorMessages = errorMessages;
+
+  return control;
+}

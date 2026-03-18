@@ -47,15 +47,16 @@ export class DataRequestDetailsComponent {
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
 
-  // Input properties
-  readonly dataRequestId = input.required<string>();
-
-  // Output properties
-  readonly closeSidepanel = output<void>();
-
   // Constants
   protected readonly faSpinnerThird = faSpinnerThird;
   protected readonly DETAILS_TABS_ID = DETAILS_TABS_ID;
+
+  // Input properties
+  readonly dataRequestId = input.required<string>();
+  readonly isRedirectUriRegexEditable = input(false);
+
+  // Output properties
+  readonly closeSidepanel = output<void>();
 
   // Signals
   protected readonly activeTabId = signal(DETAILS_TABS_ID.REQUEST);

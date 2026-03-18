@@ -1,0 +1,35 @@
+<div
+  class="flex flex-col gap-4 p-4 bg-agridata-content-gray rounded-lg"
+  *i18n="let t; prefix: 'data-request.details.redirectUriRegex'"
+>
+  <div class="flex flex-col">
+    <span class="text-lg font-semibold">{{ t('title') }}</span>
+    <span class="text-agridata-secondary-text">
+      {{ t('description') }}
+    </span>
+  </div>
+  <form
+    [formGroup]="redirectUriForm"
+    (submit)="handleSubmit()"
+    class="flex flex-col gap-3 md:flex-row md:items-center"
+  >
+    <app-form-control
+      id="validRedirectUriRegex"
+      [control]="getFormControl(redirectUriForm, 'validRedirectUriRegex')"
+      [label]="t('label')"
+      [placeholder]="'^https:\\/\\/www\\.example\\.ch\\/.*$'"
+      [disabled]="!isValidRedirectUriRegexEditable()"
+      class="flex-1"
+    />
+    @if (isValidRedirectUriRegexEditable()) {
+      <app-agridata-button
+        [loading]="isSavingValidRedirectUriRegex()"
+        [variant]="ButtonVariants.Tertiary"
+        (onClick)="handleSubmit()"
+        additionalClass="mt-1"
+      >
+        {{ t('save') }}
+      </app-agridata-button>
+    }
+  </form>
+</div>

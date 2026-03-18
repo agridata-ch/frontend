@@ -13,6 +13,7 @@ import { copyToClipboard } from '@/shared/utils';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';
 import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
+import { DataRequestRedirectUriComponent } from '@/widgets/data-request-redirect-uri';
 
 /**
  * Component for displaying the details of a data request in the "Request" tab of the Data Request Details sidepanel.
@@ -22,38 +23,43 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
 @Component({
   selector: 'app-data-request-details-request',
   imports: [
-    I18nDirective,
     AgridataBadgeComponent,
-    FontAwesomeModule,
     AgridataContactCardComponent,
-    DataRequestPurposeAccordionComponent,
     DataRequestContactComponent,
+    DataRequestPurposeAccordionComponent,
+    FontAwesomeModule,
+    I18nDirective,
+    DataRequestRedirectUriComponent,
   ],
   templateUrl: './data-request-details-request.component.html',
 })
 export class DataRequestDetailsRequestComponent {
+  // Injects
   protected readonly i18nService = inject(I18nService);
   protected readonly metaDataService = inject(MasterDataService);
 
+  // Constants
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
   protected readonly BadgeSize = BadgeSize;
-  protected readonly DataRequestStateEnum = DataRequestStateEnum;
   protected readonly copyToClipboard = copyToClipboard;
+  protected readonly DataRequestStateEnum = DataRequestStateEnum;
   protected readonly faCopy = faCopy;
   protected readonly getBadgeVariant = getBadgeVariant;
   protected readonly getFieldFromLang = getFieldFromLang;
   protected readonly locale = this.i18nService.lang();
 
+  // Input properties
   readonly dataRequest = input.required<DataRequestDto>();
+  readonly isRedirectUriRegexEditable = input(false);
 
+  // Computed signals
   protected readonly formattedSubmissionDate = computed(() =>
     formatDate(this.dataRequest().submissionDate),
   );
   protected readonly invitationLink = computed(() => {
     return `${globalThis.location.origin}/consent-requests/create/${this.dataRequest().id}`;
   });
-
   readonly productsList = computed(() => {
     if (!this.dataRequest()?.dataProviderId) return [];
     return (

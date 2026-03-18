@@ -9,17 +9,11 @@ import {
   Renderer2,
   signal,
 } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { Block, CmsService, ContactFormData, SectionContactFormBlock } from '@/entities/cms';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { FormControlWithMessages, getFormControl } from '@/shared/lib/form.helper';
+import { createFormControl, getFormControl } from '@/shared/lib/form.helper';
 import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
@@ -55,19 +49,19 @@ export class SectionContactFormBlockComponent {
   readonly ButtonVariants = ButtonVariants;
 
   protected readonly contactForm = new FormGroup({
-    firstName: this.createFormControl('', [Validators.required], {
+    firstName: createFormControl('', [Validators.required], {
       required: () => this.i18nService.translate('forms.error.required'),
     }),
-    lastName: this.createFormControl('', [Validators.required], {
+    lastName: createFormControl('', [Validators.required], {
       required: () => this.i18nService.translate('forms.error.required'),
     }),
-    organisation: this.createFormControl(''),
-    email: this.createFormControl('', [Validators.required, Validators.email], {
+    organisation: createFormControl(''),
+    email: createFormControl('', [Validators.required, Validators.email], {
       required: () => this.i18nService.translate('forms.error.required'),
       email: () => this.i18nService.translate('forms.error.pattern'),
     }),
-    phone: this.createFormControl(''),
-    message: this.createFormControl('', [Validators.required, Validators.maxLength(500)], {
+    phone: createFormControl(''),
+    message: createFormControl('', [Validators.required, Validators.maxLength(500)], {
       required: () => this.i18nService.translate('forms.error.required'),
       maxlength: () => this.i18nService.translate('forms.error.maxlength', { max: 500 }),
     }),
@@ -95,20 +89,6 @@ export class SectionContactFormBlockComponent {
         this.renderer.removeChild(document.body, script);
       });
     });
-  }
-
-  private createFormControl(
-    initialValue: string,
-    validators: Array<Validators | ValidatorFn> = [],
-    errorMessages: Record<string, () => string> = {},
-  ): FormControlWithMessages {
-    const control = new FormControl(
-      initialValue,
-      validators as ValidatorFn[],
-    ) as FormControlWithMessages;
-    control.errorMessages = errorMessages;
-
-    return control;
   }
 
   protected readonly handleSubmit = async () => {

@@ -63,6 +63,10 @@
       [purpose]="getFieldFromLang('purpose', locale, dataRequest())"
       [products]="productsList()"
     />
+    <app-data-request-redirect-uri
+      [dataRequest]="dataRequest()"
+      [isValidRedirectUriRegexEditable]="isRedirectUriRegexEditable()"
+    />
     <app-data-request-contact
       [phoneNumber]="dataRequest().contactPhoneNumber"
       [email]="dataRequest().contactEmailAddress"
