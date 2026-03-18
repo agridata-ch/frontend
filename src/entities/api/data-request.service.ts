@@ -4,7 +4,11 @@ import { firstValueFrom } from 'rxjs';
 import { DataRequestsService } from '@/entities/openapi/api/dataRequests.service';
 import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
 
-import { DataRequestDto, DataRequestUpdateDto } from '../openapi';
+import {
+  DataRequestDto,
+  DataRequestUpdateDto,
+  DataRequestValidRedirectUriRegexUpdateDto,
+} from '../openapi';
 
 /**
  * Service for managing data requests through the API. Provides methods to create, update, submit,
@@ -33,6 +37,15 @@ export class DataRequestService {
 
   async updateDataRequestDetails(dataRequestId: string, dataRequest: DataRequestUpdateDto) {
     return firstValueFrom(this.apiService.updateDataRequestDetails(dataRequestId, dataRequest));
+  }
+
+  async updateDataRequestValidRedirectUriRegex(
+    dataRequestId: string,
+    validRedirectUriRegex: DataRequestValidRedirectUriRegexUpdateDto,
+  ): Promise<DataRequestDto> {
+    return firstValueFrom(
+      this.apiService.updateDataRequestValidRedirectUriRegex(dataRequestId, validRedirectUriRegex),
+    );
   }
 
   async deleteDataRequest(dataRequestId: string) {

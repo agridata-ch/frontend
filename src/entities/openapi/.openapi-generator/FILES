@@ -40,6 +40,7 @@ model/dataRequestPurposeDto.ts
 model/dataRequestStateEnum.ts
 model/dataRequestTitleDto.ts
 model/dataRequestUpdateDto.ts
+model/dataRequestValidRedirectUriRegexUpdateDto.ts
 model/dataSourceSystemDto.ts
 model/dataTransferResponse.ts
 model/exceptionDto.ts

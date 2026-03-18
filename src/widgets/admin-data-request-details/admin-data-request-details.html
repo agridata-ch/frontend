@@ -1,6 +1,7 @@
 <ng-container *i18n="let t; prefix: 'admin'">
   <app-data-request-details
     [dataRequestId]="dataRequestId()"
+    [isRedirectUriRegexEditable]="true"
     (closeSidepanel)="handleClose()"
     #details
   >

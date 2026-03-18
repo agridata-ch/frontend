@@ -27,6 +27,7 @@ import {
 } from '@/shared/testing/mocks/mock-master-data-service';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 
+import { DataRequestDetailsRequestComponent } from './data-request-details-request';
 import { DataRequestDetailsComponent } from './data-request-details.component';
 
 describe('DataRequestDetailsComponent', () => {
@@ -199,6 +200,31 @@ describe('DataRequestDetailsComponent', () => {
       sidepanel.componentInstance.closeSidepanel.emit();
 
       expect(emitSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('RedirectUrlRegexEditable', () => {
+    it('should pass isRedirectUriRegexEditable to the request details component', async () => {
+      const newRequest: DataRequestDto = {
+        id: 'test-id',
+        dataProviderId: 'test-provider',
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      };
+
+      dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
+
+      const newFixture = TestBed.createComponent(DataRequestDetailsComponent);
+      const newComponentRef = newFixture.componentRef;
+      newComponentRef.setInput('dataRequestId', 'test-id');
+      newComponentRef.setInput('isRedirectUriRegexEditable', true);
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      const requestDetailsComp = newFixture.debugElement.query(
+        By.directive(DataRequestDetailsRequestComponent),
+      );
+      expect(requestDetailsComp).toBeTruthy();
+      expect(requestDetailsComp.componentInstance.isRedirectUriRegexEditable()).toBe(true);
     });
   });
 });

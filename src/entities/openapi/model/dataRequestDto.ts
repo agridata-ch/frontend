@@ -88,7 +88,7 @@ export interface DataRequestDto {
     dataConsumerLogoBase64?: string;
     targetGroup?: string;
     /**
-     * Regex of valid redirect_uri
+     * Regex of valid redirect_uri. Must compile as regex successfully.
      */
     validRedirectUriRegex?: string;
     currentContractRevisionId?: string;

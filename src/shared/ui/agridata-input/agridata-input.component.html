@@ -1,5 +1,7 @@
 <div
-  class="flex items-center bg-white rounded-md border border-gray-300 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2"
+  class="flex items-center bg-white rounded-md border has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2"
+  [class.border-gray-300]="!hasError()"
+  [class.border-red-500]="hasError()"
 >
   @if (inputPrefix()) {
     <span
@@ -25,7 +27,6 @@
       [type]="type()"
       [placeholder]="placeholder()"
       class="pl-5 py-3 pr-4 placeholder-gray-400 w-full outline-none focus:outline-none rounded-md"
-      [class.border-red-500]="hasError()"
       [class.bg-white]="!disabled()"
       [class.bg-gray-100]="disabled()"
       [class.pl-15]="inputPrefix()"
@@ -48,7 +49,6 @@
         inputPrefix() ? inputPrefix() + '-' + (placeholder() || '') : placeholder()
       "
       class="py-3 pr-4 placeholder-gray-400 w-full outline-none focus:outline-none rounded-md"
-      [class.border-red-500]="hasError()"
       [class.bg-white]="!disabled()"
       [class.bg-gray-100]="disabled()"
       [class.pl-5]="!inputPrefix()"

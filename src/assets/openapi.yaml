@@ -182,7 +182,8 @@ components:
               type: string
               examples:
               - ^https:\/\/www\.dummy-label-organisation\/.*$
-              description: Regex of valid redirect_uri
+              maxLength: 255
+              description: Regex of valid redirect_uri. Must compile as regex successfully.
             currentContractRevisionId:
               $ref: "#/components/schemas/UUID"
               type: string
@@ -478,7 +479,8 @@ components:
               type: string
               examples:
               - ^https:\/\/www\.dummy-label-organisation\/.*$
-              description: Regex of valid redirect_uri
+              maxLength: 255
+              description: Regex of valid redirect_uri. Must compile as regex successfully.
             currentContractRevisionId:
               $ref: "#/components/schemas/UUID"
               type: string
@@ -760,7 +762,8 @@ components:
           type: string
           examples:
           - ^https:\/\/www\.dummy-label-organisation\/.*$
-          description: Regex of valid redirect_uri
+          maxLength: 255
+          description: Regex of valid redirect_uri. Must compile as regex successfully.
         currentContractRevisionId:
           $ref: "#/components/schemas/UUID"
           type: string
@@ -870,6 +873,16 @@ components:
             format: uuid
             pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
           description: List of data products requested
+    DataRequestValidRedirectUriRegexUpdateDto:
+      type: object
+      properties:
+        validRedirectUriRegex:
+          type: string
+          examples:
+          - "^https:\\/\\/([A-Za-z0-9-]+\\.)*bio-suisse\\.ch(\\/.*)?$"
+          maxLength: 255
+          description: Regex used to validate redirect_uri values for this data request.
+            Must compile as regex successfully.
     DataSourceSystemDto:
       type: object
       required:
@@ -1344,14 +1357,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1394,14 +1407,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1443,14 +1456,14 @@ paths:
           description: Not Allowed
         "400":
           description: Bad Request
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1484,14 +1497,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1530,14 +1543,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1573,14 +1586,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1610,14 +1623,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1658,14 +1671,14 @@ paths:
           description: Not Allowed
         "400":
           description: Bad Request
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1707,14 +1720,14 @@ paths:
           description: Not Allowed
         "400":
           description: Bad Request
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1747,14 +1760,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1787,14 +1800,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1849,14 +1862,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1901,14 +1914,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1948,14 +1961,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -1995,14 +2008,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2011,6 +2024,55 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+  /api/agreement/v1/data-requests/{id}/valid-redirect-uri-regex:
+    put:
+      description: Updates the valid redirect URI regex of a specific data request.
+        Only accessible to admins.
+      operationId: updateDataRequestValidRedirectUriRegex
+      tags:
+      - Data Requests
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DataRequestValidRedirectUriRegexUpdateDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataRequestDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Update Data Request Valid Redirect Uri Regex
+      security:
+      - SecurityScheme:
         - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/agreement/v2/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests:
@@ -2045,14 +2107,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2111,14 +2173,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2166,14 +2228,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2222,14 +2284,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2259,14 +2321,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2302,14 +2364,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2346,14 +2408,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2392,14 +2454,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2435,14 +2497,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2464,14 +2526,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2499,14 +2561,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2542,14 +2604,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2593,14 +2655,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2635,14 +2697,14 @@ paths:
           description: Not Allowed
         "400":
           description: Bad Request
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2702,14 +2764,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2745,14 +2807,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2779,14 +2841,14 @@ paths:
           description: Not Authorized
         "403":
           description: Not Allowed
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2811,14 +2873,14 @@ paths:
                 type: object
                 additionalProperties:
                   type: string
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:
@@ -2835,14 +2897,14 @@ paths:
             application/json:
               schema:
                 type: string
-        "404":
-          description: The resource or element was not found
+        "500":
+          description: "Internal server error: unexpected error"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-        "500":
-          description: "Internal server error: unexpected error"
+        "404":
+          description: The resource or element was not found
           content:
             application/json:
               schema:

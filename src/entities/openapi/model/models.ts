@@ -19,6 +19,7 @@ export * from './dataRequestPurposeDto';
 export * from './dataRequestStateEnum';
 export * from './dataRequestTitleDto';
 export * from './dataRequestUpdateDto';
+export * from './dataRequestValidRedirectUriRegexUpdateDto';
 export * from './dataSourceSystemDto';
 export * from './dataTransferResponse';
 export * from './exceptionDto';
