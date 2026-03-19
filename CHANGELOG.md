@@ -1,3 +1,9 @@
+## [1.10.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.4...v1.10.0-rc.5) (2026-03-19)
+
+### Features
+
+- **signature-input:** add signing button ([3e8c8f9](https://github.com/agridata-ch/frontend/commit/3e8c8f9e629e8fe28a5540af5c6966363059c365)), closes [DIGIB2-1275](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1275)
+
 ## [1.10.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.3...v1.10.0-rc.4) (2026-03-19)
 
 ### Features
