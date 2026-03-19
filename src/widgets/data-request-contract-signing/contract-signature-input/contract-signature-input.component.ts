@@ -4,6 +4,7 @@ import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { AgridataToggleComponent } from '@/shared/ui/agridata-toggle';
 import { AgridataBadgeComponent } from '@/shared/ui/badge';
+import { ButtonComponent } from '@/shared/ui/button';
 
 /**
  * Component for inputting the contract signature.
@@ -12,7 +13,7 @@ import { AgridataBadgeComponent } from '@/shared/ui/badge';
  */
 @Component({
   selector: 'app-contract-signature-input',
-  imports: [AgridataBadgeComponent, I18nDirective, AgridataToggleComponent],
+  imports: [AgridataBadgeComponent, I18nDirective, AgridataToggleComponent, ButtonComponent],
   templateUrl: './contract-signature-input.component.html',
 })
 export class ContractSignatureInputComponent {

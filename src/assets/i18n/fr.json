@@ -365,7 +365,9 @@
         "inReviewBox": {
           "description": "Signature en attente...",
           "iconAltText": "Image avec un sablier et une horloge en arrière-plan"
-        }
+        },
+        "signingHint": "Pour confirmer votre signature, vous recevrez un code de vérification par SMS.",
+        "signingButton": "Signez dès maintenant"
       }
     }
   },
