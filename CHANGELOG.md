@@ -1,3 +1,9 @@
+## [1.10.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.3...v1.10.0-rc.4) (2026-03-19)
+
+### Features
+
+- **data-request:** add edit of redirect uri regex as admin ([985a371](https://github.com/agridata-ch/frontend/commit/985a37191fe9b4bf74d9736cb202485ad2f39f85)), closes [DIGIB2-1252](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1252)
+
 ## [1.10.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.2...v1.10.0-rc.3) (2026-03-17)
 
 ### Features
