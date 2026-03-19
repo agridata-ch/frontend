@@ -365,7 +365,9 @@
         "inReviewBox": {
           "description": "Unterzeichnung noch ausstehend...",
           "iconAltText": "Bild mit einer Sanduhr und einer Uhr im Hintergrund"
-        }
+        },
+        "signingHint": "Zur Bestätigung Ihrer Unterschrift erhalten Sie einen Verifizierungscode per SMS.",
+        "signingButton": "Jetzt unterzeichnen"
       }
     }
   },

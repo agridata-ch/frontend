@@ -365,7 +365,9 @@
         "inReviewBox": {
           "description": "Firma ancora in sospeso...",
           "iconAltText": "Immagine con una clessidra e un orologio sullo sfondo"
-        }
+        },
+        "signingHint": "Per confermare la sua firma, riceverà un codice di verifica via SMS.",
+        "signingButton": "Firma ora"
       }
     }
   },
