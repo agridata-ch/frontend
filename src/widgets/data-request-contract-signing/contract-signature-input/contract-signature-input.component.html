@@ -18,6 +18,36 @@
       />
       <span class="text-center">{{ t('inReviewBox.description') }}</span>
     </div>
+  } @else if (isActiveSigningSlot()) {
+    <div class="flex flex-col gap-4">
+      <app-alert [type]="AlertType.INFO" [title]="t('otp.title')">
+        <div class="flex flex-col gap-4 whitespace-pre-line">
+          <span class="font-bold">
+            {{ t('otp.title') }}
+          </span>
+          {{ t('otp.info', { phoneNumber: currentChallenge()?.challenge?.maskedPhoneNumber }) }}
+        </div>
+      </app-alert>
+      <form (submit)="handleVerifySigning($event)" class="flex flex-col gap-4">
+        <app-form-control
+          [label]="t('otp.input.label')"
+          [control]="getFormControl(otpForm, 'otpCode')"
+          [controlType]="ControlTypes.DIGIT_INPUT"
+        />
+        <app-agridata-button
+          [variant]="ButtonVariants.PrimaryAccept"
+          (onClick)="handleVerifySigning($event)"
+        >
+          {{ t('otp.verifyButton') }}
+        </app-agridata-button>
+        <div class="flex flex-col text-center">
+          <app-agridata-button [variant]="ButtonVariants.Tertiary" (onClick)="handleResendOtp()">
+            {{ t('otp.resendButton') }}
+          </app-agridata-button>
+          <span class="text-sm text-agridata-secondary-text">möglich in 30 sek</span>
+        </div>
+      </form>
+    </div>
   } @else {
     <div class="flex gap-3 p-2 items-center bg-agridata-content-gray rounded-lg">
       <app-agridata-toggle [(checked)]="agbChecked" />
@@ -32,7 +62,7 @@
         {{ agbParts().after }}
       </span>
     </div>
-    <app-agridata-button [disabled]="true">
+    <app-agridata-button [disabled]="!agbChecked()" (onClick)="handleStartSigning()">
       {{ t('signingButton') }}
     </app-agridata-button>
     <span>

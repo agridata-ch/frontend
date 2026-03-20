@@ -367,7 +367,16 @@
           "iconAltText": "Image avec un sablier et une horloge en arrière-plan"
         },
         "signingHint": "Pour confirmer votre signature, vous recevrez un code de vérification par SMS.",
-        "signingButton": "Signez dès maintenant"
+        "signingButton": "Signez dès maintenant",
+        "otp": {
+          "title": "Code SMS envoyé",
+          "info": "Vous avez reçu un code au numéro +41 {{ phoneNumber }} de la part d'agridata.ch\n\nCe code est valable pendant 15 minutes. Passé ce délai, vous devrez demander un nouveau code.",
+          "input": {
+            "label": "Saisir le code reçu par SMS"
+          },
+          "verifyButton": "Vérifier le code",
+          "resendButton": "Renvoyer le code SMS"
+        }
       }
     }
   },
@@ -378,7 +387,8 @@
       "maxlength": "Maximum {{max}} caractères autorisés.",
       "minItems": "Minimum {{min}} éléments requis.",
       "maxItems": "Maximum {{max}} éléments autorisés.",
-      "pattern": "Format invalide."
+      "pattern": "Format invalide.",
+      "onlyDigits": "Seuls les chiffres sont autorisés"
     }
   },
   "navigation": {
