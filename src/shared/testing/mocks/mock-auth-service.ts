@@ -52,6 +52,7 @@ export function createMockAuthService(): MockAuthService {
     isAdmin,
 
     // Methods
+    getUserId: jest.fn().mockReturnValue(undefined),
     login: jest.fn(),
     logout: jest.fn(),
     getUserFullName: jest.fn().mockReturnValue(''),

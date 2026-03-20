@@ -11,7 +11,7 @@ import { FormControlWithMessages } from '@/shared/lib/form.helper';
  * with Angular reactive form controls or operates independently with manual value handling. It
  * also emits input and blur events for external handling.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2026-03-20
  */
 @Component({
   selector: 'app-agridata-input',

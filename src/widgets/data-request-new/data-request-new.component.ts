@@ -492,4 +492,18 @@ export class DataRequestNewComponent {
 
     return nextStep.disabled === true;
   }
+
+  protected handleReloadDataRequest() {
+    const dataRequestId = this.currentDataRequestId();
+    if (!dataRequestId) return;
+    this.dataRequestService
+      .fetchDataRequest(dataRequestId)
+      .then((dataRequest: DataRequestDto) => {
+        this.dataRequest.set(dataRequest);
+        this.updateFormSteps();
+      })
+      .catch((error) => {
+        this.errorService.handleError(error);
+      });
+  }
 }

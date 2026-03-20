@@ -74,6 +74,10 @@ export class AuthService {
     return [info?.givenName, info?.familyName].filter(Boolean).join(' ');
   }
 
+  getUserId(): string | undefined {
+    return this.userInfo()?.userId;
+  }
+
   async initializeAuth(): Promise<boolean> {
     // Cache the OIDC checkAuth call to prevent multiple simultaneous calls
     this.authCheckPromise ??= lastValueFrom(this.oidcService.checkAuth());

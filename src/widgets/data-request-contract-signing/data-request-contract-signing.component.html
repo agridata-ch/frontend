@@ -33,8 +33,29 @@
         }}
       </span>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        <app-contract-signature-input />
-        <app-contract-signature-input [locked]="true" [position]="2" />
+        <app-contract-signature-input
+          [slotId]="
+            isDataConsumer
+              ? SignatureSlotCodeEnum.DataConsumer01
+              : SignatureSlotCodeEnum.DataProvider01
+          "
+          [currentChallenge]="currentChallenge()"
+          [existingSignature]="slot1Signature()"
+          (startSigning)="startSigningProcess($event)"
+          (verifySigning)="verifySigningProcess($event.slotId, $event.challengeId, $event.otpCode)"
+        />
+        <app-contract-signature-input
+          [slotId]="
+            isDataConsumer
+              ? SignatureSlotCodeEnum.DataConsumer02
+              : SignatureSlotCodeEnum.DataProvider02
+          "
+          [currentChallenge]="currentChallenge()"
+          [existingSignature]="slot2Signature()"
+          (startSigning)="startSigningProcess($event)"
+          (verifySigning)="verifySigningProcess($event.slotId, $event.challengeId, $event.otpCode)"
+          [showWaitingState]="showSecondSlotWaitingState()"
+        />
       </div>
     </div>
   </div>

@@ -21,6 +21,7 @@ export class ProductTourService {
     const driverInstance = driver({
       animate: true,
       smoothScroll: true,
+      disableActiveInteraction: true,
       steps: steps,
       showProgress: true,
       popoverClass: 'driver-product-tour-theme',

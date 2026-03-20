@@ -15,6 +15,7 @@ import { SidepanelComponent } from '@/shared/sidepanel';
 import {
   createMockDataRequestService,
   createMockI18nService,
+  mockDataRequests,
   MockDataRequestService,
 } from '@/shared/testing/mocks';
 import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
@@ -383,6 +384,62 @@ describe('DataRequestNewComponent', () => {
       await component['handleRetreat']();
 
       expect(wizardSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('handleReloadDataRequest', () => {
+    it('should return early if no dataRequestId exists', async () => {
+      component['currentDataRequestId'].set(undefined);
+
+      component['handleReloadDataRequest']();
+
+      expect(dataRequestService.fetchDataRequest).not.toHaveBeenCalled();
+    });
+
+    it('should call fetchDataRequest with the current dataRequestId', async () => {
+      component['currentDataRequestId'].set('test-id-reload');
+      dataRequestService.fetchDataRequest.mockResolvedValue(mockDataRequests[0]);
+
+      component['handleReloadDataRequest']();
+      await fixture.whenStable();
+
+      expect(dataRequestService.fetchDataRequest).toHaveBeenCalledWith('test-id-reload');
+    });
+
+    it('should update dataRequest signal with fetched data', async () => {
+      const fetchedRequest: DataRequestDto = {
+        id: 'test-id-reload',
+        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      };
+      component['currentDataRequestId'].set('test-id-reload');
+      dataRequestService.fetchDataRequest.mockResolvedValue(fetchedRequest);
+
+      component['handleReloadDataRequest']();
+      await fixture.whenStable();
+
+      expect(component['dataRequest']()).toEqual(fetchedRequest);
+    });
+
+    it('should call updateFormSteps after fetching', async () => {
+      component['currentDataRequestId'].set('test-id-reload');
+      dataRequestService.fetchDataRequest.mockResolvedValue(mockDataRequests[0]);
+      const updateFormStepsSpy = jest.spyOn(component as any, 'updateFormSteps');
+
+      component['handleReloadDataRequest']();
+      await fixture.whenStable();
+
+      expect(updateFormStepsSpy).toHaveBeenCalled();
+    });
+
+    it('should handle errors from fetchDataRequest and forward them to errorService', async () => {
+      const testError = new Error('Test fetch error');
+      component['currentDataRequestId'].set('test-id-reload');
+      dataRequestService.fetchDataRequest.mockRejectedValue(testError);
+
+      component['handleReloadDataRequest']();
+      await fixture.whenStable();
+
+      expect(errorService.handleError).toHaveBeenCalledWith(testError);
     });
   });
 });

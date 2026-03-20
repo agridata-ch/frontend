@@ -30,6 +30,7 @@ model/consentRequestFundamentalViewDto.ts
 model/consentRequestProducerViewDto.ts
 model/consentRequestStateEnum.ts
 model/contractRevisionDto.ts
+model/contractRevisionSignatureDto.ts
 model/createConsentRequestDto.ts
 model/dataProductDto.ts
 model/dataProviderDto.ts
@@ -49,15 +50,18 @@ model/exceptionEnum.ts
 model/farmTypeEnum.ts
 model/legalFormEnum.ts
 model/models.ts
+model/otpChallengeDto.ts
 model/pageResponseDto.ts
 model/pageResponseDtoConsentRequestFundamentalViewDto.ts
 model/pageResponseDtoUserInfoDto.ts
 model/resourceQueryDto.ts
+model/signatureSlotCodeEnum.ts
 model/translationDto.ts
 model/uidDto.ts
 model/uidRegisterAddressDto.ts
 model/uidRegisterOrganisationDto.ts
 model/userInfoDto.ts
 model/userPreferencesDto.ts
+model/verifyOtpRequestDto.ts
 param.ts
 variables.ts
