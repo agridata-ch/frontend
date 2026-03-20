@@ -14,6 +14,7 @@ import { UserPreferencesDto } from './userPreferencesDto';
  * Represents basic user information, such as name, contact details, and address.
  */
 export interface UserInfoDto { 
+    userId?: string;
     /**
      * AgateLoginId of the user.
      */

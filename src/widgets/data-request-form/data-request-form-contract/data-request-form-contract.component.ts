@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nDirective } from '@/shared/i18n';
@@ -17,6 +17,7 @@ import { DataRequestContractSigningComponent } from '@/widgets/data-request-cont
 })
 export class DataRequestFormContractComponent {
   readonly dataRequest = input.required<DataRequestDto>();
+  readonly reloadDataRequest = output<void>();
 
   protected readonly AlertType = AlertType;
   protected readonly DataRequestStateEnum = DataRequestStateEnum;

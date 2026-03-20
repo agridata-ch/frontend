@@ -344,9 +344,7 @@ describe('ConsentRequestDetailsComponent', () => {
 
       jest.advanceTimersByTime(initialValue * 1000);
 
-      // We don't need to check for 0 since the timer doesn't set to exactly 0 in the component
-      // It stops decrementing when currentValue <= 1
-      expect(component['countdownValue']()).toBe(1);
+      expect(component['countdownValue']()).toBe(0);
     });
 
     it('should clear the interval when starting with countdown value 1', () => {

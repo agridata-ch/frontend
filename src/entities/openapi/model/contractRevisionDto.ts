@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ContractRevisionSignatureDto } from './contractRevisionSignatureDto';
 import { DataRequestContextDto } from './dataRequestContextDto';
 
 
@@ -29,5 +30,9 @@ export interface ContractRevisionDto {
      * Contextual information from the parent data request (e.g. logo, reduced metadata)
      */
     dataRequestContext: DataRequestContextDto;
+    /**
+     * List of signatures of the data consumer
+     */
+    consumerSignatures?: Array<ContractRevisionSignatureDto>;
 }
 

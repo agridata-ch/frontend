@@ -1,5 +1,8 @@
 @if (dataRequest().stateCode === DataRequestStateEnum.ToBeSigned) {
-  <app-data-request-contract-signing [contractId]="dataRequest().currentContractRevisionId" />
+  <app-data-request-contract-signing
+    [contractId]="dataRequest().currentContractRevisionId"
+    (reloadDataRequest)="reloadDataRequest.emit()"
+  />
 } @else {
   <div class="flex flex-col gap-6 h-full" *i18n="let t; prefix: 'data-request.form.contract'">
     <app-alert [type]="AlertType.SUCCESS">

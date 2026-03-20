@@ -20,6 +20,12 @@ import { Observable }                                        from 'rxjs';
 import { ContractRevisionDto } from '../model/contractRevisionDto';
 // @ts-ignore
 import { ExceptionDto } from '../model/exceptionDto';
+// @ts-ignore
+import { OtpChallengeDto } from '../model/otpChallengeDto';
+// @ts-ignore
+import { SignatureSlotCodeEnum } from '../model/signatureSlotCodeEnum';
+// @ts-ignore
+import { VerifyOtpRequestDto } from '../model/verifyOtpRequestDto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -39,7 +45,7 @@ export class ContractRevisionsService extends BaseService {
 
     /**
      * Get Contract Revision
-     * Retrieves a specific contract revisionby its ID. Accessible by the consumerthat owns the associated datarequest.
+     * Retrieves a specific contract revision by its ID. Accessible by the consumerthat owns the associated datarequest.
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -84,6 +90,146 @@ export class ContractRevisionsService extends BaseService {
         return this.httpClient.request<ContractRevisionDto>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Initiate Consumer Signature Challenge
+     * Initiates a challenge for a specific signature slot of a specific contract revision.
+     * @param id 
+     * @param slotCode 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public initiateConsumerSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<OtpChallengeDto>;
+    public initiateConsumerSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<OtpChallengeDto>>;
+    public initiateConsumerSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<OtpChallengeDto>>;
+    public initiateConsumerSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling initiateConsumerSignatureChallenge.');
+        }
+        if (slotCode === null || slotCode === undefined) {
+            throw new Error('Required parameter slotCode was null or undefined when calling initiateConsumerSignatureChallenge.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (SecurityScheme) required
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/agreement/v1/contract-revisions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/signatures/${this.configuration.encodeParam({name: "slotCode", value: slotCode, in: "path", style: "simple", explode: false, dataType: "SignatureSlotCodeEnum", dataFormat: undefined})}/otp-challenges`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<OtpChallengeDto>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Verify Consumer Signature
+     * Verifies the otp and adds a signature to a specific signature slot.
+     * @param challengeId 
+     * @param id 
+     * @param slotCode 
+     * @param verifyOtpRequestDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public verifyConsumerSignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContractRevisionDto>;
+    public verifyConsumerSignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContractRevisionDto>>;
+    public verifyConsumerSignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContractRevisionDto>>;
+    public verifyConsumerSignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (challengeId === null || challengeId === undefined) {
+            throw new Error('Required parameter challengeId was null or undefined when calling verifyConsumerSignature.');
+        }
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling verifyConsumerSignature.');
+        }
+        if (slotCode === null || slotCode === undefined) {
+            throw new Error('Required parameter slotCode was null or undefined when calling verifyConsumerSignature.');
+        }
+        if (verifyOtpRequestDto === null || verifyOtpRequestDto === undefined) {
+            throw new Error('Required parameter verifyOtpRequestDto was null or undefined when calling verifyConsumerSignature.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (SecurityScheme) required
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/agreement/v1/contract-revisions/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/signatures/${this.configuration.encodeParam({name: "slotCode", value: slotCode, in: "path", style: "simple", explode: false, dataType: "SignatureSlotCodeEnum", dataFormat: undefined})}/otp-challenges/${this.configuration.encodeParam({name: "challengeId", value: challengeId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/verification`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<ContractRevisionDto>('post', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: verifyOtpRequestDto,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
