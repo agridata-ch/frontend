@@ -12,6 +12,7 @@ import {
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
 import { ContractRevisionDto, SignatureSlotCodeEnum } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
@@ -41,10 +42,11 @@ import { SlotChallenge } from './data-request-contract-signing.model';
   templateUrl: './data-request-contract-signing.component.html',
 })
 export class DataRequestContractSigningComponent {
-  private readonly contractRevisionService = inject(ContractRevisionService);
   private readonly authService = inject(AuthService);
-  private readonly toastService = inject(ToastService);
+  private readonly contractRevisionService = inject(ContractRevisionService);
+  private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
+  private readonly toastService = inject(ToastService);
 
   // Input/Output properties
   readonly contractId = input<string>();
@@ -124,6 +126,9 @@ export class DataRequestContractSigningComponent {
       .startSigningProcess(contractId, slotId)
       .then((challenge) => {
         this.currentChallenge.set({ slotId, challenge });
+      })
+      .catch((error) => {
+        this.errorService.handleError(error);
       });
   };
 

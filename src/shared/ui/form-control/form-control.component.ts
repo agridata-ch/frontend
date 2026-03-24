@@ -46,7 +46,7 @@ export class FormControlComponent {
   readonly options = input<MultiSelectOption[]>([]);
   readonly pattern = input<string | RegExp>('');
   readonly placeholder = input<string>('');
-  readonly length = input<number>(6);
+  readonly length = input<number>(1);
   readonly singleCategorySelection = input<boolean>(false);
   readonly type = input<'text' | 'number'>('text');
 

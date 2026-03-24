@@ -25,6 +25,7 @@ const meta: Meta<FormControlComponent> = {
     id: 'field',
     label: 'Label',
     placeholder: 'Enter value...',
+    length: 1,
   },
 };
 
@@ -165,6 +166,29 @@ export const TextareaInput: Story = {
     controlType: ControlTypes.TEXT_AREA,
     label: 'Message',
     placeholder: 'Write your message...',
+  },
+};
+
+export const DigitInput: Story = {
+  render: (args) => ({
+    props: { ...args, control: new FormControl('') },
+    template: `
+      <app-form-control
+        [control]="control"
+        [controlType]="controlType"
+        [label]="label"
+        [id]="id"
+        [placeholder]="placeholder"
+        [type]="type"
+        [length]="length"
+      />
+    `,
+  }),
+  args: {
+    controlType: ControlTypes.DIGIT_INPUT,
+    label: 'Code',
+    placeholder: 'Enter your code...',
+    type: 'number',
   },
 };
 
