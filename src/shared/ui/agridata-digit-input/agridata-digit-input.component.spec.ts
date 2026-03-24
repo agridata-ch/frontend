@@ -18,6 +18,7 @@ describe('AgridataDigitInputComponent', () => {
     fixture = TestBed.createComponent(AgridataDigitInputComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('control', control);
+    fixture.componentRef.setInput('length', 6);
     fixture.detectChanges();
   });
 
@@ -26,7 +27,9 @@ describe('AgridataDigitInputComponent', () => {
   });
 
   it('should render 6 input boxes by default', () => {
+    fixture.detectChanges();
     const inputs = fixture.nativeElement.querySelectorAll('input');
+
     expect(inputs.length).toBe(6);
   });
 

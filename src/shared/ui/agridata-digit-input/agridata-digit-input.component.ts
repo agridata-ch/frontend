@@ -15,7 +15,7 @@ import { AbstractControl } from '@angular/forms';
 export class AgridataDigitInputComponent {
   // Input properties
   readonly control = input.required<AbstractControl>();
-  readonly length = input<number>(6);
+  readonly length = input<number>(1);
 
   // Signals
   private readonly digitBoxes = viewChildren<ElementRef<HTMLInputElement>>('digitBox');

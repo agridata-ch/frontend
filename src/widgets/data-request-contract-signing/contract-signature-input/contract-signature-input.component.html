@@ -46,6 +46,7 @@
           [label]="t('otp.input.label')"
           [control]="getFormControl(otpForm, 'otpCode')"
           [controlType]="ControlTypes.DIGIT_INPUT"
+          [length]="6"
         />
         <app-agridata-button
           [variant]="ButtonVariants.PrimaryAccept"
