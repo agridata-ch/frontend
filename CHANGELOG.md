@@ -1,3 +1,9 @@
+## [1.10.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.6...v1.10.0-rc.7) (2026-03-24)
+
+### Bug Fixes
+
+- **admin-data-request:** show prodiver name ([065559e](https://github.com/agridata-ch/frontend/commit/065559e3f1b9e8117304dcbf7fe3f63ce62e637a)), closes [DIGIB2-1306](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1306)
+
 ## [1.10.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.5...v1.10.0-rc.6) (2026-03-24)
 
 ### Features
