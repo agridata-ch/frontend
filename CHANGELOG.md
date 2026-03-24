@@ -1,3 +1,9 @@
+## [1.10.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.5...v1.10.0-rc.6) (2026-03-24)
+
+### Features
+
+- **signature:** add contract signature ([20a81d7](https://github.com/agridata-ch/frontend/commit/20a81d79e5ec55d9eeebcc87838e71c140855c18)), closes [DIGIB2-306](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-306)
+
 ## [1.10.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.4...v1.10.0-rc.5) (2026-03-19)
 
 ### Features
