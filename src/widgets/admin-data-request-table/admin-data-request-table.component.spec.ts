@@ -150,13 +150,18 @@ describe('DataRequestTableComponent', () => {
     const metadata = component['dataRequestsTableMetaData']();
     const providerColumn = metadata.columns[3];
     const row = component['dataRequests']()[0];
+    const item = mockDataRequests[0];
     expect(row).toBeTruthy();
 
-    expect(providerColumn.renderer.type).toEqual('function');
+    mockI18nService.useObjectTranslation.mockReturnValue('Translated Provider Name');
 
-    if (providerColumn.renderer.type === 'function') {
-      const result = providerColumn.renderer.cellRenderFn(row);
-      expect(result).toBe('Agis');
+    expect(providerColumn.sortValueFn).toBeDefined();
+    if (providerColumn.sortValueFn) {
+      const result = providerColumn.sortValueFn(item);
+      expect(result).toBe('Translated Provider Name');
+      expect(mockI18nService.useObjectTranslation).toHaveBeenCalledWith(
+        item.dataSourceSystem?.dataProvider.name,
+      );
     }
   });
 });
