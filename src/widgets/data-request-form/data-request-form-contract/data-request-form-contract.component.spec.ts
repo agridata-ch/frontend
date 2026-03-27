@@ -1,4 +1,5 @@
-import { ComponentFixture, ComponentRef, TestBed } from '@angular/core/testing';
+import { ComponentRef } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContractRevisionService } from '@/entities/api';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
@@ -50,10 +51,10 @@ describe('DataRequestFormContractComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show contract signing when stateCode is ToBeSigned', () => {
+  it('should show contract signing when stateCode is ToBeSignedByConsumer', () => {
     componentRef.setInput('dataRequest', {
       id: 'dr-2',
-      stateCode: DataRequestStateEnum.ToBeSigned,
+      stateCode: DataRequestStateEnum.ToBeSignedByConsumer,
       currentContractRevisionId: 'cr-1',
     });
     fixture.detectChanges();
@@ -64,7 +65,7 @@ describe('DataRequestFormContractComponent', () => {
     expect(contractSigning).toBeTruthy();
   });
 
-  it('should show alert when stateCode is not ToBeSigned', () => {
+  it('should show alert when stateCode is not ToBeSignedByConsumer', () => {
     const alert = fixture.nativeElement.querySelector('app-alert');
     expect(alert).toBeTruthy();
   });

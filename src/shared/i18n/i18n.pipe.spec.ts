@@ -15,7 +15,7 @@ describe('I18nPipe', () => {
   });
 
   it('should create an instance', () => {
-    const pipe = new I18nPipe(translocoService, undefined, undefined, cdr);
+    const pipe = new I18nPipe(translocoService, undefined, cdr);
     expect(pipe).toBeTruthy();
   });
 });

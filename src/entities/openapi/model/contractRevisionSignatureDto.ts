@@ -17,7 +17,7 @@ export interface ContractRevisionSignatureDto {
     signatureSlotCode: SignatureSlotCodeEnum;
     userId: string;
     /**
-     * ID of the user of the signature
+     * Name of the user of the signature
      */
     name: string;
     timestamp: string;

@@ -4,8 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
-import { DataRequestDto } from '@/entities/openapi';
-import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
+import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { createMockI18nService } from '@/shared/testing/mocks';
 import {
@@ -48,7 +47,7 @@ describe('DataRequestRedirectUriComponent', () => {
     componentRef.setInput('dataRequest', {
       id: 'test-id',
       dataProviderId: 'test-provider',
-      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      stateCode: DataRequestStateEnum.Draft,
     } as DataRequestDto);
 
     fixture.detectChanges();
@@ -59,7 +58,7 @@ describe('DataRequestRedirectUriComponent', () => {
       componentRef.setInput('dataRequest', {
         id: 'test-id',
         dataProviderId: 'test-provider',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
         validRedirectUriRegex: '^https://example\\.ch/.*$',
       } as DataRequestDto);
       fixture.detectChanges();

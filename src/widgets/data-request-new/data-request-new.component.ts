@@ -25,8 +25,7 @@ import { debounceTime, firstValueFrom } from 'rxjs';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestUpdateDto } from '@/assets/formSchemas/agridata-schemas.json';
 import { DataRequestService } from '@/entities/api';
-import { DataRequestDto } from '@/entities/openapi';
-import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
+import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/pages/data-requests-consumer';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
@@ -41,6 +40,7 @@ import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AgridataWizardComponent, WizardStep } from '@/widgets/agridata-wizard';
+import { DataRequestCompletionComponent } from '@/widgets/data-request-completion';
 import {
   DataRequestFormConsumerComponent,
   DataRequestFormProducerComponent,
@@ -80,6 +80,7 @@ import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
     ErrorOutletComponent,
     SidepanelComponent,
     DataRequestFormContractComponent,
+    DataRequestCompletionComponent,
   ],
   templateUrl: './data-request-new.component.html',
 })
@@ -97,8 +98,7 @@ export class DataRequestNewComponent {
   protected readonly form = this.createForm();
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly FORM_GROUP_NAMES = FORM_GROUP_NAMES;
-  protected readonly ConsentRequestDetailViewDtoDataRequestStateCode =
-    ConsentRequestDetailViewDtoDataRequestStateCode;
+  protected readonly DataRequestStateEnum = DataRequestStateEnum;
   protected readonly ToastType = ToastType;
   protected readonly nextIcon = faArrowRight;
   protected readonly previousIcon = faArrowLeft;
@@ -118,7 +118,6 @@ export class DataRequestNewComponent {
   protected readonly completionLabel = this.i18nService.translateSignal(
     'data-request.wizard.steps.completion',
   );
-  protected readonly logoFile = signal<File | null>(null);
   protected readonly previewLabel = this.i18nService.translateSignal(
     'data-request.wizard.steps.preview',
   );
@@ -131,10 +130,13 @@ export class DataRequestNewComponent {
 
   // contains current data request state
   protected readonly dataRequest = signal<DataRequestDto | undefined>(undefined);
+  protected readonly logoFile = signal<File | null>(null);
   // writable signal used when data request is created
   protected readonly currentDataRequestId = signal<string | undefined>(undefined);
-  protected readonly isSaving = signal(false);
-  protected readonly refreshListNeeded = signal(false);
+  protected readonly isSaving = signal<boolean>(false);
+  protected readonly isHandlingReleaseDataRequest = signal<boolean>(false);
+  protected readonly hasFreshReleasedToProvider = signal<boolean>(false);
+  protected readonly refreshListNeeded = signal<boolean>(false);
   protected readonly formControlSteps = signal<WizardStep[]>(
     dataRequestFormsModel.map((step) => {
       const isDisabled =
@@ -151,24 +153,36 @@ export class DataRequestNewComponent {
     }),
   );
 
+  protected readonly canReleaseDataRequest = computed(() => {
+    const request = this.dataRequest();
+    return request?.stateCode === DataRequestStateEnum.ToBeReleasedByConsumer;
+  });
+
   protected readonly formDisabled = computed(() => {
     const request = this.dataRequest();
-    return (
-      !!request?.stateCode &&
-      request.stateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Draft
-    );
+    return !!request?.stateCode && request.stateCode !== DataRequestStateEnum.Draft;
   });
 
   // Effects (private)
   private readonly setInitialWizardStepEffect = effect(() => {
     const wizard = this.wizard();
     untracked(() => {
-      if (
-        wizard &&
-        this.dataRequest()?.stateCode === ConsentRequestDetailViewDtoDataRequestStateCode.ToBeSigned
-      ) {
+      const stateCode = this.dataRequest()?.stateCode;
+      if (wizard && stateCode === DataRequestStateEnum.ToBeSignedByConsumer) {
         wizard.handleChangeStep(
           this.formControlSteps().findIndex((step) => step.id === FORM_GROUP_NAMES.CONTRACT) || 0,
+        );
+      } else if (
+        wizard &&
+        (
+          [
+            DataRequestStateEnum.ToBeReleasedByConsumer,
+            DataRequestStateEnum.ToBeSignedByProvider,
+          ] as DataRequestStateEnum[]
+        ).includes(stateCode as DataRequestStateEnum)
+      ) {
+        wizard.handleChangeStep(
+          this.formControlSteps().findIndex((step) => step.id === FORM_GROUP_NAMES.COMPLETION) || 0,
         );
       }
     });
@@ -192,14 +206,16 @@ export class DataRequestNewComponent {
   private readonly updateDataRequestFromInputEffect = effect(() => {
     const request = this.initialDataRequest();
     if (request?.id) {
-      this.dataRequest.set(request);
-      populateFormFromDto(
-        this.form,
-        request as unknown as Record<string, unknown>,
-        dataRequestFormsModel,
-      );
-      this.form.markAllAsTouched();
-      this.updateFormSteps();
+      untracked(() => {
+        this.dataRequest.set(request);
+        populateFormFromDto(
+          this.form,
+          request as unknown as Record<string, unknown>,
+          dataRequestFormsModel,
+        );
+        this.form.markAllAsTouched();
+        this.updateFormSteps();
+      });
     }
   });
 
@@ -230,6 +246,7 @@ export class DataRequestNewComponent {
   protected handlePreviousStep() {
     if (!this.formDisabled()) this.handleSave();
     this.wizard()?.previousStep();
+    this.hasFreshReleasedToProvider.set(false);
   }
 
   protected handleSave() {
@@ -244,13 +261,32 @@ export class DataRequestNewComponent {
     return this.createOrSaveDataRequest();
   }
 
-  protected handleSaveAndComplete() {
+  protected async handleRelease() {
     const form = this.form;
     form.markAllAsTouched();
     if (form.invalid) {
-      console.error('Form is invalid, cannot save data request');
+      console.error('Form is invalid, cannot release data request');
       return;
     }
+
+    const dataRequestId = this.currentDataRequestId();
+    if (!dataRequestId) {
+      console.error('Cannot release data request without an id');
+      return;
+    }
+
+    this.isHandlingReleaseDataRequest.set(true);
+    await this.dataRequestService
+      .releaseDataRequestToProvider(dataRequestId)
+      .then((dataRequest: DataRequestDto) => {
+        this.dataRequest.set(dataRequest);
+        this.updateFormSteps();
+        this.hasFreshReleasedToProvider.set(true);
+      })
+      .catch((error) => {
+        this.errorService.handleError(error);
+      })
+      .finally(() => this.isHandlingReleaseDataRequest.set(false));
   }
 
   protected handleSaveLogo(logo: File) {
@@ -308,13 +344,19 @@ export class DataRequestNewComponent {
   }
 
   private checkExternalCompletion(formGroupName: string): boolean {
+    const stateCode = this.dataRequest()?.stateCode;
     // Logic for contract and completion steps
-    if (
-      formGroupName === FORM_GROUP_NAMES.CONTRACT ||
-      formGroupName === FORM_GROUP_NAMES.COMPLETION
-    ) {
-      // Example: Check if contract is signed or whatever condition you need
-      return false;
+    if (formGroupName === FORM_GROUP_NAMES.CONTRACT) {
+      return (
+        [
+          DataRequestStateEnum.ToBeReleasedByConsumer,
+          DataRequestStateEnum.ToBeSignedByProvider,
+        ] as DataRequestStateEnum[]
+      ).includes(stateCode as DataRequestStateEnum);
+    } else if (formGroupName === FORM_GROUP_NAMES.COMPLETION) {
+      return (
+        stateCode === DataRequestStateEnum.ToBeSignedByProvider //TODO: change to ToBeReleasedByProvider when that state is implemented DIGIB2-1204
+      );
     }
     return true;
   }
@@ -429,7 +471,6 @@ export class DataRequestNewComponent {
 
       case FORM_COMPLETION_STRATEGIES.FORM_VALIDATION:
       default:
-        // Default strategy - use form validation
         return formGroup?.valid && Object.keys(formGroup.controls).length > 0;
     }
   }
@@ -445,12 +486,12 @@ export class DataRequestNewComponent {
         let isDisabled = false;
         if (step.id === FORM_GROUP_NAMES.CONTRACT) {
           // CONTRACT is disabled if Draft or no stateCode (new request)
-          isDisabled =
-            !currentStateCode ||
-            currentStateCode === ConsentRequestDetailViewDtoDataRequestStateCode.Draft;
+          isDisabled = !currentStateCode || currentStateCode === DataRequestStateEnum.Draft;
         }
         if (step.id === FORM_GROUP_NAMES.COMPLETION) {
-          isDisabled = currentStateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Active;
+          isDisabled =
+            currentStateCode !== DataRequestStateEnum.ToBeReleasedByConsumer &&
+            currentStateCode !== DataRequestStateEnum.ToBeSignedByProvider;
         }
 
         // If we're only updating a specific step and this isn't it, only update disabled state
@@ -493,10 +534,10 @@ export class DataRequestNewComponent {
     return nextStep.disabled === true;
   }
 
-  protected handleReloadDataRequest() {
+  protected async handleReloadDataRequest() {
     const dataRequestId = this.currentDataRequestId();
     if (!dataRequestId) return;
-    this.dataRequestService
+    await this.dataRequestService
       .fetchDataRequest(dataRequestId)
       .then((dataRequest: DataRequestDto) => {
         this.dataRequest.set(dataRequest);

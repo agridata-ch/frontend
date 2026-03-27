@@ -1,0 +1,128 @@
+<div class="flex flex-col gap-6" *i18n="let t; prefix: 'data-request.completion'">
+  <!-- alert -->
+  @if (showFreshSavedAlert()) {
+    <app-alert [type]="AlertType.SUCCESS">
+      <div class="flex flex-col gap-4 whitespace-pre-line">
+        <span class="font-bold">
+          {{ t('releasedByConsumer.title') }}
+        </span>
+        {{ t('releasedByConsumer.message', { provider: dataProviderName() }) }}
+      </div>
+    </app-alert>
+  } @else if (shouldBeSignedByProvider()) {
+    <app-alert [type]="AlertType.INFO">
+      <div class="flex flex-col gap-4 whitespace-pre-line">
+        <span class="font-bold">
+          {{ t('waitingForProvider.title', { provider: dataProviderName() }) }}
+        </span>
+        {{ t('waitingForProvider.message', { provider: dataProviderName() }) }}
+      </div>
+    </app-alert>
+  }
+  <h3>{{ t('title') }}</h3>
+  <div class="flex gap-6">
+    <div class="flex flex-1/2 flex-col gap-4 p-4 border rounded-lg border-agridata-stroke">
+      <h4>{{ t('dataRequest.heading') }}</h4>
+      <div class="flex gap-6">
+        <div class="flex flex-col gap-1">
+          <span class="text-agridata-tertiary-text text-sm">
+            {{ t('dataRequest.submissionDate') }}
+          </span>
+          <span class="font-bold">
+            {{ formattedSubmissionDate() }}
+          </span>
+        </div>
+        <div class="flex flex-col gap-1">
+          <span class="text-agridata-tertiary-text text-sm">
+            {{ t('dataRequest.humanFriendlyId') }}
+          </span>
+          <span class="font-bold">
+            {{ dataRequest().humanFriendlyId }}
+          </span>
+        </div>
+      </div>
+      <div class="flex flex-col gap-1">
+        <span class="text-agridata-tertiary-text text-sm">
+          {{ t('state') }}
+        </span>
+        <app-agridata-badge
+          [text]="getStatusTranslation(dataRequest().stateCode)"
+          [variant]="getBadgeVariant(dataRequest().stateCode)"
+          [size]="BadgeSize.SM"
+        />
+      </div>
+    </div>
+    <div class="flex flex-1/2 flex-col gap-4 p-4 border rounded-lg border-agridata-stroke">
+      <h4>{{ t('dataProducts.heading') }}</h4>
+      <div class="flex gap-2 flex-wrap">
+        @for (product of dataRequestProducts(); track product) {
+          <span class="bg-gray-300 rounded-sm text-xs px-2 py-1">{{ product.name }}</span>
+        }
+      </div>
+    </div>
+  </div>
+  <ng-container *i18n="let t; prefix: 'data-request.completion.signingStatus'">
+    <h4>{{ t('heading') }}</h4>
+    <div class="flex gap-6">
+      <div class="flex flex-1/2 flex-col gap-4 p-4 border rounded-lg border-agridata-stroke">
+        <span class="text-sm">{{ t('dataConsumer.heading') }}</span>
+        <app-agridata-contact-card
+          [name]="contract()?.dataConsumerName"
+          [secondaryName]="contract()?.dataConsumerCity"
+          [imageUrl]="contract()?.dataRequestContext?.dataConsumerLogoBase64"
+          [size]="AvatarSize.MEDIUM"
+          [skin]="AvatarSkin.LIGHT"
+        />
+        @for (signature of contract()?.consumerSignatures; track signature) {
+          <div class="flex flex-col gap-2">
+            <app-agridata-badge
+              class="self-end"
+              [text]="t('badgeText', { position: $index + 1 })"
+            />
+            <app-alert [type]="AlertType.SUCCESS">
+              <div class="flex flex-col whitespace-pre-line">
+                <span>
+                  {{
+                    t('signedDescription', {
+                      name: signature?.name,
+                    })
+                  }}
+                </span>
+                {{ signature?.timestamp | agridataDate: 'middle' }}
+              </div>
+            </app-alert>
+          </div>
+        }
+      </div>
+      <div class="flex flex-1/2 flex-col gap-4 p-4 border rounded-lg border-agridata-stroke">
+        <span class="text-sm">{{ t('dataProvider.heading') }}</span>
+        <app-agridata-contact-card
+          [name]="dataProviderName()"
+          [size]="AvatarSize.MEDIUM"
+          [skin]="AvatarSkin.LIGHT"
+        />
+        <!-- TODO: Implement provider details DIGIB2-1204 -->
+        <div class="flex flex-col grow gap-4 justify-center rounded-lg py-6">
+          <img
+            src="assets/images/data-request-timer.svg"
+            [alt]="t('dataProvider.inReviewBox.iconAltText')"
+            class="h-10"
+          />
+          <span class="text-center">{{ t('dataProvider.inReviewBox.description') }}</span>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div class="flex py-3 px-4 border border-agridata-stroke rounded-lg">
+    <app-agridata-button
+      [variant]="ButtonVariants.Link"
+      [href]="'https://agridata.ch'"
+      [target]="HrefTarget.Blank"
+    >
+      <div class="flex items-center gap-2">
+        <span> {{ t('abgLink') }}</span>
+        <fa-icon [icon]="agbButtonIcon"></fa-icon>
+      </div>
+    </app-agridata-button>
+  </div>
+</div>

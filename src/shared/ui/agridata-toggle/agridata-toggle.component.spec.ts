@@ -1,4 +1,5 @@
-import { ComponentFixture, ComponentRef, TestBed } from '@angular/core/testing';
+import { ComponentRef } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AgridataToggleComponent } from './agridata-toggle.component';
 

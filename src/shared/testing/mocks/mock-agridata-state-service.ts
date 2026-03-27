@@ -49,6 +49,7 @@ export function createMockAgridataStateService(): MockAgridataStateService {
       currentRoute,
       backendInfo,
     },
+    saveTourIntroSeen: jest.fn(),
   } satisfies MockAgridataStateService;
 }
 

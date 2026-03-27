@@ -6,8 +6,7 @@ import { By } from '@angular/platform-browser';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService, UidRegisterService } from '@/entities/api';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { DataRequestDto } from '@/entities/openapi';
-import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
+import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { SidepanelComponent } from '@/shared/sidepanel';
@@ -81,7 +80,7 @@ describe('DataRequestDetailsComponent', () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
         dataProviderId: 'test-provider',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
         dataConsumerDisplayName: 'Test Consumer',
         dataConsumerCity: 'Test City',
         contactPhoneNumber: '1234567890',
@@ -106,7 +105,7 @@ describe('DataRequestDetailsComponent', () => {
       const slowRequest: DataRequestDto = {
         id: 'test-id',
         dataProviderId: 'test-provider',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       };
 
       let resolveRequest: (value: DataRequestDto) => void;
@@ -134,7 +133,7 @@ describe('DataRequestDetailsComponent', () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
         dataProviderId: 'test-provider',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
         dataConsumerDisplayName: 'Test Consumer',
       };
 
@@ -183,7 +182,7 @@ describe('DataRequestDetailsComponent', () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
         dataProviderId: 'test-provider',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       };
 
       dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
@@ -208,7 +207,7 @@ describe('DataRequestDetailsComponent', () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
         dataProviderId: 'test-provider',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       };
 
       dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);

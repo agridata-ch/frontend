@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
-import { ConsentRequestProducerViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestProducerViewDtoDataRequestStateCode';
 import { I18nService } from '@/shared/i18n';
 import {
   MockResources,
@@ -67,7 +66,7 @@ describe('DataRequestTableComponent', () => {
 
   it('getFilteredActions returns only details action for states other than InReview and Draft', () => {
     const toBeSignedRequest = mockDataRequests.find(
-      (r) => r.stateCode === DataRequestStateEnum.ToBeSigned,
+      (r) => r.stateCode === DataRequestStateEnum.ToBeSignedByConsumer,
     )!;
     const actions = component.getFilteredActions(toBeSignedRequest);
     expect(actions.length).toBe(1);
@@ -76,7 +75,7 @@ describe('DataRequestTableComponent', () => {
 
   it('getFilteredActions returns details and retreat actions for InReview state', () => {
     const actions = component.getFilteredActions(
-      mockDataRequests.find((r) => r.stateCode === DataRequestStateEnum.InReview)!,
+      mockDataRequests.find((r) => r.stateCode === DataRequestStateEnum.InReview),
     );
     expect(actions.length).toBe(2);
     expect(actions[0].label).toBe('data-request.table.tableActions.details');
@@ -91,7 +90,7 @@ describe('DataRequestTableComponent', () => {
   it('should get translated state value', () => {
     const i18nServiceSpy = jest.spyOn(mockI18nService, 'translate');
 
-    component['getStatusTranslation'](ConsentRequestProducerViewDtoDataRequestStateCode.Draft);
+    component['getStatusTranslation'](DataRequestStateEnum.Draft);
 
     expect(i18nServiceSpy).toHaveBeenCalledWith('data-request.stateCode.DRAFT');
   });
@@ -103,7 +102,10 @@ describe('DataRequestTableComponent', () => {
   it('getBadgeVariant returns correct BadgeVariant for each state', () => {
     expect(component['getBadgeVariant'](DataRequestStateEnum.Draft)).toBe(BadgeVariant.INFO);
     expect(component['getBadgeVariant'](DataRequestStateEnum.InReview)).toBe(BadgeVariant.INFO);
-    expect(component['getBadgeVariant'](DataRequestStateEnum.ToBeSigned)).toBe(
+    expect(component['getBadgeVariant'](DataRequestStateEnum.ToBeSignedByConsumer)).toBe(
+      BadgeVariant.WARNING,
+    );
+    expect(component['getBadgeVariant'](DataRequestStateEnum.ToBeReleasedByConsumer)).toBe(
       BadgeVariant.WARNING,
     );
     expect(component['getBadgeVariant'](DataRequestStateEnum.Active)).toBe(BadgeVariant.SUCCESS);

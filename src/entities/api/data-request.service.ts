@@ -2,10 +2,10 @@ import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { DataRequestsService } from '@/entities/openapi/api/dataRequests.service';
-import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
 
 import {
   DataRequestDto,
+  DataRequestStateEnum,
   DataRequestUpdateDto,
   DataRequestValidRedirectUriRegexUpdateDto,
 } from '../openapi';
@@ -61,7 +61,7 @@ export class DataRequestService {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
-        JSON.stringify(ConsentRequestDetailViewDtoDataRequestStateCode.InReview),
+        JSON.stringify(DataRequestStateEnum.InReview),
       ),
     );
   }
@@ -70,7 +70,7 @@ export class DataRequestService {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
-        JSON.stringify(ConsentRequestDetailViewDtoDataRequestStateCode.Draft),
+        JSON.stringify(DataRequestStateEnum.Draft),
       ),
     );
   }
@@ -79,7 +79,7 @@ export class DataRequestService {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
-        JSON.stringify(ConsentRequestDetailViewDtoDataRequestStateCode.ToBeSigned),
+        JSON.stringify(DataRequestStateEnum.ToBeSignedByConsumer),
       ),
     );
   }
@@ -88,7 +88,16 @@ export class DataRequestService {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
-        JSON.stringify(ConsentRequestDetailViewDtoDataRequestStateCode.Active),
+        JSON.stringify(DataRequestStateEnum.Active),
+      ),
+    );
+  }
+
+  async releaseDataRequestToProvider(dataRequestId: string) {
+    return firstValueFrom(
+      this.apiService.setDataRequestStatus(
+        dataRequestId,
+        JSON.stringify(DataRequestStateEnum.ToBeSignedByProvider),
       ),
     );
   }

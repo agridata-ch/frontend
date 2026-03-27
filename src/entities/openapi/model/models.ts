@@ -32,6 +32,7 @@ export * from './otpChallengeDto';
 export * from './pageResponseDto';
 export * from './pageResponseDtoConsentRequestFundamentalViewDto';
 export * from './pageResponseDtoUserInfoDto';
+export * from './producerIdentifier';
 export * from './resourceQueryDto';
 export * from './signatureSlotCodeEnum';
 export * from './translationDto';
