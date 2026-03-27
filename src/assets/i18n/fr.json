@@ -284,7 +284,7 @@
         "completion": "Conclusion"
       },
       "saveDraft": "Mise en cache",
-      "saveAndComplete": "Enregistrer et soumettre",
+      "releaseToProvider": "Soumettre auprès du fournisseur",
       "next": "Suivant",
       "previous": "Retour",
       "submitAndContinue": "Soumettre la demande et continuer",
@@ -296,8 +296,10 @@
     "stateCode": {
       "IN_REVIEW": "En cours d'examen",
       "DRAFT": "Projet",
-      "TO_BE_SIGNED": "Signature ouverte",
-      "ACTIVE": "Actif"
+      "TO_BE_SIGNED_BY_CONSUMER": "Signature ouverte",
+      "ACTIVE": "Actif",
+      "TO_BE_RELEASED_BY_CONSUMER": "Signature ouverte",
+      "TO_BE_SIGNED_BY_PROVIDER": "Signature ouverte"
     },
     "table": {
       "tableActions": {
@@ -370,13 +372,16 @@
         "signingButton": "Signez dès maintenant",
         "otp": {
           "title": "Code SMS envoyé",
-          "info": "Vous avez reçu un code au numéro +41 {{ phoneNumber }} de la part d'agridata.ch\n\nCe code est valable pendant 15 minutes. Passé ce délai, vous devrez demander un nouveau code.",
+          "info": "Vous avez reçu un code au numéro {{ phoneNumber }} de la part d'agridata.ch\n\nCe code est valable pendant 15 minutes. Passé ce délai, vous devrez demander un nouveau code.",
           "input": {
             "label": "Saisir le code reçu par SMS"
           },
           "verifyButton": "Vérifier le code",
           "resendButton": "Renvoyer le code SMS",
           "resendInfo": "Il sera possible de renvoyer le message dans {{ seconds }} secondes"
+        },
+        "alreadySigned": {
+          "description": "Signé par {{ name }}"
         }
       },
       "verifySigning": {
@@ -388,6 +393,43 @@
           "title": "Erreur lors de la signature",
           "message": "Une erreur s'est produite lors de la signature. Veuillez réessayer plus tard."
         }
+      }
+    },
+    "completion": {
+      "dataRequest": {
+        "submissionDate": "Date de soumission",
+        "humanFriendlyId": "ID",
+        "state": "Statut du contrat",
+        "heading": "Demande de données"
+      },
+      "dataProducts": {
+        "heading": "Produits de données"
+      },
+      "title": "Résumé et conclusion",
+      "signingStatus": {
+        "heading": "État de la signature",
+        "badgeText": "Personne {{ position }}",
+        "signedDescription": "Signé par {{ name }}",
+        "dataConsumer": {
+          "heading": "Signature des destinataires des données"
+        },
+        "dataProvider": {
+          "heading": "Signature du fournisseur de données",
+          "inReviewBox": {
+            "description": "Signature en attente...",
+            "iconAltText": "Image avec un sablier et une horloge en arrière-plan"
+          }
+        }
+      },
+      "abgLink": "Nos CGV",
+      "state": "Statut du contrat",
+      "releasedByConsumer": {
+        "title": "Merci beaucoup, votre demande a bien été envoyée",
+        "message": "Dès que {{ provider }} aura signé le contrat, la demande sera validée et vous en serez informé."
+      },
+      "waitingForProvider": {
+        "title": "La signature est du fait de {{ provider }}",
+        "message": "Dès que {{ provider }} aura signé le contrat, la demande sera validée et vous en serez informé."
       }
     }
   },
@@ -633,8 +675,5 @@
     },
     "startTour": "Commencer la visite",
     "title": "Instructions"
-  },
-  "data-request.contractSigning.signatureInput.alreadySigned": {
-    "description": "Signé par {{ name }}"
   }
 }

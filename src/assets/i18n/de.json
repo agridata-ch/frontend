@@ -284,7 +284,7 @@
         "completion": "Abschluss"
       },
       "saveDraft": "Zwischenspeichern",
-      "saveAndComplete": "Speichern und Einreichen",
+      "releaseToProvider": "Beim Anbieter einreichen",
       "next": "Weiter",
       "previous": "Zurück",
       "submitAndContinue": "Antrag einreichen & weiter",
@@ -296,8 +296,10 @@
     "stateCode": {
       "IN_REVIEW": "In Prüfung",
       "DRAFT": "Entwurf",
-      "TO_BE_SIGNED": "Unterzeichnung offen",
-      "ACTIVE": "Aktiv"
+      "TO_BE_SIGNED_BY_CONSUMER": "Unterzeichnung offen",
+      "ACTIVE": "Aktiv",
+      "TO_BE_RELEASED_BY_CONSUMER": "Unterzeichnung offen",
+      "TO_BE_SIGNED_BY_PROVIDER": "Unterzeichnung offen"
     },
     "table": {
       "tableActions": {
@@ -370,13 +372,16 @@
         "signingButton": "Jetzt unterzeichnen",
         "otp": {
           "title": "SMS Code versendet",
-          "info": "Sie haben einen Code an die Nr. +41 {{ phoneNumber }} von agridata.ch erhalten\n\nDer Code ist für 15 Minuten gültig. Nach Ablauf der Zeit, müssen Sie den Code erneut anfordern.",
+          "info": "Sie haben einen Code an die Nr. {{ phoneNumber }} von agridata.ch erhalten\n\nDer Code ist für 15 Minuten gültig. Nach Ablauf der Zeit, müssen Sie den Code erneut anfordern.",
           "input": {
             "label": "SMS Code eingeben"
           },
           "verifyButton": "Code bestätigen",
           "resendButton": "SMS Code erneut senden",
           "resendInfo": "Erneut senden möglich in {{ seconds }} Sekunden"
+        },
+        "alreadySigned": {
+          "description": "Unterzeichnet von {{ name }}"
         }
       },
       "verifySigning": {
@@ -388,6 +393,43 @@
           "title": "Fehler beim Unterzeichnen",
           "message": "Beim Unterzeichnen ist ein Fehler passiert. Bitte versuchen Sie es später erneut."
         }
+      }
+    },
+    "completion": {
+      "dataRequest": {
+        "submissionDate": "Datum der Einreichung",
+        "humanFriendlyId": "ID",
+        "state": "Vertragsstatus",
+        "heading": "Datenantrag"
+      },
+      "dataProducts": {
+        "heading": "Datenprodukte"
+      },
+      "title": "Zusammenfassung & Abschluss",
+      "signingStatus": {
+        "heading": "Status Unterzeichnung",
+        "badgeText": "Person {{ position }}",
+        "signedDescription": "Unterzeichnet von {{ name }}",
+        "dataConsumer": {
+          "heading": "Unterzeichnung Datenbezüger"
+        },
+        "dataProvider": {
+          "heading": "Unterzeichnung Datenanbieter",
+          "inReviewBox": {
+            "description": "Unterzeichnung noch ausstehend...",
+            "iconAltText": "Bild mit einer Sanduhr und einer Uhr im Hintergrund"
+          }
+        }
+      },
+      "abgLink": "Unsere AGB's",
+      "state": "Vertragsstatus",
+      "releasedByConsumer": {
+        "title": "Herzlichen Dank, Sie haben den Antrag erfolgreich eingereicht",
+        "message": "Sobald {{ provider }} den Vertrag unterzeichnet hat, wird der Antrag aktiviert und Sie werden benachrichtigt."
+      },
+      "waitingForProvider": {
+        "title": "Die Unterzeichnung liegt bei {{ provider }}",
+        "message": "Sobald {{ provider }} den Vertrag unterzeichnet hat, wird der Antrag aktiviert und Sie werden benachrichtigt."
       }
     }
   },
@@ -634,8 +676,5 @@
     },
     "startTour": "Tour starten",
     "title": "Anleitung"
-  },
-  "data-request.contractSigning.signatureInput.alreadySigned": {
-    "description": "Unterzeichnet von {{ name }}"
   }
 }

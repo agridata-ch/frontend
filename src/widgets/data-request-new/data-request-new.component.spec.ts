@@ -2,12 +2,12 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideRouter, Router, withComponentInputBinding } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { DataRequestService, UidRegisterService } from '@/entities/api';
+import { ContractRevisionService, DataRequestService, UidRegisterService } from '@/entities/api';
+import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
-import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
@@ -20,9 +20,17 @@ import {
 } from '@/shared/testing/mocks';
 import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 import {
+  createMockContractRevisionService,
+  MockContractRevisionService,
+} from '@/shared/testing/mocks/mock-contract-revision-service';
+import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
 } from '@/shared/testing/mocks/mock-error-handler.service';
+import {
+  createMockMasterDataService,
+  MockMasterDataService,
+} from '@/shared/testing/mocks/mock-master-data-service';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 
 import { DataRequestNewComponent } from './data-request-new.component';
@@ -32,12 +40,16 @@ describe('DataRequestNewComponent', () => {
   let component: DataRequestNewComponent;
   let componentRef: ComponentRef<DataRequestNewComponent>;
   let authService: MockAuthService;
+  let contractRevisionService: MockContractRevisionService;
   let dataRequestService: MockDataRequestService;
   let errorService: MockErrorHandlerService;
+  let masterDataService: MockMasterDataService;
 
   beforeEach(async () => {
+    contractRevisionService = createMockContractRevisionService();
     dataRequestService = createMockDataRequestService();
     errorService = createMockErrorHandlerService();
+    masterDataService = createMockMasterDataService();
 
     // Create factory mock and provide it so tests can mutate signals directly
     authService = createMockAuthService();
@@ -45,9 +57,11 @@ describe('DataRequestNewComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestNewComponent, ReactiveFormsModule, AgridataWizardComponent],
       providers: [
+        { provide: ContractRevisionService, useValue: contractRevisionService },
         { provide: DataRequestService, useValue: dataRequestService },
         { provide: I18nService, useValue: createMockI18nService() },
         { provide: AuthService, useValue: authService },
+        { provide: MasterDataService, useValue: masterDataService },
         { provide: UidRegisterService, useValue: createMockI18nService() },
         { provide: ErrorHandlerService, useValue: errorService },
         provideRouter(
@@ -79,7 +93,7 @@ describe('DataRequestNewComponent', () => {
   it('should call createDataRequest when saving a new draft', async () => {
     const returned: DataRequestDto = {
       id: 'ABC123',
-      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      stateCode: DataRequestStateEnum.Draft,
     };
     dataRequestService.createDataRequest.mockResolvedValue(returned);
 
@@ -120,7 +134,7 @@ describe('DataRequestNewComponent', () => {
   it('should compute formDisabled with Status Draft', () => {
     component['dataRequest'].set({
       id: '123',
-      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      stateCode: DataRequestStateEnum.Draft,
     });
     expect(component['formDisabled']()).toBe(false);
   });
@@ -128,7 +142,7 @@ describe('DataRequestNewComponent', () => {
   it('should compute formDisabled with Status InReview', async () => {
     component['dataRequest'].set({
       id: '123',
-      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.InReview,
+      stateCode: DataRequestStateEnum.InReview,
     });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -142,7 +156,7 @@ describe('DataRequestNewComponent', () => {
   it('should create request on createOrSetDataRequestId without logo', async () => {
     const newDto: DataRequestDto = {
       id: 'NEW123',
-      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      stateCode: DataRequestStateEnum.Draft,
     };
     dataRequestService.createDataRequest = jest.fn().mockResolvedValue(newDto);
     await component['createOrSaveDataRequest']();
@@ -154,7 +168,7 @@ describe('DataRequestNewComponent', () => {
   it('should create request on createOrSetDataRequestId with logo', async () => {
     const newDto: DataRequestDto = {
       id: 'NEW123',
-      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      stateCode: DataRequestStateEnum.Draft,
     };
     dataRequestService.createDataRequest = jest.fn().mockResolvedValue(newDto);
     const file = new File([''], 'logo.png', { type: 'image/png' });
@@ -263,7 +277,7 @@ describe('DataRequestNewComponent', () => {
     it('should update dataRequest when initialDataRequest is set', async () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       };
       componentRef.setInput('initialDataRequest', newRequest);
 
@@ -287,7 +301,7 @@ describe('DataRequestNewComponent', () => {
       component['currentDataRequestId'].set('test-id-123');
       const retreatedRequest: DataRequestDto = {
         id: 'test-id-123',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       };
       dataRequestService.retreatDataRequest.mockResolvedValue(retreatedRequest);
 
@@ -308,7 +322,7 @@ describe('DataRequestNewComponent', () => {
       component['currentDataRequestId'].set('test-id-456');
       const retreatedRequest: DataRequestDto = {
         id: 'test-id-456',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       };
       dataRequestService.retreatDataRequest.mockResolvedValue(retreatedRequest);
 
@@ -321,7 +335,7 @@ describe('DataRequestNewComponent', () => {
       component['currentDataRequestId'].set('test-id-789');
       const retreatedRequest: DataRequestDto = {
         id: 'test-id-789',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       };
       dataRequestService.retreatDataRequest.mockResolvedValue(retreatedRequest);
 
@@ -334,7 +348,7 @@ describe('DataRequestNewComponent', () => {
       component['currentDataRequestId'].set('test-id-update');
       const retreatedRequest: DataRequestDto = {
         id: 'test-id-update',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       };
       dataRequestService.retreatDataRequest.mockResolvedValue(retreatedRequest);
       const updateFormStepsSpy = jest.spyOn(component as any, 'updateFormSteps');
@@ -348,7 +362,7 @@ describe('DataRequestNewComponent', () => {
       component['currentDataRequestId'].set('test-id-contract');
       const retreatedRequest: DataRequestDto = {
         id: 'test-id-contract',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       };
       dataRequestService.retreatDataRequest.mockResolvedValue(retreatedRequest);
 
@@ -369,7 +383,7 @@ describe('DataRequestNewComponent', () => {
       component['currentDataRequestId'].set('test-id-other');
       const retreatedRequest: DataRequestDto = {
         id: 'test-id-other',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       };
       dataRequestService.retreatDataRequest.mockResolvedValue(retreatedRequest);
 
@@ -409,7 +423,7 @@ describe('DataRequestNewComponent', () => {
     it('should update dataRequest signal with fetched data', async () => {
       const fetchedRequest: DataRequestDto = {
         id: 'test-id-reload',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       };
       component['currentDataRequestId'].set('test-id-reload');
       dataRequestService.fetchDataRequest.mockResolvedValue(fetchedRequest);
@@ -440,6 +454,225 @@ describe('DataRequestNewComponent', () => {
       await fixture.whenStable();
 
       expect(errorService.handleError).toHaveBeenCalledWith(testError);
+    });
+  });
+
+  describe('handleClose', () => {
+    it('should navigate to data requests consumer path with refresh state', () => {
+      const router = TestBed.inject(Router);
+      const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+      component['refreshListNeeded'].set(true);
+
+      component['handleClose']();
+
+      expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH], {
+        state: { refresh: true },
+      });
+    });
+
+    it('should pass false for refresh state when refreshListNeeded is false', () => {
+      const router = TestBed.inject(Router);
+      const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+
+      component['handleClose']();
+
+      expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH], {
+        state: { refresh: false },
+      });
+    });
+  });
+
+  describe('canReleaseDataRequest', () => {
+    it('should return true when stateCode is ToBeReleasedByConsumer', () => {
+      component['dataRequest'].set({
+        id: '123',
+        stateCode: DataRequestStateEnum.ToBeReleasedByConsumer,
+      });
+      expect(component['canReleaseDataRequest']()).toBe(true);
+    });
+
+    it('should return false when stateCode is Draft', () => {
+      component['dataRequest'].set({
+        id: '123',
+        stateCode: DataRequestStateEnum.Draft,
+      });
+      expect(component['canReleaseDataRequest']()).toBe(false);
+    });
+  });
+
+  describe('handleRelease', () => {
+    beforeEach(() => {
+      jest.spyOn(console, 'error').mockImplementation();
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    it('should return early if form is invalid', async () => {
+      Object.defineProperty(component['form'], 'invalid', { get: () => true });
+
+      await component['handleRelease']();
+
+      expect(dataRequestService.releaseDataRequestToProvider).not.toHaveBeenCalled();
+    });
+
+    it('should return early if no dataRequestId exists', async () => {
+      Object.defineProperty(component['form'], 'invalid', { get: () => false });
+      component['currentDataRequestId'].set(undefined);
+
+      await component['handleRelease']();
+
+      expect(dataRequestService.releaseDataRequestToProvider).not.toHaveBeenCalled();
+    });
+
+    it('should call releaseDataRequestToProvider and update state on success', async () => {
+      const releasedRequest: DataRequestDto = {
+        id: 'release-id',
+        stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+      };
+      Object.defineProperty(component['form'], 'invalid', { get: () => false });
+      component['currentDataRequestId'].set('release-id');
+      dataRequestService.releaseDataRequestToProvider.mockResolvedValue(releasedRequest);
+
+      await component['handleRelease']();
+
+      expect(dataRequestService.releaseDataRequestToProvider).toHaveBeenCalledWith('release-id');
+      expect(component['dataRequest']()).toEqual(releasedRequest);
+      expect(component['hasFreshReleasedToProvider']()).toBe(true);
+      expect(component['isHandlingReleaseDataRequest']()).toBe(false);
+    });
+
+    it('should handle errors from releaseDataRequestToProvider', async () => {
+      const testError = new Error('Release error');
+      Object.defineProperty(component['form'], 'invalid', { get: () => false });
+      component['currentDataRequestId'].set('release-id');
+      dataRequestService.releaseDataRequestToProvider.mockRejectedValue(testError);
+
+      await component['handleRelease']();
+
+      expect(errorService.handleError).toHaveBeenCalledWith(testError);
+      expect(component['isHandlingReleaseDataRequest']()).toBe(false);
+    });
+  });
+
+  describe('handleSubmitAndContinue error handling', () => {
+    it('should handle errors from submitDataRequest', async () => {
+      const testError = new Error('Submit error');
+      const form = component['form'];
+
+      jest.spyOn(component as any, 'handleSave').mockResolvedValue(undefined);
+      jest.spyOn(form, 'markAllAsTouched').mockImplementation();
+      jest.spyOn(component as any, 'updateFormSteps').mockImplementation();
+      Object.defineProperty(form, 'valid', { get: () => true });
+      component['currentDataRequestId'].set('test-id');
+      dataRequestService.submitDataRequest.mockRejectedValue(testError);
+
+      await component['handleSubmitAndContinue']();
+
+      expect(errorService.handleError).toHaveBeenCalledWith(testError);
+      expect(component['isSaving']()).toBe(false);
+    });
+  });
+
+  describe('setInitialWizardStepEffect', () => {
+    it('should navigate to CONTRACT step when stateCode is ToBeSignedByConsumer', async () => {
+      const newFixture = TestBed.createComponent(DataRequestNewComponent);
+      const newComponentRef = newFixture.componentRef;
+
+      newComponentRef.setInput('initialDataRequest', {
+        id: 'test-id',
+        stateCode: DataRequestStateEnum.ToBeSignedByConsumer,
+      });
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      const wizard = newFixture.componentInstance['wizard']()!;
+      expect(wizard.currentStepId()).toBe('contract');
+    });
+
+    it('should navigate to COMPLETION step when stateCode is ToBeReleasedByConsumer', async () => {
+      const newFixture = TestBed.createComponent(DataRequestNewComponent);
+      const newComponentRef = newFixture.componentRef;
+
+      newComponentRef.setInput('initialDataRequest', {
+        id: 'test-id',
+        stateCode: DataRequestStateEnum.ToBeReleasedByConsumer,
+      });
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      const wizard = newFixture.componentInstance['wizard']()!;
+      expect(wizard.currentStepId()).toBe('completion');
+    });
+
+    it('should navigate to COMPLETION step when stateCode is ToBeSignedByProvider', async () => {
+      const newFixture = TestBed.createComponent(DataRequestNewComponent);
+      const newComponentRef = newFixture.componentRef;
+
+      newComponentRef.setInput('initialDataRequest', {
+        id: 'test-id',
+        stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+      });
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      const wizard = newFixture.componentInstance['wizard']()!;
+      expect(wizard.currentStepId()).toBe('completion');
+    });
+  });
+
+  describe('handleNextStep with disabled next step', () => {
+    it('should not call wizard.nextStep when next step is disabled', () => {
+      const wizard = component['wizard']()!;
+      const nextStepSpy = jest.spyOn(wizard, 'nextStep');
+      jest.spyOn(component as any, 'handleSave').mockImplementation();
+      jest.spyOn(component as any, 'isNextStepDisabled').mockReturnValue(true);
+
+      component['handleNextStep']();
+
+      expect(nextStepSpy).not.toHaveBeenCalled();
+    });
+
+    it('should call wizard.nextStep when next step is not disabled', () => {
+      const wizard = component['wizard']()!;
+      const nextStepSpy = jest.spyOn(wizard, 'nextStep');
+      jest.spyOn(component as any, 'handleSave').mockImplementation();
+      jest.spyOn(component as any, 'isNextStepDisabled').mockReturnValue(false);
+
+      component['handleNextStep']();
+
+      expect(nextStepSpy).toHaveBeenCalled();
+    });
+
+    it('should not call handleSave when form is disabled', () => {
+      const handleSaveSpy = jest.spyOn(component as any, 'handleSave');
+      jest.spyOn(component as any, 'isNextStepDisabled').mockReturnValue(true);
+      component['dataRequest'].set({
+        id: '123',
+        stateCode: DataRequestStateEnum.InReview,
+      });
+
+      component['handleNextStep']();
+
+      expect(handleSaveSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('isNextStepDisabled', () => {
+    it('should return true when next step is disabled', () => {
+      // Default state: CONTRACT and COMPLETION are disabled, wizard starts at step 0 (CONSUMER)
+      // Navigate to PRODUCER (step 3), next is CONTRACT which is disabled
+      component['wizard']()!.handleChangeStep(3);
+
+      expect(component['isNextStepDisabled']()).toBe(true);
+    });
+
+    it('should return false when next step is enabled', () => {
+      // At step 0 (CONSUMER), next step is REQUEST which is enabled
+      component['wizard']()!.handleChangeStep(0);
+
+      expect(component['isNextStepDisabled']()).toBe(false);
     });
   });
 });

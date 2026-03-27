@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nDirective } from '@/shared/i18n';
@@ -21,4 +21,12 @@ export class DataRequestFormContractComponent {
 
   protected readonly AlertType = AlertType;
   protected readonly DataRequestStateEnum = DataRequestStateEnum;
+
+  protected isWaitingForSignature = computed(() => {
+    const currentStateCode = this.dataRequest().stateCode as DataRequestStateEnum;
+    return (
+      currentStateCode !== DataRequestStateEnum.Draft &&
+      currentStateCode !== DataRequestStateEnum.InReview
+    );
+  });
 }

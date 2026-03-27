@@ -19,7 +19,7 @@ export const mockDataRequests: DataRequestDto[] = [
   } as DataRequestDto,
   {
     id: '3',
-    stateCode: DataRequestStateEnum.ToBeSigned,
+    stateCode: DataRequestStateEnum.ToBeSignedByConsumer,
     submissionDate: '2025-01-03',
     humanFriendlyId: 'REQ-003',
     title: { de: 'Request C' },
@@ -47,5 +47,6 @@ export function createMockDataRequestService(): MockDataRequestService {
     updateDataRequestDetails: jest.fn().mockResolvedValue(undefined),
     updateDataRequestValidRedirectUriRegex: jest.fn().mockResolvedValue(undefined),
     uploadLogo: jest.fn().mockResolvedValue(undefined),
+    releaseDataRequestToProvider: jest.fn().mockResolvedValue(mockDataRequests[0]),
   } satisfies MockDataRequestService;
 }

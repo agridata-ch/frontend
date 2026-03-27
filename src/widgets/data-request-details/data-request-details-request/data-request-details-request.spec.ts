@@ -2,8 +2,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { DataRequestDto, DataProductDto } from '@/entities/openapi';
-import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
+import { DataRequestDto, DataProductDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { createMockI18nService } from '@/shared/testing/mocks';
 import {
@@ -39,7 +38,7 @@ describe('DataRequestDetailsRequestComponent', () => {
       id: 'test-id',
       dataProviderId: 'test-provider',
       submissionDate: '2026-01-09T10:00:00Z',
-      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      stateCode: DataRequestStateEnum.Draft,
     } as DataRequestDto);
 
     fixture.detectChanges();
@@ -51,7 +50,7 @@ describe('DataRequestDetailsRequestComponent', () => {
         id: 'test-id',
         dataProviderId: 'test-provider',
         submissionDate: '2026-01-09T10:00:00Z',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       } as DataRequestDto);
       fixture.detectChanges();
 
@@ -74,7 +73,7 @@ describe('DataRequestDetailsRequestComponent', () => {
         id: 'test-id',
         dataProviderId: 'test-provider',
         products: ['product1', 'product2'],
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       } as DataRequestDto);
       fixture.detectChanges();
 
@@ -89,9 +88,7 @@ describe('DataRequestDetailsRequestComponent', () => {
 
   describe('getStatusTranslation', () => {
     it('should return translated status for valid stateCode', () => {
-      const result = component['getStatusTranslation'](
-        ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
-      );
+      const result = component['getStatusTranslation'](DataRequestStateEnum.Draft);
       expect(result).toBeDefined();
     });
 

@@ -113,7 +113,9 @@ components:
               enum:
               - DRAFT
               - IN_REVIEW
-              - TO_BE_SIGNED
+              - TO_BE_SIGNED_BY_CONSUMER
+              - TO_BE_RELEASED_BY_CONSUMER
+              - TO_BE_SIGNED_BY_PROVIDER
               - ACTIVE
               description: State of the data request
             dataConsumerLegalName:
@@ -312,6 +314,13 @@ components:
           examples:
           - GRANTED
           description: State of the consent request
+        lastModifiedDateTime:
+          type: string
+          format: datetime
+          examples:
+          - 2025-06-16T11:04:51.823889
+          description: Date and time of the most recent modification to the consent
+            request
     ConsentRequestProducerViewDto:
       type: object
       required:
@@ -410,7 +419,9 @@ components:
               enum:
               - DRAFT
               - IN_REVIEW
-              - TO_BE_SIGNED
+              - TO_BE_SIGNED_BY_CONSUMER
+              - TO_BE_RELEASED_BY_CONSUMER
+              - TO_BE_SIGNED_BY_PROVIDER
               - ACTIVE
               description: State of the data request
             dataConsumerLegalName:
@@ -569,7 +580,7 @@ components:
           type: string
           examples:
           - John Doe
-          description: ID of the user of the signature
+          description: Name of the user of the signature
         timestamp:
           $ref: "#/components/schemas/LocalDateTime"
           type: string
@@ -729,7 +740,9 @@ components:
           enum:
           - DRAFT
           - IN_REVIEW
-          - TO_BE_SIGNED
+          - TO_BE_SIGNED_BY_CONSUMER
+          - TO_BE_RELEASED_BY_CONSUMER
+          - TO_BE_SIGNED_BY_PROVIDER
           - ACTIVE
           description: State of the data request
         dataConsumerLegalName:
@@ -824,7 +837,9 @@ components:
       enum:
       - DRAFT
       - IN_REVIEW
-      - TO_BE_SIGNED
+      - TO_BE_SIGNED_BY_CONSUMER
+      - TO_BE_RELEASED_BY_CONSUMER
+      - TO_BE_SIGNED_BY_PROVIDER
       - ACTIVE
     DataRequestTitleDto:
       type: object
@@ -1176,6 +1191,22 @@ components:
           examples:
           - 10
           description: Number of items per page.
+    ProducerIdentifier:
+      type: object
+      properties:
+        uid:
+          type: string
+          examples:
+          - CHE123456789
+          description: Producer UID
+        bur:
+          type:
+          - string
+          - "null"
+          examples:
+          - A12345678
+          description: "Producer BUR, only set when the producer must additionally\
+            \ be identified by BUR."
     ResourceQueryDto:
       type: object
       properties:
@@ -2020,7 +2051,10 @@ paths:
         required: true
         schema:
           $ref: "#/components/schemas/UUID"
-      - name: lastModifiedFrom
+      - description: Only consent requests that were modified after this timestamp
+          are returned.
+        example: 2025-01-01T09:00:00
+        name: lastModifiedFrom
         in: query
         schema:
           allOf:
@@ -2081,12 +2115,16 @@ paths:
       tags:
       - Data Requests
       parameters:
-      - name: id
+      - description: The UUID of the data request
+        example: 3da3a459-d3c2-48af-b8d0-02bc95146468
+        name: id
         in: path
         required: true
         schema:
           $ref: "#/components/schemas/UUID"
-      - name: kt-id-p
+      - description: The kt-id-p identifier of the producer
+        example: FLXXA0001
+        name: kt-id-p
         in: path
         required: true
         schema:
@@ -2274,12 +2312,16 @@ paths:
       tags:
       - Data Requests
       parameters:
-      - name: id
+      - description: The UUID of the data request
+        example: 3da3a459-d3c2-48af-b8d0-02bc95146468
+        name: id
         in: path
         required: true
         schema:
           $ref: "#/components/schemas/UUID"
-      - name: kt-id-p
+      - description: The kt-id-p identifier of the producer
+        example: FLXXA0001
+        name: kt-id-p
         in: path
         required: true
         schema:
@@ -2489,6 +2531,60 @@ paths:
       summary: Data Transfer
       security:
       - SecurityScheme: []
+      x-api-subset: Data Consumer
+  /api/data-transfer/v2/product/{productId}/modified-producers:
+    get:
+      description: Returns producer IDs for which either a new consent was granted
+        or data has changed at the upstream provider since the given timestamp. Only
+        producer IDs with a currently valid consent are included. This endpoint requires
+        the product to have change detection configured.
+      operationId: getModifiedProducers
+      tags:
+      - Data Transfer V2
+      parameters:
+      - description: productId for which the change detection is requested
+        example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
+        name: productId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - description: Only changes and new consents after this date are returned.
+        example: 2025-01-01
+        name: since
+        in: query
+        schema:
+          $ref: "#/components/schemas/LocalDate"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProducerIdentifier"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Modified Producers
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: Data Consumer
   /api/products/v1:
     get:
@@ -3103,7 +3199,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.8.0-rc.7
+  version: 1.8.0-rc.13
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

@@ -2,8 +2,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { DataProductDto, DataRequestDto } from '@/entities/openapi';
-import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
+import { DataProductDto, DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { createMockI18nService } from '@/shared/testing/mocks/mock-i18n-service';
 import {
@@ -37,7 +36,7 @@ describe('DataRequestPreviewComponent', () => {
     // Set required input before detectChanges
     const mockDataRequest: DataRequestDto = {
       id: 'test-id',
-      stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+      stateCode: DataRequestStateEnum.Draft,
       title: { de: 'Test Title' },
       description: { de: 'Test Description' },
       products: ['product1'],
@@ -61,7 +60,7 @@ describe('DataRequestPreviewComponent', () => {
 
       const mockDataRequest: DataRequestDto = {
         id: 'test-id',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
         products: ['product1'],
         dataProviderId: 'provider-1',
       };
@@ -80,7 +79,7 @@ describe('DataRequestPreviewComponent', () => {
 
       const mockDataRequest: DataRequestDto = {
         id: 'test-id',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
         products: [],
       };
 

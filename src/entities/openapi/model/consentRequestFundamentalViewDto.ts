@@ -30,6 +30,10 @@ export interface ConsentRequestFundamentalViewDto {
      * State of the consent request
      */
     stateCode?: ConsentRequestStateEnum;
+    /**
+     * Date and time of the most recent modification to the consent request
+     */
+    lastModifiedDateTime?: string;
 }
 export namespace ConsentRequestFundamentalViewDto {
 }

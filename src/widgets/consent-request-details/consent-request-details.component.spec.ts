@@ -10,8 +10,7 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { ConsentRequestProducerViewDto } from '@/entities/openapi';
-import { ConsentRequestProducerViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestProducerViewDtoDataRequestStateCode';
+import { ConsentRequestProducerViewDto, DataRequestStateEnum } from '@/entities/openapi';
 import { REDIRECT_TIMEOUT } from '@/pages/consent-request-producer/consent-request-producer.page.model';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { createMockActivatedRoute, MockActivatedRoute } from '@/shared/testing/mocks';
@@ -172,7 +171,7 @@ describe('ConsentRequestDetailsComponent', () => {
         dataRequest: {
           ...mockConsentRequests[0].dataRequest,
           validRedirectUriRegex: '^https://valid-external-redirect\\.com$',
-          stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Draft,
+          stateCode: DataRequestStateEnum.Draft,
         },
       } as ConsentRequestProducerViewDto;
       consentRequestService.fetchConsentRequest.mockResolvedValue(mockRequest);
@@ -196,7 +195,7 @@ describe('ConsentRequestDetailsComponent', () => {
         ...mockConsentRequests[0],
         dataRequest: {
           ...mockConsentRequests[0].dataRequest,
-          stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Draft,
+          stateCode: DataRequestStateEnum.Draft,
         },
       } as ConsentRequestProducerViewDto;
       consentRequestService.fetchConsentRequest.mockResolvedValue(mockRequest);
@@ -221,7 +220,7 @@ describe('ConsentRequestDetailsComponent', () => {
         dataRequest: {
           ...mockConsentRequests[0].dataRequest,
           validRedirectUriRegex: '^https://valid-external-redirect\\.com$',
-          stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Draft,
+          stateCode: DataRequestStateEnum.Draft,
         },
       } as ConsentRequestProducerViewDto;
       consentRequestService.fetchConsentRequest.mockResolvedValue(mockRequest);
@@ -247,7 +246,7 @@ describe('ConsentRequestDetailsComponent', () => {
         dataRequest: {
           ...mockConsentRequests[0].dataRequest,
           validRedirectUriRegex: '([incomplete-regex',
-          stateCode: ConsentRequestProducerViewDtoDataRequestStateCode.Draft,
+          stateCode: DataRequestStateEnum.Draft,
         },
       } as ConsentRequestProducerViewDto;
       consentRequestService.fetchConsentRequest.mockResolvedValue(mockRequest);

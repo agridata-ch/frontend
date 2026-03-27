@@ -152,7 +152,6 @@ export class DataRequestContractSigningComponent {
         );
         this.currentChallenge.set(null);
         if (response.id) {
-          console.log('Setting active contract ID to:', response.id);
           this.activeContractId.set(response.id);
           this.reloadDataRequest.emit();
         }

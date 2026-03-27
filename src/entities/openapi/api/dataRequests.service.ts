@@ -177,7 +177,7 @@ export class DataRequestsService extends BaseService {
      * Get Consent Requests Of Data Request
      * Retrieves the consent requests of a specific data request. Accessible to the provider who owns the data request.
      * @param id 
-     * @param lastModifiedFrom 
+     * @param lastModifiedFrom Only consent requests that were modified after this timestamp are returned.
      * @param page 
      * @param size 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -245,8 +245,8 @@ export class DataRequestsService extends BaseService {
     /**
      * Get Consent Requests Of Data Request And Kt Id P
      * &lt;strong&gt;This endpoint is deprecated, because it does not return the name of the UIDs. Please use [/v2/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests](#/Data%20Requests/getConsentRequestsOfDataRequestAndKtIdPv2) instead.&lt;/strong&gt;&lt;br&gt;&lt;br&gt;Retrieves all consent requests associated with a specific data request and kt-id-p. Accessible to the consumer who owns the data request.
-     * @param id 
-     * @param ktIdP 
+     * @param id The UUID of the data request
+     * @param ktIdP The kt-id-p identifier of the producer
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      * @deprecated
@@ -307,8 +307,8 @@ export class DataRequestsService extends BaseService {
     /**
      * Get Consent Requests Of Data Request And Kt Id Pv 2
      * Retrieves all consent requests associated with a specific data request and kt-id-p. Accessible to the consumer who owns the data request and for admin users.
-     * @param id 
-     * @param ktIdP 
+     * @param id The UUID of the data request
+     * @param ktIdP The kt-id-p identifier of the producer
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
