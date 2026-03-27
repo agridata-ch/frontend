@@ -370,13 +370,16 @@
         "signingButton": "Firma ora",
         "otp": {
           "title": "Codice SMS inviato",
-          "info": "Ha ricevuto un codice al numero +41 {{ phoneNumber }} da agridata.ch\n\nIl codice è valido per 15 minuti. Trascorso questo tempo, dovrà richiederlo nuovamente.",
+          "info": "Ha ricevuto un codice al numero {{ phoneNumber }} da agridata.ch\n\nIl codice è valido per 15 minuti. Trascorso questo tempo, dovrà richiederlo nuovamente.",
           "input": {
             "label": "Inserisci il codice SMS"
           },
           "verifyButton": "Conferma il codice",
           "resendButton": "Invia nuovamente il codice SMS",
           "resendInfo": "È possibile inviare nuovamente tra {{ seconds }} secondi"
+        },
+        "alreadySigned": {
+          "description": "Firmato da {{ name }}"
         }
       },
       "verifySigning": {
@@ -387,6 +390,33 @@
         "error": {
           "title": "Errore durante la firma",
           "message": "Si è verificato un errore durante la firma. Si prega di riprovare più tardi."
+        }
+      }
+    },
+    "completion": {
+      "dataRequest": {
+        "submissionDate": "Data di presentazione",
+        "humanFriendlyId": "ID",
+        "state": "Stato del contratto",
+        "heading": "Richiesta di dati"
+      },
+      "dataProducts": {
+        "heading": "Prodotti di dati"
+      },
+      "title": "Sintesi e conclusione",
+      "signingStatus": {
+        "heading": "Stato della firma",
+        "badgeText": "Persona {{ posizione }}",
+        "signedDescription": "Firmato da {{ name }}",
+        "dataConsumer": {
+          "heading": "Firma dei destinatari dei dati"
+        },
+        "dataProvider": {
+          "heading": "Firma del fornitore di dati",
+          "inReviewBox": {
+            "description": "Firma ancora in sospeso...",
+            "iconAltText": "Immagine con una clessidra e un orologio sullo sfondo"
+          }
         }
       }
     }
@@ -634,8 +664,5 @@
     },
     "startTour": "Inizia il tour",
     "title": "Istruzioni"
-  },
-  "data-request.contractSigning.signatureInput.alreadySigned": {
-    "description": "Firmato da {{ name }}"
   }
 }

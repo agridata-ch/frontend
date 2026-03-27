@@ -370,13 +370,16 @@
         "signingButton": "Jetzt unterzeichnen",
         "otp": {
           "title": "SMS Code versendet",
-          "info": "Sie haben einen Code an die Nr. +41 {{ phoneNumber }} von agridata.ch erhalten\n\nDer Code ist für 15 Minuten gültig. Nach Ablauf der Zeit, müssen Sie den Code erneut anfordern.",
+          "info": "Sie haben einen Code an die Nr. {{ phoneNumber }} von agridata.ch erhalten\n\nDer Code ist für 15 Minuten gültig. Nach Ablauf der Zeit, müssen Sie den Code erneut anfordern.",
           "input": {
             "label": "SMS Code eingeben"
           },
           "verifyButton": "Code bestätigen",
           "resendButton": "SMS Code erneut senden",
           "resendInfo": "Erneut senden möglich in {{ seconds }} Sekunden"
+        },
+        "alreadySigned": {
+          "description": "Unterzeichnet von {{ name }}"
         }
       },
       "verifySigning": {
@@ -387,6 +390,33 @@
         "error": {
           "title": "Fehler beim Unterzeichnen",
           "message": "Beim Unterzeichnen ist ein Fehler passiert. Bitte versuchen Sie es später erneut."
+        }
+      }
+    },
+    "completion": {
+      "dataRequest": {
+        "submissionDate": "Datum der Einreichung",
+        "humanFriendlyId": "ID",
+        "state": "Vertragsstatus",
+        "heading": "Datenantrag"
+      },
+      "dataProducts": {
+        "heading": "Datenprodukte"
+      },
+      "title": "Zusammenfassung & Abschluss",
+      "signingStatus": {
+        "heading": "Status Unterzeichnung",
+        "badgeText": "Person {{ position }}",
+        "signedDescription": "Unterzeichnet von {{ name }}",
+        "dataConsumer": {
+          "heading": "Unterzeichnung Datenbezüger"
+        },
+        "dataProvider": {
+          "heading": "Unterzeichnung Datenanbieter",
+          "inReviewBox": {
+            "description": "Unterzeichnung noch ausstehend...",
+            "iconAltText": "Bild mit einer Sanduhr und einer Uhr im Hintergrund"
+          }
         }
       }
     }
@@ -634,8 +664,5 @@
     },
     "startTour": "Tour starten",
     "title": "Anleitung"
-  },
-  "data-request.contractSigning.signatureInput.alreadySigned": {
-    "description": "Unterzeichnet von {{ name }}"
   }
 }

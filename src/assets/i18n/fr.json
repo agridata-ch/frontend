@@ -370,13 +370,16 @@
         "signingButton": "Signez dès maintenant",
         "otp": {
           "title": "Code SMS envoyé",
-          "info": "Vous avez reçu un code au numéro +41 {{ phoneNumber }} de la part d'agridata.ch\n\nCe code est valable pendant 15 minutes. Passé ce délai, vous devrez demander un nouveau code.",
+          "info": "Vous avez reçu un code au numéro {{ phoneNumber }} de la part d'agridata.ch\n\nCe code est valable pendant 15 minutes. Passé ce délai, vous devrez demander un nouveau code.",
           "input": {
             "label": "Saisir le code reçu par SMS"
           },
           "verifyButton": "Vérifier le code",
           "resendButton": "Renvoyer le code SMS",
           "resendInfo": "Il sera possible de renvoyer le message dans {{ seconds }} secondes"
+        },
+        "alreadySigned": {
+          "description": "Signé par {{ name }}"
         }
       },
       "verifySigning": {
@@ -387,6 +390,33 @@
         "error": {
           "title": "Erreur lors de la signature",
           "message": "Une erreur s'est produite lors de la signature. Veuillez réessayer plus tard."
+        }
+      }
+    },
+    "completion": {
+      "dataRequest": {
+        "submissionDate": "Date de soumission",
+        "humanFriendlyId": "ID",
+        "state": "Statut du contrat",
+        "heading": "Demande de données"
+      },
+      "dataProducts": {
+        "heading": "Produits de données"
+      },
+      "title": "Résumé et conclusion",
+      "signingStatus": {
+        "heading": "État de la signature",
+        "badgeText": "Personne {{ position }}",
+        "signedDescription": "Signé par {{ name }}",
+        "dataConsumer": {
+          "heading": "Signature des destinataires des données"
+        },
+        "dataProvider": {
+          "heading": "Signature du fournisseur de données",
+          "inReviewBox": {
+            "description": "Signature en attente...",
+            "iconAltText": "Image avec un sablier et une horloge en arrière-plan"
+          }
         }
       }
     }
@@ -633,8 +663,5 @@
     },
     "startTour": "Commencer la visite",
     "title": "Instructions"
-  },
-  "data-request.contractSigning.signatureInput.alreadySigned": {
-    "description": "Signé par {{ name }}"
   }
 }

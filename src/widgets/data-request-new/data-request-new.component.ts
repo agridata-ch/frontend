@@ -41,6 +41,7 @@ import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AgridataWizardComponent, WizardStep } from '@/widgets/agridata-wizard';
+import { DataRequestCompletionComponent } from '@/widgets/data-request-completion';
 import {
   DataRequestFormConsumerComponent,
   DataRequestFormProducerComponent,
@@ -80,6 +81,7 @@ import { DataRequestPreviewComponent } from '@/widgets/data-request-preview';
     ErrorOutletComponent,
     SidepanelComponent,
     DataRequestFormContractComponent,
+    DataRequestCompletionComponent,
   ],
   templateUrl: './data-request-new.component.html',
 })
@@ -450,7 +452,8 @@ export class DataRequestNewComponent {
             currentStateCode === ConsentRequestDetailViewDtoDataRequestStateCode.Draft;
         }
         if (step.id === FORM_GROUP_NAMES.COMPLETION) {
-          isDisabled = currentStateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.Active;
+          isDisabled =
+            currentStateCode !== ConsentRequestDetailViewDtoDataRequestStateCode.ToBeSigned;
         }
 
         // If we're only updating a specific step and this isn't it, only update disabled state
