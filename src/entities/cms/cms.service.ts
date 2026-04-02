@@ -42,6 +42,13 @@ export class CmsService {
       ),
     );
 
+  readonly fetchAgbPage = (locale: string) =>
+    firstValueFrom(
+      this.http.get(
+        `${this.apiUrl}/api/agb?locale=${locale}${this.isDevMode ? '&status=draft' : ''}`,
+      ),
+    );
+
   readonly fetchCmsPages = (locale: string) =>
     firstValueFrom(
       this.http.get(
