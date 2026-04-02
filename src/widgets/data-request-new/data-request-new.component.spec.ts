@@ -372,7 +372,7 @@ describe('DataRequestNewComponent', () => {
 
       // Mock the wizard's currentStepId signal to return CONTRACT
       component['wizard']()!.currentStepId.set('contract');
-      const wizardSpy = jest.spyOn(component['wizard']()!, 'previousStep');
+      const wizardSpy = jest.spyOn(component['wizard']()!, 'handleChangeStep');
 
       await component['handleRetreat']();
 

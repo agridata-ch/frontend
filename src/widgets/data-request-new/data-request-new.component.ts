@@ -337,8 +337,13 @@ export class DataRequestNewComponent {
         this.dataRequest.set(dataRequest);
         this.updateFormSteps();
 
-        if (this.wizard()?.currentStepId() === FORM_GROUP_NAMES.CONTRACT) {
-          this.wizard()?.previousStep();
+        if (
+          this.wizard()?.currentStepId() === FORM_GROUP_NAMES.CONTRACT ||
+          this.wizard()?.currentStepId() === FORM_GROUP_NAMES.COMPLETION
+        ) {
+          this.wizard()?.handleChangeStep(
+            this.formControlSteps().findIndex((step) => step.id === FORM_GROUP_NAMES.PRODUCER) || 0,
+          );
         }
       });
   }
@@ -531,7 +536,7 @@ export class DataRequestNewComponent {
     const currentIndex = steps.findIndex((s) => s.id === currentStepId);
     const nextStep = steps[currentIndex + 1];
 
-    return nextStep.disabled === true;
+    return nextStep?.disabled === true;
   }
 
   protected async handleReloadDataRequest() {
