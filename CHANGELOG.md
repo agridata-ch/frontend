@@ -1,3 +1,9 @@
+## [1.10.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.9...v1.10.0-rc.10) (2026-04-02)
+
+### Features
+
+- **cms:** add cms agb page ([04a6f78](https://github.com/agridata-ch/frontend/commit/04a6f785132b59ce198cd96d8c21a30aa1cb2375)), closes [DIGIB2-1297](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1297)
+
 ## [1.10.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.8...v1.10.0-rc.9) (2026-04-02)
 
 ### Bug Fixes
