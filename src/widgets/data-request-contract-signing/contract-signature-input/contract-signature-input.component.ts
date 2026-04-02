@@ -5,6 +5,7 @@ import { ContractRevisionSignatureDto, SignatureSlotCodeEnum } from '@/entities/
 import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
+import { contractAgbUrl } from '@/shared/lib/cms';
 import { createFormControl, getFormControl } from '@/shared/lib/form.helper';
 import { AgridataToggleComponent } from '@/shared/ui/agridata-toggle';
 import { AgridataBadgeComponent } from '@/shared/ui/badge';
@@ -44,6 +45,9 @@ export class ContractSignatureInputComponent {
   readonly existingSignature = input<ContractRevisionSignatureDto | undefined>();
   readonly slotId = input.required<SignatureSlotCodeEnum>();
   readonly showWaitingState = input<boolean>(false);
+
+  // Constants
+  protected readonly contractAgbUrl = contractAgbUrl;
 
   // Output properties
   readonly startSigning = output<SignatureSlotCodeEnum>();

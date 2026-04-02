@@ -6,6 +6,7 @@ import { HomeRedirectGuard } from '@/app/guards/home-redirect.guard';
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { DefaultLayoutComponent, FullWidthLayoutComponent } from '@/app/layout';
 import { AdminPage } from '@/pages/admin-page';
+import { AgbPage } from '@/pages/agb-page';
 import { CmsPage } from '@/pages/cms-page';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
@@ -67,6 +68,17 @@ export const routes: Routes = [
       {
         path: '',
         component: PrivacyPolicyPage,
+      },
+    ],
+  },
+  {
+    path: ROUTE_PATHS.AGB_PATH,
+    component: FullWidthLayoutComponent,
+    canActivate: [AuthorizationGuard],
+    children: [
+      {
+        path: '',
+        component: AgbPage,
       },
     ],
   },

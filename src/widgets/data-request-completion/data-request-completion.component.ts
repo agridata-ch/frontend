@@ -10,6 +10,7 @@ import { formatDate } from '@/shared/date';
 import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
+import { contractAgbUrl } from '@/shared/lib/cms';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants, HrefTarget } from '@/shared/ui/button';
@@ -50,6 +51,7 @@ export class DataRequestCompletionComponent {
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly HrefTarget = HrefTarget;
   protected readonly agbButtonIcon = faArrowUpRightFromSquare;
+  protected readonly contractAgbUrl = contractAgbUrl;
   protected readonly getBadgeVariant = getBadgeVariant;
 
   // Input properties

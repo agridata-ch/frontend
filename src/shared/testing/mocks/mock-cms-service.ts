@@ -319,6 +319,7 @@ export function createMockCmsService(): MockCmsService {
     fetchCmsPages: jest.fn().mockResolvedValue([mockCmsResponse]),
     fetchCmsPage: jest.fn().mockResolvedValue(mockCmsResponse),
     submitContactForm: jest.fn().mockResolvedValue(undefined),
+    fetchAgbPage: jest.fn().mockResolvedValue(mockCmsResponse),
   } satisfies MockCmsService;
 }
 

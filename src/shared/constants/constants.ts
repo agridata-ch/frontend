@@ -7,6 +7,7 @@ export const ROUTE_PATHS = {
   ADMIN_PATH: 'admin',
   CMS_PATH: 'cms',
   IMPRESSUM_PATH: 'cms/imprint',
+  AGB_PATH: 'cms/agb',
   PRIVACY_POLICY_PATH: 'cms/privacy-policy',
   FORBIDDEN: 'forbidden',
   ERROR: 'error',

@@ -1,5 +1,4 @@
 <div class="flex flex-col gap-6" *i18n="let t; prefix: 'data-request.completion'">
-  <!-- alert -->
   @if (showFreshSavedAlert()) {
     <app-alert [type]="AlertType.SUCCESS">
       <div class="flex flex-col gap-4 whitespace-pre-line">
@@ -116,7 +115,7 @@
   <div class="flex py-3 px-4 border border-agridata-stroke rounded-lg">
     <app-agridata-button
       [variant]="ButtonVariants.Link"
-      [href]="'https://agridata.ch'"
+      [href]="contractAgbUrl()"
       [target]="HrefTarget.Blank"
     >
       <div class="flex items-center gap-2">

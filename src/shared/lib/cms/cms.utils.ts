@@ -11,3 +11,7 @@ export const generateMediaUrl = (url: string) => {
 export const isVideo = (url: string) => {
   return VIDEO_FORMATS.some((format) => url.endsWith(format));
 };
+
+export const contractAgbUrl = () => {
+  return `${environment.appBaseUrl}/cms/agb`;
+};
