@@ -1,3 +1,10 @@
+## [1.10.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.7...v1.10.0-rc.8) (2026-04-02)
+
+### Features
+
+- **data-request completion:** add completion step ([0f77008](https://github.com/agridata-ch/frontend/commit/0f77008b4ae4389bd9667ec0372a53808dd92299)), closes [DIGIB2-308](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-308)
+- **storybook:** add digit input to storybook ([a3dcb5a](https://github.com/agridata-ch/frontend/commit/a3dcb5aed31acb8498c69abf8c49c7ee59ab2014))
+
 ## [1.10.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.6...v1.10.0-rc.7) (2026-03-24)
 
 ### Bug Fixes
