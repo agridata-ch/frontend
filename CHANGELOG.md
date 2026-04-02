@@ -1,3 +1,9 @@
+## [1.10.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.8...v1.10.0-rc.9) (2026-04-02)
+
+### Bug Fixes
+
+- **data-request completion:** show retreat action ([936321d](https://github.com/agridata-ch/frontend/commit/936321db9e125f81f73c06a2b3803bd7b0553eb6)), closes [DIGIB2-308](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-308)
+
 ## [1.10.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.7...v1.10.0-rc.8) (2026-04-02)
 
 ### Features
