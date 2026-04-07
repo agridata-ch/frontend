@@ -92,11 +92,6 @@ export class DataRequestCompletionComponent {
     return this.metaDataService.dataProviders().find((provider) => provider.id === providerId);
   });
 
-  protected readonly dataProviderName = computed(() => {
-    const provider = this.dataProvider();
-    return provider ? this.i18nService.useObjectTranslation(provider.name) : '';
-  });
-
   protected readonly dataRequestProducts = computed(() => {
     const productIds = this.dataRequest()?.products || [];
     const allProducts = this.allDataProducts();

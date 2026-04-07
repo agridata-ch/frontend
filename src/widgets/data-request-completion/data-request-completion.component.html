@@ -5,16 +5,16 @@
         <span class="font-bold">
           {{ t('releasedByConsumer.title') }}
         </span>
-        {{ t('releasedByConsumer.message', { provider: dataProviderName() }) }}
+        {{ t('releasedByConsumer.message', { provider: contract()?.dataProviderName }) }}
       </div>
     </app-alert>
   } @else if (shouldBeSignedByProvider()) {
     <app-alert [type]="AlertType.INFO">
       <div class="flex flex-col gap-4 whitespace-pre-line">
         <span class="font-bold">
-          {{ t('waitingForProvider.title', { provider: dataProviderName() }) }}
+          {{ t('waitingForProvider.title', { provider: contract()?.dataProviderName }) }}
         </span>
-        {{ t('waitingForProvider.message', { provider: dataProviderName() }) }}
+        {{ t('waitingForProvider.message', { provider: contract()?.dataProviderName }) }}
       </div>
     </app-alert>
   }
@@ -96,7 +96,8 @@
       <div class="flex flex-1/2 flex-col gap-4 p-4 border rounded-lg border-agridata-stroke">
         <span class="text-sm">{{ t('dataProvider.heading') }}</span>
         <app-agridata-contact-card
-          [name]="dataProviderName()"
+          [name]="contract()?.dataProviderName"
+          [secondaryName]="contract()?.dataProviderCity"
           [size]="AvatarSize.MEDIUM"
           [skin]="AvatarSkin.LIGHT"
         />
