@@ -279,6 +279,7 @@ export class DataRequestNewComponent {
     await this.dataRequestService
       .releaseDataRequestToProvider(dataRequestId)
       .then((dataRequest: DataRequestDto) => {
+        this.refreshListNeeded.set(true);
         this.dataRequest.set(dataRequest);
         this.updateFormSteps();
         this.hasFreshReleasedToProvider.set(true);
@@ -314,6 +315,7 @@ export class DataRequestNewComponent {
       await this.dataRequestService
         .submitDataRequest(dataRequestId)
         .then((dataRequest: DataRequestDto) => {
+          this.refreshListNeeded.set(true);
           this.dataRequest.set(dataRequest);
           this.updateFormSteps();
           this.wizard()?.nextStep();
@@ -545,6 +547,7 @@ export class DataRequestNewComponent {
     await this.dataRequestService
       .fetchDataRequest(dataRequestId)
       .then((dataRequest: DataRequestDto) => {
+        this.refreshListNeeded.set(true);
         this.dataRequest.set(dataRequest);
         this.updateFormSteps();
       })

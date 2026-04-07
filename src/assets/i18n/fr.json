@@ -296,10 +296,10 @@
     "stateCode": {
       "IN_REVIEW": "En cours d'examen",
       "DRAFT": "Projet",
-      "TO_BE_SIGNED_BY_CONSUMER": "Signature ouverte",
+      "TO_BE_SIGNED_BY_CONSUMER": "Signature ouverte au destinataire",
       "ACTIVE": "Actif",
-      "TO_BE_RELEASED_BY_CONSUMER": "Signature ouverte",
-      "TO_BE_SIGNED_BY_PROVIDER": "Signature ouverte"
+      "TO_BE_RELEASED_BY_CONSUMER": "Conclusion ouverte au destinataire",
+      "TO_BE_SIGNED_BY_PROVIDER": "Fournisseur de signature ouvert"
     },
     "table": {
       "tableActions": {
