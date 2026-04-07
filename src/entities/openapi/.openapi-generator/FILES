@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.base.service.ts
 api.module.ts
@@ -35,6 +34,7 @@ model/contractRevisionSignatureDto.ts
 model/createConsentRequestDto.ts
 model/dataProductDto.ts
 model/dataProviderDto.ts
+model/dataProviderReferenceDto.ts
 model/dataRequestContextDto.ts
 model/dataRequestDescriptionDto.ts
 model/dataRequestDto.ts
@@ -44,6 +44,7 @@ model/dataRequestTitleDto.ts
 model/dataRequestUpdateDto.ts
 model/dataRequestValidRedirectUriRegexUpdateDto.ts
 model/dataSourceSystemDto.ts
+model/dataSourceSystemReferenceDto.ts
 model/dataTransferResponse.ts
 model/exceptionDto.ts
 model/exceptionDto1.ts
