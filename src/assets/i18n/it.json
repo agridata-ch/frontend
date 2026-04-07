@@ -296,10 +296,10 @@
     "stateCode": {
       "IN_REVIEW": "In fase di verifica",
       "DRAFT": "Progetto",
-      "TO_BE_SIGNED_BY_CONSUMER": "Firma aperta",
+      "TO_BE_SIGNED_BY_CONSUMER": "Firma a disposizione del destinatario",
       "ACTIVE": "Attivo",
-      "TO_BE_RELEASED_BY_CONSUMER": "Firma aperta",
-      "TO_BE_SIGNED_BY_PROVIDER": "Firma aperta"
+      "TO_BE_RELEASED_BY_CONSUMER": "Conclusione a discrezione del destinatario",
+      "TO_BE_SIGNED_BY_PROVIDER": "Fornitore di firma digitale aperta"
     },
     "table": {
       "tableActions": {

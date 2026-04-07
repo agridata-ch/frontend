@@ -296,10 +296,10 @@
     "stateCode": {
       "IN_REVIEW": "In Prüfung",
       "DRAFT": "Entwurf",
-      "TO_BE_SIGNED_BY_CONSUMER": "Unterzeichnung offen",
+      "TO_BE_SIGNED_BY_CONSUMER": "Unterzeichnung Bezüger offen",
       "ACTIVE": "Aktiv",
-      "TO_BE_RELEASED_BY_CONSUMER": "Unterzeichnung offen",
-      "TO_BE_SIGNED_BY_PROVIDER": "Unterzeichnung offen"
+      "TO_BE_RELEASED_BY_CONSUMER": "Abschluss Bezüger offen",
+      "TO_BE_SIGNED_BY_PROVIDER": "Unterzeichnung Anbieter offen"
     },
     "table": {
       "tableActions": {
