@@ -1,3 +1,9 @@
+## [1.10.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.10...v1.10.0-rc.11) (2026-04-07)
+
+### Bug Fixes
+
+- **translations, reload:** fix translations, reload data ([5a98d3f](https://github.com/agridata-ch/frontend/commit/5a98d3fe38bf4d5c4cf11baa5dc5f4128bb56158)), closes [DIGIB2-308](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-308)
+
 ## [1.10.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.9...v1.10.0-rc.10) (2026-04-02)
 
 ### Features
