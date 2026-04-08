@@ -92,6 +92,12 @@ export default defineConfig([
       'unicorn/prefer-modern-math-apis': 'warn',
       'unicorn/no-unreadable-array-destructuring': 'warn',
       'unicorn/no-empty-file': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+        },
+      ],
     },
   }, // Relax rules for test files
   {
