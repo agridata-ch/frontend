@@ -12,9 +12,9 @@ import { ConsentRequestProducerViewDto } from '@/entities/openapi';
 })
 export class ConsentRequestProducerViewDtoDirective {
   static ngTemplateContextGuard(
-    dir: ConsentRequestProducerViewDtoDirective,
-    ctx: unknown,
-  ): ctx is { $implicit: ConsentRequestProducerViewDto } {
+    _dir: ConsentRequestProducerViewDtoDirective,
+    _ctx: unknown,
+  ): _ctx is { $implicit: ConsentRequestProducerViewDto } {
     return true;
   }
 }
