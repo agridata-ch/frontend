@@ -1,5 +1,6 @@
 import { Component, computed, inject, input, resource, signal } from '@angular/core';
 import { faArrowUpRightFromSquare } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ContractRevisionService } from '@/entities/api';
@@ -7,15 +8,16 @@ import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { getBadgeVariant } from '@/shared/data-request';
 import { formatDate } from '@/shared/date';
-import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
+import { AuthService } from '@/shared/lib/auth';
 import { contractAgbUrl } from '@/shared/lib/cms';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants, HrefTarget } from '@/shared/ui/button';
-import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { AlertComponent, AlertType } from '@/widgets/alert';
+
+import { DataRequestCompletionSigningStatusComponent } from './data-request-completion-signing-status';
 
 /**
  * Component to display the completion of a data request.
@@ -29,16 +31,16 @@ import { AlertComponent, AlertType } from '@/widgets/alert';
   imports: [
     I18nDirective,
     AgridataBadgeComponent,
-    AgridataContactCardComponent,
     AlertComponent,
-    AgridataDatePipe,
     ButtonComponent,
     FontAwesomeModule,
+    DataRequestCompletionSigningStatusComponent,
   ],
   templateUrl: './data-request-completion.component.html',
 })
 export class DataRequestCompletionComponent {
   // Injects
+  protected readonly authService = inject(AuthService);
   protected readonly contractRevisionService = inject(ContractRevisionService);
   protected readonly i18nService = inject(I18nService);
   protected readonly metaDataService = inject(MasterDataService);
@@ -53,6 +55,10 @@ export class DataRequestCompletionComponent {
   protected readonly agbButtonIcon = faArrowUpRightFromSquare;
   protected readonly contractAgbUrl = contractAgbUrl;
   protected readonly getBadgeVariant = getBadgeVariant;
+  protected readonly faSpinnerThird = faSpinnerThird;
+  protected readonly releaseContractTranslation = this.i18nService.translateSignal(
+    'data-request.wizard.releaseContract',
+  );
 
   // Input properties
   readonly dataRequest = input.required<DataRequestDto>();
@@ -113,6 +119,10 @@ export class DataRequestCompletionComponent {
 
   protected readonly showFreshSavedAlert = computed(
     () => this.shouldBeSignedByProvider() && !!this.hasReleasedToProvider(),
+  );
+
+  protected readonly shouldBeReleasedByProvider = computed(
+    () => this.dataRequest().stateCode === DataRequestStateEnum.ToBeReleasedByProvider,
   );
 
   // Methods

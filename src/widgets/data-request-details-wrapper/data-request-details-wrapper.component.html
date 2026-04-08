@@ -5,6 +5,9 @@
       (closeSidepanel)="handleSidepanelClose()"
     />
   } @else {
-    <app-data-request-new [initialDataRequest]="dataRequest()" [dataRequestId]="dataRequestId()" />
+    <app-data-request-wizard
+      [initialDataRequest]="dataRequest()"
+      [dataRequestId]="dataRequestId()"
+    />
   }
 }

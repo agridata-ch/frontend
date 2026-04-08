@@ -275,20 +275,30 @@
       "moreInfos": "Weitere Details anzeigen"
     },
     "wizard": {
-      "steps": {
-        "consumer": "Bezüger",
-        "request": "Anfrage",
-        "preview": "Vorschau",
-        "producer": "Produzent",
-        "contract": "Vertrag",
-        "completion": "Abschluss"
+      "consumer": {
+        "steps": {
+          "consumer": "Bezüger",
+          "request": "Anfrage",
+          "preview": "Vorschau",
+          "producer": "Produzent",
+          "contract": "Vertrag",
+          "completion": "Abschluss"
+        }
       },
       "saveDraft": "Zwischenspeichern",
       "releaseToProvider": "Beim Anbieter einreichen",
       "next": "Weiter",
       "previous": "Zurück",
       "submitAndContinue": "Antrag einreichen & weiter",
-      "retreatRequest": "Antrag zurückziehen"
+      "retreatRequest": "Antrag zurückziehen",
+      "provider": {
+        "steps": {
+          "preview": "Vorschau",
+          "contract": "Vertrag",
+          "completion": "Abschluss"
+        }
+      },
+      "releaseContract": "Vertrag einreichen"
     },
     "submit": {
       "error": "Fehler beim Einreichen des Antrags"
@@ -299,7 +309,9 @@
       "TO_BE_SIGNED_BY_CONSUMER": "Unterzeichnung Bezüger offen",
       "ACTIVE": "Aktiv",
       "TO_BE_RELEASED_BY_CONSUMER": "Abschluss Bezüger offen",
-      "TO_BE_SIGNED_BY_PROVIDER": "Unterzeichnung Anbieter offen"
+      "TO_BE_SIGNED_BY_PROVIDER": "Unterzeichnung Anbieter offen",
+      "TO_BE_RELEASED_BY_PROVIDER": "Abschluss Anbieter offen",
+      "TO_BE_ACTIVATED": "Aktivierung offen"
     },
     "table": {
       "tableActions": {
@@ -430,6 +442,10 @@
       "waitingForProvider": {
         "title": "Die Unterzeichnung liegt bei {{ provider }}",
         "message": "Sobald {{ provider }} den Vertrag unterzeichnet hat, wird der Antrag aktiviert und Sie werden benachrichtigt."
+      },
+      "waitingForProviderRelease": {
+        "title": "Vertrag bereit zum einreichen",
+        "message": "Mit einem Klick auf “{{ releaseContract }}” reichen sie den Vertrag bei agridata.ch ein. Der Vertrag wird nun versiegelt und anschliessend aktiviert. Sobald der Antrag aktiv ist, können die Datenproduzenten (Landwirte, Tierhalter, etc.) eine Datenanfrage erhalten und ihre Zustimmung geben. Zudem können die Datenbezüger mit dem Bezug der Daten starten, sofern Zustimmungen der Datenproduzenten vorliegen."
       }
     }
   },
@@ -465,7 +481,8 @@
     "migrationInfo": {
       "title": "Die Datenanfrage von {{ consumerName }} ist jetzt hier verfügbar",
       "description": "Ihre Zustimmung für die Datenanfrage {{name}} wurde aus “Meine Agrardatenfreigaben (MAF)” übernommen.\nSie finden die Anfrage in der untenstehenden Tabelle und können bei Bedarf die Zustimmung ändern."
-    }
+    },
+    "uidMissingWarning": "Zu Ihrer Person oder Unternehmen ist zurzeit noch keine UID vorhanden. Da verschiedene Systeme involviert sind, kann es einige Tage dauern bis wir alle relevanten Angaben haben, damit agridata.ch funktionieren kann. Bitte versuchen sie es in ein paar Tage nochmal. Besteht Ihr Problem weiterhin, melden sie sich bitte beim Support ({{ phoneNumber }})."
   },
   "countries": {
     "CH": "Schweiz",
@@ -601,6 +618,10 @@
         "message": "Der aufgerufene Link führt zu keinem Antrag. Bitte überprüfen Sie den Link oder kontaktieren Sie die Organisation, die Ihnen diesen Link geschickt hat."
       },
       "modalTitle": "Hoppla, etwas hat nicht funktioniert..."
+    },
+    "externalServiceErrorPage": {
+      "title": "Verbindung unterbrochen",
+      "message": "Unsere Webseite ist derzeit wegen einem Unterbruch nicht erreichbar.\nWir sind schnellstmöglich wieder online."
     }
   },
   "breadcrumb": {
@@ -647,7 +668,8 @@
           "message": "Aktuell sind keine Datenanträge aktiv. Sobald aktive Datenanträge vorhanden sind, werden diese hier aufgelistet."
         }
       }
-    }
+    },
+    "sidePanelTitle": "Datenantrag unterzeichnen"
   },
   "product-tour": {
     "nextBtnText": "Weiter",

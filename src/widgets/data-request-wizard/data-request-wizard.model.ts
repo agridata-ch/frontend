@@ -95,3 +95,21 @@ export const dataRequestFormsModel: FormModel[] = [
     completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
   },
 ];
+
+export const dataRequestProviderFormsModel: FormModel[] = [
+  {
+    formGroupName: FORM_GROUP_NAMES.PREVIEW,
+    fields: [],
+    completionStrategy: FORM_COMPLETION_STRATEGIES.ALWAYS_COMPLETE,
+  },
+  {
+    formGroupName: FORM_GROUP_NAMES.CONTRACT,
+    fields: [],
+    completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
+  },
+  {
+    formGroupName: FORM_GROUP_NAMES.COMPLETION,
+    fields: [],
+    completionStrategy: FORM_COMPLETION_STRATEGIES.EXTERNAL_DEPENDENCY,
+  },
+];

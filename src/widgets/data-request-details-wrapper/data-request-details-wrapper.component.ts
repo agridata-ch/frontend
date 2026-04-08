@@ -4,9 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
-
-import { DataRequestDetailsComponent } from '../data-request-details/data-request-details.component';
-import { DATA_REQUEST_NEW_ID, DataRequestNewComponent } from '../data-request-new';
+import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
+import { DATA_REQUEST_NEW_ID, DataRequestWizardComponent } from '@/widgets/data-request-wizard';
 
 /**
  * Fetches the data request by ID and renders the appropriate child component based on its state.
@@ -16,7 +15,7 @@ import { DATA_REQUEST_NEW_ID, DataRequestNewComponent } from '../data-request-ne
  */
 @Component({
   selector: 'app-data-request-details-wrapper',
-  imports: [DataRequestDetailsComponent, DataRequestNewComponent],
+  imports: [DataRequestDetailsComponent, DataRequestWizardComponent],
   templateUrl: './data-request-details-wrapper.component.html',
 })
 export class DataRequestDetailsWrapperComponent {

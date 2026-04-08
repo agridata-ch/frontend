@@ -15,8 +15,8 @@ import {
   createResourceValueComputed,
 } from '@/shared/lib/api.helper';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
-import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-new';
 import { DataRequestTableComponent } from '@/widgets/data-request-table';
+import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-wizard';
 
 export const FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM = 'refresh';
 

@@ -32,7 +32,7 @@ import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { EmptyStateComponent } from '@/shared/ui/empty-state/empty-state.component';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
-import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-new';
+import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-wizard';
 
 /**
  * Implements the main table logic. It fetches data requests, maps them into table rows, and

@@ -275,20 +275,30 @@
       "moreInfos": "Visualizza maggiori dettagli"
     },
     "wizard": {
-      "steps": {
-        "consumer": "Acquirente di dati",
-        "request": "Richiesta di dati",
-        "preview": "Anteprima",
-        "producer": "Produttore di dati",
-        "contract": "Contratto",
-        "completion": "Conclusione"
+      "consumer": {
+        "steps": {
+          "consumer": "Acquirente di dati",
+          "request": "Richiesta di dati",
+          "preview": "Anteprima",
+          "producer": "Produttore di dati",
+          "contract": "Contratto",
+          "completion": "Conclusione"
+        }
       },
       "saveDraft": "Salva temporaneamente",
       "releaseToProvider": "Inviare al fornitore",
       "next": "Avanti",
       "previous": "Indietro",
       "submitAndContinue": "Invia la richiesta e continua",
-      "retreatRequest": "Revoca la richiesta"
+      "retreatRequest": "Revoca la richiesta",
+      "provider": {
+        "steps": {
+          "preview": "Anteprima",
+          "contract": "Contratto",
+          "completion": "Conclusione"
+        }
+      },
+      "releaseContract": "Inviare il contratto"
     },
     "submit": {
       "error": "Errore durante l'invio della richiesta"
@@ -299,7 +309,9 @@
       "TO_BE_SIGNED_BY_CONSUMER": "Firma a disposizione del destinatario",
       "ACTIVE": "Attivo",
       "TO_BE_RELEASED_BY_CONSUMER": "Conclusione a discrezione del destinatario",
-      "TO_BE_SIGNED_BY_PROVIDER": "Fornitore di firma digitale aperta"
+      "TO_BE_SIGNED_BY_PROVIDER": "Fornitore di firma digitale aperta",
+      "TO_BE_RELEASED_BY_PROVIDER": "Conclusione aperta al fornitore",
+      "TO_BE_ACTIVATED": "Attivazione in sospeso"
     },
     "table": {
       "tableActions": {
@@ -430,6 +442,9 @@
       "waitingForProvider": {
         "title": "La firma è apposta da {{ provider }}",
         "message": "Non appena {{ provider }} avrà firmato il contratto, la richiesta verrà attivata e riceverai una notifica."
+      },
+      "waitingForProviderRelease": {
+        "message": "Cliccando su \"{{ releaseContract }}\", invierete il contratto ad agridata.ch. Il contratto verrà ora sigillato e successivamente attivato. Non appena la richiesta sarà attiva, i produttori di dati (agricoltori, allevatori, ecc.) potranno ricevere una richiesta di dati e dare il loro consenso. Inoltre, gli acquirenti di dati potranno iniziare a scaricare i dati, a condizione che siano stati ottenuti i consensi dei produttori di dati."
       }
     }
   },
@@ -465,7 +480,8 @@
     "migrationInfo": {
       "title": "La richiesta di dati di {{ consumerName }} è ora disponibile qui",
       "description": "Il tuo consenso alla richiesta di dati {{name}} è stato ripreso da “Mia condivisione dei dati agricoli (MAF)”. Puoi trovare la richiesta nella tabella sottostante e, se necessario, modificare il consenso."
-    }
+    },
+    "uidMissingWarning": "Al momento non è ancora presente alcun numero UID relativo alla Sua persona o alla Sua azienda. Poiché sono coinvolti diversi sistemi, potrebbero essere necessari alcuni giorni prima che disponiamo di tutti i dati necessari per il corretto funzionamento di agridata.ch. La preghiamo di riprovare tra qualche giorno. Se il problema persiste, la preghiamo di contattare l'assistenza ({{ phoneNumber }})."
   },
   "countries": {
     "CH": "Svizzera",
@@ -601,6 +617,10 @@
         "message": "Il link richiamato non porta ad alcuna richiesta. Controlla il link o contatta l'organizzazione che ti ha inviato questo link."
       },
       "modalTitle": "Ops, qualcosa non ha funzionato..."
+    },
+    "externalServiceErrorPage": {
+      "title": "Connessione interrotta",
+      "message": "Il nostro sito web non è attualmente disponibile a causa di un'interruzione.\nTorneremo online il prima possibile."
     }
   },
   "breadcrumb": {
@@ -647,7 +667,8 @@
           "message": "Al momento non ci sono richieste di dati attive. Non appena saranno disponibili richieste di dati attive, queste verranno elencate qui."
         }
       }
-    }
+    },
+    "sidePanelTitle": "Firmare la richiesta di dati"
   },
   "product-tour": {
     "nextBtnText": "Inizia il tour",

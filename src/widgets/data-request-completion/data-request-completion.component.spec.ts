@@ -5,7 +5,9 @@ import { ContractRevisionService } from '@/entities/api';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataProductDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
+import { AuthService } from '@/shared/lib/auth';
 import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
+import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 import {
   createMockContractRevisionService,
   mockContractRevision,
@@ -38,11 +40,13 @@ describe('DataRequestCompletionComponent', () => {
   let component: DataRequestCompletionComponent;
   let componentRef: ComponentRef<DataRequestCompletionComponent>;
   let fixture: ComponentFixture<DataRequestCompletionComponent>;
+  let authService: MockAuthService;
   let contractRevisionService: MockContractRevisionService;
   let masterDataService: MockMasterDataService;
   let i18nService: MockI18nService;
 
   beforeEach(async () => {
+    authService = createMockAuthService();
     contractRevisionService = createMockContractRevisionService();
     masterDataService = createMockMasterDataService();
     i18nService = createMockI18nService();
@@ -50,6 +54,7 @@ describe('DataRequestCompletionComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestCompletionComponent, createTranslocoTestingModule()],
       providers: [
+        { provide: AuthService, useValue: authService },
         { provide: ContractRevisionService, useValue: contractRevisionService },
         { provide: MasterDataService, useValue: masterDataService },
         { provide: I18nService, useValue: i18nService },
@@ -134,7 +139,7 @@ describe('DataRequestCompletionComponent', () => {
     });
 
     it('should return empty string when value is undefined', () => {
-      expect(component['getStatusTranslation'](undefined)).toBe('');
+      expect(component['getStatusTranslation']()).toBe('');
     });
   });
 });

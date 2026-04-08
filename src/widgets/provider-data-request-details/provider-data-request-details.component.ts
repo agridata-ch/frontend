@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataRequestStateEnum } from '@/entities/openapi';
 import { I18nDirective } from '@/shared/i18n';
 import { ButtonVariants } from '@/shared/ui/button';
-import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
+import { DataRequestDetailsWrapperComponent } from '@/widgets/data-request-details-wrapper';
 
 /**
  * Provider page for viewing data request details with action buttons.
@@ -14,7 +14,7 @@ import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
  */
 @Component({
   selector: 'app-provider-data-request-details',
-  imports: [DataRequestDetailsComponent, I18nDirective],
+  imports: [I18nDirective, DataRequestDetailsWrapperComponent],
   templateUrl: './provider-data-request-details.html',
 })
 export class ProviderDataRequestDetailsComponent {
