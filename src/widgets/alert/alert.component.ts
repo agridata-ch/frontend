@@ -38,6 +38,7 @@ export class AlertComponent {
 
   readonly type = input<AlertType>(AlertType.NEUTRAL);
   readonly showCloseButton = input<boolean>(false);
+  readonly dataTestId = input<string | undefined>();
   readonly closeAlert = output<boolean>();
 
   protected readonly alertIcon = computed(() => {

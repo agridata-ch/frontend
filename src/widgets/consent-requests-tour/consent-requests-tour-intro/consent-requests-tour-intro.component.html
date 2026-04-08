@@ -1,4 +1,9 @@
-<app-modal [open]="showModal()" [title]="''" (closed)="closeTourIntro()">
+<app-modal
+  [open]="showModal()"
+  [title]="''"
+  [dataTestId]="'tour-intro-modal'"
+  (closed)="closeTourIntro()"
+>
   <div class="flex flex-col gap-6" *i18n="let t; prefix: 'product-tour.consentRequestsTour.intro'">
     <img
       src="/assets/images/product-tour-start.svg"

@@ -3,6 +3,7 @@
   <app-alert
     [type]="AlertType.INFO"
     [showCloseButton]="true"
+    [dataTestId]="'alert-migration-' + request.id"
     (closeAlert)="closeMigrationInfo(request.id)"
     class="mb-4"
   >
