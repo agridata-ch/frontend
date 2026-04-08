@@ -39,6 +39,7 @@
           <fa-icon
             [icon]="faCopy"
             class="cursor-pointer hover:text-agridata-primary-600"
+            [attr.data-testid]="'copy-invitation-link'"
             (click)="copyToClipboard(invitationLink())"
             (keydown.enter)="copyToClipboard(invitationLink())"
           ></fa-icon>

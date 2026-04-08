@@ -21,6 +21,7 @@
       </h4>
       <app-agridata-button
         [variant]="ButtonVariants.Icon"
+        [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
         (onClick)="handleClose()"
         [disabled]="preventManualClose()"
       >

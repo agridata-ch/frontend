@@ -2,6 +2,7 @@
   (onClick)="toggleNavigation()"
   [variant]="ButtonVariants.Icon"
   [additionalClass]="'group'"
+  [dataTestId]="'hamburger-menu'"
 >
   <fa-icon [icon]="menuIcon" size="xl" class="text-white group-hover:text-agridata-primary-600" />
 </app-agridata-button>
@@ -22,6 +23,7 @@
     <app-agridata-button
       (onClick)="toggleNavigation()"
       [variant]="ButtonVariants.Icon"
+      [dataTestId]="'hamburger-menu-close'"
       class="flex self-end group"
       additionalClass="self-end"
     >

@@ -4,6 +4,7 @@
     [isOpen]="!dataRequestResource.isLoading()"
     (closeSidepanel)="handleSidepanelClose()"
     [maxWidth]="'800px'"
+    [dataTestId]="'data-request-details-sidepanel'"
   >
     <app-error-outlet />
     @if (dataRequestResource.isLoading()) {

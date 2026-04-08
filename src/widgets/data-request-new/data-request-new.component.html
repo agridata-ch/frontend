@@ -5,6 +5,7 @@
     (closeSidepanel)="handleClose()"
     [maxWidth]="'1280px'"
     [backgroundColor]="'#efefef'"
+    [dataTestId]="'data-request-new-sidepanel'"
   >
     <app-agridata-wizard
       [steps]="formControlSteps()"

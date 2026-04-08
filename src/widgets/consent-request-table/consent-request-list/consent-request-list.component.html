@@ -36,6 +36,7 @@
         <app-agridata-button
           click-stop-propagation
           [variant]="ButtonVariants.Icon"
+          [dataTestId]="'row-action-' + $index"
           (onClick)="handleClick(request)"
         >
           <fa-icon size="xl" [icon]="faChevronRight" class="text-agridata-primary-600" />

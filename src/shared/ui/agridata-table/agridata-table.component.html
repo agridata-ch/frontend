@@ -81,6 +81,7 @@
                   (onClick)="rowAction(row)"
                   class="action-button"
                   aria-label="{{ 'table.ariaLabels.rowAction' | i18n }}"
+                  [dataTestId]="'row-action-' + $index"
                 >
                   <fa-icon size="xl" [icon]="iconRowAction"></fa-icon>
                 </app-agridata-button>

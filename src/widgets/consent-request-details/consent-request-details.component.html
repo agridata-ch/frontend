@@ -3,6 +3,7 @@
   (closeSidepanel)="handleCloseDetails()"
   [preventManualClose]="shouldRedirect()"
   [title]="t('sidepanel.title')"
+  [dataTestId]="'consent-request-details-sidepanel'"
   maxWidth="650px"
   *i18n="let t; prefix: 'consent-request.details'"
 >
@@ -93,6 +94,7 @@
     [open]="showRedirect()"
     [title]="'producer.redirect.headline' | i18n"
     [showCloseButton]="false"
+    [dataTestId]="'redirect-modal'"
   >
     <div class="text-center" *i18n="let t; prefix: 'producer.redirect'">
       <div class="flex justify-center mb-4">
