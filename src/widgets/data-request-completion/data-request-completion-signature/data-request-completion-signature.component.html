@@ -1,0 +1,15 @@
+<div class="flex flex-col gap-2" *i18n="let t; prefix: 'data-request.completion.signingStatus'">
+  <app-agridata-badge class="self-end" [text]="t('badgeText', { position: position() })" />
+  <app-alert [type]="AlertType.SUCCESS">
+    <div class="flex flex-col whitespace-pre-line">
+      <span>
+        {{
+          t('signedDescription', {
+            name: signature().name,
+          })
+        }}
+      </span>
+      {{ signature().timestamp | agridataDate: 'middle' }}
+    </div>
+  </app-alert>
+</div>

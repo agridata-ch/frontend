@@ -1,0 +1,11 @@
+@if (isDataProvider) {
+  <app-data-request-wizard-provider
+    [dataRequestId]="dataRequestId()"
+    [initialDataRequest]="initialDataRequest()"
+  />
+} @else {
+  <app-data-request-wizard-consumer
+    [dataRequestId]="dataRequestId()"
+    [initialDataRequest]="initialDataRequest()"
+  />
+}

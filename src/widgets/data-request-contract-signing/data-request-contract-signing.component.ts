@@ -61,6 +61,7 @@ export class DataRequestContractSigningComponent {
   // Signals
   protected readonly currentChallenge = signal<SlotChallenge | null>(null);
   protected readonly isDataConsumer = this.authService.isConsumer();
+  protected readonly isDataProvider = this.authService.isDataProvider();
   private readonly activeContractId = signal<string | undefined>(undefined);
 
   // Effects
@@ -88,24 +89,30 @@ export class DataRequestContractSigningComponent {
   );
 
   protected readonly slot1Signature = computed(() => {
-    return this.contract()?.consumerSignatures?.find(
-      (s) =>
-        s.signatureSlotCode ===
-        (this.isDataConsumer
-          ? SignatureSlotCodeEnum.DataConsumer01
-          : SignatureSlotCodeEnum.DataProvider01),
-    );
+    if (this.isDataConsumer) {
+      return this.contract()?.consumerSignatures?.find(
+        (s) => s.signatureSlotCode === SignatureSlotCodeEnum.DataConsumer01,
+      );
+    } else if (this.isDataProvider) {
+      return this.contract()?.providerSignatures?.find(
+        (s) => s.signatureSlotCode === SignatureSlotCodeEnum.DataProvider01,
+      );
+    }
+    return undefined;
   });
 
-  protected readonly slot2Signature = computed(() =>
-    this.contract()?.consumerSignatures?.find(
-      (s) =>
-        s.signatureSlotCode ===
-        (this.isDataConsumer
-          ? SignatureSlotCodeEnum.DataConsumer02
-          : SignatureSlotCodeEnum.DataProvider02),
-    ),
-  );
+  protected readonly slot2Signature = computed(() => {
+    if (this.isDataConsumer) {
+      return this.contract()?.consumerSignatures?.find(
+        (s) => s.signatureSlotCode === SignatureSlotCodeEnum.DataConsumer02,
+      );
+    } else if (this.isDataProvider) {
+      return this.contract()?.providerSignatures?.find(
+        (s) => s.signatureSlotCode === SignatureSlotCodeEnum.DataProvider02,
+      );
+    }
+    return undefined;
+  });
 
   protected readonly showSecondSlotWaitingState = computed(() => {
     // Show waiting state for the second slot if the first slot is signed by the current user and the second slot is not signed yet

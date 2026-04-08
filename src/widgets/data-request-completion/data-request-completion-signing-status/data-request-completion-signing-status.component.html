@@ -1,0 +1,41 @@
+<ng-container *i18n="let t; prefix: 'data-request.completion.signingStatus'">
+  <h4>{{ t('heading') }}</h4>
+  <div class="flex gap-6">
+    <div class="flex flex-1/2 flex-col gap-4 p-4 border rounded-lg border-agridata-stroke">
+      <span class="text-sm">{{ t('dataConsumer.heading') }}</span>
+      <app-agridata-contact-card
+        [name]="contract().dataConsumerName"
+        [secondaryName]="contract().dataConsumerCity"
+        [imageUrl]="contract().dataRequestContext.dataConsumerLogoBase64"
+        [size]="AvatarSize.MEDIUM"
+        [skin]="AvatarSkin.LIGHT"
+      />
+      @for (signature of contract().consumerSignatures; track signature) {
+        <app-data-request-completion-signature [signature]="signature" [position]="$index + 1" />
+      }
+    </div>
+    <div class="flex flex-1/2 flex-col gap-4 p-4 border rounded-lg border-agridata-stroke">
+      <span class="text-sm">{{ t('dataProvider.heading') }}</span>
+      <app-agridata-contact-card
+        [name]="contract().dataProviderName"
+        [secondaryName]="contract().dataProviderCity"
+        [size]="AvatarSize.MEDIUM"
+        [skin]="AvatarSkin.LIGHT"
+      />
+      @if (showProviderSignatureWaitingState()) {
+        <div class="flex flex-col gap-4 justify-center rounded-lg py-6 grow">
+          <img
+            src="assets/images/data-request-timer.svg"
+            [alt]="t('dataProvider.inReviewBox.iconAltText')"
+            class="h-10"
+          />
+          <span class="text-center">{{ t('dataProvider.inReviewBox.description') }}</span>
+        </div>
+      } @else {
+        @for (signature of contract().providerSignatures; track signature) {
+          <app-data-request-completion-signature [signature]="signature" [position]="$index + 1" />
+        }
+      }
+    </div>
+  </div>
+</ng-container>

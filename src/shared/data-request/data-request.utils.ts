@@ -7,6 +7,8 @@ export function getBadgeVariant(stateCode?: string) {
   if (stateCode === DataRequestStateEnum.ToBeSignedByConsumer) return BadgeVariant.WARNING;
   if (stateCode === DataRequestStateEnum.ToBeReleasedByConsumer) return BadgeVariant.WARNING;
   if (stateCode === DataRequestStateEnum.ToBeSignedByProvider) return BadgeVariant.WARNING;
+  if (stateCode === DataRequestStateEnum.ToBeReleasedByProvider) return BadgeVariant.WARNING;
+  if (stateCode === DataRequestStateEnum.ToBeActivated) return BadgeVariant.WARNING;
   if (stateCode === DataRequestStateEnum.Active) return BadgeVariant.SUCCESS;
   return BadgeVariant.DEFAULT;
 }

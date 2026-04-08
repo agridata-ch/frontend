@@ -25,12 +25,21 @@ export const mockContractRevision: ContractRevisionDto = {
       userId: 'user-123',
     },
     {
-      name: 'Test Provider',
-      signatureSlotCode: SignatureSlotCodeEnum.DataProvider01,
+      name: 'Test Consumer 2',
+      signatureSlotCode: SignatureSlotCodeEnum.DataConsumer02,
       timestamp: '2026-03-20T11:00:00Z',
       userId: 'user-456',
     },
   ],
+  providerSignatures: [
+    {
+      name: 'Test Provider',
+      signatureSlotCode: SignatureSlotCodeEnum.DataProvider01,
+      timestamp: '2026-04-02T11:00:00Z',
+      userId: 'user-789',
+    },
+  ],
+  dataProviderCity: '',
 };
 
 export type MockContractRevisionService = Mockify<ContractRevisionService>;

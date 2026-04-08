@@ -101,4 +101,13 @@ export class DataRequestService {
       ),
     );
   }
+
+  async releaseDataRequestToBeActivated(dataRequestId: string) {
+    return firstValueFrom(
+      this.apiService.setDataRequestStatus(
+        dataRequestId,
+        JSON.stringify(DataRequestStateEnum.ToBeActivated),
+      ),
+    );
+  }
 }

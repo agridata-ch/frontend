@@ -91,6 +91,7 @@ export class ContractSignatureInputComponent {
     const translated = this.i18nService.translate(
       'data-request.contractSigning.signatureInput.agbText',
     );
+
     const open = translated.indexOf('[');
     const close = translated.indexOf(']', open);
     if (open === -1 || close === -1) return { before: translated, linkText: null, after: '' };

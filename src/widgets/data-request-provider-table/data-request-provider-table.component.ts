@@ -24,7 +24,7 @@ import { ActionDTO, CellRendererTypes, SortDirections } from '@/shared/ui/agrida
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonVariants } from '@/shared/ui/button';
 import { EmptyStateComponent } from '@/shared/ui/empty-state/empty-state.component';
-import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-new';
+import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-wizard';
 
 /**
  * Implements the main table logic. It fetches data requests, maps them into table rows, and

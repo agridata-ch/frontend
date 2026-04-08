@@ -14,5 +14,6 @@ export interface DataProviderReferenceDto {
     id?: string;
     code?: string;
     name?: TranslationDto;
+    uid?: string;
 }
 

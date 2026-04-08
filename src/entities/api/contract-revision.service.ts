@@ -23,7 +23,7 @@ export class ContractRevisionService {
   }
 
   startSigningProcess(contractId: string, slotId: SignatureSlotCodeEnum) {
-    return firstValueFrom(this.apiService.initiateConsumerSignatureChallenge(contractId, slotId));
+    return firstValueFrom(this.apiService.initiateSignatureChallenge(contractId, slotId));
   }
 
   verifySigningProcess(
@@ -33,7 +33,7 @@ export class ContractRevisionService {
     verifyOtpRequestDto: VerifyOtpRequestDto,
   ) {
     return firstValueFrom(
-      this.apiService.verifyConsumerSignature(challengeId, contractId, slotId, verifyOtpRequestDto),
+      this.apiService.verifySignature(challengeId, contractId, slotId, verifyOtpRequestDto),
     );
   }
 }
