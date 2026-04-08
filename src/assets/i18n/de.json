@@ -275,20 +275,29 @@
       "moreInfos": "Weitere Details anzeigen"
     },
     "wizard": {
-      "steps": {
-        "consumer": "Bezüger",
-        "request": "Anfrage",
-        "preview": "Vorschau",
-        "producer": "Produzent",
-        "contract": "Vertrag",
-        "completion": "Abschluss"
+      "consumer": {
+        "steps": {
+          "consumer": "Bezüger",
+          "request": "Anfrage",
+          "preview": "Vorschau",
+          "producer": "Produzent",
+          "contract": "Vertrag",
+          "completion": "Abschluss"
+        }
       },
       "saveDraft": "Zwischenspeichern",
       "releaseToProvider": "Beim Anbieter einreichen",
       "next": "Weiter",
       "previous": "Zurück",
       "submitAndContinue": "Antrag einreichen & weiter",
-      "retreatRequest": "Antrag zurückziehen"
+      "retreatRequest": "Antrag zurückziehen",
+      "provider": {
+        "steps": {
+          "preview": "Vorschau",
+          "contract": "Vertrag",
+          "completion": "Abschluss"
+        }
+      }
     },
     "submit": {
       "error": "Fehler beim Einreichen des Antrags"
@@ -647,7 +656,8 @@
           "message": "Aktuell sind keine Datenanträge aktiv. Sobald aktive Datenanträge vorhanden sind, werden diese hier aufgelistet."
         }
       }
-    }
+    },
+    "sidePanelTitle": "Datenantrag unterzeichnen"
   },
   "product-tour": {
     "nextBtnText": "Weiter",

@@ -13,20 +13,20 @@ components:
     ConsentRequestAggregationProducerView:
       type: object
       required:
-        - id
+      - id
       description: Data transfer object representing an aggregation of consent requests
       properties:
         id:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
           description: Unique identifier of the aggregation. Corresponds to the underlying
             data request ID.
         dataProducerUid:
           type: string
           examples:
-            - CHE123456789
+          - CHE123456789
           description: UID of the data producer
         stateCode:
           $ref: "#/components/schemas/ConsentRequestAggregationStateEnum"
@@ -36,39 +36,39 @@ components:
         showStateAsMigrated:
           type: boolean
           examples:
-            - true
+          - true
           description: Indicates whether the aggregated state originates from migrated
             consent requests
         lastStateChangeDate:
           $ref: "#/components/schemas/LocalDateTime"
           type: string
           examples:
-            - 2025-06-16T11:04:51.823889
+          - 2025-06-16T11:04:51.823889
           description: Date and time when the state was changed last
         requestDate:
           $ref: "#/components/schemas/LocalDate"
           type: string
           examples:
-            - 2025-05-19
+          - 2025-05-19
           description: Date when the request was made
         dataRequest:
           type: object
           required:
-            - id
-            - stateCode
+          - id
+          - stateCode
           description: Details of the underlying data request
           properties:
             id:
               $ref: "#/components/schemas/UUID"
               type: string
               examples:
-                - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+              - 3fa85f64-5717-4562-b3fc-2c963f66afb7
               description: Unique identifier of the data request
             dataProviderId:
               $ref: "#/components/schemas/UUID"
               type: string
               examples:
-                - e37b148b-9a0f-4c2e-80c5-fe9c9416b640
+              - e37b148b-9a0f-4c2e-80c5-fe9c9416b640
               description: Unique identifier of the data provider responsible for
                 this data request. This value is derived from the data source systems
                 of the associated data products.
@@ -79,13 +79,13 @@ components:
             humanFriendlyId:
               type: string
               examples:
-                - GL56
+              - GL56
               description: Human friendly id of the data request
             submissionDate:
               type: string
               format: date
               examples:
-                - 2025-06-16T11:04:51.823889
+              - 2025-06-16T11:04:51.823889
               description: Date and time when the data request was submitted
             title:
               $ref: "#/components/schemas/DataRequestTitleDto"
@@ -108,74 +108,75 @@ components:
               description: List of data products requested
             stateCode:
               type:
-                - string
-                - object
+              - string
+              - object
               enum:
-                - DRAFT
-                - IN_REVIEW
-                - TO_BE_SIGNED_BY_CONSUMER
-                - TO_BE_RELEASED_BY_CONSUMER
-                - TO_BE_SIGNED_BY_PROVIDER
-                - ACTIVE
+              - DRAFT
+              - IN_REVIEW
+              - TO_BE_SIGNED_BY_CONSUMER
+              - TO_BE_RELEASED_BY_CONSUMER
+              - TO_BE_SIGNED_BY_PROVIDER
+              - TO_BE_RELEASED_BY_PROVIDER
+              - ACTIVE
               description: State of the data request
             dataConsumerLegalName:
               type: string
               examples:
-                - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
+              - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
               maxLength: 255
               description: LegalName of the data consumer taken from the uid register
             dataConsumerDisplayName:
               type: string
               examples:
-                - Bio Suisse
+              - Bio Suisse
               maxLength: 255
               description: Shorter name of the data consumer defined by the data consumer
                 used when displaying the request to the producer
             dataConsumerUid:
               type: string
               examples:
-                - CHE101708094
+              - CHE101708094
               description: Uid of the data consumer
             dataConsumerCity:
               type: string
               examples:
-                - Basel
+              - Basel
               maxLength: 120
               description: City of the data consumer
             dataConsumerZip:
               type: string
               examples:
-                - "4052"
+              - "4052"
               maxLength: 10
               description: Zip code of the data consumer
             dataConsumerStreet:
               type: string
               examples:
-                - Peter Merian-Str. 34
+              - Peter Merian-Str. 34
               maxLength: 255
               description: Street of the data consumer
             dataConsumerCountry:
               type: string
               examples:
-                - CH
+              - CH
               maxLength: 2
               description: 2 letter country code of the data consumer
             contactPhoneNumber:
               type: string
               examples:
-                - +41 79 123 45 67
+              - +41 79 123 45 67
               maxLength: 50
               description: Contact phone number for the data request
             contactEmailAddress:
               type: string
               examples:
-                - example@labelorganisation.ch
+              - example@labelorganisation.ch
               maxLength: 255
               description: Contact email address for the data request
             dataConsumerLogoBase64:
               type: string
               examples:
-                - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+              - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
               description: Base64-encoded logo of the data consumer
             targetGroup:
               type: string
@@ -183,7 +184,7 @@ components:
             validRedirectUriRegex:
               type: string
               examples:
-                - ^https:\/\/www\.dummy-label-organisation\/.*$
+              - ^https:\/\/www\.dummy-label-organisation\/.*$
               maxLength: 255
               description: Regex of valid redirect_uri. Must compile as regex successfully.
             currentContractRevisionId:
@@ -197,60 +198,60 @@ components:
     ConsentRequestAggregationStateEnum:
       type: string
       enum:
-        - GRANTED
-        - OPENED
-        - DECLINED
-        - PARTIALLY_GRANTED
-        - PARTIALLY_OPENED
+      - GRANTED
+      - OPENED
+      - DECLINED
+      - PARTIALLY_GRANTED
+      - PARTIALLY_OPENED
     ConsentRequestConsumerViewDto:
       type: object
       deprecated: true
       required:
-        - id
+      - id
       description: Data transfer object representing a consent request
       properties:
         id:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
           description: Unique identifier of the consent request
         dataProducerUid:
           type: string
           examples:
-            - CHE123456789
+          - CHE123456789
           description: UID of the data producer
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
     ConsentRequestConsumerViewV2Dto:
       type: object
       required:
-        - id
+      - id
       description: Data transfer object representing a consent request
       properties:
         id:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
           description: Unique identifier of the consent request
         dataProducerUid:
           type: string
           examples:
-            - CHE123456789
+          - CHE123456789
           description: UID of the data producer
         name:
           type: string
           examples:
-            - Testorganisation AG
+          - Testorganisation AG
           description: Name of the uid
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
     ConsentRequestCreatedDto:
       type: object
       required:
-        - id
-        - dataProducerUid
+      - id
+      - dataProducerUid
       description: Data transfer object representing a consent request that has been
         created
       properties:
@@ -258,123 +259,123 @@ components:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
           description: Unique identifier of the consent request
         dataProducerUid:
           type: string
           examples:
-            - CHE123456789
+          - CHE123456789
           description: UID of the data producer
         isCreated:
           type: boolean
     ConsentRequestFundamentalViewDto:
       type: object
       required:
-        - id
-        - dataRequestId
+      - id
+      - dataRequestId
       description: Data transfer object representing a consent request
       properties:
         id:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
           description: Unique identifier of the consent request
         dataRequestId:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
           description: Unique identifier of the corresponding data request
         dataProducerUid:
           type: string
           examples:
-            - CHE123456789
+          - CHE123456789
           description: UID of the data producer
         dataProducerBur:
           type: string
           examples:
-            - A123456
+          - A123456
           description: BUR of the data producer
         grantedDataPeriodFrom:
           $ref: "#/components/schemas/LocalDate"
           type: string
           examples:
-            - 2024-06-16
+          - 2024-06-16
           description: Start of the data period that is granted by this consent
         grantedDataPeriodTo:
           $ref: "#/components/schemas/LocalDate"
           type: string
           examples:
-            - 2025-06-16
+          - 2025-06-16
           description: End of the data period that is granted by this consent
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
           type: string
           examples:
-            - GRANTED
+          - GRANTED
           description: State of the consent request
         lastModifiedDateTime:
           type: string
           format: datetime
           examples:
-            - 2025-06-16T11:04:51.823889
+          - 2025-06-16T11:04:51.823889
           description: Date and time of the most recent modification to the consent
             request
     ConsentRequestProducerViewDto:
       type: object
       required:
-        - id
+      - id
       description: Data transfer object representing a consent request
       properties:
         id:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
           description: Unique identifier of the consent request
         dataProducerUid:
           type: string
           examples:
-            - CHE123456789
+          - CHE123456789
           description: UID of the data producer
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
         showStateAsMigrated:
           type: boolean
           examples:
-            - true
+          - true
           description: If the state should be shown as migrated
         lastStateChangeDate:
           type: string
           format: date
           examples:
-            - 2025-06-16T11:04:51.823889
+          - 2025-06-16T11:04:51.823889
           description: Date and time when the state was changed last
         requestDate:
           $ref: "#/components/schemas/LocalDate"
           type: string
           examples:
-            - 2025-05-19
+          - 2025-05-19
           description: Date when the request was made
         dataRequest:
           type: object
           required:
-            - id
-            - stateCode
+          - id
+          - stateCode
           description: Details of the underlying data request
           properties:
             id:
               $ref: "#/components/schemas/UUID"
               type: string
               examples:
-                - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+              - 3fa85f64-5717-4562-b3fc-2c963f66afb7
               description: Unique identifier of the data request
             dataProviderId:
               $ref: "#/components/schemas/UUID"
               type: string
               examples:
-                - e37b148b-9a0f-4c2e-80c5-fe9c9416b640
+              - e37b148b-9a0f-4c2e-80c5-fe9c9416b640
               description: Unique identifier of the data provider responsible for
                 this data request. This value is derived from the data source systems
                 of the associated data products.
@@ -385,13 +386,13 @@ components:
             humanFriendlyId:
               type: string
               examples:
-                - GL56
+              - GL56
               description: Human friendly id of the data request
             submissionDate:
               type: string
               format: date
               examples:
-                - 2025-06-16T11:04:51.823889
+              - 2025-06-16T11:04:51.823889
               description: Date and time when the data request was submitted
             title:
               $ref: "#/components/schemas/DataRequestTitleDto"
@@ -414,74 +415,75 @@ components:
               description: List of data products requested
             stateCode:
               type:
-                - string
-                - object
+              - string
+              - object
               enum:
-                - DRAFT
-                - IN_REVIEW
-                - TO_BE_SIGNED_BY_CONSUMER
-                - TO_BE_RELEASED_BY_CONSUMER
-                - TO_BE_SIGNED_BY_PROVIDER
-                - ACTIVE
+              - DRAFT
+              - IN_REVIEW
+              - TO_BE_SIGNED_BY_CONSUMER
+              - TO_BE_RELEASED_BY_CONSUMER
+              - TO_BE_SIGNED_BY_PROVIDER
+              - TO_BE_RELEASED_BY_PROVIDER
+              - ACTIVE
               description: State of the data request
             dataConsumerLegalName:
               type: string
               examples:
-                - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
+              - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
               maxLength: 255
               description: LegalName of the data consumer taken from the uid register
             dataConsumerDisplayName:
               type: string
               examples:
-                - Bio Suisse
+              - Bio Suisse
               maxLength: 255
               description: Shorter name of the data consumer defined by the data consumer
                 used when displaying the request to the producer
             dataConsumerUid:
               type: string
               examples:
-                - CHE101708094
+              - CHE101708094
               description: Uid of the data consumer
             dataConsumerCity:
               type: string
               examples:
-                - Basel
+              - Basel
               maxLength: 120
               description: City of the data consumer
             dataConsumerZip:
               type: string
               examples:
-                - "4052"
+              - "4052"
               maxLength: 10
               description: Zip code of the data consumer
             dataConsumerStreet:
               type: string
               examples:
-                - Peter Merian-Str. 34
+              - Peter Merian-Str. 34
               maxLength: 255
               description: Street of the data consumer
             dataConsumerCountry:
               type: string
               examples:
-                - CH
+              - CH
               maxLength: 2
               description: 2 letter country code of the data consumer
             contactPhoneNumber:
               type: string
               examples:
-                - +41 79 123 45 67
+              - +41 79 123 45 67
               maxLength: 50
               description: Contact phone number for the data request
             contactEmailAddress:
               type: string
               examples:
-                - example@labelorganisation.ch
+              - example@labelorganisation.ch
               maxLength: 255
               description: Contact email address for the data request
             dataConsumerLogoBase64:
               type: string
               examples:
-                - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+              - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
               description: Base64-encoded logo of the data consumer
             targetGroup:
               type: string
@@ -489,7 +491,7 @@ components:
             validRedirectUriRegex:
               type: string
               examples:
-                - ^https:\/\/www\.dummy-label-organisation\/.*$
+              - ^https:\/\/www\.dummy-label-organisation\/.*$
               maxLength: 255
               description: Regex of valid redirect_uri. Must compile as regex successfully.
             currentContractRevisionId:
@@ -499,10 +501,10 @@ components:
     ConsentRequestStateEnum:
       type: string
       enum:
-        - GRANTED
-        - OPENED
-        - DECLINED
-        - NOT_CREATED
+      - GRANTED
+      - OPENED
+      - DECLINED
+      - NOT_CREATED
       description: |
         Possible states of a consent request:
         - GRANTED: Consent has been granted
@@ -512,45 +514,45 @@ components:
     ContractRevisionDto:
       type: object
       required:
-        - id
-        - dataRequestId
-        - dataConsumerName
-        - dataConsumerCity
-        - dataProviderName
-        - dataProviderCity
-        - dataRequestContext
+      - id
+      - dataRequestId
+      - dataConsumerName
+      - dataConsumerCity
+      - dataProviderName
+      - dataProviderCity
+      - dataRequestContext
       properties:
         id:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - 24945B85-6E53-4059-8FB4-C0B0AC4FFD47
+          - 24945B85-6E53-4059-8FB4-C0B0AC4FFD47
           description: Unique identifier of the data request
         dataRequestId:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - 0D74F63F-9491-4B9B-80BA-0CA43A1A3A6F
+          - 0D74F63F-9491-4B9B-80BA-0CA43A1A3A6F
           description: Identifier of the associated data request
         dataConsumerName:
           type: string
           examples:
-            - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
+          - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
           description: LegalName of the data consumer taken from the uid register
         dataConsumerCity:
           type: string
           examples:
-            - Basel
+          - Basel
           description: City of the data consumer
         dataProviderName:
           type: string
           examples:
-            - BLW
+          - BLW
           description: Name of the data provider
         dataProviderCity:
           type: string
           examples:
-            - Bern
+          - Bern
           description: City of the data provider
         dataRequestContext:
           $ref: "#/components/schemas/DataRequestContextDto"
@@ -562,42 +564,47 @@ components:
           items:
             $ref: "#/components/schemas/ContractRevisionSignatureDto"
           description: List of signatures of the data consumer
+        providerSignatures:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContractRevisionSignatureDto"
+          description: List of signatures of the data provider
     ContractRevisionSignatureDto:
       type: object
       required:
-        - signatureSlotCode
-        - userId
-        - name
-        - timestamp
+      - signatureSlotCode
+      - userId
+      - name
+      - timestamp
       properties:
         signatureSlotCode:
           $ref: "#/components/schemas/SignatureSlotCodeEnum"
           type: string
           examples:
-            - DATA_CONSUMER_01
+          - DATA_CONSUMER_01
           description: Slot in which the signature is stored
         userId:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - 43FAB890-492E-4EEB-9B65-F4A4FB3DD74E
+          - 43FAB890-492E-4EEB-9B65-F4A4FB3DD74E
           description: ID of the user
         name:
           type: string
           examples:
-            - John Doe
+          - John Doe
           description: Name of the user of the signature
         timestamp:
           $ref: "#/components/schemas/LocalDateTime"
           type: string
           examples:
-            - 2026-03-19T12:00:00
+          - 2026-03-19T12:00:00
           description: Timestamp of when the signature was added
     CreateConsentRequestDto:
       type: object
       required:
-        - dataRequestId
-        - uid
+      - dataRequestId
+      - uid
       properties:
         dataRequestId:
           $ref: "#/components/schemas/UUID"
@@ -606,18 +613,18 @@ components:
     DataProductDto:
       type: object
       required:
-        - id
+      - id
       properties:
         id:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
           description: Unique identifier of the product
         dataSourceSystemCode:
           type: string
           examples:
-            - AGIS
+          - AGIS
           description: Code of data source system from which this product originates
         dataSourceSystem:
           $ref: "#/components/schemas/DataSourceSystemDto"
@@ -627,7 +634,7 @@ components:
           $ref: "#/components/schemas/TranslationDto"
           type: object
           examples:
-            - R01
+          - R01
           description: How this product is categorized
         description:
           $ref: "#/components/schemas/TranslationDto"
@@ -637,12 +644,12 @@ components:
           $ref: "#/components/schemas/LocalDateTime"
           type: string
           examples:
-            - 2026-03-06T00:00:00
+          - 2026-03-06T00:00:00
           description: Timestamp indicating when the product was marked as deprecated.
     DataProviderDto:
       type: object
       required:
-        - id
+      - id
       properties:
         id:
           $ref: "#/components/schemas/UUID"
@@ -669,7 +676,7 @@ components:
         dataConsumerLogoBase64:
           type: string
           examples:
-            - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+          - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
           description: Base64-encoded logo of the data consumer
     DataRequestDescriptionDto:
       type: object
@@ -677,42 +684,42 @@ components:
         de:
           type: string
           examples:
-            - "Ziel der Anfrage ist es, Informationen über Bodentypen und deren Qualitä\
+          - "Ziel der Anfrage ist es, Informationen über Bodentypen und deren Qualitä\
             t zu erhalten, um fundierte Entscheidungen zur Fruchtfolge, Düngung und\
             \ nachhaltigen Bewirtschaftung treffen zu können."
           description: Description of the data request
         fr:
           type: string
           examples:
-            - "L'objectif de la demande est d'obtenir des informations sur les types\
+          - "L'objectif de la demande est d'obtenir des informations sur les types\
             \ de sols et leur qualité afin de prendre des décisions éclairées concernant\
             \ la rotation des cultures, la fertilisation et la gestion durable."
           description: Description de la demande de données
         it:
           type: string
           examples:
-            - "L'obiettivo della richiesta è ottenere informazioni sui tipi di suolo\
+          - "L'obiettivo della richiesta è ottenere informazioni sui tipi di suolo\
             \ e sulla loro qualità per prendere decisioni informate sulla rotazione\
             \ delle colture, la fertilizzazione e la gestione sostenibile."
           description: Descrizione della richiesta di dati
     DataRequestDto:
       type: object
       required:
-        - id
-        - stateCode
+      - id
+      - stateCode
       description: Details of the underlying data request
       properties:
         id:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
           description: Unique identifier of the data request
         dataProviderId:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - e37b148b-9a0f-4c2e-80c5-fe9c9416b640
+          - e37b148b-9a0f-4c2e-80c5-fe9c9416b640
           description: Unique identifier of the data provider responsible for this
             data request. This value is derived from the data source systems of the
             associated data products.
@@ -723,13 +730,13 @@ components:
         humanFriendlyId:
           type: string
           examples:
-            - GL56
+          - GL56
           description: Human friendly id of the data request
         submissionDate:
           type: string
           format: date
           examples:
-            - 2025-06-16T11:04:51.823889
+          - 2025-06-16T11:04:51.823889
           description: Date and time when the data request was submitted
         title:
           $ref: "#/components/schemas/DataRequestTitleDto"
@@ -752,74 +759,75 @@ components:
           description: List of data products requested
         stateCode:
           type:
-            - string
-            - object
+          - string
+          - object
           enum:
-            - DRAFT
-            - IN_REVIEW
-            - TO_BE_SIGNED_BY_CONSUMER
-            - TO_BE_RELEASED_BY_CONSUMER
-            - TO_BE_SIGNED_BY_PROVIDER
-            - ACTIVE
+          - DRAFT
+          - IN_REVIEW
+          - TO_BE_SIGNED_BY_CONSUMER
+          - TO_BE_RELEASED_BY_CONSUMER
+          - TO_BE_SIGNED_BY_PROVIDER
+          - TO_BE_RELEASED_BY_PROVIDER
+          - ACTIVE
           description: State of the data request
         dataConsumerLegalName:
           type: string
           examples:
-            - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
+          - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
           maxLength: 255
           description: LegalName of the data consumer taken from the uid register
         dataConsumerDisplayName:
           type: string
           examples:
-            - Bio Suisse
+          - Bio Suisse
           maxLength: 255
           description: Shorter name of the data consumer defined by the data consumer
             used when displaying the request to the producer
         dataConsumerUid:
           type: string
           examples:
-            - CHE101708094
+          - CHE101708094
           description: Uid of the data consumer
         dataConsumerCity:
           type: string
           examples:
-            - Basel
+          - Basel
           maxLength: 120
           description: City of the data consumer
         dataConsumerZip:
           type: string
           examples:
-            - "4052"
+          - "4052"
           maxLength: 10
           description: Zip code of the data consumer
         dataConsumerStreet:
           type: string
           examples:
-            - Peter Merian-Str. 34
+          - Peter Merian-Str. 34
           maxLength: 255
           description: Street of the data consumer
         dataConsumerCountry:
           type: string
           examples:
-            - CH
+          - CH
           maxLength: 2
           description: 2 letter country code of the data consumer
         contactPhoneNumber:
           type: string
           examples:
-            - +41 79 123 45 67
+          - +41 79 123 45 67
           maxLength: 50
           description: Contact phone number for the data request
         contactEmailAddress:
           type: string
           examples:
-            - example@labelorganisation.ch
+          - example@labelorganisation.ch
           maxLength: 255
           description: Contact email address for the data request
         dataConsumerLogoBase64:
           type: string
           examples:
-            - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+          - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
           description: Base64-encoded logo of the data consumer
         targetGroup:
           type: string
@@ -827,7 +835,7 @@ components:
         validRedirectUriRegex:
           type: string
           examples:
-            - ^https:\/\/www\.dummy-label-organisation\/.*$
+          - ^https:\/\/www\.dummy-label-organisation\/.*$
           maxLength: 255
           description: Regex of valid redirect_uri. Must compile as regex successfully.
         currentContractRevisionId:
@@ -840,39 +848,40 @@ components:
         de:
           type: string
           examples:
-            - Bewertung der Bodenqualität
+          - Bewertung der Bodenqualität
         fr:
           type: string
           examples:
-            - Évaluation de la qualité du sol
+          - Évaluation de la qualité du sol
         it:
           type: string
           examples:
-            - Valutazione della qualità del suolo
+          - Valutazione della qualità del suolo
     DataRequestStateEnum:
       type: string
       enum:
-        - DRAFT
-        - IN_REVIEW
-        - TO_BE_SIGNED_BY_CONSUMER
-        - TO_BE_RELEASED_BY_CONSUMER
-        - TO_BE_SIGNED_BY_PROVIDER
-        - ACTIVE
+      - DRAFT
+      - IN_REVIEW
+      - TO_BE_SIGNED_BY_CONSUMER
+      - TO_BE_RELEASED_BY_CONSUMER
+      - TO_BE_SIGNED_BY_PROVIDER
+      - TO_BE_RELEASED_BY_PROVIDER
+      - ACTIVE
     DataRequestTitleDto:
       type: object
       properties:
         de:
           type: string
           examples:
-            - Anfrage zu Bodentypen und Bodenqualitätsdaten
+          - Anfrage zu Bodentypen und Bodenqualitätsdaten
         fr:
           type: string
           examples:
-            - Demande sur les types de sols et les données de qualité du sol
+          - Demande sur les types de sols et les données de qualité du sol
         it:
           type: string
           examples:
-            - Richiesta sui tipi di suolo e sui dati sulla qualità del suolo
+          - Richiesta sui tipi di suolo e sui dati sulla qualità del suolo
     DataRequestUpdateDto:
       type: object
       description: Data transfer object representing a data request
@@ -892,50 +901,50 @@ components:
         dataConsumerDisplayName:
           type: string
           examples:
-            - Bio Suisse
+          - Bio Suisse
           description: Shorter name of the data consumer defined by the data consumer
             used when displaying the request to the producer
         dataConsumerCity:
           type: string
           examples:
-            - Basel
+          - Basel
           description: City of the data consumer
         dataConsumerZip:
           type: string
           examples:
-            - "4052"
+          - "4052"
           description: Zip code of the data consumer
         dataConsumerStreet:
           type: string
           examples:
-            - Peter Merian-Str. 34
+          - Peter Merian-Str. 34
           description: Street of the data consumer
         dataConsumerCountry:
           type: string
           examples:
-            - CH
+          - CH
           description: 2 letter country code of the data consumer
         contactPhoneNumber:
           type: string
           examples:
-            - +41 79 123 45 67
+          - +41 79 123 45 67
           maxLength: 50
           description: Contact phone number for the data request
         contactEmailAddress:
           type: string
           examples:
-            - example@labelorganisation.ch
+          - example@labelorganisation.ch
           maxLength: 255
           description: Contact email address for the data request
         targetGroup:
           type: string
           examples:
-            - von allen Bio Suisse Mitgliedern
+          - von allen Bio Suisse Mitgliedern
           description: Target group of the data request
         products:
           type: array
           examples:
-            - - c661ea48-106d-4d7a-a5d1-a9a6db48dd8c
+          - - c661ea48-106d-4d7a-a5d1-a9a6db48dd8c
           items:
             type: string
             format: uuid
@@ -947,15 +956,15 @@ components:
         validRedirectUriRegex:
           type: string
           examples:
-            - "^https:\\/\\/([A-Za-z0-9-]+\\.)*bio-suisse\\.ch(\\/.*)?$"
+          - "^https:\\/\\/([A-Za-z0-9-]+\\.)*bio-suisse\\.ch(\\/.*)?$"
           maxLength: 255
           description: Regex used to validate redirect_uri values for this data request.
             Must compile as regex successfully.
     DataSourceSystemDto:
       type: object
       required:
-        - id
-        - dataProvider
+      - id
+      - dataProvider
       properties:
         id:
           $ref: "#/components/schemas/UUID"
@@ -968,7 +977,7 @@ components:
     DataSourceSystemReferenceDto:
       type: object
       required:
-        - dataProvider
+      - dataProvider
       properties:
         id:
           $ref: "#/components/schemas/UUID"
@@ -995,7 +1004,7 @@ components:
     ExceptionDto:
       type: object
       required:
-        - requestId
+      - requestId
       properties:
         message:
           type: string
@@ -1022,63 +1031,63 @@ components:
     ExceptionEnum:
       type: string
       enum:
-        - GENERIC
-        - UID_MISSING
-        - EXTERNAL_SERVICE_ERROR
-        - CONSENT_NOT_GRANTED
-        - MAINTENANCE
+      - GENERIC
+      - UID_MISSING
+      - EXTERNAL_SERVICE_ERROR
+      - CONSENT_NOT_GRANTED
+      - MAINTENANCE
     FarmTypeEnum:
       type: string
       enum:
-        - GANZJAHRESBETRIEB
-        - PRODUKTIONSSTAETTE
-        - GEMEINSCHAFTSWEIDEBETRIEB
-        - SOEMMERUNGSBETRIEB
-        - BETRIEBSGEMEINSCHAFT
-        - VIEHHANDELSUNTERNEHMEN
-        - WANDERHERDE
-        - TIERKLINIK
-        - SCHLACHTBETRIEB
-        - VIEHMAERKTE_UND_VERANSTALTUNGEN
-        - BETRIEBSZWEIGGEMEINSCHAFT
-        - NICHTKOMMERZIELLE_TIERHALTUNG
-        - OELN_GEMEINSCHAFT
-        - VERGAERUNG_KOMPOSTIERUNG_NAEHRSTOFFPOOL
-        - TIERHALTUNG
-        - NICHT_ZUGETEILT
-        - UNKNOWN
+      - GANZJAHRESBETRIEB
+      - PRODUKTIONSSTAETTE
+      - GEMEINSCHAFTSWEIDEBETRIEB
+      - SOEMMERUNGSBETRIEB
+      - BETRIEBSGEMEINSCHAFT
+      - VIEHHANDELSUNTERNEHMEN
+      - WANDERHERDE
+      - TIERKLINIK
+      - SCHLACHTBETRIEB
+      - VIEHMAERKTE_UND_VERANSTALTUNGEN
+      - BETRIEBSZWEIGGEMEINSCHAFT
+      - NICHTKOMMERZIELLE_TIERHALTUNG
+      - OELN_GEMEINSCHAFT
+      - VERGAERUNG_KOMPOSTIERUNG_NAEHRSTOFFPOOL
+      - TIERHALTUNG
+      - NICHT_ZUGETEILT
+      - UNKNOWN
     LegalFormEnum:
       type: string
       enum:
-        - NATUERLICHE_PERSON
-        - EINFACHE_GESELLSCHAFT
-        - KOLLEKTIVGESELLSCHAFT
-        - KOMMANDITGESELLSCHAFT
-        - KOMMANDITAKTIENGESELLSCHAFT
-        - AKTIENGESELLSCHAFT
-        - GMBH
-        - GENOSSENSCHAFT
-        - VEREIN
-        - STIFTUNG
-        - OEFF_RECHT_KOERPERSCHAFT_VERWALTUNG
-        - LANDESKIRCHE
-        - BUND
-        - KANTON
-        - BEZIRK
-        - GEMEINDE
-        - OEFF_RECHT_KOERPERSCHAFT_BETRIEB
-        - EQUIDENEIGENTUEMER
-        - UNKNOWN
+      - NATUERLICHE_PERSON
+      - EINFACHE_GESELLSCHAFT
+      - KOLLEKTIVGESELLSCHAFT
+      - KOMMANDITGESELLSCHAFT
+      - KOMMANDITAKTIENGESELLSCHAFT
+      - AKTIENGESELLSCHAFT
+      - GMBH
+      - GENOSSENSCHAFT
+      - VEREIN
+      - STIFTUNG
+      - OEFF_RECHT_KOERPERSCHAFT_VERWALTUNG
+      - LANDESKIRCHE
+      - BUND
+      - KANTON
+      - BEZIRK
+      - GEMEINDE
+      - OEFF_RECHT_KOERPERSCHAFT_BETRIEB
+      - EQUIDENEIGENTUEMER
+      - UNKNOWN
     LocalDate:
       type: string
       format: date
       examples:
-        - 2022-03-10
+      - 2022-03-10
     LocalDateTime:
       type: string
       format: date-time
       examples:
-        - 2022-03-10T12:15:50
+      - 2022-03-10T12:15:50
     OtpChallengeDto:
       type: object
       properties:
@@ -1086,33 +1095,33 @@ components:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - F259F6C6-8C31-4809-AF3E-1C11379E9D32
+          - F259F6C6-8C31-4809-AF3E-1C11379E9D32
           description: Unique identifier of the challenge
         expiresAt:
           $ref: "#/components/schemas/LocalDateTime"
           type: string
           examples:
-            - 2026-03-19T12:00:00Z
+          - 2026-03-19T12:00:00Z
           description: Expiration time of the challenge
         maskedPhoneNumber:
           type: string
           examples:
-            - '***********8'
+          - '***********8'
           description: Masked phone number
         retryAfterSeconds:
           type: integer
           format: int64
           examples:
-            - 30
+          - 30
           description: Number of remaining attempts
     PageResponseDto:
       type: object
       required:
-        - items
-        - totalItems
-        - totalPages
-        - currentPage
-        - pageSize
+      - items
+      - totalItems
+      - totalPages
+      - currentPage
+      - pageSize
       description: Generic paginated response wrapper.
       properties:
         items:
@@ -1123,34 +1132,34 @@ components:
           type: integer
           format: int64
           examples:
-            - 42
+          - 42
           description: Total number of items across all pages.
         totalPages:
           type: integer
           format: int32
           examples:
-            - 5
+          - 5
           description: Total number of pages available.
         currentPage:
           type: integer
           format: int32
           examples:
-            - 1
+          - 1
           description: Current page number (0-based ).
         pageSize:
           type: integer
           format: int32
           examples:
-            - 10
+          - 10
           description: Number of items per page.
     PageResponseDtoConsentRequestFundamentalViewDto:
       type: object
       required:
-        - items
-        - totalItems
-        - totalPages
-        - currentPage
-        - pageSize
+      - items
+      - totalItems
+      - totalPages
+      - currentPage
+      - pageSize
       description: Generic paginated response wrapper.
       properties:
         items:
@@ -1162,34 +1171,34 @@ components:
           type: integer
           format: int64
           examples:
-            - 42
+          - 42
           description: Total number of items across all pages.
         totalPages:
           type: integer
           format: int32
           examples:
-            - 5
+          - 5
           description: Total number of pages available.
         currentPage:
           type: integer
           format: int32
           examples:
-            - 1
+          - 1
           description: Current page number (0-based ).
         pageSize:
           type: integer
           format: int32
           examples:
-            - 10
+          - 10
           description: Number of items per page.
     PageResponseDtoUserInfoDto:
       type: object
       required:
-        - items
-        - totalItems
-        - totalPages
-        - currentPage
-        - pageSize
+      - items
+      - totalItems
+      - totalPages
+      - currentPage
+      - pageSize
       description: Generic paginated response wrapper.
       properties:
         items:
@@ -1201,25 +1210,25 @@ components:
           type: integer
           format: int64
           examples:
-            - 42
+          - 42
           description: Total number of items across all pages.
         totalPages:
           type: integer
           format: int32
           examples:
-            - 5
+          - 5
           description: Total number of pages available.
         currentPage:
           type: integer
           format: int32
           examples:
-            - 1
+          - 1
           description: Current page number (0-based ).
         pageSize:
           type: integer
           format: int32
           examples:
-            - 10
+          - 10
           description: Number of items per page.
     ProducerIdentifier:
       type: object
@@ -1227,14 +1236,14 @@ components:
         uid:
           type: string
           examples:
-            - CHE123456789
+          - CHE123456789
           description: Producer UID
         bur:
           type:
-            - string
-            - "null"
+          - string
+          - "null"
           examples:
-            - A12345678
+          - A12345678
           description: "Producer BUR, only set when the producer must additionally\
             \ be identified by BUR."
     ResourceQueryDto:
@@ -1263,10 +1272,10 @@ components:
     SignatureSlotCodeEnum:
       type: string
       enum:
-        - DATA_CONSUMER_01
-        - DATA_CONSUMER_02
-        - DATA_PROVIDER_01
-        - DATA_PROVIDER_02
+      - DATA_CONSUMER_01
+      - DATA_CONSUMER_02
+      - DATA_PROVIDER_01
+      - DATA_PROVIDER_02
     TranslationDto:
       type: object
       properties:
@@ -1286,7 +1295,7 @@ components:
     UidDto:
       type: object
       required:
-        - uid
+      - uid
       description: Data transfer object representing an uid
       properties:
         uid:
@@ -1326,68 +1335,68 @@ components:
           $ref: "#/components/schemas/UUID"
           type: string
           examples:
-            - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
           description: Unique identifier assigned by Agridata to a user (UUID format).
         agateLoginId:
           type: string
           examples:
-            - "1234567"
+          - "1234567"
           description: AgateLoginId of the user.
         ktIdP:
           type: string
           examples:
-            - ZH123456
+          - ZH123456
           description: KtIdP of the user. Only set for data producers
         uid:
           type: string
           examples:
-            - CHE123456789
+          - CHE123456789
           description: UID of the user. Only set for data consumers.
         givenName:
           type: string
           examples:
-            - Anna
+          - Anna
           description: User's first name.
         familyName:
           type: string
           examples:
-            - Muster
+          - Muster
           description: User's last name.
         email:
           type: string
           examples:
-            - anna.muster@example.com
+          - anna.muster@example.com
           description: Email address of the user
         phoneNumber:
           type: string
           examples:
-            - "+41791234567"
+          - "+41791234567"
           description: Phone number of the user
         addressStreet:
           type: string
           examples:
-            - Bahnhofstrasse 10
+          - Bahnhofstrasse 10
           description: Street name and house number of the user's residence.
         addressLocality:
           type: string
           examples:
-            - Zürich
+          - Zürich
           description: Locality (city or town) of the user's residence.
         addressPostalCode:
           type: string
           examples:
-            - "8001"
+          - "8001"
           description: Postal code of the user's residence.
         addressCountry:
           type: string
           examples:
-            - CH
+          - CH
           description: Country of residence
         lastLoginDate:
           $ref: "#/components/schemas/LocalDateTime"
           type: string
           examples:
-            - 2025-08-27T14:35:00
+          - 2025-08-27T14:35:00
           description: Date and time when the user last logged into the system.
         userPreferences:
           $ref: "#/components/schemas/UserPreferencesDto"
@@ -1404,17 +1413,17 @@ components:
         mainMenuOpened:
           type: boolean
           examples:
-            - true
+          - true
           description: If the main menu is opened or closed.
         activeUid:
           type: string
           examples:
-            - CHE123456789
+          - CHE123456789
           description: the active uid of the producer
         dismissedMigratedIds:
           type: array
           examples:
-            - - a5b1d2e3-4f6a-2b7c-6d0e-9f1a3b5c7d9e
+          - - a5b1d2e3-4f6a-2b7c-6d0e-9f1a3b5c7d9e
           items:
             type: string
           description: consent request ids for which we dont want to show migration
@@ -1422,18 +1431,18 @@ components:
         hasSeenConsentRequestTourIntro:
           type: boolean
           examples:
-            - true
+          - true
           description: Indicates whether the user has already seen the consent request
             feature tour introduction.
     VerifyOtpRequestDto:
       type: object
       required:
-        - otpCode
+      - otpCode
       properties:
         otpCode:
           type: string
           examples:
-            - "123456"
+          - "123456"
           pattern: "^\\d{6}$"
           description: The 6-digit code to be verified.
   securitySchemes:
@@ -1442,37 +1451,37 @@ components:
       description: Authentication
       openIdConnectUrl: http://localhost:6999/realms/agate/.well-known/openid-configuration
 tags:
-  - name: Consent Request Aggregations
-    description: Provides access to aggregated consent requests for data producers.
-      Each aggregation groups consent requests by the data request they belong to.
-  - name: Consent Requests
-    description: "Provides access to consent requests for data producers, consumers,\
+- name: Consent Request Aggregations
+  description: Provides access to aggregated consent requests for data producers.
+    Each aggregation groups consent requests by the data request they belong to.
+- name: Consent Requests
+  description: "Provides access to consent requests for data producers, consumers,\
     \ and admins. Data producers can retrieve and update consent requests assigned\
     \ to them, consumers can access consent requests linked to their data requests,\
     \ and admins have full access to all consent requests."
-  - name: Contract Revisions
-    description: Provides access to contract revisions for consumers
-  - name: Data Products
-    description: Enables retrieval of available data products that can be requested
-      and used by Users in the data sharing process.
-  - name: Data Providers
-    description: Enables retrieval of data providers and their available data products.
-  - name: Data Requests
-    description: "Provides access to data requests for consumers and admins. Consumers\
+- name: Contract Revisions
+  description: Provides access to contract revisions for consumers and providers
+- name: Data Products
+  description: Enables retrieval of available data products that can be requested
+    and used by Users in the data sharing process.
+- name: Data Providers
+  description: Enables retrieval of data providers and their available data products.
+- name: Data Requests
+  description: "Provides access to data requests for consumers and admins. Consumers\
     \ can create, update, submit, and retrieve their own data requests, while admins\
     \ have full access to all data requests and their associated consent requests."
-  - name: Data Transfer
-    description: "Relays data products that belong to a producer, identified by a specific\
+- name: Data Transfer
+  description: "Relays data products that belong to a producer, identified by a specific\
     \ UID or local BUR local unit Id. Before any data is transferred, the producer\
     \ must have accepted an active data request that includes the requested product.\
     \ This endpoint simply forwards the payload from the source system to the consumer."
-  - name: Data Transfer V2
-  - name: Test Data
-  - name: UID Register Search
-    description: Provides access to organisation details retrieved from the official
-      UID register.
-  - name: Users
-    description: "Provides access to UIDs and BURs authorized for specific data producers,\
+- name: Data Transfer V2
+- name: Test Data
+- name: UID Register Search
+  description: Provides access to organisation details retrieved from the official
+    UID register.
+- name: Users
+  description: "Provides access to UIDs and BURs authorized for specific data producers,\
     \ based on their ktIdP or UID."
 paths:
   /api/agreement/v1/consent-request-aggregations:
@@ -1481,16 +1490,16 @@ paths:
         \ grouped by data request."
       operationId: getConsentRequestAggregations
       tags:
-        - Consent Request Aggregations
+      - Consent Request Aggregations
       parameters:
-        - description: Filter to retrieve consent requests for a specific producer UID.
-          example: CHE101000001
-          name: dataProducerUid
-          required: true
-          in: query
-          schema:
-            type: string
-            pattern: "^(?:CHE|ZZZ)\\d{9}$"
+      - description: Filter to retrieve consent requests for a specific producer UID.
+        example: CHE101000001
+        name: dataProducerUid
+        required: true
+        in: query
+        schema:
+          type: string
+          pattern: "^(?:CHE|ZZZ)\\d{9}$"
       responses:
         "200":
           description: OK
@@ -1518,29 +1527,29 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Consent Request Aggregations
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Einwilliger
-            - agridata.ch.Agridata_Support
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Support
       x-api-subset:
-        - Mobile App
-        - agridata.ch Web App
+      - Mobile App
+      - agridata.ch Web App
   /api/agreement/v1/consent-requests:
     get:
       description: Retrieves all consent requests assigned to the currently authenticated
         data producer. Only accessible to users with the producer role.
       operationId: getConsentRequests
       tags:
-        - Consent Requests
+      - Consent Requests
       parameters:
-        - description: "Optional filter to retrieve consent requests for a specific\
+      - description: "Optional filter to retrieve consent requests for a specific\
           \ producer UID. If not provided, all requests for the currently authenticated\
           \ producer are returned."
-          example: CHE101000001
-          name: dataProducerUid
-          in: query
-          schema:
-            type: string
-            pattern: "^(?:CHE|ZZZ)\\d{9}$"
+        example: CHE101000001
+        name: dataProducerUid
+        in: query
+        schema:
+          type: string
+          pattern: "^(?:CHE|ZZZ)\\d{9}$"
       responses:
         "200":
           description: OK
@@ -1568,18 +1577,18 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Consent Requests For Current Data Producer
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Einwilliger
-            - agridata.ch.Agridata_Support
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Support
       x-api-subset:
-        - Mobile App
-        - agridata.ch Web App
+      - Mobile App
+      - agridata.ch Web App
     post:
       description: "Creates consent requests for given uids, provided the user actually\
         \ has access to those uids."
       operationId: createConsentRequests
       tags:
-        - Consent Requests
+      - Consent Requests
       requestBody:
         content:
           application/json:
@@ -1617,8 +1626,8 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Create Consent Requests
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Einwilliger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/consent-requests/{id}:
     get:
@@ -1626,13 +1635,13 @@ paths:
         \ producer is assigned to it. "
       operationId: getConsentRequest
       tags:
-        - Consent Requests
+      - Consent Requests
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
       responses:
         "200":
           description: OK
@@ -1658,9 +1667,9 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Consent Request
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Einwilliger
-            - agridata.ch.Agridata_Support
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Support
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/consent-requests/{id}/status:
     put:
@@ -1668,14 +1677,14 @@ paths:
         to the data producer assigned to the consent request.
       operationId: updateConsentRequestStatus
       tags:
-        - Consent Requests
+      - Consent Requests
       parameters:
-        - description: ID of the consent request
-          required: true
-          name: id
-          in: path
-          schema:
-            $ref: "#/components/schemas/UUID"
+      - description: ID of the consent request
+        required: true
+        name: id
+        in: path
+        schema:
+          $ref: "#/components/schemas/UUID"
       requestBody:
         description: New status of the consent request
         content:
@@ -1704,24 +1713,24 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Update Consent Request State For Current Data Producer
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Einwilliger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
       x-api-subset:
-        - Mobile App
-        - agridata.ch Web App
+      - Mobile App
+      - agridata.ch Web App
   /api/agreement/v1/contract-revisions/{id}:
     get:
       description: Retrieves a specific contract revision by its ID. Accessible by
-        the consumerthat owns the associated datarequest.
+        the consumer or provider that owns the associated datarequest.
       operationId: getContractRevision
       tags:
-        - Contract Revisions
+      - Contract Revisions
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
       responses:
         "200":
           description: OK
@@ -1747,27 +1756,28 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Contract Revision
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Datenanbieter
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/contract-revisions/{id}/signatures/{slotCode}/otp-challenges:
     post:
       description: Initiates a challenge for a specific signature slot of a specific
         contract revision.
-      operationId: initiateConsumerSignatureChallenge
+      operationId: initiateSignatureChallenge
       tags:
-        - Contract Revisions
+      - Contract Revisions
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
-        - name: slotCode
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/SignatureSlotCodeEnum"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: slotCode
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/SignatureSlotCodeEnum"
       responses:
         "200":
           description: OK
@@ -1791,33 +1801,34 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-      summary: Initiate Consumer Signature Challenge
+      summary: Initiate Signature Challenge
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Datenanbieter
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/contract-revisions/{id}/signatures/{slotCode}/otp-challenges/{challengeId}/verification:
     post:
       description: Verifies the otp and adds a signature to a specific signature slot.
-      operationId: verifyConsumerSignature
+      operationId: verifySignature
       tags:
-        - Contract Revisions
+      - Contract Revisions
       parameters:
-        - name: challengeId
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
-        - name: slotCode
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/SignatureSlotCodeEnum"
+      - name: challengeId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: slotCode
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/SignatureSlotCodeEnum"
       requestBody:
         content:
           application/json:
@@ -1849,10 +1860,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-      summary: Verify Consumer Signature
+      summary: Verify Signature
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Datenanbieter
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests:
     get:
@@ -1860,7 +1872,7 @@ paths:
         \ requests, while consumers receive only the data requests they own."
       operationId: getDataRequests
       tags:
-        - Data Requests
+      - Data Requests
       responses:
         "200":
           description: OK
@@ -1888,21 +1900,21 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Data Requests
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
-            - agridata.ch.Agridata_Admin
-            - agridata.ch.Agridata_Datenanbieter
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
       x-api-subset:
-        - agridata.ch Web App
-        - Data Consumer
-        - Data Provider
+      - agridata.ch Web App
+      - Data Consumer
+      - Data Provider
     post:
       description: Creates a new data request in draft status. Only accessible to
         users with the consumer role. Disallows creating more than 10 draft requests
         per consumer.
       operationId: createDataRequestDraft
       tags:
-        - Data Requests
+      - Data Requests
       requestBody:
         content:
           application/json:
@@ -1936,8 +1948,8 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Create Data Request Draft
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}:
     put:
@@ -1945,13 +1957,13 @@ paths:
         to the consumer who owns the data request.
       operationId: updateDataRequestDetails
       tags:
-        - Data Requests
+      - Data Requests
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
       requestBody:
         content:
           application/json:
@@ -1985,21 +1997,21 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Update Data Request Details
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: agridata.ch Web App
     get:
       description: 'Retrieves a specific data request by its ID. Accessible to admin
         users or the consumer who owns the data request. '
       operationId: getDataRequest
       tags:
-        - Data Requests
+      - Data Requests
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
       responses:
         "200":
           description: OK
@@ -2025,22 +2037,22 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Data Request
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
-            - agridata.ch.Agridata_Admin
-            - agridata.ch.Agridata_Datenanbieter
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
       x-api-subset: agridata.ch Web App
     delete:
       description: Deletes a data request
       operationId: deleteDataRequest
       tags:
-        - Data Requests
+      - Data Requests
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
       responses:
         "200":
           description: OK
@@ -2065,8 +2077,8 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Delete Data Request
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/consent-requests:
     get:
@@ -2074,37 +2086,37 @@ paths:
         to the provider who owns the data request.
       operationId: getConsentRequestsOfDataRequest
       tags:
-        - Data Requests
+      - Data Requests
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
-        - description: Only consent requests that were modified after this timestamp
-            are returned.
-          example: 2025-01-01T09:00:00
-          name: lastModifiedFrom
-          in: query
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/LocalDateTime"
-              - default: 1970-01-01T00:00:00
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 0
-            minimum: 0
-        - name: size
-          in: query
-          schema:
-            type: integer
-            format: int32
-            default: 100
-            maximum: 1000
-            minimum: 1
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - description: Only consent requests that were modified after this timestamp
+          are returned.
+        example: 2025-01-01T09:00:00
+        name: lastModifiedFrom
+        in: query
+        schema:
+          allOf:
+          - $ref: "#/components/schemas/LocalDateTime"
+          - default: 1970-01-01T00:00:00
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 0
+          minimum: 0
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 100
+          maximum: 1000
+          minimum: 1
       responses:
         "200":
           description: OK
@@ -2130,8 +2142,8 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Consent Requests Of Data Request
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenanbieter
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
       x-api-subset: Data Provider
   /api/agreement/v1/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests:
     get:
@@ -2143,22 +2155,22 @@ paths:
       operationId: getConsentRequestsOfDataRequestAndKtIdP
       deprecated: true
       tags:
-        - Data Requests
+      - Data Requests
       parameters:
-        - description: The UUID of the data request
-          example: 3da3a459-d3c2-48af-b8d0-02bc95146468
-          name: id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
-        - description: The kt-id-p identifier of the producer
-          example: FLXXA0001
-          name: kt-id-p
-          in: path
-          required: true
-          schema:
-            type: string
+      - description: The UUID of the data request
+        example: 3da3a459-d3c2-48af-b8d0-02bc95146468
+        name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - description: The kt-id-p identifier of the producer
+        example: FLXXA0001
+        name: kt-id-p
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -2186,8 +2198,8 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Consent Requests Of Data Request And Kt Id P
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: Data Consumer
   /api/agreement/v1/data-requests/{id}/logo:
     put:
@@ -2195,13 +2207,13 @@ paths:
         the consumer who owns the data request.
       operationId: updateDataRequestLogo
       tags:
-        - Data Requests
+      - Data Requests
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
       requestBody:
         content:
           multipart/form-data:
@@ -2233,8 +2245,8 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Update Data Request Logo
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/status:
     put:
@@ -2242,13 +2254,13 @@ paths:
         owns the data request and to admins. Only specific transitions are allowed.
       operationId: setDataRequestStatus
       tags:
-        - Data Requests
+      - Data Requests
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
       requestBody:
         content:
           application/json:
@@ -2280,9 +2292,9 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Set Data Request Status
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
-            - agridata.ch.Agridata_Admin
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/valid-redirect-uri-regex:
     put:
@@ -2290,13 +2302,13 @@ paths:
         Only accessible to admins.
       operationId: updateDataRequestValidRedirectUriRegex
       tags:
-        - Data Requests
+      - Data Requests
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
       requestBody:
         content:
           application/json:
@@ -2330,8 +2342,8 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Update Data Request Valid Redirect Uri Regex
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Admin
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/agreement/v2/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests:
     get:
@@ -2340,22 +2352,22 @@ paths:
         and for admin users.
       operationId: getConsentRequestsOfDataRequestAndKtIdPv2
       tags:
-        - Data Requests
+      - Data Requests
       parameters:
-        - description: The UUID of the data request
-          example: 3da3a459-d3c2-48af-b8d0-02bc95146468
-          name: id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
-        - description: The kt-id-p identifier of the producer
-          example: FLXXA0001
-          name: kt-id-p
-          in: path
-          required: true
-          schema:
-            type: string
+      - description: The UUID of the data request
+        example: 3da3a459-d3c2-48af-b8d0-02bc95146468
+        name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - description: The kt-id-p identifier of the producer
+        example: FLXXA0001
+        name: kt-id-p
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -2383,9 +2395,9 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Consent Requests Of Data Request And Kt Id Pv 2
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
-            - agridata.ch.Agridata_Admin
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
       x-api-subset: Data Consumer
   /api/data-transfer/v1/product/{productId}/data:
     get:
@@ -2395,35 +2407,35 @@ paths:
       operationId: dataTransfer
       deprecated: true
       tags:
-        - Data Transfer
+      - Data Transfer
       parameters:
-        - description: productId for which the data is requested
-          example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
-          name: productId
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
-        - description: Optional filter to retrieve data of a producer identified by
-            a id of a local bur unit
-          name: bur
-          in: query
-          schema:
-            type: string
-        - description: Optional filter to retrieve data of a producer identified by
-            the uid
-          example: CHE101000001
-          name: uid
-          in: query
-          schema:
-            type: string
-        - description: year for which the data is requested
-          example: 2024
-          name: year
-          in: query
-          schema:
-            type: integer
-            format: int32
+      - description: productId for which the data is requested
+        example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
+        name: productId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - description: Optional filter to retrieve data of a producer identified by
+          a id of a local bur unit
+        name: bur
+        in: query
+        schema:
+          type: string
+      - description: Optional filter to retrieve data of a producer identified by
+          the uid
+        example: CHE101000001
+        name: uid
+        in: query
+        schema:
+          type: string
+      - description: year for which the data is requested
+        example: 2024
+        name: year
+        in: query
+        schema:
+          type: integer
+          format: int32
       responses:
         "200":
           description: OK
@@ -2449,8 +2461,8 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Data Transfer
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: Data Consumer
   /api/data-transfer/v1/product/{productId}/delta:
     get:
@@ -2460,23 +2472,23 @@ paths:
         \ which a detail query is relevant"
       operationId: getDeltaIds
       tags:
-        - Data Transfer
+      - Data Transfer
       parameters:
-        - description: productId for which the delta ids are requested
-          example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
-          name: productId
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
-        - description: Only delta IDs with changes or newly granted consents after this
-            timestamp are returned.
-          example: 2025-01-01T09:00:00
-          name: since
-          in: query
-          schema:
-            $ref: "#/components/schemas/LocalDateTime"
-          required: true
+      - description: productId for which the delta ids are requested
+        example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
+        name: productId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - description: Only delta IDs with changes or newly granted consents after this
+          timestamp are returned.
+        example: 2025-01-01T09:00:00
+        name: since
+        in: query
+        schema:
+          $ref: "#/components/schemas/LocalDateTime"
+        required: true
       responses:
         "200":
           description: OK
@@ -2504,8 +2516,8 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Delta Ids
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: Data Consumer
   /api/data-transfer/v2/product/{productId}/data:
     get:
@@ -2517,26 +2529,26 @@ paths:
         \ product."
       operationId: dataTransferV2
       tags:
-        - Data Transfer V2
+      - Data Transfer V2
       parameters:
-        - description: productId for which the data is requested
-          example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
-          name: productId
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
-        - description: Additional query parameters. The needed query parameters are
-            depending on the requested productId. Please consult documentation to find
-            the necessary parameters.
-          examples:
-            uid:
-              value:
-                uid: CHE123456789
-          name: queryParams
-          schema:
-            type: object
-          in: query
+      - description: productId for which the data is requested
+        example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
+        name: productId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - description: Additional query parameters. The needed query parameters are
+          depending on the requested productId. Please consult documentation to find
+          the necessary parameters.
+        examples:
+          uid:
+            value:
+              uid: CHE123456789
+        name: queryParams
+        schema:
+          type: object
+        in: query
       responses:
         "200":
           description: OK
@@ -2560,7 +2572,7 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Data Transfer
       security:
-        - SecurityScheme: []
+      - SecurityScheme: []
       x-api-subset: Data Consumer
   /api/data-transfer/v2/product/{productId}/modified-producers:
     get:
@@ -2570,22 +2582,22 @@ paths:
         the product to have change detection configured.
       operationId: getModifiedProducers
       tags:
-        - Data Transfer V2
+      - Data Transfer V2
       parameters:
-        - description: productId for which the change detection is requested
-          example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
-          name: productId
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
-        - description: Only changes and new consents after this date are returned.
-          example: 2025-01-01
-          name: since
-          in: query
-          schema:
-            $ref: "#/components/schemas/LocalDate"
-          required: true
+      - description: productId for which the change detection is requested
+        example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
+        name: productId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - description: Only changes and new consents after this date are returned.
+        example: 2025-01-01
+        name: since
+        in: query
+        schema:
+          $ref: "#/components/schemas/LocalDate"
+        required: true
       responses:
         "200":
           description: OK
@@ -2613,8 +2625,8 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Modified Producers
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: Data Consumer
   /api/products/v1:
     get:
@@ -2622,7 +2634,7 @@ paths:
         \ to users with the producer, consumer, admin, or provider role."
       operationId: getDataProducts
       tags:
-        - Data Products
+      - Data Products
       responses:
         "200":
           description: OK
@@ -2650,22 +2662,22 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Data Products
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Einwilliger
-            - agridata.ch.Agridata_Datenbezueger
-            - agridata.ch.Agridata_Admin
-            - agridata.ch.Agridata_Datenanbieter
-            - agridata.ch.Agridata_Support
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Support
       x-api-subset:
-        - agridata.ch Web App
-        - Mobile App
+      - agridata.ch Web App
+      - Mobile App
   /api/products/v1/data-providers:
     get:
       description: "Retrieves the list of all available data providers. Accessible\
         \ to users with the producer, consumer, admin, or provider role."
       operationId: getDataProviders
       tags:
-        - Data Providers
+      - Data Providers
       responses:
         "200":
           description: OK
@@ -2693,25 +2705,25 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Data Providers
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Einwilliger
-            - agridata.ch.Agridata_Datenbezueger
-            - agridata.ch.Agridata_Admin
-            - agridata.ch.Agridata_Datenanbieter
-            - agridata.ch.Agridata_Support
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Support
       x-api-subset: agridata.ch Web App
   /api/products/v1/data-providers/{providerId}:
     get:
       description: Retrieves a specific data provider.
       operationId: getDataProviderById
       tags:
-        - Data Providers
+      - Data Providers
       parameters:
-        - name: providerId
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
+      - name: providerId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
       responses:
         "200":
           description: OK
@@ -2737,25 +2749,25 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Data Provider By Id
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Einwilliger
-            - agridata.ch.Agridata_Datenbezueger
-            - agridata.ch.Agridata_Admin
-            - agridata.ch.Agridata_Datenanbieter
-            - agridata.ch.Agridata_Support
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Support
       x-api-subset: agridata.ch Web App
   /api/products/v1/data-providers/{providerId}/products:
     get:
       description: Retrieves all data products belonging to a specific data provider.
       operationId: getDataProductsByProviderId
       tags:
-        - Data Providers
+      - Data Providers
       parameters:
-        - name: providerId
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
+      - name: providerId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
       responses:
         "200":
           description: OK
@@ -2783,18 +2795,18 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Data Products By Provider Id
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Einwilliger
-            - agridata.ch.Agridata_Datenbezueger
-            - agridata.ch.Agridata_Admin
-            - agridata.ch.Agridata_Datenanbieter
-            - agridata.ch.Agridata_Support
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Support
       x-api-subset: agridata.ch Web App
   /api/test-data/execute:
     post:
       operationId: executeSqlScript
       tags:
-        - Test Data
+      - Test Data
       requestBody:
         content:
           multipart/form-data:
@@ -2826,14 +2838,14 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Execute
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Admin
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/test-data/reset:
     post:
       operationId: resetTestData
       tags:
-        - Test Data
+      - Test Data
       responses:
         "201":
           description: Created
@@ -2855,7 +2867,7 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Reset Test Data
       security:
-        - SecurityScheme: []
+      - SecurityScheme: []
       x-api-subset: agridata.ch Web App
   /api/uid-register/v1/search:
     get:
@@ -2864,7 +2876,7 @@ paths:
         with the consumer role.
       operationId: getByUidOfCurrentUser
       tags:
-        - UID Register Search
+      - UID Register Search
       responses:
         "200":
           description: OK
@@ -2890,8 +2902,8 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get By Uid Of Current User
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Datenbezueger
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: agridata.ch Web App
   /api/uid-register/v1/search/{uid}:
     get:
@@ -2899,15 +2911,15 @@ paths:
         specified UID. Accessible to users with the admin role.
       operationId: getByUid
       tags:
-        - UID Register Search
+      - UID Register Search
       parameters:
-        - description: UID of the organisation without CHE prefix
-          example: 101708094
-          required: true
-          name: uid
-          in: path
-          schema:
-            type: integer
+      - description: UID of the organisation without CHE prefix
+        example: 101708094
+        required: true
+        name: uid
+        in: path
+        schema:
+          type: integer
       responses:
         "200":
           description: OK
@@ -2933,8 +2945,8 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get By Uid
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Admin
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/user/v1/authorized-uids:
     get:
@@ -2942,21 +2954,21 @@ paths:
         producer.
       operationId: getAuthorizedUids
       tags:
-        - Users
+      - Users
       parameters:
-        - description: The agateLoginId of the producer (only relevant for admin users)
-          example: "1234567"
-          name: agate-login-id
-          in: query
-          schema:
-            type: string
-        - description: The kt-id-p identifier of the producer (only relevant for admin
-            users)
-          example: FLXXA0001
-          name: kt-id-p
-          in: query
-          schema:
-            type: string
+      - description: The agateLoginId of the producer (only relevant for admin users)
+        example: "1234567"
+        name: agate-login-id
+        in: query
+        schema:
+          type: string
+      - description: The kt-id-p identifier of the producer (only relevant for admin
+          users)
+        example: FLXXA0001
+        name: kt-id-p
+        in: query
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -2984,19 +2996,19 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Authorized Uids
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Einwilliger
-            - agridata.ch.Agridata_Support
-            - agridata.ch.Agridata_Admin
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Support
+        - agridata.ch.Agridata_Admin
       x-api-subset:
-        - agridata.ch Web App
-        - Mobile App
+      - agridata.ch Web App
+      - Mobile App
   /api/user/v1/preferences:
     put:
       description: updates preferences for the currently authenticated user.
       operationId: updateUserPreferences
       tags:
-        - Users
+      - Users
       requestBody:
         content:
           application/json:
@@ -3026,48 +3038,48 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Update User Preferences
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Einwilliger
-            - agridata.ch.Agridata_Datenbezueger
-            - agridata.ch.Agridata_Admin
-            - agridata.ch.Agridata_Support
-            - agridata.ch.Agridata_Datenanbieter
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Support
+        - agridata.ch.Agridata_Datenanbieter
       x-api-subset: agridata.ch Web App
   /api/user/v1/producers:
     get:
       description: Retrieves users mathing the given query parameters.
       operationId: getProducers
       tags:
-        - Users
+      - Users
       parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-            description: page number
-            default: 0
-            minimum: 0
-        - name: searchTerm
-          in: query
-          schema:
-            type: string
-            description: string to search for in the resource
-        - name: size
-          in: query
-          schema:
-            type: integer
-            format: int32
-            description: page size
-            default: 20
-            maximum: 100
-            minimum: 1
-        - name: sortBy
-          in: query
-          schema:
-            type: object
-            description: List of field names to sort by. Default is ascending prefix
-              with - for descending
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+          description: page number
+          default: 0
+          minimum: 0
+      - name: searchTerm
+        in: query
+        schema:
+          type: string
+          description: string to search for in the resource
+      - name: size
+        in: query
+        schema:
+          type: integer
+          format: int32
+          description: page size
+          default: 20
+          maximum: 100
+          minimum: 1
+      - name: sortBy
+        in: query
+        schema:
+          type: object
+          description: List of field names to sort by. Default is ascending prefix
+            with - for descending
       responses:
         "200":
           description: OK
@@ -3093,8 +3105,8 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Producers
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Support
+      - SecurityScheme:
+        - agridata.ch.Agridata_Support
       x-api-subset: agridata.ch Web App
   /api/user/v1/uid/{uid}/authorized-burs:
     get:
@@ -3102,13 +3114,13 @@ paths:
         to admin users.
       operationId: getAuthorizedBursByUid
       tags:
-        - Users
+      - Users
       parameters:
-        - name: uid
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: uid
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -3136,15 +3148,15 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Authorized Burs By Uid
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Admin
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/user/v1/user-info:
     get:
       description: Retrieves user-info for the currently authenticated user.
       operationId: getUserInfo
       tags:
-        - Users
+      - Users
       responses:
         "200":
           description: OK
@@ -3170,12 +3182,12 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get User Info
       security:
-        - SecurityScheme:
-            - agridata.ch.Agridata_Einwilliger
-            - agridata.ch.Agridata_Datenbezueger
-            - agridata.ch.Agridata_Admin
-            - agridata.ch.Agridata_Support
-            - agridata.ch.Agridata_Datenanbieter
+      - SecurityScheme:
+        - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Support
+        - agridata.ch.Agridata_Datenanbieter
       x-api-subset: agridata.ch Web App
   /q/info:
     get:
@@ -3202,7 +3214,7 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Info
       tags:
-        - Info Resource
+      - Info Resource
   /q/info/schema:
     get:
       responses:
@@ -3226,10 +3238,10 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Schema
       tags:
-        - Info Resource
+      - Info Resource
 info:
   title: agridata.ch API
-  version: 1.8.0-rc.18
+  version: 1.8.0-rc.20
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

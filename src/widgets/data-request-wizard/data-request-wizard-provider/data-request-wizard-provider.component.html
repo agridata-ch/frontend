@@ -1,0 +1,61 @@
+<ng-container *i18n="let t; prefix: 'provider'">
+  <app-sidepanel
+    [title]="t('sidePanelTitle')"
+    [isOpen]="true"
+    (closeSidepanel)="handleClose()"
+    [maxWidth]="'1280px'"
+    [backgroundColor]="'#efefef'"
+    [dataTestId]="'data-request-provider-sidepanel'"
+  >
+    <app-agridata-wizard
+      [steps]="formControlSteps()"
+      #wizard
+      (onStepChange)="handleStepChange()"
+      class="flex flex-col flex-1 min-h-0 relative"
+    >
+      <div wizardContent>
+        <app-error-outlet></app-error-outlet>
+        @switch (wizard.currentStepId()) {
+          @case (FORM_GROUP_NAMES.PREVIEW) {
+            <app-data-request-preview [dataRequest]="dataRequest()!" />
+          }
+          @case (FORM_GROUP_NAMES.CONTRACT) {
+            <app-data-request-form-contract
+              [dataRequest]="dataRequest()!"
+              (reloadDataRequest)="handleReloadDataRequest()"
+            />
+          }
+          @case (FORM_GROUP_NAMES.COMPLETION) {
+            <app-data-request-completion [dataRequest]="dataRequest()!" />
+          }
+        }
+      </div>
+      <div wizardFooter class="contents" *i18n="let t; prefix: 'data-request.wizard'">
+        <div class="flex grow gap-4 justify-end">
+          <app-agridata-button
+            [variant]="ButtonVariants.Secondary"
+            (onClick)="handlePreviousStep()"
+            [disabled]="wizard.currentStep() === 0"
+          >
+            <fa-icon [icon]="previousIcon"></fa-icon>
+            <span class="ml-2">{{ t('previous') }}</span>
+          </app-agridata-button>
+          @if (wizard.currentStepId() !== FORM_GROUP_NAMES.COMPLETION) {
+            <app-agridata-button (onClick)="handleNextStep()" [disabled]="isNextStepDisabled()">
+              <span class="mr-2">{{ t('next') }}</span>
+              <fa-icon [icon]="nextIcon"></fa-icon>
+            </app-agridata-button>
+          }
+          @if (wizard.currentStepId() === FORM_GROUP_NAMES.COMPLETION) {
+            <app-agridata-button
+              (onClick)="handleReleaseContract()"
+              [disabled]="!canReleaseContract()"
+            >
+              {{ t('releaseContract') }}
+            </app-agridata-button>
+          }
+        </div>
+      </div>
+    </app-agridata-wizard>
+  </app-sidepanel>
+</ng-container>

@@ -107,6 +107,7 @@ describe('DataRequestContractSigningComponent', () => {
 
     it('should return DataProvider01 signature for a provider', async () => {
       authService.__testSignals.isConsumer.set(false);
+      authService.__testSignals.isDataProvider.set(true);
       const providerFixture = TestBed.createComponent(DataRequestContractSigningComponent);
       providerFixture.componentRef.setInput('contractId', 'cr-1');
       providerFixture.detectChanges();

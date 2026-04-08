@@ -275,20 +275,29 @@
       "moreInfos": "Afficher plus de détails"
     },
     "wizard": {
-      "steps": {
-        "consumer": "Requérant des données",
-        "request": "Demande de données",
-        "preview": "Aperçu",
-        "producer": "Fournisseur de données",
-        "contract": "Contrat",
-        "completion": "Conclusion"
+      "consumer": {
+        "steps": {
+          "consumer": "Requérant des données",
+          "request": "Demande de données",
+          "preview": "Aperçu",
+          "producer": "Fournisseur de données",
+          "contract": "Contrat",
+          "completion": "Conclusion"
+        }
       },
       "saveDraft": "Mise en cache",
       "releaseToProvider": "Soumettre auprès du fournisseur",
       "next": "Suivant",
       "previous": "Retour",
       "submitAndContinue": "Soumettre la demande et continuer",
-      "retreatRequest": "Retirer la demande"
+      "retreatRequest": "Retirer la demande",
+      "provider": {
+        "steps": {
+          "preview": "Aperçu",
+          "contract": "Contrat",
+          "completion": "Conclusion"
+        }
+      }
     },
     "submit": {
       "error": "Erreur lors de la soumission de la demande"
@@ -646,7 +655,8 @@
           "message": "Aucune demande de données n'est actuellement active. Dès que des demandes de données actives seront disponibles, elles seront répertoriées ici."
         }
       }
-    }
+    },
+    "sidePanelTitle": "Signer la demande de données"
   },
   "product-tour": {
     "nextBtnText": "Continuer",
