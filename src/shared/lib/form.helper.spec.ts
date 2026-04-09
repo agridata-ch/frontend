@@ -5,7 +5,7 @@ import {
   FormModel,
   FORM_COMPLETION_STRATEGIES,
   FORM_GROUP_NAMES,
-} from '@/widgets/data-request-new';
+} from '@/widgets/data-request-wizard';
 
 import {
   buildReactiveForm,

@@ -275,20 +275,29 @@
       "moreInfos": "Visualizza maggiori dettagli"
     },
     "wizard": {
-      "steps": {
-        "consumer": "Acquirente di dati",
-        "request": "Richiesta di dati",
-        "preview": "Anteprima",
-        "producer": "Produttore di dati",
-        "contract": "Contratto",
-        "completion": "Conclusione"
+      "consumer": {
+        "steps": {
+          "consumer": "Acquirente di dati",
+          "request": "Richiesta di dati",
+          "preview": "Anteprima",
+          "producer": "Produttore di dati",
+          "contract": "Contratto",
+          "completion": "Conclusione"
+        }
       },
       "saveDraft": "Salva temporaneamente",
       "releaseToProvider": "Inviare al fornitore",
       "next": "Avanti",
       "previous": "Indietro",
       "submitAndContinue": "Invia la richiesta e continua",
-      "retreatRequest": "Revoca la richiesta"
+      "retreatRequest": "Revoca la richiesta",
+      "provider": {
+        "steps": {
+          "preview": "Anteprima",
+          "contract": "Contratto",
+          "completion": "Conclusione"
+        }
+      }
     },
     "submit": {
       "error": "Errore durante l'invio della richiesta"
@@ -647,7 +656,8 @@
           "message": "Al momento non ci sono richieste di dati attive. Non appena saranno disponibili richieste di dati attive, queste verranno elencate qui."
         }
       }
-    }
+    },
+    "sidePanelTitle": "Firmare la richiesta di dati"
   },
   "product-tour": {
     "nextBtnText": "Inizia il tour",

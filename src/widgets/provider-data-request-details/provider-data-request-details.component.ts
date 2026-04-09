@@ -6,6 +6,8 @@ import { I18nDirective } from '@/shared/i18n';
 import { ButtonVariants } from '@/shared/ui/button';
 import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
 
+import { DataRequestDetailsWrapperComponent } from '../data-request-details-wrapper/data-request-details-wrapper.component';
+
 /**
  * Provider page for viewing data request details with action buttons.
  * Wraps the reusable details component.
@@ -14,7 +16,7 @@ import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
  */
 @Component({
   selector: 'app-provider-data-request-details',
-  imports: [DataRequestDetailsComponent, I18nDirective],
+  imports: [DataRequestDetailsComponent, I18nDirective, DataRequestDetailsWrapperComponent],
   templateUrl: './provider-data-request-details.html',
 })
 export class ProviderDataRequestDetailsComponent {

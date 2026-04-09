@@ -45,7 +45,7 @@ export class ContractRevisionsService extends BaseService {
 
     /**
      * Get Contract Revision
-     * Retrieves a specific contract revision by its ID. Accessible by the consumerthat owns the associated datarequest.
+     * Retrieves a specific contract revision by its ID. Accessible by the consumer or provider that owns the associated datarequest.
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -101,22 +101,22 @@ export class ContractRevisionsService extends BaseService {
     }
 
     /**
-     * Initiate Consumer Signature Challenge
+     * Initiate Signature Challenge
      * Initiates a challenge for a specific signature slot of a specific contract revision.
      * @param id 
      * @param slotCode 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public initiateConsumerSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<OtpChallengeDto>;
-    public initiateConsumerSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<OtpChallengeDto>>;
-    public initiateConsumerSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<OtpChallengeDto>>;
-    public initiateConsumerSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public initiateSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<OtpChallengeDto>;
+    public initiateSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<OtpChallengeDto>>;
+    public initiateSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<OtpChallengeDto>>;
+    public initiateSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling initiateConsumerSignatureChallenge.');
+            throw new Error('Required parameter id was null or undefined when calling initiateSignatureChallenge.');
         }
         if (slotCode === null || slotCode === undefined) {
-            throw new Error('Required parameter slotCode was null or undefined when calling initiateConsumerSignatureChallenge.');
+            throw new Error('Required parameter slotCode was null or undefined when calling initiateSignatureChallenge.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -162,7 +162,7 @@ export class ContractRevisionsService extends BaseService {
     }
 
     /**
-     * Verify Consumer Signature
+     * Verify Signature
      * Verifies the otp and adds a signature to a specific signature slot.
      * @param challengeId 
      * @param id 
@@ -171,21 +171,21 @@ export class ContractRevisionsService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public verifyConsumerSignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContractRevisionDto>;
-    public verifyConsumerSignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContractRevisionDto>>;
-    public verifyConsumerSignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContractRevisionDto>>;
-    public verifyConsumerSignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public verifySignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContractRevisionDto>;
+    public verifySignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContractRevisionDto>>;
+    public verifySignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContractRevisionDto>>;
+    public verifySignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (challengeId === null || challengeId === undefined) {
-            throw new Error('Required parameter challengeId was null or undefined when calling verifyConsumerSignature.');
+            throw new Error('Required parameter challengeId was null or undefined when calling verifySignature.');
         }
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling verifyConsumerSignature.');
+            throw new Error('Required parameter id was null or undefined when calling verifySignature.');
         }
         if (slotCode === null || slotCode === undefined) {
-            throw new Error('Required parameter slotCode was null or undefined when calling verifyConsumerSignature.');
+            throw new Error('Required parameter slotCode was null or undefined when calling verifySignature.');
         }
         if (verifyOtpRequestDto === null || verifyOtpRequestDto === undefined) {
-            throw new Error('Required parameter verifyOtpRequestDto was null or undefined when calling verifyConsumerSignature.');
+            throw new Error('Required parameter verifyOtpRequestDto was null or undefined when calling verifySignature.');
         }
 
         let localVarHeaders = this.defaultHeaders;

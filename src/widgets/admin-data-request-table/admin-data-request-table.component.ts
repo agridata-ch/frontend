@@ -98,11 +98,11 @@ export class AdminDataRequestTableComponent {
             renderer: {
               type: CellRendererTypes.FUNCTION,
               cellRenderFn: (item) =>
-                this.i18nService.useObjectTranslation(item.dataSourceSystem?.dataProvider.name),
+                this.i18nService.useObjectTranslation(item.dataSourceSystem?.dataProvider?.name),
             },
             sortable: true,
             sortValueFn: (item) =>
-              this.i18nService.useObjectTranslation(item.dataSourceSystem?.dataProvider.name),
+              this.i18nService.useObjectTranslation(item.dataSourceSystem?.dataProvider?.name),
           },
           {
             name: this.dataRequestStateHeader,

@@ -1,7 +1,7 @@
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 import { I18nService } from '@/shared/i18n';
-import { FormModel } from '@/widgets/data-request-new';
+import { FormModel } from '@/widgets/data-request-wizard';
 
 // Defines a top-level grouping of DTO fields into a named FormGroup
 
