@@ -22,6 +22,7 @@ export default defineConfig([
       'coverage/*',
       'dist/*',
       'src/entities/openapi/*',
+      'src/widgets/data-request-details-email/data-request-details-email.template.html',
     ],
   },
   {

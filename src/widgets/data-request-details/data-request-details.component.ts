@@ -21,7 +21,7 @@ import { AgridataTabsComponent, Tab } from '@/shared/ui/agridata-tabs';
 
 import { DataRequestDetailsRequestComponent } from './data-request-details-request';
 import { DETAILS_TABS_ID } from './data-request-details.model';
-import { DataRequestFormContractComponent } from '../data-request-form';
+import { DataRequestDetailsEmailComponent } from '../data-request-details-email/data-request-details-email.component';
 
 /**
  * Displays detailed information about a data request in a sidepanel with tabs.
@@ -39,7 +39,7 @@ import { DataRequestFormContractComponent } from '../data-request-form';
     AgridataTabsComponent,
     FontAwesomeModule,
     DataRequestDetailsRequestComponent,
-    DataRequestFormContractComponent,
+    DataRequestDetailsEmailComponent,
   ],
   templateUrl: './data-request-details.component.html',
 })
@@ -95,7 +95,7 @@ export class DataRequestDetailsComponent {
     // TODO: add other tabs when the corresponding components are implemented DIGIB2-547
     // { id: DETAILS_TABS_ID.PRODUCER, label: this.producerTabLabel() },
     // { id: DETAILS_TABS_ID.CONTRACT, label: this.contractTabLabel() },
-    // { id: DETAILS_TABS_ID.EMAIL, label: this.emailTabLabel() },
+    { id: DETAILS_TABS_ID.EMAIL, label: this.emailTabLabel() },
   ]);
 
   // Effects
