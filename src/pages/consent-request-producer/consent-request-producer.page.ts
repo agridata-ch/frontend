@@ -72,9 +72,12 @@ export class ConsentRequestProducerPage {
   readonly AlertType = AlertType;
 
   readonly consentRequestResource = resource({
-    params: () => ({ uid: this.agridataStateService.activeUid() }),
+    params: () => ({
+      uid: this.agridataStateService.activeUid(),
+      uidMissing: this.agridataStateService.uidMissing(),
+    }),
     loader: ({ params }) => {
-      if (!params?.uid) {
+      if (!params?.uid || params.uidMissing) {
         return Promise.resolve([]);
       }
       return this.consentRequestService.fetchConsentRequests(params.uid);
@@ -83,6 +86,11 @@ export class ConsentRequestProducerPage {
   });
 
   readonly locale = computed(() => this.i18nService.lang());
+  readonly phoneNumber = this.i18nService.translateSignal('support-info.phoneNumber');
+  readonly uidMissingWarning = computed(() => {
+    const phoneNumber = this.phoneNumber();
+    return this.i18nService.translate('producer.uidMissingWarning', { phoneNumber });
+  });
 
   private readonly dismissedMigrationIds = computed<Set<string>>(() => {
     const storedIds = this.agridataStateService.userPreferences().dismissedMigratedIds;
@@ -117,6 +125,7 @@ export class ConsentRequestProducerPage {
 
   // Redirect-related signals
   private readonly redirectUrlFromQuery = signal<string | null>(null);
+  protected readonly uidMissing = this.agridataStateService.uidMissing;
   protected readonly hasErrors = computed(() => this.errorService.getAllErrors()().length > 0);
   protected readonly hasRedirectUrl = computed(() => !!this.redirectUrlFromQuery());
   protected readonly showRedirect = computed(() => this.hasRedirectUrl() && this.hasErrors());

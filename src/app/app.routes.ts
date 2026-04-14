@@ -12,6 +12,7 @@ import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
 import { DataRequestsProviderPage } from '@/pages/data-requests-provider';
 import { ErrorPage } from '@/pages/error-page/error-page.component';
+import { ExternalServiceErrorPage } from '@/pages/external-service-error';
 import { ForbiddenPage } from '@/pages/forbidden';
 import { ImprintPage } from '@/pages/imprint-page';
 import { LandingPage } from '@/pages/landing-page';
@@ -242,6 +243,13 @@ export const routes: Routes = [
     runGuardsAndResolvers: 'paramsChange',
     canActivate: [AuthorizationGuard],
     children: [{ path: '**', component: MaintenancePage }],
+  },
+  {
+    path: ROUTE_PATHS.EXTERNAL_SERVICE_ERROR,
+    component: FullWidthLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
+    canActivate: [AuthorizationGuard],
+    children: [{ path: '**', component: ExternalServiceErrorPage }],
   },
   {
     path: '',

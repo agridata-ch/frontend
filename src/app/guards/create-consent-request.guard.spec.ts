@@ -4,6 +4,7 @@ import { ActivatedRouteSnapshot, convertToParamMap, Router, UrlTree } from '@ang
 import { of, throwError } from 'rxjs';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
 import { CreateConsentRequestGuard } from '@/app/guards/create-consent-request.guard';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -319,6 +320,19 @@ describe('createConsentRequestGuard', () => {
     expect(mockRouter.createUrlTree).toHaveBeenCalledWith([
       ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
     ]);
+    expect(result).toBe(mockUrlTree);
+  });
+
+  it('should redirect to external service error page when ExternalServiceHttpError is thrown', async () => {
+    const route = {
+      paramMap: convertToParamMap({ dataRequestUid: testDataRequestUid }),
+      queryParamMap: convertToParamMap({}),
+    } as ActivatedRouteSnapshot;
+    authService.initializeAuthorizedUids.mockRejectedValueOnce(new ExternalServiceHttpError());
+
+    const result = await createConsentRequestGuard.canActivate(route);
+
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR]);
     expect(result).toBe(mockUrlTree);
   });
 

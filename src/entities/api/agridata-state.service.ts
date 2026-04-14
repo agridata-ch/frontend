@@ -1,4 +1,4 @@
-import { Injectable, computed, inject, signal, effect } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   NavigationCancel,
@@ -29,7 +29,7 @@ const BACKEND_INFO_ROUTE_BLACKLIST = ['/', `/${ROUTE_PATHS.MAINTENANCE}`];
   providedIn: 'root',
 })
 export class AgridataStateService {
-  // Injectes
+  // Injects
   private readonly router = inject(Router);
   private readonly userService = inject(UserService);
   private readonly authService = inject(AuthService);
@@ -39,10 +39,12 @@ export class AgridataStateService {
   private readonly _userPreferences = signal<UserPreferencesDto>({}); // we want to locally track changes before persisting
   private readonly _backendInfo = signal<{ [key: string]: string } | undefined>(undefined);
   private readonly _showCookiebanner = signal<boolean>(this.shouldShowCookieBanner());
+  private readonly _uidMissing = signal<boolean>(false);
 
   readonly userPreferences = this._userPreferences.asReadonly();
   readonly backendInfo = this._backendInfo.asReadonly();
   readonly showCookiebanner = this._showCookiebanner.asReadonly();
+  readonly uidMissing = this._uidMissing.asReadonly();
   readonly currentRoute = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
@@ -103,7 +105,9 @@ export class AgridataStateService {
     }
   });
 
-  setActiveUid(activeUid: string) {
+  setActiveUid(activeUid: string | null) {
+    if (!activeUid) return;
+
     if (activeUid !== this.activeUid()) {
       this._userPreferences.update((prefs) => ({
         ...prefs,
@@ -153,11 +157,14 @@ export class AgridataStateService {
     this.userService.updateUserPreferences(this._userPreferences()).then();
   }
 
+  setUidMissing(pending: boolean): void {
+    this._uidMissing.set(pending);
+  }
+
   hideCookieBanner(): void {
     localStorage.setItem('showCookieBanner', 'false');
     this._showCookiebanner.set(false);
   }
-
   private shouldShowCookieBanner(): boolean {
     const showBanner = localStorage.getItem('showCookieBanner');
     return showBanner === null ? true : showBanner === 'true';

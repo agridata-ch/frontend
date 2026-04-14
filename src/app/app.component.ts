@@ -8,8 +8,15 @@ import {
   runInInjectionContext,
   signal,
 } from '@angular/core';
-import { Router, RouterOutlet, Scroll } from '@angular/router';
-import { filter } from 'rxjs';
+import {
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+  RouterOutlet,
+  Scroll,
+} from '@angular/router';
 
 import { AnalyticsService } from '@/app/analytics.service';
 import { DebugModalComponent } from '@/features/debug/debug-modal.component';
@@ -33,8 +40,34 @@ export class AppComponent {
   private readonly router = inject(Router);
   private readonly scroller = inject(ViewportScroller);
   private readonly analyticsService = inject(AnalyticsService);
+
   // Signals
   private readonly currentAnchor = signal<string | null>(null);
+  protected readonly isNavigating = signal(false);
+  private readonly navigationLoadingTimer = signal<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+
+  private readonly navigationLoadingEffect = effect((onCleanup) => {
+    const sub = this.router.events.subscribe((e) => {
+      if (e instanceof NavigationStart) {
+        // Only show loader after 300ms to avoid flash on fast navigations
+        this.navigationLoadingTimer.set(setTimeout(() => this.isNavigating.set(true), 300));
+      } else if (
+        e instanceof NavigationEnd ||
+        e instanceof NavigationCancel ||
+        e instanceof NavigationError
+      ) {
+        clearTimeout(this.navigationLoadingTimer());
+        this.isNavigating.set(false);
+      }
+    });
+
+    onCleanup(() => {
+      sub.unsubscribe();
+      clearTimeout(this.navigationLoadingTimer());
+    });
+  });
 
   private readonly pageLoadedTrackEffect = effect(() => {
     this.analyticsService.logEvent('page_loaded');
@@ -94,11 +127,12 @@ export class AppComponent {
     });
   });
 
-  routerEffect = effect(() => {
-    this.router.events.pipe(filter((e): e is Scroll => e instanceof Scroll)).subscribe((e) => {
-      if (e.anchor) {
+  routerEffect = effect((onCleanup) => {
+    const sub = this.router.events.subscribe((e) => {
+      if (e instanceof Scroll && e.anchor) {
         this.currentAnchor.set(e.anchor);
       }
     });
+    onCleanup(() => sub.unsubscribe());
   });
 }

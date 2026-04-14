@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Router, UrlTree } from '@angular/router';
 
+import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
@@ -124,6 +125,20 @@ describe('HomeRedirectGuard', () => {
     const result = await guard.canActivate();
 
     expect(result).toBe(true);
+  });
+
+  it('should redirect to external service error page when ExternalServiceHttpError is thrown during uid initialization', async () => {
+    const urlTree = {} as UrlTree;
+    authService.__testSignals.isAuthenticated.set(true);
+    authService.__testSignals.isProducer.set(true);
+    authService.initializeAuth.mockResolvedValue(true);
+    authService.initializeAuthorizedUids.mockRejectedValueOnce(new ExternalServiceHttpError());
+    (router.createUrlTree as jest.Mock).mockReturnValue(urlTree);
+
+    const result = await guard.canActivate();
+
+    expect(router.createUrlTree).toHaveBeenCalledWith([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR]);
+    expect(result).toBe(urlTree);
   });
 
   afterEach(() => {

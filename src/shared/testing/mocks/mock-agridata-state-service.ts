@@ -11,6 +11,7 @@ export type MockAgridataStateServiceTestSignals = {
   userPreferences: WritableSignal<UserPreferencesDto>;
   activeUid: WritableSignal<string | undefined>;
   backendInfo: WritableSignal<{ [key: string]: string } | undefined>;
+  uidMissing: WritableSignal<boolean>;
 };
 
 export type MockAgridataStateService = MockifyWithWritableSignals<
@@ -28,17 +29,20 @@ export function createMockAgridataStateService(): MockAgridataStateService {
   });
   const activeUid = signal<string | undefined>(undefined);
   const backendInfo = signal({ version: BE_VERSION });
+  const uidMissing = signal<boolean>(false);
   return {
     activeUid,
     currentRoute,
     currentRouteWithoutQueryParams,
     userPreferences,
     backendInfo,
+    uidMissing,
     getDefaultUid: jest.fn().mockReturnValue(undefined),
     isImpersonating: jest.fn().mockReturnValue(false),
     routeStart: signal<string | undefined>('/some-page'),
     setActiveUid: jest.fn(),
     setMainMenuOpened: jest.fn(),
+    setUidMissing: jest.fn(),
     addConfirmedMigratedUids: jest.fn(),
     hideCookieBanner: jest.fn(),
     showCookiebanner: signal(true),
@@ -48,6 +52,7 @@ export function createMockAgridataStateService(): MockAgridataStateService {
       activeUid,
       currentRoute,
       backendInfo,
+      uidMissing,
     },
     saveTourIntroSeen: jest.fn(),
   } satisfies MockAgridataStateService;
