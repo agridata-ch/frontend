@@ -1,3 +1,9 @@
+## [1.10.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.12...v1.10.0-rc.13) (2026-04-14)
+
+### Features
+
+- **contract:** add provider contract ([126d282](https://github.com/agridata-ch/frontend/commit/126d282616e00767d0ef82eb99dabe02d8ada865)), closes [DIGIB2-1204](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1204)
+
 ## [1.10.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.11...v1.10.0-rc.12) (2026-04-08)
 
 ### Features
