@@ -8,6 +8,7 @@ import {
   UrlTree,
 } from '@angular/router';
 
+import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UidDto } from '@/entities/openapi';
@@ -162,6 +163,19 @@ describe('producerUidGuard', () => {
     expect(guardResult).toBeInstanceOf(UrlTree);
     if (guardResult instanceof UrlTree) {
       expect(guardResult.toString()).toEqual(`/${ROUTE_PATHS.ERROR}`);
+    }
+  });
+
+  it('should redirect to external service error page when ExternalServiceHttpError is thrown', async () => {
+    authService.initializeAuthorizedUids.mockRejectedValueOnce(new ExternalServiceHttpError());
+
+    const guardResult = await producerUidGuard.canActivate(
+      activatedRouteSnapshot(ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, '', {}),
+    );
+
+    expect(guardResult).toBeInstanceOf(UrlTree);
+    if (guardResult instanceof UrlTree) {
+      expect(guardResult.toString()).toEqual(`/${ROUTE_PATHS.EXTERNAL_SERVICE_ERROR}`);
     }
   });
 });

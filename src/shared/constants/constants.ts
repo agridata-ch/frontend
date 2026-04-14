@@ -11,6 +11,7 @@ export const ROUTE_PATHS = {
   PRIVACY_POLICY_PATH: 'cms/privacy-policy',
   FORBIDDEN: 'forbidden',
   ERROR: 'error',
+  EXTERNAL_SERVICE_ERROR: 'external-service-error',
   NOT_FOUND: 'not-found',
   MAINTENANCE: 'maintenance',
   LOGIN: 'login',

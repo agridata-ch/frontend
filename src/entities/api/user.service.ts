@@ -1,7 +1,9 @@
+import { HttpContext } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { AUTHORIZED_UIDS_ERROR_HANDLING } from '@/app/interceptors/error-http-interceptor';
 import {
   ResourceQueryDto,
   UserInfoDto,
@@ -23,7 +25,9 @@ export class UserService {
   private readonly apiService = inject(UsersService);
 
   getAuthorizedUids() {
-    return this.apiService.getAuthorizedUids();
+    return this.apiService.getAuthorizedUids(undefined, undefined, undefined, undefined, {
+      context: new HttpContext().set(AUTHORIZED_UIDS_ERROR_HANDLING, true),
+    });
   }
 
   getProducers = (queryDto: ResourceQueryDto): Promise<PageResponseDto<UserInfoDto>> => {

@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 
+import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
@@ -11,7 +12,7 @@ import { AuthService } from '@/shared/lib/auth';
  * Consumers go to data requests page.
  * Unauthenticated users stay on the landing page.
  *
- * CommentLastReviewed: 2025-12-01
+ * CommentLastReviewed: 2026-04-13
  */
 @Injectable({
   providedIn: 'root',
@@ -30,7 +31,13 @@ export class HomeRedirectGuard implements CanActivate {
     }
 
     if (this.authService.isProducer() || this.stateService.isImpersonating()) {
-      await this.authService.initializeAuthorizedUids();
+      try {
+        await this.authService.initializeAuthorizedUids();
+      } catch (error) {
+        if (error instanceof ExternalServiceHttpError) {
+          return this.router.createUrlTree([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR]);
+        }
+      }
       return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);
     }
 
