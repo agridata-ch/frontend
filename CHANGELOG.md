@@ -1,3 +1,9 @@
+## [1.10.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.14...v1.10.0-rc.15) (2026-04-16)
+
+### Features
+
+- **deps:** update actions/github-script action to v9 ([9fe0940](https://github.com/agridata-ch/frontend/commit/9fe0940250400b89e40a6db464622e27596a7b73))
+
 ## [1.10.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.13...v1.10.0-rc.14) (2026-04-16)
 
 ### Bug Fixes
