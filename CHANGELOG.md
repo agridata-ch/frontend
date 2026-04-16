@@ -1,3 +1,9 @@
+## [1.10.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.15...v1.10.0-rc.16) (2026-04-16)
+
+### Features
+
+- **error-message:** improve error messages missing uid person ([71e3436](https://github.com/agridata-ch/frontend/commit/71e3436f1ef3acd565398d7730b793b50dc3c53b)), closes [DIGIB2-1249](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1249)
+
 ## [1.10.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.14...v1.10.0-rc.15) (2026-04-16)
 
 ### Features
