@@ -1,4 +1,14 @@
-import { Component, effect, input, output, signal } from '@angular/core';
+import {
+  Component,
+  DOCUMENT,
+  effect,
+  ElementRef,
+  inject,
+  input,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 
 import { WizardStep } from '@/widgets/agridata-wizard/';
 import { AgridataWizardStepperComponent } from '@/widgets/agridata-wizard/agridata-wizard-stepper/agridata-wizard-stepper.component';
@@ -16,19 +26,32 @@ import { AgridataWizardStepperComponent } from '@/widgets/agridata-wizard/agrida
   templateUrl: './agridata-wizard.component.html',
 })
 export class AgridataWizardComponent {
+  // Injects
+  private readonly document = inject(DOCUMENT);
+
+  // Inputs
   steps = input<WizardStep[]>([]);
+
+  // Signals
   currentStep = signal(0);
   currentStepId = signal<string>('');
+
+  // Outputs
   onStepChange = output<void>();
 
-  constructor() {
-    effect(() => {
-      this.updateStepId();
-    });
-  }
+  // Effects
+  private readonly stepIdEffect = effect(() => {
+    this.updateStepId();
+  });
 
-  private updateStepId() {
-    this.currentStepId.set(this.steps()[this.currentStep()].id);
+  private readonly scrollContainer = viewChild<ElementRef<HTMLDivElement>>('scrollContainer');
+
+  handleChangeStep(stepIndex: number) {
+    if (stepIndex >= 0 && stepIndex < this.steps().length) {
+      this.onStepChange.emit();
+      this.currentStep.set(stepIndex);
+      this.updateStepId();
+    }
   }
 
   nextStep() {
@@ -36,6 +59,7 @@ export class AgridataWizardComponent {
       this.currentStep.update((step) => step + 1);
     }
     this.updateStepId();
+    this.scrollToTop();
   }
 
   previousStep() {
@@ -43,13 +67,17 @@ export class AgridataWizardComponent {
       this.currentStep.update((step) => step - 1);
     }
     this.updateStepId();
+    this.scrollToTop();
   }
 
-  handleChangeStep(stepIndex: number) {
-    if (stepIndex >= 0 && stepIndex < this.steps().length) {
-      this.onStepChange.emit();
-      this.currentStep.set(stepIndex);
-      this.updateStepId();
+  private updateStepId() {
+    this.currentStepId.set(this.steps()[this.currentStep()].id);
+  }
+
+  private scrollToTop(): void {
+    const el = this.scrollContainer()?.nativeElement;
+    if (el) {
+      el.scrollTop = 0;
     }
   }
 }

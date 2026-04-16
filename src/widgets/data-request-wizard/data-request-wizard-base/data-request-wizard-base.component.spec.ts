@@ -355,7 +355,7 @@ describe('DataRequestWizardBaseComponent', () => {
       expect(step?.isValid).toBe(true);
     });
 
-    it('should mark disabled form group steps as completed', async () => {
+    it('should mark disabled form group steps not as completed', async () => {
       component['dataRequest'].set({
         id: '1',
         stateCode: DataRequestStateEnum.InReview,
@@ -366,7 +366,7 @@ describe('DataRequestWizardBaseComponent', () => {
       component['updateFormSteps']();
 
       const steps = component['formControlSteps']();
-      expect(steps.every((s) => s.completed)).toBe(true);
+      expect(steps.every((s) => s.completed)).toBe(false);
     });
   });
 });

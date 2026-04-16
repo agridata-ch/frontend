@@ -230,14 +230,10 @@ export abstract class DataRequestWizardBaseComponent {
           return { ...step, disabled: isDisabled };
         }
 
-        if (formGroup?.disabled) {
-          return { ...step, isValid: true, completed: true, disabled: isDisabled };
-        }
-
         const isValid = valid ?? formGroup?.valid;
         return {
           ...step,
-          isValid,
+          isValid: formGroup?.disabled ? true : (isValid ?? true),
           completed: isStepCompleted(formGroup, this.formsModel, step.id, (name) =>
             this.checkExternalCompletion(name),
           ),
