@@ -29,7 +29,7 @@ import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { buildReactiveForm, populateFormFromDto, setControlValue } from '@/shared/lib/form.helper';
-import { ToastType } from '@/shared/toast';
+import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonVariants } from '@/shared/ui/button';
 import { AgridataWizardComponent, WizardStep } from '@/widgets/agridata-wizard';
 import {
@@ -57,6 +57,7 @@ export abstract class DataRequestWizardBaseComponent {
   protected readonly location = inject(Location);
   protected readonly router = inject(Router);
   protected readonly translateService = inject(TranslocoService);
+  protected readonly toastService = inject(ToastService);
 
   // Constants
   protected readonly form = this.createForm();

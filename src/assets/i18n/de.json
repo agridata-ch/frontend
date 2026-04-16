@@ -283,6 +283,10 @@
           "producer": "Produzent",
           "contract": "Vertrag",
           "completion": "Abschluss"
+        },
+        "releaseContract\".success": {
+          "title": "Erfolgreich beim Anbieter eingereicht",
+          "message": "Der Vertrag wurde beim Anbieter eingereicht"
         }
       },
       "saveDraft": "Zwischenspeichern",
@@ -296,6 +300,10 @@
           "preview": "Vorschau",
           "contract": "Vertrag",
           "completion": "Abschluss"
+        },
+        "releaseContract\".success": {
+          "title": "Vertrag erfolgreich eingereicht",
+          "message": "Der Vertrag wurde eingereicht und kann nun aktiviert werden"
         }
       },
       "releaseContract": "Vertrag einreichen"

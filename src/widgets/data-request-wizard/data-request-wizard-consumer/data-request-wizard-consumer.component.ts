@@ -10,6 +10,7 @@ import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.c
 import { I18nDirective } from '@/shared/i18n';
 import { flattenFormGroup } from '@/shared/lib/form.helper';
 import { SidepanelComponent } from '@/shared/sidepanel';
+import { ToastType } from '@/shared/toast';
 import { ButtonComponent } from '@/shared/ui/button';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 import { DataRequestCompletionComponent } from '@/widgets/data-request-completion';
@@ -221,6 +222,13 @@ export class DataRequestWizardConsumerComponent extends DataRequestWizardBaseCom
     await this.dataRequestService
       .releaseDataRequestToProvider(dataRequestId)
       .then((dataRequest: DataRequestDto) => {
+        this.toastService.show(
+          this.i18nService.translate('data-request.wizard.provider.releaseContract.success.title'),
+          this.i18nService.translate(
+            'data-request.wizard.provider.releaseContract.success.message',
+          ),
+          ToastType.Success,
+        );
         this.refreshListNeeded.set(true);
         this.dataRequest.set(dataRequest);
         this.updateFormSteps();
