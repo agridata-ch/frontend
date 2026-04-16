@@ -1,3 +1,9 @@
+## [1.10.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.13...v1.10.0-rc.14) (2026-04-16)
+
+### Bug Fixes
+
+- **data-request:** fix wizard step completion ([9a48b56](https://github.com/agridata-ch/frontend/commit/9a48b56e791d6549fdbcfffd831fc5d60452ecb4)), closes [DIGIB2-1204](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1204)
+
 ## [1.10.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.12...v1.10.0-rc.13) (2026-04-14)
 
 ### Features
