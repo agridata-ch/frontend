@@ -3,6 +3,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataProductDto, DataProvidersService, DataProviderDto } from '@/entities/openapi';
+import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 
 /**
@@ -18,6 +19,7 @@ export class MasterDataService {
   private readonly authService = inject(AuthService);
   private readonly dataProvidersService = inject(DataProvidersService);
   private readonly errorService = inject(ErrorHandlerService);
+  private readonly i18nService = inject(I18nService);
 
   // Signals
   private readonly _dataProviders = signal<DataProviderDto[]>([]);
@@ -70,7 +72,13 @@ export class MasterDataService {
     if (!products) {
       this.fetchProductsByProvider(providerId);
     }
-    return products ?? [];
+    return (
+      products?.sort((a, b) => {
+        const nameA = a.name?.[this.i18nService.lang() as keyof typeof a.name] ?? '';
+        const nameB = b.name?.[this.i18nService.lang() as keyof typeof b.name] ?? '';
+        return nameA.localeCompare(nameB);
+      }) ?? []
+    );
   }
 
   private fetchDataProductsByProviderId(providerId: string): Promise<DataProductDto[]> {

@@ -18,6 +18,8 @@ export function isStepCompleted(
       return checkExternalCompletion(formGroupName);
     case FORM_COMPLETION_STRATEGIES.FORM_VALIDATION:
     default:
-      return formGroup?.valid && Object.keys(formGroup.controls).length > 0;
+      return (
+        formGroup?.disabled || (formGroup?.valid && Object.keys(formGroup.controls).length > 0)
+      );
   }
 }
