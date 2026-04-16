@@ -283,6 +283,10 @@
           "producer": "Produttore di dati",
           "contract": "Contratto",
           "completion": "Conclusione"
+        },
+        "releaseContract\".success": {
+          "title": "Inviata con successo al fornitore",
+          "message": "Il contratto è stato inviato al fornitore"
         }
       },
       "saveDraft": "Salva temporaneamente",
@@ -296,6 +300,10 @@
           "preview": "Anteprima",
           "contract": "Contratto",
           "completion": "Conclusione"
+        },
+        "releaseContract\".success": {
+          "title": "Contratto inviato con successo",
+          "message": "Il contratto è stato inviato e ora può essere attivato"
         }
       },
       "releaseContract": "Inviare il contratto"
