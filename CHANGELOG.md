@@ -1,3 +1,9 @@
+## [1.10.0-rc.17](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.16...v1.10.0-rc.17) (2026-04-16)
+
+### Bug Fixes
+
+- **data-request:** add success toast ([a72443f](https://github.com/agridata-ch/frontend/commit/a72443f5ee9e0329c416d265dd92b0a0cd77b635)), closes [DIGIB2-1204](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1204)
+
 ## [1.10.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.15...v1.10.0-rc.16) (2026-04-16)
 
 ### Features
