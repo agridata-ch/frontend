@@ -96,11 +96,11 @@ function handleError(
   }
 
   if (req.context.get(AUTHORIZED_UIDS_ERROR_HANDLING)) {
-    if (error.status === 504) {
+    if (backendError?.type === ExceptionEnum.ExternalServiceError) {
       authService.clearAuthorizedUidsCache();
       return throwError(() => new ExternalServiceHttpError());
     }
-    if (error.status === 502) {
+    if (backendError?.type === ExceptionEnum.UidMissing) {
       authService.clearAuthorizedUidsCache();
       stateService.setUidMissing(true);
       return of(new HttpResponse({ status: 200, body: [] }));

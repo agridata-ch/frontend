@@ -28,7 +28,6 @@ import {
   errorHttpInterceptor,
   getErrorMethod,
   hasMethod,
-  HttpErrorWithMethod,
   METHOD_ENHANCED,
 } from './error-http-interceptor';
 
@@ -270,7 +269,7 @@ describe('errorHttpInterceptor', () => {
 
       httpClient.get(testUrl).subscribe({
         next: () => {
-          done.fail('Should rethrow error when navigating to maintenance');
+          done(new Error('Should rethrow error when navigating to maintenance'));
         },
         error: (error: HttpErrorResponse) => {
           expect(error.status).toBe(503);
@@ -442,7 +441,7 @@ describe('errorHttpInterceptor', () => {
 
       httpClient.get(testUrl).subscribe({
         next: () => {
-          done.fail('Should rethrow error when navigating to maintenance');
+          done(new Error('Should rethrow error when navigating to maintenance'));
         },
         error: (error: HttpErrorResponse) => {
           expect(error.status).toBe(503);
@@ -461,8 +460,14 @@ describe('errorHttpInterceptor', () => {
     const context = new HttpContext().set(AUTHORIZED_UIDS_ERROR_HANDLING, true);
 
     it('should throw ExternalServiceHttpError and clear cache on 504', (done) => {
+      const externalServiceError: ExceptionDto = {
+        requestId: 'test-request-id',
+        type: ExceptionEnum.ExternalServiceError,
+        message: 'External Service Error',
+      };
+
       httpClient.get(testUrl, { context }).subscribe({
-        next: () => done.fail('Should not complete on 504'),
+        next: () => done(new Error('Should not complete on 504')),
         error: (error: unknown) => {
           expect(error).toBeInstanceOf(ExternalServiceHttpError);
           expect(authService.clearAuthorizedUidsCache).toHaveBeenCalled();
@@ -471,10 +476,16 @@ describe('errorHttpInterceptor', () => {
       });
 
       const req = httpMock.expectOne(testUrl);
-      req.flush('Gateway Timeout', { status: 504, statusText: 'Gateway Timeout' });
+      req.flush(externalServiceError, { status: 504, statusText: 'Gateway Timeout' });
     });
 
     it('should return empty array, set uidMissing and clear cache on 502', (done) => {
+      const uidMissingError: ExceptionDto = {
+        requestId: 'test-request-id',
+        type: ExceptionEnum.UidMissing,
+        message: 'UID Missing',
+      };
+
       httpClient.get<unknown[]>(testUrl, { context }).subscribe({
         next: (response) => {
           expect(response).toEqual([]);
@@ -482,16 +493,16 @@ describe('errorHttpInterceptor', () => {
           expect(authService.clearAuthorizedUidsCache).toHaveBeenCalled();
           done();
         },
-        error: () => done.fail('Should not error on 502'),
+        error: () => done(new Error('Should not error on 502')),
       });
 
       const req = httpMock.expectOne(testUrl);
-      req.flush('Bad Gateway', { status: 502, statusText: 'Bad Gateway' });
+      req.flush(uidMissingError, { status: 502, statusText: 'Bad Gateway' });
     });
 
     it('should treat 502/504 as normal errors when context token is not set', (done) => {
       httpClient.get(testUrl).subscribe({
-        next: () => done.fail('Should not complete on 504 without context'),
+        next: () => done(new Error('Should not complete on 504 without context')),
         error: (error: unknown) => {
           expect(error).toBeInstanceOf(HttpErrorResponse);
           expect(error).not.toBeInstanceOf(ExternalServiceHttpError);
@@ -547,7 +558,7 @@ describe('enhanceHttpErrorWithMethod', () => {
     const enhanced = enhanceHttpErrorWithMethod(error, 'GET');
 
     expect(() => {
-      (enhanced as HttpErrorWithMethod).method = 'POST';
+      enhanced.method = 'POST';
     }).toThrow();
   });
 
