@@ -1,3 +1,9 @@
+## [1.10.0-rc.18](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.17...v1.10.0-rc.18) (2026-04-17)
+
+### Bug Fixes
+
+- **error-interceptor:** fix external error check ([ef33bda](https://github.com/agridata-ch/frontend/commit/ef33bdac12e2647e79aa426e27e430cf392ee66d)), closes [DIGIB2-1249](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1249)
+
 ## [1.10.0-rc.17](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.16...v1.10.0-rc.17) (2026-04-16)
 
 ### Bug Fixes
