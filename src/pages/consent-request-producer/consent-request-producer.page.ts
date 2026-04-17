@@ -68,9 +68,16 @@ export class ConsentRequestProducerPage {
     ),
   );
 
-  readonly fileIcon = faFileCheck;
-  readonly AlertType = AlertType;
+  // Constants
+  protected readonly fileIcon = faFileCheck;
+  protected readonly AlertType = AlertType;
+  protected readonly uidMissing = this.agridataStateService.uidMissing;
 
+  // Signals
+  readonly phoneNumber = this.i18nService.translateSignal('support-info.phoneNumber');
+  private readonly redirectUrlFromQuery = signal<string | null>(null);
+
+  // Resources
   readonly consentRequestResource = resource({
     params: () => ({
       uid: this.agridataStateService.activeUid(),
@@ -85,52 +92,7 @@ export class ConsentRequestProducerPage {
     defaultValue: [],
   });
 
-  readonly locale = computed(() => this.i18nService.lang());
-  readonly phoneNumber = this.i18nService.translateSignal('support-info.phoneNumber');
-  readonly uidMissingWarning = computed(() => {
-    const phoneNumber = this.phoneNumber();
-    return this.i18nService.translate('producer.uidMissingWarning', { phoneNumber });
-  });
-
-  private readonly dismissedMigrationIds = computed<Set<string>>(() => {
-    const storedIds = this.agridataStateService.userPreferences().dismissedMigratedIds;
-    return storedIds ? new Set(storedIds) : new Set();
-  });
-
-  readonly migratedRequests = computed(() =>
-    this.consentRequestResource.value().filter((request) => request.showStateAsMigrated),
-  );
-
-  readonly visibleMigratedRequests = computed(() => {
-    const dismissedIds = this.dismissedMigrationIds();
-    return this.migratedRequests().filter((request) => !dismissedIds.has(request.id));
-  });
-
-  readonly showTourIntro = computed(() => {
-    const userPreferences = this.agridataStateService.userPreferences();
-    // don't show the tour intro if there is a consent request id in the route (so we don't interrupt the user when they are navigating directly to a specific request)
-    // or if the user has already seen the tour intro or if there are no consent requests
-    return (
-      !this.consentRequestId() &&
-      !userPreferences.hasSeenConsentRequestTourIntro &&
-      this.consentRequestResource.value().length > 0
-    );
-  });
-
-  closeTourIntro() {
-    this.agridataStateService.saveTourIntroSeen(true);
-  }
-
-  readonly consentRequests = createResourceValueComputed(this.consentRequestResource, []);
-
-  // Redirect-related signals
-  private readonly redirectUrlFromQuery = signal<string | null>(null);
-  protected readonly uidMissing = this.agridataStateService.uidMissing;
-  protected readonly hasErrors = computed(() => this.errorService.getAllErrors()().length > 0);
-  protected readonly hasRedirectUrl = computed(() => !!this.redirectUrlFromQuery());
-  protected readonly showRedirect = computed(() => this.hasRedirectUrl() && this.hasErrors());
-  protected readonly redirectUrl = computed(() => this.redirectUrlFromQuery());
-
+  // Effects
   private readonly checkForRedirectEffect = effect(() => {
     const redirectUri = this.activeRoute.snapshot.queryParamMap.get('redirect_uri') ?? null;
     if (redirectUri) {
@@ -154,17 +116,63 @@ export class ConsentRequestProducerPage {
     this.errorService,
   );
 
+  // Computed
+  protected readonly consentRequests = createResourceValueComputed(this.consentRequestResource, []);
+
+  protected readonly hasErrors = computed(() => this.errorService.getAllErrors()().length > 0);
+  protected readonly hasRedirectUrl = computed(() => !!this.redirectUrlFromQuery());
+  protected readonly showRedirect = computed(() => this.hasRedirectUrl() && this.hasErrors());
+  protected readonly redirectUrl = computed(() => this.redirectUrlFromQuery());
+  protected readonly locale = computed(() => this.i18nService.lang());
+
+  protected readonly uidMissingWarning = computed(() => {
+    const phoneNumber = this.phoneNumber();
+    if (!phoneNumber) return '';
+    return this.i18nService.translate('producer.uidMissingWarning', { phoneNumber });
+  });
+
+  readonly migratedRequests = computed(() =>
+    this.consentRequestResource.value().filter((request) => request.showStateAsMigrated),
+  );
+
+  readonly visibleMigratedRequests = computed(() => {
+    const dismissedIds = this.dismissedMigrationIds();
+    return this.migratedRequests().filter((request) => !dismissedIds.has(request.id));
+  });
+
+  readonly showTourIntro = computed(() => {
+    const userPreferences = this.agridataStateService.userPreferences();
+    // don't show the tour intro if there is a consent request id in the route (so we don't interrupt the user when they are navigating directly to a specific request)
+    // or if the user has already seen the tour intro or if there are no consent requests
+    return (
+      !this.consentRequestId() &&
+      !userPreferences.hasSeenConsentRequestTourIntro &&
+      this.consentRequestResource.value().length > 0 &&
+      !this.agridataStateService.uidMissing()
+    );
+  });
+
+  private readonly dismissedMigrationIds = computed<Set<string>>(() => {
+    const storedIds = this.agridataStateService.userPreferences().dismissedMigratedIds;
+    return storedIds ? new Set(storedIds) : new Set();
+  });
+
+  // Methods
+  protected closeTourIntro() {
+    this.agridataStateService.saveTourIntroSeen(true);
+  }
+
   protected navigateToRequest = (request?: ConsentRequestProducerViewDto | null) => {
     if (request?.id) {
       this.router.navigate([request.id], { relativeTo: this.activeRoute }).then();
     }
   };
 
-  closeMigrationInfo(requestId: string) {
+  protected closeMigrationInfo(requestId: string) {
     this.agridataStateService.addConfirmedMigratedUids([requestId]);
   }
 
-  getMigratedRequestTitle(request: ConsentRequestProducerViewDto): string {
+  protected getMigratedRequestTitle(request: ConsentRequestProducerViewDto): string {
     return this.i18nService.useObjectTranslation(request?.dataRequest?.title);
   }
 
