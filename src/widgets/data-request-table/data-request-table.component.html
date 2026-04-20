@@ -31,7 +31,7 @@
       <fa-icon emptyStateIcon [icon]="folderIcon" size="3x" class="text-agridata-tertiary-text" />
       <app-agridata-button
         emptyStateAction
-        (onClick)="newRequest()"
+        (handleButtonClick)="newRequest()"
         (keydown.enter)="newRequest()"
         [variant]="ButtonVariants.Primary"
       >
@@ -52,10 +52,13 @@
       <p>{{ t('description', { title: requestToDeleteTitle() }) }}</p>
     </div>
     <div class="flex justify-between gap-2">
-      <app-agridata-button (onClick)="cancelDelete()" [variant]="ButtonVariants.Secondary">
+      <app-agridata-button
+        (handleButtonClick)="cancelDelete()"
+        [variant]="ButtonVariants.Secondary"
+      >
         {{ t('cancel') }}
       </app-agridata-button>
-      <app-agridata-button (onClick)="deleteRequest()" [variant]="ButtonVariants.Primary">
+      <app-agridata-button (handleButtonClick)="deleteRequest()" [variant]="ButtonVariants.Primary">
         {{ t('delete') }}
       </app-agridata-button>
     </div>

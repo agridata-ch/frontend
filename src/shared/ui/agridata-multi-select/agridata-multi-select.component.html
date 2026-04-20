@@ -42,7 +42,7 @@
       @if (enableSearch()) {
         <div class="sticky top-0 border-b border-gray-200 bg-white p-2 z-1">
           <app-search-input
-            (onInput)="onSearchInput($event)"
+            (handleInput)="onSearchInput($event)"
             [debounceTime]="0"
             [minSearchLength]="1"
           />

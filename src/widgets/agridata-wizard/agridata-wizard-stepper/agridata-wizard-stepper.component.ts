@@ -17,9 +17,9 @@ import { WizardStep } from '@/widgets/agridata-wizard';
 export class AgridataWizardStepperComponent {
   steps = input<WizardStep[]>([]);
   currentStep = input<number>(0);
-  onStepChange = output<number>();
+  handleStepChange = output<number>();
 
   handleClickStep($index: number) {
-    this.onStepChange.emit($index);
+    this.handleStepChange.emit($index);
   }
 }

@@ -48,7 +48,7 @@ export class MarkdownPipe implements PipeTransform {
     });
 
     // Pre-process the content to handle multiple consecutive line breaks
-    const processedValue = value.replace(/\n(?=\n)/g, '\n\n<br/>\n');
+    const processedValue = value.replaceAll(/\n(?=\n)/g, '\n\n<br/>\n');
 
     const html = marked(processedValue);
 

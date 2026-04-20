@@ -46,7 +46,7 @@ For tests adhere to those rules:
   const matchingButton = buttons.find((btn) =>
   btn.query(By.css('[aria-label="common.ariaLabel.close"]')),
   );
-  matchingButton?.triggerEventHandler('onClick', null);
+  matchingButton?.triggerEventHandler('buttonClicked', null);
 - most services already have mock like this:
 
 ```javascript

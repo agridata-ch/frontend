@@ -15,14 +15,14 @@
     <div class="flex gap-2 justify-between">
       <app-agridata-button
         [variant]="ButtonVariants.Secondary"
-        (onClick)="closeTourIntro()"
+        (handleButtonClick)="closeTourIntro()"
         (keydown.enter)="closeTourIntro()"
       >
         {{ t('skipTour') }}
       </app-agridata-button>
       <app-agridata-button
         [variant]="ButtonVariants.Primary"
-        (onClick)="startTour()"
+        (handleButtonClick)="startTour()"
         (keydown.enter)="startTour()"
       >
         {{ t('startTour') }}

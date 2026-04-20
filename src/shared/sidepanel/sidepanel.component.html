@@ -22,7 +22,7 @@
       <app-agridata-button
         [variant]="ButtonVariants.Icon"
         [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
-        (onClick)="handleClose()"
+        (handleButtonClick)="handleClose()"
         [disabled]="preventManualClose()"
       >
         <fa-icon size="xl" [icon]="closeIcon" />

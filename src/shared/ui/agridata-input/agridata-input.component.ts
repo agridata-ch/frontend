@@ -32,14 +32,14 @@ export class AgridataInputComponent {
 
   readonly value = model<string | number>();
 
-  readonly onBlur = output<void>();
-  readonly onInput = output<string>();
+  readonly handleBlur = output<void>();
+  readonly handleInput = output<string>();
 
   handleInputChange(event: Event) {
-    if (this.onInput) {
+    if (this.handleInput) {
       const inputElement = event.target as HTMLInputElement;
       const value = inputElement.value;
-      this.onInput.emit(value);
+      this.handleInput.emit(value);
     }
   }
 }

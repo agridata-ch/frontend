@@ -73,7 +73,7 @@ describe('ConsentRequestsTourIntroComponent', () => {
     const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
     // buttons[0] is the modal's own close button; skip is index 1
     const skipButton = buttons[1];
-    skipButton.triggerEventHandler('onClick', null);
+    skipButton.triggerEventHandler('handleButtonClick', null);
 
     expect(component['showModal']()).toBe(false);
     expect(productTourService.start).not.toHaveBeenCalled();
@@ -83,7 +83,7 @@ describe('ConsentRequestsTourIntroComponent', () => {
     const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
     // buttons[0] is the modal's own close button; start is index 2
     const startButton = buttons[2];
-    startButton.triggerEventHandler('onClick', null);
+    startButton.triggerEventHandler('handleButtonClick', null);
 
     expect(component['showModal']()).toBe(false);
     expect(productTourService.start).toHaveBeenCalledTimes(1);

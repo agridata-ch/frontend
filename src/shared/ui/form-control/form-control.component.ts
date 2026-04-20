@@ -50,7 +50,7 @@ export class FormControlComponent {
   readonly singleCategorySelection = input<boolean>(false);
   readonly type = input<'text' | 'number'>('text');
 
-  readonly onBlur = output<void>();
+  readonly handleBlur = output<void>();
 
   readonly ControlTypes = ControlTypes;
 

@@ -412,7 +412,7 @@ describe('AgridataTableComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should call rowAction when row is clicked', () => {
+    it('should call rowAction when row is handleButtonClick', () => {
       const rowActionSpy = jest.fn();
       const metadataWithAction = {
         ...mockTableMetadata,

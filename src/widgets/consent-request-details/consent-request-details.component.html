@@ -66,7 +66,7 @@
           agridataStateService.isImpersonating()
         "
         [loading]="showRejectedLoading()"
-        (onClick)="rejectRequest()"
+        (handleButtonClick)="rejectRequest()"
         [additionalClass]="'w-full'"
       >
         {{ t('actions.reject') }}
@@ -78,7 +78,7 @@
           agridataStateService.isImpersonating()
         "
         [loading]="showAcceptedLoading()"
-        (onClick)="acceptRequest()"
+        (handleButtonClick)="acceptRequest()"
         [additionalClass]="'w-full'"
       >
         {{ t('actions.accept') }}
@@ -100,7 +100,7 @@
       <div class="flex justify-center mb-4">
         <p>{{ t('description', { count: countdownValue() }) }}</p>
       </div>
-      <app-agridata-button (onClick)="redirectDirectly()">
+      <app-agridata-button (handleButtonClick)="redirectDirectly()">
         {{ t('redirectNow') }}
       </app-agridata-button>
     </div>

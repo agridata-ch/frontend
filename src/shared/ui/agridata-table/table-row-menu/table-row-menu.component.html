@@ -4,7 +4,7 @@
     [variant]="ButtonVariants.IconOutline"
     ariaLabel="actions"
     [dataTestId]="dataTestId()"
-    (onClick)="handleToggle()"
+    (handleButtonClick)="handleToggle()"
   >
     <fa-icon [icon]="iconEllipsis" />
   </app-agridata-button>
@@ -16,21 +16,22 @@
     >
       <ul>
         @for (action of actionWithLoadingSignal(); track action.label) {
-          <li
-            tabindex="0"
-            click-stop-propagation
-            class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer min-w-25 flex flex-row items-center justify-center"
-            (click)="handleActionClick(action)"
-            (keydown.enter)="handleActionClick(action)"
-          >
-            @if (action.loading()) {
-              <fa-icon animation="spin" [icon]="faSpinnerThird"></fa-icon>
-            } @else {
-              @if (action.icon) {
-                <fa-icon [icon]="action.icon" class="mr-2" />
+          <li>
+            <button
+              type="button"
+              click-stop-propagation
+              class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 min-w-25 flex flex-row items-center justify-center"
+              (click)="handleActionClick(action)"
+            >
+              @if (action.loading()) {
+                <fa-icon animation="spin" [icon]="faSpinnerThird"></fa-icon>
+              } @else {
+                @if (action.icon) {
+                  <fa-icon [icon]="action.icon" class="mr-2" />
+                }
+                {{ action.label | i18n }}
               }
-              {{ action.label | i18n }}
-            }
+            </button>
           </li>
         }
       </ul>

@@ -20,7 +20,7 @@
     <div class="lg:absolute lg:right-0 flex">
       <app-agridata-button
         [variant]="ButtonVariants.Icon"
-        (onClick)="goPrev()"
+        (handleButtonClick)="goPrev()"
         [disabled]="currentIndex() === 0"
       >
         <fa-icon class="lg:hidden" size="xl" [icon]="iconChevronLeft"></fa-icon>
@@ -29,7 +29,7 @@
       </app-agridata-button>
       <app-agridata-button
         [variant]="ButtonVariants.Icon"
-        (onClick)="goNext()"
+        (handleButtonClick)="goNext()"
         [disabled]="currentIndex() === totalPages().length - 1"
       >
         <fa-icon class="lg:hidden" size="xl" [icon]="iconChevronRight"></fa-icon>

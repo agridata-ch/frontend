@@ -20,7 +20,7 @@
           ariaLabel="common.ariaLabel.close"
           [variant]="ButtonVariants.Icon"
           [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
-          (onClick)="closeAlert.emit(true)"
+          (handleButtonClick)="closeAlert.emit(true)"
         >
           <fa-icon size="xl" [icon]="closeIcon"></fa-icon>
         </app-agridata-button>
@@ -34,7 +34,7 @@
           ariaLabel="common.ariaLabel.close"
           [variant]="ButtonVariants.Icon"
           [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
-          (onClick)="closeAlert.emit(true)"
+          (handleButtonClick)="closeAlert.emit(true)"
         >
           <fa-icon size="xl" [icon]="closeIcon"></fa-icon>
         </app-agridata-button>

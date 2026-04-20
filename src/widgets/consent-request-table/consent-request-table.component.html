@@ -1,4 +1,7 @@
-<app-consent-request-filter (onClick)="setStateCodeFilter($event)" [requests]="consentRequests()" />
+<app-consent-request-filter
+  (handleFilterChange)="setStateCodeFilter($event)"
+  [requests]="consentRequests()"
+/>
 <app-agridata-client-table
   [rawData]="filteredConsentRequests()"
   [tableMetadata]="consentRequestsTableMetaData()"
@@ -39,7 +42,7 @@
         [variant]="ButtonVariants.PrimaryAccept"
         [disabled]="acceptConsentActionDisabled()"
         [loading]="getElementLoadingSignal(item.id)()"
-        (onClick)="
+        (handleButtonClick)="
           updateConsentRequestState(
             item.id,
             ConsentRequestStateEnum.Granted,

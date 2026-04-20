@@ -29,7 +29,7 @@
       </div>
       <app-agridata-button
         [variant]="ButtonVariants.Secondary"
-        (onClick)="logout()"
+        (handleButtonClick)="logout()"
         [additionalClass]="'w-full'"
         [disabled]="agridataStateService.isImpersonating()"
       >

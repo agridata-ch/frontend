@@ -50,14 +50,14 @@
         />
         <app-agridata-button
           [variant]="ButtonVariants.PrimaryAccept"
-          (onClick)="handleVerifySigning($event)"
+          (handleButtonClick)="handleVerifySigning($event)"
         >
           {{ t('otp.verifyButton') }}
         </app-agridata-button>
         <div class="flex flex-col text-center">
           <app-agridata-button
             [variant]="ButtonVariants.Tertiary"
-            (onClick)="handleResendOtp()"
+            (handleButtonClick)="handleResendOtp()"
             [disabled]="isResendDisabled()"
           >
             {{ t('otp.resendButton') }}
@@ -84,7 +84,7 @@
         {{ agbParts().after }}
       </span>
     </div>
-    <app-agridata-button [disabled]="!agbChecked()" (onClick)="handleStartSigning()">
+    <app-agridata-button [disabled]="!agbChecked()" (handleButtonClick)="handleStartSigning()">
       {{ t('signingButton') }}
     </app-agridata-button>
     <span>
