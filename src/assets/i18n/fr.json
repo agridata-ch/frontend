@@ -306,7 +306,7 @@
           "message": "Le contrat a été soumis et peut désormais être activé"
         }
       },
-      "releaseContract": "Soumettre le contrat"
+      "releaseContract": "Approuver la demande"
     },
     "submit": {
       "error": "Erreur lors de la soumission de la demande"
@@ -371,8 +371,7 @@
     "contractSigning": {
       "title": "Signer le contrat",
       "contract": {
-        "title": "Contrat",
-        "description": "Signez le contrat entre {{ consumer }} et {{ provider }}. Dès que les deux parties auront signé le contrat à deux reprises, l'échange de données commencera automatiquement.",
+        "description": "Signez le contrat entre les partenaires contractuels : {{ consumer }} et {{ provider }}. Une fois que toutes les signatures requises ont été apposées, le contrat est transmis à l'administrateur pour vérification finale et activation.",
         "signing": {
           "info": "Deux signatures sont requises pour chaque partie contractante. Veuillez vous assurer qu'une deuxième personne habilitée à signer au nom de {{ company }} signe également le contrat."
         }
@@ -415,6 +414,11 @@
         }
       }
     },
+    "contractPdf": {
+      "title": "Contrat",
+      "download": "Télécharger",
+      "fileName": "Vertrag/Contrat_{{ humanFriendlyId }}"
+    },
     "completion": {
       "dataRequest": {
         "submissionDate": "Date de soumission",
@@ -445,14 +449,15 @@
       "state": "Statut du contrat",
       "releasedByConsumer": {
         "title": "Merci beaucoup, votre demande a bien été envoyée",
-        "message": "Dès que {{ provider }} aura signé le contrat, la demande sera validée et vous en serez informé."
+        "message": "Le fournisseur ({{ provider }}) va maintenant être invité automatiquement à signer le contrat. Dès que toutes les signatures auront été apposées et que l'administrateur aura activé le contrat, vous en serez immédiatement informé(e)."
       },
       "waitingForProvider": {
         "title": "La signature est du fait de {{ provider }}",
-        "message": "Dès que {{ provider }} aura signé le contrat, la demande sera validée et vous en serez informé."
+        "message": "Dès que toutes les signatures auront été apposées et que l'administrateur aura activé le contrat, vous en serez immédiatement informé(e)."
       },
       "waitingForProviderRelease": {
-        "message": "En cliquant sur \"{{ releaseContract }}\", vous soumettez le contrat à agridata.ch. Le contrat est alors scellé, puis activé. Dès que la demande est active, les producteurs de données (agriculteurs, éleveurs, etc.) peuvent recevoir une demande de données et donner leur accord. De plus, les utilisateurs de données peuvent commencer à récupérer les données dès lors qu’ils ont obtenu l’accord des producteurs de données."
+        "title": "Demande prête pour approbation",
+        "message": "En cliquant sur « {{ releaseContract }} », vous libérez le contrat au nom de votre organisation. Dès que la demande est active, les producteurs de données (agriculteurs, éleveurs, etc.) peuvent recevoir une demande de données et donner leur accord. De plus, les utilisateurs de données peuvent commencer à récupérer les données dès lors qu’ils ont obtenu l’accord des producteurs de données."
       }
     }
   },
@@ -675,7 +680,7 @@
         }
       }
     },
-    "sidePanelTitle": "Signer la demande de données"
+    "sidePanelTitle": "Examen et signature de la demande de données"
   },
   "product-tour": {
     "nextBtnText": "Continuer",

@@ -5,7 +5,8 @@
   "compilerOptions": {
     "module": "es2020",
     "types": [
-      "jest"
+      "jest",
+      "node"
     ],
   },
   "include": [

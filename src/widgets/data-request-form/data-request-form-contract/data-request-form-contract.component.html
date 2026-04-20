@@ -1,6 +1,6 @@
 @if (isWaitingForSignature()) {
   <app-data-request-contract-signing
-    [contractId]="dataRequest().currentContractRevisionId"
+    [dataRequest]="dataRequest()"
     (reloadDataRequest)="reloadDataRequest.emit()"
   />
 } @else {

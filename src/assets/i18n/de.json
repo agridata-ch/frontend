@@ -306,7 +306,7 @@
           "message": "Der Vertrag wurde eingereicht und kann nun aktiviert werden"
         }
       },
-      "releaseContract": "Vertrag einreichen"
+      "releaseContract": "Antrag genehmigen"
     },
     "submit": {
       "error": "Fehler beim Einreichen des Antrags"
@@ -371,8 +371,7 @@
     "contractSigning": {
       "title": "Vertrag unterzeichnen",
       "contract": {
-        "title": "Vertrag",
-        "description": "Unterzeichnen Sie den Vertrag zwischen {{ consumer }} und {{ provider }}. Sobald beide Vertragspartner je zweimal unterzeichnet haben, startet der Datenaustausch automatisch.",
+        "description": "Unterzeichnen Sie den Vertrag zwischen den Vertragspartnern: {{ consumer }} und {{ provider }}. Sobald alle erforderlichen Unterschriften vorliegen, wird der Vertrag dem Administrator zur finalen Prüfung und Aktivierung übermittelt.",
         "signing": {
           "info": "Pro Vertragspartner sind zwei Unterschriften erforderlich. Stellen Sie sicher, dass auch eine zweite zeichnungsberechtigte Person aus {{ company }} den Vertrag unterzeichnet."
         }
@@ -415,6 +414,11 @@
         }
       }
     },
+    "contractPdf": {
+      "title": "Vertrag",
+      "download": "Herunterladen",
+      "fileName": "Vertrag/Contrat_{{ humanFriendlyId }}"
+    },
     "completion": {
       "dataRequest": {
         "submissionDate": "Datum der Einreichung",
@@ -445,15 +449,15 @@
       "state": "Vertragsstatus",
       "releasedByConsumer": {
         "title": "Herzlichen Dank, Sie haben den Antrag erfolgreich eingereicht",
-        "message": "Sobald {{ provider }} den Vertrag unterzeichnet hat, wird der Antrag aktiviert und Sie werden benachrichtigt."
+        "message": "Der Datenanbieter ({{ provider }}) wird nun automatisch zur Unterzeichnung eingeladen. Sobald alle Unterschriften vorliegen und der Administrator den Vertrag aktiviert hat, werden Sie umgehend benachrichtigt."
       },
       "waitingForProvider": {
         "title": "Die Unterzeichnung liegt bei {{ provider }}",
-        "message": "Sobald {{ provider }} den Vertrag unterzeichnet hat, wird der Antrag aktiviert und Sie werden benachrichtigt."
+        "message": "Sobald alle Unterschriften vorliegen und der Administrator den Vertrag aktiviert hat, werden Sie umgehend benachrichtigt."
       },
       "waitingForProviderRelease": {
-        "title": "Vertrag bereit zum einreichen",
-        "message": "Mit einem Klick auf “{{ releaseContract }}” reichen sie den Vertrag bei agridata.ch ein. Der Vertrag wird nun versiegelt und anschliessend aktiviert. Sobald der Antrag aktiv ist, können die Datenproduzenten (Landwirte, Tierhalter, etc.) eine Datenanfrage erhalten und ihre Zustimmung geben. Zudem können die Datenbezüger mit dem Bezug der Daten starten, sofern Zustimmungen der Datenproduzenten vorliegen."
+        "title": "Antrag zur Genehmigung bereit",
+        "message": "Mit einem Klick auf “{{ releaseContract }}” geben Sie den Vertrag seitens Ihrer Organisation frei. Der Vertrag wird nun versiegelt und anschliessend aktiviert. Sobald der Antrag aktiv ist, können die Datenproduzenten (Landwirte, Tierhalter, etc.) eine Datenanfrage erhalten und ihre Zustimmung geben. Zudem können die Datenbezüger mit dem Bezug der Daten starten, sofern Zustimmungen der Datenproduzenten vorliegen."
       }
     }
   },
@@ -677,7 +681,7 @@
         }
       }
     },
-    "sidePanelTitle": "Datenantrag unterzeichnen"
+    "sidePanelTitle": "Prüfung und Signatur des Datenantrags"
   },
   "product-tour": {
     "nextBtnText": "Weiter",

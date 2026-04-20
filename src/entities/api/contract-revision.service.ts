@@ -36,4 +36,12 @@ export class ContractRevisionService {
       this.apiService.verifySignature(challengeId, contractId, slotId, verifyOtpRequestDto),
     );
   }
+
+  getContractRevisionPdf(contractRevisionId: string): Promise<Blob> {
+    return firstValueFrom(
+      this.apiService.getContractRevisionPdf(contractRevisionId, undefined, undefined, {
+        httpHeaderAccept: 'application/pdf',
+      }),
+    );
+  }
 }

@@ -1275,6 +1275,12 @@ components:
         searchTerm:
           type: string
           description: string to search for in the resource
+    SealAttemptStateEnum:
+      type: string
+      enum:
+      - IN_PROGRESS
+      - COMPLETED
+      - FAILED
     SignatureSlotCodeEnum:
       type: string
       enum:
@@ -1457,6 +1463,7 @@ components:
       description: Authentication
       openIdConnectUrl: http://localhost:6999/realms/agate/.well-known/openid-configuration
 tags:
+- name: BIT Signature Test
 - name: Consent Request Aggregations
   description: Provides access to aggregated consent requests for data producers.
     Each aggregation groups consent requests by the data request they belong to.
@@ -1766,10 +1773,10 @@ paths:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Datenanbieter
       x-api-subset: agridata.ch Web App
-  /api/agreement/v1/contract-revisions/{id}/seals:
-    post:
-      description: Seals a contract revision PDF via BIT Evidence Signing API.
-      operationId: sealContractRevision
+  /api/agreement/v1/contract-revisions/{id}/pdf:
+    get:
+      description: Returns the pdf of the contract revision
+      operationId: getContractRevisionPdf
       tags:
       - Contract Revisions
       parameters:
@@ -1778,10 +1785,6 @@ paths:
         required: true
         schema:
           $ref: "#/components/schemas/UUID"
-      - name: adminGlobalId
-        in: query
-        schema:
-          type: string
       responses:
         "200":
           description: OK
@@ -1803,7 +1806,98 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Contract Revision Pdf
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: agridata.ch Web App
+  /api/agreement/v1/contract-revisions/{id}/seals:
+    post:
+      description: Seals a contract revision PDF via BIT Evidence Signing API.
+      operationId: sealContractRevision
+      tags:
+      - Contract Revisions
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: adminGlobalId
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
       summary: Seal Contract Revision
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+  /api/agreement/v1/contract-revisions/{id}/seals/status:
+    get:
+      description: "Returns the current status of the seal process for a contract\
+        \ revision. If longPolling=true and the state is IN_PROGRESS, the response\
+        \ is held for up to 10 seconds until the state changes. If no state change\
+        \ occurs within that time, IN_PROGRESS is returned. If longPolling=false (default),\
+        \ the current state is returned immediately."
+      operationId: getContractRevisionSealStatus
+      tags:
+      - Contract Revisions
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: longPolling
+        in: query
+        schema:
+          type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SealAttemptStateEnum"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Contract Revision Seal Status
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Admin
@@ -2448,6 +2542,54 @@ paths:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
       x-api-subset: Data Consumer
+  /api/bit/v1/test/sign:
+    post:
+      description: Signs an uploaded PDF via the BIT Evidence Signing API. Only available
+        on non-production profiles.
+      operationId: testBitSign
+      tags:
+      - BIT Signature Test
+      parameters:
+      - name: adminGlobalId
+        in: query
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/pdf: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Test Sign
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
   /api/data-transfer/v1/product/{productId}/data:
     get:
       description: Retrieves data defined by productId. The needed query parameters
@@ -3290,7 +3432,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.8.0-rc.23
+  version: 1.8.0-rc.27
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

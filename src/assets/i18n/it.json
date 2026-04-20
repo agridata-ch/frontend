@@ -306,7 +306,7 @@
           "message": "Il contratto è stato inviato e ora può essere attivato"
         }
       },
-      "releaseContract": "Inviare il contratto"
+      "releaseContract": "Approvare la domanda"
     },
     "submit": {
       "error": "Errore durante l'invio della richiesta"
@@ -371,8 +371,7 @@
     "contractSigning": {
       "title": "Firmare il contratto",
       "contract": {
-        "title": "Contratto",
-        "description": "Firmate il contratto tra {{ consumer }} e {{ provider }}. Non appena entrambe le parti contraenti avranno firmato due volte, lo scambio di dati avrà inizio automaticamente.",
+        "description": "Firmate il contratto tra le parti contraenti: {{ consumer }} e {{ provider }}. Non appena tutte le firme necessarie sono state apposte, il contratto verrà trasmesso all'amministratore per la verifica finale e l'attivazione.",
         "signing": {
           "info": "Sono necessarie due firme per ciascuna parte contraente. Assicurarsi che anche una seconda persona autorizzata alla firma da parte di {{ company }} firmi il contratto."
         }
@@ -415,6 +414,11 @@
         }
       }
     },
+    "contractPdf": {
+      "title": "Contratto",
+      "download": "Scarica",
+      "fileName": "Vertrag/Contrat_{{ humanFriendlyId }}"
+    },
     "completion": {
       "dataRequest": {
         "submissionDate": "Data di presentazione",
@@ -445,14 +449,15 @@
       "state": "Stato del contratto",
       "releasedByConsumer": {
         "title": "Grazie mille, la richiesta è stata inviata con successo",
-        "message": "Non appena {{ provider }} avrà firmato il contratto, la richiesta verrà attivata e riceverai una notifica."
+        "message": "Il fornitore ({{ provider }}) verrà ora invitato automaticamente a firmare il contratto. Non appena tutte le firme saranno state apposte e l'amministratore avrà attivato il contratto, riceverà immediatamente una notifica."
       },
       "waitingForProvider": {
         "title": "La firma è apposta da {{ provider }}",
-        "message": "Non appena {{ provider }} avrà firmato il contratto, la richiesta verrà attivata e riceverai una notifica."
+        "message": "Non appena tutte le firme saranno state apposte e l'amministratore avrà attivato il contratto, riceverà immediatamente una notifica."
       },
       "waitingForProviderRelease": {
-        "message": "Cliccando su \"{{ releaseContract }}\", invierete il contratto ad agridata.ch. Il contratto verrà ora sigillato e successivamente attivato. Non appena la richiesta sarà attiva, i produttori di dati (agricoltori, allevatori, ecc.) potranno ricevere una richiesta di dati e dare il loro consenso. Inoltre, gli acquirenti di dati potranno iniziare a scaricare i dati, a condizione che siano stati ottenuti i consensi dei produttori di dati."
+        "title": "Domanda pronta per l'approvazione",
+        "message": "Cliccando su « {{ releaseContract }} », date il via libera al contratto per conto della vostra organizzazione. Non appena la richiesta sarà attiva, i produttori di dati (agricoltori, allevatori, ecc.) potranno ricevere una richiesta di dati e dare il loro consenso. Inoltre, gli acquirenti di dati potranno iniziare a scaricare i dati, a condizione che siano stati ottenuti i consensi dei produttori di dati."
       }
     }
   },
@@ -676,7 +681,7 @@
         }
       }
     },
-    "sidePanelTitle": "Firmare la richiesta di dati"
+    "sidePanelTitle": "Esame e firma della domanda di dati"
   },
   "product-tour": {
     "nextBtnText": "Inizia il tour",

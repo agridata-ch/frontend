@@ -36,6 +36,7 @@ export * from './pageResponseDtoConsentRequestFundamentalViewDto';
 export * from './pageResponseDtoUserInfoDto';
 export * from './producerIdentifier';
 export * from './resourceQueryDto';
+export * from './sealAttemptStateEnum';
 export * from './signatureSlotCodeEnum';
 export * from './translationDto';
 export * from './uidDto';
