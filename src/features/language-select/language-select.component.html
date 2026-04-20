@@ -15,7 +15,7 @@
       @for (option of languageOptions(); track option) {
         <li
           click-stop-propagation
-          class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+          class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer focus:outline-1"
           [attr.data-testid]="'language-option-' + option"
           (click)="changeLanguage(option)"
           (keydown.enter)="changeLanguage(option)"
@@ -37,7 +37,6 @@
         [attr.data-testid]="'language-option-' + option"
         (click)="changeLanguage(option)"
         (keydown.enter)="changeLanguage(option)"
-        tabindex="0"
       >
         {{ option.toUpperCase() }}
       </li>

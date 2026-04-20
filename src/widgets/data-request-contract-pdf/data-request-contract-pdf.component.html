@@ -1,0 +1,11 @@
+<ng-container *i18n="let t; prefix: 'data-request.contractPdf'">
+  <h4 class="mb-4">{{ t('title') }}</h4>
+  <div class="flex py-3 px-4 border border-agridata-stroke rounded-lg justify-between items-center">
+    <app-agridata-button [variant]="ButtonVariants.Link" (onClick)="handleOpenPdf()">
+      <span class="flex gap-4"><fa-icon [icon]="faPdf" />{{ fileName() }}</span>
+    </app-agridata-button>
+    <app-agridata-button [variant]="ButtonVariants.Link" (onClick)="handleDownloadPdf()">
+      {{ t('download') }}
+    </app-agridata-button>
+  </div>
+</ng-container>

@@ -53,6 +53,9 @@ export type MockContractRevisionService = Mockify<ContractRevisionService>;
 export function createMockContractRevisionService(): MockContractRevisionService {
   return {
     fetchContract: jest.fn().mockResolvedValue(mockContractRevision),
+    getContractRevisionPdf: jest
+      .fn()
+      .mockResolvedValue(new Blob(['pdf'], { type: 'application/pdf' })),
     startSigningProcess: jest.fn().mockResolvedValue(mockOtpChallenge),
     verifySigningProcess: jest.fn().mockResolvedValue(mockContractRevision),
   } satisfies MockContractRevisionService;

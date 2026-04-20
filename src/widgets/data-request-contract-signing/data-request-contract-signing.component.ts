@@ -14,13 +14,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
-import { ContractRevisionDto, SignatureSlotCodeEnum } from '@/entities/openapi';
+import { ContractRevisionDto, DataRequestDto, SignatureSlotCodeEnum } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
 import { AuthService } from '@/shared/lib/auth';
 import { ToastService, ToastType } from '@/shared/toast';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
+import { DataRequestContractPdfComponent } from '@/widgets/data-request-contract-pdf';
 
 import { ContractSignatureInputComponent } from './contract-signature-input/contract-signature-input.component';
 import { SlotChallenge } from './data-request-contract-signing.model';
@@ -38,6 +39,7 @@ import { SlotChallenge } from './data-request-contract-signing.model';
     CommonModule,
     AgridataContactCardComponent,
     ContractSignatureInputComponent,
+    DataRequestContractPdfComponent,
   ],
   templateUrl: './data-request-contract-signing.component.html',
 })
@@ -49,7 +51,7 @@ export class DataRequestContractSigningComponent {
   private readonly toastService = inject(ToastService);
 
   // Input/Output properties
-  readonly contractId = input<string>();
+  readonly dataRequest = input.required<DataRequestDto>();
   readonly reloadDataRequest = output<void>();
 
   // Constants
@@ -63,6 +65,9 @@ export class DataRequestContractSigningComponent {
   protected readonly isDataConsumer = this.authService.isConsumer();
   protected readonly isDataProvider = this.authService.isDataProvider();
   private readonly activeContractId = signal<string | undefined>(undefined);
+
+  // Computed
+  protected readonly contractId = computed(() => this.dataRequest().currentContractRevisionId);
 
   // Effects
   private readonly syncContractIdEffect = effect(() => {

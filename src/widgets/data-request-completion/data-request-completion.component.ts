@@ -16,6 +16,7 @@ import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants, HrefTarget } from '@/shared/ui/button';
 import { AlertComponent, AlertType } from '@/widgets/alert';
+import { DataRequestContractPdfComponent } from '@/widgets/data-request-contract-pdf';
 
 import { DataRequestCompletionSigningStatusComponent } from './data-request-completion-signing-status';
 
@@ -35,6 +36,7 @@ import { DataRequestCompletionSigningStatusComponent } from './data-request-comp
     ButtonComponent,
     FontAwesomeModule,
     DataRequestCompletionSigningStatusComponent,
+    DataRequestContractPdfComponent,
   ],
   templateUrl: './data-request-completion.component.html',
 })

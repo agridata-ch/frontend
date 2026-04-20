@@ -2,7 +2,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContractRevisionService } from '@/entities/api';
-import { SignatureSlotCodeEnum } from '@/entities/openapi';
+import { DataRequestDto, SignatureSlotCodeEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
@@ -21,6 +21,13 @@ import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing
 import { ToastService, ToastType } from '@/shared/toast';
 
 import { DataRequestContractSigningComponent } from './data-request-contract-signing.component';
+
+const mockDataRequest: DataRequestDto = { id: 'dr-1', stateCode: 'draft' };
+const mockDataRequestWithContract: DataRequestDto = {
+  id: 'dr-1',
+  stateCode: 'draft',
+  currentContractRevisionId: 'cr-1',
+};
 
 describe('DataRequestContractSigningComponent', () => {
   let component: DataRequestContractSigningComponent;
@@ -50,6 +57,7 @@ describe('DataRequestContractSigningComponent', () => {
     fixture = TestBed.createComponent(DataRequestContractSigningComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
+    componentRef.setInput('dataRequest', mockDataRequest);
     fixture.detectChanges();
   });
 
@@ -63,7 +71,7 @@ describe('DataRequestContractSigningComponent', () => {
   });
 
   it('should call fetchContract when contractId is set', async () => {
-    componentRef.setInput('contractId', 'cr-1');
+    componentRef.setInput('dataRequest', mockDataRequestWithContract);
     fixture.detectChanges();
     await fixture.whenStable();
     expect(contractRevisionService.fetchContract).toHaveBeenCalledWith('cr-1');
@@ -73,7 +81,7 @@ describe('DataRequestContractSigningComponent', () => {
     it('should return consumer name when user is a consumer', async () => {
       authService.__testSignals.isConsumer.set(true);
       const consumerFixture = TestBed.createComponent(DataRequestContractSigningComponent);
-      consumerFixture.componentRef.setInput('contractId', 'cr-1');
+      consumerFixture.componentRef.setInput('dataRequest', mockDataRequestWithContract);
       consumerFixture.detectChanges();
       await consumerFixture.whenStable();
       expect(consumerFixture.componentInstance['companyName']()).toBe(
@@ -84,7 +92,7 @@ describe('DataRequestContractSigningComponent', () => {
     it('should return provider name when user is not a consumer', async () => {
       authService.__testSignals.isConsumer.set(false);
       const providerFixture = TestBed.createComponent(DataRequestContractSigningComponent);
-      providerFixture.componentRef.setInput('contractId', 'cr-1');
+      providerFixture.componentRef.setInput('dataRequest', mockDataRequestWithContract);
       providerFixture.detectChanges();
       await providerFixture.whenStable();
       expect(providerFixture.componentInstance['companyName']()).toBe(
@@ -97,7 +105,7 @@ describe('DataRequestContractSigningComponent', () => {
     it('should return DataConsumer01 signature for a consumer', async () => {
       authService.__testSignals.isConsumer.set(true);
       const consumerFixture = TestBed.createComponent(DataRequestContractSigningComponent);
-      consumerFixture.componentRef.setInput('contractId', 'cr-1');
+      consumerFixture.componentRef.setInput('dataRequest', mockDataRequestWithContract);
       consumerFixture.detectChanges();
       await consumerFixture.whenStable();
       expect(consumerFixture.componentInstance['slot1Signature']()?.signatureSlotCode).toBe(
@@ -109,7 +117,7 @@ describe('DataRequestContractSigningComponent', () => {
       authService.__testSignals.isConsumer.set(false);
       authService.__testSignals.isDataProvider.set(true);
       const providerFixture = TestBed.createComponent(DataRequestContractSigningComponent);
-      providerFixture.componentRef.setInput('contractId', 'cr-1');
+      providerFixture.componentRef.setInput('dataRequest', mockDataRequestWithContract);
       providerFixture.detectChanges();
       await providerFixture.whenStable();
       expect(providerFixture.componentInstance['slot1Signature']()?.signatureSlotCode).toBe(
@@ -120,7 +128,7 @@ describe('DataRequestContractSigningComponent', () => {
 
   describe('startSigningProcess', () => {
     it('should call the service and set currentChallenge', async () => {
-      componentRef.setInput('contractId', 'cr-1');
+      componentRef.setInput('dataRequest', mockDataRequestWithContract);
       fixture.detectChanges();
       await fixture.whenStable();
 
@@ -145,7 +153,7 @@ describe('DataRequestContractSigningComponent', () => {
 
   describe('verifySigningProcess', () => {
     it('should show a success toast and clear the challenge on success', async () => {
-      componentRef.setInput('contractId', 'cr-1');
+      componentRef.setInput('dataRequest', mockDataRequestWithContract);
       fixture.detectChanges();
       await fixture.whenStable();
       component['currentChallenge'].set({
@@ -175,7 +183,7 @@ describe('DataRequestContractSigningComponent', () => {
 
     it('should show an error toast when verification fails', async () => {
       contractRevisionService.verifySigningProcess.mockRejectedValueOnce(new Error('failed'));
-      componentRef.setInput('contractId', 'cr-1');
+      componentRef.setInput('dataRequest', mockDataRequestWithContract);
       fixture.detectChanges();
       await fixture.whenStable();
 

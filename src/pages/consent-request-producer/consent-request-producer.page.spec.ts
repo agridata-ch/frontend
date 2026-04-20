@@ -146,7 +146,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
 
       expect(component.visibleMigratedRequests()).toHaveLength(2);
 
-      component.closeMigrationInfo('1');
+      component['closeMigrationInfo']('1');
       fixture.detectChanges();
 
       expect(addConfirmedMiratedUidsSpy).toHaveBeenCalledWith(['1']);
@@ -168,7 +168,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
         },
       } as ConsentRequestProducerViewDto;
 
-      const title = component.getMigratedRequestTitle(migratedRequest);
+      const title = component['getMigratedRequestTitle'](migratedRequest);
 
       expect(title).toBe(mockConsentRequests[0].dataRequest?.title?.de);
     });

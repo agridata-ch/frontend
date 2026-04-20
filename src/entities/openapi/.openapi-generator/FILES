@@ -3,6 +3,7 @@ README.md
 api.base.service.ts
 api.module.ts
 api/api.ts
+api/bITSignatureTest.service.ts
 api/consentRequestAggregations.service.ts
 api/consentRequests.service.ts
 api/contractRevisions.service.ts
@@ -58,6 +59,7 @@ model/pageResponseDtoConsentRequestFundamentalViewDto.ts
 model/pageResponseDtoUserInfoDto.ts
 model/producerIdentifier.ts
 model/resourceQueryDto.ts
+model/sealAttemptStateEnum.ts
 model/signatureSlotCodeEnum.ts
 model/translationDto.ts
 model/uidDto.ts

@@ -5,23 +5,23 @@
     size="3x"
     class="absolute flex items-center justify-center inset-0"
   ></fa-icon>
-} @else {
+} @else if (contract(); as contract) {
   <div class="flex flex-col gap-6 h-full" *i18n="let t; prefix: 'data-request.contractSigning'">
     <h3>{{ t('title') }}</h3>
-    <h4>{{ t('contract.title') }}</h4>
+    <app-data-request-contract-pdf [dataRequest]="dataRequest()" />
     <span class="text-lg">
       {{
         t('contract.description', {
-          consumer: contract()?.dataConsumerName,
-          provider: contract()?.dataProviderName,
+          consumer: contract.dataConsumerName,
+          provider: contract.dataProviderName,
         })
       }}
     </span>
     <div class="flex flex-col gap-6 p-6 bg-agridata-content-gray rounded-lg">
       <app-agridata-contact-card
         [name]="companyName()"
-        [secondaryName]="contract()?.dataConsumerCity"
-        [imageUrl]="contract()?.dataRequestContext?.dataConsumerLogoBase64"
+        [secondaryName]="contract.dataConsumerCity"
+        [imageUrl]="contract.dataRequestContext.dataConsumerLogoBase64"
         [size]="AvatarSize.MEDIUM"
         [skin]="AvatarSkin.LIGHT"
       />
