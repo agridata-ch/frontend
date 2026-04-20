@@ -40,7 +40,7 @@ export class SearchInputComponent implements OnDestroy {
 
   protected readonly faSpinnerThird = faSpinnerThird;
 
-  readonly onInput = output<string>();
+  readonly handleInput = output<string>();
 
   protected readonly magnifyingGlassIcon = faMagnifyingGlass;
   protected readonly faClose = faClose;
@@ -64,7 +64,7 @@ export class SearchInputComponent implements OnDestroy {
         ),
       )
       .subscribe((debouncedValue) => {
-        this.onInput.emit(debouncedValue);
+        this.handleInput.emit(debouncedValue);
       });
   }
 
@@ -75,6 +75,6 @@ export class SearchInputComponent implements OnDestroy {
 
   clearSearch() {
     this.value.set('');
-    this.onInput.emit('');
+    this.handleInput.emit('');
   }
 }

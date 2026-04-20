@@ -17,7 +17,7 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 })
 export class ConsentRequestFilterComponent {
   readonly requests = input.required<ConsentRequestProducerViewDto[]>();
-  onClick = output<string | null>();
+  handleFilterChange = output<string | null>();
 
   readonly requestsSignal = signal<ConsentRequestProducerViewDto[]>([]);
   readonly ButtonVariants = ButtonVariants;
@@ -50,7 +50,7 @@ export class ConsentRequestFilterComponent {
       value = null;
     }
     this.selectedValue.set(value);
-    this.onClick.emit(value);
+    this.handleFilterChange.emit(value);
   }
 
   isSelected(value: string | null): boolean {

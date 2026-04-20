@@ -44,12 +44,12 @@ describe('TableActionsComponent', () => {
     const toggleButton = buttons[0];
     expect(toggleButton).toBeDefined();
 
-    toggleButton.triggerEventHandler('onClick', null);
+    toggleButton.triggerEventHandler('handleClick', null);
 
     expect(component['isOpen']()).toBe(true);
 
     // Toggle again
-    toggleButton.triggerEventHandler('onClick', null);
+    toggleButton.triggerEventHandler('handleClick', null);
     expect(component['isOpen']()).toBe(false);
   });
 
@@ -69,13 +69,13 @@ describe('TableActionsComponent', () => {
     const toggleButton = buttons[0];
     expect(toggleButton).toBeDefined();
 
-    toggleButton.triggerEventHandler('onClick', null);
+    toggleButton.triggerEventHandler('handleClick', null);
 
     componentRef.setInput('actions', [action]);
     fixture.detectChanges();
     await fixture.whenStable();
     // Find action button by searching ButtonComponent instances that contain our label
-    const actionListElements = fixture.debugElement.queryAll(By.css('li'));
+    const actionListElements = fixture.debugElement.queryAll(By.css('li button'));
     const testActionElement = actionListElements.find((element) =>
       element.nativeElement.textContent?.includes('test.action'),
     );

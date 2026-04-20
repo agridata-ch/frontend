@@ -3,7 +3,7 @@
     <!-- normally you don't use ! for classes but here it's neccessary because of tailwind and angular -->
     <app-agridata-button
       [variant]="ButtonVariants.Filter"
-      (onClick)="handleClick(filter.value)"
+      (handleClick)="handleClick(filter.value)"
       [selected]="isSelected(filter.value)"
     >
       <span>

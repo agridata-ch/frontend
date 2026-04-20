@@ -24,7 +24,7 @@ export function installMockLocalStorage(initial: LocalStore = {}) {
   };
 
   // Replace the window.localStorage getter (JSDOM exposes it as a property)
-  jest.spyOn(window, 'localStorage', 'get').mockReturnValue(mock as unknown as Storage);
+  jest.spyOn(globalThis, 'localStorage', 'get').mockReturnValue(mock as unknown as Storage);
 
   return mock;
 }

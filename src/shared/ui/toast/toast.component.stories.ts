@@ -19,31 +19,31 @@ import { ToastComponent } from '@/shared/ui/toast/toast.component';
       <app-agridata-button
         [variant]="ButtonVariants.Primary"
         ariaLabel="Show info"
-        (onClick)="showInfo()"
+        (handleClick)="showInfo()"
         >Info</app-agridata-button
       >
       <app-agridata-button
         [variant]="ButtonVariants.PrimaryAccept"
         ariaLabel="Show success"
-        (onClick)="showSuccess()"
+        (handleClick)="showSuccess()"
         >Success</app-agridata-button
       >
       <app-agridata-button
         [variant]="ButtonVariants.SecondaryReject"
         ariaLabel="Show error"
-        (onClick)="showError()"
+        (handleClick)="showError()"
         >Error</app-agridata-button
       >
       <app-agridata-button
         [variant]="ButtonVariants.Secondary"
         ariaLabel="Show warning"
-        (onClick)="showWarning()"
+        (handleClick)="showWarning()"
         >Warning</app-agridata-button
       >
       <app-agridata-button
         [variant]="ButtonVariants.Tertiary"
         ariaLabel="Show with undo"
-        (onClick)="showWithUndo()"
+        (handleClick)="showWithUndo()"
         >With Undo</app-agridata-button
       >
     </div>

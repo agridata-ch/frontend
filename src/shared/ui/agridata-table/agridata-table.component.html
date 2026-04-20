@@ -2,7 +2,7 @@
 @if (enableSearch()) {
   <div class="mb-4 w-60">
     <app-search-input
-      (onInput)="handleSearchInput($event)"
+      (handleInput)="handleSearchInput($event)"
       [isLoading]="dataProvider().isLoading()"
     >
     </app-search-input>
@@ -78,7 +78,7 @@
                 <app-agridata-button
                   click-stop-propagation
                   [variant]="ButtonVariants.Icon"
-                  (onClick)="rowAction(row)"
+                  (handleClick)="rowAction(row)"
                   class="action-button"
                   aria-label="{{ 'table.ariaLabels.rowAction' | i18n }}"
                   [dataTestId]="'row-action-' + $index"

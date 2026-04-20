@@ -18,8 +18,8 @@
       [tabindex]="tabindex()"
       [attr.aria-label]="ariaLabel()"
       [attr.data-testid]="dataTestId()"
-      (click)="handleClick($event)"
-      (keydown.enter)="handleClick($event)"
+      (click)="onButtonClick($event)"
+      (keydown.enter)="onButtonClick($event)"
       [class]="`relative agridata-button agridata-button-${variant()} ${selected() ? 'selected' : ''} ${additionalClass()}`"
     >
       @if (isIconLink()) {
