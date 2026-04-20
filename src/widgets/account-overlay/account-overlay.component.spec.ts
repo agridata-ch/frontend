@@ -74,7 +74,7 @@ describe('AccountOverlayComponent', () => {
     component.isOverlayOpen.set(true);
     fixture.detectChanges();
     const logoutButton = fixture.debugElement.query(By.css('app-agridata-button'));
-    logoutButton.triggerEventHandler('onClick', null);
+    logoutButton.triggerEventHandler('handleClick', null);
     expect(authService.logout).toHaveBeenCalled();
   });
 });

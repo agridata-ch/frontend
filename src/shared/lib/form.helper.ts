@@ -29,6 +29,10 @@ export interface FormControlWithMessages extends FormControl {
   pattern?: string;
 }
 
+interface FieldPath {
+  name: string;
+}
+
 /**
  * Recursively locate the JsonSchema node and parent-required list for a given field path.
  */
@@ -156,6 +160,70 @@ function buildErrorMessages(
   return messages;
 }
 
+function addFieldToGroup(
+  fieldPath: FieldPath,
+  topGroup: FormGroup,
+  jsonSchema: JsonSchema,
+  i18nService: I18nService,
+) {
+  const pathSegments = fieldPath.name.split('.');
+  if (pathSegments.length === 0) {
+    return;
+  }
+  let containerGroup = topGroup;
+
+  containerGroup = ensureNestedGroups(pathSegments, containerGroup);
+
+  const lastSegment = pathSegments.at(-1);
+  if (!lastSegment) {
+    return; // Skip if no last segment
+  }
+  const { schemaNode, parentRequiredList } = getSchemaNode(jsonSchema, pathSegments);
+  const control = createControl(schemaNode, parentRequiredList, lastSegment, i18nService);
+
+  // Mark as touched if pre-filled to show validation state immediately
+
+  containerGroup.addControl(lastSegment, control);
+}
+
+function ensureNestedGroups(pathSegments: string[], containerGroup: FormGroup) {
+  // Build nested FormGroups for pathSegments except the last
+  for (let depth = 0; depth < pathSegments.length - 1; depth++) {
+    const segment = pathSegments[depth];
+    if (!containerGroup.get(segment)) {
+      containerGroup.addControl(segment, new FormGroup({}));
+    }
+    containerGroup = containerGroup.get(segment) as FormGroup;
+  }
+  return containerGroup;
+}
+
+function createControl(
+  schemaNode: JsonSchema,
+  parentRequiredList: string[],
+  lastSegment: string,
+  i18nService: I18nService,
+) {
+  const defaultValue = schemaNode.type === 'array' ? [] : '';
+  const validators = buildValidatorFunctions(schemaNode, parentRequiredList, lastSegment);
+
+  // Create FormControl with messages
+  const control = new FormControl(defaultValue, validators) as FormControlWithMessages;
+  control.errorMessages = buildErrorMessages(
+    schemaNode,
+    parentRequiredList,
+    lastSegment,
+    i18nService,
+  );
+
+  control.maxLength = schemaNode.maxLength;
+  control.minLength = schemaNode.minLength;
+  control.minItems = schemaNode.minItems;
+  control.maxItems = schemaNode.maxItems;
+  control.pattern = schemaNode.pattern;
+
+  return control;
+}
 /**
  * Build a FormGroup tree from schema + DTO + field map, wiring up
  * validators, initial values, and translated error messages.
@@ -175,47 +243,7 @@ export function buildReactiveForm(
     const topGroup = new FormGroup({});
 
     for (const fieldPath of fields) {
-      const pathSegments = fieldPath.name.split('.');
-      if (pathSegments.length === 0) {
-        continue;
-      }
-      let containerGroup = topGroup;
-
-      // Build nested FormGroups for pathSegments except the last
-      for (let depth = 0; depth < pathSegments.length - 1; depth++) {
-        const segment = pathSegments[depth];
-        if (!containerGroup.get(segment)) {
-          containerGroup.addControl(segment, new FormGroup({}));
-        }
-        containerGroup = containerGroup.get(segment) as FormGroup;
-      }
-
-      const lastSegment = pathSegments.at(-1);
-      if (!lastSegment) {
-        continue; // Skip if no last segment
-      }
-      const { schemaNode, parentRequiredList } = getSchemaNode(jsonSchema, pathSegments);
-      const defaultValue = schemaNode.type === 'array' ? [] : '';
-      const validators = buildValidatorFunctions(schemaNode, parentRequiredList, lastSegment);
-
-      // Create FormControl with messages
-      const control = new FormControl(defaultValue, validators) as FormControlWithMessages;
-      control.errorMessages = buildErrorMessages(
-        schemaNode,
-        parentRequiredList,
-        lastSegment,
-        i18nService,
-      );
-
-      control.maxLength = schemaNode.maxLength;
-      control.minLength = schemaNode.minLength;
-      control.minItems = schemaNode.minItems;
-      control.maxItems = schemaNode.maxItems;
-      control.pattern = schemaNode.pattern;
-
-      // Mark as touched if pre-filled to show validation state immediately
-
-      containerGroup.addControl(lastSegment, control);
+      addFieldToGroup(fieldPath, topGroup, jsonSchema, i18nService);
     }
 
     rootGroup.addControl(formGroupName, topGroup);

@@ -92,7 +92,7 @@
                 @if (!formDisabled()) {
                   <app-agridata-button
                     [variant]="ButtonVariants.Link"
-                    (onClick)="fileInput.click()"
+                    (handleClick)="fileInput.click()"
                     (keydown.enter)="fileInput.click()"
                   >
                     {{ t('logo.upload') }}

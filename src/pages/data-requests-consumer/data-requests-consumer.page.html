@@ -6,7 +6,7 @@
     </h2>
     <div>
       <app-agridata-button
-        (onClick)="newRequest()"
+        (handleClick)="newRequest()"
         (keydown.enter)="newRequest()"
         [disabled]="isButtonDisabled()"
         [variant]="ButtonVariants.Primary"

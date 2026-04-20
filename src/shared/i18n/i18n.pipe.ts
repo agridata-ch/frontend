@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Inject, Optional, Pipe } from '@angular/core';
+import { ChangeDetectorRef, Inject, Optional, Pipe, PipeTransform } from '@angular/core';
 import {
   TRANSLOCO_SCOPE,
   TranslocoPipe,
@@ -20,7 +20,7 @@ export type OrArray<T> = T | T[];
   standalone: true,
   pure: false,
 })
-export class I18nPipe extends TranslocoPipe {
+export class I18nPipe extends TranslocoPipe implements PipeTransform {
   constructor(
     service: TranslocoService,
     @Optional()

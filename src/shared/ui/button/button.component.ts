@@ -39,7 +39,7 @@ export class ButtonComponent {
   iconPosition = input<IconPosition>(IconPosition.Left);
 
   // Output properties
-  onClick = output<Event>();
+  handleClick = output<Event>();
 
   @HostBinding('style.display') display = 'contents';
 
@@ -51,9 +51,9 @@ export class ButtonComponent {
   // Computed signals
   protected readonly isIconLink = computed(() => this.variant() === ButtonVariants.IconLink);
 
-  handleClick(event: Event) {
+  onButtonClick(event: Event) {
     event.preventDefault();
     event.stopPropagation();
-    this.onClick.emit(event);
+    this.handleClick.emit(event);
   }
 }

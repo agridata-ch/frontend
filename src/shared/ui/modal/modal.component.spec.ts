@@ -78,7 +78,7 @@ describe('ModalComponent', () => {
 
     const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
     const closeButton = buttons[0];
-    closeButton.triggerEventHandler('onClick', null);
+    closeButton.triggerEventHandler('handleClick', null);
     fixture.detectChanges();
 
     expect(component.open()).toBe(false);
