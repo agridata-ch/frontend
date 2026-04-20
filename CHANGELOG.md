@@ -1,3 +1,9 @@
+## [1.10.0-rc.19](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.18...v1.10.0-rc.19) (2026-04-20)
+
+### Features
+
+- **data-request-contract:** add contract pdf ([8421cd8](https://github.com/agridata-ch/frontend/commit/8421cd8a056b4f7dbb16ed2eccab04339397ad18)), closes [DIGIB2-305](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-305)
+
 ## [1.10.0-rc.18](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.17...v1.10.0-rc.18) (2026-04-17)
 
 ### Bug Fixes
