@@ -1,3 +1,9 @@
+## [1.10.0-rc.20](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.19...v1.10.0-rc.20) (2026-04-21)
+
+### Features
+
+- **contract-pdf:** add loading-spinner ([2e707bb](https://github.com/agridata-ch/frontend/commit/2e707bb2b34b63ccc5954da02949d40b21c986ed)), closes [DIGIB2-305](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-305)
+
 ## [1.10.0-rc.19](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.18...v1.10.0-rc.19) (2026-04-20)
 
 ### Features
