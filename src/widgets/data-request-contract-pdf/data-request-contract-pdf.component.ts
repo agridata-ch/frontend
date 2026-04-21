@@ -7,7 +7,7 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
 import { DataRequestDto } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/button';
 
 /**
  * Component for displaying and handling interactions with a contract PDF related to a data request.
@@ -34,6 +34,7 @@ export class DataRequestContractPdfComponent {
 
   // Constants
   protected readonly ButtonVariants = ButtonVariants;
+  protected readonly IconPosition = IconPosition;
   protected readonly faPdf = faFilePdf;
   protected readonly faSpinnerThird = faSpinnerThird;
   protected readonly faDownload = faDownload;

@@ -2,38 +2,28 @@
   <h4 class="mb-4">{{ t('title') }}</h4>
   <div class="flex py-3 px-4 border border-agridata-stroke rounded-lg justify-between items-center">
     <div class="flex gap-4">
-      @if (isLoadingOpen()) {
-        <fa-icon animation="spin" [icon]="faSpinnerThird"></fa-icon>
-      }
       <app-agridata-button
-        [variant]="ButtonVariants.Link"
+        [variant]="ButtonVariants.IconLink"
         (onClick)="handleOpenPdf()"
         [disabled]="isLoadingOpen()"
+        [icon]="faPdf"
+        [iconPosition]="IconPosition.Right"
+        [loading]="isLoadingOpen()"
       >
-        <span class="flex gap-4">
-          @if (!isLoadingOpen()) {
-            <fa-icon [icon]="faPdf"></fa-icon>
-          }
-          {{ fileName() }}
-        </span>
+        {{ fileName() }}
       </app-agridata-button>
     </div>
     <div class="flex gap-4">
       <app-agridata-button
-        [variant]="ButtonVariants.Link"
+        [variant]="ButtonVariants.IconLink"
         (onClick)="handleDownloadPdf()"
         [disabled]="isLoadingDownload()"
+        [icon]="faDownload"
+        [iconPosition]="IconPosition.Right"
+        [loading]="isLoadingDownload()"
       >
-        <span class="flex gap-4">
-          {{ t('download') }}
-          @if (!isLoadingDownload()) {
-            <fa-icon [icon]="faDownload"></fa-icon>
-          }
-        </span>
+        {{ t('download') }}
       </app-agridata-button>
-      @if (isLoadingDownload()) {
-        <fa-icon animation="spin" [icon]="faSpinnerThird"></fa-icon>
-      }
     </div>
   </div>
 </ng-container>

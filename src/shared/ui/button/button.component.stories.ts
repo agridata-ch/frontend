@@ -1,9 +1,15 @@
-import { faBars, faArrowRight, faPlus } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import {
+  faBars,
+  faArrowRight,
+  faDownload,
+  faFilePdf,
+  faPlus,
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { FaIconComponent, IconDefinition } from '@fortawesome/angular-fontawesome';
 import { moduleMetadata, Meta, StoryObj } from '@storybook/angular';
 
 import { ButtonComponent } from './button.component';
-import { ButtonVariants, HrefTarget } from './button.model';
+import { ButtonVariants, HrefTarget, IconPosition } from './button.model';
 
 const sharedTemplate = (content: string): string => `
   <app-agridata-button
@@ -40,11 +46,36 @@ const iconStory = (
   args: { ariaLabel, ...args },
 });
 
+const iconLinkStory = (
+  icon: IconDefinition,
+  label: string,
+  args: StoryObj<ButtonComponent>['args'],
+): Story => ({
+  render: (storyArgs) => ({
+    props: storyArgs,
+    template: `
+      <app-agridata-button
+        [variant]="variant"
+        [disabled]="disabled"
+        [loading]="loading"
+        [icon]="icon"
+        [iconPosition]="iconPosition"
+        [ariaLabel]="ariaLabel"
+      >${label}</app-agridata-button>
+    `,
+  }),
+  args: { icon, ariaLabel: label, ...args },
+});
+
 const meta: Meta<ButtonComponent> = {
   title: 'Shared/UI/Button',
   component: ButtonComponent,
   tags: ['autodocs'],
   argTypes: {
+    iconPosition: {
+      control: 'select',
+      options: ['left', 'right'],
+    },
     target: {
       control: 'select',
       options: Object.values(HrefTarget),
@@ -113,6 +144,22 @@ export const IconOutline = iconStory(faArrowRight, 'Go forward', {
 export const Link = textStory('Read more', {
   variant: ButtonVariants.Link,
   ariaLabel: 'Read more',
+});
+
+export const IconLink = iconLinkStory(faFilePdf, 'Contract.pdf', {
+  variant: ButtonVariants.IconLink,
+  iconPosition: IconPosition.Left,
+});
+
+export const IconLinkRight = iconLinkStory(faDownload, 'Download', {
+  variant: ButtonVariants.IconLink,
+  iconPosition: IconPosition.Right,
+});
+
+export const IconLinkLoading = iconLinkStory(faFilePdf, 'Contract.pdf', {
+  variant: ButtonVariants.IconLink,
+  iconPosition: IconPosition.Left,
+  loading: true,
 });
 
 export const Filter = iconStory(faBars, 'Filter', {
