@@ -1,0 +1,147 @@
+<mjml>
+  <mj-head>
+    <mj-style>
+      @media only screen and (max-width: 480px) {
+        .header-section div {
+        }
+        .header-text div {
+          font-size: 16px !important;
+        }
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body background-color="#F1F5F9" width="1024px">
+    <mj-wrapper padding="24px 40px">
+      <mj-section full-width="full-width" padding="0 0 24px 0">
+        <mj-column>
+          <mj-image
+            width="100px"
+            src="https://agridata.ch/assets/images/agridata-logo.svg"
+            align="left"
+            padding="0"
+          ></mj-image>
+        </mj-column>
+      </mj-section>
+      <mj-section
+        css-class="header-section"
+        background-color="#FFFFFF"
+        border-radius="6px 6px 0 0"
+        border="1px solid #D1D5DC"
+        border-bottom="0"
+        padding="0"
+      >
+        <mj-column>
+          <mj-text
+            css-class="header-text"
+            font-size="36px"
+            font-weight="bold"
+            color="#263645"
+            padding="24px 40px"
+          >
+            Neue Anfrage von
+          </mj-text>
+
+          <mj-text
+            css-class="header-text"
+            font-size="36px"
+            font-weight="bold"
+            color="#263645"
+            padding="0 40px 24px 40px"
+          >
+            {{ dataprovider }}
+          </mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section
+        background-color="#FFFFFF"
+        padding="40px"
+        border-radius="0 0 6px 6px"
+        border="1px solid #D1D5DC"
+        border-top="0"
+      >
+        <mj-column>
+          <mj-button
+            href="https://agridata.ch"
+            background-color="#3366CC"
+            color="#FFFFFF"
+            border-radius="6px"
+            padding="12px 16px"
+          >
+            Anfrage öffnen
+          </mj-button>
+          <mj-text font-size="22px" padding="24px 0 0 0">Details zum Datenantrag</mj-text>
+          <mj-text font-size="16px" font-weight="bold" padding="24px 0 0 0">Datenbezüger:</mj-text>
+          <mj-text font-size="16px" padding="0">{{ dataconsumer }}</mj-text>
+          <mj-text font-size="16px" font-weight="bold" padding="24px 0 0 0">Antragsname:</mj-text>
+          <mj-text font-size="16px" padding="0">{{ dataRequestName }}</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section full-width="full-width">
+        <mj-column vertical-align="top" width="25%">
+          <mj-text align="center" color="#5D6F89" font-size="11px" padding-bottom="30px"
+            ><span style="font-size: 14px; color: #3366cc">Logo Eidgenossenschaft</span
+            ><br /><br />Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
+            eleifend sagittis nunc, et fermentum est ullamcorper dignissim.</mj-text
+          >
+        </mj-column>
+        <mj-column vertical-align="top" width="25%">
+          <mj-text align="center" color="#5D6F89" font-size="11px" padding-bottom="30px"
+            ><span style="font-size: 14px; color: #3366cc">Logo KOLAS</span><br /><br />Lorem ipsum
+            dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend sagittis nunc, et
+            fermentum est ullamcorper dignissim.</mj-text
+          >
+        </mj-column>
+      </mj-section>
+      <mj-section full-width="full-width" padding="0">
+        <mj-column width="100%">
+          <mj-divider
+            border-color="#99A1AF"
+            border-style="solid"
+            border-width="1px"
+            padding="24px 0"
+          ></mj-divider>
+
+          <mj-text align="center" color="#5D6F89" font-size="14px">
+            Probieren Sie die agridata.ch App aus, um auch unterwegs den Überblick über Ihre
+            Anfragen zu behalten.
+          </mj-text>
+        </mj-column>
+        <mj-group>
+          <mj-column>
+            <mj-image
+              src="https://media.agridata.ch/typ_appstore_de_db348edb14.svg"
+              height="31px"
+              href="https://apps.apple.com/ch/app/agridata-ch/id6754881667?l=de-CH"
+            />
+          </mj-column>
+        </mj-group>
+        <mj-column width="100%">
+          <mj-divider
+            border-color="#99A1AF"
+            border-style="solid"
+            border-width="1px"
+            padding="24px 0"
+          ></mj-divider>
+        </mj-column>
+      </mj-section>
+      <mj-section full-width="full-width" background-color="#F1F5F9" padding="24px 0">
+        <mj-column>
+          <mj-text align="center" font-size="14px" color="#5D6F89" padding="0" line-height="130%">
+            Haben Sie Fragen?
+          </mj-text>
+
+          <mj-text align="center" font-size="14px" line-height="130%" color="#5D6F89" padding="0">
+            Kontaktieren Sie uns unter
+            <a href="mailto:support@agridata.ch" style="color: #3366cc">support@agridata.ch</a> oder
+            <a href="tel:+41432060218" style="color: #3366cc">+41 43 206 02 18</a>
+          </mj-text>
+
+          <mj-text align="center" font-size="14px" color="#5D6F89" padding="0" line-height="130%">
+            Besuchen Sie uns auf
+            <a href="https://www.agridata.ch" style="color: #3366cc">www.agridata.ch</a>
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+  </mj-body>
+</mjml>
