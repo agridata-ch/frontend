@@ -1,5 +1,6 @@
-import { Component, computed, inject, input } from '@angular/core';
-import { faFilePdf } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { Component, computed, inject, input, signal } from '@angular/core';
+import { faDownload, faFilePdf } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
@@ -11,7 +12,8 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 /**
  * Component for displaying and handling interactions with a contract PDF related to a data request.
  * It provides functionality to open the PDF in a new tab or download it directly.
- * The component fetches the PDF blob from the ContractRevisionService using the provided contract revision ID and creates a URL for viewing or downloading the PDF.
+ * The component fetches the PDF blob from the ContractRevisionService using
+ * the provided contract revision ID and creates a URL for viewing or downloading the PDF.
  *
  * CommentLastReviewed: 2026-04-20
  */
@@ -28,10 +30,17 @@ export class DataRequestContractPdfComponent {
 
   // Inputs
   readonly dataRequest = input.required<DataRequestDto>();
+  readonly contractRevisionId = input.required<string>();
 
   // Constants
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly faPdf = faFilePdf;
+  protected readonly faSpinnerThird = faSpinnerThird;
+  protected readonly faDownload = faDownload;
+
+  // Signals
+  protected readonly isLoadingOpen = signal(false);
+  protected readonly isLoadingDownload = signal(false);
 
   // Computed
   protected readonly fileName = computed(() => {
@@ -41,12 +50,13 @@ export class DataRequestContractPdfComponent {
     return `${translation}.pdf`;
   });
 
-  protected readonly contractRevisionId = computed(
-    () => this.dataRequest().currentContractRevisionId ?? '',
-  );
-
   // Methods
   protected handleOpenPdf(): void {
+    if (this.isLoadingOpen()) {
+      return;
+    }
+
+    this.isLoadingOpen.set(true);
     this.contractRevisionService
       .getContractRevisionPdf(this.contractRevisionId())
       .then((pdfBlob) => {
@@ -56,10 +66,18 @@ export class DataRequestContractPdfComponent {
       })
       .catch((error) => {
         this.errorHandler.handleError(error);
+      })
+      .finally(() => {
+        this.isLoadingOpen.set(false);
       });
   }
 
   protected handleDownloadPdf(): void {
+    if (this.isLoadingDownload()) {
+      return;
+    }
+
+    this.isLoadingDownload.set(true);
     this.contractRevisionService
       .getContractRevisionPdf(this.contractRevisionId())
       .then((pdfBlob) => {
@@ -74,6 +92,9 @@ export class DataRequestContractPdfComponent {
       })
       .catch((error) => {
         this.errorHandler.handleError(error);
+      })
+      .finally(() => {
+        this.isLoadingDownload.set(false);
       });
   }
 }
