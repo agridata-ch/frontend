@@ -284,9 +284,11 @@
           "contract": "Contratto",
           "completion": "Conclusione"
         },
-        "releaseContract\".success": {
-          "title": "Inviata con successo al fornitore",
-          "message": "Il contratto è stato inviato al fornitore"
+        "releaseContract": {
+          "success": {
+            "title": "Inviata con successo al fornitore",
+            "message": "Il contratto è stato inviato al fornitore"
+          }
         }
       },
       "saveDraft": "Salva temporaneamente",
@@ -301,9 +303,11 @@
           "contract": "Contratto",
           "completion": "Conclusione"
         },
-        "releaseContract\".success": {
-          "title": "Contratto inviato con successo",
-          "message": "Il contratto è stato inviato e ora può essere attivato"
+        "releaseContract": {
+          "success": {
+            "title": "Contratto inviato con successo",
+            "message": "Il contratto è stato inviato e ora può essere attivato"
+          }
         }
       },
       "releaseContract": "Approvare la domanda"

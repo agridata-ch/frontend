@@ -2,6 +2,14 @@
   <ng-content></ng-content>
 </ng-template>
 
+<ng-template #iconContent>
+  @if (loading()) {
+    <fa-icon animation="spin" [icon]="faSpinnerThird" class="loading-spinner"></fa-icon>
+  } @else if (icon()) {
+    <fa-icon [icon]="icon()!"></fa-icon>
+  }
+</ng-template>
+
 @if (!href()) {
   <div class="contents" [title]="disabled() ? disabledInfo() : ''">
     <button
@@ -14,16 +22,28 @@
       (keydown.enter)="handleClick($event)"
       [class]="`relative agridata-button agridata-button-${variant()} ${selected() ? 'selected' : ''} ${additionalClass()}`"
     >
-      @if (loading()) {
-        <fa-icon
-          animation="spin"
-          [icon]="faSpinnerThird"
-          class="absolute flex items-center justify-center inset-0"
-        ></fa-icon>
+      @if (isIconLink()) {
+        <span class="flex items-center gap-2">
+          @if (iconPosition() === IconPosition.Left) {
+            <ng-container [ngTemplateOutlet]="iconContent"></ng-container>
+          }
+          <ng-container [ngTemplateOutlet]="content"></ng-container>
+          @if (iconPosition() === IconPosition.Right) {
+            <ng-container [ngTemplateOutlet]="iconContent"></ng-container>
+          }
+        </span>
+      } @else {
+        @if (loading()) {
+          <fa-icon
+            animation="spin"
+            [icon]="faSpinnerThird"
+            class="absolute flex items-center justify-center inset-0"
+          ></fa-icon>
+        }
+        <span [class.invisible]="loading()">
+          <ng-container [ngTemplateOutlet]="content"></ng-container>
+        </span>
       }
-      <span [class.invisible]="loading()">
-        <ng-container [ngTemplateOutlet]="content"></ng-container>
-      </span>
     </button>
   </div>
 } @else {

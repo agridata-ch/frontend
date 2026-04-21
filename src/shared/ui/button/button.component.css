@@ -206,6 +206,29 @@
   background-color: transparent;
 }
 
+.agridata-button.agridata-button-icon-link {
+  border: 0;
+  color: var(--color-agridata-primary-600);
+  padding: 0;
+}
+
+.agridata-button.agridata-button-icon-link:hover {
+  text-decoration: underline;
+}
+
+.agridata-button.agridata-button-icon-link:disabled {
+  border: 0;
+  color: var(--color-agridata-primary-100);
+  padding: 0;
+  cursor: not-allowed;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.agridata-button.agridata-button-icon-link:disabled .loading-spinner {
+  color: var(--color-agridata-primary-600);
+}
+
 .agridata-button.agridata-button-filter {
   font-size: var(--text-sm);
   border-radius: var(--radius-4xl);

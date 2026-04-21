@@ -284,9 +284,11 @@
           "contract": "Vertrag",
           "completion": "Abschluss"
         },
-        "releaseContract\".success": {
-          "title": "Erfolgreich beim Anbieter eingereicht",
-          "message": "Der Vertrag wurde beim Anbieter eingereicht"
+        "releaseContract": {
+          "success": {
+            "title": "Erfolgreich beim Anbieter eingereicht",
+            "message": "Der Vertrag wurde beim Anbieter eingereicht"
+          }
         }
       },
       "saveDraft": "Zwischenspeichern",
@@ -301,9 +303,11 @@
           "contract": "Vertrag",
           "completion": "Abschluss"
         },
-        "releaseContract\".success": {
-          "title": "Vertrag erfolgreich eingereicht",
-          "message": "Der Vertrag wurde eingereicht und kann nun aktiviert werden"
+        "releaseContract": {
+          "success": {
+            "title": "Vertrag erfolgreich eingereicht",
+            "message": "Der Vertrag wurde eingereicht und kann nun aktiviert werden"
+          }
         }
       },
       "releaseContract": "Antrag genehmigen"

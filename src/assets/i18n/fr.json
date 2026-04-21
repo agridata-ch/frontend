@@ -284,9 +284,11 @@
           "contract": "Contrat",
           "completion": "Conclusion"
         },
-        "releaseContract\".success": {
-          "title": "Soumis avec succès auprès du fournisseur",
-          "message": "Le contrat a été transmis au prestataire"
+        "releaseContract": {
+          "success": {
+            "title": "Soumis avec succès auprès du fournisseur",
+            "message": "Le contrat a été transmis au prestataire"
+          }
         }
       },
       "saveDraft": "Mise en cache",
@@ -301,9 +303,11 @@
           "contract": "Contrat",
           "completion": "Conclusion"
         },
-        "releaseContract\".success": {
-          "title": "Contrat soumis avec succès",
-          "message": "Le contrat a été soumis et peut désormais être activé"
+        "releaseContract": {
+          "success": {
+            "title": "Contrat soumis avec succès",
+            "message": "Le contrat a été soumis et peut désormais être activé"
+          }
         }
       },
       "releaseContract": "Approuver la demande"
