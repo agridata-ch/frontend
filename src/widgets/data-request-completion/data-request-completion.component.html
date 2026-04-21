@@ -81,7 +81,10 @@
         </div>
       </div>
     </div>
-    <app-data-request-contract-pdf [dataRequest]="dataRequest()" />
+    <app-data-request-contract-pdf
+      [contractRevisionId]="contractRevision.id"
+      [dataRequest]="dataRequest()"
+    />
     <app-data-request-completion-signing-status
       [contract]="contractRevision"
       [dataRequestStateCode]="dataRequest().stateCode"

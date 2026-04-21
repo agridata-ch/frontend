@@ -50,6 +50,7 @@ describe('DataRequestContractPdfComponent', () => {
     fixture = TestBed.createComponent(DataRequestContractPdfComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('dataRequest', mockDataRequest);
+    fixture.componentRef.setInput('contractRevisionId', CONTRACT_REVISION_ID);
     fixture.detectChanges();
   });
 
@@ -89,6 +90,27 @@ describe('DataRequestContractPdfComponent', () => {
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
 
       expect(errorHandlerService.handleError).toHaveBeenCalledWith(testError);
+    });
+
+    it('should not call service when already loading', () => {
+      component['isLoadingOpen'].set(true);
+      component['handleOpenPdf']();
+      expect(contractRevisionService.getContractRevisionPdf).not.toHaveBeenCalled();
+    });
+
+    it('should reset isLoadingOpen after fetch completes', async () => {
+      component['handleOpenPdf']();
+      expect(component['isLoadingOpen']()).toBe(true);
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+      expect(component['isLoadingOpen']()).toBe(false);
+    });
+
+    it('should reset isLoadingOpen after fetch failure', async () => {
+      contractRevisionService.getContractRevisionPdf.mockRejectedValueOnce(new Error('failed'));
+      component['handleOpenPdf']();
+      expect(component['isLoadingOpen']()).toBe(true);
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+      expect(component['isLoadingOpen']()).toBe(false);
     });
   });
 
@@ -131,6 +153,40 @@ describe('DataRequestContractPdfComponent', () => {
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
 
       expect(errorHandlerService.handleError).toHaveBeenCalledWith(testError);
+    });
+
+    it('should not call service when already loading', () => {
+      component['isLoadingDownload'].set(true);
+      component['handleDownloadPdf']();
+      expect(contractRevisionService.getContractRevisionPdf).not.toHaveBeenCalled();
+    });
+
+    it('should reset isLoadingDownload after fetch completes', async () => {
+      const mockAnchor = { href: '', download: '', click: jest.fn(), remove: jest.fn() };
+      const createElementSpy = jest
+        .spyOn(document, 'createElement')
+        .mockReturnValue(mockAnchor as unknown as HTMLElement);
+      const appendChildSpy = jest
+        .spyOn(document.body, 'appendChild')
+        .mockImplementation((node) => node);
+      URL.createObjectURL = jest.fn().mockReturnValue('blob:mock');
+      URL.revokeObjectURL = jest.fn();
+
+      component['handleDownloadPdf']();
+      expect(component['isLoadingDownload']()).toBe(true);
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+      expect(component['isLoadingDownload']()).toBe(false);
+
+      createElementSpy.mockRestore();
+      appendChildSpy.mockRestore();
+    });
+
+    it('should reset isLoadingDownload after fetch failure', async () => {
+      contractRevisionService.getContractRevisionPdf.mockRejectedValueOnce(new Error('failed'));
+      component['handleDownloadPdf']();
+      expect(component['isLoadingDownload']()).toBe(true);
+      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+      expect(component['isLoadingDownload']()).toBe(false);
     });
   });
 });

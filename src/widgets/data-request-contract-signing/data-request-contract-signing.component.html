@@ -8,7 +8,10 @@
 } @else if (contract(); as contract) {
   <div class="flex flex-col gap-6 h-full" *i18n="let t; prefix: 'data-request.contractSigning'">
     <h3>{{ t('title') }}</h3>
-    <app-data-request-contract-pdf [dataRequest]="dataRequest()" />
+    <app-data-request-contract-pdf
+      [contractRevisionId]="contract.id"
+      [dataRequest]="dataRequest()"
+    />
     <span class="text-lg">
       {{
         t('contract.description', {
