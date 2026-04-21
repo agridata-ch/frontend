@@ -1,3 +1,9 @@
+## [1.10.0-rc.22](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.21...v1.10.0-rc.22) (2026-04-21)
+
+### Features
+
+- **button:** add iconLink button ([dad8968](https://github.com/agridata-ch/frontend/commit/dad8968e7a1221d74974ee82558a430c3138614d))
+
 ## [1.10.0-rc.21](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.20...v1.10.0-rc.21) (2026-04-21)
 
 ### Features
