@@ -216,8 +216,12 @@ describe('DataRequestTableComponent', () => {
     expect(providerColumn.renderer.type).toEqual('function');
 
     if (providerColumn.renderer.type === 'function') {
+      mockI18nService.useObjectTranslation.mockReturnValue('Provider A');
       const result = providerColumn.renderer.cellRenderFn(row);
-      expect(result).toBe('Agis');
+      expect(result).toBe('Provider A');
+      expect(mockI18nService.useObjectTranslation).toHaveBeenCalledWith(
+        row.dataSourceSystem?.dataProvider.name,
+      );
     }
   });
 
