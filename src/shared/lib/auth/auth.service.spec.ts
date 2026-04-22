@@ -9,22 +9,10 @@ import { createMockUserService, MockUserService } from '@/shared/testing/mocks';
 import { mockUserInfo } from '@/shared/testing/mocks/mock-auth-service';
 
 import { AuthService } from './auth.service';
-/**
- * Helper to build a minimal JWT‐style string whose payload
- * contains realm_access.roles.
- */
-// We'll use this helper in the JWT test
-function createJwtWithRoles(roles: string[]): string {
-  const payload = { realm_access: { roles } };
-  const json = JSON.stringify(payload);
-  const base64 = btoa(json);
-  return `header.${base64}.signature`;
-}
-
-function createLoginResponse(isAuthenticated: boolean, roles: string[]): LoginResponse {
+function createLoginResponse(isAuthenticated: boolean): LoginResponse {
   return {
     isAuthenticated,
-    accessToken: createJwtWithRoles(roles),
+    accessToken: '',
     userData: {},
     idToken: '',
   };
@@ -64,10 +52,10 @@ describe('AuthService', () => {
     authService = TestBed.inject(AuthService);
   });
 
-  it('should extract roles from JWT token', async () => {
+  it('should extract roles from userInfo.rolesAtLastLogin', async () => {
     const testRoles = ['admin', 'user'];
-
-    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true, testRoles)));
+    userService.getUserInfo.mockReturnValue(of({ ...mockUserInfo, rolesAtLastLogin: testRoles }));
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
 
     await authService.initializeAuth();
 
@@ -76,7 +64,7 @@ describe('AuthService', () => {
 
   it('should have no role if none is present in request', async () => {
     // Test for the isProducer, isConsumer, and isSupporter computed signals
-    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true, [])));
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
     await authService.initializeAuth();
 
     // First, test with no roles (empty array instead of null)
@@ -86,9 +74,10 @@ describe('AuthService', () => {
   });
 
   it('should be producer if having producer role', async () => {
-    mockOidc.checkAuth.mockReturnValue(
-      of(createLoginResponse(true, [USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER])),
+    userService.getUserInfo.mockReturnValue(
+      of({ ...mockUserInfo, rolesAtLastLogin: [USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER] }),
     );
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
     await authService.initializeAuth();
     expect(authService.isProducer()).toBe(true);
     expect(authService.isConsumer()).toBe(false);
@@ -96,9 +85,10 @@ describe('AuthService', () => {
   });
 
   it('should be consumer if having consumer role', async () => {
-    mockOidc.checkAuth.mockReturnValue(
-      of(createLoginResponse(true, [USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER])),
+    userService.getUserInfo.mockReturnValue(
+      of({ ...mockUserInfo, rolesAtLastLogin: [USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER] }),
     );
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
     await authService.initializeAuth();
     expect(authService.isProducer()).toBe(false);
     expect(authService.isConsumer()).toBe(true);
@@ -106,9 +96,10 @@ describe('AuthService', () => {
   });
 
   it('should be supporter if having supporter role', async () => {
-    mockOidc.checkAuth.mockReturnValue(
-      of(createLoginResponse(true, [USER_ROLES.AGRIDATA_SUPPORTER])),
+    userService.getUserInfo.mockReturnValue(
+      of({ ...mockUserInfo, rolesAtLastLogin: [USER_ROLES.AGRIDATA_SUPPORTER] }),
     );
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
     await authService.initializeAuth();
     expect(authService.isProducer()).toBe(false);
     expect(authService.isConsumer()).toBe(false);
@@ -119,22 +110,22 @@ describe('AuthService', () => {
     const roles = ['role1', 'role2'];
 
     authService = TestBed.inject(AuthService);
-    userService.getUserInfo.mockReturnValue(of(mockUserInfo));
-    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true, roles)));
-    const result = await authService.initializeUserInfo();
+    userService.getUserInfo.mockReturnValue(of({ ...mockUserInfo, rolesAtLastLogin: roles }));
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
+    const result = await authService.initializeAuth();
 
     expect(result).toBeTruthy();
     expect(authService.isAuthenticated()).toBe(true);
-    expect(authService.userInfo()).toEqual(mockUserInfo);
+    expect(authService.userInfo()).toEqual({ ...mockUserInfo, rolesAtLastLogin: roles });
     expect(authService.userRoles()).toEqual(roles);
   });
 
   it('should clear userData when checkAuth emits authenticated=false', async () => {
-    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true, [])));
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
     await authService.initializeAuth();
     expect(authService.isAuthenticated()).toBe(true);
 
-    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(false, [])));
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(false)));
     // Clear the promise cache to allow a fresh call
     authService['authCheckPromise'] = undefined;
     const result = await authService.initializeAuth();
@@ -169,17 +160,17 @@ describe('AuthService', () => {
   });
 
   it('should return userFullName', async () => {
-    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true, [])));
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
 
-    await authService.initializeUserInfo();
+    await authService.initializeAuth();
 
     expect(authService.getUserFullName()).toBe('Producer 081');
   });
 
   it('should return userEmail', async () => {
-    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true, [])));
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
     userService.getUserInfo.mockReturnValue(of(mockUserInfo));
-    await authService.initializeUserInfo();
+    await authService.initializeAuth();
 
     const email = authService.getUserEmail();
 
@@ -187,9 +178,10 @@ describe('AuthService', () => {
   });
 
   it('should throw error user is not a producer', async () => {
-    mockOidc.checkAuth.mockReturnValue(
-      of(createLoginResponse(true, [USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER])),
+    userService.getUserInfo.mockReturnValue(
+      of({ ...mockUserInfo, rolesAtLastLogin: [USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER] }),
     );
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
 
     await expect(authService.initializeAuthorizedUids()).rejects.toThrow(
       'user does not have correct role to fetch authorized uids',
@@ -197,9 +189,10 @@ describe('AuthService', () => {
   });
 
   it('should accept request if the user is supporter', async () => {
-    mockOidc.checkAuth.mockReturnValue(
-      of(createLoginResponse(true, [USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER])),
+    userService.getUserInfo.mockReturnValue(
+      of({ ...mockUserInfo, rolesAtLastLogin: [USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER] }),
     );
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
 
     const result = await authService.initializeAuthorizedUids();
 
@@ -243,20 +236,20 @@ describe('AuthService User Properties', () => {
   }
 
   it('should return userEmail without email', async () => {
-    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true, [])));
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
     createTestModule({ ...mockUserInfo, email: undefined });
 
-    await authService.initializeUserInfo();
+    await authService.initializeAuth();
     const email = authService.getUserEmail();
 
     expect(email).toBe('');
   });
 
   it('should return userFullName without givenName', async () => {
-    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true, [])));
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
     createTestModule({ ...mockUserInfo, givenName: undefined });
 
-    await authService.initializeUserInfo();
+    await authService.initializeAuth();
 
     const fullName = authService.getUserFullName();
 
@@ -264,20 +257,20 @@ describe('AuthService User Properties', () => {
   });
 
   it('should return userFullName without familyName', async () => {
-    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true, [])));
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
     createTestModule({ ...mockUserInfo, familyName: undefined });
 
-    await authService.initializeUserInfo();
+    await authService.initializeAuth();
     const fullName = authService.getUserFullName();
 
     expect(fullName).toBe('Producer');
   });
 
   it('should return userFullName without userData', async () => {
-    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true, [])));
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
     createTestModule({});
 
-    await authService.initializeUserInfo();
+    await authService.initializeAuth();
     const fullName = authService.getUserFullName();
 
     expect(fullName).toBe('');

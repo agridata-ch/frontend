@@ -1,14 +1,9 @@
-import { WritableSignal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AGATE_LOGIN_ID_IMPERSONATION_HEADER, ROUTE_PATHS } from '@/shared/constants/constants';
-import {
-  createMockAuthService,
-  MockAuthService,
-  mockUserInfo,
-} from '@/shared/testing/mocks/mock-auth-service';
+import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
@@ -54,7 +49,7 @@ describe('AuthorizationGuard', () => {
   });
 
   it('allows activation when no roles are required', async () => {
-    authService.initializeUserInfo.mockResolvedValue(mockUserInfo);
+    authService.initializeAuth.mockResolvedValue(true);
 
     const result = await guard.canActivate(mockActivatedRouteSnapshot);
 
@@ -62,8 +57,8 @@ describe('AuthorizationGuard', () => {
   });
 
   it('denies activation when required role is missing and redirects to forbidden', async () => {
-    authService.initializeUserInfo.mockResolvedValue(undefined);
-    (authService.__testSignals.userRoles as WritableSignal<string[]>).set(['ROLE_USER']);
+    authService.initializeAuth.mockResolvedValue(true);
+    authService.__testSignals.userInfo.set({ rolesAtLastLogin: ['ROLE_USER'] });
     mockActivatedRouteSnapshot.data = { roles: ['ROLE_ADMIN'] };
 
     const result = await guard.canActivate(mockActivatedRouteSnapshot);
@@ -73,8 +68,8 @@ describe('AuthorizationGuard', () => {
   });
 
   it('allows activation when user has one of the required roles', async () => {
-    authService.initializeUserInfo.mockResolvedValue(undefined);
-    authService.__testSignals.userRoles.set(['ROLE_ADMIN', 'ROLE_USER']);
+    authService.initializeAuth.mockResolvedValue(true);
+    authService.__testSignals.userInfo.set({ rolesAtLastLogin: ['ROLE_ADMIN', 'ROLE_USER'] });
 
     mockActivatedRouteSnapshot.data = { roles: ['ROLE_ADMIN'] };
 
@@ -85,7 +80,7 @@ describe('AuthorizationGuard', () => {
 
   it('handles errors from initializeAuth by sending them to errorService and redirecting to error route', async () => {
     const testError = new Error('Test initializeAuth error');
-    authService.initializeUserInfo.mockRejectedValue(testError);
+    authService.initializeAuth.mockRejectedValue(testError);
 
     const result = await guard.canActivate(mockActivatedRouteSnapshot);
 
@@ -96,7 +91,7 @@ describe('AuthorizationGuard', () => {
 
   it('ignores errors when on error page and returns true', async () => {
     const testError = new Error('Test initializeAuth error');
-    authService.initializeUserInfo.mockRejectedValue(testError);
+    authService.initializeAuth.mockRejectedValue(testError);
     (mockActivatedRouteSnapshot as any).url = [ROUTE_PATHS.ERROR];
 
     const result = await guard.canActivate(mockActivatedRouteSnapshot);
@@ -110,7 +105,7 @@ describe('AuthorizationGuard', () => {
     // Arrange
     const testAgateLoginId = 'test-agateLoginId';
     (mockActivatedRouteSnapshot.queryParamMap?.get as jest.Mock).mockReturnValue(testAgateLoginId);
-    authService.initializeUserInfo.mockResolvedValue(undefined);
+    authService.initializeAuth.mockResolvedValue(true);
     sessionStorage.removeItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER);
 
     // Act
@@ -129,7 +124,7 @@ describe('AuthorizationGuard', () => {
   it('should not set header in sessionStorage when query param is not present', async () => {
     // Arrange
 
-    authService.initializeUserInfo.mockResolvedValue(undefined);
+    authService.initializeAuth.mockResolvedValue(true);
 
     // Clear any previous values
     sessionStorage.removeItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER);

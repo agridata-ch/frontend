@@ -27,14 +27,15 @@ export class AuthorizationGuard implements CanActivate {
     }
 
     try {
-      await this.authService.initializeUserInfo();
+      await this.authService.initializeAuth();
+      const userRoles = this.authService.userInfo()?.rolesAtLastLogin ?? [];
 
       const requiredRoles: string[] = route.data['roles'] || [];
       if (!requiredRoles || requiredRoles.length === 0) {
         return true;
       }
 
-      const hasRole = requiredRoles.some((role) => this.authService.userRoles().includes(role));
+      const hasRole = requiredRoles.some((role) => userRoles.includes(role));
       if (!hasRole) {
         return this.router.parseUrl(ROUTE_PATHS.FORBIDDEN);
       }
