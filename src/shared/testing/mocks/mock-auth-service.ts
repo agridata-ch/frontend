@@ -59,7 +59,6 @@ export function createMockAuthService(): MockAuthService {
     getUserFullName: jest.fn().mockReturnValue(''),
     getUserEmail: jest.fn().mockReturnValue(''),
     initializeAuth: jest.fn(),
-    initializeUserInfo: jest.fn(),
     initializeAuthorizedUids: jest.fn(),
     // test-only writable signals
     __testSignals: {
