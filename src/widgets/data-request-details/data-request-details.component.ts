@@ -21,6 +21,7 @@ import { AgridataTabsComponent, Tab } from '@/shared/ui/agridata-tabs';
 
 import { DataRequestDetailsRequestComponent } from './data-request-details-request';
 import { DETAILS_TABS_ID } from './data-request-details.model';
+import { DataRequestFormContractComponent } from '../data-request-form';
 
 /**
  * Displays detailed information about a data request in a sidepanel with tabs.
@@ -38,6 +39,7 @@ import { DETAILS_TABS_ID } from './data-request-details.model';
     AgridataTabsComponent,
     FontAwesomeModule,
     DataRequestDetailsRequestComponent,
+    DataRequestFormContractComponent,
   ],
   templateUrl: './data-request-details.component.html',
 })
@@ -47,15 +49,16 @@ export class DataRequestDetailsComponent {
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
 
-  // Input properties
-  readonly dataRequestId = input.required<string>();
-
-  // Output properties
-  readonly closeSidepanel = output<void>();
-
   // Constants
   protected readonly faSpinnerThird = faSpinnerThird;
   protected readonly DETAILS_TABS_ID = DETAILS_TABS_ID;
+
+  // Input properties
+  readonly dataRequestId = input.required<string>();
+  readonly isRedirectUriRegexEditable = input(false);
+
+  // Output properties
+  readonly closeSidepanel = output<void>();
 
   // Signals
   protected readonly activeTabId = signal(DETAILS_TABS_ID.REQUEST);
@@ -71,15 +74,15 @@ export class DataRequestDetailsComponent {
   protected readonly emailTabLabel = this.i18nService.translateSignal(
     'data-request.details.tabs.email',
   );
-  protected readonly tabs = signal<Tab[]>([
-    { id: DETAILS_TABS_ID.REQUEST, label: this.requestTabLabel() },
-    // TODO: add other tabs when the corresponding components are implemented DIGIB2-547
-    // { id: DETAILS_TABS_ID.PRODUCER, label: this.producerTabLabel() },
-    // { id: DETAILS_TABS_ID.CONTRACT, label: this.contractTabLabel() },
-    // { id: DETAILS_TABS_ID.EMAIL, label: this.emailTabLabel() },
-  ]);
 
   // Computed Signals
+  readonly dataRequestResource = resource({
+    params: () => ({ id: this.dataRequestId() }),
+    loader: ({ params }) => {
+      return this.dataRequestService.fetchDataRequest(params.id);
+    },
+  });
+
   readonly dataRequest = computed(() => {
     if (this.dataRequestResource.isLoading()) {
       return null;
@@ -87,12 +90,13 @@ export class DataRequestDetailsComponent {
     return this.dataRequestResource.value();
   });
 
-  readonly dataRequestResource = resource({
-    params: () => ({ id: this.dataRequestId() }),
-    loader: ({ params }) => {
-      return this.dataRequestService.fetchDataRequest(params.id);
-    },
-  });
+  protected readonly tabs = signal<Tab[]>([
+    { id: DETAILS_TABS_ID.REQUEST, label: this.requestTabLabel() },
+    // TODO: add other tabs when the corresponding components are implemented DIGIB2-547
+    // { id: DETAILS_TABS_ID.PRODUCER, label: this.producerTabLabel() },
+    // { id: DETAILS_TABS_ID.CONTRACT, label: this.contractTabLabel() },
+    // { id: DETAILS_TABS_ID.EMAIL, label: this.emailTabLabel() },
+  ]);
 
   // Effects
   private readonly errorHandlerEffect = effect(() => {

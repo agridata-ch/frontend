@@ -1,6 +1,7 @@
 <ng-container *i18n="let t; prefix: 'admin'">
   <app-data-request-details
     [dataRequestId]="dataRequestId()"
+    [isRedirectUriRegexEditable]="true"
     (closeSidepanel)="handleClose()"
     #details
   >
@@ -23,7 +24,7 @@
           {{ t('actions.reject') }}
         </app-agridata-button>
       </div>
-      @if (details.dataRequest()?.stateCode === DataRequestStateEnum.ToBeSigned) {
+      @if (details.dataRequest()?.stateCode === DataRequestStateEnum.ToBeReleasedByConsumer) {
       <app-agridata-button
         class="flex-1"
         [variant]="ButtonVariants.PrimaryAccept"

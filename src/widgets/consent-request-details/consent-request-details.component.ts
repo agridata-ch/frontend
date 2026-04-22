@@ -41,6 +41,7 @@ import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
+import { startCountdown } from '@/shared/utils/ui.util';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { AlertComponent, AlertType } from '@/widgets/alert';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';
@@ -363,21 +364,10 @@ export class ConsentRequestDetailsComponent {
   };
 
   private startCountdown(): void {
-    if (this.countdownTimer) {
-      clearInterval(this.countdownTimer);
-    }
-
-    this.countdownValue.set(REDIRECT_TIMEOUT / 1000);
-    this.countdownTimer = setInterval(() => {
-      const currentValue = this.countdownValue();
-      if (currentValue <= 1) {
-        if (this.countdownTimer) {
-          clearInterval(this.countdownTimer);
-          this.countdownTimer = undefined;
-        }
-      } else {
-        this.countdownValue.set(currentValue - 1);
-      }
-    }, 1000);
+    this.countdownTimer = startCountdown(
+      this.countdownValue,
+      REDIRECT_TIMEOUT / 1000,
+      this.countdownTimer,
+    );
   }
 }

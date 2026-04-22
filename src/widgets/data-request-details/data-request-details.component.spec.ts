@@ -6,8 +6,7 @@ import { By } from '@angular/platform-browser';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService, UidRegisterService } from '@/entities/api';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { DataRequestDto } from '@/entities/openapi';
-import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
+import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { SidepanelComponent } from '@/shared/sidepanel';
@@ -27,6 +26,7 @@ import {
 } from '@/shared/testing/mocks/mock-master-data-service';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 
+import { DataRequestDetailsRequestComponent } from './data-request-details-request';
 import { DataRequestDetailsComponent } from './data-request-details.component';
 
 describe('DataRequestDetailsComponent', () => {
@@ -80,7 +80,7 @@ describe('DataRequestDetailsComponent', () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
         dataProviderId: 'test-provider',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
         dataConsumerDisplayName: 'Test Consumer',
         dataConsumerCity: 'Test City',
         contactPhoneNumber: '1234567890',
@@ -105,7 +105,7 @@ describe('DataRequestDetailsComponent', () => {
       const slowRequest: DataRequestDto = {
         id: 'test-id',
         dataProviderId: 'test-provider',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       };
 
       let resolveRequest: (value: DataRequestDto) => void;
@@ -133,7 +133,7 @@ describe('DataRequestDetailsComponent', () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
         dataProviderId: 'test-provider',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
         dataConsumerDisplayName: 'Test Consumer',
       };
 
@@ -182,7 +182,7 @@ describe('DataRequestDetailsComponent', () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
         dataProviderId: 'test-provider',
-        stateCode: ConsentRequestDetailViewDtoDataRequestStateCode.Draft,
+        stateCode: DataRequestStateEnum.Draft,
       };
 
       dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
@@ -199,6 +199,31 @@ describe('DataRequestDetailsComponent', () => {
       sidepanel.componentInstance.closeSidepanel.emit();
 
       expect(emitSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('RedirectUrlRegexEditable', () => {
+    it('should pass isRedirectUriRegexEditable to the request details component', async () => {
+      const newRequest: DataRequestDto = {
+        id: 'test-id',
+        dataProviderId: 'test-provider',
+        stateCode: DataRequestStateEnum.Draft,
+      };
+
+      dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
+
+      const newFixture = TestBed.createComponent(DataRequestDetailsComponent);
+      const newComponentRef = newFixture.componentRef;
+      newComponentRef.setInput('dataRequestId', 'test-id');
+      newComponentRef.setInput('isRedirectUriRegexEditable', true);
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      const requestDetailsComp = newFixture.debugElement.query(
+        By.directive(DataRequestDetailsRequestComponent),
+      );
+      expect(requestDetailsComp).toBeTruthy();
+      expect(requestDetailsComp.componentInstance.isRedirectUriRegexEditable()).toBe(true);
     });
   });
 });

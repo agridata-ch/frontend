@@ -44,6 +44,7 @@
 <app-modal
   [open]="showDeleteModal()"
   [title]="'data-request.table.deleteRequest.title' | i18n"
+  [dataTestId]="'delete-request-modal'"
   (closed)="cancelDelete()"
 >
   <div class="text-center" *i18n="let t; prefix: 'data-request.table.deleteRequest'">

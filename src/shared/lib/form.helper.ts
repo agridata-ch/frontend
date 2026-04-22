@@ -1,7 +1,7 @@
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 import { I18nService } from '@/shared/i18n';
-import { FormModel } from '@/widgets/data-request-new';
+import { FormModel } from '@/widgets/data-request-wizard';
 
 // Defines a top-level grouping of DTO fields into a named FormGroup
 
@@ -331,4 +331,18 @@ export function populateFormFromDto<T extends Dto>(
       }
     });
   });
+}
+
+export function createFormControl(
+  initialValue: string,
+  validators: Array<Validators | ValidatorFn> = [],
+  errorMessages: Record<string, () => string> = {},
+): FormControlWithMessages {
+  const control = new FormControl(
+    initialValue,
+    validators as ValidatorFn[],
+  ) as FormControlWithMessages;
+  control.errorMessages = errorMessages;
+
+  return control;
 }

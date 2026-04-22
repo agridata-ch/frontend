@@ -11,9 +11,9 @@ import { UserInfoDto } from '@/entities/openapi';
 })
 export class UserInfoDtoDirective {
   static ngTemplateContextGuard(
-    dir: UserInfoDtoDirective,
-    ctx: unknown,
-  ): ctx is { $implicit: UserInfoDto } {
+    _dir: UserInfoDtoDirective,
+    _ctx: unknown,
+  ): _ctx is { $implicit: UserInfoDto } {
     return true;
   }
 }

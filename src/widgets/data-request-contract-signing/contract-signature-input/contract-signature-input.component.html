@@ -1,0 +1,94 @@
+<div
+  class="flex flex-col gap-4 p-4 border border-agridata-stroke rounded-lg bg-white"
+  *i18n="let t; prefix: 'data-request.contractSigning.signatureInput'"
+>
+  <div class="flex gap-1 items-center">
+    <span class="flex-1 text-sm text-agridata-secondary-text font-medium">
+      {{ isDataConsumer ? t('signature.dataConsumer') : t('signature.dataProvider') }}
+    </span>
+    <app-agridata-badge [text]="t('badgeText', { position: position() })" />
+  </div>
+
+  @if (existingSignature()) {
+    <app-alert [type]="AlertType.SUCCESS">
+      <div class="flex flex-col whitespace-pre-line">
+        <span>
+          {{
+            t('alreadySigned.description', {
+              name: existingSignature()?.name,
+            })
+          }}
+        </span>
+        {{ existingSignature()?.timestamp | agridataDate: 'middle' }}
+      </div>
+    </app-alert>
+  } @else if (showWaitingState()) {
+    <div class="flex flex-col gap-4 justify-center rounded-lg py-6">
+      <img
+        src="assets/images/data-request-timer.svg"
+        [alt]="t('inReviewBox.iconAltText')"
+        class="h-10"
+      />
+      <span class="text-center">{{ t('inReviewBox.description') }}</span>
+    </div>
+  } @else if (isActiveSigningSlot()) {
+    <div class="flex flex-col gap-4">
+      <app-alert [type]="AlertType.INFO" [title]="t('otp.title')">
+        <div class="flex flex-col gap-4 whitespace-pre-line">
+          <span class="font-bold">
+            {{ t('otp.title') }}
+          </span>
+          {{ t('otp.info', { phoneNumber: currentChallenge()?.challenge?.maskedPhoneNumber }) }}
+        </div>
+      </app-alert>
+      <form (submit)="handleVerifySigning($event)" class="flex flex-col gap-4">
+        <app-form-control
+          [label]="t('otp.input.label')"
+          [control]="getFormControl(otpForm, 'otpCode')"
+          [controlType]="ControlTypes.DIGIT_INPUT"
+          [length]="6"
+        />
+        <app-agridata-button
+          [variant]="ButtonVariants.PrimaryAccept"
+          (onClick)="handleVerifySigning($event)"
+        >
+          {{ t('otp.verifyButton') }}
+        </app-agridata-button>
+        <div class="flex flex-col text-center">
+          <app-agridata-button
+            [variant]="ButtonVariants.Tertiary"
+            (onClick)="handleResendOtp()"
+            [disabled]="isResendDisabled()"
+          >
+            {{ t('otp.resendButton') }}
+          </app-agridata-button>
+          @if (isResendDisabled()) {
+            <span class="text-sm text-agridata-secondary-text">
+              {{ t('otp.resendInfo', { seconds: countdownValue() }) }}
+            </span>
+          }
+        </div>
+      </form>
+    </div>
+  } @else {
+    <div class="flex gap-3 p-2 items-center bg-agridata-content-gray rounded-lg">
+      <app-agridata-toggle [(checked)]="agbChecked" />
+      <span>
+        {{ agbParts().before }}
+        <a
+          href="{{ contractAgbUrl() }}"
+          target="_blank"
+          class="underline hover:text-agridata-primary-600"
+          >{{ agbParts().linkText }}</a
+        >
+        {{ agbParts().after }}
+      </span>
+    </div>
+    <app-agridata-button [disabled]="!agbChecked()" (onClick)="handleStartSigning()">
+      {{ t('signingButton') }}
+    </app-agridata-button>
+    <span>
+      {{ t('signingHint') }}
+    </span>
+  }
+</div>

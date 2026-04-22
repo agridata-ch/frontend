@@ -1,17 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, input, output } from '@angular/core';
+import { Component, HostBinding, computed, input, output } from '@angular/core';
 import { faSpinner } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { FaIconComponent, IconDefinition } from '@fortawesome/angular-fontawesome';
 
-import { ButtonVariants, HrefTarget } from './button.model';
+import { ButtonVariants, HrefTarget, IconPosition } from './button.model';
 
 /**
  * Implements the button’s logic. It defines inputs for type, variant, disabled state, tabindex,
  * ARIA label, selection state, custom classes, and optional hyperlink mode. It emits click events
  * and ensures accessibility through keyboard interaction support.
+ * The IconLink variant renders an icon (left or right) alongside content; during loading the icon
+ * is replaced by a spinner without disabling the button.
  *
- * CommentLastReviewed: 2025-09-09
+ * CommentLastReviewed: 2026-04-21
  */
 @Component({
   selector: 'app-agridata-button',
@@ -20,6 +22,7 @@ import { ButtonVariants, HrefTarget } from './button.model';
   styleUrl: './button.component.css',
 })
 export class ButtonComponent {
+  // Input properties
   variant = input<ButtonVariants>(ButtonVariants.Primary);
   type = input<'button' | 'submit' | 'reset'>('button');
   disabled = input<boolean>(false);
@@ -28,16 +31,25 @@ export class ButtonComponent {
   selected = input<boolean>(false);
   loading = input<boolean>(false);
   disabledInfo = input<string>('');
-
-  onClick = output<Event>();
   additionalClass = input<string>('');
   href = input<string>('');
   target = input<HrefTarget>(HrefTarget.Self);
   dataTestId = input<string | undefined>();
+  icon = input<IconDefinition>();
+  iconPosition = input<IconPosition>(IconPosition.Left);
+
+  // Output properties
+  onClick = output<Event>();
+
   @HostBinding('style.display') display = 'contents';
 
+  // Constants
   protected readonly faSpinner = faSpinner;
-  protected faSpinnerThird = faSpinnerThird;
+  protected readonly faSpinnerThird = faSpinnerThird;
+  protected readonly IconPosition = IconPosition;
+
+  // Computed signals
+  protected readonly isIconLink = computed(() => this.variant() === ButtonVariants.IconLink);
 
   handleClick(event: Event) {
     event.preventDefault();

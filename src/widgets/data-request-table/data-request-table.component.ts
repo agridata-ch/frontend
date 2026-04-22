@@ -32,7 +32,7 @@ import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { EmptyStateComponent } from '@/shared/ui/empty-state/empty-state.component';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
-import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-new';
+import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-wizard';
 
 /**
  * Implements the main table logic. It fetches data requests, maps them into table rows, and
@@ -138,9 +138,12 @@ export class DataRequestTableComponent {
             name: this.dataRequestProviderHeader,
             renderer: {
               type: CellRendererTypes.FUNCTION,
-              //TODO: use real provider name when available
-              cellRenderFn: () => 'Agis',
+              cellRenderFn: (item) =>
+                this.i18nService.useObjectTranslation(item?.dataSourceSystem?.dataProvider.name),
             },
+            sortable: true,
+            sortValueFn: (item) =>
+              this.i18nService.useObjectTranslation(item?.dataSourceSystem?.dataProvider.name),
           },
           {
             name: this.dataRequestStateHeader,

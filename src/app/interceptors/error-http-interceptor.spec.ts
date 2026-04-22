@@ -1,5 +1,6 @@
 import {
   HttpClient,
+  HttpContext,
   HttpErrorResponse,
   provideHttpClient,
   withInterceptors,
@@ -9,6 +10,7 @@ import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
+import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ExceptionDto, ExceptionEnum } from '@/entities/openapi';
 import { DebugService } from '@/features/debug/debug.service';
@@ -21,11 +23,11 @@ import {
 } from '@/shared/testing/mocks/mock-agridata-state-service';
 
 import {
+  AUTHORIZED_UIDS_ERROR_HANDLING,
   enhanceHttpErrorWithMethod,
   errorHttpInterceptor,
   getErrorMethod,
   hasMethod,
-  HttpErrorWithMethod,
   METHOD_ENHANCED,
 } from './error-http-interceptor';
 
@@ -36,6 +38,7 @@ const mockDebugService: Partial<DebugService> = {
 
 const createMockAuthService = () =>
   ({
+    clearAuthorizedUidsCache: jest.fn(),
     isAuthenticated: signal<boolean>(false),
   }) satisfies Partial<AuthService>;
 
@@ -55,6 +58,7 @@ describe('errorHttpInterceptor', () => {
     TestBed.configureTestingModule({
       providers: [
         provideRouter([
+          { path: ROUTE_PATHS.EXTERNAL_SERVICE_ERROR, component: DummyComponent },
           { path: ROUTE_PATHS.MAINTENANCE, component: DummyComponent },
           { path: '', component: DummyComponent },
           { path: ROUTE_PATHS.PRIVACY_POLICY_PATH, component: DummyComponent },
@@ -252,7 +256,7 @@ describe('errorHttpInterceptor', () => {
   });
 
   describe('maintenance navigation', () => {
-    it('should navigate to maintenance and return 204 when maintenance error occurs for authenticated user', (done) => {
+    it('should navigate to maintenance and rethrow error when maintenance error occurs for authenticated user', (done) => {
       const testUrl = '/api/test';
       const maintenanceError: ExceptionDto = {
         requestId: 'test-request-id',
@@ -264,13 +268,13 @@ describe('errorHttpInterceptor', () => {
       const navigateSpy = jest.spyOn(router, 'navigate');
 
       httpClient.get(testUrl).subscribe({
-        next: (response) => {
-          expect(response).toBeDefined();
+        next: () => {
+          done(new Error('Should rethrow error when navigating to maintenance'));
+        },
+        error: (error: HttpErrorResponse) => {
+          expect(error.status).toBe(503);
           expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.MAINTENANCE]);
           done();
-        },
-        error: () => {
-          done.fail('Should not throw error when navigating to maintenance');
         },
       });
 
@@ -423,7 +427,7 @@ describe('errorHttpInterceptor', () => {
       req.flush(plainError, { status: 500, statusText: 'Internal Server Error' });
     });
 
-    it('should handle null currentRoute gracefully', (done) => {
+    it('should navigate to maintenance and rethrow error when currentRoute is null', (done) => {
       const testUrl = '/api/test';
       const maintenanceError: ExceptionDto = {
         requestId: 'test-request-id',
@@ -436,18 +440,79 @@ describe('errorHttpInterceptor', () => {
       const navigateSpy = jest.spyOn(router, 'navigate');
 
       httpClient.get(testUrl).subscribe({
-        next: (response) => {
-          expect(response).toBeDefined();
+        next: () => {
+          done(new Error('Should rethrow error when navigating to maintenance'));
+        },
+        error: (error: HttpErrorResponse) => {
+          expect(error.status).toBe(503);
           expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.MAINTENANCE]);
           done();
-        },
-        error: () => {
-          done.fail('Should not throw error when navigating to maintenance');
         },
       });
 
       const req = httpMock.expectOne(testUrl);
       req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
+    });
+  });
+
+  describe('authorized UIDs error handling', () => {
+    const testUrl = '/api/authorized-uids';
+    const context = new HttpContext().set(AUTHORIZED_UIDS_ERROR_HANDLING, true);
+
+    it('should throw ExternalServiceHttpError and clear cache on 504', (done) => {
+      const externalServiceError: ExceptionDto = {
+        requestId: 'test-request-id',
+        type: ExceptionEnum.ExternalServiceError,
+        message: 'External Service Error',
+      };
+
+      httpClient.get(testUrl, { context }).subscribe({
+        next: () => done(new Error('Should not complete on 504')),
+        error: (error: unknown) => {
+          expect(error).toBeInstanceOf(ExternalServiceHttpError);
+          expect(authService.clearAuthorizedUidsCache).toHaveBeenCalled();
+          done();
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(externalServiceError, { status: 504, statusText: 'Gateway Timeout' });
+    });
+
+    it('should return empty array, set uidMissing and clear cache on 502', (done) => {
+      const uidMissingError: ExceptionDto = {
+        requestId: 'test-request-id',
+        type: ExceptionEnum.UidMissing,
+        message: 'UID Missing',
+      };
+
+      httpClient.get<unknown[]>(testUrl, { context }).subscribe({
+        next: (response) => {
+          expect(response).toEqual([]);
+          expect(agridataStateService.setUidMissing).toHaveBeenCalledWith(true);
+          expect(authService.clearAuthorizedUidsCache).toHaveBeenCalled();
+          done();
+        },
+        error: () => done(new Error('Should not error on 502')),
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(uidMissingError, { status: 502, statusText: 'Bad Gateway' });
+    });
+
+    it('should treat 502/504 as normal errors when context token is not set', (done) => {
+      httpClient.get(testUrl).subscribe({
+        next: () => done(new Error('Should not complete on 504 without context')),
+        error: (error: unknown) => {
+          expect(error).toBeInstanceOf(HttpErrorResponse);
+          expect(error).not.toBeInstanceOf(ExternalServiceHttpError);
+          expect(authService.clearAuthorizedUidsCache).not.toHaveBeenCalled();
+          done();
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush('Gateway Timeout', { status: 504, statusText: 'Gateway Timeout' });
     });
   });
 });
@@ -493,7 +558,7 @@ describe('enhanceHttpErrorWithMethod', () => {
     const enhanced = enhanceHttpErrorWithMethod(error, 'GET');
 
     expect(() => {
-      (enhanced as HttpErrorWithMethod).method = 'POST';
+      enhanced.method = 'POST';
     }).toThrow();
   });
 

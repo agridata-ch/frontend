@@ -1,13 +1,16 @@
 import {
+  HttpContextToken,
   HttpErrorResponse,
   HttpEvent,
   HttpInterceptorFn,
+  HttpRequest,
   HttpResponse,
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, of, tap, throwError } from 'rxjs';
 
+import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ExceptionDto, ExceptionEnum } from '@/entities/openapi';
 import { DebugService } from '@/features/debug/debug.service';
@@ -17,13 +20,16 @@ import { AuthService } from '@/shared/lib/auth';
 // Symbol to mark enhanced errors
 export const METHOD_ENHANCED = Symbol('methodEnhanced');
 
+// Context token to enable special 502/504 handling for the authorized UIDs endpoint
+export const AUTHORIZED_UIDS_ERROR_HANDLING = new HttpContextToken<boolean>(() => false);
+
 // Type for the enhanced error
 export type HttpErrorWithMethod = HttpErrorResponse & {
   method: string;
   [METHOD_ENHANCED]: boolean;
 };
 
-const MAINTENANCE_MODE_BLACKLIST = [
+const MAINTENANCE_MODE_WHITELIST = new Set([
   '/',
   `/${ROUTE_PATHS.PRIVACY_POLICY_PATH}`,
   `/${ROUTE_PATHS.IMPRESSUM_PATH}`,
@@ -31,7 +37,7 @@ const MAINTENANCE_MODE_BLACKLIST = [
   `/${ROUTE_PATHS.ERROR}`,
   `/${ROUTE_PATHS.FORBIDDEN}`,
   `/${ROUTE_PATHS.MAINTENANCE}`,
-];
+]);
 
 /**
  * HTTP interceptor that enhances errors with request method and handles maintenance mode
@@ -48,9 +54,7 @@ export const errorHttpInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     tap((event) => trackSuccessfulResponse(debugService, req.url, req.method, event)),
-    catchError((error) =>
-      handleError(error, req.method, debugService, req.url, router, authService, stateService),
-    ),
+    catchError((error) => handleError(error, req, debugService, router, authService, stateService)),
   );
 };
 
@@ -72,9 +76,8 @@ function trackSuccessfulResponse(
 
 function handleError(
   error: unknown,
-  method: string,
+  req: HttpRequest<unknown>,
   debugService: DebugService,
-  url: string,
   router: Router,
   authService: AuthService,
   stateService: AgridataStateService,
@@ -86,13 +89,25 @@ function handleError(
   const backendError = error.error;
   const requestId = extractRequestId(backendError);
 
-  trackFailedResponse(debugService, url, method, error, requestId);
+  trackFailedResponse(debugService, req.url, req.method, error, requestId);
 
   if (shouldNavigateToMaintenance(backendError, authService, stateService)) {
-    return navigateToMaintenanceAndComplete(router);
+    return navigateToMaintenanceAndComplete(router, error);
   }
 
-  const errorWithMethod = enhanceHttpErrorWithMethod(error, method);
+  if (req.context.get(AUTHORIZED_UIDS_ERROR_HANDLING)) {
+    if (backendError?.type === ExceptionEnum.ExternalServiceError) {
+      authService.clearAuthorizedUidsCache();
+      return throwError(() => new ExternalServiceHttpError());
+    }
+    if (backendError?.type === ExceptionEnum.UidMissing) {
+      authService.clearAuthorizedUidsCache();
+      stateService.setUidMissing(true);
+      return of(new HttpResponse({ status: 200, body: [] }));
+    }
+  }
+
+  const errorWithMethod = enhanceHttpErrorWithMethod(error, req.method);
   return throwError(() => errorWithMethod);
 }
 
@@ -124,12 +139,15 @@ function shouldNavigateToMaintenance(
   }
 
   const currentRoute = stateService.currentRouteWithoutQueryParams() || '';
-  return !MAINTENANCE_MODE_BLACKLIST.includes(currentRoute);
+  return !MAINTENANCE_MODE_WHITELIST.has(currentRoute);
 }
 
-function navigateToMaintenanceAndComplete(router: Router): Observable<HttpEvent<unknown>> {
+function navigateToMaintenanceAndComplete(
+  router: Router,
+  error: HttpErrorResponse,
+): Observable<HttpEvent<unknown>> {
   void router.navigate([ROUTE_PATHS.MAINTENANCE]);
-  return of(new HttpResponse({ status: 204 }));
+  return throwError(() => error);
 }
 
 export function enhanceHttpErrorWithMethod(

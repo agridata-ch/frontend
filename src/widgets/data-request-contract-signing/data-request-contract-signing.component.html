@@ -1,0 +1,65 @@
+@if (contractResource.isLoading()) {
+  <fa-icon
+    animation="spin"
+    [icon]="faSpinnerThird"
+    size="3x"
+    class="absolute flex items-center justify-center inset-0"
+  ></fa-icon>
+} @else if (contract(); as contract) {
+  <div class="flex flex-col gap-6 h-full" *i18n="let t; prefix: 'data-request.contractSigning'">
+    <h3>{{ t('title') }}</h3>
+    <app-data-request-contract-pdf
+      [contractRevisionId]="contract.id"
+      [dataRequest]="dataRequest()"
+    />
+    <span class="text-lg">
+      {{
+        t('contract.description', {
+          consumer: contract.dataConsumerName,
+          provider: contract.dataProviderName,
+        })
+      }}
+    </span>
+    <div class="flex flex-col gap-6 p-6 bg-agridata-content-gray rounded-lg">
+      <app-agridata-contact-card
+        [name]="companyName()"
+        [secondaryName]="contract.dataConsumerCity"
+        [imageUrl]="contract.dataRequestContext.dataConsumerLogoBase64"
+        [size]="AvatarSize.MEDIUM"
+        [skin]="AvatarSkin.LIGHT"
+      />
+      <span class="text-gray-700">
+        {{
+          t('contract.signing.info', {
+            company: companyName(),
+          })
+        }}
+      </span>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <app-contract-signature-input
+          [slotId]="
+            isDataConsumer
+              ? SignatureSlotCodeEnum.DataConsumer01
+              : SignatureSlotCodeEnum.DataProvider01
+          "
+          [currentChallenge]="currentChallenge()"
+          [existingSignature]="slot1Signature()"
+          (startSigning)="startSigningProcess($event)"
+          (verifySigning)="verifySigningProcess($event.slotId, $event.challengeId, $event.otpCode)"
+        />
+        <app-contract-signature-input
+          [slotId]="
+            isDataConsumer
+              ? SignatureSlotCodeEnum.DataConsumer02
+              : SignatureSlotCodeEnum.DataProvider02
+          "
+          [currentChallenge]="currentChallenge()"
+          [existingSignature]="slot2Signature()"
+          (startSigning)="startSigningProcess($event)"
+          (verifySigning)="verifySigningProcess($event.slotId, $event.challengeId, $event.otpCode)"
+          [showWaitingState]="showSecondSlotWaitingState()"
+        />
+      </div>
+    </div>
+  </div>
+}

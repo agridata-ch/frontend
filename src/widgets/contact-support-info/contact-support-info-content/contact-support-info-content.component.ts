@@ -1,9 +1,10 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, output, computed } from '@angular/core';
 import { faEnvelope, faGlobe, faPhone } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { environment } from '@/environments/environment';
 import { I18nDirective, I18nService } from '@/shared/i18n';
+import { AuthService } from '@/shared/lib/auth';
 import { ConsentRequestsTourTriggerComponent } from '@/widgets/consent-requests-tour';
 
 /**
@@ -18,6 +19,7 @@ import { ConsentRequestsTourTriggerComponent } from '@/widgets/consent-requests-
   templateUrl: './contact-support-info-content.component.html',
 })
 export class ContactSupportInfoContentComponent {
+  protected readonly authService = inject(AuthService);
   protected readonly i18nService = inject(I18nService);
 
   protected readonly closeOverlay = output();
@@ -33,4 +35,6 @@ export class ContactSupportInfoContentComponent {
   protected handleCloseOverlay(): void {
     this.closeOverlay.emit();
   }
+
+  protected showConsentRequestsTourTrigger = computed(() => this.authService.isProducer());
 }

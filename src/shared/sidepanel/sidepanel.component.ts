@@ -27,6 +27,7 @@ import { ButtonComponent, ButtonVariants } from '../ui/button';
 })
 export class SidepanelComponent {
   readonly backgroundColor = input<string>();
+  readonly dataTestId = input<string | undefined>();
   readonly isOpen = input<boolean>(false);
   readonly maxWidth = input<string>('100%');
   readonly preventManualClose = input<boolean>(false);

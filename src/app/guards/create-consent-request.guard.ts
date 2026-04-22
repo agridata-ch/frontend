@@ -4,11 +4,11 @@ import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/r
 import { lastValueFrom } from 'rxjs';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ConsentRequestCreatedDto, CreateConsentRequestDto, UidDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 
 /**
@@ -32,7 +32,6 @@ export class CreateConsentRequestGuard implements CanActivate {
   private readonly consentRequestService = inject(ConsentRequestService);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly router = inject(Router);
-  private readonly i18nService = inject(I18nService);
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<UrlTree | boolean> {
     const { dataRequestUid, redirectUrl, uid } = this.extractRouteParameters(route);
@@ -68,6 +67,9 @@ export class CreateConsentRequestGuard implements CanActivate {
 
       return this.navigateToConsentRequest(consentRequests, redirectUrl);
     } catch (error) {
+      if (error instanceof ExternalServiceHttpError) {
+        return this.router.createUrlTree([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR]);
+      }
       if (error instanceof HttpErrorResponse && error.status === 404) {
         // Navigate first with redirectUrl as query param if it exists
         const queryParams = redirectUrl ? { redirect_uri: redirectUrl } : {};
@@ -92,6 +94,7 @@ export class CreateConsentRequestGuard implements CanActivate {
         // Delay error handling so the error is registered after navigation and will show on the right page
         return urlTree;
       }
+
       return this.handleError(error);
     }
   }

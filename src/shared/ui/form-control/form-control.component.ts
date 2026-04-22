@@ -2,6 +2,7 @@ import { Component, input, output } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { FormControlWithMessages, getErrorMessage } from '@/shared/lib/form.helper';
+import { AgridataDigitInputComponent } from '@/shared/ui/agridata-digit-input';
 import { AgridataInputComponent } from '@/shared/ui/agridata-input';
 import {
   AgridataMultiSelectComponent,
@@ -29,6 +30,7 @@ import { ControlTypes } from './form-control.model';
     AgridataTextareaComponent,
     AgridataSelectComponent,
     AgridataInputComponent,
+    AgridataDigitInputComponent,
   ],
   templateUrl: './form-control.component.html',
 })
@@ -44,6 +46,7 @@ export class FormControlComponent {
   readonly options = input<MultiSelectOption[]>([]);
   readonly pattern = input<string | RegExp>('');
   readonly placeholder = input<string>('');
+  readonly length = input<number>(1);
   readonly singleCategorySelection = input<boolean>(false);
   readonly type = input<'text' | 'number'>('text');
 

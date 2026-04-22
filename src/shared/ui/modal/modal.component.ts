@@ -19,6 +19,7 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 export class ModalComponent {
   readonly title = input<string>('title');
   readonly showCloseButton = input<boolean>(true);
+  readonly dataTestId = input<string | undefined>();
   readonly open = model();
   readonly closed = output<boolean>();
 

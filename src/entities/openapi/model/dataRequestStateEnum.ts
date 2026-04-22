@@ -12,7 +12,11 @@
 export const DataRequestStateEnum = {
     Draft: 'DRAFT',
     InReview: 'IN_REVIEW',
-    ToBeSigned: 'TO_BE_SIGNED',
+    ToBeSignedByConsumer: 'TO_BE_SIGNED_BY_CONSUMER',
+    ToBeReleasedByConsumer: 'TO_BE_RELEASED_BY_CONSUMER',
+    ToBeSignedByProvider: 'TO_BE_SIGNED_BY_PROVIDER',
+    ToBeReleasedByProvider: 'TO_BE_RELEASED_BY_PROVIDER',
+    ToBeActivated: 'TO_BE_ACTIVATED',
     Active: 'ACTIVE'
 } as const;
 export type DataRequestStateEnum = typeof DataRequestStateEnum[keyof typeof DataRequestStateEnum];

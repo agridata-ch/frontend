@@ -6,11 +6,13 @@ import { HomeRedirectGuard } from '@/app/guards/home-redirect.guard';
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { DefaultLayoutComponent, FullWidthLayoutComponent } from '@/app/layout';
 import { AdminPage } from '@/pages/admin-page';
+import { AgbPage } from '@/pages/agb-page';
 import { CmsPage } from '@/pages/cms-page';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
 import { DataRequestsProviderPage } from '@/pages/data-requests-provider';
 import { ErrorPage } from '@/pages/error-page/error-page.component';
+import { ExternalServiceErrorPage } from '@/pages/external-service-error';
 import { ForbiddenPage } from '@/pages/forbidden';
 import { ImprintPage } from '@/pages/imprint-page';
 import { LandingPage } from '@/pages/landing-page';
@@ -67,6 +69,17 @@ export const routes: Routes = [
       {
         path: '',
         component: PrivacyPolicyPage,
+      },
+    ],
+  },
+  {
+    path: ROUTE_PATHS.AGB_PATH,
+    component: FullWidthLayoutComponent,
+    canActivate: [AuthorizationGuard],
+    children: [
+      {
+        path: '',
+        component: AgbPage,
       },
     ],
   },
@@ -230,6 +243,13 @@ export const routes: Routes = [
     runGuardsAndResolvers: 'paramsChange',
     canActivate: [AuthorizationGuard],
     children: [{ path: '**', component: MaintenancePage }],
+  },
+  {
+    path: ROUTE_PATHS.EXTERNAL_SERVICE_ERROR,
+    component: FullWidthLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
+    canActivate: [AuthorizationGuard],
+    children: [{ path: '**', component: ExternalServiceErrorPage }],
   },
   {
     path: '',

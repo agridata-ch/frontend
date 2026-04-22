@@ -9,6 +9,11 @@ export const mockDataRequests: DataRequestDto[] = [
     submissionDate: '2025-01-01',
     humanFriendlyId: 'REQ-001',
     title: { de: 'Request A' },
+    dataSourceSystem: {
+      dataProvider: {
+        name: { de: 'Provider A' },
+      },
+    },
   } as DataRequestDto,
   {
     id: '2',
@@ -16,10 +21,15 @@ export const mockDataRequests: DataRequestDto[] = [
     submissionDate: '2025-01-02',
     humanFriendlyId: 'REQ-002',
     title: { de: 'Request B' },
+    dataSourceSystem: {
+      dataProvider: {
+        name: { de: 'Provider B' },
+      },
+    },
   } as DataRequestDto,
   {
     id: '3',
-    stateCode: DataRequestStateEnum.ToBeSigned,
+    stateCode: DataRequestStateEnum.ToBeSignedByConsumer,
     submissionDate: '2025-01-03',
     humanFriendlyId: 'REQ-003',
     title: { de: 'Request C' },
@@ -45,6 +55,9 @@ export function createMockDataRequestService(): MockDataRequestService {
     activateDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
     submitDataRequest: jest.fn().mockResolvedValue(undefined),
     updateDataRequestDetails: jest.fn().mockResolvedValue(undefined),
+    updateDataRequestValidRedirectUriRegex: jest.fn().mockResolvedValue(undefined),
     uploadLogo: jest.fn().mockResolvedValue(undefined),
+    releaseDataRequestToBeActivated: jest.fn().mockResolvedValue(mockDataRequests[0]),
+    releaseDataRequestToProvider: jest.fn().mockResolvedValue(mockDataRequests[0]),
   } satisfies MockDataRequestService;
 }

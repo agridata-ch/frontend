@@ -97,8 +97,12 @@ export class AdminDataRequestTableComponent {
             name: this.dataRequestProviderHeader,
             renderer: {
               type: CellRendererTypes.FUNCTION,
-              cellRenderFn: () => 'Agis',
+              cellRenderFn: (item) =>
+                this.i18nService.useObjectTranslation(item.dataSourceSystem?.dataProvider?.name),
             },
+            sortable: true,
+            sortValueFn: (item) =>
+              this.i18nService.useObjectTranslation(item.dataSourceSystem?.dataProvider?.name),
           },
           {
             name: this.dataRequestStateHeader,

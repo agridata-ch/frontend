@@ -2,9 +2,13 @@ import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { DataRequestsService } from '@/entities/openapi/api/dataRequests.service';
-import { ConsentRequestDetailViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestDetailViewDtoDataRequestStateCode';
 
-import { DataRequestDto, DataRequestUpdateDto } from '../openapi';
+import {
+  DataRequestDto,
+  DataRequestStateEnum,
+  DataRequestUpdateDto,
+  DataRequestValidRedirectUriRegexUpdateDto,
+} from '../openapi';
 
 /**
  * Service for managing data requests through the API. Provides methods to create, update, submit,
@@ -35,6 +39,15 @@ export class DataRequestService {
     return firstValueFrom(this.apiService.updateDataRequestDetails(dataRequestId, dataRequest));
   }
 
+  async updateDataRequestValidRedirectUriRegex(
+    dataRequestId: string,
+    validRedirectUriRegex: DataRequestValidRedirectUriRegexUpdateDto,
+  ): Promise<DataRequestDto> {
+    return firstValueFrom(
+      this.apiService.updateDataRequestValidRedirectUriRegex(dataRequestId, validRedirectUriRegex),
+    );
+  }
+
   async deleteDataRequest(dataRequestId: string) {
     return firstValueFrom(this.apiService.deleteDataRequest(dataRequestId));
   }
@@ -48,7 +61,7 @@ export class DataRequestService {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
-        JSON.stringify(ConsentRequestDetailViewDtoDataRequestStateCode.InReview),
+        JSON.stringify(DataRequestStateEnum.InReview),
       ),
     );
   }
@@ -57,7 +70,7 @@ export class DataRequestService {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
-        JSON.stringify(ConsentRequestDetailViewDtoDataRequestStateCode.Draft),
+        JSON.stringify(DataRequestStateEnum.Draft),
       ),
     );
   }
@@ -66,7 +79,7 @@ export class DataRequestService {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
-        JSON.stringify(ConsentRequestDetailViewDtoDataRequestStateCode.ToBeSigned),
+        JSON.stringify(DataRequestStateEnum.ToBeSignedByConsumer),
       ),
     );
   }
@@ -75,7 +88,25 @@ export class DataRequestService {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
-        JSON.stringify(ConsentRequestDetailViewDtoDataRequestStateCode.Active),
+        JSON.stringify(DataRequestStateEnum.Active),
+      ),
+    );
+  }
+
+  async releaseDataRequestToProvider(dataRequestId: string) {
+    return firstValueFrom(
+      this.apiService.setDataRequestStatus(
+        dataRequestId,
+        JSON.stringify(DataRequestStateEnum.ToBeSignedByProvider),
+      ),
+    );
+  }
+
+  async releaseDataRequestToBeActivated(dataRequestId: string) {
+    return firstValueFrom(
+      this.apiService.setDataRequestStatus(
+        dataRequestId,
+        JSON.stringify(DataRequestStateEnum.ToBeActivated),
       ),
     );
   }

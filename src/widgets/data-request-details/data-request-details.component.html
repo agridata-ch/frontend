@@ -4,6 +4,7 @@
     [isOpen]="!dataRequestResource.isLoading()"
     (closeSidepanel)="handleSidepanelClose()"
     [maxWidth]="'800px'"
+    [dataTestId]="'data-request-details-sidepanel'"
   >
     <app-error-outlet />
     @if (dataRequestResource.isLoading()) {
@@ -21,7 +22,11 @@
           [(activeTabId)]="activeTabId"
         />
         @if (activeTabId() === DETAILS_TABS_ID.REQUEST) {
-          <app-data-request-details-request [dataRequest]="request" class="py-6" />
+          <app-data-request-details-request
+            [dataRequest]="request"
+            [isRedirectUriRegexEditable]="isRedirectUriRegexEditable()"
+            class="py-6"
+          />
         }
         @if (activeTabId() === DETAILS_TABS_ID.PRODUCER) {
           <div class="flex flex-col gap-4 pt-4">

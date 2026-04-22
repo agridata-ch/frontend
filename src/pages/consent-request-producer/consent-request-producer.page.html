@@ -3,6 +3,7 @@
   <app-alert
     [type]="AlertType.INFO"
     [showCloseButton]="true"
+    [dataTestId]="'alert-migration-' + request.id"
     (closeAlert)="closeMigrationInfo(request.id)"
     class="mb-4"
   >
@@ -20,7 +21,11 @@
     {{ t('pageTitle') }}
   </h2>
 </ng-container>
-@if (!hasRedirectUrl()) {
+@if (!hasRedirectUrl()) { @if (uidMissing()) {
+<app-alert [type]="AlertType.WARNING" [showCloseButton]="false" class="mb-4">
+  {{ uidMissingWarning() }}
+</app-alert>
+}
 <app-error-outlet></app-error-outlet>
 }
 <app-consent-request-table

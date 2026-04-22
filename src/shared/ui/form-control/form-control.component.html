@@ -46,6 +46,9 @@
       [disabled]="disabled()"
     />
   }
+  @if (controlType() === ControlTypes.DIGIT_INPUT) {
+    <app-agridata-digit-input [control]="control()!" [length]="length()" />
+  }
   <span class="min-h-[1.5em] block text-gray-700" [class.text-red-500]="hasError()">
     @if (hasError()) {
       <span class="text-sm">{{ errorMessage() }}</span>

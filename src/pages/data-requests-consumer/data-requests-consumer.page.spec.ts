@@ -16,7 +16,7 @@ import {
   MockErrorHandlerService,
 } from '@/shared/testing/mocks/mock-error-handler.service';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
-import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-new';
+import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-wizard';
 
 import {
   DataRequestsConsumerPage,

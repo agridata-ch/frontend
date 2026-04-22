@@ -39,6 +39,7 @@
           <fa-icon
             [icon]="faCopy"
             class="cursor-pointer hover:text-agridata-primary-600"
+            [attr.data-testid]="'copy-invitation-link'"
             (click)="copyToClipboard(invitationLink())"
             (keydown.enter)="copyToClipboard(invitationLink())"
           ></fa-icon>
@@ -62,6 +63,10 @@
     <app-data-request-purpose-accordion
       [purpose]="getFieldFromLang('purpose', locale, dataRequest())"
       [products]="productsList()"
+    />
+    <app-data-request-redirect-uri
+      [dataRequest]="dataRequest()"
+      [isValidRedirectUriRegexEditable]="isRedirectUriRegexEditable()"
     />
     <app-data-request-contact
       [phoneNumber]="dataRequest().contactPhoneNumber"

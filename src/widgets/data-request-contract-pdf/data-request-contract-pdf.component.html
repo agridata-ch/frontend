@@ -1,0 +1,29 @@
+<ng-container *i18n="let t; prefix: 'data-request.contractPdf'">
+  <h4 class="mb-4">{{ t('title') }}</h4>
+  <div class="flex py-3 px-4 border border-agridata-stroke rounded-lg justify-between items-center">
+    <div class="flex gap-4">
+      <app-agridata-button
+        [variant]="ButtonVariants.IconLink"
+        (onClick)="handleOpenPdf()"
+        [disabled]="isLoadingOpen()"
+        [icon]="faPdf"
+        [iconPosition]="IconPosition.Left"
+        [loading]="isLoadingOpen()"
+      >
+        {{ fileName() }}
+      </app-agridata-button>
+    </div>
+    <div class="flex gap-4">
+      <app-agridata-button
+        [variant]="ButtonVariants.IconLink"
+        (onClick)="handleDownloadPdf()"
+        [disabled]="isLoadingDownload()"
+        [icon]="faDownload"
+        [iconPosition]="IconPosition.Right"
+        [loading]="isLoadingDownload()"
+      >
+        {{ t('download') }}
+      </app-agridata-button>
+    </div>
+  </div>
+</ng-container>

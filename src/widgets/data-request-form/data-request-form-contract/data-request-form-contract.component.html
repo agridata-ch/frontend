@@ -1,21 +1,26 @@
-<div class="flex flex-col gap-6 h-full" *i18n="let t; prefix: 'data-request.form.contract'">
-  <app-alert [type]="AlertType.SUCCESS">
-    <div class="flex flex-col">
-      <span class="font-bold">
-        {{ t('inReviewAlert.title') }}
-      </span>
-      {{ t('inReviewAlert.description') }}
+@if (isWaitingForSignature()) {
+  <app-data-request-contract-signing
+    [dataRequest]="dataRequest()"
+    (reloadDataRequest)="reloadDataRequest.emit()"
+  />
+} @else {
+  <div class="flex flex-col gap-6 h-full" *i18n="let t; prefix: 'data-request.form.contract'">
+    <app-alert [type]="AlertType.SUCCESS">
+      <div class="flex flex-col">
+        <span class="font-bold">
+          {{ t('inReviewAlert.title') }}
+        </span>
+        {{ t('inReviewAlert.description') }}
+      </div>
+    </app-alert>
+    <div class="flex flex-col gap-4 justify-center p-10 bg-agridata-content-gray rounded-lg h-105">
+      <img
+        src="assets/images/data-request-timer.svg"
+        [alt]="t('inReviewBox.iconAltText')"
+        class="h-17"
+      />
+      <span class="text-center font-bold text-lg">{{ t('inReviewBox.title') }}</span>
+      <span class="text-center">{{ t('inReviewBox.description') }}</span>
     </div>
-  </app-alert>
-  <div
-    class="flex flex-col gap-4 justify-center p-10 bg-agridata-content-gray rounded-lg h-[420px]"
-  >
-    <img
-      src="assets/images/data-request-timer.svg"
-      [alt]="t('inReviewBox.iconAltText')"
-      class="h-[68px]"
-    />
-    <span class="text-center font-bold text-lg">{{ t('inReviewBox.title') }}</span>
-    <span class="text-center">{{ t('inReviewBox.description') }}</span>
   </div>
-</div>
+}

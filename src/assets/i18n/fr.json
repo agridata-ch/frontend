@@ -275,20 +275,42 @@
       "moreInfos": "Afficher plus de détails"
     },
     "wizard": {
-      "steps": {
-        "consumer": "Requérant des données",
-        "request": "Demande de données",
-        "preview": "Aperçu",
-        "producer": "Fournisseur de données",
-        "contract": "Contrat",
-        "completion": "Conclusion"
+      "consumer": {
+        "steps": {
+          "consumer": "Requérant des données",
+          "request": "Demande de données",
+          "preview": "Aperçu",
+          "producer": "Fournisseur de données",
+          "contract": "Contrat",
+          "completion": "Conclusion"
+        },
+        "releaseContract": {
+          "success": {
+            "title": "Soumis avec succès auprès du fournisseur",
+            "message": "Le contrat a été transmis au prestataire"
+          }
+        }
       },
       "saveDraft": "Mise en cache",
-      "saveAndComplete": "Enregistrer et soumettre",
+      "releaseToProvider": "Soumettre auprès du fournisseur",
       "next": "Suivant",
       "previous": "Retour",
       "submitAndContinue": "Soumettre la demande et continuer",
-      "retreatRequest": "Retirer la demande"
+      "retreatRequest": "Retirer la demande",
+      "provider": {
+        "steps": {
+          "preview": "Aperçu",
+          "contract": "Contrat",
+          "completion": "Conclusion"
+        },
+        "releaseContract": {
+          "success": {
+            "title": "Contrat soumis avec succès",
+            "message": "Le contrat a été soumis et peut désormais être activé"
+          }
+        }
+      },
+      "releaseContract": "Approuver la demande"
     },
     "submit": {
       "error": "Erreur lors de la soumission de la demande"
@@ -296,8 +318,12 @@
     "stateCode": {
       "IN_REVIEW": "En cours d'examen",
       "DRAFT": "Projet",
-      "TO_BE_SIGNED": "Signature ouverte",
-      "ACTIVE": "Actif"
+      "TO_BE_SIGNED_BY_CONSUMER": "Signature ouverte au destinataire",
+      "ACTIVE": "Actif",
+      "TO_BE_RELEASED_BY_CONSUMER": "Conclusion ouverte au destinataire",
+      "TO_BE_SIGNED_BY_PROVIDER": "Fournisseur de signature ouvert",
+      "TO_BE_RELEASED_BY_PROVIDER": "Conclusion ouverte à fournisseur",
+      "TO_BE_ACTIVATED": "Activation en cours"
     },
     "table": {
       "tableActions": {
@@ -336,10 +362,108 @@
         "contract": "Contrat",
         "email": "Modèle d'e-mail"
       },
-      "sidePanelTitle": "Vue détaillée"
+      "sidePanelTitle": "Vue détaillée",
+      "redirectUriRegex": {
+        "title": "Règle de redirection automatique",
+        "description": "Définit vers quelle URL de redirection (redirect_uri) la redirection peut être effectuée après une décision.",
+        "label": "Expression régulière pour une valeur valide de redirect_uri",
+        "save": "Enregistrer"
+      }
     },
     "invitationLink": "Lien d'invitation",
-    "productsSystemCode": "Système"
+    "productsSystemCode": "Système",
+    "contractSigning": {
+      "title": "Signer le contrat",
+      "contract": {
+        "description": "Signez le contrat entre les partenaires contractuels : {{ consumer }} et {{ provider }}. Une fois que toutes les signatures requises ont été apposées, le contrat est transmis à l'administrateur pour vérification finale et activation.",
+        "signing": {
+          "info": "Deux signatures sont requises pour chaque partie contractante. Veuillez vous assurer qu'une deuxième personne habilitée à signer au nom de {{ company }} signe également le contrat."
+        }
+      },
+      "signatureInput": {
+        "signature": {
+          "dataConsumer": "Signature des destinataires des données",
+          "dataProvider": "Signature des fournisseur de données"
+        },
+        "badgeText": "Personne {{ position }}",
+        "agbText": "En apposant ma signature, je certifie avoir pris connaissance des [conditions générales].",
+        "inReviewBox": {
+          "description": "Signature en attente...",
+          "iconAltText": "Image avec un sablier et une horloge en arrière-plan"
+        },
+        "signingHint": "Pour confirmer votre signature, vous recevrez un code de vérification par SMS.",
+        "signingButton": "Signez dès maintenant",
+        "otp": {
+          "title": "Code SMS envoyé",
+          "info": "Vous avez reçu un code au numéro {{ phoneNumber }} de la part d'agridata.ch\n\nCe code est valable pendant 15 minutes. Passé ce délai, vous devrez demander un nouveau code.",
+          "input": {
+            "label": "Saisir le code reçu par SMS"
+          },
+          "verifyButton": "Vérifier le code",
+          "resendButton": "Renvoyer le code SMS",
+          "resendInfo": "Il sera possible de renvoyer le message dans {{ seconds }} secondes"
+        },
+        "alreadySigned": {
+          "description": "Signé par {{ name }}"
+        }
+      },
+      "verifySigning": {
+        "success": {
+          "title": "S'inscrire avec succès",
+          "message": "Votre signature a bien été enregistrée"
+        },
+        "error": {
+          "title": "Erreur lors de la signature",
+          "message": "Une erreur s'est produite lors de la signature. Veuillez réessayer plus tard."
+        }
+      }
+    },
+    "contractPdf": {
+      "title": "Contrat",
+      "download": "Télécharger",
+      "fileName": "Vertrag/Contrat_{{ humanFriendlyId }}"
+    },
+    "completion": {
+      "dataRequest": {
+        "submissionDate": "Date de soumission",
+        "humanFriendlyId": "ID",
+        "state": "Statut du contrat",
+        "heading": "Demande de données"
+      },
+      "dataProducts": {
+        "heading": "Produits de données"
+      },
+      "title": "Résumé et conclusion",
+      "signingStatus": {
+        "heading": "État de la signature",
+        "badgeText": "Personne {{ position }}",
+        "signedDescription": "Signé par {{ name }}",
+        "dataConsumer": {
+          "heading": "Signature des destinataires des données"
+        },
+        "dataProvider": {
+          "heading": "Signature du fournisseur de données",
+          "inReviewBox": {
+            "description": "Signature en attente...",
+            "iconAltText": "Image avec un sablier et une horloge en arrière-plan"
+          }
+        }
+      },
+      "abgLink": "Nos CGV",
+      "state": "Statut du contrat",
+      "releasedByConsumer": {
+        "title": "Merci beaucoup, votre demande a bien été envoyée",
+        "message": "Le fournisseur ({{ provider }}) va maintenant être invité automatiquement à signer le contrat. Dès que toutes les signatures auront été apposées et que l'administrateur aura activé le contrat, vous en serez immédiatement informé(e)."
+      },
+      "waitingForProvider": {
+        "title": "La signature est du fait de {{ provider }}",
+        "message": "Dès que toutes les signatures auront été apposées et que l'administrateur aura activé le contrat, vous en serez immédiatement informé(e)."
+      },
+      "waitingForProviderRelease": {
+        "title": "Demande prête pour approbation",
+        "message": "En cliquant sur « {{ releaseContract }} », vous libérez le contrat au nom de votre organisation. Dès que la demande est active, les producteurs de données (agriculteurs, éleveurs, etc.) peuvent recevoir une demande de données et donner leur accord. De plus, les utilisateurs de données peuvent commencer à récupérer les données dès lors qu’ils ont obtenu l’accord des producteurs de données."
+      }
+    }
   },
   "forms": {
     "error": {
@@ -348,7 +472,8 @@
       "maxlength": "Maximum {{max}} caractères autorisés.",
       "minItems": "Minimum {{min}} éléments requis.",
       "maxItems": "Maximum {{max}} éléments autorisés.",
-      "pattern": "Format invalide."
+      "pattern": "Format invalide.",
+      "onlyDigits": "Seuls les chiffres sont autorisés"
     }
   },
   "navigation": {
@@ -372,7 +497,8 @@
     "migrationInfo": {
       "title": "La demande de données de {{ consumerName }} est désormais disponible ici.",
       "description": "Votre approbation pour la demande de données {{name}} a été repris de « Mon partage de données agricoles (MAF) ».\nVous trouverez la demande dans le tableau ci-dessous et pouvez modifier votre approbation si nécessaire."
-    }
+    },
+    "uidMissingWarning": "Aucun numéro d'identification fiscale (UID) n'est encore enregistré pour vous ou votre entreprise. Étant donné que plusieurs systèmes sont impliqués, cela peut prendre quelques jours avant que nous disposions de toutes les informations nécessaires au bon fonctionnement d'agridata.ch. Veuillez réessayer dans quelques jours. Si le problème persiste, veuillez contacter le service d'assistance ({{ phoneNumber }})."
   },
   "countries": {
     "CH": "Suisse",
@@ -507,6 +633,10 @@
         "message": "Le lien consulté ne mène à aucune demande. Veuillez vérifier le lien ou contacter l'organisation qui vous l'a envoyé."
       },
       "modalTitle": "Oups, quelque chose n'a pas fonctionné..."
+    },
+    "externalServiceErrorPage": {
+      "title": "Connexion interrompue",
+      "message": "Notre site web est actuellement indisponible en raison d'une panne.\nNous serons de nouveau en ligne dès que possible."
     }
   },
   "breadcrumb": {
@@ -553,7 +683,8 @@
           "message": "Aucune demande de données n'est actuellement active. Dès que des demandes de données actives seront disponibles, elles seront répertoriées ici."
         }
       }
-    }
+    },
+    "sidePanelTitle": "Examen et signature de la demande de données"
   },
   "product-tour": {
     "nextBtnText": "Continuer",

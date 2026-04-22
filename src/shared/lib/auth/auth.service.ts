@@ -1,4 +1,4 @@
-import { Injectable, computed, effect, inject, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { lastValueFrom } from 'rxjs';
@@ -74,6 +74,10 @@ export class AuthService {
     return [info?.givenName, info?.familyName].filter(Boolean).join(' ');
   }
 
+  getUserId(): string | undefined {
+    return this.userInfo()?.userId;
+  }
+
   async initializeAuth(): Promise<boolean> {
     // Cache the OIDC checkAuth call to prevent multiple simultaneous calls
     this.authCheckPromise ??= lastValueFrom(this.oidcService.checkAuth());
@@ -108,7 +112,6 @@ export class AuthService {
     }
 
     this._userRoles.set(userRoles);
-
     return true;
   }
 
@@ -132,10 +135,15 @@ export class AuthService {
     }
 
     this.userUidsPromise ??= lastValueFrom(this.userService.getAuthorizedUids());
-    const uids = await this.userUidsPromise;
+    const promise = this.userUidsPromise; // capture before cache may be cleared mid-flight
+    const uids = await promise;
     this._userUids.set(uids);
 
-    return this.userUidsPromise;
+    return uids;
+  }
+
+  clearAuthorizedUidsCache(): void {
+    this.userUidsPromise = undefined;
   }
 
   /**

@@ -12,9 +12,9 @@ import { DataRequestDto } from '@/entities/openapi';
 })
 export class DataRequestDtoDirective {
   static ngTemplateContextGuard(
-    dir: DataRequestDtoDirective,
-    ctx: unknown,
-  ): ctx is { $implicit: DataRequestDto } {
+    _dir: DataRequestDtoDirective,
+    _ctx: unknown,
+  ): _ctx is { $implicit: DataRequestDto } {
     return true;
   }
 }

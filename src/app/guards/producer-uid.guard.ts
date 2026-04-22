@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UidDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
@@ -27,6 +28,9 @@ export class ProducerUidGuard implements CanActivate {
       const uidDtos = await this.authorizationService.initializeAuthorizedUids();
       return this.validateAndSetUid(route, uidDtos);
     } catch (error) {
+      if (error instanceof ExternalServiceHttpError) {
+        return this.router.createUrlTree([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR]);
+      }
       return this.processError(error);
     }
   }
@@ -50,6 +54,10 @@ export class ProducerUidGuard implements CanActivate {
     const defaultUid = this.agridataStateService.getDefaultUid(uidDtos);
 
     if (!defaultUid) {
+      if (this.agridataStateService.uidMissing()) {
+        return true; // already in a pending state, just allow the route to load which will show the appropriate message
+      }
+
       this.errorService.handleError(new Error('user has no authorized uids'));
       return this.createErrorUrlTree();
     }

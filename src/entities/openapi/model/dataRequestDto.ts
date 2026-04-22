@@ -7,7 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DataSourceSystemDto } from './dataSourceSystemDto';
+import { DataSourceSystemReferenceDto } from './dataSourceSystemReferenceDto';
 import { DataRequestPurposeDto } from './dataRequestPurposeDto';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
@@ -20,7 +20,7 @@ export interface DataRequestDto {
     id: string;
     dataProviderId?: string;
     dataSourceSystemId?: string;
-    dataSourceSystem?: DataSourceSystemDto;
+    dataSourceSystem?: DataSourceSystemReferenceDto;
     /**
      * Human friendly id of the data request
      */
@@ -88,8 +88,9 @@ export interface DataRequestDto {
     dataConsumerLogoBase64?: string;
     targetGroup?: string;
     /**
-     * Regex of valid redirect_uri
+     * Regex of valid redirect_uri. Must compile as regex successfully.
      */
     validRedirectUriRegex?: string;
+    currentContractRevisionId?: string;
 }
 

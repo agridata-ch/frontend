@@ -3,6 +3,7 @@
     [open]="errors().length > 0"
     [showCloseButton]="false"
     [title]="'errors.popupTitle' | i18n"
+    [dataTestId]="'error-modal'"
     (closed)="this.closeErrors()"
   >
     <app-error-alert-list [errors]="errors()" (closeErrors)="closeErrors()"></app-error-alert-list>

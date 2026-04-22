@@ -4,7 +4,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
-import { ConsentRequestProducerViewDtoDataRequestStateCode } from '@/entities/openapi/model/consentRequestProducerViewDtoDataRequestStateCode';
 import { I18nService } from '@/shared/i18n';
 import {
   MockResources,
@@ -58,7 +57,7 @@ describe('DataRequestTableComponent', () => {
   it('should get translated state value', () => {
     const i18nServiceSpy = jest.spyOn(mockI18nService, 'translate');
 
-    component['getStatusTranslation'](ConsentRequestProducerViewDtoDataRequestStateCode.Draft);
+    component['getStatusTranslation'](DataRequestStateEnum.Draft);
 
     expect(i18nServiceSpy).toHaveBeenCalledWith('data-request.stateCode.DRAFT');
   });
@@ -70,7 +69,10 @@ describe('DataRequestTableComponent', () => {
   it('getBadgeVariant returns correct BadgeVariant for each state', () => {
     expect(component['getBadgeVariant'](DataRequestStateEnum.Draft)).toBe(BadgeVariant.INFO);
     expect(component['getBadgeVariant'](DataRequestStateEnum.InReview)).toBe(BadgeVariant.INFO);
-    expect(component['getBadgeVariant'](DataRequestStateEnum.ToBeSigned)).toBe(
+    expect(component['getBadgeVariant'](DataRequestStateEnum.ToBeSignedByConsumer)).toBe(
+      BadgeVariant.WARNING,
+    );
+    expect(component['getBadgeVariant'](DataRequestStateEnum.ToBeReleasedByConsumer)).toBe(
       BadgeVariant.WARNING,
     );
     expect(component['getBadgeVariant'](DataRequestStateEnum.Active)).toBe(BadgeVariant.SUCCESS);
@@ -150,13 +152,18 @@ describe('DataRequestTableComponent', () => {
     const metadata = component['dataRequestsTableMetaData']();
     const providerColumn = metadata.columns[3];
     const row = component['dataRequests']()[0];
+    const item = mockDataRequests[0];
     expect(row).toBeTruthy();
 
-    expect(providerColumn.renderer.type).toEqual('function');
+    mockI18nService.useObjectTranslation.mockReturnValue('Translated Provider Name');
 
-    if (providerColumn.renderer.type === 'function') {
-      const result = providerColumn.renderer.cellRenderFn(row);
-      expect(result).toBe('Agis');
+    expect(providerColumn.sortValueFn).toBeDefined();
+    if (providerColumn.sortValueFn) {
+      const result = providerColumn.sortValueFn(item);
+      expect(result).toBe('Translated Provider Name');
+      expect(mockI18nService.useObjectTranslation).toHaveBeenCalledWith(
+        item.dataSourceSystem?.dataProvider.name,
+      );
     }
   });
 });

@@ -182,14 +182,12 @@ export class DataRequestFormRequestComponent {
     }
     this.productsLoading.set(true);
     this.loadingProviderId.set(providerId);
+    this.metaDataService.fetchProductsByProvider(providerId);
     Promise.resolve().then(() => {
       this.metaDataService.fetchProductsByProvider(providerId);
-      // Simulate async: set loading to false after products are fetched (in real app, use callback or observable)
-      setTimeout(() => {
-        if (this.loadingProviderId() === providerId) {
-          this.productsLoading.set(false);
-        }
-      }, 200); // adjust as needed for real fetch
+      if (this.loadingProviderId() === providerId) {
+        this.productsLoading.set(false);
+      }
     });
   });
 
@@ -250,10 +248,15 @@ export class DataRequestFormRequestComponent {
     return null;
   }
 
-  private mapProductToOption(product: DataProductDto): { label: string; value: string } {
+  private mapProductToOption(product: DataProductDto): {
+    label: string;
+    value: string;
+    deprecated: boolean;
+  } {
     return {
       label: product.name?.[this.i18nService.lang() as keyof typeof product.name] ?? '',
       value: product.id,
+      deprecated: product.deprecatedSince !== null,
     };
   }
 }

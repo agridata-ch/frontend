@@ -275,20 +275,42 @@
       "moreInfos": "Weitere Details anzeigen"
     },
     "wizard": {
-      "steps": {
-        "consumer": "Bezüger",
-        "request": "Anfrage",
-        "preview": "Vorschau",
-        "producer": "Produzent",
-        "contract": "Vertrag",
-        "completion": "Abschluss"
+      "consumer": {
+        "steps": {
+          "consumer": "Bezüger",
+          "request": "Anfrage",
+          "preview": "Vorschau",
+          "producer": "Produzent",
+          "contract": "Vertrag",
+          "completion": "Abschluss"
+        },
+        "releaseContract": {
+          "success": {
+            "title": "Erfolgreich beim Anbieter eingereicht",
+            "message": "Der Vertrag wurde beim Anbieter eingereicht"
+          }
+        }
       },
       "saveDraft": "Zwischenspeichern",
-      "saveAndComplete": "Speichern und Einreichen",
+      "releaseToProvider": "Beim Anbieter einreichen",
       "next": "Weiter",
       "previous": "Zurück",
       "submitAndContinue": "Antrag einreichen & weiter",
-      "retreatRequest": "Antrag zurückziehen"
+      "retreatRequest": "Antrag zurückziehen",
+      "provider": {
+        "steps": {
+          "preview": "Vorschau",
+          "contract": "Vertrag",
+          "completion": "Abschluss"
+        },
+        "releaseContract": {
+          "success": {
+            "title": "Vertrag erfolgreich eingereicht",
+            "message": "Der Vertrag wurde eingereicht und kann nun aktiviert werden"
+          }
+        }
+      },
+      "releaseContract": "Antrag genehmigen"
     },
     "submit": {
       "error": "Fehler beim Einreichen des Antrags"
@@ -296,8 +318,12 @@
     "stateCode": {
       "IN_REVIEW": "In Prüfung",
       "DRAFT": "Entwurf",
-      "TO_BE_SIGNED": "Unterzeichnung offen",
-      "ACTIVE": "Aktiv"
+      "TO_BE_SIGNED_BY_CONSUMER": "Unterzeichnung Bezüger offen",
+      "ACTIVE": "Aktiv",
+      "TO_BE_RELEASED_BY_CONSUMER": "Abschluss Bezüger offen",
+      "TO_BE_SIGNED_BY_PROVIDER": "Unterzeichnung Anbieter offen",
+      "TO_BE_RELEASED_BY_PROVIDER": "Abschluss Anbieter offen",
+      "TO_BE_ACTIVATED": "Aktivierung offen"
     },
     "table": {
       "tableActions": {
@@ -336,10 +362,108 @@
         "contract": "Vertrag",
         "email": "E-Mail Vorlage"
       },
-      "sidePanelTitle": "Detailansicht"
+      "sidePanelTitle": "Detailansicht",
+      "redirectUriRegex": {
+        "title": "Regel Automatische Weiterleitung",
+        "description": "Definiert, auf welche redirect_uri nach einem Entscheid weitergeleitet werden darf.",
+        "label": "Regex für gültige redirect_uri",
+        "save": "Speichern"
+      }
     },
     "invitationLink": "Einladungslink",
-    "productsSystemCode": "System"
+    "productsSystemCode": "System",
+    "contractSigning": {
+      "title": "Vertrag unterzeichnen",
+      "contract": {
+        "description": "Unterzeichnen Sie den Vertrag zwischen den Vertragspartnern: {{ consumer }} und {{ provider }}. Sobald alle erforderlichen Unterschriften vorliegen, wird der Vertrag dem Administrator zur finalen Prüfung und Aktivierung übermittelt.",
+        "signing": {
+          "info": "Pro Vertragspartner sind zwei Unterschriften erforderlich. Stellen Sie sicher, dass auch eine zweite zeichnungsberechtigte Person aus {{ company }} den Vertrag unterzeichnet."
+        }
+      },
+      "signatureInput": {
+        "signature": {
+          "dataConsumer": "Unterzeichnung Datenbezüger",
+          "dataProvider": "Unterzeichnung Datenanbieter"
+        },
+        "badgeText": "Person {{ position }}",
+        "agbText": "Mit meiner Unterzeichnung bestätige ich die [Allgemeinen Geschäftsbedingungen] gelesen zu haben.",
+        "inReviewBox": {
+          "description": "Unterzeichnung noch ausstehend...",
+          "iconAltText": "Bild mit einer Sanduhr und einer Uhr im Hintergrund"
+        },
+        "signingHint": "Zur Bestätigung Ihrer Unterschrift erhalten Sie einen Verifizierungscode per SMS.",
+        "signingButton": "Jetzt unterzeichnen",
+        "otp": {
+          "title": "SMS Code versendet",
+          "info": "Sie haben einen Code an die Nr. {{ phoneNumber }} von agridata.ch erhalten\n\nDer Code ist für 15 Minuten gültig. Nach Ablauf der Zeit, müssen Sie den Code erneut anfordern.",
+          "input": {
+            "label": "SMS Code eingeben"
+          },
+          "verifyButton": "Code bestätigen",
+          "resendButton": "SMS Code erneut senden",
+          "resendInfo": "Erneut senden möglich in {{ seconds }} Sekunden"
+        },
+        "alreadySigned": {
+          "description": "Unterzeichnet von {{ name }}"
+        }
+      },
+      "verifySigning": {
+        "success": {
+          "title": "Unterzeichnen erfolgreich",
+          "message": "Ihre Unterzeichnung wurde erfolgreich erfasst"
+        },
+        "error": {
+          "title": "Fehler beim Unterzeichnen",
+          "message": "Beim Unterzeichnen ist ein Fehler passiert. Bitte versuchen Sie es später erneut."
+        }
+      }
+    },
+    "contractPdf": {
+      "title": "Vertrag",
+      "download": "Herunterladen",
+      "fileName": "Vertrag/Contrat_{{ humanFriendlyId }}"
+    },
+    "completion": {
+      "dataRequest": {
+        "submissionDate": "Datum der Einreichung",
+        "humanFriendlyId": "ID",
+        "state": "Vertragsstatus",
+        "heading": "Datenantrag"
+      },
+      "dataProducts": {
+        "heading": "Datenprodukte"
+      },
+      "title": "Zusammenfassung & Abschluss",
+      "signingStatus": {
+        "heading": "Status Unterzeichnung",
+        "badgeText": "Person {{ position }}",
+        "signedDescription": "Unterzeichnet von {{ name }}",
+        "dataConsumer": {
+          "heading": "Unterzeichnung Datenbezüger"
+        },
+        "dataProvider": {
+          "heading": "Unterzeichnung Datenanbieter",
+          "inReviewBox": {
+            "description": "Unterzeichnung noch ausstehend...",
+            "iconAltText": "Bild mit einer Sanduhr und einer Uhr im Hintergrund"
+          }
+        }
+      },
+      "abgLink": "Unsere AGB's",
+      "state": "Vertragsstatus",
+      "releasedByConsumer": {
+        "title": "Herzlichen Dank, Sie haben den Antrag erfolgreich eingereicht",
+        "message": "Der Datenanbieter ({{ provider }}) wird nun automatisch zur Unterzeichnung eingeladen. Sobald alle Unterschriften vorliegen und der Administrator den Vertrag aktiviert hat, werden Sie umgehend benachrichtigt."
+      },
+      "waitingForProvider": {
+        "title": "Die Unterzeichnung liegt bei {{ provider }}",
+        "message": "Sobald alle Unterschriften vorliegen und der Administrator den Vertrag aktiviert hat, werden Sie umgehend benachrichtigt."
+      },
+      "waitingForProviderRelease": {
+        "title": "Antrag zur Genehmigung bereit",
+        "message": "Mit einem Klick auf “{{ releaseContract }}” geben Sie den Vertrag seitens Ihrer Organisation frei. Der Vertrag wird nun versiegelt und anschliessend aktiviert. Sobald der Antrag aktiv ist, können die Datenproduzenten (Landwirte, Tierhalter, etc.) eine Datenanfrage erhalten und ihre Zustimmung geben. Zudem können die Datenbezüger mit dem Bezug der Daten starten, sofern Zustimmungen der Datenproduzenten vorliegen."
+      }
+    }
   },
   "forms": {
     "error": {
@@ -348,7 +472,8 @@
       "maxlength": "Maximal {{max}} Zeichen erlaubt.",
       "minItems": "Mindestens {{min}} Einträge erforderlich.",
       "maxItems": "Maximal {{max}} Einträge erlaubt.",
-      "pattern": "Ungültiges Format."
+      "pattern": "Ungültiges Format.",
+      "onlyDigits": "Nur Zahlen erlaubt"
     }
   },
   "navigation": {
@@ -372,7 +497,8 @@
     "migrationInfo": {
       "title": "Die Datenanfrage von {{ consumerName }} ist jetzt hier verfügbar",
       "description": "Ihre Zustimmung für die Datenanfrage {{name}} wurde aus “Meine Agrardatenfreigaben (MAF)” übernommen.\nSie finden die Anfrage in der untenstehenden Tabelle und können bei Bedarf die Zustimmung ändern."
-    }
+    },
+    "uidMissingWarning": "Zu Ihrer Person oder Unternehmen ist zurzeit noch keine UID vorhanden. Da verschiedene Systeme involviert sind, kann es einige Tage dauern bis wir alle relevanten Angaben haben, damit agridata.ch funktionieren kann. Bitte versuchen sie es in ein paar Tage nochmal. Besteht Ihr Problem weiterhin, melden sie sich bitte beim Support ({{ phoneNumber }})."
   },
   "countries": {
     "CH": "Schweiz",
@@ -508,6 +634,10 @@
         "message": "Der aufgerufene Link führt zu keinem Antrag. Bitte überprüfen Sie den Link oder kontaktieren Sie die Organisation, die Ihnen diesen Link geschickt hat."
       },
       "modalTitle": "Hoppla, etwas hat nicht funktioniert..."
+    },
+    "externalServiceErrorPage": {
+      "title": "Verbindung unterbrochen",
+      "message": "Unsere Webseite ist derzeit wegen einem Unterbruch nicht erreichbar.\nWir sind schnellstmöglich wieder online."
     }
   },
   "breadcrumb": {
@@ -554,7 +684,8 @@
           "message": "Aktuell sind keine Datenanträge aktiv. Sobald aktive Datenanträge vorhanden sind, werden diese hier aufgelistet."
         }
       }
-    }
+    },
+    "sidePanelTitle": "Prüfung und Signatur des Datenantrags"
   },
   "product-tour": {
     "nextBtnText": "Weiter",

@@ -24,12 +24,16 @@ export interface ConsentRequestFundamentalViewDto {
      * BUR of the data producer
      */
     dataProducerBur?: string;
-    uidBurRelationSince?: string;
-    uidBurRelationUntil?: string;
+    grantedDataPeriodFrom?: string;
+    grantedDataPeriodTo?: string;
     /**
      * State of the consent request
      */
     stateCode?: ConsentRequestStateEnum;
+    /**
+     * Date and time of the most recent modification to the consent request
+     */
+    lastModifiedDateTime?: string;
 }
 export namespace ConsentRequestFundamentalViewDto {
 }

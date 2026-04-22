@@ -1,3 +1,137 @@
+## [1.10.0-rc.22](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.21...v1.10.0-rc.22) (2026-04-21)
+
+### Features
+
+- **button:** add iconLink button ([dad8968](https://github.com/agridata-ch/frontend/commit/dad8968e7a1221d74974ee82558a430c3138614d))
+
+## [1.10.0-rc.21](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.20...v1.10.0-rc.21) (2026-04-21)
+
+### Features
+
+- **button:** add iconLink button ([50f6409](https://github.com/agridata-ch/frontend/commit/50f64095a5ba63a5e8a6e2ee42065b2c02539cbf))
+
+## [1.10.0-rc.20](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.19...v1.10.0-rc.20) (2026-04-21)
+
+### Features
+
+- **contract-pdf:** add loading-spinner ([2e707bb](https://github.com/agridata-ch/frontend/commit/2e707bb2b34b63ccc5954da02949d40b21c986ed)), closes [DIGIB2-305](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-305)
+
+## [1.10.0-rc.19](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.18...v1.10.0-rc.19) (2026-04-20)
+
+### Features
+
+- **data-request-contract:** add contract pdf ([8421cd8](https://github.com/agridata-ch/frontend/commit/8421cd8a056b4f7dbb16ed2eccab04339397ad18)), closes [DIGIB2-305](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-305)
+
+## [1.10.0-rc.18](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.17...v1.10.0-rc.18) (2026-04-17)
+
+### Bug Fixes
+
+- **error-interceptor:** fix external error check ([ef33bda](https://github.com/agridata-ch/frontend/commit/ef33bdac12e2647e79aa426e27e430cf392ee66d)), closes [DIGIB2-1249](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1249)
+
+## [1.10.0-rc.17](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.16...v1.10.0-rc.17) (2026-04-16)
+
+### Bug Fixes
+
+- **data-request:** add success toast ([a72443f](https://github.com/agridata-ch/frontend/commit/a72443f5ee9e0329c416d265dd92b0a0cd77b635)), closes [DIGIB2-1204](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1204)
+
+## [1.10.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.15...v1.10.0-rc.16) (2026-04-16)
+
+### Features
+
+- **error-message:** improve error messages missing uid person ([71e3436](https://github.com/agridata-ch/frontend/commit/71e3436f1ef3acd565398d7730b793b50dc3c53b)), closes [DIGIB2-1249](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1249)
+
+## [1.10.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.14...v1.10.0-rc.15) (2026-04-16)
+
+### Features
+
+- **deps:** update actions/github-script action to v9 ([9fe0940](https://github.com/agridata-ch/frontend/commit/9fe0940250400b89e40a6db464622e27596a7b73))
+
+## [1.10.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.13...v1.10.0-rc.14) (2026-04-16)
+
+### Bug Fixes
+
+- **data-request:** fix wizard step completion ([9a48b56](https://github.com/agridata-ch/frontend/commit/9a48b56e791d6549fdbcfffd831fc5d60452ecb4)), closes [DIGIB2-1204](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1204)
+
+## [1.10.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.12...v1.10.0-rc.13) (2026-04-14)
+
+### Features
+
+- **contract:** add provider contract ([126d282](https://github.com/agridata-ch/frontend/commit/126d282616e00767d0ef82eb99dabe02d8ada865)), closes [DIGIB2-1204](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1204)
+
+## [1.10.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.11...v1.10.0-rc.12) (2026-04-08)
+
+### Features
+
+- **contract:** get data provider information from uid register ([f02cb20](https://github.com/agridata-ch/frontend/commit/f02cb2048385397887617e00365e4ece9d251a65)), closes [DIGIB2-395](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-395)
+
+## [1.10.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.10...v1.10.0-rc.11) (2026-04-07)
+
+### Bug Fixes
+
+- **translations, reload:** fix translations, reload data ([5a98d3f](https://github.com/agridata-ch/frontend/commit/5a98d3fe38bf4d5c4cf11baa5dc5f4128bb56158)), closes [DIGIB2-308](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-308)
+
+## [1.10.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.9...v1.10.0-rc.10) (2026-04-02)
+
+### Features
+
+- **cms:** add cms agb page ([04a6f78](https://github.com/agridata-ch/frontend/commit/04a6f785132b59ce198cd96d8c21a30aa1cb2375)), closes [DIGIB2-1297](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1297)
+
+## [1.10.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.8...v1.10.0-rc.9) (2026-04-02)
+
+### Bug Fixes
+
+- **data-request completion:** show retreat action ([936321d](https://github.com/agridata-ch/frontend/commit/936321db9e125f81f73c06a2b3803bd7b0553eb6)), closes [DIGIB2-308](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-308)
+
+## [1.10.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.7...v1.10.0-rc.8) (2026-04-02)
+
+### Features
+
+- **data-request completion:** add completion step ([0f77008](https://github.com/agridata-ch/frontend/commit/0f77008b4ae4389bd9667ec0372a53808dd92299)), closes [DIGIB2-308](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-308)
+- **storybook:** add digit input to storybook ([a3dcb5a](https://github.com/agridata-ch/frontend/commit/a3dcb5aed31acb8498c69abf8c49c7ee59ab2014))
+
+## [1.10.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.6...v1.10.0-rc.7) (2026-03-24)
+
+### Bug Fixes
+
+- **admin-data-request:** show prodiver name ([065559e](https://github.com/agridata-ch/frontend/commit/065559e3f1b9e8117304dcbf7fe3f63ce62e637a)), closes [DIGIB2-1306](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1306)
+
+## [1.10.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.5...v1.10.0-rc.6) (2026-03-24)
+
+### Features
+
+- **signature:** add contract signature ([20a81d7](https://github.com/agridata-ch/frontend/commit/20a81d79e5ec55d9eeebcc87838e71c140855c18)), closes [DIGIB2-306](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-306)
+
+## [1.10.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.4...v1.10.0-rc.5) (2026-03-19)
+
+### Features
+
+- **signature-input:** add signing button ([3e8c8f9](https://github.com/agridata-ch/frontend/commit/3e8c8f9e629e8fe28a5540af5c6966363059c365)), closes [DIGIB2-1275](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1275)
+
+## [1.10.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.3...v1.10.0-rc.4) (2026-03-19)
+
+### Features
+
+- **data-request:** add edit of redirect uri regex as admin ([985a371](https://github.com/agridata-ch/frontend/commit/985a37191fe9b4bf74d9736cb202485ad2f39f85)), closes [DIGIB2-1252](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1252)
+
+## [1.10.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.2...v1.10.0-rc.3) (2026-03-17)
+
+### Features
+
+- **data-request-contract:** add contract view ([5b01a50](https://github.com/agridata-ch/frontend/commit/5b01a50a845edbda8fbb0375f50ec3a967ffee05)), closes [DIGIB2-1275](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1275)
+- **deps:** update actions/create-github-app-token action to v3 ([ba3e4ac](https://github.com/agridata-ch/frontend/commit/ba3e4ac7196266869238a3e9ec39bd89f099a624))
+
+## [1.10.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.10.0-rc.1...v1.10.0-rc.2) (2026-03-16)
+
+### Bug Fixes
+
+- **cache:** fix caching issue by adding query param to i18n assets ([9e5719b](https://github.com/agridata-ch/frontend/commit/9e5719b24b0c9532411e7cf489bf4ad3fc2f9195))
+
+## [1.10.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.9.0...v1.10.0-rc.1) (2026-03-16)
+
+### Features
+
+- **multi-select:** option can now be deprecated ([4034b7b](https://github.com/agridata-ch/frontend/commit/4034b7b0bf86a3fc528f278166b57ac243e7d7b6)), closes [DIGIB2-1200](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1200)
+
 ## [1.9.0](https://github.com/agridata-ch/frontend/compare/v1.8.1...v1.9.0) (2026-03-13)
 
 ### Features

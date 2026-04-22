@@ -15,7 +15,7 @@ import { format } from 'date-fns';
 export class AgridataDatePipe implements PipeTransform {
   transform(
     value: Date | string | number | null | undefined,
-    formatType: 'short' | 'long' = 'short',
+    formatType: 'short' | 'middle' | 'long' = 'short',
   ): string {
     if (!value && value !== 0) {
       return '';
@@ -28,6 +28,10 @@ export class AgridataDatePipe implements PipeTransform {
 
     if (formatType === 'long') {
       return format(date, 'dd.MM.yyyy HH:mm:ss.SSS');
+    }
+
+    if (formatType === 'middle') {
+      return format(date, 'dd.MM.yyyy HH:mm');
     }
 
     return format(date, 'dd.MM.yyyy');
