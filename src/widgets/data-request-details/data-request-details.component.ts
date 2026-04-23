@@ -21,13 +21,13 @@ import { AgridataTabsComponent, Tab } from '@/shared/ui/agridata-tabs';
 
 import { DataRequestDetailsRequestComponent } from './data-request-details-request';
 import { DETAILS_TABS_ID } from './data-request-details.model';
-import { DataRequestFormContractComponent } from '../data-request-form';
+import { DataRequestDetailsContractComponent } from '../data-request-details-contract/data-request-details-contract.component';
 
 /**
  * Displays detailed information about a data request in a sidepanel with tabs.
  * Footer content is projected from the parent via ng-content.
  *
- * CommentLastReviewed: 2026-02-11
+ * CommentLastReviewed: 2026-04-23
  */
 @Component({
   selector: 'app-data-request-details',
@@ -39,7 +39,7 @@ import { DataRequestFormContractComponent } from '../data-request-form';
     AgridataTabsComponent,
     FontAwesomeModule,
     DataRequestDetailsRequestComponent,
-    DataRequestFormContractComponent,
+    DataRequestDetailsContractComponent,
   ],
   templateUrl: './data-request-details.component.html',
 })
@@ -77,28 +77,32 @@ export class DataRequestDetailsComponent {
 
   // Computed Signals
   readonly dataRequestResource = resource({
-    params: () => ({ id: this.dataRequestId() }),
+    params: () => {
+      const id = this.dataRequestId();
+      return id ? { id } : undefined;
+    },
     loader: ({ params }) => {
       return this.dataRequestService.fetchDataRequest(params.id);
     },
   });
 
   readonly dataRequest = computed(() => {
-    if (this.dataRequestResource.isLoading()) {
+    if (this.dataRequestResource.isLoading() || this.dataRequestResource.error()) {
       return null;
     }
     return this.dataRequestResource.value();
   });
 
-  protected readonly tabs = signal<Tab[]>([
+  protected readonly tabs = computed<Tab[]>(() => [
     { id: DETAILS_TABS_ID.REQUEST, label: this.requestTabLabel() },
-    // TODO: add other tabs when the corresponding components are implemented DIGIB2-547
+    // Other tabs will be added when the corresponding components are implemented.
     // { id: DETAILS_TABS_ID.PRODUCER, label: this.producerTabLabel() },
-    // { id: DETAILS_TABS_ID.CONTRACT, label: this.contractTabLabel() },
+    ...(this.dataRequest()?.currentContractRevisionId
+      ? [{ id: DETAILS_TABS_ID.CONTRACT, label: this.contractTabLabel() }]
+      : []),
     // { id: DETAILS_TABS_ID.EMAIL, label: this.emailTabLabel() },
   ]);
 
-  // Effects
   private readonly errorHandlerEffect = effect(() => {
     const error = this.dataRequestResource.error();
     if (error) {

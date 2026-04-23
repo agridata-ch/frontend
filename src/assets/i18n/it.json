@@ -419,7 +419,7 @@
       }
     },
     "contractPdf": {
-      "title": "Contratto",
+      "title": "Documento contrattuale",
       "download": "Scarica",
       "fileName": "Vertrag/Contrat_{{ humanFriendlyId }}"
     },

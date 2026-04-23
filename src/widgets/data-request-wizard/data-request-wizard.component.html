@@ -2,10 +2,12 @@
   <app-data-request-wizard-provider
     [dataRequestId]="dataRequestId()"
     [initialDataRequest]="initialDataRequest()"
+    [isLoading]="isLoading()"
   />
 } @else {
   <app-data-request-wizard-consumer
     [dataRequestId]="dataRequestId()"
     [initialDataRequest]="initialDataRequest()"
+    [isLoading]="isLoading()"
   />
 }

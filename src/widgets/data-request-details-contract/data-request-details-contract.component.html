@@ -1,0 +1,19 @@
+<div class="flex flex-col gap-4 pt-4">
+  @if (contractResource.isLoading()) {
+    <fa-icon
+      animation="spin"
+      [icon]="faSpinnerThird"
+      size="3x"
+      class="absolute flex items-center justify-center inset-0"
+    />
+  } @else if (dataRequestContract(); as contract) {
+    <app-data-request-contract-pdf
+      [contractRevisionId]="dataRequest().currentContractRevisionId!"
+      [dataRequest]="dataRequest()"
+    />
+    <app-data-request-completion-signing-status
+      [contract]="contract"
+      [dataRequestStateCode]="dataRequest().stateCode"
+    />
+  }
+</div>
