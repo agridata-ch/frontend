@@ -3,7 +3,7 @@
     [title]="t('sidePanelTitle')"
     [isOpen]="!dataRequestResource.isLoading()"
     (closeSidepanel)="handleSidepanelClose()"
-    [maxWidth]="'800px'"
+    [maxWidth]="'1000px'"
     [dataTestId]="'data-request-details-sidepanel'"
   >
     <app-error-outlet />
@@ -34,9 +34,7 @@
           </div>
         }
         @if (activeTabId() === DETAILS_TABS_ID.CONTRACT) {
-          <div class="flex flex-col gap-4 pt-4">
-            <!-- Tab 3 content -->
-          </div>
+          <app-data-request-details-contract [dataRequest]="request" />
         }
         @if (activeTabId() === DETAILS_TABS_ID.EMAIL) {
           <div class="flex flex-col gap-4 pt-4">

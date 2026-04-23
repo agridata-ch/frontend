@@ -150,6 +150,7 @@ export class ContractSignatureInputComponent {
   }
 
   protected handleResendOtp(): void {
+    if (this.isResendDisabled()) return;
     this.handleStartSigning();
     this.otpForm.reset();
   }

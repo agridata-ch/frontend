@@ -32,7 +32,8 @@ export class DataRequestCompletionSigningStatusComponent {
     return (
       this.authService.isConsumer() &&
       this.dataRequestStateCode() !== DataRequestStateEnum.ToBeActivated &&
-      this.dataRequestStateCode() !== DataRequestStateEnum.ToBeReleasedByProvider
+      this.dataRequestStateCode() !== DataRequestStateEnum.ToBeReleasedByProvider &&
+      this.dataRequestStateCode() !== DataRequestStateEnum.Active
     );
   });
 }

@@ -21,6 +21,7 @@ export class DataRequestWizardComponent {
 
   readonly dataRequestId = input<string | undefined>();
   readonly initialDataRequest = input<DataRequestDto | undefined>();
+  readonly isLoading = input<boolean>(false);
 
   protected readonly isDataConsumer = this.authService.isConsumer();
   protected readonly isDataProvider = this.authService.isDataProvider();

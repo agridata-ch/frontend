@@ -1,7 +1,7 @@
 <ng-container *i18n="let t; prefix: 'consumer'">
   <app-sidepanel
     [title]="t('sidePanelTitle')"
-    [isOpen]="true"
+    [isOpen]="!isLoading()"
     (closeSidepanel)="handleClose()"
     [maxWidth]="'1280px'"
     [backgroundColor]="'#efefef'"
