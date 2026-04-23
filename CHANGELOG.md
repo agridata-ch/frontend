@@ -1,3 +1,9 @@
+## [1.11.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.10.0...v1.11.0-rc.1) (2026-04-23)
+
+### Features
+
+- **authentication:** use roles of user info ([e8dd834](https://github.com/agridata-ch/frontend/commit/e8dd83411dbce7d9785c527fb730ae830c30090d)), closes [DIGIB2-1305](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1305)
+
 ## [1.10.0](https://github.com/agridata-ch/frontend/compare/v1.9.0...v1.10.0) (2026-04-22)
 
 ### Features
