@@ -1,3 +1,9 @@
+## [1.11.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.1...v1.11.0-rc.2) (2026-04-24)
+
+### Features
+
+- **data-request:** show contract tab ([fde4a8a](https://github.com/agridata-ch/frontend/commit/fde4a8a6acff911f506e4c0389ab9bd77dc701e4)), closes [DIGIB2-1203](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1203)
+
 ## [1.11.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.10.0...v1.11.0-rc.1) (2026-04-23)
 
 ### Features
