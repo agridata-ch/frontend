@@ -113,42 +113,45 @@ function waitForStablePosition(element: Element, maxFrames = 120): Promise<void>
     // Two rAF skips before measuring: the first ensures Angular's DOM changes
     // are painted so CSS transitions have a chance to start; the second gives
     // us a base measurement taken after the transition is in motion.
+    const startSecondFrame = createFrameLoop(element, maxFrames, resolve);
+
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        let prev = element.getBoundingClientRect().left;
-        let stableFrames = 0;
-        let totalFrames = 0;
-
-        function checkFrame() {
-          const rect = element.getBoundingClientRect();
-          const current = rect.left;
-          totalFrames++;
-
-          // The element may live inside a ng-content-projected sidepanel that starts
-          // with w-0 (overflow:hidden, fixed right-0). When the panel is closed its
-          // children sit at left ≈ window.innerWidth — visually clipped but still
-          // present in the DOM. Only consider the position stable once the element
-          // is actually inside the visible viewport.
-          const isInViewport = rect.left < window.innerWidth;
-
-          if (isInViewport && Math.abs(current - prev) < 0.5) {
-            stableFrames++;
-          } else {
-            stableFrames = 0;
-            prev = current;
-          }
-
-          if ((isInViewport && stableFrames >= 2) || totalFrames >= maxFrames) {
-            resolve();
-          } else {
-            requestAnimationFrame(checkFrame);
-          }
-        }
-
-        requestAnimationFrame(checkFrame);
-      });
+      requestAnimationFrame(startSecondFrame);
     });
   });
+}
+
+function createFrameLoop(element: Element, maxFrames: number, resolve: () => void) {
+  let prev = element.getBoundingClientRect().left;
+  let stableFrames = 0;
+  let totalFrames = 0;
+
+  return function checkFrame() {
+    const rect = element.getBoundingClientRect();
+    const current = rect.left;
+    totalFrames++;
+
+    // The element may live inside a ng-content-projected sidepanel that starts
+    // with w-0 (overflow:hidden, fixed right-0). When the panel is closed its
+    // children sit at left ≈ window.innerWidth — visually clipped but still
+    // present in the DOM. Only consider the position stable once the element
+    // is actually inside the visible viewport.
+    const isInViewport = rect.left < globalThis.innerWidth;
+
+    if (isInViewport && Math.abs(current - prev) < 0.5) {
+      stableFrames++;
+    } else {
+      stableFrames = 0;
+      prev = current;
+    }
+
+    if ((isInViewport && stableFrames >= 2) || totalFrames >= maxFrames) {
+      resolve();
+      return;
+    }
+
+    requestAnimationFrame(checkFrame);
+  };
 }
 
 function getTableOrListElement(): HTMLElement {

@@ -20,8 +20,8 @@ describe('ButtonComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit onClick event on handleClick', () => {
-    const clickSpy = jest.spyOn(component.onClick, 'emit');
+  it('should emit handleButtonClick event on handleClick', () => {
+    const clickSpy = jest.spyOn(component.handleButtonClick, 'emit');
     const event = new MouseEvent('click');
     component.handleClick(event);
     expect(clickSpy).toHaveBeenCalled();

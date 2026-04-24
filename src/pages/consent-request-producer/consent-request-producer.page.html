@@ -42,7 +42,9 @@
 >
   <app-error-outlet></app-error-outlet>
   <div class="text-center" *i18n="let t; prefix: 'producer.redirect'">
-    <app-agridata-button (onClick)="redirect()"> {{ t('redirectNow') }} </app-agridata-button>
+    <app-agridata-button (handleButtonClick)="redirect()">
+      {{ t('redirectNow') }}
+    </app-agridata-button>
   </div>
 </app-modal>
 } @if (!showRedirect() && showTourIntro()) {

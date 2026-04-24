@@ -10,14 +10,14 @@
   </span>
   <div class="flex flex-col md:flex-row gap-6">
     <app-agridata-button
-      (onClick)="acceptCookies()"
+      (handleButtonClick)="acceptCookies()"
       (keydown.enter)="acceptCookies()"
       [variant]="ButtonVariants.Primary"
     >
       <span>{{ t('acceptCookies') }}</span>
     </app-agridata-button>
     <app-agridata-button
-      (onClick)="declineCookies()"
+      (handleButtonClick)="declineCookies()"
       (keydown.enter)="declineCookies()"
       [variant]="ButtonVariants.Link"
     >

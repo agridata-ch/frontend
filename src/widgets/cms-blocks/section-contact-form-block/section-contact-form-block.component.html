@@ -62,7 +62,7 @@
     />
 
     <div class="flex justify-end">
-      <app-agridata-button (onClick)="handleSubmit()" [variant]="ButtonVariants.Primary">
+      <app-agridata-button (handleButtonClick)="handleSubmit()" [variant]="ButtonVariants.Primary">
         <span>{{ t('submit') }}</span>
       </app-agridata-button>
     </div>

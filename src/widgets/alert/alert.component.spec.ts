@@ -75,7 +75,7 @@ describe('AlertComponent', () => {
       const matchingButton = buttons.find((btn) =>
         btn.query(By.css('[aria-label="common.ariaLabel.close"]')),
       );
-      matchingButton?.triggerEventHandler('onClick', null);
+      matchingButton?.triggerEventHandler('handleButtonClick', null);
 
       expect(component.closeAlert.emit).toHaveBeenCalledWith(true);
     });

@@ -13,7 +13,7 @@ const withTrigger = (bodyTemplate: string, args: Story['args'] = {}): Story => (
     return {
       props: { ...storyArgs, open, ButtonVariants, toggle: () => open.set(true) },
       template: `
-        <app-agridata-button [variant]="ButtonVariants.Primary" ariaLabel="Open modal" (onClick)="toggle()">Open modal</app-agridata-button>
+        <app-agridata-button [variant]="ButtonVariants.Primary" ariaLabel="Open modal" (handleButtonClick)="toggle()">Open modal</app-agridata-button>
         <app-modal [title]="title" [(open)]="open" [showCloseButton]="showCloseButton">
           ${bodyTemplate}
         </app-modal>

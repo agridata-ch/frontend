@@ -10,7 +10,7 @@
     <app-agridata-wizard
       [steps]="formControlSteps()"
       #wizard
-      (onStepChange)="handleStepChange()"
+      (handleStepChange)="handleStepChange()"
       class="flex flex-col flex-1 min-h-0 relative"
     >
       <div wizardContent>
@@ -34,21 +34,24 @@
         <div class="flex grow gap-4 justify-end">
           <app-agridata-button
             [variant]="ButtonVariants.Secondary"
-            (onClick)="handlePreviousStep()"
+            (handleButtonClick)="handlePreviousStep()"
             [disabled]="wizard.currentStep() === 0"
           >
             <fa-icon [icon]="previousIcon"></fa-icon>
             <span class="ml-2">{{ t('previous') }}</span>
           </app-agridata-button>
           @if (wizard.currentStepId() !== FORM_GROUP_NAMES.COMPLETION) {
-            <app-agridata-button (onClick)="handleNextStep()" [disabled]="isNextStepDisabled()">
+            <app-agridata-button
+              (handleButtonClick)="handleNextStep()"
+              [disabled]="isNextStepDisabled()"
+            >
               <span class="mr-2">{{ t('next') }}</span>
               <fa-icon [icon]="nextIcon"></fa-icon>
             </app-agridata-button>
           }
           @if (wizard.currentStepId() === FORM_GROUP_NAMES.COMPLETION) {
             <app-agridata-button
-              (onClick)="handleReleaseContract()"
+              (handleButtonClick)="handleReleaseContract()"
               [disabled]="!canReleaseContract()"
               [loading]="isHandlingReleaseDataRequest()"
             >

@@ -1,12 +1,12 @@
 <app-agridata-button
-  (onClick)="toggleNavigation()"
+  (handleButtonClick)="toggleNavigation()"
   [variant]="ButtonVariants.Icon"
   [additionalClass]="'group'"
   [dataTestId]="'hamburger-menu'"
 >
   <fa-icon [icon]="menuIcon" size="xl" class="text-white group-hover:text-agridata-primary-600" />
 </app-agridata-button>
-<!-- 
+<!--
   we have to set h-[calc(var(--vh,1vh)*100)] here to ensure the mobile navigation covers the full height of the viewport,
   because height: 100dvh; on the parent div does not work as expected
 -->
@@ -21,7 +21,7 @@
     [class.opacity-100]="isNavigationOpen()"
   >
     <app-agridata-button
-      (onClick)="toggleNavigation()"
+      (handleButtonClick)="toggleNavigation()"
       [variant]="ButtonVariants.Icon"
       [dataTestId]="'hamburger-menu-close'"
       class="flex self-end group"
@@ -64,7 +64,7 @@
     @if (isAuthenticated()) {
       <app-agridata-button
         [variant]="ButtonVariants.SecondaryCms"
-        (onClick)="authService.logout()"
+        (handleButtonClick)="authService.logout()"
         [additionalClass]="'w-full'"
       >
         {{ 'account.logout' | i18n }}
@@ -72,7 +72,7 @@
     } @else {
       <app-agridata-button
         [variant]="ButtonVariants.SecondaryCms"
-        (onClick)="authService.login()"
+        (handleButtonClick)="authService.login()"
         [additionalClass]="'w-full'"
       >
         {{ 'account.login' | i18n }}
