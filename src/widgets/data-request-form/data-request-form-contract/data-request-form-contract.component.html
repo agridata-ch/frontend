@@ -5,14 +5,11 @@
   />
 } @else {
   <div class="flex flex-col gap-6 h-full" *i18n="let t; prefix: 'data-request.form.contract'">
-    <app-alert [type]="AlertType.SUCCESS">
-      <div class="flex flex-col">
-        <span class="font-bold">
-          {{ t('inReviewAlert.title') }}
-        </span>
-        {{ t('inReviewAlert.description') }}
-      </div>
-    </app-alert>
+    <app-alert
+      [type]="AlertType.SUCCESS"
+      [title]="t('inReviewAlert.title')"
+      [message]="t('inReviewAlert.description')"
+    />
     <div class="flex flex-col gap-4 justify-center p-10 bg-agridata-content-gray rounded-lg h-105">
       <img
         src="assets/images/data-request-timer.svg"
