@@ -1,3 +1,9 @@
+## [1.11.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.3...v1.11.0-rc.4) (2026-04-28)
+
+### Bug Fixes
+
+- **sonarqube:** fix naming ([16c1e48](https://github.com/agridata-ch/frontend/commit/16c1e48d8990a47c9a577a22389943edafe3c062)), closes [DIGIB2-1313](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1313)
+
 ## [1.11.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.2...v1.11.0-rc.3) (2026-04-27)
 
 ### Features
