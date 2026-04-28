@@ -6,15 +6,9 @@
     [dataTestId]="'alert-migration-' + request.id"
     (closeAlert)="closeMigrationInfo(request.id)"
     class="mb-4"
-  >
-    <div class="flex flex-col gap-4">
-      <span class="font-bold">
-        {{ t('migrationInfo.title', { consumerName: request.dataRequest?.dataConsumerDisplayName })
-        }}
-      </span>
-      {{ t('migrationInfo.description', { name: getMigratedRequestTitle(request) }) }}
-    </div>
-  </app-alert>
+    [title]="t('migrationInfo.title', { consumerName: request.dataRequest?.dataConsumerDisplayName })"
+    [message]="t('migrationInfo.description', { name: getMigratedRequestTitle(request) })"
+  />
   }
   <h2 class="page-title">
     <fa-icon [icon]="fileIcon" class="mr-3" />
@@ -22,9 +16,12 @@
   </h2>
 </ng-container>
 @if (!hasRedirectUrl()) { @if (uidMissing()) {
-<app-alert [type]="AlertType.WARNING" [showCloseButton]="false" class="mb-4">
-  {{ uidMissingWarning() }}
-</app-alert>
+<app-alert
+  [type]="AlertType.WARNING"
+  [showCloseButton]="false"
+  class="mb-4"
+  [message]="uidMissingWarning()"
+/>
 }
 <app-error-outlet></app-error-outlet>
 }

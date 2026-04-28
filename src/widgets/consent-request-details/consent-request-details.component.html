@@ -20,9 +20,7 @@
       />
     </div>
     @if (request()?.showStateAsMigrated) {
-      <app-alert [type]="AlertType.INFO">
-        <span class="flex items-center">{{ t('request.migrated') }}</span>
-      </app-alert>
+      <app-alert [type]="AlertType.INFO" [message]="t('request.migrated')" />
     }
     <h3 class="text-agridata-primary-text">
       {{ requestTitle() }}

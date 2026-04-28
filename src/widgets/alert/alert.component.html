@@ -1,8 +1,15 @@
+<ng-template #messageContent>
+  <span>{{ message() }}</span>
+  @if (additionalInfo()) {
+    <span class="text-sm">{{ additionalInfo() }}</span>
+  }
+</ng-template>
+
 <div
-  class="flex gap-4 py-4 px-6 rounded-lg"
-  [class.bg-gray-200]="type() === AlertType.NEUTRAL"
-  [class.text-gray-800]="type() === AlertType.NEUTRAL"
-  [class.bg-yellow-100]="type() === AlertType.WARNING"
+  class="flex items-center gap-2 py-4 px-6 rounded-lg"
+  [class.bg-gray-100]="type() === AlertType.NEUTRAL"
+  [class.text-gray-600]="type() === AlertType.NEUTRAL"
+  [class.bg-orange-100]="type() === AlertType.WARNING"
   [class.text-orange-700]="type() === AlertType.WARNING"
   [class.bg-red-100]="type() === AlertType.ERROR"
   [class.text-red-700]="type() === AlertType.ERROR"
@@ -11,34 +18,37 @@
   [class.bg-sky-100]="type() === AlertType.INFO"
   [class.text-sky-700]="type() === AlertType.INFO"
 >
-  <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 w-full">
-    <fa-icon class="mt-1 hidden lg:block" size="xl" [icon]="alertIcon()"></fa-icon>
-    <div class="flex justify-between w-full lg:hidden">
-      <fa-icon class="mt-1 lg:hidden" size="lg" [icon]="alertIcon()"></fa-icon>
-      @if (showCloseButton()) {
-        <app-agridata-button
-          ariaLabel="common.ariaLabel.close"
-          [variant]="ButtonVariants.Icon"
-          [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
-          (handleClick)="closeAlert.emit(true)"
-        >
-          <fa-icon size="xl" [icon]="closeIcon"></fa-icon>
-        </app-agridata-button>
+  <!-- desktop icon -->
+  <fa-icon class="hidden lg:block shrink-0" size="xl" [icon]="alertIcon()"></fa-icon>
+  <!-- content -->
+  <div class="flex flex-col flex-1 min-w-0 whitespace-pre-line">
+    <div class="flex items-center gap-2">
+      <!-- mobile icon -->
+      <fa-icon class="shrink-0 lg:hidden" size="xl" [icon]="alertIcon()"></fa-icon>
+      @if (title()) {
+        <span class="font-bold">{{ title() }}</span>
+      } @else {
+        <div class="flex flex-col gap-2">
+          <ng-container [ngTemplateOutlet]="messageContent" />
+        </div>
       }
     </div>
-    <ng-content></ng-content>
-    @if (showCloseButton()) {
-      <div class="hidden lg:block">
-        <app-agridata-button
-          class="hidden lg:block"
-          ariaLabel="common.ariaLabel.close"
-          [variant]="ButtonVariants.Icon"
-          [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
-          (handleClick)="closeAlert.emit(true)"
-        >
-          <fa-icon size="xl" [icon]="closeIcon"></fa-icon>
-        </app-agridata-button>
+    @if (title()) {
+      <div class="flex flex-col mt-4 lg:mt-1 gap-2">
+        <ng-container [ngTemplateOutlet]="messageContent" />
       </div>
     }
   </div>
+  <!-- close button -->
+  @if (showCloseButton()) {
+    <app-agridata-button
+      ariaLabel="common.ariaLabel.close"
+      [variant]="ButtonVariants.Icon"
+      [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
+      (handleClick)="closeAlert.emit(true)"
+      additionalClass="self-start"
+    >
+      <fa-icon size="xl" [icon]="closeIcon"></fa-icon>
+    </app-agridata-button>
+  }
 </div>
