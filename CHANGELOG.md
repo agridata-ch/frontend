@@ -1,3 +1,13 @@
+## [1.11.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.4...v1.11.0-rc.5) (2026-04-29)
+
+### Features
+
+- **alert:** update alert component ([e69d2bc](https://github.com/agridata-ch/frontend/commit/e69d2bcd478f1a27700d2711450d4f873d680f06)), closes [DIGIB2-1022](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1022)
+
+### Bug Fixes
+
+- **build:** fix build ([adc5b13](https://github.com/agridata-ch/frontend/commit/adc5b13b6a002a6c069222d3245d03abc20e45fc)), closes [DIGIB2-1022](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1022)
+
 ## [1.11.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.3...v1.11.0-rc.4) (2026-04-28)
 
 ### Bug Fixes
