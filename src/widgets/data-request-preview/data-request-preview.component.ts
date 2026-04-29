@@ -35,15 +35,20 @@ import { AgridataContactCardComponent } from '../agridata-contact-card';
   templateUrl: './data-request-preview.component.html',
 })
 export class DataRequestPreviewComponent {
-  protected readonly dataRequest = input.required<DataRequestDto>();
+  // Injects
   protected readonly metaDataService = inject(MasterDataService);
 
+  // Inputs
+  readonly dataRequest = input.required<DataRequestDto>();
+
+  // Constants
   protected readonly availableLangs = availableLangs;
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
   protected readonly getFieldFromLang = getFieldFromLang;
   protected readonly faSpinnerThird = faSpinnerThird;
 
+  // Computed
   protected readonly dataProvider = computed(() => {
     return this.metaDataService
       .dataProviders()
