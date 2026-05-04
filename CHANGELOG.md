@@ -1,3 +1,9 @@
+## [1.11.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.6...v1.11.0-rc.7) (2026-05-04)
+
+### Features
+
+- **signature-policy:** add signature-policy ([90f6406](https://github.com/agridata-ch/frontend/commit/90f6406bd7eca65d97933da26b62b3e35aa13cea)), closes [DIGIB2-1286](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1286)
+
 ## [1.11.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.5...v1.11.0-rc.6) (2026-05-04)
 
 ### Features
