@@ -468,11 +468,11 @@
       "options": {
         "collective": {
           "title": "Signature collective (deux personnes requises)",
-          "subtitle": "Deux signatures par partie contractante sont requises. Une deuxième personne habilitée à signer au nom de {{ company }} doit également signer le contrat."
+          "subtitle": "Pour votre organisation ({{ company }}), le contrat doit être signé par deux personnes disposant du droit de signature."
         },
         "individual": {
           "title": "Signature unique (une seule personne suffit)",
-          "subtitle": "Une signature par partie contractante suffit. En cochant cette case, vous confirmez de manière juridiquement valable que vous disposez du pouvoir de signature individuel requis."
+          "subtitle": "Pour votre organisation ({{ company }}), la signature d'une seule personne disposant du droit de signature est suffisante. Par ce choix, vous confirmez de manière juridiquement contraignante que vous disposez d'un droit de signature individuelle."
         }
       },
       "title": "Règles relatives aux signatures",

@@ -56,6 +56,7 @@ export class DataRequestContractSignaturePolicyComponent {
     {
       subtitle: this.i18nService.translate(
         'data-request.contractSignaturePolicy.options.individual.subtitle',
+        { company: this.companyName() },
       ),
       title: this.i18nService.translate(
         'data-request.contractSignaturePolicy.options.individual.title',
