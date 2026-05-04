@@ -468,11 +468,11 @@
       "options": {
         "collective": {
           "title": "Firma collettiva (sono necessarie due persone)",
-          "subtitle": "Sono necessarie due firme per ciascuna parte contraente. Anche un secondo firmatario autorizzato di {{ company }} deve firmare il contratto."
+          "subtitle": "Per la vostra organizzazione ({{ company }}), il contratto deve essere firmato da due persone autorizzate."
         },
         "individual": {
           "title": "Firma singola (è sufficiente una sola persona)",
-          "subtitle": "È sufficiente una firma per ciascuna parte contraente. Con questa scelta confermate in modo giuridicamente vincolante di disporre della relativa facoltà di firma individuale."
+          "subtitle": "Per la vostra organizzazione ({{ company }}), è sufficiente la firma di una sola persona autorizzata. Con questa selezione, confermate in modo legalmente vincolante di disporre del corrispondente potere di firma individuale."
         }
       },
       "title": "Regolamento sulle firme",

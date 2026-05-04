@@ -468,11 +468,11 @@
       "options": {
         "collective": {
           "title": "Kollektivunterschrift (zwei Personen erforderlich)",
-          "subtitle": "Zwei Unterschriften pro Vertragspartei notwendig. Eine zweite zeichnungsberechtigte Person aus {{ company }} muss den Vertrag ebenfalls unterzeichnen."
+          "subtitle": "Für Ihre Organisation ({{ company }}) muss der Vertrag von zwei zeichnungsberechtigten Personen unterzeichnet werden."
         },
         "individual": {
           "title": "Einzelunterschrift (eine Person ausreichend)",
-          "subtitle": "Eine Unterschrift pro Vertragspartei genügt. Mit dieser Auswahl bestätigen Sie rechtsverbindlich, dass Sie über die entsprechende Einzelzeichnungsberechtigung verfügen."
+          "subtitle": "Für Ihre Organisation ({{ company }}) ist die Unterschrift einer einzelnen zeichnungsberechtigten Person ausreichend. Mit dieser Auswahl bestätigen Sie rechtsverbindlich, dass Sie über die entsprechende Einzelzeichnungsberechtigung verfügen."
         }
       },
       "title": "Unterschriftenregelung",
