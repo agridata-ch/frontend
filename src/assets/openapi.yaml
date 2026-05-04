@@ -192,6 +192,14 @@ components:
               $ref: "#/components/schemas/UUID"
               type: string
               description: Id of current contract revision
+            consumerSignatureType:
+              $ref: "#/components/schemas/SignatureTypeEnum"
+              type: string
+              description: Signature type for consumer
+            providerSignatureType:
+              $ref: "#/components/schemas/SignatureTypeEnum"
+              type: string
+              description: Signature type for provider
         consentRequests:
           type: array
           items:
@@ -500,6 +508,14 @@ components:
               $ref: "#/components/schemas/UUID"
               type: string
               description: Id of current contract revision
+            consumerSignatureType:
+              $ref: "#/components/schemas/SignatureTypeEnum"
+              type: string
+              description: Signature type for consumer
+            providerSignatureType:
+              $ref: "#/components/schemas/SignatureTypeEnum"
+              type: string
+              description: Signature type for provider
     ConsentRequestStateEnum:
       type: string
       enum:
@@ -571,6 +587,16 @@ components:
           items:
             $ref: "#/components/schemas/ContractRevisionSignatureDto"
           description: List of signatures of the data provider
+        consumerSignatureType:
+          $ref: "#/components/schemas/SignatureTypeEnum"
+          type: string
+          description: Defines whether the consumer party uses a individual or a collective
+            signature
+        providerSignatureType:
+          $ref: "#/components/schemas/SignatureTypeEnum"
+          type: string
+          description: Defines whether the provider party uses a individual or a collective
+            signature
     ContractRevisionSignatureDto:
       type: object
       required:
@@ -847,6 +873,14 @@ components:
           $ref: "#/components/schemas/UUID"
           type: string
           description: Id of current contract revision
+        consumerSignatureType:
+          $ref: "#/components/schemas/SignatureTypeEnum"
+          type: string
+          description: Signature type for consumer
+        providerSignatureType:
+          $ref: "#/components/schemas/SignatureTypeEnum"
+          type: string
+          description: Signature type for provider
     DataRequestPurposeDto:
       type: object
       properties:
@@ -1288,6 +1322,11 @@ components:
       - DATA_CONSUMER_02
       - DATA_PROVIDER_01
       - DATA_PROVIDER_02
+    SignatureTypeEnum:
+      type: string
+      enum:
+      - INDIVIDUAL_SIGNATURE
+      - COLLECTIVE_SIGNATURE
     TranslationDto:
       type: object
       properties:
@@ -1770,6 +1809,7 @@ paths:
       summary: Get Contract Revision
       security:
       - SecurityScheme:
+        - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Datenanbieter
       x-api-subset: agridata.ch Web App
@@ -1809,6 +1849,8 @@ paths:
       summary: Get Contract Revision Pdf
       security:
       - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Datenbezueger
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/contract-revisions/{id}/seals:
@@ -2389,6 +2431,54 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: agridata.ch Web App
+  /api/agreement/v1/data-requests/{id}/signature-type:
+    put:
+      description: Sets the type of signature (single or pair) for the current role.
+        Available to the consumer and provider of a data request.
+      operationId: setSignatureType
+      tags:
+      - Data Requests
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignatureTypeEnum"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataRequestDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Update Signature Type
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Datenanbieter
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/status:
     put:
@@ -3432,7 +3522,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.8.0-rc.27
+  version: 1.9.0-rc.3
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

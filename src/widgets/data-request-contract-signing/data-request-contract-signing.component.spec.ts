@@ -1,8 +1,8 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContractRevisionService } from '@/entities/api';
-import { DataRequestDto, SignatureSlotCodeEnum } from '@/entities/openapi';
+import { ContractRevisionService, DataRequestService } from '@/entities/api';
+import { DataRequestDto, SignatureSlotCodeEnum, SignatureTypeEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
@@ -13,6 +13,7 @@ import {
   mockOtpChallenge,
   MockContractRevisionService,
 } from '@/shared/testing/mocks/mock-contract-revision-service';
+import { createMockDataRequestService } from '@/shared/testing/mocks/mock-data-request-service';
 import {
   createMockToastService,
   MockToastService,
@@ -49,6 +50,7 @@ describe('DataRequestContractSigningComponent', () => {
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: ContractRevisionService, useValue: contractRevisionService },
+        { provide: DataRequestService, useValue: createMockDataRequestService() },
         { provide: I18nService, useValue: i18nService },
         { provide: ToastService, useValue: toastService },
       ],
@@ -204,6 +206,68 @@ describe('DataRequestContractSigningComponent', () => {
       await expect(
         component.verifySigningProcess(SignatureSlotCodeEnum.DataConsumer01, 'ch-1', '123456'),
       ).rejects.toThrow();
+    });
+  });
+
+  describe('isCollectiveSignatureType', () => {
+    it('should return true for a consumer with CollectiveSignature', () => {
+      authService.__testSignals.isConsumer.set(true);
+      const f = TestBed.createComponent(DataRequestContractSigningComponent);
+      f.componentRef.setInput('dataRequest', {
+        ...mockDataRequest,
+        consumerSignatureType: SignatureTypeEnum.CollectiveSignature,
+      });
+      f.detectChanges();
+      expect(f.componentInstance['isCollectiveSignatureType']()).toBe(true);
+    });
+
+    it('should return false for a consumer with IndividualSignature', () => {
+      authService.__testSignals.isConsumer.set(true);
+      const f = TestBed.createComponent(DataRequestContractSigningComponent);
+      f.componentRef.setInput('dataRequest', {
+        ...mockDataRequest,
+        consumerSignatureType: SignatureTypeEnum.IndividualSignature,
+      });
+      f.detectChanges();
+      expect(f.componentInstance['isCollectiveSignatureType']()).toBe(false);
+    });
+
+    it('should default to true for a consumer when type is not set', () => {
+      authService.__testSignals.isConsumer.set(true);
+      const f = TestBed.createComponent(DataRequestContractSigningComponent);
+      f.componentRef.setInput('dataRequest', mockDataRequest);
+      f.detectChanges();
+      expect(f.componentInstance['isCollectiveSignatureType']()).toBe(true);
+    });
+
+    it('should return true for a provider with CollectiveSignature', () => {
+      authService.__testSignals.isDataProvider.set(true);
+      const f = TestBed.createComponent(DataRequestContractSigningComponent);
+      f.componentRef.setInput('dataRequest', {
+        ...mockDataRequest,
+        providerSignatureType: SignatureTypeEnum.CollectiveSignature,
+      });
+      f.detectChanges();
+      expect(f.componentInstance['isCollectiveSignatureType']()).toBe(true);
+    });
+
+    it('should return false for a provider with IndividualSignature', () => {
+      authService.__testSignals.isDataProvider.set(true);
+      const f = TestBed.createComponent(DataRequestContractSigningComponent);
+      f.componentRef.setInput('dataRequest', {
+        ...mockDataRequest,
+        providerSignatureType: SignatureTypeEnum.IndividualSignature,
+      });
+      f.detectChanges();
+      expect(f.componentInstance['isCollectiveSignatureType']()).toBe(false);
+    });
+
+    it('should default to true for a provider when type is not set', () => {
+      authService.__testSignals.isDataProvider.set(true);
+      const f = TestBed.createComponent(DataRequestContractSigningComponent);
+      f.componentRef.setInput('dataRequest', mockDataRequest);
+      f.detectChanges();
+      expect(f.componentInstance['isCollectiveSignatureType']()).toBe(true);
     });
   });
 });

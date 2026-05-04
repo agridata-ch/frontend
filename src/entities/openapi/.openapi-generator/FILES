@@ -61,6 +61,7 @@ model/producerIdentifier.ts
 model/resourceQueryDto.ts
 model/sealAttemptStateEnum.ts
 model/signatureSlotCodeEnum.ts
+model/signatureTypeEnum.ts
 model/translationDto.ts
 model/uidDto.ts
 model/uidRegisterAddressDto.ts

@@ -59,5 +59,6 @@ export function createMockDataRequestService(): MockDataRequestService {
     uploadLogo: jest.fn().mockResolvedValue(undefined),
     releaseDataRequestToBeActivated: jest.fn().mockResolvedValue(mockDataRequests[0]),
     releaseDataRequestToProvider: jest.fn().mockResolvedValue(mockDataRequests[0]),
+    setSignatureType: jest.fn().mockResolvedValue(mockDataRequests[0]),
   } satisfies MockDataRequestService;
 }

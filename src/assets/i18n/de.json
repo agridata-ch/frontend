@@ -463,6 +463,20 @@
         "title": "Antrag zur Genehmigung bereit",
         "message": "Mit einem Klick auf “{{ releaseContract }}” geben Sie den Vertrag seitens Ihrer Organisation frei. Der Vertrag wird nun versiegelt und anschliessend aktiviert. Sobald der Antrag aktiv ist, können die Datenproduzenten (Landwirte, Tierhalter, etc.) eine Datenanfrage erhalten und ihre Zustimmung geben. Zudem können die Datenbezüger mit dem Bezug der Daten starten, sofern Zustimmungen der Datenproduzenten vorliegen."
       }
+    },
+    "contractSignaturePolicy": {
+      "options": {
+        "collective": {
+          "title": "Kollektivunterschrift (zwei Personen erforderlich)",
+          "subtitle": "Zwei Unterschriften pro Vertragspartei notwendig. Eine zweite zeichnungsberechtigte Person aus {{ company }} muss den Vertrag ebenfalls unterzeichnen."
+        },
+        "individual": {
+          "title": "Einzelunterschrift (eine Person ausreichend)",
+          "subtitle": "Eine Unterschrift pro Vertragspartei genügt. Mit dieser Auswahl bestätigen Sie rechtsverbindlich, dass Sie über die entsprechende Einzelzeichnungsberechtigung verfügen."
+        }
+      },
+      "title": "Unterschriftenregelung",
+      "subtitle": "Wählen Sie, die Unterschriftenregelung gemäss den Vorgaben von {{ company }}."
     }
   },
   "forms": {

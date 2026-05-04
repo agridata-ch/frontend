@@ -463,6 +463,20 @@
         "title": "Demande prête pour approbation",
         "message": "En cliquant sur « {{ releaseContract }} », vous libérez le contrat au nom de votre organisation. Dès que la demande est active, les producteurs de données (agriculteurs, éleveurs, etc.) peuvent recevoir une demande de données et donner leur accord. De plus, les utilisateurs de données peuvent commencer à récupérer les données dès lors qu’ils ont obtenu l’accord des producteurs de données."
       }
+    },
+    "contractSignaturePolicy": {
+      "options": {
+        "collective": {
+          "title": "Signature collective (deux personnes requises)",
+          "subtitle": "Deux signatures par partie contractante sont requises. Une deuxième personne habilitée à signer au nom de {{ company }} doit également signer le contrat."
+        },
+        "individual": {
+          "title": "Signature unique (une seule personne suffit)",
+          "subtitle": "Une signature par partie contractante suffit. En cochant cette case, vous confirmez de manière juridiquement valable que vous disposez du pouvoir de signature individuel requis."
+        }
+      },
+      "title": "Règles relatives aux signatures",
+      "subtitle": "Veuillez choisir le régime de signature conformément aux directives de {{ company }}."
     }
   },
   "forms": {

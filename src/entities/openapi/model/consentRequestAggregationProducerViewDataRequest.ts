@@ -11,6 +11,7 @@ import { DataSourceSystemReferenceDto } from './dataSourceSystemReferenceDto';
 import { DataRequestPurposeDto } from './dataRequestPurposeDto';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
+import { SignatureTypeEnum } from './signatureTypeEnum';
 
 
 /**
@@ -92,5 +93,16 @@ export interface ConsentRequestAggregationProducerViewDataRequest {
      */
     validRedirectUriRegex?: string;
     currentContractRevisionId?: string;
+    /**
+     * Signature type for consumer
+     */
+    consumerSignatureType?: SignatureTypeEnum;
+    /**
+     * Signature type for provider
+     */
+    providerSignatureType?: SignatureTypeEnum;
 }
+export namespace ConsentRequestAggregationProducerViewDataRequest {
+}
+
 
