@@ -463,6 +463,20 @@
         "title": "Domanda pronta per l'approvazione",
         "message": "Cliccando su « {{ releaseContract }} », date il via libera al contratto per conto della vostra organizzazione. Non appena la richiesta sarà attiva, i produttori di dati (agricoltori, allevatori, ecc.) potranno ricevere una richiesta di dati e dare il loro consenso. Inoltre, gli acquirenti di dati potranno iniziare a scaricare i dati, a condizione che siano stati ottenuti i consensi dei produttori di dati."
       }
+    },
+    "contractSignaturePolicy": {
+      "options": {
+        "collective": {
+          "title": "Firma collettiva (sono necessarie due persone)",
+          "subtitle": "Sono necessarie due firme per ciascuna parte contraente. Anche un secondo firmatario autorizzato di {{ company }} deve firmare il contratto."
+        },
+        "individual": {
+          "title": "Firma singola (è sufficiente una sola persona)",
+          "subtitle": "È sufficiente una firma per ciascuna parte contraente. Con questa scelta confermate in modo giuridicamente vincolante di disporre della relativa facoltà di firma individuale."
+        }
+      },
+      "title": "Regolamento sulle firme",
+      "subtitle": "Selezionare la procedura di firma in conformità con le direttive di {{ company }}."
     }
   },
   "forms": {

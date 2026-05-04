@@ -14,7 +14,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
-import { ContractRevisionDto, DataRequestDto, SignatureSlotCodeEnum } from '@/entities/openapi';
+import {
+  ContractRevisionDto,
+  DataRequestDto,
+  SignatureSlotCodeEnum,
+  SignatureTypeEnum,
+} from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
 import { AuthService } from '@/shared/lib/auth';
@@ -22,6 +27,7 @@ import { ToastService, ToastType } from '@/shared/toast';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { DataRequestContractPdfComponent } from '@/widgets/data-request-contract-pdf';
+import { DataRequestContractSignaturePolicyComponent } from '@/widgets/data-request-contract-signature-policy';
 
 import { ContractSignatureInputComponent } from './contract-signature-input/contract-signature-input.component';
 import { SlotChallenge } from './data-request-contract-signing.model';
@@ -29,7 +35,7 @@ import { SlotChallenge } from './data-request-contract-signing.model';
 /**
  * Component for signing the data request contract.
  *
- * CommentLastReviewed: 2026-03-20
+ * CommentLastReviewed: 2026-05-04
  */
 @Component({
   selector: 'app-data-request-contract-signing',
@@ -40,6 +46,7 @@ import { SlotChallenge } from './data-request-contract-signing.model';
     AgridataContactCardComponent,
     ContractSignatureInputComponent,
     DataRequestContractPdfComponent,
+    DataRequestContractSignaturePolicyComponent,
   ],
   templateUrl: './data-request-contract-signing.component.html',
 })
@@ -92,6 +99,15 @@ export class DataRequestContractSigningComponent {
   protected readonly companyName = computed(() =>
     this.isDataConsumer ? this.contract()?.dataConsumerName : this.contract()?.dataProviderName,
   );
+
+  protected readonly isCollectiveSignatureType = computed(() => {
+    const type = this.isDataConsumer
+      ? this.dataRequest().consumerSignatureType
+      : this.dataRequest().providerSignatureType;
+    return (
+      (type ?? SignatureTypeEnum.CollectiveSignature) === SignatureTypeEnum.CollectiveSignature
+    );
+  });
 
   protected readonly slot1Signature = computed(() => {
     if (this.isDataConsumer) {
