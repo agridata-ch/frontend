@@ -1,12 +1,13 @@
 <div class="overflow-hidden rounded-lg border border-agridata-stroke">
   @for (option of options(); track option.value) {
     <label
-      class="group flex items-center gap-4 px-6 py-7 hover:bg-gray-100"
+      class="group flex items-center gap-4 px-6 py-7 disabled:hover:bg-white"
       [class.border-t]="$index > 0"
       [class.border-gray-300]="$index > 0"
       [class.cursor-pointer]="!disabled()"
       [class.cursor-not-allowed]="disabled()"
-      [class.opacity-60]="disabled()"
+      [class.hover:bg-gray-100]="!disabled()"
+      [class.hover:bg-white]="disabled()"
     >
       <span class="relative mt-1 h-6 w-6 shrink-0">
         <input
@@ -27,7 +28,9 @@
 
         <span
           aria-hidden="true"
-          class="absolute top-1/2 left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-0 scale-0 transition-all duration-150 peer-checked:opacity-100 peer-checked:scale-100"
+          class="absolute top-1/2 left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 scale-0 transition-all duration-150 peer-checked:opacity-100 peer-checked:scale-100"
+          [class.bg-white]="!disabled()"
+          [class.bg-gray-600]="disabled()"
         ></span>
       </span>
 
