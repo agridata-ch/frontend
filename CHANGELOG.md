@@ -1,3 +1,9 @@
+## [1.11.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.8...v1.11.0-rc.9) (2026-05-05)
+
+### Bug Fixes
+
+- **agridata-table:** fix search ([9099cee](https://github.com/agridata-ch/frontend/commit/9099cee0ab9860eb328b03ed41eab70197b8e5b2)), closes [DIGIB2-1341](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1341)
+
 ## [1.11.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.7...v1.11.0-rc.8) (2026-05-05)
 
 ### Features
