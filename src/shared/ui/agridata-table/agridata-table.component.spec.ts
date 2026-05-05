@@ -241,6 +241,12 @@ describe('AgridataTableComponent', () => {
       expect(component['searchTerm']()).toBe('test search');
     });
 
+    it('should reset page to first page when searching', () => {
+      component['nextPageIndex'].set(4);
+      component['handleSearchInput']('test');
+      expect(component['nextPageIndex']()).toBe(0);
+    });
+
     it('should emit query param change with search term', (done) => {
       fixture.componentRef.setInput('enableSearch', true);
       fixture.detectChanges();
@@ -495,13 +501,14 @@ describe('AgridataTableComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should emit updated query params when multiple values change', (done) => {
+    it('should reset page to 0 and emit updated search term', (done) => {
       fixture.detectChanges();
+      component['nextPageIndex'].set(1);
 
       const subscription = component.queryParameters.subscribe(
         (params: ResourceQueryDto | undefined) => {
-          if (params?.page === 1 && params?.searchTerm === 'test') {
-            expect(params.page).toBe(1);
+          if (params?.page === 0 && params?.searchTerm === 'test') {
+            expect(params.page).toBe(0);
             expect(params.searchTerm).toBe('test');
             subscription.unsubscribe();
             done();
@@ -509,7 +516,6 @@ describe('AgridataTableComponent', () => {
         },
       );
 
-      component['nextPageIndex'].set(1);
       component['handleSearchInput']('test');
     });
   });
