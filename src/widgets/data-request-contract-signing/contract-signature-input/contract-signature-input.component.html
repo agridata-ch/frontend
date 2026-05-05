@@ -12,12 +12,12 @@
   @if (existingSignature()) {
     <app-alert
       [type]="AlertType.SUCCESS"
-      [title]="
+      [message]="
         t('alreadySigned.description', {
           name: existingSignature()?.name,
         })
       "
-      [message]="existingSignature()?.timestamp | agridataDate: 'middle'"
+      [additionalInfo]="existingSignature()?.timestamp | agridataDate: 'middle'"
     />
   } @else if (showWaitingState()) {
     <div class="flex flex-col gap-4 justify-center rounded-lg py-6">

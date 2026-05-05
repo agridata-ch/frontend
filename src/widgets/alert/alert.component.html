@@ -18,13 +18,10 @@
   [class.bg-sky-100]="type() === AlertType.INFO"
   [class.text-sky-700]="type() === AlertType.INFO"
 >
-  <!-- desktop icon -->
-  <fa-icon class="hidden lg:block shrink-0" size="xl" [icon]="alertIcon()"></fa-icon>
   <!-- content -->
   <div class="flex flex-col flex-1 min-w-0 whitespace-pre-line">
     <div class="flex items-center gap-2">
-      <!-- mobile icon -->
-      <fa-icon class="shrink-0 lg:hidden" size="xl" [icon]="alertIcon()"></fa-icon>
+      <fa-icon class="shrink-0" size="xl" [icon]="alertIcon()"></fa-icon>
       @if (title()) {
         <span class="font-bold">{{ title() }}</span>
       } @else {
