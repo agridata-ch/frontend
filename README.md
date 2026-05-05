@@ -6,8 +6,8 @@ This is the frontend of agridata.ch. The frontend is built with Angular and Type
 
 ## Requirements
 
-- Node.js (>= 20.0.0)
-- npm (>= 10.0.0)
+- Node.js (>= 24.0.0)
+- npm (>= 11.0.0)
 
 ## Installation
 
@@ -24,6 +24,8 @@ cd frontend
 ```bash
 FONTAWESOME_PACKAGE_TOKEN={{your_token_here}}
 ```
+
+If you get an authentication error then the preinstall script does not correctly fetch the token from your .env file so then past the token directly in to the .npmrc but don't check in this change!
 
 If you are on windows npm may not be able to use the .env file directly. In this case you can set the environment variable manually in powershell:
 

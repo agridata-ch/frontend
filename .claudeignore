@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Angular cache (das ist ein grosser Token-Fresser!)
+.angular/
+
+# Test coverage
+coverage/
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+
+# Env files
+.env
+.env.\*
+!.env.example
+
+# Generated
+_.min.js
+_.min.css
+\*.map
+
+# Logs
+\*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
