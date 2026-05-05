@@ -1,3 +1,9 @@
+## [1.11.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.7...v1.11.0-rc.8) (2026-05-05)
+
+### Features
+
+- **ui:** alert and radio styles ([787bab7](https://github.com/agridata-ch/frontend/commit/787bab748821a21689e666f2f25abe5924a22112))
+
 ## [1.11.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.6...v1.11.0-rc.7) (2026-05-04)
 
 ### Features
