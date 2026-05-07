@@ -1,3 +1,9 @@
+## [1.11.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.10...v1.11.0-rc.11) (2026-05-07)
+
+### Features
+
+- **activation:** change stateCode to make button visible ([5fd6099](https://github.com/agridata-ch/frontend/commit/5fd609924eb48f051f12d37238265931eeef3106)), closes [DIGIB2-XXX](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-XXX)
+
 ## [1.11.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.9...v1.11.0-rc.10) (2026-05-06)
 
 ### Features
