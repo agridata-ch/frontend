@@ -7,11 +7,15 @@ import { MasterDataService } from '@/entities/api/master-data.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
-import { createMockDataRequestService, createMockI18nService } from '@/shared/testing/mocks';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
-import { createMockContractRevisionService } from '@/shared/testing/mocks/mock-contract-revision-service';
-import { createMockErrorHandlerService } from '@/shared/testing/mocks/mock-error-handler.service';
-import { createMockMasterDataService } from '@/shared/testing/mocks/mock-master-data-service';
+import {
+  createMockDataRequestService,
+  createMockI18nService,
+  createMockAuthService,
+  MockAuthService,
+  createMockContractRevisionService,
+  createMockErrorHandlerService,
+  createMockMasterDataService,
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { DataRequestWizardComponent } from './data-request-wizard.component';

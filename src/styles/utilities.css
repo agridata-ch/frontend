@@ -40,3 +40,14 @@
   white-space: normal;
   overflow-wrap: anywhere;
 }
+
+.agridata-ellipsis-multiline {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}

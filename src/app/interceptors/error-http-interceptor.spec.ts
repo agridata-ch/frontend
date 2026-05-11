@@ -16,11 +16,11 @@ import { ExceptionDto, ExceptionEnum } from '@/entities/openapi';
 import { DebugService } from '@/features/debug/debug.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
-import { DummyComponent } from '@/shared/testing/mocks/dummy-components';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
+  DummyComponent,
+} from '@/shared/testing/mocks';
 
 import {
   AUTHORIZED_UIDS_ERROR_HANDLING,

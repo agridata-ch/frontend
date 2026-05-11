@@ -6,15 +6,14 @@ import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { createMockDataRequestService, MockDataRequestService } from '@/shared/testing/mocks';
 import {
+  createMockDataRequestService,
+  MockDataRequestService,
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-wizard';
 

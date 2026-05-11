@@ -1,5 +1,5 @@
 import { UidRegisterService } from '@/entities/api';
-import { Mockify } from '@/shared/testing/mocks/test-model';
+import { Mockify } from '@/shared/testing/mocks';
 
 export type MockUidRegisterService = Mockify<UidRegisterService>;
 

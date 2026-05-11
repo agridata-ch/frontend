@@ -5,12 +5,13 @@ import { DataRequestService } from '@/entities/api';
 import { ContractRevisionDto, DataRequestDto, SignatureTypeEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
-import { createMockI18nService } from '@/shared/testing/mocks';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 import {
+  createMockI18nService,
+  createMockAuthService,
+  MockAuthService,
   createMockDataRequestService,
   MockDataRequestService,
-} from '@/shared/testing/mocks/mock-data-request-service';
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { DataRequestContractSignaturePolicyComponent } from './data-request-contract-signature-policy.component';

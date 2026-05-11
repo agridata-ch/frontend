@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { createMockDataRequestService, MockDataRequestService } from '@/shared/testing/mocks';
 import {
+  createMockDataRequestService,
+  MockDataRequestService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { AdminPage, FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from './admin.page';

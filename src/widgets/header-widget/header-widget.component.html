@@ -30,6 +30,7 @@
   <div class="hidden lg:flex flex-row gap-10 items-center">
     @if (isAuthenticated()) {
       <app-contact-support-info />
+      <app-notification-overlay />
     }
     <agridata-language-select />
     @if (isAuthenticated() && userInfo()) {

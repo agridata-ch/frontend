@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, computed, input, output } from '@angular/core';
+import { Component, HostBinding, booleanAttribute, computed, input, output } from '@angular/core';
 import { faSpinner } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FaIconComponent, IconDefinition } from '@fortawesome/angular-fontawesome';
@@ -25,11 +25,11 @@ export class ButtonComponent {
   // Input properties
   variant = input<ButtonVariants>(ButtonVariants.Primary);
   type = input<'button' | 'submit' | 'reset'>('button');
-  disabled = input<boolean>(false);
+  disabled = input(false, { transform: booleanAttribute });
   tabindex = input<number>(0);
   ariaLabel = input<string>('');
-  selected = input<boolean>(false);
-  loading = input<boolean>(false);
+  selected = input(false, { transform: booleanAttribute });
+  loading = input(false, { transform: booleanAttribute });
   disabledInfo = input<string>('');
   additionalClass = input<string>('');
   href = input<string>('');
@@ -49,7 +49,9 @@ export class ButtonComponent {
   protected readonly IconPosition = IconPosition;
 
   // Computed signals
-  protected readonly isIconLink = computed(() => this.variant() === ButtonVariants.IconLink);
+  protected readonly isIconLink = computed(
+    () => this.variant() === ButtonVariants.IconLink || this.icon() !== undefined,
+  );
 
   onButtonClick(event: Event) {
     event.preventDefault();

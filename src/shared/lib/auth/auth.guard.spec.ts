@@ -3,11 +3,12 @@ import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AGATE_LOGIN_ID_IMPERSONATION_HEADER, ROUTE_PATHS } from '@/shared/constants/constants';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 import {
+  createMockAuthService,
+  MockAuthService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+} from '@/shared/testing/mocks';
 
 import { AuthorizationGuard } from './auth.guard';
 import { AuthService } from './auth.service';

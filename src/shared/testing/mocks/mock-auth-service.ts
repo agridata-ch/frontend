@@ -4,7 +4,7 @@ import { signal, WritableSignal } from '@angular/core';
 
 import { UidDto, UserInfoDto } from '@/entities/openapi';
 import { AuthService } from '@/shared/lib/auth/auth.service';
-import { MockifyWithWritableSignals } from '@/shared/testing/mocks/test-model';
+import { MockifyWithWritableSignals } from '@/shared/testing/mocks';
 
 /**
  * Test signals exposed by the mock so tests can mutate the underlying writable signals.

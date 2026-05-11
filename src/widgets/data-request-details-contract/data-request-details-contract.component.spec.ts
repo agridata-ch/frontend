@@ -7,11 +7,9 @@ import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import {
   createMockContractRevisionService,
   MockContractRevisionService,
-} from '@/shared/testing/mocks/mock-contract-revision-service';
-import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+} from '@/shared/testing/mocks';
 
 import { DataRequestDetailsContractComponent } from './data-request-details-contract.component';
 

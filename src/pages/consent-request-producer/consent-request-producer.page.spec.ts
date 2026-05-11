@@ -23,24 +23,16 @@ import {
   mockConsentRequests,
   MockDataRequestService,
   MockI18nService,
-} from '@/shared/testing/mocks';
-import {
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import { createMockAnalyticsService } from '@/shared/testing/mocks/mock-analytics-service';
-import {
+  createMockAnalyticsService,
   createMockConsentRequestService,
   MockConsentRequestService,
-} from '@/shared/testing/mocks/mock-consent-request-service';
-import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
-import {
   createMockMasterDataService,
   MockMasterDataService,
-} from '@/shared/testing/mocks/mock-master-data-service';
+} from '@/shared/testing/mocks';
 
 describe('ConsentRequestProducerPage - component behavior', () => {
   let fixture: ComponentFixture<ConsentRequestProducerPage>;

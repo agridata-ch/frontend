@@ -21,8 +21,9 @@ import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
+  createMockAuthService,
+  MockAuthService,
+} from '@/shared/testing/mocks';
 
 describe('producerUidGuard', () => {
   let producerUidGuard: ProducerUidGuard;

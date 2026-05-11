@@ -4,6 +4,7 @@ export const ROUTE_PATHS = {
   DATA_REQUESTS_CONSUMER_PATH: 'data-requests',
   DATA_REQUESTS_PROVIDER_PATH: 'data-requests-provider',
   SUPPORT_PATH: 'support',
+  NOTIFICATIONS_PATH: 'notifications',
   ADMIN_PATH: 'admin',
   CMS_PATH: 'cms',
   IMPRESSUM_PATH: 'cms/imprint',

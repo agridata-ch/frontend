@@ -6,11 +6,12 @@ import { UserInfoDto } from '@/entities/openapi';
 import { SupporterPageComponent } from '@/pages/supporter-page/supporter-page.component';
 import { AGATE_LOGIN_ID_IMPERSONATION_HEADER } from '@/shared/constants/constants';
 import { I18nPipe } from '@/shared/i18n';
-import { createMockUserService, MockUserService } from '@/shared/testing/mocks';
 import {
+  createMockUserService,
+  MockUserService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+} from '@/shared/testing/mocks';
 
 describe('SupporterPageComponent', () => {
   let component: SupporterPageComponent;

@@ -12,12 +12,11 @@ import {
   createMockDataRequestService,
   createMockI18nService,
   MockDataRequestService,
-} from '@/shared/testing/mocks';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
-import {
+  createMockAuthService,
+  MockAuthService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 import { dataRequestFormsModel, FORM_GROUP_NAMES, FormModel } from '@/widgets/data-request-wizard';

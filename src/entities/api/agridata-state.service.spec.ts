@@ -6,13 +6,14 @@ import { BackendInfoService } from '@/entities/api/backend-info.service';
 import { UserService } from '@/entities/api/user.service';
 import { AGATE_LOGIN_ID_IMPERSONATION_HEADER } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
-import { BE_VERSION } from '@/shared/testing/mocks/mock-agridata-state-service';
 import {
+  BE_VERSION,
   createMockAuthService,
   MockAuthService,
   mockUserInfo,
-} from '@/shared/testing/mocks/mock-auth-service';
-import { createMockUserService, MockUserService } from '@/shared/testing/mocks/mock-user-service';
+  createMockUserService,
+  MockUserService,
+} from '@/shared/testing/mocks';
 
 import { AgridataStateService, DISMISSED_MIGRATIONS_KEY } from './agridata-state.service';
 

@@ -3,11 +3,12 @@ import { By } from '@angular/platform-browser';
 
 import { I18nService } from '@/shared/i18n';
 import { ProductTourService } from '@/shared/product-tour/product-tour.service';
-import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks/mock-i18n-service';
 import {
+  createMockI18nService,
+  MockI18nService,
   createMockProductTourService,
   MockProductTourService,
-} from '@/shared/testing/mocks/mock-product-tour.service';
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ButtonComponent } from '@/shared/ui/button';
 

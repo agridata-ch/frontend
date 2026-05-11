@@ -5,8 +5,7 @@ import { of } from 'rxjs';
 
 import { UidDto, UserInfoDto, UsersService } from '@/entities/openapi';
 import { USER_ROLES } from '@/shared/constants/constants';
-import { createMockUserService, MockUserService } from '@/shared/testing/mocks';
-import { mockUserInfo } from '@/shared/testing/mocks/mock-auth-service';
+import { createMockUserService, MockUserService, mockUserInfo } from '@/shared/testing/mocks';
 
 import { AuthService } from './auth.service';
 function createLoginResponse(isAuthenticated: boolean): LoginResponse {

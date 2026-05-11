@@ -550,7 +550,7 @@ export class DataRequestsService extends BaseService {
 
     /**
      * Update Signature Type
-     * Sets the type of signature (single or pair) for the current role. Available to the consumer and provider of a data request.
+     * Sets the type of signature (individual or collective) for the current role. Available to the consumer and provider of a data request.
      * @param id 
      * @param body 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

@@ -3,7 +3,7 @@ import { signal, WritableSignal } from '@angular/core';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UserPreferencesDto } from '@/entities/openapi';
 import { UidDto } from '@/entities/openapi/model/uidDto';
-import { MockifyWithWritableSignals } from '@/shared/testing/mocks/test-model';
+import { MockifyWithWritableSignals } from '@/shared/testing/mocks';
 
 export type MockAgridataStateServiceTestSignals = {
   currentRouteWithoutQueryParams: WritableSignal<string | undefined>;

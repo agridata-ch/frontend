@@ -1,0 +1,78 @@
+<div class="flex flex-col gap-4 w-full" *i18n="let t; prefix: 'header.notifications'">
+  @if (notifications()?.length === 0) {
+    <div class="p-4">
+      <div
+        class="flex flex-col gap-4 items-center justify-center p-10 bg-agridata-content-gray rounded-md"
+      >
+        <fa-icon size="3x" [icon]="faMailbox" />
+        <span class="text-sm">{{ t('empty') }}</span>
+        <app-agridata-button
+          [variant]="ButtonVariants.Tertiary"
+          (handleClick)="navigateToNotifications()"
+          [icon]="faLink"
+          [iconPosition]="IconPosition.Right"
+          disabled
+        >
+          {{ t('showAll') }}
+        </app-agridata-button>
+      </div>
+    </div>
+  } @else {
+    <div class="flex flex-col divide-y divide-agridata-stroke">
+      <div
+        class="flex flex-col divide-y divide-agridata-stroke max-h-100 overflow-y-auto"
+        appScrollFade
+      >
+        @for (notification of notifications(); track notification.id) {
+          <div
+            class="flex gap-4 px-3 py-3 pr-1 justify-between hover:bg-agridata-content-gray cursor-pointer"
+          >
+            <div class="flex flex-col gap-1">
+              <span class="text-sm font-semibold">{{
+                i18nService.useObjectTranslation(notification.title)
+              }}</span>
+              <span
+                class="text-sm font-semibold text-agridata-primary-600 agridata-ellipsis-multiline"
+              >
+                {{ i18nService.useObjectTranslation(notification.text) }}
+              </span>
+              <span class="text-xs text-agridata-tertiary-text">
+                {{ notification.createdAt | agridataDate: 'middle' }}
+              </span>
+            </div>
+            <div
+              class="flex grow items-center justify-end py-4 px-4"
+              (click)="handleMarkAsRead(notification)"
+              (keydown)="handleMarkAsRead(notification)"
+              [title]="notification.isRead ? '' : t('markAsRead')"
+            >
+              <div
+                class="w-2 h-2 rounded-full border-2 border-agridata-brand-green"
+                [class.bg-agridata-brand-green]="!notification.isRead"
+              ></div>
+            </div>
+          </div>
+        }
+      </div>
+      <app-agridata-button
+        [variant]="ButtonVariants.Tertiary"
+        (handleClick)="handleMarkAllAsRead()"
+        [icon]="faEye"
+        [iconPosition]="IconPosition.Left"
+        [loading]="isLoadingMarkAllAsRead()"
+        [additionalClass]="'rounded-none'"
+      >
+        {{ t('markAllAsRead') }}
+      </app-agridata-button>
+      <app-agridata-button
+        [variant]="ButtonVariants.Tertiary"
+        (handleClick)="navigateToNotifications()"
+        [icon]="faLink"
+        [iconPosition]="IconPosition.Right"
+        disabled
+      >
+        {{ t('showAll') }}
+      </app-agridata-button>
+    </div>
+  }
+</div>

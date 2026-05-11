@@ -1,7 +1,7 @@
 import { signal, WritableSignal } from '@angular/core';
 
 import { TitleService } from '@/app/title.service';
-import { MockifyWithWritableSignals } from '@/shared/testing/mocks/test-model';
+import { MockifyWithWritableSignals } from '@/shared/testing/mocks';
 
 export type MockTitleServiceSignals = {
   roTranslatedTitle: WritableSignal<string | undefined>;

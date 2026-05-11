@@ -1,6 +1,6 @@
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
-import { Mockify } from '@/shared/testing/mocks/test-model';
+import { Mockify } from '@/shared/testing/mocks';
 
 export const mockDataRequests: DataRequestDto[] = [
   {

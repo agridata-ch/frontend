@@ -13,22 +13,19 @@ import { MasterDataService } from '@/entities/api/master-data.service';
 import { ConsentRequestProducerViewDto, DataRequestStateEnum } from '@/entities/openapi';
 import { REDIRECT_TIMEOUT } from '@/pages/consent-request-producer/consent-request-producer.page.model';
 import { SidepanelComponent } from '@/shared/sidepanel';
-import { createMockActivatedRoute, MockActivatedRoute } from '@/shared/testing/mocks';
 import {
+  createMockActivatedRoute,
+  MockActivatedRoute,
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import { createMockAnalyticsService } from '@/shared/testing/mocks/mock-analytics-service';
-import {
+  createMockAnalyticsService,
   createMockConsentRequestService,
   mockConsentRequests,
   MockConsentRequestService,
-} from '@/shared/testing/mocks/mock-consent-request-service';
-import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
-import { createMockMasterDataService } from '@/shared/testing/mocks/mock-master-data-service';
+  createMockMasterDataService,
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ToastService } from '@/shared/toast';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';

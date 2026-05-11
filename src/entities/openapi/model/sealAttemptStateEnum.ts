@@ -10,6 +10,7 @@
 
 
 export const SealAttemptStateEnum = {
+    NotStarted: 'NOT_STARTED',
     InProgress: 'IN_PROGRESS',
     Completed: 'COMPLETED',
     Failed: 'FAILED'

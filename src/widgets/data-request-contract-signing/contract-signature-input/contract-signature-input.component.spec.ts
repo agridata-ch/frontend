@@ -4,9 +4,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SignatureSlotCodeEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
-import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
-import { mockOtpChallenge } from '@/shared/testing/mocks/mock-contract-revision-service';
+import {
+  createMockI18nService,
+  MockI18nService,
+  createMockAuthService,
+  MockAuthService,
+  mockOtpChallenge,
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { SlotChallenge } from '@/widgets/data-request-contract-signing/data-request-contract-signing.model';
 

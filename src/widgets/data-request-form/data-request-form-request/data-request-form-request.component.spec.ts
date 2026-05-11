@@ -5,11 +5,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataProductDto, DataProviderDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
-import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
 import {
+  createMockI18nService,
+  MockI18nService,
   createMockMasterDataService,
   MockMasterDataService,
-} from '@/shared/testing/mocks/mock-master-data-service';
+} from '@/shared/testing/mocks';
 
 import { DataRequestFormRequestComponent } from './data-request-form-request.component';
 

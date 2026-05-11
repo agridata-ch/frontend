@@ -1,0 +1,26 @@
+<div *i18n="let t; prefix: 'header.notifications'" (appClickOutside)="closeOverlay()">
+  <button
+    class="flex lg:flex-col items-center px-2 lg:px-4 py-2 rounded focus:outline-none"
+    (click)="handleToggle()"
+    type="button"
+  >
+    <div class="flex items-center justify-center w-10 h-10 relative">
+      <fa-icon [icon]="faBell" size="xl" />
+      @if (hasUnreadNotifications()) {
+        <div
+          class="w-2.5 h-2.5 rounded-full bg-agridata-brand-green absolute top-2 right-2 border-2 border-agridata-primary-text"
+        ></div>
+      }
+    </div>
+    <span class="lg:text-gray-400 lg:text-xs">
+      {{ t('title') }}
+    </span>
+  </button>
+  <app-popover [isOpen]="showPopover()" class="hidden lg:block max-w-105">
+    <app-notification-overlay-content
+      [notifications]="notificationResource.value()?.items"
+      (reloadNotifications)="reloadNotifications()"
+    />
+  </app-popover>
+  <div class="block lg:hidden"></div>
+</div>

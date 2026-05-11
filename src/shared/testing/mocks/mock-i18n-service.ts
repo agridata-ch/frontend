@@ -4,7 +4,7 @@ import { signal } from '@angular/core';
 
 import { TranslationDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
-import { Mockify } from '@/shared/testing/mocks/test-model';
+import { Mockify } from '@/shared/testing/mocks';
 
 export type MockI18nService = Mockify<I18nService>;
 
