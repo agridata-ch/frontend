@@ -1,6 +1,6 @@
 import { signal } from '@angular/core';
 
-import { Mockify } from '@/shared/testing/mocks/test-model';
+import { Mockify } from '@/shared/testing/mocks';
 import { Toast, ToastService } from '@/shared/toast';
 
 export type MockToastService = Mockify<ToastService>;

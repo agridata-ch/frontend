@@ -13,6 +13,7 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AccountOverlayComponent } from '@/widgets/account-overlay';
 import { ContactSupportInfoComponent } from '@/widgets/contact-support-info';
 import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
+import { NotificationOverlayComponent } from '@/widgets/notification-overlay';
 
 /**
  * Implements the header logic. It renders the application logo, includes language selection, and
@@ -31,6 +32,7 @@ import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
     NavigationWidgetComponent,
     ButtonComponent,
     ContactSupportInfoComponent,
+    NotificationOverlayComponent,
   ],
   templateUrl: './header-widget.component.html',
   styleUrl: './header-widget.component.css',

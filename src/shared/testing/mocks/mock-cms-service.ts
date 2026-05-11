@@ -301,7 +301,7 @@ export const mockCmsResponse = {
 };
 
 import { CmsService } from '@/entities/cms';
-import { Mockify } from '@/shared/testing/mocks/test-model';
+import { Mockify } from '@/shared/testing/mocks';
 
 export type MockCmsService = Mockify<CmsService>;
 

@@ -6,15 +6,13 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
-import { createMockI18nService } from '@/shared/testing/mocks';
 import {
+  createMockI18nService,
   createMockDataRequestService,
   MockDataRequestService,
-} from '@/shared/testing/mocks/mock-data-request-service';
-import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+} from '@/shared/testing/mocks';
 import { ButtonComponent } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
 

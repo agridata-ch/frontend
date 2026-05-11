@@ -401,7 +401,20 @@
           },
           "verifyButton": "Conferma il codice",
           "resendButton": "Invia nuovamente il codice SMS",
-          "resendInfo": "È possibile inviare nuovamente tra {{ seconds }} secondi"
+          "resendInfo": "È possibile inviare nuovamente tra {{ seconds }} secondi",
+          "error": {
+            "expired": "Il codice non è valido. Si prega di richiedere un nuovo codice.",
+            "invalid": "Il codice non è valido. Si prega di riprovare.",
+            "locked": "Il codice non è valido. Si prega di richiedere un nuovo codice.",
+            "lockedAlert": {
+              "title": "Troppi tentativi",
+              "message": "Hai digitato il codice errato troppe volte. Richiedi un nuovo codice."
+            },
+            "resendCooldownAlert": {
+              "title": "Veuillez patienter un instant",
+              "message": "La procedura di firma è già in corso. Attendere circa 30 secondi e riprovare."
+            }
+          }
         },
         "alreadySigned": {
           "description": "Firmato da {{ name }}"
@@ -527,6 +540,13 @@
         "openingInfos": "I nostri orari:\ndal lunedì al venerdì\ndalle 07.00 alle 18.00",
         "moreInfos": "Maggiori informazioni"
       }
+    },
+    "notifications": {
+      "title": "Notifiche",
+      "markAllAsRead": "Contrassegnare le notifiche come lette",
+      "showAll": "Mostra tutte le notifiche",
+      "empty": "Non ci sono notifiche",
+      "markAsRead": "Segna come letto"
     }
   },
   "contact-form": {
@@ -728,5 +748,23 @@
     },
     "startTour": "Inizia il tour",
     "title": "Istruzioni"
+  },
+  "notifications": {
+    "markAsRead": {
+      "error": {
+        "title": "Impossibile contrassegnare come letto",
+        "message": "Si è verificato un errore durante l'operazione “Contrassegna come letto”. Si prega di riprovare"
+      }
+    },
+    "markAllAsRead": {
+      "error": {
+        "title": "Impossibile contrassegnare le notifiche come lette",
+        "message": "Si è verificato un errore durante l'operazione \"Contrassegna le notifiche come lette\". Si prega di riprovare più tardi."
+      },
+      "success": {
+        "title": "Contrassegna tutte le notifiche come lette",
+        "message": "Tutte le notifiche sono state contrassegnate come lette"
+      }
+    }
   }
 }

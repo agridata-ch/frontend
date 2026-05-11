@@ -119,7 +119,7 @@ matchingButton?.triggerEventHandler('buttonClicked', null);
 All services have mocks with a `mock` prefix. Import pattern:
 
 ```typescript
-import { createMockMyService, MockMyService } from '@/shared/testing/mocks/mock-my-service';
+import { createMockMyService, MockMyService } from '@/shared/testing/mocks';
 ```
 
 Declare in describe block:

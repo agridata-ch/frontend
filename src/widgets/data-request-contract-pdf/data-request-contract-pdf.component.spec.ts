@@ -8,12 +8,11 @@ import { I18nService } from '@/shared/i18n';
 import {
   createMockContractRevisionService,
   MockContractRevisionService,
-} from '@/shared/testing/mocks/mock-contract-revision-service';
-import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
-import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks/mock-i18n-service';
+  createMockI18nService,
+  MockI18nService,
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { DataRequestContractPdfComponent } from './data-request-contract-pdf.component';

@@ -8,7 +8,7 @@ import {
   BE_VERSION,
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
+} from '@/shared/testing/mocks';
 import { FooterWidgetComponent } from '@/widgets/footer-widget';
 
 import { version as frontendVersion } from '../../../../package.json';

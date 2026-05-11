@@ -10,24 +10,19 @@ import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { SidepanelComponent } from '@/shared/sidepanel';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 import {
+  createMockAuthService,
+  MockAuthService,
   createMockContractRevisionService,
   MockContractRevisionService,
-} from '@/shared/testing/mocks/mock-contract-revision-service';
-import {
   createMockDataRequestService,
   MockDataRequestService,
-} from '@/shared/testing/mocks/mock-data-request-service';
-import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
-import { createMockI18nService } from '@/shared/testing/mocks/mock-i18n-service';
-import {
+  createMockI18nService,
   createMockMasterDataService,
   MockMasterDataService,
-} from '@/shared/testing/mocks/mock-master-data-service';
+} from '@/shared/testing/mocks';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 
 import { DataRequestDetailsRequestComponent } from './data-request-details-request';

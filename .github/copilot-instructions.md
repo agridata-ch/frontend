@@ -50,7 +50,7 @@ For tests adhere to those rules:
 - most services already have mock like this:
 
 ```javascript
-import {MockifyWithWritableSignals} from '@/shared/testing/mocks/test-model';
+import {MockifyWithWritableSignals} from '@/shared/testing/mocks';
 
 export
 type
@@ -82,10 +82,7 @@ export function createMockAgridataStateService(): MockAgridataStateService {
 - assume that such a service exists for any service used in the component under test. It is always named with a "mock" prefix to the service name. Import like so:
 
 ```javascript
-import {
-  createMockAgridataStateService,
-  MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
+import { createMockAgridataStateService, MockAgridataStateService } from '@/shared/testing/mocks';
 ```
 
 - in the test suites describe block declare the service like this: let agridataStateService: MockAgridataStateService;

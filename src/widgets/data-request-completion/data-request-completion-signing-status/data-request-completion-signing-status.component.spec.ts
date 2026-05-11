@@ -3,8 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataRequestStateEnum } from '@/entities/openapi';
 import { AuthService } from '@/shared/lib/auth';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
-import { mockContractRevision } from '@/shared/testing/mocks/mock-contract-revision-service';
+import {
+  createMockAuthService,
+  MockAuthService,
+  mockContractRevision,
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { DataRequestCompletionSigningStatusComponent } from './data-request-completion-signing-status.component';

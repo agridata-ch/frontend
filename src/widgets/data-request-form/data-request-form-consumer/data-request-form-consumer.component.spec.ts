@@ -11,12 +11,11 @@ import {
   createMockI18nService,
   createMockUidRegisterService,
   MockUidRegisterService,
-} from '@/shared/testing/mocks';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
-import {
+  createMockAuthService,
+  MockAuthService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+} from '@/shared/testing/mocks';
 
 import { DataRequestFormConsumerComponent } from './data-request-form-consumer.component';
 

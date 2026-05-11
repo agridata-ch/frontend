@@ -12,19 +12,16 @@ import { CreateConsentRequestDto, UidDto } from '@/entities/openapi';
 import { ConsentRequestCreatedDto } from '@/entities/openapi/model/consentRequestCreatedDto';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks';
 import {
+  createMockAuthService,
+  MockAuthService,
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import {
   createMockConsentRequestService,
   MockConsentRequestService,
-} from '@/shared/testing/mocks/mock-consent-request-service';
-import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+} from '@/shared/testing/mocks';
 
 import { ProducerUidGuard } from './producer-uid.guard';
 

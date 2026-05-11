@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
 import { BackendInfoService } from '@/entities/api';
-import { DummyComponent } from '@/shared/testing/mocks/dummy-components';
+import { DummyComponent } from '@/shared/testing/mocks';
 
 import { MaintenancePage } from './maintenance.page';
 

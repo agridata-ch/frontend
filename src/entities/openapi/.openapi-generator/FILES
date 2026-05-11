@@ -13,6 +13,7 @@ api/dataRequests.service.ts
 api/dataTransfer.service.ts
 api/dataTransferV2.service.ts
 api/infoResource.service.ts
+api/notifications.service.ts
 api/testData.service.ts
 api/uIDRegisterSearch.service.ts
 api/users.service.ts
@@ -51,11 +52,14 @@ model/exceptionDto.ts
 model/exceptionDto1.ts
 model/exceptionEnum.ts
 model/farmTypeEnum.ts
+model/inboxEntryDto.ts
 model/legalFormEnum.ts
+model/markAsReadRequestDto.ts
 model/models.ts
 model/otpChallengeDto.ts
 model/pageResponseDto.ts
 model/pageResponseDtoConsentRequestFundamentalViewDto.ts
+model/pageResponseDtoInboxEntryDto.ts
 model/pageResponseDtoUserInfoDto.ts
 model/producerIdentifier.ts
 model/resourceQueryDto.ts
