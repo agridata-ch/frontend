@@ -1,3 +1,9 @@
+## [1.11.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.11...v1.11.0-rc.12) (2026-05-12)
+
+### Features
+
+- **notifications:** add notifications overlay ([b9d9516](https://github.com/agridata-ch/frontend/commit/b9d9516038458a6689c98cf1694d7d83613d4820)), closes [DIGIB2-323](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-323)
+
 ## [1.11.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.10...v1.11.0-rc.11) (2026-05-07)
 
 ### Features
