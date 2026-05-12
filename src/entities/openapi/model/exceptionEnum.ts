@@ -14,6 +14,10 @@ export const ExceptionEnum = {
     UidMissing: 'UID_MISSING',
     ExternalServiceError: 'EXTERNAL_SERVICE_ERROR',
     ConsentNotGranted: 'CONSENT_NOT_GRANTED',
+    OtpInvalid: 'OTP_INVALID',
+    OtpLocked: 'OTP_LOCKED',
+    OtpExpired: 'OTP_EXPIRED',
+    OtpResendCooldown: 'OTP_RESEND_COOLDOWN',
     Maintenance: 'MAINTENANCE'
 } as const;
 export type ExceptionEnum = typeof ExceptionEnum[keyof typeof ExceptionEnum];

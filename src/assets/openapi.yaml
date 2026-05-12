@@ -1075,6 +1075,10 @@ components:
       - UID_MISSING
       - EXTERNAL_SERVICE_ERROR
       - CONSENT_NOT_GRANTED
+      - OTP_INVALID
+      - OTP_LOCKED
+      - OTP_EXPIRED
+      - OTP_RESEND_COOLDOWN
       - MAINTENANCE
     FarmTypeEnum:
       type: string
@@ -3694,7 +3698,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.9.0-rc.8
+  version: 1.9.0-rc.13
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

@@ -48,10 +48,9 @@
               ? SignatureSlotCodeEnum.DataConsumer01
               : SignatureSlotCodeEnum.DataProvider01
           "
-          [currentChallenge]="currentChallenge()"
+          [contractId]="contractId()"
           [existingSignature]="slot1Signature()"
-          (startSigning)="startSigningProcess($event)"
-          (verifySigning)="verifySigningProcess($event.slotId, $event.challengeId, $event.otpCode)"
+          (signingSuccess)="onSigningSuccess($event)"
         />
         @if (isCollectiveSignatureType()) {
           <app-contract-signature-input
@@ -60,13 +59,10 @@
                 ? SignatureSlotCodeEnum.DataConsumer02
                 : SignatureSlotCodeEnum.DataProvider02
             "
-            [currentChallenge]="currentChallenge()"
+            [contractId]="contractId()"
             [existingSignature]="slot2Signature()"
-            (startSigning)="startSigningProcess($event)"
-            (verifySigning)="
-              verifySigningProcess($event.slotId, $event.challengeId, $event.otpCode)
-            "
             [showWaitingState]="showSecondSlotWaitingState()"
+            (signingSuccess)="onSigningSuccess($event)"
           />
         }
       </div>
