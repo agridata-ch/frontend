@@ -2,7 +2,12 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContractRevisionService, DataRequestService } from '@/entities/api';
-import { DataRequestDto, SignatureSlotCodeEnum, SignatureTypeEnum } from '@/entities/openapi';
+import {
+  ContractRevisionDto,
+  DataRequestDto,
+  SignatureSlotCodeEnum,
+  SignatureTypeEnum,
+} from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
@@ -12,14 +17,10 @@ import {
   MockAuthService,
   createMockContractRevisionService,
   mockContractRevision,
-  mockOtpChallenge,
   MockContractRevisionService,
   createMockDataRequestService,
-  createMockToastService,
-  MockToastService,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
-import { ToastService, ToastType } from '@/shared/toast';
 
 import { DataRequestContractSigningComponent } from './data-request-contract-signing.component';
 
@@ -37,13 +38,11 @@ describe('DataRequestContractSigningComponent', () => {
   let authService: MockAuthService;
   let contractRevisionService: MockContractRevisionService;
   let i18nService: MockI18nService;
-  let toastService: MockToastService;
 
   beforeEach(async () => {
     authService = createMockAuthService();
     contractRevisionService = createMockContractRevisionService();
     i18nService = createMockI18nService();
-    toastService = createMockToastService();
 
     await TestBed.configureTestingModule({
       imports: [DataRequestContractSigningComponent, createTranslocoTestingModule()],
@@ -52,7 +51,6 @@ describe('DataRequestContractSigningComponent', () => {
         { provide: ContractRevisionService, useValue: contractRevisionService },
         { provide: DataRequestService, useValue: createMockDataRequestService() },
         { provide: I18nService, useValue: i18nService },
-        { provide: ToastService, useValue: toastService },
       ],
     }).compileComponents();
 
@@ -128,84 +126,27 @@ describe('DataRequestContractSigningComponent', () => {
     });
   });
 
-  describe('startSigningProcess', () => {
-    it('should call the service and set currentChallenge', async () => {
-      componentRef.setInput('dataRequest', mockDataRequestWithContract);
-      fixture.detectChanges();
-      await fixture.whenStable();
+  describe('onSigningSuccess', () => {
+    it('should update activeContractId and emit reloadDataRequest when contract has an id', () => {
+      const reloadSpy = jest.fn();
+      component.reloadDataRequest.subscribe(reloadSpy);
 
-      await component.startSigningProcess(SignatureSlotCodeEnum.DataConsumer01);
+      component['onSigningSuccess'](mockContractRevision);
 
-      expect(contractRevisionService.startSigningProcess).toHaveBeenCalledWith(
-        'cr-1',
-        SignatureSlotCodeEnum.DataConsumer01,
-      );
-      expect(component['currentChallenge']()).toEqual({
-        challenge: mockOtpChallenge,
-        slotId: SignatureSlotCodeEnum.DataConsumer01,
-      });
+      expect(component['activeContractId']()).toBe(mockContractRevision.id);
+      expect(reloadSpy).toHaveBeenCalled();
     });
 
-    it('should reject when contractId is not set', async () => {
-      await expect(
-        component.startSigningProcess(SignatureSlotCodeEnum.DataConsumer01),
-      ).rejects.toThrow();
-    });
-  });
+    it('should not emit reloadDataRequest when contract has no id', () => {
+      const reloadSpy = jest.fn();
+      component.reloadDataRequest.subscribe(reloadSpy);
 
-  describe('verifySigningProcess', () => {
-    it('should show a success toast and clear the challenge on success', async () => {
-      componentRef.setInput('dataRequest', mockDataRequestWithContract);
-      fixture.detectChanges();
-      await fixture.whenStable();
-      component['currentChallenge'].set({
-        challenge: mockOtpChallenge,
-        slotId: SignatureSlotCodeEnum.DataConsumer01,
-      });
+      component['onSigningSuccess']({
+        ...mockContractRevision,
+        id: undefined,
+      } as unknown as ContractRevisionDto);
 
-      await component.verifySigningProcess(
-        SignatureSlotCodeEnum.DataConsumer01,
-        'challenge-1',
-        '123456',
-      );
-
-      expect(contractRevisionService.verifySigningProcess).toHaveBeenCalledWith(
-        'challenge-1',
-        'cr-1',
-        SignatureSlotCodeEnum.DataConsumer01,
-        { otpCode: '123456' },
-      );
-      expect(toastService.show).toHaveBeenCalledWith(
-        expect.anything(),
-        expect.anything(),
-        ToastType.Success,
-      );
-      expect(component['currentChallenge']()).toBeNull();
-    });
-
-    it('should show an error toast when verification fails', async () => {
-      contractRevisionService.verifySigningProcess.mockRejectedValueOnce(new Error('failed'));
-      componentRef.setInput('dataRequest', mockDataRequestWithContract);
-      fixture.detectChanges();
-      await fixture.whenStable();
-
-      await component.verifySigningProcess(
-        SignatureSlotCodeEnum.DataConsumer01,
-        'challenge-1',
-        '000000',
-      );
-
-      expect(toastService.show).toHaveBeenCalledWith(
-        expect.anything(),
-        expect.anything(),
-        ToastType.Error,
-      );
-    });
-
-    it('should reject when contractId is not set', async () => {
-      await expect(
-        component.verifySigningProcess(SignatureSlotCodeEnum.DataConsumer01, 'ch-1', '123456'),
-      ).rejects.toThrow();
+      expect(reloadSpy).not.toHaveBeenCalled();
     });
   });
 

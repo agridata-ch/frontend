@@ -1,37 +1,65 @@
+import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SignatureSlotCodeEnum } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { ContractRevisionService } from '@/entities/api';
+import { ExceptionEnum, SignatureSlotCodeEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
   createMockI18nService,
+  createMockToastService,
   MockI18nService,
+  MockToastService,
+  createMockContractRevisionService,
+  mockContractRevision,
+  mockOtpChallenge,
+  MockContractRevisionService,
   createMockAuthService,
   MockAuthService,
-  mockOtpChallenge,
+  createMockErrorHandlerService,
+  MockErrorHandlerService,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
+import { ToastService, ToastType } from '@/shared/toast';
 import { SlotChallenge } from '@/widgets/data-request-contract-signing/data-request-contract-signing.model';
 
 import { ContractSignatureInputComponent } from './contract-signature-input.component';
+
+const mockChallenge: SlotChallenge = {
+  challenge: mockOtpChallenge,
+  slotId: SignatureSlotCodeEnum.DataConsumer01,
+};
 
 describe('ContractSignatureInputComponent', () => {
   let component: ContractSignatureInputComponent;
   let componentRef: ComponentRef<ContractSignatureInputComponent>;
   let fixture: ComponentFixture<ContractSignatureInputComponent>;
   let authService: MockAuthService;
+  let contractRevisionService: MockContractRevisionService;
+  let errorService: MockErrorHandlerService;
   let i18nService: MockI18nService;
+  let toastService: MockToastService;
 
   beforeEach(async () => {
     authService = createMockAuthService();
+    contractRevisionService = createMockContractRevisionService();
+    errorService = createMockErrorHandlerService();
     i18nService = createMockI18nService();
+    toastService = createMockToastService();
 
     await TestBed.configureTestingModule({
       imports: [ContractSignatureInputComponent, createTranslocoTestingModule()],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: AuthService, useValue: authService },
+        { provide: ContractRevisionService, useValue: contractRevisionService },
+        { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: i18nService },
+        { provide: ToastService, useValue: toastService },
       ],
     }).compileComponents();
 
@@ -39,6 +67,7 @@ describe('ContractSignatureInputComponent', () => {
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
     componentRef.setInput('slotId', SignatureSlotCodeEnum.DataConsumer01);
+    componentRef.setInput('contractId', 'cr-1');
     fixture.detectChanges();
   });
 
@@ -97,26 +126,14 @@ describe('ContractSignatureInputComponent', () => {
   });
 
   describe('isActiveSigningSlot', () => {
-    it('should be true when challenge slotId matches', () => {
-      const challenge: SlotChallenge = {
-        challenge: mockOtpChallenge,
-        slotId: SignatureSlotCodeEnum.DataConsumer01,
-      };
-      componentRef.setInput('currentChallenge', challenge);
+    it('should be true when internal challenge slotId matches', async () => {
+      component['handleStartSigning']();
+      await fixture.whenStable();
+
       expect(component['isActiveSigningSlot']()).toBe(true);
     });
 
-    it('should be false when challenge slotId does not match', () => {
-      const challenge: SlotChallenge = {
-        challenge: mockOtpChallenge,
-        slotId: SignatureSlotCodeEnum.DataConsumer02,
-      };
-      componentRef.setInput('currentChallenge', challenge);
-      expect(component['isActiveSigningSlot']()).toBe(false);
-    });
-
     it('should be false when no challenge is set', () => {
-      componentRef.setInput('currentChallenge', null);
       expect(component['isActiveSigningSlot']()).toBe(false);
     });
   });
@@ -153,67 +170,171 @@ describe('ContractSignatureInputComponent', () => {
   });
 
   describe('handleStartSigning', () => {
-    it('should emit startSigning with the current slotId', () => {
-      const spy = jest.spyOn(component.startSigning, 'emit');
+    it('should call startSigningProcess and set the internal challenge on success', async () => {
       component['handleStartSigning']();
-      expect(spy).toHaveBeenCalledWith(SignatureSlotCodeEnum.DataConsumer01);
+      await fixture.whenStable();
+
+      expect(contractRevisionService.startSigningProcess).toHaveBeenCalledWith(
+        'cr-1',
+        SignatureSlotCodeEnum.DataConsumer01,
+      );
+      expect(component['currentChallenge']()).toEqual(mockChallenge);
     });
 
-    it('should start the resend countdown after signing starts', () => {
+    it('should start the resend countdown', () => {
       jest.useFakeTimers();
       component['handleStartSigning']();
       expect(component['countdownValue']()).toBeGreaterThan(0);
       jest.useRealTimers();
     });
+
+    it('should set showResendCooldownAlert when OtpResendCooldown error is returned', async () => {
+      contractRevisionService.startSigningProcess.mockRejectedValueOnce(
+        new HttpErrorResponse({ error: { type: ExceptionEnum.OtpResendCooldown } }),
+      );
+
+      component['handleStartSigning']();
+      await fixture.whenStable();
+
+      expect(component['showResendCooldownAlert']()).toBe(true);
+    });
+
+    it('should clear showResendCooldownAlert on successful start', async () => {
+      component['showResendCooldownAlert'].set(true);
+      component['handleStartSigning']();
+      await fixture.whenStable();
+
+      expect(component['showResendCooldownAlert']()).toBe(false);
+    });
+
+    it('should call errorService for generic errors during start', async () => {
+      const error = new HttpErrorResponse({ error: { type: ExceptionEnum.Generic } });
+      contractRevisionService.startSigningProcess.mockRejectedValueOnce(error);
+
+      component['handleStartSigning']();
+      await fixture.whenStable();
+
+      expect(errorService.handleError).toHaveBeenCalledWith(error);
+    });
+
+    it('should not call startSigningProcess when contractId is not set', async () => {
+      componentRef.setInput('contractId', undefined);
+
+      component['handleStartSigning']();
+      await fixture.whenStable();
+
+      expect(contractRevisionService.startSigningProcess).not.toHaveBeenCalled();
+    });
   });
 
   describe('handleVerifySigning', () => {
-    it('should not emit when otp form is invalid', () => {
-      const spy = jest.spyOn(component.verifySigning, 'emit');
-      component['handleVerifySigning'](new Event('submit'));
-      expect(spy).not.toHaveBeenCalled();
+    beforeEach(() => {
+      component['currentChallenge'].set(mockChallenge);
+      component['otpForm'].get('otpCode')?.setValue('123456');
     });
 
-    it('should emit verifySigning when form is valid and challenge exists', () => {
-      const challenge: SlotChallenge = {
-        challenge: mockOtpChallenge,
-        slotId: SignatureSlotCodeEnum.DataConsumer01,
-      };
-      componentRef.setInput('currentChallenge', challenge);
-      component['otpForm'].get('otpCode')?.setValue('123456');
+    it('should not call verifySigningProcess when otp form is invalid', async () => {
+      component['otpForm'].get('otpCode')?.setValue('');
+      component['handleVerifySigning'](new Event('submit'));
+      await fixture.whenStable();
 
-      const spy = jest.spyOn(component.verifySigning, 'emit');
-      const event = new Event('submit');
-      jest.spyOn(event, 'preventDefault');
-      component['handleVerifySigning'](event);
-
-      expect(spy).toHaveBeenCalledWith({
-        challengeId: 'challenge-1',
-        otpCode: '123456',
-        slotId: SignatureSlotCodeEnum.DataConsumer01,
-      });
+      expect(contractRevisionService.verifySigningProcess).not.toHaveBeenCalled();
     });
 
-    it('should not emit when challengeId is missing', () => {
-      componentRef.setInput('currentChallenge', null);
-      component['otpForm'].get('otpCode')?.setValue('123456');
+    it('should emit signingSuccess and show success toast on successful verification', async () => {
+      const successSpy = jest.fn();
+      component.signingSuccess.subscribe(successSpy);
 
-      const spy = jest.spyOn(component.verifySigning, 'emit');
       component['handleVerifySigning'](new Event('submit'));
+      await fixture.whenStable();
 
-      expect(spy).not.toHaveBeenCalled();
+      expect(contractRevisionService.verifySigningProcess).toHaveBeenCalledWith(
+        mockOtpChallenge.challengeId,
+        'cr-1',
+        SignatureSlotCodeEnum.DataConsumer01,
+        { otpCode: '123456' },
+      );
+      expect(toastService.show).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        ToastType.Success,
+      );
+      expect(successSpy).toHaveBeenCalledWith(mockContractRevision);
+      expect(component['currentChallenge']()).toBeNull();
+    });
+
+    it('should set otpInvalid error on OtpInvalid response', async () => {
+      contractRevisionService.verifySigningProcess.mockRejectedValueOnce(
+        new HttpErrorResponse({ error: { type: ExceptionEnum.OtpInvalid } }),
+      );
+
+      component['handleVerifySigning'](new Event('submit'));
+      await fixture.whenStable();
+
+      expect(component['otpForm'].get('otpCode')?.errors).toEqual({ otpInvalid: true });
+    });
+
+    it('should set otpExpired error on OtpExpired response', async () => {
+      contractRevisionService.verifySigningProcess.mockRejectedValueOnce(
+        new HttpErrorResponse({ error: { type: ExceptionEnum.OtpExpired } }),
+      );
+
+      component['handleVerifySigning'](new Event('submit'));
+      await fixture.whenStable();
+
+      expect(component['otpForm'].get('otpCode')?.errors).toEqual({ otpExpired: true });
+    });
+
+    it('should set otpLocked error and show locked alert on OtpLocked response', async () => {
+      contractRevisionService.verifySigningProcess.mockRejectedValueOnce(
+        new HttpErrorResponse({ error: { type: ExceptionEnum.OtpLocked } }),
+      );
+
+      component['handleVerifySigning'](new Event('submit'));
+      await fixture.whenStable();
+
+      expect(component['otpForm'].get('otpCode')?.errors).toEqual({ otpLocked: true });
+      expect(component['showLockedAlert']()).toBe(true);
+    });
+
+    it('should clear showLockedAlert after successful verification', async () => {
+      component['showLockedAlert'].set(true);
+
+      component['handleVerifySigning'](new Event('submit'));
+      await fixture.whenStable();
+
+      expect(component['showLockedAlert']()).toBe(false);
+    });
+
+    it('should call errorService for generic errors during verify', async () => {
+      const error = new HttpErrorResponse({ error: { type: ExceptionEnum.Generic } });
+      contractRevisionService.verifySigningProcess.mockRejectedValueOnce(error);
+
+      component['handleVerifySigning'](new Event('submit'));
+      await fixture.whenStable();
+
+      expect(errorService.handleError).toHaveBeenCalledWith(error);
     });
   });
 
   describe('handleResendOtp', () => {
-    it('should emit startSigning and reset the otp form', () => {
+    it('should call startSigningProcess and reset the otp form', async () => {
+      component['currentChallenge'].set(mockChallenge);
+      component['countdownValue'].set(0);
       component['otpForm'].get('otpCode')?.setValue('123456');
-      const spy = jest.spyOn(component.startSigning, 'emit');
 
       component['handleResendOtp']();
+      await fixture.whenStable();
 
-      expect(spy).toHaveBeenCalled();
+      expect(contractRevisionService.startSigningProcess).toHaveBeenCalled();
       expect(component['otpForm'].get('otpCode')?.value).toBeNull();
+    });
+
+    it('should not resend when countdown is active', () => {
+      component['countdownValue'].set(10);
+      component['handleResendOtp']();
+
+      expect(contractRevisionService.startSigningProcess).not.toHaveBeenCalled();
     });
   });
 });

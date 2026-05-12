@@ -108,7 +108,7 @@
         [totalPages]="pageData().totalPages"
         [currentPageIndex]="pageData().currentPage"
         (pageChange)="nextPageIndex.set($event)"
-        (pageSizeChange)="nextPageSize.set($event)"
+        (pageSizeChange)="handlePageSizeChange($event)"
       ></app-table-pagination>
     }
   </div>

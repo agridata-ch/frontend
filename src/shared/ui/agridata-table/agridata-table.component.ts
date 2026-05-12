@@ -159,6 +159,11 @@ export class AgridataTableComponent<T> {
     this.searchTerm.set(searchTerm);
   }
 
+  protected handlePageSizeChange(newPageSize: number): void {
+    this.nextPageIndex.set(0);
+    this.nextPageSize.set(newPageSize);
+  }
+
   /**
    * Resets all column sort states except the provided
    */
