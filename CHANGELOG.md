@@ -1,3 +1,9 @@
+## [1.11.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.12...v1.11.0-rc.13) (2026-05-12)
+
+### Features
+
+- **otp-validation:** add otp validation ([257a541](https://github.com/agridata-ch/frontend/commit/257a54199ca4e2d63dd4a25d5f48ed72afc1fa9c)), closes [DIGIB2-1285](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1285)
+
 ## [1.11.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.11...v1.11.0-rc.12) (2026-05-12)
 
 ### Features
