@@ -766,5 +766,15 @@
         "message": "Alle Benachrichtigungen wurden erfolgreich als gelesen markiert"
       }
     }
+  },
+  "dataCatalog": {
+    "pageTitle": "Datenkatalog",
+    "table": {
+      "name": "Datenprodukt",
+      "system": "System",
+      "actions": {
+        "viewDetails": "Anzeigen"
+      }
+    }
   }
 }

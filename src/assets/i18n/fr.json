@@ -765,5 +765,15 @@
         "message": "Toutes les notifications ont été marquées comme lues"
       }
     }
+  },
+  "dataCatalog": {
+    "pageTitle": "Catalogue de données",
+    "table": {
+      "name": "Produit de données",
+      "system": "Système",
+      "actions": {
+        "viewDetails": "Afficher"
+      }
+    }
   }
 }

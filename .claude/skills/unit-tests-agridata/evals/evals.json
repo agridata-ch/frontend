@@ -1,0 +1,23 @@
+{
+  "skill_name": "unit-tests-agridata",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a UserProfileComponent that takes a userId input signal, fetches the user data via a resource, and displays it. It has a protected userName signal. Write a test that verifies the component displays the user name after loading.",
+      "expected_output": "A complete Jest test with proper setup, mocking the UserService, testing resource loading with async/await, and verifying the display.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I need to test a SaveButtonComponent that emits buttonClicked and calls a save method. Show me how to write tests that simulate the button click using the AgriData ButtonComponent pattern and verify the save method was called with the right parameters.",
+      "expected_output": "Tests showing how to query for the ButtonComponent, trigger the click, and verify the service call with specific arguments.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I have an existing test file that accesses component properties via fixture.componentInstance and uses CSS selectors to find elements. Refactor it to follow agridata patterns (use component alias, aria-labels, protected properties).",
+      "expected_output": "Refactored test following the skill's patterns with explanations of why each change improves the test.",
+      "files": []
+    }
+  ]
+}

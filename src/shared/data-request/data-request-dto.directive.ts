@@ -4,11 +4,10 @@ import { DataRequestDto } from '@/entities/openapi';
 
 /**
  * directive to ensure template variable is of type DataRequestDto
- * CommentLastReviewed: 2026-01-06
+ * CommentLastReviewed: 2026-05-13
  */
 @Directive({
   selector: '[appDataRequestDtoGuard]',
-  standalone: true,
 })
 export class DataRequestDtoDirective {
   static ngTemplateContextGuard(
