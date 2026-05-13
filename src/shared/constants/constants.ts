@@ -1,6 +1,7 @@
 export const ROUTE_PATHS = {
   CONSENT_REQUEST_PRODUCER_PATH: 'consent-requests',
   CONSENT_REQUEST_PRODUCER_CREATE_SUBPATH: 'create',
+  DATA_CATALOG_PATH: 'data-catalog',
   DATA_REQUESTS_CONSUMER_PATH: 'data-requests',
   DATA_REQUESTS_PROVIDER_PATH: 'data-requests-provider',
   SUPPORT_PATH: 'support',

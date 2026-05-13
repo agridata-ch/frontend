@@ -766,5 +766,15 @@
         "message": "Tutte le notifiche sono state contrassegnate come lette"
       }
     }
+  },
+  "dataCatalog": {
+    "pageTitle": "Catalogo dati",
+    "table": {
+      "name": "Prodotto di dati",
+      "system": "Sistema",
+      "actions": {
+        "viewDetails": "Visualizza"
+      }
+    }
   }
 }

@@ -1259,6 +1259,45 @@ components:
           description: Number of items per page.
           examples:
           - 10
+    PageResponseDtoDataProductDto:
+      description: Generic paginated response wrapper.
+      type: object
+      required:
+      - items
+      - totalItems
+      - totalPages
+      - currentPage
+      - pageSize
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataProductDto"
+          description: List of items on the current page.
+        totalItems:
+          type: integer
+          format: int64
+          description: Total number of items across all pages.
+          examples:
+          - 42
+        totalPages:
+          type: integer
+          format: int32
+          description: Total number of pages available.
+          examples:
+          - 5
+        currentPage:
+          type: integer
+          format: int32
+          description: Current page number (0-based ).
+          examples:
+          - 1
+        pageSize:
+          type: integer
+          format: int32
+          description: Number of items per page.
+          examples:
+          - 10
     PageResponseDtoInboxEntryDto:
       description: Generic paginated response wrapper.
       type: object
@@ -3259,6 +3298,73 @@ paths:
         - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Support
       x-api-subset: agridata.ch Web App
+  /api/products/v2:
+    get:
+      description: "Retrieves a paginated list of all available data products. Accessible\
+        \ to users with the producer, and admin. Supports pagination."
+      operationId: getDataProductsPaginated
+      tags:
+      - Data Products
+      parameters:
+      - name: page
+        in: query
+        schema:
+          description: page number
+          format: int32
+          type: integer
+          minimum: 0
+          default: 0
+      - name: searchTerm
+        in: query
+        schema:
+          description: string to search for in the resource
+          type: string
+      - name: size
+        in: query
+        schema:
+          description: page size
+          format: int32
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+      - name: sortBy
+        in: query
+        schema:
+          description: List of field names to sort by. Default is ascending prefix
+            with - for descending
+          type: object
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageResponseDtoDataProductDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Products Paginated
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+      x-api-subset:
+      - agridata.ch Web App
+      - Mobile App
   /api/test-data/execute:
     post:
       operationId: executeSqlScript
@@ -3504,7 +3610,7 @@ paths:
       x-api-subset: agridata.ch Web App
   /api/user/v1/producers:
     get:
-      description: Retrieves users mathing the given query parameters.
+      description: Retrieves users matching the given query parameters.
       operationId: getProducers
       tags:
       - Users
@@ -3698,7 +3804,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.9.0-rc.13
+  version: 1.9.0-rc.16
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 
