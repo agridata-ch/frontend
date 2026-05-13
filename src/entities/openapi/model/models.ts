@@ -35,6 +35,7 @@ export * from './markAsReadRequestDto';
 export * from './otpChallengeDto';
 export * from './pageResponseDto';
 export * from './pageResponseDtoConsentRequestFundamentalViewDto';
+export * from './pageResponseDtoDataProductDto';
 export * from './pageResponseDtoInboxEntryDto';
 export * from './pageResponseDtoUserInfoDto';
 export * from './producerIdentifier';

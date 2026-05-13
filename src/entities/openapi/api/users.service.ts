@@ -166,7 +166,7 @@ export class UsersService extends BaseService {
 
     /**
      * Get Producers
-     * Retrieves users mathing the given query parameters.
+     * Retrieves users matching the given query parameters.
      * @param page 
      * @param searchTerm 
      * @param size 

@@ -6,6 +6,7 @@ import {
   faDatabase,
   faFileCheck,
   faUsers,
+  faLayerGroup,
 } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -59,6 +60,11 @@ export class NavigationWidgetComponent {
         icon: faFileCheck,
         route: `/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`,
       },
+      this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_PROVIDER) && {
+        label: 'provider.pageTitle',
+        icon: faDatabase,
+        route: `/${ROUTE_PATHS.DATA_REQUESTS_PROVIDER_PATH}`,
+      },
       this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER) && {
         label: 'consumer.pageTitle',
         icon: faDatabase,
@@ -69,6 +75,13 @@ export class NavigationWidgetComponent {
           label: 'supporter.pageTitle',
           icon: faUsers,
           route: `/${ROUTE_PATHS.SUPPORT_PATH}`,
+        },
+      (this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) ||
+        this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_PROVIDER)) &&
+        !this.agridataStateService.isImpersonating() && {
+          label: 'dataCatalog.pageTitle',
+          icon: faLayerGroup,
+          route: `/${ROUTE_PATHS.DATA_CATALOG_PATH}`,
         },
       this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) &&
         !this.agridataStateService.isImpersonating() && {

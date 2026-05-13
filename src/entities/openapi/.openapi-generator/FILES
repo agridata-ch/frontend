@@ -59,6 +59,7 @@ model/models.ts
 model/otpChallengeDto.ts
 model/pageResponseDto.ts
 model/pageResponseDtoConsentRequestFundamentalViewDto.ts
+model/pageResponseDtoDataProductDto.ts
 model/pageResponseDtoInboxEntryDto.ts
 model/pageResponseDtoUserInfoDto.ts
 model/producerIdentifier.ts
