@@ -1,3 +1,9 @@
+## [1.11.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.13...v1.11.0-rc.14) (2026-05-18)
+
+### Features
+
+- **notification:** update styling ([b52d24b](https://github.com/agridata-ch/frontend/commit/b52d24b1b7d891867419af17f6bd089af95bdfec)), closes [DIGIB2-323](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-323)
+
 ## [1.11.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.12...v1.11.0-rc.13) (2026-05-12)
 
 ### Features
