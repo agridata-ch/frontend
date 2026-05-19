@@ -1,3 +1,9 @@
+## [1.11.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.15...v1.11.0-rc.16) (2026-05-19)
+
+### Features
+
+- **data-product:** rename data-catalog ([1ebbed6](https://github.com/agridata-ch/frontend/commit/1ebbed6a9959630f99ab254a70d7db3d6489e046)), closes [DIGIB2-1350](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1350)
+
 ## [1.11.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.14...v1.11.0-rc.15) (2026-05-19)
 
 ### Features
