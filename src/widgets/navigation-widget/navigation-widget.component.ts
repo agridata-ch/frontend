@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   faChevronLeft,
@@ -38,20 +38,25 @@ import { MobileNavigationWidgetComponent } from '@/widgets/navigation-widget/mob
   templateUrl: './navigation-widget.component.html',
 })
 export class NavigationWidgetComponent {
-  private readonly authService = inject(AuthService);
+  // Injects
   private readonly agridataStateService = inject(AgridataStateService);
+  private readonly authService = inject(AuthService);
   readonly i18nService = inject(I18nService);
 
+  // Inputs
   readonly cmsPages = input<PageData[]>([]);
 
+  // Signals
+  readonly isAnimating = signal(false);
+  private readonly initialized = signal(false);
+
+  // Computed
   readonly isNavigationOpen = computed(
     () => this.agridataStateService.userPreferences()?.mainMenuOpened,
   );
-
   readonly navIcon = computed(() => (this.isNavigationOpen() ? faChevronLeft : faChevronRight));
   readonly showNavigation = computed(() => this.authService.isAuthenticated());
   readonly userRoles = computed(() => this.authService.userRoles());
-
   readonly navigationItems = computed(() =>
     [
       (this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) ||
@@ -76,6 +81,12 @@ export class NavigationWidgetComponent {
           icon: faUsers,
           route: `/${ROUTE_PATHS.SUPPORT_PATH}`,
         },
+      this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) &&
+        !this.agridataStateService.isImpersonating() && {
+          label: 'admin.pageTitle',
+          icon: faFileCheck,
+          route: `/${ROUTE_PATHS.ADMIN_PATH}`,
+        },
       (this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) ||
         this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_PROVIDER)) &&
         !this.agridataStateService.isImpersonating() && {
@@ -83,18 +94,23 @@ export class NavigationWidgetComponent {
           icon: faLayerGroup,
           route: `/${ROUTE_PATHS.DATA_CATALOG_PATH}`,
         },
-      this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) &&
-        !this.agridataStateService.isImpersonating() && {
-          label: 'admin.pageTitle',
-          icon: faFileCheck,
-          route: `/${ROUTE_PATHS.ADMIN_PATH}`,
-        },
     ].filter(Boolean),
   );
 
-  readonly isAnimating = signal(false);
+  // Effects
+  private readonly _animationEffect = effect(() => {
+    this.isNavigationOpen();
+    if (this.initialized()) {
+      untracked(() => {
+        this.isAnimating.set(true);
+        setTimeout(() => this.isAnimating.set(false), 150);
+      });
+    }
+    this.initialized.set(true);
+  });
 
-  toggleNavigation = () => {
+  // Methods
+  protected toggleNavigation = () => {
     this.agridataStateService.setMainMenuOpened(!this.isNavigationOpen());
     this.isAnimating.set(true);
     setTimeout(() => this.isAnimating.set(false), 150);
