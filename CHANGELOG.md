@@ -1,3 +1,9 @@
+## [1.11.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.14...v1.11.0-rc.15) (2026-05-19)
+
+### Features
+
+- **data-catalog:** add data-catalog page ([eaf122e](https://github.com/agridata-ch/frontend/commit/eaf122e0e051b3094eefcfa5ef9b0e9507c8ff18)), closes [DIGIB2-1350](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1350)
+
 ## [1.11.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.13...v1.11.0-rc.14) (2026-05-18)
 
 ### Features
