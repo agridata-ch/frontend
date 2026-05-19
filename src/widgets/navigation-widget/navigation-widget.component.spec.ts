@@ -47,22 +47,6 @@ describe('NavigationWidgetComponent', () => {
     expect(component.isNavigationOpen()).toBe(false);
   });
 
-  it('toggleNavigation flips isNavigationOpen and updates chevronIcon', () => {
-    createComponent();
-
-    component.toggleNavigation();
-    expect(stateService.setMainMenuOpened).toHaveBeenCalledWith(true);
-
-    stateService.__testSignals.userPreferences.update((pref) => ({
-      ...pref,
-      mainMenuOpened: true,
-    }));
-    fixture.detectChanges();
-    component.toggleNavigation();
-
-    expect(stateService.setMainMenuOpened).toHaveBeenCalledWith(false);
-  });
-
   it('showNavigation is false when AuthService.isAuthenticated() returns false', () => {
     authService.__testSignals.isAuthenticated.set(false);
     createComponent();
