@@ -16,11 +16,11 @@ import {
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { CellRendererTypes } from '@/shared/ui/agridata-table';
 
-import { DataCatalogPageComponent } from './data-catalog-page.component';
+import { DataProductsPageComponent } from './data-products-page.component';
 
-describe('DataCatalogPageComponent - component behavior', () => {
-  let fixture: ComponentFixture<DataCatalogPageComponent>;
-  let component: DataCatalogPageComponent;
+describe('DataProductsPageComponent - component behavior', () => {
+  let fixture: ComponentFixture<DataProductsPageComponent>;
+  let component: DataProductsPageComponent;
   let dataProductService: MockDataProductService;
   let errorService: MockErrorHandlerService;
   let i18nService: MockI18nService;
@@ -31,7 +31,7 @@ describe('DataCatalogPageComponent - component behavior', () => {
     i18nService = createMockI18nService();
 
     await TestBed.configureTestingModule({
-      imports: [DataCatalogPageComponent, createTranslocoTestingModule()],
+      imports: [DataProductsPageComponent, createTranslocoTestingModule()],
       providers: [
         { provide: DataProductService, useValue: dataProductService },
         { provide: ErrorHandlerService, useValue: errorService },
@@ -39,7 +39,7 @@ describe('DataCatalogPageComponent - component behavior', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DataCatalogPageComponent);
+    fixture = TestBed.createComponent(DataProductsPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -72,7 +72,7 @@ describe('DataCatalogPageComponent - component behavior', () => {
 
       dataProductService.getAllDataProducts.mockResolvedValueOnce(mockResponse);
 
-      const testFixture = TestBed.createComponent(DataCatalogPageComponent);
+      const testFixture = TestBed.createComponent(DataProductsPageComponent);
       testFixture.detectChanges();
       await testFixture.whenStable();
 
@@ -88,7 +88,7 @@ describe('DataCatalogPageComponent - component behavior', () => {
         pageSize: 10,
       } as PageResponseDto<DataProductDto>);
 
-      const testFixture = TestBed.createComponent(DataCatalogPageComponent);
+      const testFixture = TestBed.createComponent(DataProductsPageComponent);
       testFixture.detectChanges();
       await testFixture.whenStable();
 
@@ -104,7 +104,7 @@ describe('DataCatalogPageComponent - component behavior', () => {
         pageSize: 10,
       } as PageResponseDto<DataProductDto>);
 
-      const testFixture = TestBed.createComponent(DataCatalogPageComponent);
+      const testFixture = TestBed.createComponent(DataProductsPageComponent);
       const testComponent = testFixture.componentInstance;
 
       const queryParams: ResourceQueryDto = {
@@ -124,32 +124,32 @@ describe('DataCatalogPageComponent - component behavior', () => {
 
   describe('table metadata computed signal', () => {
     it('should include two columns in table metadata', () => {
-      const metadata = component['dataCatalogTableMetaData']();
+      const metadata = component['dataProductsTableMetaData']();
       expect(metadata.columns.length).toBe(2);
     });
 
     it('should configure the name column with template renderer', () => {
-      const metadata = component['dataCatalogTableMetaData']();
+      const metadata = component['dataProductsTableMetaData']();
       const nameColumn = metadata.columns[0];
 
-      expect(nameColumn.name).toBe('dataCatalog.table.name');
+      expect(nameColumn.name).toBe('dataProducts.table.name');
       expect(nameColumn.sortable).toBe(true);
       expect(nameColumn.sortField).toBe('productName');
       expect(nameColumn.renderer.type).toBe(CellRendererTypes.TEMPLATE);
     });
 
     it('should configure the system column with function renderer', () => {
-      const metadata = component['dataCatalogTableMetaData']();
+      const metadata = component['dataProductsTableMetaData']();
       const systemColumn = metadata.columns[1];
 
-      expect(systemColumn.name).toBe('dataCatalog.table.system');
+      expect(systemColumn.name).toBe('dataProducts.table.system');
       expect(systemColumn.sortable).toBe(true);
       expect(systemColumn.sortField).toBe('systemName');
       expect(systemColumn.renderer.type).toBe(CellRendererTypes.FUNCTION);
     });
 
     it('should use FUNCTION renderer on system column to call i18nService.useObjectTranslation', () => {
-      const metadata = component['dataCatalogTableMetaData']();
+      const metadata = component['dataProductsTableMetaData']();
       const systemColumn = metadata.columns[1];
 
       const mockProduct: DataProductDto = {
@@ -170,12 +170,12 @@ describe('DataCatalogPageComponent - component behavior', () => {
     });
 
     it('should configure row menu actions with one viewDetails action', () => {
-      const metadata = component['dataCatalogTableMetaData']();
+      const metadata = component['dataProductsTableMetaData']();
       const actions = metadata.rowMenuActions?.();
 
       expect(actions).toBeDefined();
       expect(actions?.length).toBe(1);
-      expect(actions?.[0].label).toBe('dataCatalog.table.actions.viewDetails');
+      expect(actions?.[0].label).toBe('dataProducts.table.actions.viewDetails');
     });
   });
 });

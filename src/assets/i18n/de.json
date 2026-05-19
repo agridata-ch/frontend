@@ -767,8 +767,8 @@
       }
     }
   },
-  "dataCatalog": {
-    "pageTitle": "Datenkatalog",
+  "dataProducts": {
+    "pageTitle": "Datenprodukte",
     "table": {
       "name": "Datenprodukt",
       "system": "System",
