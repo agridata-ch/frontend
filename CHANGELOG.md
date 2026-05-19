@@ -1,3 +1,9 @@
+## [1.11.0-rc.17](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.16...v1.11.0-rc.17) (2026-05-19)
+
+### Features
+
+- **ui:** improve navigation button ([07324a2](https://github.com/agridata-ch/frontend/commit/07324a289c1ab2c41bebccdf4a88a16eea6ef81b))
+
 ## [1.11.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.15...v1.11.0-rc.16) (2026-05-19)
 
 ### Features
