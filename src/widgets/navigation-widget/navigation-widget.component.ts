@@ -79,9 +79,9 @@ export class NavigationWidgetComponent {
       (this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) ||
         this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_PROVIDER)) &&
         !this.agridataStateService.isImpersonating() && {
-          label: 'dataCatalog.pageTitle',
+          label: 'dataProducts.pageTitle',
           icon: faLayerGroup,
-          route: `/${ROUTE_PATHS.DATA_CATALOG_PATH}`,
+          route: `/${ROUTE_PATHS.DATA_PRODUCTS_PATH}`,
         },
       this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) &&
         !this.agridataStateService.isImpersonating() && {

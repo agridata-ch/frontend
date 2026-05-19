@@ -30,7 +30,7 @@ import {
  * CommentLastReviewed: 2026-05-13
  */
 @Component({
-  selector: 'app-data-catalog-page',
+  selector: 'app-data-products-page',
   imports: [
     AgridataTableComponent,
     FaIconComponent,
@@ -38,15 +38,15 @@ import {
     ErrorOutletComponent,
     DataProductDtoDirective,
   ],
-  templateUrl: './data-catalog-page.component.html',
+  templateUrl: './data-products-page.component.html',
 })
-export class DataCatalogPageComponent {
+export class DataProductsPageComponent {
   private readonly dataProductService = inject(DataProductService);
   private readonly errorService = inject(ErrorHandlerService);
   protected readonly i18nService = inject(I18nService);
 
-  protected readonly NAME_HEADER = 'dataCatalog.table.name';
-  protected readonly SYSTEM_HEADER = 'dataCatalog.table.system';
+  protected readonly NAME_HEADER = 'dataProducts.table.name';
+  protected readonly SYSTEM_HEADER = 'dataProducts.table.system';
 
   protected readonly faLayerGroup = faLayerGroup;
   protected readonly faEye = faEye;
@@ -56,7 +56,7 @@ export class DataCatalogPageComponent {
 
   readonly resourceQueryDto = signal<ResourceQueryDto | undefined>(undefined);
 
-  protected readonly dataCatalogTableMetaData = computed<TableMetadata<DataProductDto>>(() => {
+  protected readonly dataProductsTableMetaData = computed<TableMetadata<DataProductDto>>(() => {
     return {
       idColumn: 'id',
       columns: [
@@ -83,7 +83,7 @@ export class DataCatalogPageComponent {
       ],
       rowMenuActions: () => [
         {
-          label: 'dataCatalog.table.actions.viewDetails',
+          label: 'dataProducts.table.actions.viewDetails',
           icon: faEye,
           callback: async () => {},
         },
@@ -91,7 +91,7 @@ export class DataCatalogPageComponent {
     };
   });
 
-  readonly fetchDataCatalogResource = resource({
+  readonly fetchDataProductsResource = resource({
     params: () => ({
       query: this.resourceQueryDto() ?? {},
       locale: this.i18nService.lang(),
@@ -100,8 +100,8 @@ export class DataCatalogPageComponent {
     defaultValue: {} as PageResponseDto,
   });
 
-  fetchDataCatalogErrorHandler = createResourceErrorHandlerEffect(
-    this.fetchDataCatalogResource,
+  fetchDataProductsErrorHandler = createResourceErrorHandlerEffect(
+    this.fetchDataProductsResource,
     this.errorService,
   );
 }

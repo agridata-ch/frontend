@@ -766,8 +766,8 @@
       }
     }
   },
-  "dataCatalog": {
-    "pageTitle": "Catalogue de données",
+  "dataProducts": {
+    "pageTitle": "Produits de données",
     "table": {
       "name": "Produit de données",
       "system": "Système",
