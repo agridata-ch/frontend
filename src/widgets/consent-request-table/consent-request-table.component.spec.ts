@@ -99,6 +99,7 @@ describe('ConsentRequestTableComponent', () => {
 
     fixture = TestBed.createComponent(ConsentRequestTableComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('consentRequestId', undefined);
     fixture.componentRef.setInput('consentRequests', mockConsentRequests);
     // Set the consentRequestsResource input to the fetchConsentRequests ResourceRef
     fixture.componentRef.setInput('consentRequestsResource', mockResourceRef);
@@ -242,5 +243,42 @@ describe('ConsentRequestTableComponent', () => {
     );
 
     expect(spy).toHaveBeenCalledWith(mockConsentRequests[0].id, ConsentRequestStateEnum.Declined);
+  });
+
+  describe('highlightClickedRowFn', () => {
+    const getHighlightClickedRowFn = () =>
+      (
+        component as unknown as {
+          consentRequestsTableMetaData: () => {
+            highlightClickedRowFn?: (item: ConsentRequestProducerViewDto) => boolean;
+          };
+        }
+      ).consentRequestsTableMetaData().highlightClickedRowFn;
+
+    it('should not highlight any row when consentRequestId is undefined', () => {
+      expect(getHighlightClickedRowFn()?.(mockConsentRequests[0])).toBe(false);
+      expect(getHighlightClickedRowFn()?.(mockConsentRequests[1])).toBe(false);
+    });
+
+    it('should update highlighted row when consentRequestId changes', () => {
+      fixture.componentRef.setInput('consentRequestId', '1');
+      fixture.detectChanges();
+      expect(getHighlightClickedRowFn()?.(mockConsentRequests[0])).toBe(true);
+
+      fixture.componentRef.setInput('consentRequestId', '2');
+      fixture.detectChanges();
+      expect(getHighlightClickedRowFn()?.(mockConsentRequests[0])).toBe(false);
+      expect(getHighlightClickedRowFn()?.(mockConsentRequests[1])).toBe(true);
+    });
+
+    it('should clear highlighted row when consentRequestId is set to undefined', () => {
+      fixture.componentRef.setInput('consentRequestId', '1');
+      fixture.detectChanges();
+      expect(getHighlightClickedRowFn()?.(mockConsentRequests[0])).toBe(true);
+
+      fixture.componentRef.setInput('consentRequestId', undefined);
+      fixture.detectChanges();
+      expect(getHighlightClickedRowFn()?.(mockConsentRequests[0])).toBe(false);
+    });
   });
 });

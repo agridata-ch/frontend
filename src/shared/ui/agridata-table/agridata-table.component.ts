@@ -46,8 +46,9 @@ import {
  * - Row highlighting and hover states
  * - Keyboard navigation support
  * - Action buttons per row
+ * - Row highlighting when clicked/selected
  *
- * CommentLastReviewed: 2026-05-05
+ * CommentLastReviewed: 2026-05-21
  **/
 @Component({
   selector: 'app-agridata-table',
@@ -146,6 +147,10 @@ export class AgridataTableComponent<T> {
   protected isRowHighlighted(row: T): boolean {
     const highlightFn = this.tableMetadata().highlightFn;
     return highlightFn ? highlightFn(row) : false;
+  }
+
+  protected isRowSelected(row: T): boolean {
+    return this.tableMetadata().highlightClickedRowFn?.(row) ?? false;
   }
 
   protected getRowActions(row: T): ActionDTO[] {

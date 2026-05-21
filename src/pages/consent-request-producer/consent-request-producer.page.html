@@ -29,6 +29,7 @@
   [consentRequests]="consentRequests()"
   (tableRowAction)="navigateToRequest($event)"
   [consentRequestsResource]="consentRequestResource"
+  [consentRequestId]="consentRequestId()"
 />
 <router-outlet></router-outlet>
 @if (hasRedirectUrl()) {
