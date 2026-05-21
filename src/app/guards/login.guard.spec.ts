@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
+import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks';
 
 import { LoginAuthGuard } from './login.guard';
 

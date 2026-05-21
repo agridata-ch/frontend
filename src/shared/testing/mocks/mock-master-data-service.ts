@@ -2,7 +2,7 @@ import { signal, WritableSignal } from '@angular/core';
 
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataProductDto, DataProviderDto, UserPreferencesDto } from '@/entities/openapi';
-import { MockifyWithWritableSignals } from '@/shared/testing/mocks/test-model';
+import { MockifyWithWritableSignals } from '@/shared/testing/mocks';
 import { MultiSelectCategory } from '@/shared/ui/agridata-multi-select';
 
 export type MockMasterDataServiceTestSignals = {

@@ -7,8 +7,7 @@ import { Subject } from 'rxjs';
 
 import { AnalyticsService } from '@/app/analytics.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { createMockAgridataStateService } from '@/shared/testing/mocks/mock-agridata-state-service';
-import { createMockAnalyticsService } from '@/shared/testing/mocks/mock-analytics-service';
+import { createMockAgridataStateService, createMockAnalyticsService } from '@/shared/testing/mocks';
 
 import { AppComponent } from './app.component';
 

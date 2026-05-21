@@ -8,11 +8,9 @@ import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+} from '@/shared/testing/mocks';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 
 import { ErrorModal } from './error-modal.component';

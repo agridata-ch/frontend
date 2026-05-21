@@ -6,17 +6,17 @@ import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataProductDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
-import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 import {
+  createMockI18nService,
+  MockI18nService,
+  createMockAuthService,
+  MockAuthService,
   createMockContractRevisionService,
   mockContractRevision,
   MockContractRevisionService,
-} from '@/shared/testing/mocks/mock-contract-revision-service';
-import {
   createMockMasterDataService,
   MockMasterDataService,
-} from '@/shared/testing/mocks/mock-master-data-service';
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { DataRequestCompletionComponent } from './data-request-completion.component';

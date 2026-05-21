@@ -6,11 +6,9 @@ import { DebugLogSource, DebugLogStatus } from '@/features/debug/debug.model';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+} from '@/shared/testing/mocks';
 
 import { DebugService } from './debug.service';
 

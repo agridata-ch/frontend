@@ -1,6 +1,6 @@
 import { UserService } from '@/entities/api/user.service';
 import { UidDto, UserInfoDto } from '@/entities/openapi';
-import { Mockify } from '@/shared/testing/mocks/test-model';
+import { Mockify } from '@/shared/testing/mocks';
 
 export type MockUserService = Mockify<UserService>;
 

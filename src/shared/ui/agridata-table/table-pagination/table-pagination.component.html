@@ -12,14 +12,12 @@
   </div>
 
   <!-- Pagination Controls -->
-  <div
-    class="flex items-center rounded-md border border-agridata-stroke divide-x divide-agridata-stroke"
-  >
+  <div class="flex items-center rounded-md border border-agridata-stroke">
     <app-agridata-button
       [ariaLabel]="t('previousPage')"
       [disabled]="!canNavigateToPrevious()"
       [variant]="ButtonVariants.Icon"
-      (onClick)="navigateToPreviousPage()"
+      (handleClick)="navigateToPreviousPage()"
     >
       <fa-icon [icon]="faChevronLeft" />
     </app-agridata-button>
@@ -36,7 +34,7 @@
       [disabled]="!canNavigateToNext()"
       [variant]="ButtonVariants.Icon"
       [ariaLabel]="t('nextPage')"
-      (onClick)="navigateToNextPage()"
+      (handleClick)="navigateToNextPage()"
     >
       <fa-icon [icon]="faChevronRight" />
     </app-agridata-button>

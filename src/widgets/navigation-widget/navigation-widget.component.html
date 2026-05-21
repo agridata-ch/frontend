@@ -31,16 +31,7 @@
         }
       </ul>
     </nav>
-    <button
-      (click)="toggleNavigation()"
-      class="absolute flex justify-center items-center bottom-14 -right-2.5 rounded-full border w-6 h-6 bg-white hover:bg-agridata-background-page z-10"
-      [attr.aria-label]="
-        isNavigationOpen() ? ('navigation.open' | i18n) : ('navigation.close' | i18n)
-      "
-      [attr.data-testid]="isNavigationOpen() ? 'navigation-collapse' : 'navigation-expand'"
-    >
-      <fa-icon [icon]="navIcon()" class="flex text-agridata-secondary-text" />
-    </button>
+    <!-- We moved the toggle button to the default layout to ensure proper positioning -->
   </div>
 }
 <app-mobile-navigation-widget class="flex lg:hidden" [cmsPages]="cmsPages()" />

@@ -6,11 +6,9 @@ import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import {
   createMockAnalyticsService,
   MockAnalyticsService,
-} from '@/shared/testing/mocks/mock-analytics-service';
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { CookiebannerComponent } from './cookiebanner.component';

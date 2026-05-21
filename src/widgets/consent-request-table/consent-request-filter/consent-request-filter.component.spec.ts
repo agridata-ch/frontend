@@ -37,9 +37,9 @@ describe('ConsentRequestFilterComponent', () => {
     expect(component.totalOpenRequests()).toBe(2);
   });
 
-  it('handleClick toggles selectedValue and emits the correct value', async () => {
+  it('onButtonClick toggles selectedValue and emits the correct value', async () => {
     const emittedValues: Array<string | null> = [];
-    component.onClick.subscribe((val) => emittedValues.push(val));
+    component.handleFilterChange.subscribe((val) => emittedValues.push(val));
 
     expect(component.isSelected(null)).toBe(true);
 

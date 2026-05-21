@@ -42,13 +42,13 @@ export class ToastComponent {
   getToastClasses(toast: Toast) {
     switch (toast.type) {
       case ToastType.Success:
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-100 text-green-700';
       case ToastType.Error:
         return 'bg-red-100 text-red-700';
       case ToastType.Info:
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-sky-100 text-sky-700';
       case ToastType.Warning:
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-orange-100 text-orange-700';
     }
   }
 

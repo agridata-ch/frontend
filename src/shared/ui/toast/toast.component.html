@@ -16,7 +16,7 @@
           <app-agridata-button
             class="ml-6"
             [variant]="ButtonVariants.Link"
-            (onClick)="handleUndoAction(toast)"
+            (handleClick)="handleUndoAction(toast)"
           >
             {{ toast.undoAction.label | i18n }}
           </app-agridata-button>

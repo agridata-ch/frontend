@@ -401,7 +401,20 @@
           },
           "verifyButton": "Conferma il codice",
           "resendButton": "Invia nuovamente il codice SMS",
-          "resendInfo": "È possibile inviare nuovamente tra {{ seconds }} secondi"
+          "resendInfo": "È possibile inviare nuovamente tra {{ seconds }} secondi",
+          "error": {
+            "expired": "Il codice non è valido. Si prega di richiedere un nuovo codice.",
+            "invalid": "Il codice non è valido. Si prega di riprovare.",
+            "locked": "Il codice non è valido. Si prega di richiedere un nuovo codice.",
+            "lockedAlert": {
+              "title": "Troppi tentativi",
+              "message": "Hai digitato il codice errato troppe volte. Richiedi un nuovo codice."
+            },
+            "resendCooldownAlert": {
+              "title": "Veuillez patienter un instant",
+              "message": "La procedura di firma è già in corso. Attendere circa 30 secondi e riprovare."
+            }
+          }
         },
         "alreadySigned": {
           "description": "Firmato da {{ name }}"
@@ -419,7 +432,7 @@
       }
     },
     "contractPdf": {
-      "title": "Contratto",
+      "title": "Documento contrattuale",
       "download": "Scarica",
       "fileName": "Vertrag/Contrat_{{ humanFriendlyId }}"
     },
@@ -463,6 +476,20 @@
         "title": "Domanda pronta per l'approvazione",
         "message": "Cliccando su « {{ releaseContract }} », date il via libera al contratto per conto della vostra organizzazione. Non appena la richiesta sarà attiva, i produttori di dati (agricoltori, allevatori, ecc.) potranno ricevere una richiesta di dati e dare il loro consenso. Inoltre, gli acquirenti di dati potranno iniziare a scaricare i dati, a condizione che siano stati ottenuti i consensi dei produttori di dati."
       }
+    },
+    "contractSignaturePolicy": {
+      "options": {
+        "collective": {
+          "title": "Firma collettiva (sono necessarie due persone)",
+          "subtitle": "Per la vostra organizzazione ({{ company }}), il contratto deve essere firmato da due persone autorizzate."
+        },
+        "individual": {
+          "title": "Firma singola (è sufficiente una sola persona)",
+          "subtitle": "Per la vostra organizzazione ({{ company }}), è sufficiente la firma di una sola persona autorizzata. Con questa selezione, confermate in modo legalmente vincolante di disporre del corrispondente potere di firma individuale."
+        }
+      },
+      "title": "Regolamento sulle firme",
+      "subtitle": "Selezionare la procedura di firma in conformità con le direttive di {{ company }}."
     }
   },
   "forms": {
@@ -513,6 +540,13 @@
         "openingInfos": "I nostri orari:\ndal lunedì al venerdì\ndalle 07.00 alle 18.00",
         "moreInfos": "Maggiori informazioni"
       }
+    },
+    "notifications": {
+      "title": "Notifiche",
+      "markAllAsRead": "Contrassegnare le notifiche come lette",
+      "showAll": "Mostra tutte le notifiche",
+      "empty": "Non ci sono notifiche",
+      "markAsRead": "Segna come letto"
     }
   },
   "contact-form": {
@@ -714,5 +748,33 @@
     },
     "startTour": "Inizia il tour",
     "title": "Istruzioni"
+  },
+  "notifications": {
+    "markAsRead": {
+      "error": {
+        "title": "Impossibile contrassegnare come letto",
+        "message": "Si è verificato un errore durante l'operazione “Contrassegna come letto”. Si prega di riprovare"
+      }
+    },
+    "markAllAsRead": {
+      "error": {
+        "title": "Impossibile contrassegnare le notifiche come lette",
+        "message": "Si è verificato un errore durante l'operazione \"Contrassegna le notifiche come lette\". Si prega di riprovare più tardi."
+      },
+      "success": {
+        "title": "Contrassegna tutte le notifiche come lette",
+        "message": "Tutte le notifiche sono state contrassegnate come lette"
+      }
+    }
+  },
+  "dataProducts": {
+    "pageTitle": "Prodotti informativi",
+    "table": {
+      "name": "Prodotto di dati",
+      "system": "Sistema",
+      "actions": {
+        "viewDetails": "Visualizza"
+      }
+    }
   }
 }

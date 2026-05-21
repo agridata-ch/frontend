@@ -23,5 +23,5 @@ export class AgridataTextareaComponent {
   readonly hasError = input<boolean>(false);
   readonly disabled = input<boolean>(false);
 
-  readonly onBlur = output<void>();
+  readonly handleBlur = output<void>();
 }

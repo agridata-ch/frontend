@@ -1,9 +1,11 @@
 import { Component, computed, inject, input } from '@angular/core';
+import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto } from '@/entities/openapi';
 import { getFieldFromLang } from '@/shared/data-request';
-import { I18nDirective, I18nService } from '@/shared/i18n';
+import { I18nDirective } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact/data-request-contact.component';
 import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos/data-request-privacy-infos.component';
@@ -28,19 +30,25 @@ import { AgridataContactCardComponent } from '../agridata-contact-card';
     DataRequestPrivacyInfosComponent,
     DataRequestContactComponent,
     AgridataContactCardComponent,
+    FontAwesomeModule,
   ],
   templateUrl: './data-request-preview.component.html',
 })
 export class DataRequestPreviewComponent {
-  readonly i18nService = inject(I18nService);
+  // Injects
+  protected readonly metaDataService = inject(MasterDataService);
+
+  // Inputs
   readonly dataRequest = input.required<DataRequestDto>();
-  readonly metaDataService = inject(MasterDataService);
 
-  readonly availableLangs = availableLangs;
-  readonly AvatarSize = AvatarSize;
-  readonly AvatarSkin = AvatarSkin;
-  readonly getFieldFromLang = getFieldFromLang;
+  // Constants
+  protected readonly availableLangs = availableLangs;
+  protected readonly AvatarSize = AvatarSize;
+  protected readonly AvatarSkin = AvatarSkin;
+  protected readonly getFieldFromLang = getFieldFromLang;
+  protected readonly faSpinnerThird = faSpinnerThird;
 
+  // Computed
   protected readonly dataProvider = computed(() => {
     return this.metaDataService
       .dataProviders()

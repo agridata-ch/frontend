@@ -1,6 +1,6 @@
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
-import { Mockify } from '@/shared/testing/mocks/test-model';
+import { Mockify } from '@/shared/testing/mocks';
 
 export const mockDataRequests: DataRequestDto[] = [
   {
@@ -59,5 +59,6 @@ export function createMockDataRequestService(): MockDataRequestService {
     uploadLogo: jest.fn().mockResolvedValue(undefined),
     releaseDataRequestToBeActivated: jest.fn().mockResolvedValue(mockDataRequests[0]),
     releaseDataRequestToProvider: jest.fn().mockResolvedValue(mockDataRequests[0]),
+    setSignatureType: jest.fn().mockResolvedValue(mockDataRequests[0]),
   } satisfies MockDataRequestService;
 }

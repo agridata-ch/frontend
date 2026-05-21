@@ -1,5 +1,5 @@
 import { AnalyticsService } from '@/app/analytics.service';
-import { Mockify } from '@/shared/testing/mocks/test-model';
+import { Mockify } from '@/shared/testing/mocks';
 
 export type MockAnalyticsService = Mockify<AnalyticsService>;
 

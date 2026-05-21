@@ -89,6 +89,9 @@ export class DataRequestWizardConsumerComponent extends DataRequestWizardBaseCom
   // Effects
   private readonly setInitialWizardStepEffect = effect(() => {
     const wizard = this.wizard();
+    const loading = this.isLoading();
+    if (loading || !wizard) return;
+
     untracked(() => {
       const stateCode = this.dataRequest()?.stateCode;
       if (

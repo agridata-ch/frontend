@@ -35,7 +35,7 @@
       [attr.aria-label]="
         inputPrefix() ? inputPrefix() + '-' + (placeholder() || '') : placeholder()
       "
-      (blur)="onBlur.emit()"
+      (blur)="handleBlur.emit()"
     />
   } @else {
     <input
@@ -57,7 +57,7 @@
       [class.border-l-0]="inputPrefix()"
       [class.cursor-not-allowed]="disabled()"
       (input)="handleInputChange($event)"
-      (blur)="onBlur.emit()"
+      (blur)="handleBlur.emit()"
     />
   }
   @if (suffixTemplate()) {

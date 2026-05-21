@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { DriveStep } from 'driver.js';
 
 import { I18nService } from '@/shared/i18n';
-import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks/mock-i18n-service';
+import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
 
 import { ProductTourService } from './product-tour.service';
 

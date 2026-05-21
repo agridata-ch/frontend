@@ -3,7 +3,8 @@
 import angularEslintTemplate from '@angular-eslint/eslint-plugin-template';
 import angularTemplateParser from '@angular-eslint/template-parser';
 import { defineConfig } from 'eslint/config';
-import importPlugin from 'eslint-plugin-import';
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
+import importPlugin from 'eslint-plugin-import-x';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import securityPlugin from 'eslint-plugin-security';
 import storybook from 'eslint-plugin-storybook';
@@ -49,9 +50,7 @@ export default defineConfig([
       ],
     },
     settings: {
-      'import/resolver': {
-        typescript: {},
-      },
+      'import-x/resolver-next': [createTypeScriptImportResolver()],
     },
   }, // Add security plugin rules
   {

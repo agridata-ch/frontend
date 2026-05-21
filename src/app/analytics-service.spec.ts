@@ -9,11 +9,9 @@ import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import {
   createMockTitleService,
   MockTitleService,
-} from '@/shared/testing/mocks/mock-title-service';
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { AnalyticsService } from './analytics.service';

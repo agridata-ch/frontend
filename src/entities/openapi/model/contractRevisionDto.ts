@@ -9,6 +9,7 @@
  */
 import { ContractRevisionSignatureDto } from './contractRevisionSignatureDto';
 import { DataRequestContextDto } from './dataRequestContextDto';
+import { SignatureTypeEnum } from './signatureTypeEnum';
 
 
 export interface ContractRevisionDto { 
@@ -42,5 +43,16 @@ export interface ContractRevisionDto {
      * List of signatures of the data provider
      */
     providerSignatures?: Array<ContractRevisionSignatureDto>;
+    /**
+     * Defines whether the consumer party uses a individual or a collective signature
+     */
+    consumerSignatureType?: SignatureTypeEnum;
+    /**
+     * Defines whether the provider party uses a individual or a collective signature
+     */
+    providerSignatureType?: SignatureTypeEnum;
 }
+export namespace ContractRevisionDto {
+}
+
 

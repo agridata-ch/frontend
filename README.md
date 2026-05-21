@@ -6,8 +6,8 @@ This is the frontend of agridata.ch. The frontend is built with Angular and Type
 
 ## Requirements
 
-- Node.js (>= 20.0.0)
-- npm (>= 10.0.0)
+- Node.js (>= 24.0.0)
+- npm (>= 11.0.0)
 
 ## Installation
 
@@ -24,6 +24,8 @@ cd frontend
 ```bash
 FONTAWESOME_PACKAGE_TOKEN={{your_token_here}}
 ```
+
+If you get an authentication error then the preinstall script does not correctly fetch the token from your .env file so then past the token directly in to the .npmrc but don't check in this change!
 
 If you are on windows npm may not be able to use the .env file directly. In this case you can set the environment variable manually in powershell:
 
@@ -49,17 +51,8 @@ In this project we use the [Conventional Commits](https://www.conventionalcommit
 
 - feat: A new feature
 - fix: A bug fix
-- docs: Documentation only changes
-- style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
-- refactor: A code change that neither fixes a bug nor adds a feature
-- perf: A code change that improves performance
-- test: Adding missing or correcting existing tests
-- build: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
-- ci: Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)
-- chore: Other changes that don't modify src or test files
-- revert: Reverts a previous commit
-- WIP: Work in progress
-- BREAKING CHANGE: A commit that introduces a breaking change
+
+When merging a pull request, the commit message must follow one of these formats; otherwise, the build will fail.
 
 # Deployment
 

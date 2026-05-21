@@ -1,38 +1,47 @@
-<div class="flex flex-col gap-8">
-  @for (lang of availableLangs; track lang) {
-    <div class="flex flex-col gap-4" *i18n="let t; prefix: 'data-request.preview'; lang: lang">
-      <h2>{{ `${t('title')} ${lang.toUpperCase()}` }}</h2>
-      <div class="flex flex-col gap-6 border border-agridata-stroke rounded-lg p-6">
-        <h3>{{ getFieldFromLang('title', lang, dataRequest()) }}</h3>
-        <div class="flex items-center gap-2">
-          <app-agridata-contact-card
-            [imageUrl]="dataRequest().dataConsumerLogoBase64"
-            [name]="dataRequest().dataConsumerDisplayName"
-            [secondaryName]="dataRequest().dataConsumerCity"
-            [size]="AvatarSize.MEDIUM"
-            [skin]="AvatarSkin.LIGHT"
+@if (dataRequest(); as request) {
+  <div class="flex flex-col gap-8">
+    @for (lang of availableLangs; track lang) {
+      <div class="flex flex-col gap-4" *i18n="let t; prefix: 'data-request.preview'; lang: lang">
+        <h2>{{ `${t('title')} ${lang.toUpperCase()}` }}</h2>
+        <div class="flex flex-col gap-6 border border-agridata-stroke rounded-lg p-6">
+          <h3>{{ getFieldFromLang('title', lang, dataRequest()) }}</h3>
+          <div class="flex items-center gap-2">
+            <app-agridata-contact-card
+              [imageUrl]="request.dataConsumerLogoBase64"
+              [name]="request.dataConsumerDisplayName"
+              [secondaryName]="request.dataConsumerCity"
+              [size]="AvatarSize.MEDIUM"
+              [skin]="AvatarSkin.LIGHT"
+            />
+          </div>
+          <span class="text-agridata-secondary-text">
+            {{ getFieldFromLang('description', lang, request) }}
+          </span>
+          <app-data-request-purpose-accordion
+            [purpose]="getFieldFromLang('purpose', lang, request)"
+            [products]="productsList()"
+            [lang]="lang"
+          />
+          <app-data-request-contact
+            [phoneNumber]="request.contactPhoneNumber"
+            [email]="request.contactEmailAddress"
+            [organisationName]="request.dataConsumerDisplayName"
+            [lang]="lang"
+          />
+          <app-data-request-privacy-infos
+            [dataConsumerName]="request.dataConsumerDisplayName"
+            [dataProvider]="dataProvider()"
+            [lang]="lang"
           />
         </div>
-        <span class="text-agridata-secondary-text">
-          {{ getFieldFromLang('description', lang, dataRequest()) }}
-        </span>
-        <app-data-request-purpose-accordion
-          [purpose]="getFieldFromLang('purpose', lang, dataRequest())"
-          [products]="productsList()"
-          [lang]="lang"
-        />
-        <app-data-request-contact
-          [phoneNumber]="dataRequest().contactPhoneNumber"
-          [email]="dataRequest().contactEmailAddress"
-          [organisationName]="dataRequest().dataConsumerDisplayName"
-          [lang]="lang"
-        />
-        <app-data-request-privacy-infos
-          [dataConsumerName]="dataRequest().dataConsumerDisplayName"
-          [dataProvider]="dataProvider()"
-          [lang]="lang"
-        />
       </div>
-    </div>
-  }
-</div>
+    }
+  </div>
+} @else {
+  <fa-icon
+    animation="spin"
+    [icon]="faSpinnerThird"
+    size="3x"
+    class="absolute flex items-center justify-center inset-0"
+  ></fa-icon>
+}

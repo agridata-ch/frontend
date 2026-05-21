@@ -4,11 +4,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataProductDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
-import { createMockI18nService } from '@/shared/testing/mocks';
 import {
+  createMockI18nService,
   MockMasterDataService,
   createMockMasterDataService,
-} from '@/shared/testing/mocks/mock-master-data-service';
+} from '@/shared/testing/mocks';
 
 import { DataRequestDetailsRequestComponent } from './data-request-details-request.component';
 

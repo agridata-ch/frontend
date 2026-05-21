@@ -7,8 +7,9 @@ import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
+  createMockAuthService,
+  MockAuthService,
+} from '@/shared/testing/mocks';
 
 import { AccountOverlayComponent } from './account-overlay.component';
 
@@ -74,7 +75,7 @@ describe('AccountOverlayComponent', () => {
     component.isOverlayOpen.set(true);
     fixture.detectChanges();
     const logoutButton = fixture.debugElement.query(By.css('app-agridata-button'));
-    logoutButton.triggerEventHandler('onClick', null);
+    logoutButton.triggerEventHandler('handleClick', null);
     expect(authService.logout).toHaveBeenCalled();
   });
 });

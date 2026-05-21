@@ -2,8 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
-import { createMockI18nService } from '@/shared/testing/mocks';
-import { createMockAuthService } from '@/shared/testing/mocks/mock-auth-service';
+import { createMockI18nService, createMockAuthService } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { ContactSupportInfoContentComponent } from './contact-support-info-content.component';

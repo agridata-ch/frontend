@@ -31,7 +31,6 @@ import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.c
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
   imports: [RouterOutlet, DebugModalComponent, ErrorOutletComponent],
 })
 export class AppComponent {

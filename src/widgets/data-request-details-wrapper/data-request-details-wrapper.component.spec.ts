@@ -12,13 +12,11 @@ import {
   createMockDataRequestService,
   createMockI18nService,
   MockDataRequestService,
-} from '@/shared/testing/mocks';
-import { createMockAuthService } from '@/shared/testing/mocks/mock-auth-service';
-import {
+  createMockAuthService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
-import { createMockMasterDataService } from '@/shared/testing/mocks/mock-master-data-service';
+  createMockMasterDataService,
+} from '@/shared/testing/mocks';
 
 import { DataRequestDetailsWrapperComponent } from './data-request-details-wrapper.component';
 

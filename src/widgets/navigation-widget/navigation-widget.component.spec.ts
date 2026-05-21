@@ -8,8 +8,9 @@ import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
+  createMockAuthService,
+  MockAuthService,
+} from '@/shared/testing/mocks';
 import { NavigationWidgetComponent } from '@/widgets/navigation-widget';
 
 describe('NavigationWidgetComponent', () => {
@@ -44,22 +45,6 @@ describe('NavigationWidgetComponent', () => {
   it('navigation is closed by default', () => {
     createComponent();
     expect(component.isNavigationOpen()).toBe(false);
-  });
-
-  it('toggleNavigation flips isNavigationOpen and updates chevronIcon', () => {
-    createComponent();
-
-    component.toggleNavigation();
-    expect(stateService.setMainMenuOpened).toHaveBeenCalledWith(true);
-
-    stateService.__testSignals.userPreferences.update((pref) => ({
-      ...pref,
-      mainMenuOpened: true,
-    }));
-    fixture.detectChanges();
-    component.toggleNavigation();
-
-    expect(stateService.setMainMenuOpened).toHaveBeenCalledWith(false);
   });
 
   it('showNavigation is false when AuthService.isAuthenticated() returns false', () => {

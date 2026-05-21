@@ -13,11 +13,13 @@
   --color-agridata-primary-900: #1a3366;
   --color-agridata-secondary-600: #00AA8D;
 
+  --color-agridata-brand-green: #00AA8D;
+
   --color-agridata-primary-text: #263645;
   --color-agridata-secondary-text: #46596b;
   --color-agridata-tertiary-text: #62748e;
 
-  --color-agridata-stroke: #ededed;
+  --color-agridata-stroke: var(--color-gray-300);
   --color-agridata-background-page: #ededed;
   --color-agridata-content-gray: #f1f5f9;
 

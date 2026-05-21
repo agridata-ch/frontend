@@ -7,12 +7,10 @@ import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import {
   createMockAuthService,
   MockAuthService,
   mockUserInfo,
-} from '@/shared/testing/mocks/mock-auth-service';
+} from '@/shared/testing/mocks';
 
 import { SupporterOverlayComponent } from './supporter-overlay.component';
 

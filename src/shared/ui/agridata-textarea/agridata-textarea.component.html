@@ -4,7 +4,7 @@
     [name]="id()!"
     [formControl]="control()!"
     [placeholder]="placeholder()"
-    (blur)="onBlur.emit()"
+    (blur)="handleBlur.emit()"
     class="border rounded-md border-gray-300 pl-5 py-3 pr-4 h-[120px] mb-2"
     [class.border-red-500]="hasError()"
     [class.bg-gray-100]="disabled()"

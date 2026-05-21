@@ -43,7 +43,7 @@ export class AgridataAvatarComponent {
     // FNV-1a 32-bit
     let h = 0x811c9dc5;
     for (let i = 0; i < str.length; i++) {
-      h ^= str.charCodeAt(i);
+      h ^= str.codePointAt(i) ?? 0;
       h = Math.imul(h, 0x01000193);
     }
     return h >>> 0;

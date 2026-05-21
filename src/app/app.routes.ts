@@ -9,6 +9,7 @@ import { AdminPage } from '@/pages/admin-page';
 import { AgbPage } from '@/pages/agb-page';
 import { CmsPage } from '@/pages/cms-page';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
+import { DataProductsPageComponent } from '@/pages/data-products-page';
 import { DataRequestsConsumerPage } from '@/pages/data-requests-consumer';
 import { DataRequestsProviderPage } from '@/pages/data-requests-provider';
 import { ErrorPage } from '@/pages/error-page/error-page.component';
@@ -211,6 +212,20 @@ export const routes: Routes = [
             component: AdminDataRequestDetailsComponent,
           },
         ],
+      },
+    ],
+  },
+  {
+    // data products routes
+    path: ROUTE_PATHS.DATA_PRODUCTS_PATH,
+    title: 'dataProducts.pageTitle',
+    component: DefaultLayoutComponent,
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
+    data: { roles: [USER_ROLES.AGRIDATA_ADMIN, USER_ROLES.AGRIDATA_DATA_REQUESTS_PROVIDER] },
+    children: [
+      {
+        path: '',
+        component: DataProductsPageComponent,
       },
     ],
   },

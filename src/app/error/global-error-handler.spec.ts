@@ -3,10 +3,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { GlobalErrorHandler } from '@/app/error/global-error-handler';
-import {
-  createMockErrorHandlerService,
-  MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+import { createMockErrorHandlerService, MockErrorHandlerService } from '@/shared/testing/mocks';
 
 describe('GlobalErrorHandler', () => {
   let errorHandler: GlobalErrorHandler;

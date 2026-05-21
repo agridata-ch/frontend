@@ -4,10 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import { ErrorDto } from '@/app/error/error-dto';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import {
-  createMockErrorHandlerService,
-  MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+import { createMockErrorHandlerService, MockErrorHandlerService } from '@/shared/testing/mocks';
 
 import { ErrorOutletComponent } from './error-outlet.component';
 

@@ -1,0 +1,21 @@
+<ng-container *i18n="let t; prefix: 'dataProducts'">
+  <h2 class="page-title">
+    <fa-icon [icon]="faLayerGroup" class="mr-3" />
+    {{ t('pageTitle') }}
+  </h2>
+  <app-error-outlet></app-error-outlet>
+  <app-agridata-table
+    [dataProvider]="fetchDataProductsResource"
+    [tableMetadata]="dataProductsTableMetaData()"
+    [(queryParameters)]="resourceQueryDto"
+  >
+    <ng-template #nameTemplate [appDataProductDtoGuard] let-item>
+      <span
+        class="text-agridata-primary-600 agridata-ellipsis"
+        [title]="this.i18nService.useObjectTranslation(item?.name)"
+      >
+        {{ this.i18nService.useObjectTranslation(item?.name) }}
+      </span>
+    </ng-template>
+  </app-agridata-table>
+</ng-container>

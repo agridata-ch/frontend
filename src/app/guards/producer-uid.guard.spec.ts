@@ -21,12 +21,9 @@ import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import {
   createMockAuthService,
   MockAuthService,
-  mockUserInfo,
-} from '@/shared/testing/mocks/mock-auth-service';
+} from '@/shared/testing/mocks';
 
 describe('producerUidGuard', () => {
   let producerUidGuard: ProducerUidGuard;
@@ -49,7 +46,6 @@ describe('producerUidGuard', () => {
     uid = '123';
     agridataStateService = createMockAgridataStateService();
     authService = createMockAuthService();
-    authService.initializeUserInfo.mockResolvedValue(mockUserInfo);
     authService.initializeAuthorizedUids.mockResolvedValue([{ uid: uid } as UidDto]);
     TestBed.configureTestingModule({
       providers: [

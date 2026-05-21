@@ -1,7 +1,6 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { faDownload, faFilePdf } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
@@ -19,7 +18,7 @@ import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/butto
  */
 @Component({
   selector: 'app-data-request-contract-pdf',
-  imports: [ButtonComponent, I18nDirective, FaIconComponent],
+  imports: [ButtonComponent, I18nDirective],
   templateUrl: './data-request-contract-pdf.component.html',
 })
 export class DataRequestContractPdfComponent {

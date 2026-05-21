@@ -2,7 +2,7 @@
 
 import { ContractRevisionService } from '@/entities/api';
 import { ContractRevisionDto, OtpChallengeDto, SignatureSlotCodeEnum } from '@/entities/openapi';
-import { Mockify } from '@/shared/testing/mocks/test-model';
+import { Mockify } from '@/shared/testing/mocks';
 
 export const mockOtpChallenge: OtpChallengeDto = {
   challengeId: 'challenge-1',

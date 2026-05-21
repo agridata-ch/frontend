@@ -8,12 +8,9 @@ import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import {
   createMockAuthService,
   MockAuthService,
-  mockUserInfo,
-} from '@/shared/testing/mocks/mock-auth-service';
+} from '@/shared/testing/mocks';
 
 import { HomeRedirectGuard } from './home-redirect.guard';
 
@@ -61,7 +58,6 @@ describe('HomeRedirectGuard', () => {
     authService.__testSignals.userRoles.set([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
     authService.__testSignals.isProducer.set(true);
     authService.initializeAuth.mockResolvedValue(true);
-    authService.initializeUserInfo.mockResolvedValue(mockUserInfo);
     (router.createUrlTree as jest.Mock).mockReturnValue(urlTree);
 
     const result = await guard.canActivate();
@@ -76,7 +72,6 @@ describe('HomeRedirectGuard', () => {
     authService.__testSignals.isAuthenticated.set(true);
     authService.__testSignals.userRoles.set([USER_ROLES.AGRIDATA_SUPPORTER]);
     authService.initializeAuth.mockResolvedValue(true);
-    authService.initializeUserInfo.mockResolvedValue(mockUserInfo);
     (router.createUrlTree as jest.Mock).mockReturnValue(urlTree);
 
     const result = await guard.canActivate();
@@ -90,7 +85,6 @@ describe('HomeRedirectGuard', () => {
     authService.__testSignals.isAuthenticated.set(true);
     authService.__testSignals.userRoles.set([USER_ROLES.AGRIDATA_SUPPORTER]);
     authService.initializeAuth.mockResolvedValue(true);
-    authService.initializeUserInfo.mockResolvedValue(mockUserInfo);
     (router.createUrlTree as jest.Mock).mockReturnValue(urlTree);
     authService.__testSignals.isSupporter.set(true);
 
@@ -106,7 +100,6 @@ describe('HomeRedirectGuard', () => {
     authService.__testSignals.userRoles.set([USER_ROLES.AGRIDATA_DATA_REQUESTS_CONSUMER]);
     authService.__testSignals.isConsumer.set(true);
     authService.initializeAuth.mockResolvedValue(true);
-    authService.initializeUserInfo.mockResolvedValue(mockUserInfo);
 
     (router.createUrlTree as jest.Mock).mockReturnValue(urlTree);
 
@@ -120,7 +113,6 @@ describe('HomeRedirectGuard', () => {
     authService.__testSignals.isAuthenticated.set(true);
     authService.__testSignals.userRoles.set([]);
     authService.initializeAuth.mockResolvedValue(true);
-    authService.initializeUserInfo.mockResolvedValue(mockUserInfo);
 
     const result = await guard.canActivate();
 

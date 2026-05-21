@@ -1,9 +1,11 @@
 export const ROUTE_PATHS = {
   CONSENT_REQUEST_PRODUCER_PATH: 'consent-requests',
   CONSENT_REQUEST_PRODUCER_CREATE_SUBPATH: 'create',
+  DATA_PRODUCTS_PATH: 'data-products',
   DATA_REQUESTS_CONSUMER_PATH: 'data-requests',
   DATA_REQUESTS_PROVIDER_PATH: 'data-requests-provider',
   SUPPORT_PATH: 'support',
+  NOTIFICATIONS_PATH: 'notifications',
   ADMIN_PATH: 'admin',
   CMS_PATH: 'cms',
   IMPRESSUM_PATH: 'cms/imprint',

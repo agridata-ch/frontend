@@ -3,12 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { AuthService } from '@/shared/lib/auth';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks';
 import {
+  createMockAuthService,
+  MockAuthService,
   createMockAgridataStateService,
   MockAgridataStateService,
   mockUids,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
+} from '@/shared/testing/mocks';
 
 import { UidSwitchComponent } from './uid-switch.component';
 

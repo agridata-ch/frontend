@@ -4,41 +4,43 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { DataRequestService, UidRegisterService } from '@/entities/api';
+import { ContractRevisionService, DataRequestService, UidRegisterService } from '@/entities/api';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { SidepanelComponent } from '@/shared/sidepanel';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
 import {
+  createMockAuthService,
+  MockAuthService,
+  createMockContractRevisionService,
+  MockContractRevisionService,
   createMockDataRequestService,
   MockDataRequestService,
-} from '@/shared/testing/mocks/mock-data-request-service';
-import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
-import { createMockI18nService } from '@/shared/testing/mocks/mock-i18n-service';
-import {
+  createMockI18nService,
   createMockMasterDataService,
   MockMasterDataService,
-} from '@/shared/testing/mocks/mock-master-data-service';
+} from '@/shared/testing/mocks';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 
 import { DataRequestDetailsRequestComponent } from './data-request-details-request';
 import { DataRequestDetailsComponent } from './data-request-details.component';
+import { DETAILS_TABS_ID } from './data-request-details.model';
 
 describe('DataRequestDetailsComponent', () => {
   let fixture: ComponentFixture<DataRequestDetailsComponent>;
   let component: DataRequestDetailsComponent;
   let componentRef: ComponentRef<DataRequestDetailsComponent>;
   let authService: MockAuthService;
+  let contractRevisionService: MockContractRevisionService;
   let dataRequestService: MockDataRequestService;
   let errorService: MockErrorHandlerService;
   let masterDataService: MockMasterDataService;
 
   beforeEach(async () => {
+    contractRevisionService = createMockContractRevisionService();
     dataRequestService = createMockDataRequestService();
     errorService = createMockErrorHandlerService();
     masterDataService = createMockMasterDataService();
@@ -49,6 +51,7 @@ describe('DataRequestDetailsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestDetailsComponent, ReactiveFormsModule, AgridataWizardComponent],
       providers: [
+        { provide: ContractRevisionService, useValue: contractRevisionService },
         { provide: DataRequestService, useValue: dataRequestService },
         { provide: I18nService, useValue: createMockI18nService() },
         { provide: AuthService, useValue: authService },
@@ -224,6 +227,78 @@ describe('DataRequestDetailsComponent', () => {
       );
       expect(requestDetailsComp).toBeTruthy();
       expect(requestDetailsComp.componentInstance.isRedirectUriRegexEditable()).toBe(true);
+    });
+  });
+
+  describe('contract loading', () => {
+    it('should not fetch contract while contract tab is not active', async () => {
+      const requestWithContract: DataRequestDto = {
+        id: 'test-id',
+        currentContractRevisionId: 'contract-revision-id',
+        dataProviderId: 'test-provider',
+        stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+      };
+      dataRequestService.fetchDataRequest.mockResolvedValue(requestWithContract);
+
+      const newFixture = TestBed.createComponent(DataRequestDetailsComponent);
+      const newComponentRef = newFixture.componentRef;
+      newComponentRef.setInput('dataRequestId', 'test-id');
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      expect(contractRevisionService.fetchContract).not.toHaveBeenCalled();
+    });
+
+    it('should fetch contract when contract tab becomes active', async () => {
+      const requestWithContract: DataRequestDto = {
+        id: 'test-id',
+        currentContractRevisionId: 'contract-revision-id',
+        dataProviderId: 'test-provider',
+        stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+      };
+      dataRequestService.fetchDataRequest.mockResolvedValue(requestWithContract);
+
+      const newFixture = TestBed.createComponent(DataRequestDetailsComponent);
+      const newComponentRef = newFixture.componentRef;
+      newComponentRef.setInput('dataRequestId', 'test-id');
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      newFixture.componentInstance['activeTabId'].set(DETAILS_TABS_ID.CONTRACT);
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      expect(contractRevisionService.fetchContract).toHaveBeenCalledWith('contract-revision-id');
+    });
+
+    it('should refetch contract when opening contract tab repeatedly', async () => {
+      const requestWithContract: DataRequestDto = {
+        id: 'test-id',
+        currentContractRevisionId: 'contract-revision-id',
+        dataProviderId: 'test-provider',
+        stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+      };
+      dataRequestService.fetchDataRequest.mockResolvedValue(requestWithContract);
+
+      const newFixture = TestBed.createComponent(DataRequestDetailsComponent);
+      const newComponentRef = newFixture.componentRef;
+      newComponentRef.setInput('dataRequestId', 'test-id');
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      newFixture.componentInstance['activeTabId'].set(DETAILS_TABS_ID.CONTRACT);
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      newFixture.componentInstance['activeTabId'].set(DETAILS_TABS_ID.REQUEST);
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      newFixture.componentInstance['activeTabId'].set(DETAILS_TABS_ID.CONTRACT);
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      expect(contractRevisionService.fetchContract).toHaveBeenCalledTimes(2);
     });
   });
 });

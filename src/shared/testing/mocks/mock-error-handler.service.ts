@@ -1,5 +1,5 @@
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { Mockify } from '@/shared/testing/mocks/test-model';
+import { Mockify } from '@/shared/testing/mocks';
 
 export type MockErrorHandlerService = Mockify<ErrorHandlerService>;
 

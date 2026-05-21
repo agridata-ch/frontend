@@ -15,20 +15,15 @@ import {
   createMockI18nService,
   mockDataRequests,
   MockDataRequestService,
-} from '@/shared/testing/mocks';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
-import {
+  createMockAuthService,
+  MockAuthService,
   createMockContractRevisionService,
   MockContractRevisionService,
-} from '@/shared/testing/mocks/mock-contract-revision-service';
-import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
-import {
   createMockMasterDataService,
   MockMasterDataService,
-} from '@/shared/testing/mocks/mock-master-data-service';
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
 

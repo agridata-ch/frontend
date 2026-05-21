@@ -72,6 +72,7 @@ export abstract class DataRequestWizardBaseComponent {
   // Input properties
   readonly dataRequestId = input<string | undefined>();
   readonly initialDataRequest = input<DataRequestDto | undefined>();
+  readonly isLoading = input<boolean>(false);
 
   // Signals
   protected readonly currentDataRequestId = signal<string | undefined>(undefined);

@@ -9,7 +9,7 @@ import { ProductTourService } from '@/shared/product-tour/product-tour.service';
 import { ButtonVariants } from '@/shared/ui/button';
 
 /**
- * A button that triggers a driver.js guided tour when clicked.
+ * A button that triggers a driver.js guided tour when handleClick.
  * Accepts tour steps as input.
  *
  * CommentLastReviewed: 2026-02-25

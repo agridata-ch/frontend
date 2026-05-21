@@ -1,3 +1,109 @@
+## [1.11.0-rc.17](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.16...v1.11.0-rc.17) (2026-05-19)
+
+### Features
+
+- **ui:** improve navigation button ([07324a2](https://github.com/agridata-ch/frontend/commit/07324a289c1ab2c41bebccdf4a88a16eea6ef81b))
+
+## [1.11.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.15...v1.11.0-rc.16) (2026-05-19)
+
+### Features
+
+- **data-product:** rename data-catalog ([1ebbed6](https://github.com/agridata-ch/frontend/commit/1ebbed6a9959630f99ab254a70d7db3d6489e046)), closes [DIGIB2-1350](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1350)
+
+## [1.11.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.14...v1.11.0-rc.15) (2026-05-19)
+
+### Features
+
+- **data-catalog:** add data-catalog page ([eaf122e](https://github.com/agridata-ch/frontend/commit/eaf122e0e051b3094eefcfa5ef9b0e9507c8ff18)), closes [DIGIB2-1350](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1350)
+
+## [1.11.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.13...v1.11.0-rc.14) (2026-05-18)
+
+### Features
+
+- **notification:** update styling ([b52d24b](https://github.com/agridata-ch/frontend/commit/b52d24b1b7d891867419af17f6bd089af95bdfec)), closes [DIGIB2-323](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-323)
+
+## [1.11.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.12...v1.11.0-rc.13) (2026-05-12)
+
+### Features
+
+- **otp-validation:** add otp validation ([257a541](https://github.com/agridata-ch/frontend/commit/257a54199ca4e2d63dd4a25d5f48ed72afc1fa9c)), closes [DIGIB2-1285](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1285)
+
+## [1.11.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.11...v1.11.0-rc.12) (2026-05-12)
+
+### Features
+
+- **notifications:** add notifications overlay ([b9d9516](https://github.com/agridata-ch/frontend/commit/b9d9516038458a6689c98cf1694d7d83613d4820)), closes [DIGIB2-323](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-323)
+
+## [1.11.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.10...v1.11.0-rc.11) (2026-05-07)
+
+### Features
+
+- **activation:** change stateCode to make button visible ([5fd6099](https://github.com/agridata-ch/frontend/commit/5fd609924eb48f051f12d37238265931eeef3106)), closes [DIGIB2-XXX](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-XXX)
+
+## [1.11.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.9...v1.11.0-rc.10) (2026-05-06)
+
+### Features
+
+- **deps:** update sonarsource/sonarqube-scan-action action to v8 ([53b7d07](https://github.com/agridata-ch/frontend/commit/53b7d07371e26da902b149c39e32fc312a3ecd1a))
+
+## [1.11.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.8...v1.11.0-rc.9) (2026-05-05)
+
+### Bug Fixes
+
+- **agridata-table:** fix search ([9099cee](https://github.com/agridata-ch/frontend/commit/9099cee0ab9860eb328b03ed41eab70197b8e5b2)), closes [DIGIB2-1341](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1341)
+
+## [1.11.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.7...v1.11.0-rc.8) (2026-05-05)
+
+### Features
+
+- **ui:** alert and radio styles ([787bab7](https://github.com/agridata-ch/frontend/commit/787bab748821a21689e666f2f25abe5924a22112))
+
+## [1.11.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.6...v1.11.0-rc.7) (2026-05-04)
+
+### Features
+
+- **signature-policy:** add signature-policy ([90f6406](https://github.com/agridata-ch/frontend/commit/90f6406bd7eca65d97933da26b62b3e35aa13cea)), closes [DIGIB2-1286](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1286)
+
+## [1.11.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.5...v1.11.0-rc.6) (2026-05-04)
+
+### Features
+
+- **signature-policy:** add signature-policy ([d12476f](https://github.com/agridata-ch/frontend/commit/d12476f09ac24c1df91d0867714bff65862b1dd0)), closes [DIGIB2-1286](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1286)
+
+## [1.11.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.4...v1.11.0-rc.5) (2026-04-29)
+
+### Features
+
+- **alert:** update alert component ([e69d2bc](https://github.com/agridata-ch/frontend/commit/e69d2bcd478f1a27700d2711450d4f873d680f06)), closes [DIGIB2-1022](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1022)
+
+### Bug Fixes
+
+- **build:** fix build ([adc5b13](https://github.com/agridata-ch/frontend/commit/adc5b13b6a002a6c069222d3245d03abc20e45fc)), closes [DIGIB2-1022](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1022)
+
+## [1.11.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.3...v1.11.0-rc.4) (2026-04-28)
+
+### Bug Fixes
+
+- **sonarqube:** fix naming ([16c1e48](https://github.com/agridata-ch/frontend/commit/16c1e48d8990a47c9a577a22389943edafe3c062)), closes [DIGIB2-1313](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1313)
+
+## [1.11.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.2...v1.11.0-rc.3) (2026-04-27)
+
+### Features
+
+- **sonarqube:** address sonarqube issues ([f2ed2ff](https://github.com/agridata-ch/frontend/commit/f2ed2ffdca8d6701a77b15fd7cd54cce20d3afad)), closes [DIGIB2-1313](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1313)
+
+## [1.11.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.11.0-rc.1...v1.11.0-rc.2) (2026-04-24)
+
+### Features
+
+- **data-request:** show contract tab ([fde4a8a](https://github.com/agridata-ch/frontend/commit/fde4a8a6acff911f506e4c0389ab9bd77dc701e4)), closes [DIGIB2-1203](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1203)
+
+## [1.11.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.10.0...v1.11.0-rc.1) (2026-04-23)
+
+### Features
+
+- **authentication:** use roles of user info ([e8dd834](https://github.com/agridata-ch/frontend/commit/e8dd83411dbce7d9785c527fb730ae830c30090d)), closes [DIGIB2-1305](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1305)
+
 ## [1.10.0](https://github.com/agridata-ch/frontend/compare/v1.9.0...v1.10.0) (2026-04-22)
 
 ### Features

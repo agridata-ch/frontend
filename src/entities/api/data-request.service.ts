@@ -8,6 +8,7 @@ import {
   DataRequestStateEnum,
   DataRequestUpdateDto,
   DataRequestValidRedirectUriRegexUpdateDto,
+  SignatureTypeEnum,
 } from '../openapi';
 
 /**
@@ -108,6 +109,12 @@ export class DataRequestService {
         dataRequestId,
         JSON.stringify(DataRequestStateEnum.ToBeActivated),
       ),
+    );
+  }
+
+  async setSignatureType(dataRequestId: string, signatureType: SignatureTypeEnum) {
+    return firstValueFrom(
+      this.apiService.setSignatureType(dataRequestId, JSON.stringify(signatureType)),
     );
   }
 }

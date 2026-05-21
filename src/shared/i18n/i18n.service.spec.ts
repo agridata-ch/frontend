@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { TranslocoService } from '@jsverse/transloco';
 
 import { TranslationDto } from '@/entities/openapi';
-import { installMockLocalStorage } from '@/shared/testing/mocks/mock-local-store';
+import { installMockLocalStorage } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { I18nService } from './i18n.service';

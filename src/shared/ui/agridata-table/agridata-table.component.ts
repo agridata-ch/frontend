@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   effect,
@@ -48,7 +47,7 @@ import {
  * - Keyboard navigation support
  * - Action buttons per row
  *
- * CommentLastReviewed: 2025-11-25
+ * CommentLastReviewed: 2026-05-05
  **/
 @Component({
   selector: 'app-agridata-table',
@@ -66,7 +65,6 @@ import {
     I18nPipe,
   ],
   templateUrl: './agridata-table.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AgridataTableComponent<T> {
   // Constants
@@ -107,32 +105,30 @@ export class AgridataTableComponent<T> {
     return sortStates;
   });
 
-  constructor() {
-    effect(() => {
-      const queryParameters = {
-        page: this.nextPageIndex(),
-        size: this.nextPageSize(),
-        searchTerm: this.searchTerm(),
-        sortParams: this.buildSortParameters(),
-      };
-      this.queryParameters.set(queryParameters);
+  // Effects
+  private readonly _queryEffect = effect(() => {
+    this.queryParameters.set({
+      page: this.nextPageIndex(),
+      size: this.nextPageSize(),
+      searchTerm: this.searchTerm(),
+      sortParams: this.buildSortParameters(),
     });
+  });
 
-    effect(() => {
-      if (!this.dataProvider().error()) {
-        const currentPageData = this.dataProvider().value();
-        if (currentPageData?.items) {
-          this.pageData.set({
-            currentPage: currentPageData?.currentPage ?? 0,
-            pageSize: currentPageData?.pageSize ?? PAGE_SIZES[0],
-            totalPages: currentPageData?.totalPages ?? 1,
-            items: currentPageData?.items ?? [],
-            totalItems: currentPageData?.totalItems ?? 0,
-          });
-        }
+  private readonly _dataProviderEffect = effect(() => {
+    if (!this.dataProvider().error()) {
+      const currentPageData = this.dataProvider().value();
+      if (currentPageData?.items) {
+        this.pageData.set({
+          currentPage: currentPageData.currentPage ?? 0,
+          pageSize: currentPageData.pageSize ?? PAGE_SIZES[0],
+          totalPages: currentPageData.totalPages ?? 1,
+          items: currentPageData.items,
+          totalItems: currentPageData.totalItems ?? 0,
+        });
       }
-    });
-  }
+    }
+  });
 
   // Template methods (protected)
   protected handleRowClick(row: T): void {
@@ -159,7 +155,13 @@ export class AgridataTableComponent<T> {
   }
 
   protected handleSearchInput(searchTerm: string): void {
+    this.nextPageIndex.set(0);
     this.searchTerm.set(searchTerm);
+  }
+
+  protected handlePageSizeChange(newPageSize: number): void {
+    this.nextPageIndex.set(0);
+    this.nextPageSize.set(newPageSize);
   }
 
   /**

@@ -401,7 +401,20 @@
           },
           "verifyButton": "Code bestätigen",
           "resendButton": "SMS Code erneut senden",
-          "resendInfo": "Erneut senden möglich in {{ seconds }} Sekunden"
+          "resendInfo": "Erneut senden möglich in {{ seconds }} Sekunden",
+          "error": {
+            "expired": "Code ist ungültig. Bitte fordern Sie einen neuen Code an.",
+            "invalid": "Code ist ungültig. Bitte versuchen Sie es erneut.",
+            "locked": "Code ist ungültig. Bitte fordern Sie einen neuen Code an.",
+            "lockedAlert": {
+              "title": "Zu viele Versuche",
+              "message": "Sie haben den Code zu oft falsch eingegeben. Fordern Sie einen neuen Code an."
+            },
+            "resendCooldownAlert": {
+              "title": "Bitte warten Sie kurz",
+              "message": "Die Unterzeichnung ist bereits im Gange. Bitte warten Sie ca. 30  Sekunden und versuchen Sie es anschliessend erneut."
+            }
+          }
         },
         "alreadySigned": {
           "description": "Unterzeichnet von {{ name }}"
@@ -419,7 +432,7 @@
       }
     },
     "contractPdf": {
-      "title": "Vertrag",
+      "title": "Vertragsdokument",
       "download": "Herunterladen",
       "fileName": "Vertrag/Contrat_{{ humanFriendlyId }}"
     },
@@ -463,6 +476,20 @@
         "title": "Antrag zur Genehmigung bereit",
         "message": "Mit einem Klick auf “{{ releaseContract }}” geben Sie den Vertrag seitens Ihrer Organisation frei. Der Vertrag wird nun versiegelt und anschliessend aktiviert. Sobald der Antrag aktiv ist, können die Datenproduzenten (Landwirte, Tierhalter, etc.) eine Datenanfrage erhalten und ihre Zustimmung geben. Zudem können die Datenbezüger mit dem Bezug der Daten starten, sofern Zustimmungen der Datenproduzenten vorliegen."
       }
+    },
+    "contractSignaturePolicy": {
+      "options": {
+        "collective": {
+          "title": "Kollektivunterschrift (zwei Personen erforderlich)",
+          "subtitle": "Für Ihre Organisation ({{ company }}) muss der Vertrag von zwei zeichnungsberechtigten Personen unterzeichnet werden."
+        },
+        "individual": {
+          "title": "Einzelunterschrift (eine Person ausreichend)",
+          "subtitle": "Für Ihre Organisation ({{ company }}) ist die Unterschrift einer einzelnen zeichnungsberechtigten Person ausreichend. Mit dieser Auswahl bestätigen Sie rechtsverbindlich, dass Sie über die entsprechende Einzelzeichnungsberechtigung verfügen."
+        }
+      },
+      "title": "Unterschriftenregelung",
+      "subtitle": "Wählen Sie, die Unterschriftenregelung gemäss den Vorgaben von {{ company }}."
     }
   },
   "forms": {
@@ -513,6 +540,13 @@
         "openingInfos": "Unsere Zeiten:\nMontag bis Freitag\n07:00 - 18:00 Uhr",
         "moreInfos": "Weitere Informationen"
       }
+    },
+    "notifications": {
+      "title": "Benachrichtigungen",
+      "markAllAsRead": "Benachrichtigungen als gelesen markieren",
+      "showAll": "Alle Benachrichtigungen anzeigen",
+      "empty": "Sie haben keine Benachrichtigungen",
+      "markAsRead": "Als gelesen markieren"
     }
   },
   "contact-form": {
@@ -714,5 +748,33 @@
     },
     "startTour": "Tour starten",
     "title": "Anleitung"
+  },
+  "notifications": {
+    "markAsRead": {
+      "error": {
+        "title": "Als gelesen markieren fehlgeschlagen",
+        "message": "Bei der Aktion \"Als gelesen markieren\" ist ein Fehler aufgetreten. Bitte versuchen Sie es noch einmal"
+      }
+    },
+    "markAllAsRead": {
+      "error": {
+        "title": "Benachrichtigungen als gelesen markieren fehlgeschlagen",
+        "message": "Bei der Aktion \"Benachrichtigungen als gelesen markieren\" ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal."
+      },
+      "success": {
+        "title": "Alle Benachrichtigungen als gelesen markiert",
+        "message": "Alle Benachrichtigungen wurden erfolgreich als gelesen markiert"
+      }
+    }
+  },
+  "dataProducts": {
+    "pageTitle": "Datenprodukte",
+    "table": {
+      "name": "Datenprodukt",
+      "system": "System",
+      "actions": {
+        "viewDetails": "Anzeigen"
+      }
+    }
   }
 }

@@ -3,7 +3,7 @@
 import { signal } from '@angular/core';
 
 import { ProductTourService } from '@/shared/product-tour/product-tour.service';
-import { Mockify } from '@/shared/testing/mocks/test-model';
+import { Mockify } from '@/shared/testing/mocks';
 
 export type MockProductTourService = Omit<Mockify<ProductTourService>, 'i18nService'>;
 

@@ -1,13 +1,12 @@
-@if (!isLoading()) {
-  @if (shouldShowActiveComponent()) {
-    <app-data-request-details
-      [dataRequestId]="dataRequestId()"
-      (closeSidepanel)="handleSidepanelClose()"
-    />
-  } @else {
-    <app-data-request-wizard
-      [initialDataRequest]="dataRequest()"
-      [dataRequestId]="dataRequestId()"
-    />
-  }
+@if (shouldShowActiveComponent()) {
+  <app-data-request-details
+    [dataRequestId]="dataRequestId()"
+    (closeSidepanel)="handleSidepanelClose()"
+  />
+} @else {
+  <app-data-request-wizard
+    [initialDataRequest]="dataRequest()"
+    [dataRequestId]="dataRequestId()"
+    [isLoading]="isLoading()"
+  />
 }

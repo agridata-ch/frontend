@@ -401,7 +401,20 @@
           },
           "verifyButton": "Vérifier le code",
           "resendButton": "Renvoyer le code SMS",
-          "resendInfo": "Il sera possible de renvoyer le message dans {{ seconds }} secondes"
+          "resendInfo": "Il sera possible de renvoyer le message dans {{ seconds }} secondes",
+          "error": {
+            "expired": "Le code n'est pas valide. Veuillez demander un nouveau code.",
+            "invalid": "Le code n'est pas valide. Veuillez réessayer.",
+            "locked": "Le code n'est pas valide. Veuillez demander un nouveau code.",
+            "lockedAlert": {
+              "title": "Trop d'essais",
+              "message": "Vous avez saisi un code erroné trop souvent. Demandez un nouveau code."
+            },
+            "resendCooldownAlert": {
+              "title": "Veuillez patienter un instant",
+              "message": "La signature est déjà en cours. Veuillez patienter environ 30 secondes, puis réessayez."
+            }
+          }
         },
         "alreadySigned": {
           "description": "Signé par {{ name }}"
@@ -419,7 +432,7 @@
       }
     },
     "contractPdf": {
-      "title": "Contrat",
+      "title": "Document contractuel",
       "download": "Télécharger",
       "fileName": "Vertrag/Contrat_{{ humanFriendlyId }}"
     },
@@ -463,6 +476,20 @@
         "title": "Demande prête pour approbation",
         "message": "En cliquant sur « {{ releaseContract }} », vous libérez le contrat au nom de votre organisation. Dès que la demande est active, les producteurs de données (agriculteurs, éleveurs, etc.) peuvent recevoir une demande de données et donner leur accord. De plus, les utilisateurs de données peuvent commencer à récupérer les données dès lors qu’ils ont obtenu l’accord des producteurs de données."
       }
+    },
+    "contractSignaturePolicy": {
+      "options": {
+        "collective": {
+          "title": "Signature collective (deux personnes requises)",
+          "subtitle": "Pour votre organisation ({{ company }}), le contrat doit être signé par deux personnes disposant du droit de signature."
+        },
+        "individual": {
+          "title": "Signature unique (une seule personne suffit)",
+          "subtitle": "Pour votre organisation ({{ company }}), la signature d'une seule personne disposant du droit de signature est suffisante. Par ce choix, vous confirmez de manière juridiquement contraignante que vous disposez d'un droit de signature individuelle."
+        }
+      },
+      "title": "Règles relatives aux signatures",
+      "subtitle": "Veuillez choisir le régime de signature conformément aux directives de {{ company }}."
     }
   },
   "forms": {
@@ -512,6 +539,13 @@
         "openingInfos": "Nos horaires:\nDu lundi au vendredi\nDe 7 h à 18 h",
         "moreInfos": "Informations complémentaires"
       }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "markAllAsRead": "Marquer les notifications comme lues",
+      "showAll": "Afficher toutes les notifications",
+      "empty": "Vous n'avez aucune notification",
+      "markAsRead": "Marquer comme lu"
     }
   },
   "contact-form": {
@@ -713,5 +747,33 @@
     },
     "startTour": "Commencer la visite",
     "title": "Instructions"
+  },
+  "notifications": {
+    "markAsRead": {
+      "error": {
+        "title": "Échec de la mise en marque comme lu",
+        "message": "Une erreur s'est produite lors de l'opération \"Marquer comme lu\". Veuillez réessayer."
+      }
+    },
+    "markAllAsRead": {
+      "error": {
+        "title": "Impossible de marquer les notifications comme lues",
+        "message": "Une erreur s'est produite lors de l'opération \"Marquer les notifications comme lues\". Veuillez réessayer plus tard."
+      },
+      "success": {
+        "title": "Toutes les notifications sont marquées comme lues",
+        "message": "Toutes les notifications ont été marquées comme lues"
+      }
+    }
+  },
+  "dataProducts": {
+    "pageTitle": "Produits de données",
+    "table": {
+      "name": "Produit de données",
+      "system": "Système",
+      "actions": {
+        "viewDetails": "Afficher"
+      }
+    }
   }
 }

@@ -3,19 +3,21 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { NotificationService } from '@/entities/api/notification.service';
 import { CmsService } from '@/entities/cms';
 import { UserInfoDto } from '@/entities/openapi';
 import { AuthService } from '@/shared/lib/auth';
-import { mockCmsService } from '@/shared/testing/mocks';
 import {
-  createMockAgridataStateService,
-  MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import { createMockAuthService, MockAuthService } from '@/shared/testing/mocks/mock-auth-service';
-import {
+  createMockNotificationService,
+  mockCmsService,
+  MockNotificationService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+  createMockAgridataStateService,
+  MockAgridataStateService,
+  createMockAuthService,
+  MockAuthService,
+} from '@/shared/testing/mocks';
 import { HeaderWidgetComponent } from '@/widgets/header-widget';
 
 describe('HeaderWidgetComponent', () => {
@@ -24,6 +26,7 @@ describe('HeaderWidgetComponent', () => {
   let authService: MockAuthService;
   let errorService: MockErrorHandlerService;
   let cmsService: Partial<CmsService>;
+  let notificationService: MockNotificationService;
   let router: jest.Mocked<Router>;
   let stateService: MockAgridataStateService;
   beforeEach(async () => {
@@ -39,6 +42,7 @@ describe('HeaderWidgetComponent', () => {
     cmsService = mockCmsService;
     authService = createMockAuthService();
     stateService = createMockAgridataStateService();
+    notificationService = createMockNotificationService();
 
     await TestBed.configureTestingModule({
       imports: [HeaderWidgetComponent, RouterLink],
@@ -49,6 +53,7 @@ describe('HeaderWidgetComponent', () => {
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: AgridataStateService, useValue: stateService },
         { provide: Router, useValue: router },
+        { provide: NotificationService, useValue: notificationService },
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(HeaderWidgetComponent);

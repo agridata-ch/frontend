@@ -63,7 +63,7 @@ export class AgridataSelectComponent {
     }
   });
 
-  ngOnInit() {
+  ngOnInit(): void {
     // Initialize selected option based on the control's value
     let currentValue = this.control()?.value ?? null;
     currentValue = currentValue ?? this.selectedOption();

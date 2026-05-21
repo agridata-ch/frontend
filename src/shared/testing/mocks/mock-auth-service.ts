@@ -4,7 +4,7 @@ import { signal, WritableSignal } from '@angular/core';
 
 import { UidDto, UserInfoDto } from '@/entities/openapi';
 import { AuthService } from '@/shared/lib/auth/auth.service';
-import { MockifyWithWritableSignals } from '@/shared/testing/mocks/test-model';
+import { MockifyWithWritableSignals } from '@/shared/testing/mocks';
 
 /**
  * Test signals exposed by the mock so tests can mutate the underlying writable signals.
@@ -59,7 +59,6 @@ export function createMockAuthService(): MockAuthService {
     getUserFullName: jest.fn().mockReturnValue(''),
     getUserEmail: jest.fn().mockReturnValue(''),
     initializeAuth: jest.fn(),
-    initializeUserInfo: jest.fn(),
     initializeAuthorizedUids: jest.fn(),
     // test-only writable signals
     __testSignals: {

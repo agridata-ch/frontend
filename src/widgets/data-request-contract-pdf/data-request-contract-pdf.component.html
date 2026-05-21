@@ -4,7 +4,7 @@
     <div class="flex gap-4">
       <app-agridata-button
         [variant]="ButtonVariants.IconLink"
-        (onClick)="handleOpenPdf()"
+        (handleClick)="handleOpenPdf()"
         [disabled]="isLoadingOpen()"
         [icon]="faPdf"
         [iconPosition]="IconPosition.Left"
@@ -16,7 +16,7 @@
     <div class="flex gap-4">
       <app-agridata-button
         [variant]="ButtonVariants.IconLink"
-        (onClick)="handleDownloadPdf()"
+        (handleClick)="handleDownloadPdf()"
         [disabled]="isLoadingDownload()"
         [icon]="faDownload"
         [iconPosition]="IconPosition.Right"

@@ -8,10 +8,10 @@ import { UidDto, UserInfoDto } from '@/entities/openapi';
 import { AGATE_LOGIN_ID_IMPERSONATION_HEADER, USER_ROLES } from '@/shared/constants/constants';
 
 /**
- * Manages authentication state, user profile data, and role extraction from tokens. Provides login,
+ * Manages authentication state, user profile data, and role extraction from user info. Provides login,
  * logout, and authentication status monitoring with reactive signals.
  *
- * CommentLastReviewed: 2025-12-01
+ * CommentLastReviewed: 2026-04-22
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -60,7 +60,7 @@ export class AuthService {
   });
 
   // Private properties
-  private authCheckPromise?: Promise<{ accessToken: string; isAuthenticated: boolean }>;
+  private authCheckPromise?: Promise<{ isAuthenticated: boolean }>;
   private hasRedirectedAfterLogin = false;
   private userInfoPromise?: Promise<UserInfoDto | undefined>;
   private userUidsPromise?: Promise<UidDto[]>;
@@ -82,8 +82,7 @@ export class AuthService {
     // Cache the OIDC checkAuth call to prevent multiple simultaneous calls
     this.authCheckPromise ??= lastValueFrom(this.oidcService.checkAuth());
 
-    const result = await this.authCheckPromise;
-    const { accessToken, isAuthenticated } = result;
+    const { isAuthenticated } = await this.authCheckPromise;
 
     // Only skip re-initialization if we're authenticated AND already have roles loaded
     if (isAuthenticated && this.isAuthenticated() && this.userRoles().length > 0) {
@@ -99,19 +98,16 @@ export class AuthService {
     this._isAuthenticated.set(isAuthenticated);
 
     if (!isAuthenticated) {
+      this._userInfo.set(undefined);
+      this._userRoles.set([]);
       return false;
     }
 
-    let userRoles: string[] = [];
-    if (accessToken) {
-      const decoded = this.decodeAccessToken(accessToken);
-      const realmAccess = decoded['realm_access'] as { roles?: string[] } | undefined;
-      if (realmAccess?.roles) {
-        userRoles = userRoles.concat(realmAccess.roles);
-      }
-    }
+    this.userInfoPromise ??= lastValueFrom(this.userService.getUserInfo());
+    const userInfo = await this.userInfoPromise;
+    this._userInfo.set(userInfo);
 
-    this._userRoles.set(userRoles);
+    this._userRoles.set(userInfo?.rolesAtLastLogin ?? []);
     return true;
   }
 
@@ -123,7 +119,7 @@ export class AuthService {
    * @returns A promise emitting an array of authorized UIDs.
    */
   async initializeAuthorizedUids(): Promise<UidDto[]> {
-    await this.initializeUserInfo();
+    await this.initializeAuth();
 
     if (this.shouldSkipAuthorizedUids()) {
       throw new Error('user does not have correct role to fetch authorized uids');
@@ -146,27 +142,6 @@ export class AuthService {
     this.userUidsPromise = undefined;
   }
 
-  /**
-   * Initializes and retrieves user information
-   * Ensures that user is authenticated and caches user information preventing unnecessary API call.
-   * Intended to be used by guards (that run in parallel), preventing multiple API calls.
-   *
-   * @returns A promise emitting user infos.
-   */
-  async initializeUserInfo(): Promise<UserInfoDto | undefined> {
-    const auth = await this.initializeAuth();
-
-    if (!auth) {
-      return undefined;
-    }
-
-    this.userInfoPromise ??= lastValueFrom(this.userService.getUserInfo());
-    const userInfo = await this.userInfoPromise;
-    this._userInfo.set(userInfo);
-
-    return this.userInfoPromise;
-  }
-
   login(): void {
     this.oidcService.authorize();
   }
@@ -174,16 +149,6 @@ export class AuthService {
   async logout(): Promise<void> {
     await lastValueFrom(this.oidcService.logoff());
     await this.router.navigate(['/']);
-  }
-
-  private decodeAccessToken(token: string): Record<string, unknown> {
-    try {
-      const payload = token.split('.')[1];
-      return JSON.parse(atob(payload.replaceAll('-', '+').replaceAll('_', '/')));
-    } catch {
-      console.error('failed to decode access token');
-      return {};
-    }
   }
 
   private shouldSkipAuthorizedUids(): boolean {

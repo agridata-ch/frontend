@@ -9,7 +9,7 @@
         >{{ 'errors.maintenancePage.message' | i18n }}</span
       >
     </div>
-    <app-agridata-button (onClick)="reloadPage()" [variant]="ButtonVariants.SecondaryCms">
+    <app-agridata-button (handleClick)="reloadPage()" [variant]="ButtonVariants.SecondaryCms">
       {{ 'errors.reloadPage' | i18n }}
     </app-agridata-button>
   </div>

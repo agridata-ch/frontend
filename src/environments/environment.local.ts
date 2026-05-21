@@ -16,7 +16,7 @@ export const environment = {
     authority: 'http://localhost:6999/realms/agate',
     clientId: 'agridata-ui',
     redirectUrl: 'http://localhost:4200/auth-response',
-    postLogoutRedirectUri: window.location.origin,
+    postLogoutRedirectUri: globalThis.location.origin,
     scope: 'openid offline_access',
     responseType: 'code',
     silentRenew: true,

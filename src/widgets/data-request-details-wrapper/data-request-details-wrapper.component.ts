@@ -1,5 +1,7 @@
 import { Component, computed, inject, input, resource } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
@@ -15,7 +17,7 @@ import { DATA_REQUEST_NEW_ID, DataRequestWizardComponent } from '@/widgets/data-
  */
 @Component({
   selector: 'app-data-request-details-wrapper',
-  imports: [DataRequestDetailsComponent, DataRequestWizardComponent],
+  imports: [DataRequestDetailsComponent, DataRequestWizardComponent, FontAwesomeModule],
   templateUrl: './data-request-details-wrapper.component.html',
 })
 export class DataRequestDetailsWrapperComponent {
@@ -24,6 +26,9 @@ export class DataRequestDetailsWrapperComponent {
   private readonly errorService = inject(ErrorHandlerService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+
+  // Constants
+  protected readonly faSpinnerThird = faSpinnerThird;
 
   // Input properties
   readonly dataRequestId = input.required<string>();

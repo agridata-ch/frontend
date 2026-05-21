@@ -37,7 +37,7 @@ export class AgridataWizardComponent {
   currentStepId = signal<string>('');
 
   // Outputs
-  onStepChange = output<void>();
+  handleStepChange = output<void>();
 
   // Effects
   private readonly stepIdEffect = effect(() => {
@@ -48,7 +48,7 @@ export class AgridataWizardComponent {
 
   handleChangeStep(stepIndex: number) {
     if (stepIndex >= 0 && stepIndex < this.steps().length) {
-      this.onStepChange.emit();
+      this.handleStepChange.emit();
       this.currentStep.set(stepIndex);
       this.updateStepId();
     }

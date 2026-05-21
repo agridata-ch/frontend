@@ -20,9 +20,7 @@
       />
     </div>
     @if (request()?.showStateAsMigrated) {
-      <app-alert [type]="AlertType.INFO">
-        <span class="flex items-center">{{ t('request.migrated') }}</span>
-      </app-alert>
+      <app-alert [type]="AlertType.INFO" [message]="t('request.migrated')" />
     }
     <h3 class="text-agridata-primary-text">
       {{ requestTitle() }}
@@ -66,7 +64,7 @@
           agridataStateService.isImpersonating()
         "
         [loading]="showRejectedLoading()"
-        (onClick)="rejectRequest()"
+        (handleClick)="rejectRequest()"
         [additionalClass]="'w-full'"
       >
         {{ t('actions.reject') }}
@@ -78,7 +76,7 @@
           agridataStateService.isImpersonating()
         "
         [loading]="showAcceptedLoading()"
-        (onClick)="acceptRequest()"
+        (handleClick)="acceptRequest()"
         [additionalClass]="'w-full'"
       >
         {{ t('actions.accept') }}
@@ -100,7 +98,7 @@
       <div class="flex justify-center mb-4">
         <p>{{ t('description', { count: countdownValue() }) }}</p>
       </div>
-      <app-agridata-button (onClick)="redirectDirectly()">
+      <app-agridata-button (handleClick)="redirectDirectly()">
         {{ t('redirectNow') }}
       </app-agridata-button>
     </div>

@@ -12,20 +12,16 @@ import {
   DataRequestStateEnum,
 } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
-import { MockResources } from '@/shared/testing/mocks';
 import {
+  MockResources,
   createMockAgridataStateService,
   MockAgridataStateService,
-} from '@/shared/testing/mocks/mock-agridata-state-service';
-import { createMockAnalyticsService } from '@/shared/testing/mocks/mock-analytics-service';
-import {
+  createMockAnalyticsService,
   createMockConsentRequestService,
   MockConsentRequestService,
-} from '@/shared/testing/mocks/mock-consent-request-service';
-import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
-} from '@/shared/testing/mocks/mock-error-handler.service';
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ToastService } from '@/shared/toast';
 import { ButtonComponent } from '@/shared/ui/button';

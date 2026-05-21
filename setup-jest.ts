@@ -9,18 +9,45 @@ beforeEach(() => {
   });
 });
 
-// Mock the crypto.randomUUID API for Jest tests because it is not implemented in JSDOM. This is provided by the browser normally.
-Object.defineProperty(global, 'crypto', {
+Object.defineProperty(globalThis, 'crypto', {
   value: {
     // Preserve any existing crypto methods
-    ...(global.crypto || {}),
+    ...globalThis.crypto,
     // Add randomUUID implementation
     randomUUID: () =>
-      'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-        const r = (Math.random() * 16) | 0;
+      'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replaceAll(/[xy]/g, (c) => {
+        const r = Math.trunc(Math.random() * 16);
         const v = c === 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
       }),
   },
 });
+
+/**
+ * A simple mock implementation of ResizeObserver that does nothing.
+ * This allows tests to run without errors in environments where ResizeObserver
+ * is not available (like JSDOM).
+ *
+ * CommentLastReviewed: 2026-05-12
+ */
+class ResizeObserverMock {
+  constructor(private readonly callback: ResizeObserverCallback) {}
+
+  observe(): void {
+    // no-op
+  }
+
+  unobserve(): void {
+    // no-op
+  }
+
+  disconnect(): void {
+    // no-op
+  }
+}
+
+Object.defineProperty(globalThis, 'ResizeObserver', {
+  value: ResizeObserverMock,
+});
+
 setupZonelessTestEnv();
