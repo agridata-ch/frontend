@@ -35,7 +35,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "20.3.19",
+    "@angular/common": "21.0.0",
     "@angular/compiler": "20.3.19",
     "@angular/core": "20.3.19",
     "@angular/forms": "20.3.19",
