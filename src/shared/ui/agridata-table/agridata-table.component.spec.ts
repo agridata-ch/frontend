@@ -481,6 +481,23 @@ describe('AgridataTableComponent', () => {
       const rows = fixture.debugElement.queryAll(By.css('tbody tr'));
       expect(rows[1].nativeElement.classList.contains('bg-sky-50')).toBe(true);
     });
+
+    it('should select row when highlightClickedRowFn returns true', () => {
+      const metadataWithSelectedRow = {
+        ...mockTableMetadata,
+        highlightClickedRowFn: (row: TestUser) => row.id === '1',
+      };
+
+      fixture.componentRef.setInput('tableMetadata', metadataWithSelectedRow);
+      fixture.detectChanges();
+
+      expect(component['isRowSelected'](mockUsers[0])).toBe(true);
+      expect(component['isRowSelected'](mockUsers[1])).toBe(false);
+    });
+
+    it('should return false for isRowSelected when highlightClickedRowFn is not provided', () => {
+      expect(component['isRowSelected'](mockUsers[0])).toBe(false);
+    });
   });
 
   describe('Query Parameter Changes', () => {
