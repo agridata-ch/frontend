@@ -58,7 +58,7 @@
     "@angular-eslint/template-parser": "21.3.1",
     "@angular/build": "20.3.25",
     "@angular/cli": "20.3.25",
-    "@angular/compiler-cli": "20.3.19",
+    "@angular/compiler-cli": "21.0.0",
     "@commitlint/config-conventional": "21.0.0",
     "@eslint/js": "10.0.1",
     "@feature-sliced/eslint-config": "0.1.1",
