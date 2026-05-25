@@ -41,7 +41,7 @@
     "@angular/forms": "20.3.19",
     "@angular/platform-browser": "20.3.19",
     "@angular/platform-browser-dynamic": "20.3.19",
-    "@angular/router": "20.3.19",
+    "@angular/router": "21.0.1",
     "@awesome.me/kit-0b6d1ed528": "^1.0.31",
     "@jsverse/transloco": "8.3.0",
     "driver.js": "1.4.0",
