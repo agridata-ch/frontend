@@ -1,4 +1,4 @@
-import { Component, computed, inject, resource, signal } from '@angular/core';
+import { Component, computed, effect, inject, resource, signal, untracked } from '@angular/core';
 import { faBell } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -51,6 +51,13 @@ export class NotificationOverlayComponent {
     loader: () => this.notificationService.fetchHeaderNotifications(),
   });
 
+  // Effects
+  private readonly syncEffect = effect(() => {
+    const trigger = this.notificationService.mutationTrigger();
+    if (trigger === 0) return;
+    untracked(() => this.notificationResource.reload());
+  });
+
   // Methods
   protected closeOverlay() {
     this.showPopover.set(false);
@@ -58,9 +65,5 @@ export class NotificationOverlayComponent {
 
   protected handleToggle() {
     this.showPopover.update((isOpen) => !isOpen);
-  }
-
-  protected reloadNotifications() {
-    this.notificationResource.reload();
   }
 }

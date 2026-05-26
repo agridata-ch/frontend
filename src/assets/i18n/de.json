@@ -765,6 +765,12 @@
         "title": "Alle Benachrichtigungen als gelesen markiert",
         "message": "Alle Benachrichtigungen wurden erfolgreich als gelesen markiert"
       }
+    },
+    "markAsUnread": {
+      "error": {
+        "title": "Als ungelesen markieren fehlgeschlagen",
+        "message": "Bei der Aktion \"Als ungelesen markieren\" ist ein Fehler aufgetreten. Bitte versuchen Sie es noch einmal"
+      }
     }
   },
   "dataProducts": {
@@ -776,5 +782,15 @@
         "viewDetails": "Anzeigen"
       }
     }
+  },
+  "notificationCenter": {
+    "pageTitle": "Alle Benachrichtigungen",
+    "table": {
+      "title": "Titel",
+      "text": "Nachricht",
+      "date": "Datum",
+      "actions": "Aktionen"
+    },
+    "markAllAsRead": "Alle Benachrichtigungen als gelesen markieren"
   }
 }

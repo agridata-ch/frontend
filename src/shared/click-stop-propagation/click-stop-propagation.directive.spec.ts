@@ -11,9 +11,10 @@ describe('ClickStopPropagationDirective', () => {
     expect(directive).toBeTruthy();
   });
 
-  it('should stop propagation on click', () => {
-    const event = { stopPropagation: jest.fn() } as unknown as Event;
+  it('should stop propagation and prevent default on click', () => {
+    const event = { stopPropagation: jest.fn(), preventDefault: jest.fn() } as unknown as Event;
     directive.onClick(event);
     expect(event.stopPropagation).toHaveBeenCalled();
+    expect(event.preventDefault).toHaveBeenCalled();
   });
 });

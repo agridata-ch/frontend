@@ -765,6 +765,12 @@
         "title": "Contrassegna tutte le notifiche come lette",
         "message": "Tutte le notifiche sono state contrassegnate come lette"
       }
+    },
+    "markAsUnread": {
+      "error": {
+        "title": "Contrassegna come non letto non riuscita",
+        "message": "Si è verificato un errore durante l'operazione \"Contrassegna come non letto\". Si prega di riprovare"
+      }
     }
   },
   "dataProducts": {
@@ -776,5 +782,15 @@
         "viewDetails": "Visualizza"
       }
     }
+  },
+  "notificationCenter": {
+    "pageTitle": "Tutte le notifiche",
+    "table": {
+      "title": "Titolo",
+      "text": "Messaggio",
+      "date": "Data",
+      "actions": "Azioni"
+    },
+    "markAllAsRead": "Contrassegna tutte le notifiche come lette"
   }
 }

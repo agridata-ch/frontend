@@ -687,6 +687,20 @@ components:
           $ref: "#/components/schemas/TranslationDto"
         uid:
           type: string
+    DataProviderExceptionDto:
+      type: object
+      properties:
+        message:
+          type: string
+        requestId:
+          type: string
+        exceptionType:
+          $ref: "#/components/schemas/ExceptionEnum"
+        dataProviderHttpStatus:
+          type: integer
+          format: int32
+        dataProviderMessage:
+          type: string
     DataProviderReferenceDto:
       type: object
       properties:
@@ -1079,6 +1093,7 @@ components:
       - OTP_LOCKED
       - OTP_EXPIRED
       - OTP_RESEND_COOLDOWN
+      - DATA_PROVIDER_ERROR
       - MAINTENANCE
     FarmTypeEnum:
       type: string
@@ -3264,6 +3279,46 @@ paths:
       x-api-subset:
       - agridata.ch Web App
       - Mobile App
+  /api/notification/v1/inbox/mark-as-unread:
+    put:
+      description: Marks one or multiple inbox entries as unread for the currently
+        authenticated user.
+      operationId: markInboxAsUnread
+      tags:
+      - Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MarkAsReadRequestDto"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Mark As Unread
+      security:
+      - SecurityScheme: []
+      x-api-subset:
+      - agridata.ch Web App
+      - Mobile App
   /api/products/v1:
     get:
       description: "Retrieves the list of all available data products. Accessible\
@@ -3973,7 +4028,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.10.0-rc.1
+  version: 1.10.0-rc.8
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 
