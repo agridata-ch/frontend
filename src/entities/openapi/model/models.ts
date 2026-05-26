@@ -13,6 +13,7 @@ export * from './contractRevisionSignatureDto';
 export * from './createConsentRequestDto';
 export * from './dataProductDto';
 export * from './dataProviderDto';
+export * from './dataProviderExceptionDto';
 export * from './dataProviderReferenceDto';
 export * from './dataRequestContextDto';
 export * from './dataRequestDescriptionDto';

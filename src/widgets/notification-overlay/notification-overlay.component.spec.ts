@@ -1,7 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { NotificationService } from '@/entities/api/notification.service';
-import { createMockNotificationService, MockNotificationService } from '@/shared/testing/mocks';
+import { AuthService } from '@/shared/lib/auth';
+import {
+  createMockAuthService,
+  createMockNotificationService,
+  MockNotificationService,
+} from '@/shared/testing/mocks';
 
 import { NotificationOverlayComponent } from './notification-overlay.component';
 
@@ -15,7 +21,11 @@ describe('NotificationOverlayComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [NotificationOverlayComponent],
-      providers: [{ provide: NotificationService, useValue: notificationService }],
+      providers: [
+        provideRouter([]),
+        { provide: AuthService, useValue: createMockAuthService() },
+        { provide: NotificationService, useValue: notificationService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NotificationOverlayComponent);
@@ -99,16 +109,6 @@ describe('NotificationOverlayComponent', () => {
       component['handleToggle']();
 
       expect(component['showPopover']()).toBe(false);
-    });
-  });
-
-  describe('reloadNotifications', () => {
-    it('should call notificationResource.reload()', () => {
-      const reloadSpy = jest.spyOn(component['notificationResource'], 'reload');
-
-      component['reloadNotifications']();
-
-      expect(reloadSpy).toHaveBeenCalled();
     });
   });
 

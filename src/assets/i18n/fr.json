@@ -764,6 +764,12 @@
         "title": "Toutes les notifications sont marquées comme lues",
         "message": "Toutes les notifications ont été marquées comme lues"
       }
+    },
+    "markAsUnread": {
+      "error": {
+        "title": "Échec de la mise en marqueur non lu",
+        "message": "Une erreur s'est produite lors de l'opération \"Marquer comme non lu\". Veuillez réessayer."
+      }
     }
   },
   "dataProducts": {
@@ -775,5 +781,15 @@
         "viewDetails": "Afficher"
       }
     }
+  },
+  "notificationCenter": {
+    "pageTitle": "Toutes les notifications",
+    "table": {
+      "title": "Titre",
+      "text": "Message",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "markAllAsRead": "Marquer toutes les notifications comme lues"
   }
 }

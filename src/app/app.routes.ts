@@ -19,6 +19,7 @@ import { ImprintPage } from '@/pages/imprint-page';
 import { LandingPage } from '@/pages/landing-page';
 import { MaintenancePage } from '@/pages/maintenance';
 import { NotFoundPage } from '@/pages/not-found';
+import { NotificationCenterPageComponent } from '@/pages/notification-center-page';
 import { PrivacyPolicyPage } from '@/pages/privacy-policy-page';
 import { SupporterPageComponent } from '@/pages/supporter-page/';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
@@ -179,21 +180,6 @@ export const routes: Routes = [
     ],
   },
   {
-    // support routes
-    path: ROUTE_PATHS.SUPPORT_PATH,
-    title: 'supporter.pageTitle',
-    component: DefaultLayoutComponent,
-    runGuardsAndResolvers: 'paramsChange',
-    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
-    data: { roles: [USER_ROLES.AGRIDATA_SUPPORTER, USER_ROLES.AGRIDATA_ADMIN] },
-    children: [
-      {
-        path: '',
-        component: SupporterPageComponent,
-      },
-    ],
-  },
-  {
     // admin routes
     path: ROUTE_PATHS.ADMIN_PATH,
     title: 'admin.pageTitle',
@@ -216,6 +202,21 @@ export const routes: Routes = [
     ],
   },
   {
+    // support routes
+    path: ROUTE_PATHS.SUPPORT_PATH,
+    title: 'supporter.pageTitle',
+    component: DefaultLayoutComponent,
+    runGuardsAndResolvers: 'paramsChange',
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
+    data: { roles: [USER_ROLES.AGRIDATA_SUPPORTER] },
+    children: [
+      {
+        path: '',
+        component: SupporterPageComponent,
+      },
+    ],
+  },
+  {
     // data products routes
     path: ROUTE_PATHS.DATA_PRODUCTS_PATH,
     title: 'dataProducts.pageTitle',
@@ -226,6 +227,19 @@ export const routes: Routes = [
       {
         path: '',
         component: DataProductsPageComponent,
+      },
+    ],
+  },
+  {
+    // notifications route
+    path: ROUTE_PATHS.NOTIFICATIONS_PATH,
+    title: 'notificationCenter.pageTitle',
+    component: DefaultLayoutComponent,
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
+    children: [
+      {
+        path: '',
+        component: NotificationCenterPageComponent,
       },
     ],
   },
