@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestStateEnum } from '@/entities/openapi';
 import { I18nDirective } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
@@ -25,6 +26,7 @@ export class AdminDataRequestDetailsComponent {
   private readonly errorService = inject(ErrorHandlerService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly stateService = inject(AgridataStateService);
 
   readonly dataRequestId = input.required<string>();
 
@@ -40,7 +42,7 @@ export class AdminDataRequestDetailsComponent {
 
   protected acceptRequest(): void {
     this.dataRequestService
-      .approveDataRequest(this.dataRequestId())
+      .approveDataRequest(this.dataRequestId(), this.stateService.actingRole())
       .then(() => {
         this.refreshListNeeded.set(true);
         this.detailsComponent().dataRequestResource.reload();
@@ -50,7 +52,7 @@ export class AdminDataRequestDetailsComponent {
 
   protected activateRequest(): void {
     this.dataRequestService
-      .activateDataRequest(this.dataRequestId())
+      .activateDataRequest(this.dataRequestId(), this.stateService.actingRole())
       .then(() => {
         this.refreshListNeeded.set(true);
         this.detailsComponent().dataRequestResource.reload();
@@ -67,7 +69,7 @@ export class AdminDataRequestDetailsComponent {
 
   protected rejectRequest(): void {
     this.dataRequestService
-      .retreatDataRequest(this.dataRequestId())
+      .retreatDataRequest(this.dataRequestId(), this.stateService.actingRole())
       .then(() => {
         this.refreshListNeeded.set(true);
         this.handleClose();

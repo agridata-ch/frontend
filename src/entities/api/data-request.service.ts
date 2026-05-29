@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { DataRequestsService } from '@/entities/openapi/api/dataRequests.service';
+import { ActingRole } from '@/shared/constants/constants';
 
 import {
   DataRequestDto,
@@ -24,12 +25,19 @@ import {
 export class DataRequestService {
   private readonly apiService = inject(DataRequestsService);
 
-  fetchDataRequests() {
-    return firstValueFrom(this.apiService.getDataRequests());
+  fetchDataRequests(actingRole?: ActingRole) {
+    return firstValueFrom(
+      this.apiService.getDataRequests(actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined),
+    );
   }
 
-  fetchDataRequest(id: string) {
-    return firstValueFrom(this.apiService.getDataRequest(id));
+  fetchDataRequest(id: string, actingRole?: ActingRole) {
+    return firstValueFrom(
+      this.apiService.getDataRequest(
+        id,
+        actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined,
+      ),
+    );
   }
 
   async createDataRequest(dataRequest: DataRequestUpdateDto): Promise<DataRequestDto> {
@@ -58,63 +66,77 @@ export class DataRequestService {
     return firstValueFrom(this.apiService.updateDataRequestLogo(dataRequestId, logoBlob));
   }
 
-  async submitDataRequest(dataRequestId: string) {
+  async submitDataRequest(dataRequestId: string, actingRole?: ActingRole) {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
         JSON.stringify(DataRequestStateEnum.InReview),
+        actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined,
       ),
     );
   }
 
-  async retreatDataRequest(dataRequestId: string) {
+  async retreatDataRequest(dataRequestId: string, actingRole?: ActingRole) {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
         JSON.stringify(DataRequestStateEnum.Draft),
+        actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined,
       ),
     );
   }
 
-  async approveDataRequest(dataRequestId: string) {
+  async approveDataRequest(dataRequestId: string, actingRole?: ActingRole) {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
         JSON.stringify(DataRequestStateEnum.ToBeSignedByConsumer),
+        actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined,
       ),
     );
   }
 
-  async activateDataRequest(dataRequestId: string) {
+  async activateDataRequest(dataRequestId: string, actingRole?: ActingRole) {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
         JSON.stringify(DataRequestStateEnum.Active),
+        actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined,
       ),
     );
   }
 
-  async releaseDataRequestToProvider(dataRequestId: string) {
+  async releaseDataRequestToProvider(dataRequestId: string, actingRole?: ActingRole) {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
         JSON.stringify(DataRequestStateEnum.ToBeSignedByProvider),
+        actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined,
       ),
     );
   }
 
-  async releaseDataRequestToBeActivated(dataRequestId: string) {
+  async releaseDataRequestToBeActivated(dataRequestId: string, actingRole?: ActingRole) {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(
         dataRequestId,
         JSON.stringify(DataRequestStateEnum.ToBeActivated),
+        actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined,
       ),
     );
   }
 
-  async setSignatureType(dataRequestId: string, signatureType: SignatureTypeEnum) {
+  async setSignatureType(
+    dataRequestId: string,
+    signatureType: SignatureTypeEnum,
+    actingRole?: ActingRole,
+  ) {
     return firstValueFrom(
-      this.apiService.setSignatureType(dataRequestId, JSON.stringify(signatureType)),
+      this.apiService.setSignatureType(
+        dataRequestId,
+        JSON.stringify(signatureType),
+        actingRole as 'CONSUMER' | 'PROVIDER' | undefined,
+      ),
     );
   }
 }

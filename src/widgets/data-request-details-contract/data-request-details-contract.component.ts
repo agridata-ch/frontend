@@ -4,6 +4,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ContractRevisionDto, DataRequestDto } from '@/entities/openapi';
 
 import { DataRequestCompletionSigningStatusComponent } from '../data-request-completion/data-request-completion-signing-status';
@@ -27,6 +28,7 @@ export class DataRequestDetailsContractComponent {
   // Injects
   private readonly contractRevisionService = inject(ContractRevisionService);
   private readonly errorService = inject(ErrorHandlerService);
+  private readonly stateService = inject(AgridataStateService);
 
   // Inputs
   readonly dataRequest = input.required<DataRequestDto>();
@@ -38,10 +40,15 @@ export class DataRequestDetailsContractComponent {
   readonly contractResource = resource({
     params: () => {
       const contractRevisionId = this.dataRequest().currentContractRevisionId;
-      return contractRevisionId ? { contractRevisionId } : undefined;
+      return contractRevisionId
+        ? { actingRole: this.stateService.actingRole(), contractRevisionId }
+        : undefined;
     },
     loader: ({ params }) => {
-      return this.contractRevisionService.fetchContract(params.contractRevisionId);
+      return this.contractRevisionService.fetchContract(
+        params.contractRevisionId,
+        params.actingRole,
+      );
     },
   });
 

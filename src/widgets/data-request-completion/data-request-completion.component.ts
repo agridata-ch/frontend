@@ -4,6 +4,7 @@ import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ContractRevisionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { getBadgeVariant } from '@/shared/data-request';
@@ -46,6 +47,7 @@ export class DataRequestCompletionComponent {
   protected readonly contractRevisionService = inject(ContractRevisionService);
   protected readonly i18nService = inject(I18nService);
   protected readonly metaDataService = inject(MasterDataService);
+  private readonly stateService = inject(AgridataStateService);
 
   // Constants
   protected readonly AlertType = AlertType;
@@ -71,12 +73,15 @@ export class DataRequestCompletionComponent {
 
   // Resources
   readonly contractResource = resource({
-    params: () => ({ id: this.dataRequest().currentContractRevisionId }),
+    params: () => ({
+      actingRole: this.stateService.actingRole(),
+      id: this.dataRequest().currentContractRevisionId,
+    }),
     loader: ({ params }) => {
       if (!params?.id) {
         return Promise.resolve(null);
       }
-      return this.contractRevisionService.fetchContract(params.id);
+      return this.contractRevisionService.fetchContract(params.id, params.actingRole);
     },
     defaultValue: null,
   });

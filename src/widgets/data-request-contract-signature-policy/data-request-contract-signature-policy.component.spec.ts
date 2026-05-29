@@ -2,15 +2,17 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ContractRevisionDto, DataRequestDto, SignatureTypeEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
-  createMockI18nService,
+  createMockAgridataStateService,
   createMockAuthService,
   MockAuthService,
   createMockDataRequestService,
   MockDataRequestService,
+  createMockI18nService,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
@@ -45,6 +47,7 @@ describe('DataRequestContractSignaturePolicyComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestContractSignaturePolicyComponent, createTranslocoTestingModule()],
       providers: [
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
         { provide: AuthService, useValue: authService },
         { provide: DataRequestService, useValue: dataRequestService },
         { provide: I18nService, useValue: createMockI18nService() },
@@ -132,6 +135,7 @@ describe('DataRequestContractSignaturePolicyComponent', () => {
       expect(dataRequestService.setSignatureType).toHaveBeenCalledWith(
         'dr-1',
         SignatureTypeEnum.IndividualSignature,
+        undefined,
       );
       expect(emitSpy).toHaveBeenCalled();
     });

@@ -49,16 +49,21 @@ export class ContractRevisionsService extends BaseService {
      * Get Contract Revision
      * Retrieves a specific contract revision by its ID. Accessible by the consumer or provider that owns the associated datarequest.
      * @param id 
+     * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getContractRevision(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContractRevisionDto>;
-    public getContractRevision(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContractRevisionDto>>;
-    public getContractRevision(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContractRevisionDto>>;
-    public getContractRevision(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getContractRevision(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'ADMIN', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContractRevisionDto>;
+    public getContractRevision(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'ADMIN', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContractRevisionDto>>;
+    public getContractRevision(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'ADMIN', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContractRevisionDto>>;
+    public getContractRevision(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'ADMIN', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getContractRevision.');
         }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>actingRole, 'actingRole');
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -92,6 +97,7 @@ export class ContractRevisionsService extends BaseService {
         return this.httpClient.request<ContractRevisionDto>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -106,16 +112,21 @@ export class ContractRevisionsService extends BaseService {
      * Get Contract Revision Pdf
      * Returns the pdf of the contract revision
      * @param id 
+     * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getContractRevisionPdf(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public getContractRevisionPdf(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public getContractRevisionPdf(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public getContractRevisionPdf(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getContractRevisionPdf(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'ADMIN', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public getContractRevisionPdf(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'ADMIN', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public getContractRevisionPdf(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'ADMIN', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public getContractRevisionPdf(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'ADMIN', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getContractRevisionPdf.');
         }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>actingRole, 'actingRole');
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -150,6 +161,7 @@ export class ContractRevisionsService extends BaseService {
         return this.httpClient.request<any>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -228,19 +240,24 @@ export class ContractRevisionsService extends BaseService {
      * Initiates a challenge for a specific signature slot of a specific contract revision.
      * @param id 
      * @param slotCode 
+     * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public initiateSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<OtpChallengeDto>;
-    public initiateSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<OtpChallengeDto>>;
-    public initiateSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<OtpChallengeDto>>;
-    public initiateSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public initiateSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, actingRole?: 'CONSUMER' | 'PROVIDER', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<OtpChallengeDto>;
+    public initiateSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, actingRole?: 'CONSUMER' | 'PROVIDER', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<OtpChallengeDto>>;
+    public initiateSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, actingRole?: 'CONSUMER' | 'PROVIDER', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<OtpChallengeDto>>;
+    public initiateSignatureChallenge(id: string, slotCode: SignatureSlotCodeEnum, actingRole?: 'CONSUMER' | 'PROVIDER', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling initiateSignatureChallenge.');
         }
         if (slotCode === null || slotCode === undefined) {
             throw new Error('Required parameter slotCode was null or undefined when calling initiateSignatureChallenge.');
         }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>actingRole, 'actingRole');
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -274,6 +291,7 @@ export class ContractRevisionsService extends BaseService {
         return this.httpClient.request<OtpChallengeDto>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -354,13 +372,14 @@ export class ContractRevisionsService extends BaseService {
      * @param id 
      * @param slotCode 
      * @param verifyOtpRequestDto 
+     * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public verifySignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContractRevisionDto>;
-    public verifySignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContractRevisionDto>>;
-    public verifySignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContractRevisionDto>>;
-    public verifySignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public verifySignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, actingRole?: 'CONSUMER' | 'PROVIDER', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ContractRevisionDto>;
+    public verifySignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, actingRole?: 'CONSUMER' | 'PROVIDER', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ContractRevisionDto>>;
+    public verifySignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, actingRole?: 'CONSUMER' | 'PROVIDER', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ContractRevisionDto>>;
+    public verifySignature(challengeId: string, id: string, slotCode: SignatureSlotCodeEnum, verifyOtpRequestDto: VerifyOtpRequestDto, actingRole?: 'CONSUMER' | 'PROVIDER', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (challengeId === null || challengeId === undefined) {
             throw new Error('Required parameter challengeId was null or undefined when calling verifySignature.');
         }
@@ -373,6 +392,10 @@ export class ContractRevisionsService extends BaseService {
         if (verifyOtpRequestDto === null || verifyOtpRequestDto === undefined) {
             throw new Error('Required parameter verifyOtpRequestDto was null or undefined when calling verifySignature.');
         }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>actingRole, 'actingRole');
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -416,6 +439,7 @@ export class ContractRevisionsService extends BaseService {
             {
                 context: localVarHttpContext,
                 body: verifyOtpRequestDto,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

@@ -1,6 +1,7 @@
 import { Component, computed, ErrorHandler, inject, input, output } from '@angular/core';
 
 import { DataRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ContractRevisionDto, DataRequestDto, SignatureTypeEnum } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
@@ -25,6 +26,7 @@ export class DataRequestContractSignaturePolicyComponent {
   private readonly dataRequestService = inject(DataRequestService);
   private readonly errorHandler = inject(ErrorHandler);
   private readonly i18nService = inject(I18nService);
+  private readonly stateService = inject(AgridataStateService);
 
   // Input properties
   readonly dataRequest = input.required<DataRequestDto>();
@@ -78,7 +80,7 @@ export class DataRequestContractSignaturePolicyComponent {
     }
 
     this.dataRequestService
-      .setSignatureType(this.dataRequest().id, value)
+      .setSignatureType(this.dataRequest().id, value, this.stateService.actingRole())
       .then(() => {
         this.handleReloadDataRequest.emit();
       })

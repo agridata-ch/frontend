@@ -43,6 +43,7 @@ export * from './resourceQueryDto';
 export * from './sealAttemptStateEnum';
 export * from './signatureSlotCodeEnum';
 export * from './signatureTypeEnum';
+export * from './targetTypeCodeEnum';
 export * from './translationDto';
 export * from './uidDto';
 export * from './uidRegisterAddressDto';

@@ -5,6 +5,7 @@ import { provideRouter, Router, withComponentInputBinding } from '@angular/route
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService, DataRequestService, UidRegisterService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/pages/data-requests-consumer';
@@ -12,18 +13,19 @@ import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
-  createMockDataRequestService,
-  createMockI18nService,
-  mockDataRequests,
-  MockDataRequestService,
+  createMockAgridataStateService,
   createMockAuthService,
   MockAuthService,
   createMockContractRevisionService,
   MockContractRevisionService,
+  createMockDataRequestService,
+  MockDataRequestService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
+  createMockI18nService,
   createMockMasterDataService,
   MockMasterDataService,
+  mockDataRequests,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
@@ -55,13 +57,14 @@ describe('DataRequestWizardConsumerComponent', () => {
         createTranslocoTestingModule(),
       ],
       providers: [
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
+        { provide: AuthService, useValue: authService },
         { provide: ContractRevisionService, useValue: contractRevisionService },
         { provide: DataRequestService, useValue: dataRequestService },
+        { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: createMockI18nService() },
-        { provide: AuthService, useValue: authService },
         { provide: MasterDataService, useValue: masterDataService },
         { provide: UidRegisterService, useValue: createMockI18nService() },
-        { provide: ErrorHandlerService, useValue: errorService },
         provideRouter(
           [
             {
@@ -397,7 +400,7 @@ describe('DataRequestWizardConsumerComponent', () => {
 
       await component['handleRetreat']();
 
-      expect(dataRequestService.retreatDataRequest).toHaveBeenCalledWith('test-id-456');
+      expect(dataRequestService.retreatDataRequest).toHaveBeenCalledWith('test-id-456', undefined);
     });
 
     it('should update dataRequest signal with retreated data', async () => {
@@ -462,7 +465,7 @@ describe('DataRequestWizardConsumerComponent', () => {
       component['handleReloadDataRequest']();
       await fixture.whenStable();
 
-      expect(dataRequestService.fetchDataRequest).toHaveBeenCalledWith('test-id-reload');
+      expect(dataRequestService.fetchDataRequest).toHaveBeenCalledWith('test-id-reload', undefined);
     });
 
     it('should handle errors from fetchDataRequest', async () => {
@@ -546,7 +549,10 @@ describe('DataRequestWizardConsumerComponent', () => {
 
       await component['handleRelease']();
 
-      expect(dataRequestService.releaseDataRequestToProvider).toHaveBeenCalledWith('release-id');
+      expect(dataRequestService.releaseDataRequestToProvider).toHaveBeenCalledWith(
+        'release-id',
+        undefined,
+      );
       expect(component['dataRequest']()).toEqual(releasedRequest);
       expect(component['hasFreshReleasedToProvider']()).toBe(true);
       expect(component['isHandlingReleaseDataRequest']()).toBe(false);

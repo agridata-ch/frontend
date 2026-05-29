@@ -5,6 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
@@ -37,10 +38,12 @@ export class AdminPage {
   private readonly dataRequestService = inject(DataRequestService);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly router = inject(Router);
+  private readonly stateService = inject(AgridataStateService);
 
   protected readonly icon = faFileCheck;
   protected readonly dataRequestsResource = resource({
-    loader: () => this.dataRequestService.fetchDataRequests(),
+    params: () => ({ actingRole: this.stateService.actingRole() }),
+    loader: ({ params }) => this.dataRequestService.fetchDataRequests(params.actingRole),
     defaultValue: [],
   });
   protected readonly dataRequests = createResourceValueComputed(this.dataRequestsResource, []);

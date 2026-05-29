@@ -2,18 +2,20 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContractRevisionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataProductDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
-  createMockI18nService,
-  MockI18nService,
+  createMockAgridataStateService,
   createMockAuthService,
   MockAuthService,
   createMockContractRevisionService,
   mockContractRevision,
   MockContractRevisionService,
+  createMockI18nService,
+  MockI18nService,
   createMockMasterDataService,
   MockMasterDataService,
 } from '@/shared/testing/mocks';
@@ -54,10 +56,11 @@ describe('DataRequestCompletionComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestCompletionComponent, createTranslocoTestingModule()],
       providers: [
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
         { provide: AuthService, useValue: authService },
         { provide: ContractRevisionService, useValue: contractRevisionService },
-        { provide: MasterDataService, useValue: masterDataService },
         { provide: I18nService, useValue: i18nService },
+        { provide: MasterDataService, useValue: masterDataService },
       ],
     }).compileComponents();
 
@@ -75,7 +78,7 @@ describe('DataRequestCompletionComponent', () => {
   describe('contractResource', () => {
     it('should call fetchContract when currentContractRevisionId is set', async () => {
       await fixture.whenStable();
-      expect(contractRevisionService.fetchContract).toHaveBeenCalledWith('cr-1');
+      expect(contractRevisionService.fetchContract).toHaveBeenCalledWith('cr-1', undefined);
     });
 
     it('should not call fetchContract when currentContractRevisionId is not set', async () => {

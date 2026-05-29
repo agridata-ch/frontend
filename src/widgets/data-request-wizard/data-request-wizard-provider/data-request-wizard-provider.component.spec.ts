@@ -5,24 +5,26 @@ import { provideRouter, Router, withComponentInputBinding } from '@angular/route
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService, DataRequestService, UidRegisterService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
-  createMockDataRequestService,
-  createMockI18nService,
-  mockDataRequests,
-  MockDataRequestService,
+  createMockAgridataStateService,
   createMockAuthService,
   MockAuthService,
   createMockContractRevisionService,
   MockContractRevisionService,
+  createMockDataRequestService,
+  MockDataRequestService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
+  createMockI18nService,
   createMockMasterDataService,
   MockMasterDataService,
+  mockDataRequests,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
@@ -54,13 +56,14 @@ describe('DataRequestWizardProviderComponent', () => {
         createTranslocoTestingModule(),
       ],
       providers: [
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
+        { provide: AuthService, useValue: authService },
         { provide: ContractRevisionService, useValue: contractRevisionService },
         { provide: DataRequestService, useValue: dataRequestService },
+        { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: createMockI18nService() },
-        { provide: AuthService, useValue: authService },
         { provide: MasterDataService, useValue: masterDataService },
         { provide: UidRegisterService, useValue: createMockI18nService() },
-        { provide: ErrorHandlerService, useValue: errorService },
         provideRouter(
           [
             {
@@ -285,7 +288,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['handleClose']();
 
       expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.DATA_REQUESTS_PROVIDER_PATH], {
-        state: { forceReload: true },
+        state: { refresh: true },
       });
     });
   });
@@ -350,7 +353,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['handleReloadDataRequest']();
       await fixture.whenStable();
 
-      expect(dataRequestService.fetchDataRequest).toHaveBeenCalledWith('test-id-reload');
+      expect(dataRequestService.fetchDataRequest).toHaveBeenCalledWith('test-id-reload', undefined);
     });
 
     it('should handle errors from fetchDataRequest', async () => {

@@ -6,6 +6,7 @@ import {
   SignatureSlotCodeEnum,
   VerifyOtpRequestDto,
 } from '@/entities/openapi';
+import { ActingRole } from '@/shared/constants/constants';
 
 /**
  * Service for managing contract revisions through the API. Provides methods to fetch contract
@@ -18,12 +19,23 @@ import {
 export class ContractRevisionService {
   private readonly apiService = inject(ContractRevisionsService);
 
-  fetchContract(id: string) {
-    return firstValueFrom(this.apiService.getContractRevision(id));
+  fetchContract(id: string, actingRole?: ActingRole) {
+    return firstValueFrom(
+      this.apiService.getContractRevision(
+        id,
+        actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined,
+      ),
+    );
   }
 
-  startSigningProcess(contractId: string, slotId: SignatureSlotCodeEnum) {
-    return firstValueFrom(this.apiService.initiateSignatureChallenge(contractId, slotId));
+  startSigningProcess(contractId: string, slotId: SignatureSlotCodeEnum, actingRole?: ActingRole) {
+    return firstValueFrom(
+      this.apiService.initiateSignatureChallenge(
+        contractId,
+        slotId,
+        actingRole as 'CONSUMER' | 'PROVIDER' | undefined,
+      ),
+    );
   }
 
   verifySigningProcess(
@@ -31,17 +43,30 @@ export class ContractRevisionService {
     contractId: string,
     slotId: SignatureSlotCodeEnum,
     verifyOtpRequestDto: VerifyOtpRequestDto,
+    actingRole?: ActingRole,
   ) {
     return firstValueFrom(
-      this.apiService.verifySignature(challengeId, contractId, slotId, verifyOtpRequestDto),
+      this.apiService.verifySignature(
+        challengeId,
+        contractId,
+        slotId,
+        verifyOtpRequestDto,
+        actingRole as 'CONSUMER' | 'PROVIDER' | undefined,
+      ),
     );
   }
 
-  getContractRevisionPdf(contractRevisionId: string): Promise<Blob> {
+  getContractRevisionPdf(contractRevisionId: string, actingRole?: ActingRole): Promise<Blob> {
     return firstValueFrom(
-      this.apiService.getContractRevisionPdf(contractRevisionId, undefined, undefined, {
-        httpHeaderAccept: 'application/pdf',
-      }),
+      this.apiService.getContractRevisionPdf(
+        contractRevisionId,
+        actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined,
+        undefined,
+        undefined,
+        {
+          httpHeaderAccept: 'application/pdf',
+        },
+      ),
     );
   }
 }

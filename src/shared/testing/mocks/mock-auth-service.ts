@@ -10,14 +10,15 @@ import { MockifyWithWritableSignals } from '@/shared/testing/mocks';
  * Test signals exposed by the mock so tests can mutate the underlying writable signals.
  */
 export type MockAuthServiceTestSignals = {
-  isProducer: WritableSignal<boolean>;
+  isAdmin: WritableSignal<boolean>;
+  isAuthenticated: WritableSignal<boolean>;
   isConsumer: WritableSignal<boolean>;
   isDataProvider: WritableSignal<boolean>;
+  isImpersonating: WritableSignal<boolean>;
+  isProducer: WritableSignal<boolean>;
   isSupporter: WritableSignal<boolean>;
-  isAdmin: WritableSignal<boolean>;
-  userRoles: WritableSignal<string[]>;
   userInfo: WritableSignal<UserInfoDto | undefined>;
-  isAuthenticated: WritableSignal<boolean>;
+  userRoles: WritableSignal<string[]>;
   userUids: WritableSignal<UidDto[]>;
 };
 
@@ -28,14 +29,15 @@ export type MockAuthService = MockifyWithWritableSignals<AuthService, MockAuthSe
  * Methods are jest mocks; signals are real signals and can be mutated via `__testSignals`.
  */
 export function createMockAuthService(): MockAuthService {
+  const isAdmin = signal(false);
   const isAuthenticated = signal<boolean>(false);
-  const userInfo = signal<UserInfoDto | undefined>(undefined);
-  const userRoles = signal([]);
-  const isProducer = signal(false);
   const isConsumer = signal(false);
   const isDataProvider = signal(false);
+  const isImpersonating = signal(false);
+  const isProducer = signal(false);
   const isSupporter = signal(false);
-  const isAdmin = signal(false);
+  const userInfo = signal<UserInfoDto | undefined>(undefined);
+  const userRoles = signal([]);
   const userUids = signal([]);
 
   return {
@@ -45,31 +47,33 @@ export function createMockAuthService(): MockAuthService {
     userRoles,
     userUids,
     // Computed signals (keep as simple signals for tests)
-    isProducer,
+    isAdmin,
     isConsumer,
     isDataProvider,
+    isImpersonating,
+    isProducer,
     isSupporter,
-    isAdmin,
 
     // Methods
     clearAuthorizedUidsCache: jest.fn(),
-    getUserId: jest.fn().mockReturnValue(undefined),
-    login: jest.fn(),
-    logout: jest.fn(),
-    getUserFullName: jest.fn().mockReturnValue(''),
     getUserEmail: jest.fn().mockReturnValue(''),
+    getUserFullName: jest.fn().mockReturnValue(''),
+    getUserId: jest.fn().mockReturnValue(undefined),
     initializeAuth: jest.fn(),
     initializeAuthorizedUids: jest.fn(),
+    login: jest.fn(),
+    logout: jest.fn(),
     // test-only writable signals
     __testSignals: {
-      isProducer,
+      isAdmin,
+      isAuthenticated,
       isConsumer,
       isDataProvider,
+      isImpersonating,
+      isProducer,
       isSupporter,
-      isAdmin,
-      userRoles,
       userInfo,
-      isAuthenticated,
+      userRoles,
       userUids,
     },
   } satisfies MockAuthService;

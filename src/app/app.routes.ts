@@ -185,7 +185,7 @@ export const routes: Routes = [
     component: DefaultLayoutComponent,
     runGuardsAndResolvers: 'paramsChange',
     canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
-    data: { roles: [USER_ROLES.AGRIDATA_SUPPORTER] },
+    data: { roles: [USER_ROLES.AGRIDATA_SUPPORTER, USER_ROLES.AGRIDATA_ADMIN] },
     children: [
       {
         path: '',
