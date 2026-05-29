@@ -2,6 +2,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContractRevisionService, DataRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
   ContractRevisionDto,
   DataRequestDto,
@@ -11,14 +12,15 @@ import {
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
-  createMockI18nService,
-  MockI18nService,
+  createMockAgridataStateService,
   createMockAuthService,
   MockAuthService,
   createMockContractRevisionService,
   mockContractRevision,
   MockContractRevisionService,
   createMockDataRequestService,
+  createMockI18nService,
+  MockI18nService,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
@@ -47,6 +49,7 @@ describe('DataRequestContractSigningComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestContractSigningComponent, createTranslocoTestingModule()],
       providers: [
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
         { provide: AuthService, useValue: authService },
         { provide: ContractRevisionService, useValue: contractRevisionService },
         { provide: DataRequestService, useValue: createMockDataRequestService() },
@@ -74,7 +77,7 @@ describe('DataRequestContractSigningComponent', () => {
     componentRef.setInput('dataRequest', mockDataRequestWithContract);
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(contractRevisionService.fetchContract).toHaveBeenCalledWith('cr-1');
+    expect(contractRevisionService.fetchContract).toHaveBeenCalledWith('cr-1', undefined);
   });
 
   describe('companyName', () => {

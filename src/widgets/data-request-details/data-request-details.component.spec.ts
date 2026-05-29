@@ -5,12 +5,14 @@ import { By } from '@angular/platform-browser';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService, DataRequestService, UidRegisterService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import {
+  createMockAgridataStateService,
   createMockAuthService,
   MockAuthService,
   createMockContractRevisionService,
@@ -51,13 +53,14 @@ describe('DataRequestDetailsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestDetailsComponent, ReactiveFormsModule, AgridataWizardComponent],
       providers: [
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
+        { provide: AuthService, useValue: authService },
         { provide: ContractRevisionService, useValue: contractRevisionService },
         { provide: DataRequestService, useValue: dataRequestService },
-        { provide: I18nService, useValue: createMockI18nService() },
-        { provide: AuthService, useValue: authService },
-        { provide: UidRegisterService, useValue: createMockI18nService() },
         { provide: ErrorHandlerService, useValue: errorService },
+        { provide: I18nService, useValue: createMockI18nService() },
         { provide: MasterDataService, useValue: masterDataService },
+        { provide: UidRegisterService, useValue: createMockI18nService() },
       ],
     }).compileComponents();
 
@@ -268,7 +271,10 @@ describe('DataRequestDetailsComponent', () => {
       newFixture.detectChanges();
       await newFixture.whenStable();
 
-      expect(contractRevisionService.fetchContract).toHaveBeenCalledWith('contract-revision-id');
+      expect(contractRevisionService.fetchContract).toHaveBeenCalledWith(
+        'contract-revision-id',
+        undefined,
+      );
     });
 
     it('should refetch contract when opening contract tab repeatedly', async () => {

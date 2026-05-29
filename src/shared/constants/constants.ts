@@ -51,3 +51,13 @@ export const CMS_BLOCKS = {
 export const VIDEO_FORMATS = ['.mp4', '.webm', '.wmv', '.avi', '.mov', '.mkv', '.flv'];
 
 export const AGATE_LOGIN_ID_IMPERSONATION_HEADER = 'X-Impersonated-AgateLoginId';
+
+export const ACTING_ROLES = {
+  CONSUMER: 'CONSUMER',
+  PROVIDER: 'PROVIDER',
+  ADMIN: 'ADMIN',
+  PRODUCER: 'PRODUCER',
+  SUPPORT: 'SUPPORT',
+};
+
+export type ActingRole = (typeof ACTING_ROLES)[keyof typeof ACTING_ROLES];

@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { firstValueFrom, map } from 'rxjs';
 
 import { DataProductDto, DataProductsService, ResourceQueryDto } from '@/entities/openapi';
+import { ActingRole } from '@/shared/constants/constants';
 import { arrayToObjectSortParams, asPageResponse, PageResponseDto } from '@/shared/lib/api.helper';
 
 /**
@@ -18,6 +19,7 @@ export class DataProductService {
   getAllDataProducts = (
     queryDto: ResourceQueryDto,
     locale: string,
+    actingRole?: ActingRole,
   ): Promise<PageResponseDto<DataProductDto>> => {
     this.apiService.defaultHeaders = this.apiService.defaultHeaders.set('Accept-Language', locale);
     return firstValueFrom(
@@ -27,6 +29,7 @@ export class DataProductService {
           queryDto.searchTerm,
           queryDto.size,
           arrayToObjectSortParams(queryDto.sortParams, 'sortBy'),
+          actingRole as 'PROVIDER' | 'ADMIN' | undefined,
         )
         .pipe(map((response) => asPageResponse(response))),
     );

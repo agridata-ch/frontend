@@ -5,22 +5,24 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ExceptionEnum, SignatureSlotCodeEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
-  createMockI18nService,
-  createMockToastService,
-  MockI18nService,
-  MockToastService,
+  createMockAgridataStateService,
+  createMockAuthService,
+  MockAuthService,
   createMockContractRevisionService,
   mockContractRevision,
   mockOtpChallenge,
   MockContractRevisionService,
-  createMockAuthService,
-  MockAuthService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
+  createMockI18nService,
+  MockI18nService,
+  createMockToastService,
+  MockToastService,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ToastService, ToastType } from '@/shared/toast';
@@ -55,6 +57,7 @@ describe('ContractSignatureInputComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
         { provide: AuthService, useValue: authService },
         { provide: ContractRevisionService, useValue: contractRevisionService },
         { provide: ErrorHandlerService, useValue: errorService },
@@ -177,6 +180,7 @@ describe('ContractSignatureInputComponent', () => {
       expect(contractRevisionService.startSigningProcess).toHaveBeenCalledWith(
         'cr-1',
         SignatureSlotCodeEnum.DataConsumer01,
+        undefined,
       );
       expect(component['currentChallenge']()).toEqual(mockChallenge);
     });
@@ -253,6 +257,7 @@ describe('ContractSignatureInputComponent', () => {
         'cr-1',
         SignatureSlotCodeEnum.DataConsumer01,
         { otpCode: '123456' },
+        undefined,
       );
       expect(toastService.show).toHaveBeenCalledWith(
         expect.anything(),

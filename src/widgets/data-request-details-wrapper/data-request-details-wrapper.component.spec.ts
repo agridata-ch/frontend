@@ -4,18 +4,20 @@ import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService, UidRegisterService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
-  createMockDataRequestService,
-  createMockI18nService,
-  MockDataRequestService,
+  createMockAgridataStateService,
   createMockAuthService,
+  createMockDataRequestService,
   createMockErrorHandlerService,
-  MockErrorHandlerService,
+  createMockI18nService,
   createMockMasterDataService,
+  MockDataRequestService,
+  MockErrorHandlerService,
 } from '@/shared/testing/mocks';
 
 import { DataRequestDetailsWrapperComponent } from './data-request-details-wrapper.component';
@@ -34,12 +36,13 @@ describe('DataRequestDetailsWrapperComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestDetailsWrapperComponent],
       providers: [
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
+        { provide: AuthService, useValue: createMockAuthService() },
         { provide: DataRequestService, useValue: dataRequestService },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: createMockI18nService() },
-        { provide: AuthService, useValue: createMockAuthService() },
-        { provide: UidRegisterService, useValue: createMockI18nService() },
         { provide: MasterDataService, useValue: createMockMasterDataService() },
+        { provide: UidRegisterService, useValue: createMockI18nService() },
         provideRouter(
           [
             {

@@ -2,15 +2,17 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContractRevisionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
-  createMockI18nService,
+  createMockAgridataStateService,
   createMockAuthService,
   MockAuthService,
   createMockContractRevisionService,
   MockContractRevisionService,
+  createMockI18nService,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
@@ -35,9 +37,10 @@ describe('DataRequestFormContractComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestFormContractComponent, createTranslocoTestingModule()],
       providers: [
-        { provide: I18nService, useValue: createMockI18nService() },
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
         { provide: AuthService, useValue: authService },
         { provide: ContractRevisionService, useValue: contractRevisionService },
+        { provide: I18nService, useValue: createMockI18nService() },
       ],
     }).compileComponents();
 

@@ -10,6 +10,7 @@ import {
   UserPreferencesDto,
   UsersService,
 } from '@/entities/openapi';
+import { ActingRole } from '@/shared/constants/constants';
 import { PageResponseDto, arrayToObjectSortParams, asPageResponse } from '@/shared/lib/api.helper';
 
 /**
@@ -24,10 +25,17 @@ import { PageResponseDto, arrayToObjectSortParams, asPageResponse } from '@/shar
 export class UserService {
   private readonly apiService = inject(UsersService);
 
-  getAuthorizedUids() {
-    return this.apiService.getAuthorizedUids(undefined, undefined, undefined, undefined, {
-      context: new HttpContext().set(AUTHORIZED_UIDS_ERROR_HANDLING, true),
-    });
+  getAuthorizedUids(actingRole?: ActingRole) {
+    return this.apiService.getAuthorizedUids(
+      undefined,
+      undefined,
+      actingRole as 'PRODUCER' | 'ADMIN' | 'SUPPORT' | undefined,
+      undefined,
+      undefined,
+      {
+        context: new HttpContext().set(AUTHORIZED_UIDS_ERROR_HANDLING, true),
+      },
+    );
   }
 
   getProducers = (queryDto: ResourceQueryDto): Promise<PageResponseDto<UserInfoDto>> => {

@@ -13,6 +13,7 @@ import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ContractRevisionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
   ContractRevisionDto,
   DataRequestDto,
@@ -51,6 +52,7 @@ export class DataRequestContractSigningComponent {
   // Injects
   private readonly authService = inject(AuthService);
   private readonly contractRevisionService = inject(ContractRevisionService);
+  private readonly stateService = inject(AgridataStateService);
 
   // Input/Output properties
   readonly dataRequest = input.required<DataRequestDto>();
@@ -77,12 +79,12 @@ export class DataRequestContractSigningComponent {
 
   // Resources
   readonly contractResource = resource({
-    params: () => ({ id: this.activeContractId() }),
+    params: () => ({ actingRole: this.stateService.actingRole(), id: this.activeContractId() }),
     loader: ({ params }) => {
       if (!params?.id) {
         return Promise.resolve(null);
       }
-      return this.contractRevisionService.fetchContract(params.id);
+      return this.contractRevisionService.fetchContract(params.id, params.actingRole);
     },
     defaultValue: null,
   });

@@ -1115,6 +1115,10 @@ components:
           type: boolean
         createdAt:
           $ref: "#/components/schemas/LocalDateTime"
+        targetType:
+          $ref: "#/components/schemas/TargetTypeCodeEnum"
+        targetId:
+          $ref: "#/components/schemas/UUID"
     LegalFormEnum:
       type: string
       enum:
@@ -1434,6 +1438,10 @@ components:
       enum:
       - INDIVIDUAL_SIGNATURE
       - COLLECTIVE_SIGNATURE
+    TargetTypeCodeEnum:
+      type: string
+      enum:
+      - DATA_REQUEST
     TranslationDto:
       type: object
       properties:
@@ -1893,6 +1901,21 @@ paths:
         required: true
         schema:
           $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - CONSUMER
+          - PROVIDER
+          - ADMIN
       responses:
         "200":
           description: OK
@@ -1935,6 +1958,21 @@ paths:
         required: true
         schema:
           $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - CONSUMER
+          - PROVIDER
+          - ADMIN
       responses:
         "200":
           description: OK
@@ -2072,6 +2110,20 @@ paths:
         required: true
         schema:
           $ref: "#/components/schemas/SignatureSlotCodeEnum"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - CONSUMER
+          - PROVIDER
       responses:
         "200":
           description: OK
@@ -2123,6 +2175,20 @@ paths:
         required: true
         schema:
           $ref: "#/components/schemas/SignatureSlotCodeEnum"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - CONSUMER
+          - PROVIDER
       requestBody:
         content:
           application/json:
@@ -2202,6 +2268,22 @@ paths:
       - agridata.ch Web App
       - Data Consumer
       - Data Provider
+      parameters:
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - CONSUMER
+          - PROVIDER
+          - ADMIN
     post:
       description: Creates a new data request in draft status. Only accessible to
         users with the consumer role. Disallows creating more than 10 draft requests
@@ -2306,6 +2388,21 @@ paths:
         required: true
         schema:
           $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - CONSUMER
+          - PROVIDER
+          - ADMIN
       responses:
         "200":
           description: OK
@@ -2555,6 +2652,20 @@ paths:
         required: true
         schema:
           $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - CONSUMER
+          - PROVIDER
       requestBody:
         content:
           application/json:
@@ -2603,6 +2714,21 @@ paths:
         required: true
         schema:
           $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - CONSUMER
+          - PROVIDER
+          - ADMIN
       requestBody:
         content:
           application/json:
@@ -2711,6 +2837,20 @@ paths:
         required: true
         schema:
           type: string
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - CONSUMER
+          - ADMIN
       responses:
         "200":
           description: OK
@@ -3334,6 +3474,20 @@ paths:
           description: List of field names to sort by. Default is ascending prefix
             with - for descending
           type: object
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
       responses:
         "200":
           description: OK
@@ -3532,6 +3686,21 @@ paths:
         in: query
         schema:
           type: string
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PRODUCER
+          - ADMIN
+          - SUPPORT
       responses:
         "200":
           description: OK
@@ -3804,7 +3973,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.9.0-rc.16
+  version: 1.10.0-rc.1
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

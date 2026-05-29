@@ -25,6 +25,7 @@ import { debounceTime, firstValueFrom } from 'rxjs';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestUpdateDto } from '@/assets/formSchemas/agridata-schemas.json';
 import { DataRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
@@ -53,6 +54,7 @@ export abstract class DataRequestWizardBaseComponent {
   protected readonly dataRequestService = inject(DataRequestService);
   protected readonly destroyRef = inject(DestroyRef);
   protected readonly errorService = inject(ErrorHandlerService);
+  protected readonly stateService = inject(AgridataStateService);
   protected readonly i18nService = inject(I18nService);
   protected readonly location = inject(Location);
   protected readonly router = inject(Router);
@@ -182,7 +184,7 @@ export abstract class DataRequestWizardBaseComponent {
     const dataRequestId = this.currentDataRequestId();
     if (!dataRequestId) return;
     await this.dataRequestService
-      .fetchDataRequest(dataRequestId)
+      .fetchDataRequest(dataRequestId, this.stateService.actingRole())
       .then((dataRequest: DataRequestDto) => {
         this.refreshListNeeded.set(true);
         this.dataRequest.set(dataRequest);

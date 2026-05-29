@@ -3,9 +3,11 @@ import { signal, WritableSignal } from '@angular/core';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UserPreferencesDto } from '@/entities/openapi';
 import { UidDto } from '@/entities/openapi/model/uidDto';
+import { ActingRole } from '@/shared/constants/constants';
 import { MockifyWithWritableSignals } from '@/shared/testing/mocks';
 
 export type MockAgridataStateServiceTestSignals = {
+  actingRole: WritableSignal<ActingRole | undefined>;
   currentRouteWithoutQueryParams: WritableSignal<string | undefined>;
   currentRoute: WritableSignal<string | undefined>;
   userPreferences: WritableSignal<UserPreferencesDto>;
@@ -22,6 +24,7 @@ export type MockAgridataStateService = MockifyWithWritableSignals<
 export const BE_VERSION = '1.0.0';
 
 export function createMockAgridataStateService(): MockAgridataStateService {
+  const actingRole = signal<ActingRole | undefined>(undefined);
   const currentRouteWithoutQueryParams = signal<string | undefined>(undefined);
   const currentRoute = signal<string | undefined>('/some-page');
   const userPreferences = signal<UserPreferencesDto>({
@@ -33,6 +36,7 @@ export function createMockAgridataStateService(): MockAgridataStateService {
   const uidMissing = signal<boolean>(false);
   const showCookiebanner = signal(true);
   return {
+    actingRole,
     activeUid,
     currentRoute,
     currentRouteWithoutQueryParams,
@@ -49,6 +53,7 @@ export function createMockAgridataStateService(): MockAgridataStateService {
     hideCookieBanner: jest.fn(),
     showCookiebanner,
     __testSignals: {
+      actingRole,
       currentRouteWithoutQueryParams,
       userPreferences,
       activeUid,

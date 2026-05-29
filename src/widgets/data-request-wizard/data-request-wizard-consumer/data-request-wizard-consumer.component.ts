@@ -223,7 +223,7 @@ export class DataRequestWizardConsumerComponent extends DataRequestWizardBaseCom
 
     this.isHandlingReleaseDataRequest.set(true);
     await this.dataRequestService
-      .releaseDataRequestToProvider(dataRequestId)
+      .releaseDataRequestToProvider(dataRequestId, this.stateService.actingRole())
       .then((dataRequest: DataRequestDto) => {
         this.toastService.show(
           this.i18nService.translate('data-request.wizard.provider.releaseContract.success.title'),
@@ -249,7 +249,7 @@ export class DataRequestWizardConsumerComponent extends DataRequestWizardBaseCom
     if (!dataRequestId) return;
 
     await this.dataRequestService
-      .retreatDataRequest(dataRequestId)
+      .retreatDataRequest(dataRequestId, this.stateService.actingRole())
       .then((dataRequest: DataRequestDto) => {
         this.dataRequest.set(dataRequest);
         this.updateFormSteps();
@@ -285,7 +285,7 @@ export class DataRequestWizardConsumerComponent extends DataRequestWizardBaseCom
     if (this.form.valid && dataRequestId) {
       this.isSaving.set(true);
       await this.dataRequestService
-        .submitDataRequest(dataRequestId)
+        .submitDataRequest(dataRequestId, this.stateService.actingRole())
         .then((dataRequest: DataRequestDto) => {
           this.refreshListNeeded.set(true);
           this.dataRequest.set(dataRequest);

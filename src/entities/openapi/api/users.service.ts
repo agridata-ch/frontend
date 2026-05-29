@@ -107,19 +107,22 @@ export class UsersService extends BaseService {
      * Retrieves all UIDs authorized for the currently authenticated data producer.
      * @param agateLoginId The agateLoginId of the producer (only relevant for admin users)
      * @param ktIdP The kt-id-p identifier of the producer (only relevant for admin users)
+     * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAuthorizedUids(agateLoginId?: string, ktIdP?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<UidDto>>;
-    public getAuthorizedUids(agateLoginId?: string, ktIdP?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<UidDto>>>;
-    public getAuthorizedUids(agateLoginId?: string, ktIdP?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<UidDto>>>;
-    public getAuthorizedUids(agateLoginId?: string, ktIdP?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getAuthorizedUids(agateLoginId?: string, ktIdP?: string, actingRole?: 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<UidDto>>;
+    public getAuthorizedUids(agateLoginId?: string, ktIdP?: string, actingRole?: 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<UidDto>>>;
+    public getAuthorizedUids(agateLoginId?: string, ktIdP?: string, actingRole?: 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<UidDto>>>;
+    public getAuthorizedUids(agateLoginId?: string, ktIdP?: string, actingRole?: 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>agateLoginId, 'agate-login-id');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>ktIdP, 'kt-id-p');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>actingRole, 'actingRole');
 
         let localVarHeaders = this.defaultHeaders;
 

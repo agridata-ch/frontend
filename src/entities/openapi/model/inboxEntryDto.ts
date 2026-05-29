@@ -7,6 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TargetTypeCodeEnum } from './targetTypeCodeEnum';
 import { TranslationDto } from './translationDto';
 
 
@@ -17,5 +18,10 @@ export interface InboxEntryDto {
     userId?: string;
     isRead?: boolean;
     createdAt?: string;
+    targetType?: TargetTypeCodeEnum;
+    targetId?: string;
 }
+export namespace InboxEntryDto {
+}
+
 

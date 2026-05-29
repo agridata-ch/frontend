@@ -3,9 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import {
+  createMockAgridataStateService,
   createMockContractRevisionService,
   MockContractRevisionService,
   createMockErrorHandlerService,
@@ -40,6 +42,7 @@ describe('DataRequestContractPdfComponent', () => {
       imports: [DataRequestContractPdfComponent, createTranslocoTestingModule()],
       providers: [
         provideHttpClient(),
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
         { provide: ContractRevisionService, useValue: contractRevisionService },
         { provide: ErrorHandlerService, useValue: errorHandlerService },
         { provide: I18nService, useValue: i18nService },
@@ -73,6 +76,7 @@ describe('DataRequestContractPdfComponent', () => {
 
       expect(contractRevisionService.getContractRevisionPdf).toHaveBeenCalledWith(
         CONTRACT_REVISION_ID,
+        undefined,
       );
       expect(URL.createObjectURL).toHaveBeenCalled();
       expect(openSpy).toHaveBeenCalledWith(mockUrl, '_blank');
@@ -132,6 +136,7 @@ describe('DataRequestContractPdfComponent', () => {
 
       expect(contractRevisionService.getContractRevisionPdf).toHaveBeenCalledWith(
         CONTRACT_REVISION_ID,
+        undefined,
       );
       expect(URL.createObjectURL).toHaveBeenCalled();
       expect(mockAnchor.href).toBe(mockUrl);

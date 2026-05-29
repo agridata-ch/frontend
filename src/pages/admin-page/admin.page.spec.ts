@@ -3,8 +3,10 @@ import { Router } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import {
+  createMockAgridataStateService,
   createMockDataRequestService,
   MockDataRequestService,
   createMockErrorHandlerService,
@@ -33,6 +35,7 @@ describe('AdminPage - component behavior', () => {
 
       providers: [
         AdminPage,
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
         { provide: DataRequestService, useValue: dataRequestService },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: Router, useValue: mockRouter },

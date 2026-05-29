@@ -1,11 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProductDto, ResourceQueryDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { PageResponseDto } from '@/shared/lib/api.helper';
 import {
+  createMockAgridataStateService,
   createMockDataProductService,
   createMockErrorHandlerService,
   createMockI18nService,
@@ -33,6 +35,7 @@ describe('DataProductsPageComponent - component behavior', () => {
     await TestBed.configureTestingModule({
       imports: [DataProductsPageComponent, createTranslocoTestingModule()],
       providers: [
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
         { provide: DataProductService, useValue: dataProductService },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: i18nService },
@@ -76,7 +79,7 @@ describe('DataProductsPageComponent - component behavior', () => {
       testFixture.detectChanges();
       await testFixture.whenStable();
 
-      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith({}, 'de');
+      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith({}, 'de', undefined);
     });
 
     it('should pass locale from i18nService to getAllDataProducts', async () => {
@@ -92,7 +95,11 @@ describe('DataProductsPageComponent - component behavior', () => {
       testFixture.detectChanges();
       await testFixture.whenStable();
 
-      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith(expect.any(Object), 'de');
+      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith(
+        expect.any(Object),
+        'de',
+        undefined,
+      );
     });
 
     it('should pass resourceQueryDto params to getAllDataProducts', async () => {
@@ -118,7 +125,11 @@ describe('DataProductsPageComponent - component behavior', () => {
       testFixture.detectChanges();
       await testFixture.whenStable();
 
-      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith(queryParams, 'de');
+      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith(
+        queryParams,
+        'de',
+        undefined,
+      );
     });
   });
 
