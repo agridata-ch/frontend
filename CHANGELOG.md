@@ -1,3 +1,9 @@
+## [1.12.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.1...v1.12.0-rc.2) (2026-05-29)
+
+### Features
+
+- **coding-agent:** add a11y-reviewer ([269c51f](https://github.com/agridata-ch/frontend/commit/269c51f5df715b833b2b583f9c3622ffeb070481))
+
 ## [1.12.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.11.0...v1.12.0-rc.1) (2026-05-29)
 
 ### Features
