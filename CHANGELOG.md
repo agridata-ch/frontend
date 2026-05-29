@@ -1,3 +1,9 @@
+## [1.12.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.11.0...v1.12.0-rc.1) (2026-05-29)
+
+### Features
+
+- **consent_request:** highlight clicked rows table when sidepanel open ([bfab3b8](https://github.com/agridata-ch/frontend/commit/bfab3b83193022e4ec6a4500095bb92743ba3be0)), closes [DIGIB2-483](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-483)
+
 ## [1.11.0](https://github.com/agridata-ch/frontend/compare/v1.10.0...v1.11.0) (2026-05-21)
 
 ### Features
