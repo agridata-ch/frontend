@@ -9,6 +9,7 @@ import {
   untracked,
   viewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { faBell, faEye } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -19,7 +20,8 @@ import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { PageResponseDto, createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
-import { markAllAsRead, toggleReadStatus } from '@/shared/notification';
+import { AuthService } from '@/shared/lib/auth';
+import { getNotificationRoute, markAllAsRead, toggleReadStatus } from '@/shared/notification';
 import { ToastService } from '@/shared/toast';
 import {
   AgridataTableComponent,
@@ -48,9 +50,11 @@ import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/butto
 })
 export class NotificationCenterPageComponent {
   // Injects
-  private readonly notificationService = inject(NotificationService);
+  private readonly authService = inject(AuthService);
   private readonly errorService = inject(ErrorHandlerService);
   protected readonly i18nService = inject(I18nService);
+  private readonly notificationService = inject(NotificationService);
+  private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
 
   // Constants
@@ -68,6 +72,8 @@ export class NotificationCenterPageComponent {
   protected readonly isLoadingMarkAllAsRead = signal(false);
 
   // Template refs
+  private readonly titleTemplate =
+    viewChild<TemplateRef<{ $implicit: InboxEntryDto }>>('titleTemplate');
   private readonly textTemplate =
     viewChild<TemplateRef<{ $implicit: InboxEntryDto }>>('textTemplate');
   private readonly dateTemplate =
@@ -82,8 +88,8 @@ export class NotificationCenterPageComponent {
       {
         name: this.TITLE_HEADER,
         renderer: {
-          type: CellRendererTypes.FUNCTION,
-          cellRenderFn: (row) => this.i18nService.useObjectTranslation(row.title) ?? '',
+          type: CellRendererTypes.TEMPLATE,
+          template: this.titleTemplate(),
         },
       },
       {
@@ -111,6 +117,11 @@ export class NotificationCenterPageComponent {
         },
       },
     ],
+    showRowActionButton: true,
+    rowAction: (item) => {
+      const route = getNotificationRoute(item, this.authService);
+      if (route) this.router.navigateByUrl(route);
+    },
   }));
 
   // Resource

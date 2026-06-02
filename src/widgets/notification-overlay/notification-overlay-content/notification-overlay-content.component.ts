@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { faExternalLink, faEye } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { faMailbox } from '@awesome.me/kit-0b6d1ed528/icons/duotone/light';
@@ -55,6 +55,14 @@ export class NotificationOverlayContentComponent {
   // Signals
   protected readonly isLoadingMarkAllAsRead = signal(false);
 
+  // Computed signals
+  protected readonly notificationRoutes = computed(
+    () =>
+      new Map(
+        (this.notifications() ?? []).map((n) => [n.id!, getNotificationRoute(n, this.authService)]),
+      ),
+  );
+
   // Methods
   protected readonly handleToggleReadStatus = (notification: InboxEntryDto) =>
     toggleReadStatus(notification, this.notificationService, this.toastService, this.i18nService);
@@ -68,9 +76,6 @@ export class NotificationOverlayContentComponent {
       this.i18nService,
     ).finally(() => this.isLoadingMarkAllAsRead.set(false));
   };
-
-  protected getNotificationRoute = (notification: InboxEntryDto) =>
-    getNotificationRoute(notification, this.authService);
 
   protected navigateToNotifications = () => {
     this.router.navigate([ROUTE_PATHS.NOTIFICATIONS_PATH]);

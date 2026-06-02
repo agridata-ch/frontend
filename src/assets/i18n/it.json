@@ -546,7 +546,8 @@
       "markAllAsRead": "Contrassegnare le notifiche come lette",
       "showAll": "Mostra tutte le notifiche",
       "empty": "Non ci sono notifiche",
-      "markAsRead": "Segna come letto"
+      "markAsRead": "Segna come letto",
+      "markAsUnread": "Contrassegna come non letto"
     }
   },
   "contact-form": {
@@ -791,6 +792,8 @@
       "date": "Data",
       "actions": "Azioni"
     },
-    "markAllAsRead": "Contrassegna tutte le notifiche come lette"
+    "markAllAsRead": "Contrassegna tutte le notifiche come lette",
+    "markAsRead": "Segna come letto",
+    "markAsUnread": "Contrassegna come non letto"
   }
 }

@@ -30,6 +30,14 @@ export class HomeRedirectGuard implements CanActivate {
       return true;
     }
 
+    if (this.authService.isAdmin()) {
+      return this.router.createUrlTree([ROUTE_PATHS.ADMIN_PATH]);
+    }
+
+    if (this.authService.isSupporter()) {
+      return this.router.createUrlTree([ROUTE_PATHS.SUPPORT_PATH]);
+    }
+
     if (this.authService.isProducer() || this.stateService.isImpersonating()) {
       try {
         await this.authService.initializeAuthorizedUids();
@@ -47,14 +55,6 @@ export class HomeRedirectGuard implements CanActivate {
 
     if (this.authService.isDataProvider()) {
       return this.router.createUrlTree([ROUTE_PATHS.DATA_REQUESTS_PROVIDER_PATH]);
-    }
-
-    if (this.authService.isSupporter()) {
-      return this.router.createUrlTree([ROUTE_PATHS.SUPPORT_PATH]);
-    }
-
-    if (this.authService.isAdmin()) {
-      return this.router.createUrlTree([ROUTE_PATHS.ADMIN_PATH]);
     }
 
     return true;

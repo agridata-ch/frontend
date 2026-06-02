@@ -545,7 +545,8 @@
       "markAllAsRead": "Marquer les notifications comme lues",
       "showAll": "Afficher toutes les notifications",
       "empty": "Vous n'avez aucune notification",
-      "markAsRead": "Marquer comme lu"
+      "markAsRead": "Marquer comme lu",
+      "markAsUnread": "Marquer comme non lu"
     }
   },
   "contact-form": {
@@ -790,6 +791,8 @@
       "date": "Date",
       "actions": "Actions"
     },
-    "markAllAsRead": "Marquer toutes les notifications comme lues"
+    "markAllAsRead": "Marquer toutes les notifications comme lues",
+    "markAsRead": "Marquer comme lu",
+    "markAsUnread": "Marquer comme non lu"
   }
 }
