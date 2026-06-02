@@ -1,3 +1,9 @@
+## [1.12.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.4...v1.12.0-rc.5) (2026-06-02)
+
+### Bug Fixes
+
+- **ui:** navigation item order ([b2cb7e8](https://github.com/agridata-ch/frontend/commit/b2cb7e839484d5d95306e46db332a5636ea1cbeb)), closes [DIGIB2-1214](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1214)
+
 ## [1.12.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.3...v1.12.0-rc.4) (2026-06-02)
 
 ### Features
