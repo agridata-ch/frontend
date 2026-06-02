@@ -1,3 +1,9 @@
+## [1.12.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.3...v1.12.0-rc.4) (2026-06-02)
+
+### Features
+
+- **notification-center:** add notifications page ([213c7a0](https://github.com/agridata-ch/frontend/commit/213c7a0b3492e1102d25bda09d36c9207b7db7ee)), closes [DIGIB2-315](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-315)
+
 ## [1.12.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.2...v1.12.0-rc.3) (2026-06-02)
 
 ### Features
