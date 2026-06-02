@@ -1,3 +1,10 @@
+## [1.12.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.2...v1.12.0-rc.3) (2026-06-02)
+
+### Features
+
+- **deps:** update gitleaks/gitleaks-action action to v3 ([de78ada](https://github.com/agridata-ch/frontend/commit/de78ada351a466bbfb0692e80aad23d42d5bbba5))
+- **multi-roles:** allow multiple roles ([2ea0ff1](https://github.com/agridata-ch/frontend/commit/2ea0ff1df0e8925e3222b16bdabb9354df9f43df)), closes [DIGIB2-1214](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1214)
+
 ## [1.12.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.1...v1.12.0-rc.2) (2026-05-29)
 
 ### Features
