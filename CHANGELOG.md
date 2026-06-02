@@ -1,3 +1,9 @@
+## [1.12.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.5...v1.12.0-rc.6) (2026-06-02)
+
+### Bug Fixes
+
+- **notifications:** fix table deeplink ([6a2eaa5](https://github.com/agridata-ch/frontend/commit/6a2eaa5dc396397f09e196ee7a02af4d03244955)), closes [DIGIB2-315](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-315)
+
 ## [1.12.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.4...v1.12.0-rc.5) (2026-06-02)
 
 ### Bug Fixes
