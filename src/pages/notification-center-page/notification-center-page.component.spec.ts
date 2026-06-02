@@ -1,15 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { NotificationService } from '@/entities/api/notification.service';
-import { InboxEntryDto, MarkAsReadRequestDto, ResourceQueryDto } from '@/entities/openapi';
+import {
+  InboxEntryDto,
+  MarkAsReadRequestDto,
+  ResourceQueryDto,
+  TargetTypeCodeEnum,
+} from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { PageResponseDto } from '@/shared/lib/api.helper';
+import { AuthService } from '@/shared/lib/auth';
 import {
+  createMockAuthService,
   createMockErrorHandlerService,
   createMockI18nService,
   createMockNotificationService,
   createMockToastService,
+  MockAuthService,
   MockErrorHandlerService,
   MockI18nService,
   MockNotificationService,
@@ -29,6 +38,8 @@ describe('NotificationCenterPageComponent - component behavior', () => {
   let errorService: MockErrorHandlerService;
   let i18nService: MockI18nService;
   let toastService: MockToastService;
+  let authService: MockAuthService;
+  let mockRouter: jest.Mocked<Pick<Router, 'navigateByUrl'>>;
 
   const mockResponse: PageResponseDto<InboxEntryDto> = {
     items: mockInboxEntries,
@@ -43,6 +54,10 @@ describe('NotificationCenterPageComponent - component behavior', () => {
     errorService = createMockErrorHandlerService();
     i18nService = createMockI18nService();
     toastService = createMockToastService();
+    authService = createMockAuthService();
+    mockRouter = { navigateByUrl: jest.fn().mockResolvedValue(true) } as unknown as jest.Mocked<
+      Pick<Router, 'navigateByUrl'>
+    >;
 
     notificationService.fetchNotifications.mockResolvedValue(mockResponse);
 
@@ -53,6 +68,8 @@ describe('NotificationCenterPageComponent - component behavior', () => {
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: i18nService },
         { provide: ToastService, useValue: toastService },
+        { provide: AuthService, useValue: authService },
+        { provide: Router, useValue: mockRouter },
       ],
     }).compileComponents();
 
@@ -98,27 +115,21 @@ describe('NotificationCenterPageComponent - component behavior', () => {
       expect(metadata.columns.length).toBe(4);
     });
 
-    it('should configure the title column as FUNCTION renderer', () => {
+    it('should configure the title column as TEMPLATE renderer', () => {
       const metadata = component['tableMetaData']();
       const titleColumn = metadata.columns[0];
 
       expect(titleColumn.name).toBe('notificationCenter.table.title');
-      expect(titleColumn.renderer.type).toBe(CellRendererTypes.FUNCTION);
+      expect(titleColumn.renderer.type).toBe(CellRendererTypes.TEMPLATE);
     });
 
-    it('should call i18nService.useObjectTranslation for title column', () => {
+    it('should configure the title column with a template reference', async () => {
+      await fixture.whenStable();
       const metadata = component['tableMetaData']();
       const titleColumn = metadata.columns[0];
 
-      const mockNotification: InboxEntryDto = {
-        id: '1',
-        title: { de: 'Test Title' },
-        isRead: false,
-      };
-
-      if (titleColumn.renderer.type === CellRendererTypes.FUNCTION) {
-        titleColumn.renderer.cellRenderFn(mockNotification);
-        expect(i18nService.useObjectTranslation).toHaveBeenCalledWith(mockNotification.title);
+      if (titleColumn.renderer.type === CellRendererTypes.TEMPLATE) {
+        expect(titleColumn.renderer.template).toBeDefined();
       }
     });
 
@@ -234,6 +245,48 @@ describe('NotificationCenterPageComponent - component behavior', () => {
       await fixture.whenStable();
 
       expect(component['isLoadingMarkAllAsRead']()).toBe(false);
+    });
+  });
+
+  describe('tableMetaData rowAction', () => {
+    it('should navigate via router when notification has a valid route', async () => {
+      await fixture.whenStable();
+      authService.__testSignals.isConsumer.set(true);
+      fixture.detectChanges();
+
+      const notification: InboxEntryDto = {
+        id: '42',
+        targetType: TargetTypeCodeEnum.DataRequest,
+        targetId: 'target-123',
+        isRead: false,
+      };
+
+      component['tableMetaData']().rowAction!(notification);
+
+      expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/data-requests/target-123');
+    });
+
+    it('should not navigate when notification has no targetId', async () => {
+      await fixture.whenStable();
+
+      const notification: InboxEntryDto = { id: '42', isRead: false };
+
+      component['tableMetaData']().rowAction!(notification);
+
+      expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('syncEffect', () => {
+    it('should reload fetchNotificationsResource when notifyMutation is called', async () => {
+      await fixture.whenStable();
+      const reloadSpy = jest.spyOn(component.fetchNotificationsResource, 'reload');
+
+      notificationService.notifyMutation();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(reloadSpy).toHaveBeenCalled();
     });
   });
 

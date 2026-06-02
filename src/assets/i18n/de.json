@@ -546,7 +546,8 @@
       "markAllAsRead": "Benachrichtigungen als gelesen markieren",
       "showAll": "Alle Benachrichtigungen anzeigen",
       "empty": "Sie haben keine Benachrichtigungen",
-      "markAsRead": "Als gelesen markieren"
+      "markAsRead": "Als gelesen markieren",
+      "markAsUnread": "Als ungelesen markieren"
     }
   },
   "contact-form": {
@@ -791,6 +792,8 @@
       "date": "Datum",
       "actions": "Aktionen"
     },
-    "markAllAsRead": "Alle Benachrichtigungen als gelesen markieren"
+    "markAllAsRead": "Alle Benachrichtigungen als gelesen markieren",
+    "markAsRead": "Als gelesen markieren",
+    "markAsUnread": "Als ungelesen markieren"
   }
 }

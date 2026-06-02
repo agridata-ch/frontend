@@ -10,7 +10,7 @@ export function getNotificationRoute(
   authService: AuthService,
 ): string | null {
   const route = getRouteForTarget(notification.targetType, notification.targetId, authService);
-  if (!route) {
+  if (!route && notification.targetType) {
     console.warn(
       'No route found for notification target:',
       notification.targetType,

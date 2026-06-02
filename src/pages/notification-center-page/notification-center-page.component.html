@@ -20,6 +20,12 @@
     [tableMetadata]="tableMetaData()"
     [(queryParameters)]="resourceQueryDto"
   >
+    <ng-template #titleTemplate let-item>
+      <span class="agridata-ellipsis-multiline">
+        {{ i18nService.useObjectTranslation(item.title) }}
+      </span>
+    </ng-template>
+
     <ng-template #textTemplate let-item>
       <span class="text-sm font-semibold text-agridata-primary-600 agridata-ellipsis-multiline">
         {{ i18nService.useObjectTranslation(item.text) }}
