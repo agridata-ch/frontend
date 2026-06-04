@@ -1,3 +1,9 @@
+## [1.12.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.7...v1.12.0-rc.8) (2026-06-04)
+
+### Bug Fixes
+
+- **consent_request:** set activeUid for opened side panel ([f381bdf](https://github.com/agridata-ch/frontend/commit/f381bdfe40a00cfc781430e1b5292a19320fa308)), closes [DIGIB2-1420](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1420)
+
 ## [1.12.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.6...v1.12.0-rc.7) (2026-06-04)
 
 ### Bug Fixes
