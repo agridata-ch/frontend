@@ -34,7 +34,12 @@ model/consentRequestStateEnum.ts
 model/contractRevisionDto.ts
 model/contractRevisionSignatureDto.ts
 model/createConsentRequestDto.ts
+model/dataProductDescriptionDto.ts
 model/dataProductDto.ts
+model/dataProductDtoStateCode.ts
+model/dataProductNameDto.ts
+model/dataProductStateEnum.ts
+model/dataProductUpdateDto.ts
 model/dataProviderDto.ts
 model/dataProviderExceptionDto.ts
 model/dataProviderReferenceDto.ts
@@ -53,6 +58,7 @@ model/exceptionDto.ts
 model/exceptionDto1.ts
 model/exceptionEnum.ts
 model/farmTypeEnum.ts
+model/flowCodeEnum.ts
 model/inboxEntryDto.ts
 model/legalFormEnum.ts
 model/markAsReadRequestDto.ts
@@ -65,6 +71,8 @@ model/pageResponseDtoInboxEntryDto.ts
 model/pageResponseDtoUserInfoDto.ts
 model/producerIdentifier.ts
 model/resourceQueryDto.ts
+model/restClientDto.ts
+model/restClientMethodCodeEnum.ts
 model/sealAttemptStateEnum.ts
 model/signatureSlotCodeEnum.ts
 model/signatureTypeEnum.ts

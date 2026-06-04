@@ -32,6 +32,7 @@ export class SidepanelComponent {
   readonly maxWidth = input<string>('100%');
   readonly preventManualClose = input<boolean>(false);
   readonly title = input<string>('');
+  readonly subTitle = input<string>('');
 
   readonly closeSidepanel = output<void>();
 

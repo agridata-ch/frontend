@@ -1,19 +1,22 @@
 import {
   Component,
   computed,
+  effect,
   inject,
   resource,
   signal,
   TemplateRef,
   viewChild,
 } from '@angular/core';
-import { faEye, faLayerGroup } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { Router, RouterOutlet } from '@angular/router';
+import { faEye, faLayerGroup, faPlus } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProductDto, PageResponseDto, ResourceQueryDto } from '@/entities/openapi';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { DataProductDtoDirective } from '@/shared/data-product';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nService } from '@/shared/i18n';
@@ -24,6 +27,11 @@ import {
   SortDirections,
   TableMetadata,
 } from '@/shared/ui/agridata-table';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import {
+  DATA_PRODUCT_NEW_ID,
+  FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM,
+} from '@/widgets/data-product-detail-form/data-product-detail-form.model';
 
 /**
  * Shows a table with all available data products.
@@ -34,24 +42,29 @@ import {
   selector: 'app-data-products-page',
   imports: [
     AgridataTableComponent,
+    ButtonComponent,
+    DataProductDtoDirective,
+    ErrorOutletComponent,
     FaIconComponent,
     I18nDirective,
-    ErrorOutletComponent,
-    DataProductDtoDirective,
+    RouterOutlet,
   ],
   templateUrl: './data-products-page.component.html',
 })
 export class DataProductsPageComponent {
   private readonly dataProductService = inject(DataProductService);
   private readonly errorService = inject(ErrorHandlerService);
+  private readonly router = inject(Router);
   private readonly stateService = inject(AgridataStateService);
   protected readonly i18nService = inject(I18nService);
 
-  protected readonly NAME_HEADER = 'dataProducts.table.name';
-  protected readonly SYSTEM_HEADER = 'dataProducts.table.system';
+  protected readonly ButtonVariants = ButtonVariants;
+  protected readonly NAME_HEADER = 'data-products.table.name';
+  protected readonly SYSTEM_HEADER = 'data-products.table.system';
+  protected readonly buttonIcon = faPlus;
 
-  protected readonly faLayerGroup = faLayerGroup;
   protected readonly faEye = faEye;
+  protected readonly faLayerGroup = faLayerGroup;
 
   private readonly nameTemplate =
     viewChild<TemplateRef<{ $implicit: DataProductDto }>>('nameTemplate');
@@ -85,7 +98,7 @@ export class DataProductsPageComponent {
       ],
       rowMenuActions: () => [
         {
-          label: 'dataProducts.table.actions.viewDetails',
+          label: 'data-products.table.actions.viewDetails',
           icon: faEye,
           callback: async () => {},
         },
@@ -108,4 +121,15 @@ export class DataProductsPageComponent {
     this.fetchDataProductsResource,
     this.errorService,
   );
+
+  private readonly reloadDataProductsEffect = effect(() => {
+    const nav = this.router.currentNavigation();
+    if (nav?.extras?.state?.[FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM]) {
+      this.fetchDataProductsResource.reload();
+    }
+  });
+
+  protected newProduct(): void {
+    this.router.navigate([ROUTE_PATHS.DATA_PRODUCTS_PATH, DATA_PRODUCT_NEW_ID]);
+  }
 }

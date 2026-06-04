@@ -531,7 +531,6 @@
     "CH": "Schweiz",
     "LI": "Liechtenstein"
   },
-  "account.loginForm.loginButton": "Login",
   "header": {
     "helpAndSupport": {
       "title": "Hilfe & Support",
@@ -678,6 +677,11 @@
   "breadcrumb": {
     "home": "Home"
   },
+  "common": {
+    "ariaLabel": {
+      "close": "Schliessen"
+    }
+  },
   "footer": {
     "logoBund": {
       "altText": "Bild mit Schweizer Flagge und Schrift Schweizerischer Eidgenossenschaft"
@@ -774,7 +778,7 @@
       }
     }
   },
-  "dataProducts": {
+  "data-products": {
     "pageTitle": "Datenprodukte",
     "table": {
       "name": "Datenprodukt",
@@ -784,12 +788,102 @@
       }
     },
     "createNew": "Datenprodukt erfassen",
-    "create": {
+    "detailPanel": {
       "title": "Neues Datenprodukt erfassen",
+      "subTitle": "Ein Datenprodukt ist eine versionierte und klar abgegrenzte Datenlieferung, die über ein Quellsystem bereitgestellt wird. Es dient als Brücke zwischen fachlicher Verständlichkeit und technischer Integrationsfähigkeit."
+    },
+    "detailForm": {
       "name": {
         "de": {
-          "label": "Name Deutsch"
+          "label": "Name Deutsch",
+          "placeholder": "z.B. Nutztiere in Sömmerung"
+        },
+        "fr": {
+          "label": "Name Französisch",
+          "placeholder": "p.ex. Animaux de rente en estivage"
+        },
+        "it": {
+          "label": "Name Italienisch",
+          "placeholder": "p.es. Animali da reddito estivati"
         }
+      },
+      "dataProduct": "Name und Beschreibung Datenprodukt",
+      "infoTitle": "Wichtiger Hinweis zur verständlichen Sprache",
+      "infoMessage": "Bitte wählen Sie für den Produktnamen und die Beschreibung eine einfach verständliche Sprache (kein reines IT-Fachdeutsch).\n\nWarum? Diese Texte werden nicht nur im öffentlichen Datenkatalog publiziert, sondern direkt dem Landwirten / Tierhalter angezeigt, wenn dieser im System eine Datenanfrage sichtet und seine formelle Zustimmung zur Datenfreigabe erteilt.",
+      "system": "System",
+      "technicalFields": "Technische Informationen",
+      "description": {
+        "de": {
+          "label": "Beschreibung Deutsch",
+          "placeholder": "z.B. Dieses Datenprodukt enthält die Art und Anzahl Nutztiere pro Betrieb, die im Inland gesömmert wurden."
+        },
+        "fr": {
+          "label": "Beschreibung Französisch",
+          "placeholder": "Par exemple, ce produit de données contient le type et le nombre d'animaux d'élevage par exploitation qui ont été gardés localement pendant l'été."
+        },
+        "it": {
+          "label": "Beschreibung Italienisch",
+          "placeholder": "Ad esempio, questo prodotto di dati contiene il tipo e il numero di animali da allevamento per azienda agricola che sono stati ospitati in loco durante l'estate."
+        }
+      },
+      "provider": {
+        "label": "Datenanbieter wählen",
+        "placeholder": "Bitte wählen Sie den Datenanbieter"
+      },
+      "dataSourceSystem": {
+        "label": "System wählen",
+        "placeholder": "Bitte wählen Sie das System"
+      },
+      "restClientIdentifier": {
+        "label": "System-Schnittstelle wählen",
+        "placeholder": "Bitte wählen Sie die System-Schnittstelle"
+      },
+      "restClientMethod": {
+        "label": "Übertragungsmethode wählen",
+        "placeholder": "Bitte wählen Sie die Übertragungsmethode"
+      },
+      "restClientPathTemplate": {
+        "label": "URL-Pfad-Template (Schnittstelle)",
+        "placeholder": "z.B. /api/v1/bur/{{bur}}/nutztiere"
+      },
+      "restClientRequestTemplate": {
+        "label": "Request-Body Template (JSON/XML)",
+        "placeholder": "z.B. { \"status\": \"active\" }"
+      },
+      "restClientChangeDetectionPathTemplate": {
+        "label": "Pfad für Änderungserkennung (Change Detection)",
+        "placeholder": "z.B. /api/v1/nutztiere/changes"
+      },
+      "cancel": "Abbrechen",
+      "saveDraft": "Als Entwurf speichern",
+      "saveAndPublish": "Speichern und publizieren",
+      "flowCode": {
+        "label": "Übertragungsmodus wählen",
+        "placeholder": "Bitte wählen Sie den Übertragungsmodus"
+      },
+      "tab": {
+        "technicalFields": "Technische Informationen",
+        "nameAndDescription": "Name und Beschreibung"
+      }
+    },
+    "saveAndPublish": {
+      "success": {
+        "title": "Speichern und publizieren erfolgreich",
+        "message": "Das Datenprodukt wurde erfolgreich gespeichert und publiziert."
+      },
+      "error": {
+        "title": "Speichern und publizieren fehlgeschlagen",
+        "message": "Beim speichern und publizieren ist etwas schief gelaufen. Bitte versuchen Sie es später noch einmal."
+      }
+    },
+    "saveDraft": {
+      "success": {
+        "title": "Als Entwurf gespeichert",
+        "message": "Das Datenprodukt wurde erfolgreich als Entwurf gespeichert."
+      },
+      "error": {
+        "title": "Speichern als Entwurf fehlgeschlagen.",
+        "message": "Beim speichern als Entwurf ist etwas schief gelaufen. Bitte versuchen Sie es später noch einmal."
       }
     }
   },

@@ -27,7 +27,8 @@ import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
 import { AdminDataRequestDetailsComponent } from '@/widgets/admin-data-request-details';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
-import { DataRequestDetailsWrapperComponent } from '@/widgets/data-request-details-wrapper/data-request-details-wrapper.component';
+import { DataProductDetailFormComponent } from '@/widgets/data-product-detail-form';
+import { DataRequestDetailsWrapperComponent } from '@/widgets/data-request-details-wrapper';
 import { ProviderDataRequestDetailsComponent } from '@/widgets/provider-data-request-details';
 
 import { LoginAuthGuard } from './guards/login.guard';
@@ -231,7 +232,7 @@ export const routes: Routes = [
   {
     // data products routes
     path: ROUTE_PATHS.DATA_PRODUCTS_PATH,
-    title: 'dataProducts.pageTitle',
+    title: 'data-products.pageTitle',
     component: DefaultLayoutComponent,
     canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
     data: { roles: [USER_ROLES.AGRIDATA_ADMIN, USER_ROLES.AGRIDATA_DATA_REQUESTS_PROVIDER] },
@@ -239,6 +240,12 @@ export const routes: Routes = [
       {
         path: '',
         component: DataProductsPageComponent,
+        children: [
+          {
+            path: ':dataProductId',
+            component: DataProductDetailFormComponent,
+          },
+        ],
       },
     ],
   },
