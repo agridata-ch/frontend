@@ -1,3 +1,9 @@
+## [1.12.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.6...v1.12.0-rc.7) (2026-06-04)
+
+### Bug Fixes
+
+- **modal:** fix backdrop ([00e8905](https://github.com/agridata-ch/frontend/commit/00e89059cad9f4deb41ae6fdc29e22a804220d61)), closes [DIGIB2-1307](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1307)
+
 ## [1.12.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.5...v1.12.0-rc.6) (2026-06-02)
 
 ### Bug Fixes
