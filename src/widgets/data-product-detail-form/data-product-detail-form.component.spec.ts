@@ -1,0 +1,373 @@
+import { Location } from '@angular/common';
+import { ComponentRef } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter, Router } from '@angular/router';
+
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { DataProductService } from '@/entities/api/data-product.service';
+import { DataProvidersService } from '@/entities/api/data-providers.service';
+import { MasterDataService } from '@/entities/api/master-data.service';
+import { DataProductDto } from '@/entities/openapi';
+import { I18nService } from '@/shared/i18n';
+import { AuthService } from '@/shared/lib/auth';
+import {
+  createMockAgridataStateService,
+  createMockAuthService,
+  createMockDataProductService,
+  createMockDataProvidersService,
+  createMockI18nService,
+  createMockMasterDataService,
+  createMockToastService,
+  MockAgridataStateService,
+  MockDataProductService,
+  MockToastService,
+} from '@/shared/testing/mocks';
+import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
+import { ToastService, ToastType } from '@/shared/toast';
+
+import { DataProductDetailFormComponent } from './data-product-detail-form.component';
+import {
+  DATA_PRODUCT_NEW_ID,
+  FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM,
+  FORM_TAB_IDS,
+} from './data-product-detail-form.model';
+
+function fillValidForm(component: DataProductDetailFormComponent): void {
+  component['form'].patchValue({
+    [FORM_TAB_IDS.NAME_AND_DESCRIPTION]: {
+      name: { de: 'Test DE', fr: 'Test FR', it: 'Test IT' },
+      description: {
+        de: 'Description DE',
+        fr: 'Description FR',
+        it: 'Description IT',
+      },
+      dataSourceSystemId: 'sys-1',
+      restClientId: 'rc-1',
+      restClientMethodCode: 'GET',
+    },
+    [FORM_TAB_IDS.TECHNICAL_FIELDS]: {
+      flowCode: 'UID_BASED_PRE_VALIDATION',
+      restClientPathTemplate: '/api/path',
+      restClientRequestTemplate: '{}',
+    },
+  });
+}
+
+describe('DataProductDetailFormComponent', () => {
+  let fixture: ComponentFixture<DataProductDetailFormComponent>;
+  let component: DataProductDetailFormComponent;
+  let componentRef: ComponentRef<DataProductDetailFormComponent>;
+  let dataProductService: MockDataProductService;
+  let stateService: MockAgridataStateService;
+  let toastService: MockToastService;
+  let router: Router;
+
+  beforeEach(async () => {
+    dataProductService = createMockDataProductService();
+    stateService = createMockAgridataStateService();
+    toastService = createMockToastService();
+
+    await TestBed.configureTestingModule({
+      imports: [DataProductDetailFormComponent, createTranslocoTestingModule()],
+      providers: [
+        { provide: AgridataStateService, useValue: stateService },
+        { provide: AuthService, useValue: createMockAuthService() },
+        { provide: DataProductService, useValue: dataProductService },
+        { provide: DataProvidersService, useValue: createMockDataProvidersService() },
+        { provide: I18nService, useValue: createMockI18nService() },
+        { provide: MasterDataService, useValue: createMockMasterDataService() },
+        { provide: ToastService, useValue: toastService },
+        provideRouter([{ path: '**', component: DataProductDetailFormComponent }]),
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(DataProductDetailFormComponent);
+    component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
+    router = TestBed.inject(Router);
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  describe('isOpen', () => {
+    it('should be true after initial render', () => {
+      expect(component['isOpen']()).toBe(true);
+    });
+  });
+
+  describe('tabs', () => {
+    it('should return two tabs', () => {
+      expect(component['tabs']()).toHaveLength(2);
+    });
+
+    it('should have correct tab IDs', () => {
+      const ids = component['tabs']().map((t) => t.id);
+      expect(ids).toContain(FORM_TAB_IDS.NAME_AND_DESCRIPTION);
+      expect(ids).toContain(FORM_TAB_IDS.TECHNICAL_FIELDS);
+    });
+
+    it('should have hasError=false on all tabs before publish is attempted', () => {
+      expect(component['tabs']().every((t) => !t.hasError)).toBe(true);
+    });
+
+    it('should set hasError=true on invalid tabs after publish attempt', async () => {
+      // nameAndDescription tab has required fields (dataSourceSystemId)
+      // so triggering saveAndPublish without filling them should mark tab as having errors
+      await component['saveAndPublish']();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const nameTab = component['tabs']().find((t) => t.id === FORM_TAB_IDS.NAME_AND_DESCRIPTION);
+      expect(nameTab?.hasError).toBe(true);
+    });
+  });
+
+  describe('getTabForm', () => {
+    it('should return a FormGroup for NAME_AND_DESCRIPTION', () => {
+      const tabForm = component['getTabForm'](FORM_TAB_IDS.NAME_AND_DESCRIPTION);
+      expect(tabForm).toBeTruthy();
+      expect(tabForm.controls).toBeDefined();
+    });
+
+    it('should return a FormGroup for TECHNICAL_FIELDS', () => {
+      const tabForm = component['getTabForm'](FORM_TAB_IDS.TECHNICAL_FIELDS);
+      expect(tabForm).toBeTruthy();
+      expect(tabForm.controls).toBeDefined();
+    });
+  });
+
+  describe('syncRouteIdEffect', () => {
+    it('should set currentDataProductId when dataProductId is a real id', async () => {
+      componentRef.setInput('dataProductId', 'abc-123');
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component['currentDataProductId']()).toBe('abc-123');
+    });
+
+    it('should not set currentDataProductId when dataProductId is "new"', async () => {
+      componentRef.setInput('dataProductId', DATA_PRODUCT_NEW_ID);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component['currentDataProductId']()).toBeNull();
+    });
+
+    it('should not set currentDataProductId when dataProductId is undefined', async () => {
+      componentRef.setInput('dataProductId', undefined);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component['currentDataProductId']()).toBeNull();
+    });
+  });
+
+  describe('cancel', () => {
+    it('should navigate to data-products list with refresh=false by default', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+      component['cancel']();
+      expect(navigateSpy).toHaveBeenCalledWith(['data-products'], {
+        state: { [FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM]: false },
+      });
+    });
+
+    it('should navigate with refresh=true when refreshListNeeded is set', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+      component['refreshListNeeded'].set(true);
+      component['cancel']();
+      expect(navigateSpy).toHaveBeenCalledWith(['data-products'], {
+        state: { [FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM]: true },
+      });
+    });
+  });
+
+  describe('saveDraft', () => {
+    it('should call createDataProduct when no existing id', async () => {
+      const savedProduct = { id: 'new-id' } as DataProductDto;
+      dataProductService.createDataProduct.mockResolvedValue(savedProduct);
+
+      await component['saveDraft']();
+
+      expect(dataProductService.createDataProduct).toHaveBeenCalled();
+    });
+
+    it('should update currentDataProductId after create', async () => {
+      const savedProduct = { id: 'new-id' } as DataProductDto;
+      dataProductService.createDataProduct.mockResolvedValue(savedProduct);
+
+      await component['saveDraft']();
+
+      expect(component['currentDataProductId']()).toBe('new-id');
+    });
+
+    it('should set refreshListNeeded=true after save', async () => {
+      const savedProduct = { id: 'saved-id' } as DataProductDto;
+      dataProductService.createDataProduct.mockResolvedValue(savedProduct);
+
+      await component['saveDraft']();
+
+      expect(component['refreshListNeeded']()).toBe(true);
+    });
+
+    it('should call updateDataProduct when existing id is set', async () => {
+      const savedProduct = { id: 'ex-id' } as DataProductDto;
+      dataProductService.updateDataProduct.mockResolvedValue(savedProduct);
+      component['currentDataProductId'].set('ex-id');
+
+      await component['saveDraft']();
+
+      expect(dataProductService.updateDataProduct).toHaveBeenCalledWith(
+        'ex-id',
+        expect.anything(),
+        undefined,
+      );
+    });
+
+    it('should show success toast on save', async () => {
+      dataProductService.createDataProduct.mockResolvedValue({ id: 'saved-id' } as DataProductDto);
+
+      await component['saveDraft']();
+
+      expect(toastService.show).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        ToastType.Success,
+      );
+    });
+
+    it('should show error toast when createDataProduct fails', async () => {
+      dataProductService.createDataProduct.mockRejectedValue(new Error('API error'));
+
+      await component['saveDraft']();
+
+      expect(toastService.show).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        ToastType.Error,
+      );
+    });
+
+    it('should set isSaving=false after successful save', async () => {
+      dataProductService.createDataProduct.mockResolvedValue({ id: 'saved-id' } as DataProductDto);
+
+      await component['saveDraft']();
+
+      expect(component['isSaving']()).toBe(false);
+    });
+
+    it('should set isSaving=false after failed save', async () => {
+      dataProductService.createDataProduct.mockRejectedValue(new Error('API error'));
+
+      await component['saveDraft']();
+
+      expect(component['isSaving']()).toBe(false);
+    });
+
+    it('should update URL via location.replaceState after create', async () => {
+      const location = TestBed.inject(Location);
+      const replaceStateSpy = jest.spyOn(location, 'replaceState');
+      dataProductService.createDataProduct.mockResolvedValue({ id: 'saved-id' } as DataProductDto);
+
+      await component['saveDraft']();
+
+      expect(replaceStateSpy).toHaveBeenCalledWith('data-products/saved-id');
+    });
+  });
+
+  describe('saveAndPublish', () => {
+    it('should set publishAttempted=true', async () => {
+      await component['saveAndPublish']();
+      expect(component['publishAttempted']()).toBe(true);
+    });
+
+    it('should mark all form controls as touched', async () => {
+      await component['saveAndPublish']();
+      expect(component['form'].touched).toBe(true);
+    });
+
+    it('should not call createDataProduct when form is invalid', async () => {
+      // form has required dataSourceSystemId, so it is invalid by default
+      await component['saveAndPublish']();
+      expect(dataProductService.createDataProduct).not.toHaveBeenCalled();
+    });
+
+    it('should call setDataProductStatus when form is valid and product is created', async () => {
+      const savedProduct = { id: 'pub-id' } as DataProductDto;
+      dataProductService.createDataProduct.mockResolvedValue(savedProduct);
+      dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
+      fillValidForm(component);
+
+      await component['saveAndPublish']();
+
+      expect(dataProductService.setDataProductStatus).toHaveBeenCalledWith(
+        'pub-id',
+        expect.any(String),
+        undefined,
+      );
+    });
+
+    it('should navigate to list with refresh=true after publish', async () => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+      const savedProduct = { id: 'pub-id' } as DataProductDto;
+      dataProductService.createDataProduct.mockResolvedValue(savedProduct);
+      dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
+      fillValidForm(component);
+
+      await component['saveAndPublish']();
+
+      expect(navigateSpy).toHaveBeenCalledWith(['data-products'], {
+        state: { [FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM]: true },
+      });
+    });
+
+    it('should show success toast after publish', async () => {
+      const savedProduct = { id: 'pub-id' } as DataProductDto;
+      dataProductService.createDataProduct.mockResolvedValue(savedProduct);
+      dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
+      fillValidForm(component);
+
+      await component['saveAndPublish']();
+
+      expect(toastService.show).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        ToastType.Success,
+      );
+    });
+
+    it('should show error toast when publish fails', async () => {
+      dataProductService.createDataProduct.mockRejectedValue(new Error('API error'));
+      fillValidForm(component);
+
+      await component['saveAndPublish']();
+
+      expect(toastService.show).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        ToastType.Error,
+      );
+    });
+
+    it('should set isSaving=false after successful publish', async () => {
+      const savedProduct = { id: 'pub-id' } as DataProductDto;
+      dataProductService.createDataProduct.mockResolvedValue(savedProduct);
+      dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
+      fillValidForm(component);
+
+      await component['saveAndPublish']();
+
+      expect(component['isSaving']()).toBe(false);
+    });
+
+    it('should set isSaving=false after failed publish', async () => {
+      dataProductService.createDataProduct.mockRejectedValue(new Error('API error'));
+      fillValidForm(component);
+
+      await component['saveAndPublish']();
+
+      expect(component['isSaving']()).toBe(false);
+    });
+  });
+});

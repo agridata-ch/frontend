@@ -1,32 +1,20 @@
+import { FORM_COMPLETION_STRATEGIES, FormModel } from '@/shared/lib/form.helper';
+
 export enum FORM_GROUP_NAMES {
+  COMPLETION = 'completion',
   CONSUMER = 'consumer',
-  REQUEST = 'request',
+  CONTRACT = 'contract',
+  DATA_PRODUCT = 'dataProduct',
   PREVIEW = 'preview',
   PRODUCER = 'producer',
-  CONTRACT = 'contract',
-  COMPLETION = 'completion',
+  REQUEST = 'request',
 }
 
-export enum FORM_COMPLETION_STRATEGIES {
-  ALWAYS_COMPLETE = 'always-complete',
-  FORM_VALIDATION = 'form-validation',
-  EXTERNAL_DEPENDENCY = 'external-dependency',
-}
+export type DataRequestFormModel = Required<FormModel<FORM_GROUP_NAMES>>;
 
 export const DATA_REQUEST_NEW_ID = 'new';
 
-export type FormField = {
-  readonly name: string;
-  readonly i18nDefaultValue?: string;
-};
-
-export interface FormModel {
-  readonly formGroupName: FORM_GROUP_NAMES;
-  readonly fields: readonly FormField[];
-  readonly completionStrategy: FORM_COMPLETION_STRATEGIES;
-}
-
-export const dataRequestFormsModel: FormModel[] = [
+export const dataRequestFormsModel: DataRequestFormModel[] = [
   {
     formGroupName: FORM_GROUP_NAMES.CONSUMER,
     fields: [
@@ -96,7 +84,7 @@ export const dataRequestFormsModel: FormModel[] = [
   },
 ];
 
-export const dataRequestProviderFormsModel: FormModel[] = [
+export const dataRequestProviderFormsModel: DataRequestFormModel[] = [
   {
     formGroupName: FORM_GROUP_NAMES.PREVIEW,
     fields: [],

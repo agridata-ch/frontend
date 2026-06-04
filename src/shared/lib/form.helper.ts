@@ -1,9 +1,23 @@
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 import { I18nService } from '@/shared/i18n';
-import { FormModel } from '@/widgets/data-request-wizard';
 
-// Defines a top-level grouping of DTO fields into a named FormGroup
+export enum FORM_COMPLETION_STRATEGIES {
+  ALWAYS_COMPLETE = 'always-complete',
+  EXTERNAL_DEPENDENCY = 'external-dependency',
+  FORM_VALIDATION = 'form-validation',
+}
+
+export type FormField = {
+  readonly name: string;
+  readonly i18nDefaultValue?: string;
+};
+
+export interface FormModel<T extends string = string> {
+  readonly completionStrategy: FORM_COMPLETION_STRATEGIES;
+  readonly fields: readonly FormField[];
+  readonly formGroupName?: T;
+}
 
 // Simplified JSON-Schema fragment for validation rules
 export interface JsonSchema {
@@ -240,13 +254,17 @@ export function buildReactiveForm(
   const rootGroup = new FormGroup({});
 
   for (const { formGroupName, fields } of fieldMaps) {
-    const topGroup = new FormGroup({});
-
-    for (const fieldPath of fields) {
-      addFieldToGroup(fieldPath, topGroup, jsonSchema, i18nService);
+    if (formGroupName) {
+      const topGroup = new FormGroup({});
+      for (const fieldPath of fields) {
+        addFieldToGroup(fieldPath, topGroup, jsonSchema, i18nService);
+      }
+      rootGroup.addControl(formGroupName, topGroup);
+    } else {
+      for (const fieldPath of fields) {
+        addFieldToGroup(fieldPath, rootGroup, jsonSchema, i18nService);
+      }
     }
-
-    rootGroup.addControl(formGroupName, topGroup);
   }
 
   return rootGroup;
@@ -329,7 +347,7 @@ export function populateFormFromDto<T extends Dto>(
   }
 
   fieldMaps.forEach((item) => {
-    const fg = form.get(item.formGroupName) as FormGroup | null;
+    const fg = (item.formGroupName ? form.get(item.formGroupName) : form) as FormGroup | null;
     if (!fg) {
       return;
     }

@@ -638,10 +638,35 @@ components:
           $ref: "#/components/schemas/UUID"
         uid:
           type: string
+    DataProductDescriptionDto:
+      type: object
+      properties:
+        de:
+          type: string
+          description: German description of the data product
+          examples:
+          - Dieses Datenprodukt enthält Angaben zu Kontrollen aus dem Kontrollbereich
+            03 Tierschutz mit den Ergebnissen pro Kontrollpunkt. Maximal die letzten
+            4 Jahre oder seit Bewirtschafterwechsel.
+        fr:
+          type: string
+          description: French description of the data product
+          examples:
+          - Ce produit de données contient des informations sur les contrôles du domaine
+            de contrôle 03 Protection des animaux avec les résultats par point de
+            contrôle. Maximum les 4 dernières années ou depuis le changement d'exploitant.
+        it:
+          type: string
+          description: Italian description of the data product
+          examples:
+          - Questo prodotto dati contiene informazioni sui controlli dell'area di
+            controllo 03 Protezione degli animali con i risultati per punto di controllo.
+            Massimo gli ultimi 4 anni o dal cambio di gestore.
     DataProductDto:
       type: object
       required:
       - id
+      - stateCode
       properties:
         id:
           $ref: "#/components/schemas/UUID"
@@ -658,9 +683,27 @@ components:
           $ref: "#/components/schemas/DataSourceSystemDto"
           description: Data source system from which this product originates
           type: object
+        restClient:
+          $ref: "#/components/schemas/RestClientDto"
+          description: Rest client used to fetch the data product
+          type: object
+        restClientPathTemplate:
+          type: string
+          description: Template for the path where the data product is fetched from
+        restClientRequestTemplate:
+          type: string
+          description: Template of the request body for fetching the data product
+        restClientMethodCode:
+          $ref: "#/components/schemas/RestClientMethodCodeEnum"
+          description: Http-Method used to fetch the data product
+          type: string
+        flowCode:
+          $ref: "#/components/schemas/FlowCodeEnum"
+          description: Code of the flow used to fetch the data product
+          type: string
         name:
           $ref: "#/components/schemas/TranslationDto"
-          description: How this product is categorized
+          description: How this product i categorized
           type: object
           examples:
           - R01
@@ -674,6 +717,95 @@ components:
           type: string
           examples:
           - 2026-03-06T00:00:00
+        stateCode:
+          type:
+          - string
+          - object
+          enum:
+          - DRAFT
+          - ACTIVE
+          description: State of the data product
+          examples:
+          - DRAFT
+    DataProductNameDto:
+      type: object
+      properties:
+        de:
+          type: string
+          description: German name of the data product
+          examples:
+          - Tierschutz
+        fr:
+          type: string
+          description: French name of the data product
+          examples:
+          - Protection des animaux
+        it:
+          type: string
+          description: Italian name of the data product
+          examples:
+          - Protezione degli animali
+    DataProductStateEnum:
+      type: string
+      enum:
+      - DRAFT
+      - ACTIVE
+    DataProductUpdateDto:
+      description: Data transfer object representing a data product
+      type: object
+      properties:
+        name:
+          $ref: "#/components/schemas/DataProductNameDto"
+          description: Name of the data product
+          type: object
+        description:
+          $ref: "#/components/schemas/DataProductDescriptionDto"
+          description: Description of the data product
+          type: object
+        dataSourceSystemId:
+          $ref: "#/components/schemas/UUID"
+          description: UUID of DataSourceSystem
+          type: string
+          examples:
+          - 5335d715-e95c-4777-a424-ab73f2ff5618
+        restClientId:
+          $ref: "#/components/schemas/UUID"
+          description: UUID of rest client code
+          type: string
+          examples:
+          - b1398c9d-c28d-4e7e-b5f0-f5d615a6471c
+        restClientPathTemplate:
+          type: string
+          description: Template for the path from which the data product will be fetched
+          examples:
+          - "v1/animal/{{uid}}"
+          maxLength: 4000
+        restClientRequestTemplate:
+          type: string
+          description: Template for the path from which the data product will be fetched
+          examples:
+          - "{\"search\":{\"uid\":\"{{uid}}\"}}"
+          maxLength: 4000
+        restClientMethodCode:
+          $ref: "#/components/schemas/RestClientMethodCodeEnum"
+          description: The http-method used to fetch the data product
+          type: string
+          examples:
+          - GET
+        flowCode:
+          $ref: "#/components/schemas/FlowCodeEnum"
+          description: The flow code used for authorizing data retrieval
+          type: string
+          examples:
+          - UID_BASED_PRE_VALIDATION
+        restClientChangeDetectionPathTemplate:
+          type: string
+          description: Template for the path for retrieving updates to the data product
+          examples:
+          - "v1/animal-updates/{{uid}}?since={{LAST_CHANGED_SINCE}}"
+          maxLength: 4000
+      required:
+      - dataSourceSystemId
     DataProviderDto:
       type: object
       required:
@@ -1115,6 +1247,14 @@ components:
       - TIERHALTUNG
       - NICHT_ZUGETEILT
       - UNKNOWN
+    FlowCodeEnum:
+      type: string
+      enum:
+      - UID_BASED_PRE_VALIDATION
+      - UID_BASED_POST_VALIDATION
+      - BUR_BASED_PRE_VALIDATION
+      - BUR_BASED_POST_VALIDATION
+      - UNBOUND_POST_VALIDATION
     InboxEntryDto:
       type: object
       properties:
@@ -1434,6 +1574,18 @@ components:
         searchTerm:
           type: string
           description: string to search for in the resource
+    RestClientDto:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+        code:
+          type: string
+    RestClientMethodCodeEnum:
+      type: string
+      enum:
+      - POST
+      - GET
     SealAttemptStateEnum:
       type: string
       enum:
@@ -3447,6 +3599,49 @@ paths:
         - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Support
       x-api-subset: agridata.ch Web App
+  /api/products/v1/data-providers/{providerId}/dataSourceSystems:
+    get:
+      description: Lorem Ipsum
+      operationId: getDataSourceSystemsByProviderId
+      tags:
+      - Data Providers
+      parameters:
+      - name: providerId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataSourceSystemDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Source Systems By Provider Id
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
   /api/products/v1/data-providers/{providerId}/products:
     get:
       description: Retrieves all data products belonging to a specific data provider.
@@ -3492,6 +3687,49 @@ paths:
         - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Support
+      x-api-subset: agridata.ch Web App
+  /api/products/v1/data-providers/{providerId}/restClient:
+    get:
+      description: Lorem Ipsum
+      operationId: getRestClientsByProviderId
+      tags:
+      - Data Providers
+      parameters:
+      - name: providerId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RestClientDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Rest Clients By Provider Id
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/products/v2:
     get:
@@ -3574,6 +3812,189 @@ paths:
       x-api-subset:
       - agridata.ch Web App
       - Mobile App
+    post:
+      description: Lorem Ipsum
+      operationId: createDataProductDraft
+      tags:
+      - Data Products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DataProductUpdateDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProductDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Create Data Request Draft
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+      parameters:
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
+  /api/products/v2/{id}:
+    put:
+      description: Updates the details of an existing data product.
+      operationId: updateDataProductDraft
+      tags:
+      - Data Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DataProductUpdateDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProductDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Update Data Product Draft
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+  /api/products/v2/{id}/status:
+    post:
+      description: Sets the status of a data product. Only accessible to the provider
+        who owns the data product. Admins on the other hand can set the state to any
+        data product. Only specific transitions are allowed.
+      operationId: setDataProductStatus
+      tags:
+      - Data Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DataProductStateEnum"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProductDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Set Data Product Status
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
   /api/test-data/execute:
     post:
       operationId: executeSqlScript
@@ -4028,7 +4449,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.10.0-rc.8
+  version: 1.10.0-rc.10
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

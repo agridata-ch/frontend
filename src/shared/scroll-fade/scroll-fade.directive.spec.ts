@@ -5,16 +5,24 @@ import { ScrollFadeDirective } from './scroll-fade.directive';
 
 @Component({
   imports: [ScrollFadeDirective],
-  template: `
-    <div id="scrollable" style="max-height: 100px; overflow-y: auto;" appScrollFade>
-      <div style="height: 500px;"></div>
-    </div>
-  `,
+  template: `<div id="scrollable" appScrollFade></div>`,
 })
 class TestHostComponent {}
 
+function mockScrollProps(
+  el: HTMLElement,
+  scrollHeight: number,
+  clientHeight: number,
+  scrollTop: number,
+): void {
+  Object.defineProperty(el, 'scrollHeight', { value: scrollHeight, configurable: true });
+  Object.defineProperty(el, 'clientHeight', { value: clientHeight, configurable: true });
+  Object.defineProperty(el, 'scrollTop', { value: scrollTop, configurable: true });
+}
+
 describe('ScrollFadeDirective', () => {
   let fixture: ComponentFixture<TestHostComponent>;
+  let host: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -22,72 +30,58 @@ describe('ScrollFadeDirective', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);
+    host = fixture.nativeElement.querySelector('#scrollable');
   });
 
   afterEach(() => {
     fixture.destroy();
   });
 
-  it('should create the overlay div and wrap the host', async () => {
+  async function setup(
+    scrollHeight: number,
+    clientHeight: number,
+    scrollTop: number,
+  ): Promise<void> {
+    mockScrollProps(host, scrollHeight, clientHeight, scrollTop);
     fixture.detectChanges();
     await fixture.whenStable();
+    host.dispatchEvent(new Event('scroll'));
+  }
 
-    const wrapper = fixture.nativeElement.querySelector('.relative');
-    const overlay = wrapper?.querySelector('.bg-linear-to-b');
-
-    expect(wrapper).toBeTruthy();
-    expect(wrapper?.className).toBe('relative');
-    expect(overlay).toBeTruthy();
-    expect(overlay?.className).toContain('absolute');
-    expect(overlay?.className).toContain('bottom-0');
+  it('should apply gradient mask when scrollable and not at bottom', async () => {
+    await setup(500, 100, 0);
+    expect(host.style.maskImage).toContain('linear-gradient');
   });
 
-  it('should show overlay when not scrolled to bottom', async () => {
-    fixture.detectChanges();
-    await fixture.whenStable();
-
-    const wrapper = fixture.nativeElement.querySelector('.relative');
-    const overlay = wrapper?.querySelector('.bg-linear-to-b');
-
-    expect(overlay?.classList.contains('hidden')).toBe(false);
+  it('should clear mask when content is not scrollable', async () => {
+    await setup(50, 100, 0);
+    expect(host.style.maskImage).toBe('');
   });
 
-  it('should hide overlay when scrolled to bottom', async () => {
-    fixture.detectChanges();
-    await fixture.whenStable();
-
-    const scrollable = fixture.nativeElement.querySelector('#scrollable');
-    scrollable.scrollTop = scrollable.scrollHeight - scrollable.clientHeight;
-    scrollable.dispatchEvent(new Event('scroll'));
-    fixture.detectChanges();
-    await fixture.whenStable();
-
-    const wrapper = fixture.nativeElement.querySelector('.relative');
-    const overlay = wrapper?.querySelector('.bg-linear-to-b');
-
-    expect(overlay?.classList.contains('hidden')).toBe(true);
+  it('should clear mask when scrolled to bottom', async () => {
+    // distanceToBottom = 500 - 398 - 100 = 2, condition is > 2, so fade hides
+    await setup(500, 100, 398);
+    expect(host.style.maskImage).toBe('');
   });
 
-  it('should show overlay when scrolled to top', async () => {
-    fixture.detectChanges();
-    await fixture.whenStable();
+  it('should restore gradient mask when scrolled back up from bottom', async () => {
+    await setup(500, 100, 0);
+    expect(host.style.maskImage).toContain('linear-gradient');
 
-    const wrapper = fixture.nativeElement.querySelector('.relative');
-    const overlay = wrapper?.querySelector('.bg-linear-to-b');
+    mockScrollProps(host, 500, 100, 398);
+    host.dispatchEvent(new Event('scroll'));
+    expect(host.style.maskImage).toBe('');
 
-    expect(overlay?.classList.contains('hidden')).toBe(false);
+    mockScrollProps(host, 500, 100, 50);
+    host.dispatchEvent(new Event('scroll'));
+    expect(host.style.maskImage).toContain('linear-gradient');
   });
 
-  it('should remove wrapper and overlay on destroy', async () => {
-    fixture.detectChanges();
-    await fixture.whenStable();
-
-    let wrapper = fixture.nativeElement.querySelector('.relative');
-    expect(wrapper).toBeTruthy();
+  it('should clear mask on destroy', async () => {
+    await setup(500, 100, 0);
+    expect(host.style.maskImage).toContain('linear-gradient');
 
     fixture.destroy();
-
-    wrapper = fixture.nativeElement.querySelector('.relative');
-    expect(wrapper).toBeFalsy();
+    expect(host.style.maskImage).toBe('');
   });
 });

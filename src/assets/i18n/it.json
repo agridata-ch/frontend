@@ -531,7 +531,6 @@
     "CH": "Svizzera",
     "LI": "Liechtenstein"
   },
-  "account.loginForm.loginButton": "Accedi",
   "header": {
     "helpAndSupport": {
       "title": "Aiuto e supporto",
@@ -678,6 +677,11 @@
   "breadcrumb": {
     "home": "Casa"
   },
+  "common": {
+    "ariaLabel": {
+      "close": "Chiudi"
+    }
+  },
   "footer": {
     "logoBund": {
       "altText": "Immagine con bandiera svizzera e scritta Confederazione Svizzera"
@@ -774,7 +778,7 @@
       }
     }
   },
-  "dataProducts": {
+  "data-products": {
     "pageTitle": "Prodotti informativi",
     "table": {
       "name": "Prodotto di dati",
@@ -784,12 +788,102 @@
       }
     },
     "createNew": "Inserire un prodotto dati",
-    "create": {
+    "detailPanel": {
       "title": "Crea un nuovo prodotto dati",
+      "subTitle": "Un prodotto dati è una consegna di dati versionata e chiaramente delimitata, fornita tramite un sistema sorgente. Serve come ponte tra la comprensibilità specialistica e la capacità di integrazione tecnica."
+    },
+    "detailForm": {
       "name": {
         "de": {
-          "label": "Nome in tedesco"
+          "label": "Nome in tedesco",
+          "placeholder": "z.B. Nutztiere in Sömmerung"
+        },
+        "fr": {
+          "label": "Nome Francese",
+          "placeholder": "p.ex. Animaux de rente en estivage"
+        },
+        "it": {
+          "label": "Nome Italiano",
+          "placeholder": "p.es. Animali da reddito estivati"
         }
+      },
+      "dataProduct": "Nome e descrizione prodotto dati",
+      "infoTitle": "Linguaggio Semplice",
+      "infoMessage": "Scegliete un linguaggio di facile comprensione per i nomi e la descrizione dei prodotti. I prodotti di dati, una volta salvati e pubblicati, verranno visualizzati direttamente su agridata.ch e dovranno essere scritti in modo comprensibile.",
+      "system": "Sistema",
+      "technicalFields": "Informazioni tecniche",
+      "description": {
+        "de": {
+          "label": "Descrizione Tedesco",
+          "placeholder": "z.B. Dieses Datenprodukt enthält die Art und Anzahl Nutztiere pro Betrieb, die im Inland gesömmert wurden."
+        },
+        "fr": {
+          "label": "Descrizione Francese",
+          "placeholder": "Par exemple, ce produit de données contient le type et le nombre d'animaux d'élevage par exploitation qui ont été gardés localement pendant l'été."
+        },
+        "it": {
+          "label": "Descrizione Italiano",
+          "placeholder": "Ad esempio, questo prodotto di dati contiene il tipo e il numero di animali da allevamento per azienda agricola che sono stati ospitati in loco durante l'estate."
+        }
+      },
+      "provider": {
+        "label": "Seleziona fornitore di dati",
+        "placeholder": "Si prega di selezionare il fornitore di dati"
+      },
+      "dataSourceSystem": {
+        "label": "Seleziona sistema",
+        "placeholder": "Si prega di selezionare il sistema"
+      },
+      "restClientIdentifier": {
+        "label": "Seleziona interfaccia di sistema",
+        "placeholder": "Si prega di selezionare l'interfaccia di sistema"
+      },
+      "restClientMethod": {
+        "label": "Seleziona metodo di trasferimento",
+        "placeholder": "Si prega di selezionare il metodo di trasferimento"
+      },
+      "restClientPathTemplate": {
+        "label": "Template percorso URL (interfaccia)",
+        "placeholder": "es. /api/v1/bur/{{bur}}/nutztiere"
+      },
+      "restClientRequestTemplate": {
+        "label": "Template corpo della richiesta (JSON/XML)",
+        "placeholder": "es. { \"status\": \"active\" }"
+      },
+      "restClientChangeDetectionPathTemplate": {
+        "label": "Percorso per il rilevamento delle modifiche (Change Detection)",
+        "placeholder": "es. /api/v1/nutztiere/changes"
+      },
+      "cancel": "Annulla",
+      "saveDraft": "Salva come bozza",
+      "saveAndPublish": "Salva e pubblica",
+      "flowCode": {
+        "label": "Seleziona modalità di trasferimento",
+        "placeholder": "Si prega di selezionare la modalità di trasferimento"
+      },
+      "tab": {
+        "technicalFields": "Informazioni tecniche",
+        "nameAndDescription": "Nome e descrizione"
+      }
+    },
+    "saveAndPublish": {
+      "success": {
+        "title": "Salvataggio e pubblicazione riusciti",
+        "message": "Il prodotto dati è stato salvato e pubblicato con successo."
+      },
+      "error": {
+        "title": "Salvataggio e pubblicazione falliti",
+        "message": "Qualcosa è andato storto durante il salvataggio e la pubblicazione. Si prega di riprovare più tardi."
+      }
+    },
+    "saveDraft": {
+      "success": {
+        "title": "Salvato come bozza",
+        "message": "Il prodotto dati è stato salvato con successo come bozza."
+      },
+      "error": {
+        "title": "Salvataggio come bozza fallito.",
+        "message": "Qualcosa è andato storto durante il salvataggio come bozza. Si prega di riprovare più tardi."
       }
     }
   },
@@ -845,6 +939,9 @@
       },
       "agateNumber": {
         "label": "Numero agate"
+      },
+      "mobileNumber": {
+        "label": "Numero di cellulare"
       }
     },
     "submit": "Trasmetti i dati",
@@ -874,7 +971,7 @@
       }
     },
     "data-request-person": {
-      "subheading": "Poiché i contratti di accesso ai dati vengono firmati digitalmente, è obbligatorio inserire qui le persone con diritto di firma. Se necessario, è possibile aggiungere altre persone che dovranno accedere per gestire le richieste di dati.",
+      "subheading": "Per la firma digitale dei contratti di accesso ai dati, è obbligatorio inserire le persone con diritto di firma della vostra azienda (persone autorizzate a firmare contratti per la società). Se necessario, è possibile aggiungere altre persone che gestiranno in seguito le richieste di dati. Inoltre, per tutte le persone inserite è strettamente necessario un account personale agate (informazioni su [blw.admin.ch]).",
       "heading": "Persone autorizzate all'accesso e con diritto di firma"
     },
     "additionals": {
@@ -886,7 +983,7 @@
         "label": "Vi preghiamo di elencare brevemente i dati o i prodotti dati specifici a cui siete interessati."
       },
       "ownSystemDescription": {
-        "label": "Vi preghiamo di descrivere brevemente il vostro software e il modo in care i dati dovranno esservi trasferiti."
+        "label": "Vi preghiamo di descrivere brevemente il vostro software, chi ne è il gestore (produttore) e il modo in cui i dati dovranno esservi trasferiti."
       },
       "additionalNotes": {
         "label": "Ulteriori informazioni, note o domande"

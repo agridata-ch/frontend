@@ -21,7 +21,11 @@ import {
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
-import { dataRequestFormsModel, FORM_GROUP_NAMES, FormModel } from '@/widgets/data-request-wizard';
+import {
+  dataRequestFormsModel,
+  DataRequestFormModel,
+  FORM_GROUP_NAMES,
+} from '@/widgets/data-request-wizard';
 
 import { DataRequestWizardBaseComponent } from './data-request-wizard-base.component';
 
@@ -31,7 +35,7 @@ import { DataRequestWizardBaseComponent } from './data-request-wizard-base.compo
   template: `<app-agridata-wizard [steps]="formControlSteps()"></app-agridata-wizard>`,
 })
 class TestDataRequestWizardComponent extends DataRequestWizardBaseComponent {
-  protected override readonly formsModel: FormModel[] = dataRequestFormsModel;
+  protected override readonly formsModel: DataRequestFormModel[] = dataRequestFormsModel;
   protected override readonly listRoutePath = 'data-requests';
   protected override readonly stepLabelMap: Record<string, Signal<string | undefined>> = {
     [FORM_GROUP_NAMES.COMPLETION]: signal('Completion'),
