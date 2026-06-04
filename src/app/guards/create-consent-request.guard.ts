@@ -20,7 +20,7 @@ import { AuthService } from '@/shared/lib/auth';
  * data request and navigates to the appropriate consent request detail page based on the active
  * uid or redirects to the consent request producer overview if no matching consent request is found.
  *
- * CommentLastReviewed: 2025-12-01
+ * CommentLastReviewed: 2025-06-03
  */
 @Injectable({
   providedIn: 'root',
@@ -141,14 +141,16 @@ export class CreateConsentRequestGuard implements CanActivate {
   private isValidUid(uid: string, uidDtos: UidDto[]): boolean {
     return uidDtos.some((userUid) => userUid.uid === uid);
   }
+
   private navigateToConsentRequest(
     consentRequests: ConsentRequestCreatedDto[],
     redirectUrl?: string,
   ): UrlTree {
-    const activeUid = this.agridataStateService.activeUid();
+    let activeUid = this.agridataStateService.activeUid();
 
-    if (!activeUid) {
-      return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);
+    if (!activeUid && consentRequests.length > 0) {
+      activeUid = consentRequests[0].dataProducerUid;
+      this.agridataStateService.setActiveUid(activeUid);
     }
 
     const consentRequestToOpen = [...consentRequests].find(
