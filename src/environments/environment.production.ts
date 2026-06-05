@@ -5,6 +5,7 @@ export const environment = {
   apiBaseUrl: 'https://api.agridata.ch',
   cmsBaseUrl: 'https://cms.agridata.ch',
   cmsContactUrl: 'https://cms.agridata.ch/api/contact',
+  cmsOnboardingFormUrl: 'https://cms.agridata.ch/api/onboarding-form',
   canResetTestData: false,
   titleEnvPrefix: '',
 

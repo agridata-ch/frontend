@@ -20,6 +20,7 @@ import { LandingPage } from '@/pages/landing-page';
 import { MaintenancePage } from '@/pages/maintenance';
 import { NotFoundPage } from '@/pages/not-found';
 import { NotificationCenterPageComponent } from '@/pages/notification-center-page';
+import { OnboardingPage } from '@/pages/onboarding-page';
 import { PrivacyPolicyPage } from '@/pages/privacy-policy-page';
 import { SupporterPageComponent } from '@/pages/supporter-page/';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
@@ -82,6 +83,17 @@ export const routes: Routes = [
       {
         path: '',
         component: AgbPage,
+      },
+    ],
+  },
+  {
+    path: ROUTE_PATHS.ONBOARDING_PATH,
+    component: FullWidthLayoutComponent,
+    canActivate: [AuthorizationGuard],
+    children: [
+      {
+        path: '',
+        component: OnboardingPage,
       },
     ],
   },

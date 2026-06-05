@@ -14,6 +14,7 @@ import { SectionContactFormBlockComponent } from '@/widgets/cms-blocks/section-c
 import { SectionFaqBlockComponent } from '@/widgets/cms-blocks/section-faq-block/section-faq-block.component';
 import { SectionImageCardBlockComponent } from '@/widgets/cms-blocks/section-image-card-block/section-image-card-block.component';
 import { SectionImageListComponent } from '@/widgets/cms-blocks/section-image-list/section-image-list.component';
+import { SectionOnboardingFormBlockComponent } from '@/widgets/cms-blocks/section-onboarding-form-block/section-onboarding-form-block.component';
 import { SectionTimelineComponent } from '@/widgets/cms-blocks/section-timeline/section-timeline.component';
 
 /**
@@ -31,6 +32,7 @@ import { SectionTimelineComponent } from '@/widgets/cms-blocks/section-timeline/
     SectionUserFeedbackBlockComponent,
     SectionCardGridBlockComponent,
     SectionContactFormBlockComponent,
+    SectionOnboardingFormBlockComponent,
     SectionFaqBlockComponent,
     ImageGridBlockComponent,
     SectionImageCardBlockComponent,

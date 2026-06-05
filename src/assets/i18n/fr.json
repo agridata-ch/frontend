@@ -781,6 +781,15 @@
       "actions": {
         "viewDetails": "Afficher"
       }
+    },
+    "createNew": "Saisir un produit de données",
+    "create": {
+      "title": "Créer un nouveau produit de données",
+      "name": {
+        "de": {
+          "label": "Nom en allemand"
+        }
+      }
     }
   },
   "notificationCenter": {

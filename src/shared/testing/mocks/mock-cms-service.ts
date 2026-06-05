@@ -318,7 +318,9 @@ export function createMockCmsService(): MockCmsService {
     fetchPrivacyPolicyPage: jest.fn().mockResolvedValue(mockCmsResponse),
     fetchCmsPages: jest.fn().mockResolvedValue([mockCmsResponse]),
     fetchCmsPage: jest.fn().mockResolvedValue(mockCmsResponse),
+    fetchOnboardingPage: jest.fn().mockResolvedValue(mockCmsResponse),
     submitContactForm: jest.fn().mockResolvedValue(undefined),
+    submitOnboardingForm: jest.fn().mockResolvedValue(undefined),
     fetchAgbPage: jest.fn().mockResolvedValue(mockCmsResponse),
   } satisfies MockCmsService;
 }
