@@ -1,5 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  computed,
+  inject,
+  input,
+} from '@angular/core';
+import { FormArray, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import {
   Block,
@@ -32,6 +39,7 @@ export class SectionOnboardingFormBlockComponent {
 
   // Injects
   protected readonly cmsService = inject(CmsService);
+  private readonly elementRef = inject(ElementRef);
   protected readonly i18nService = inject(I18nService);
   protected readonly toastService = inject(ToastService);
 
@@ -55,15 +63,27 @@ export class SectionOnboardingFormBlockComponent {
       salutation: createFormControl(''),
       firstName: createFormControl(''),
       lastName: createFormControl(''),
-      email: createFormControl(''),
+      email: createFormControl('', [Validators.email], {
+        email: () => this.i18nService.translate('forms.error.pattern'),
+      }),
       phone: createFormControl(''),
     }),
     persons: new FormArray([this.createPersonGroup()]),
-    additionalNotes: createFormControl(''),
-    existingAgateSystems: createFormControl(''),
-    interestedDataDescription: createFormControl(''),
-    ownSystemDescription: createFormControl(''),
-    wishedDateRange: createFormControl(''),
+    additionalNotes: createFormControl('', [Validators.maxLength(500)], {
+      maxlength: () => this.i18nService.translate('forms.error.maxlength', { max: 500 }),
+    }),
+    existingAgateSystems: createFormControl('', [Validators.maxLength(500)], {
+      maxlength: () => this.i18nService.translate('forms.error.maxlength', { max: 500 }),
+    }),
+    interestedDataDescription: createFormControl('', [Validators.maxLength(500)], {
+      maxlength: () => this.i18nService.translate('forms.error.maxlength', { max: 500 }),
+    }),
+    ownSystemDescription: createFormControl('', [Validators.maxLength(500)], {
+      maxlength: () => this.i18nService.translate('forms.error.maxlength', { max: 500 }),
+    }),
+    wishedDateRange: createFormControl('', [Validators.maxLength(250)], {
+      maxlength: () => this.i18nService.translate('forms.error.maxlength', { max: 250 }),
+    }),
   });
 
   protected get contactPersonGroup(): FormGroup {
@@ -89,6 +109,15 @@ export class SectionOnboardingFormBlockComponent {
   }
 
   protected readonly handleSubmit = async () => {
+    if (this.onboardingForm.invalid) {
+      this.onboardingForm.markAllAsTouched();
+      const firstInvalid = this.elementRef.nativeElement.querySelector(
+        'input.ng-invalid, textarea.ng-invalid, select.ng-invalid',
+      );
+      firstInvalid?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
     const formValue = this.onboardingForm.value;
     const data: OnboardingFormData = {
       uid: formValue.uid as string,
@@ -129,7 +158,9 @@ export class SectionOnboardingFormBlockComponent {
   private createPersonGroup(): FormGroup {
     return new FormGroup({
       agateNumber: createFormControl(''),
-      email: createFormControl(''),
+      email: createFormControl('', [Validators.email], {
+        email: () => this.i18nService.translate('forms.error.pattern'),
+      }),
       firstName: createFormControl(''),
       function: createFormControl(''),
       lastName: createFormControl(''),
