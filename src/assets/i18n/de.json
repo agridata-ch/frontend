@@ -807,10 +807,10 @@
   },
   "onboardingForm": {
     "uid": {
-      "label": "UID"
+      "label": "UID-Nummer (CHE-XXX.XXX.XXX)"
     },
     "company": {
-      "label": "Firma"
+      "label": "Unternehmensname (offizieller Firmenname)"
     },
     "country": {
       "label": "Land"
@@ -841,13 +841,13 @@
         "label": "E-Mail"
       },
       "function": {
-        "label": "Funktion"
+        "label": "Funktion (z. B. Geschäftsführer, Inhaber, VR-Präsident)"
       },
       "agateNumber": {
         "label": "agate-Nummer"
       }
     },
-    "submit": "Einreichen",
+    "submit": "Angaben übermitteln",
     "success": {
       "title": "Erfolgreich eingereicht",
       "message": "Ihr Formular wurde erfolgreich an agridata.ch übermittelt. Wir melden uns baldmöglichst bei Ihnen."
@@ -874,25 +874,25 @@
       }
     },
     "data-request-person": {
-      "subheading": "Die hier erfassten Personen erhalten Zugriff auf agridata.ch. Damit neue Datenanträge erfasst und bestehende verwaltet werden können. Sowie die Verträge direkt digitale unterzeichnen. Deshalb müssen Sie hier auch zeichnungsberechtigte Personen erfassen.",
-      "heading": "Personen mit Zugriff auf agridata.ch"
+      "subheading": "Da Verträge zur Datenbezug direkt digital unterzeichnet werden, müssen Sie hier zwingend zeichnungsberechtigte Personen erfassen. Erfassen Sie bei Bedarf auch weitere Personen, die Zugriff erhalten sollen, um Datenanträge zu verwalten.",
+      "heading": "Zugriffsberechtigte & Zeichnungsberechtigte Personen"
     },
     "additionals": {
       "heading": "Zusätzliche Angaben",
       "wishedDateRange": {
-        "label": "Gewünschtes Datum für Abschluss des Onboardings"
+        "label": "Angestrebtes Abschlussdatum"
       },
       "interestedDataDescription": {
-        "label": "Beschreibung der Daten, an denen Sie interessiert sind"
+        "label": "Bitte listen Sie kurz auf, an welchen Daten oder konkreten Datenprodukten Sie Interesse haben."
       },
       "ownSystemDescription": {
-        "label": "Beschreibung Ihres Systems und des Datenbezuges"
+        "label": "Bitte beschreiben Sie kurz Ihre Software und auf welchem Weg die Daten dorthin übertragen werden sollen."
       },
       "additionalNotes": {
         "label": "Weitere Angaben, Bemerkungen oder Fragen"
       },
       "existingAgateSystems": {
-        "label": "Verwenden Sie agate bereits für andere Systeme? Wen ja, für welche?"
+        "label": "Verwenden Sie agate bereits für andere Systeme? Wenn ja, für welche?"
       }
     },
     "companyInformation": {
