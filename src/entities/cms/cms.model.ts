@@ -164,6 +164,47 @@ export interface SectionContactFormBlock {
   anchorId: string;
 }
 
+export interface SectionOnboardingFormBlock {
+  __component: string;
+  id: number;
+  heading: string;
+  subHeading: string;
+  anchorId: string;
+}
+
+export interface ContactPersonData {
+  salutation: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+}
+
+export interface PersonData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  function: string;
+  agateNumber: string;
+}
+
+export interface OnboardingFormData {
+  uid: string;
+  company: string;
+  country: string;
+  street: string;
+  number: string;
+  postalCode: string;
+  city: string;
+  contactPerson: ContactPersonData;
+  persons: PersonData[];
+  additionalNotes?: string;
+  existingAgateSystems?: string;
+  interestedDataDescription?: string;
+  ownSystemDescription?: string;
+  wishedDateRange?: string;
+}
+
 export interface SectionFaqBlock {
   __component: string;
   id: number;
@@ -224,6 +265,7 @@ export type Block =
   | SectionUserFeedbackBlock
   | SectionCardGridBlock
   | SectionContactFormBlock
+  | SectionOnboardingFormBlock
   | SectionFaqBlock
   | ImageGridBlock
   | SectionImageCardBlock

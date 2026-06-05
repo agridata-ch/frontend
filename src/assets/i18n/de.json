@@ -782,6 +782,15 @@
       "actions": {
         "viewDetails": "Anzeigen"
       }
+    },
+    "createNew": "Datenprodukt erfassen",
+    "create": {
+      "title": "Neues Datenprodukt erfassen",
+      "name": {
+        "de": {
+          "label": "Name Deutsch"
+        }
+      }
     }
   },
   "notificationCenter": {
@@ -795,5 +804,100 @@
     "markAllAsRead": "Alle Benachrichtigungen als gelesen markieren",
     "markAsRead": "Als gelesen markieren",
     "markAsUnread": "Als ungelesen markieren"
+  },
+  "onboardingForm": {
+    "uid": {
+      "label": "UID"
+    },
+    "company": {
+      "label": "Firma"
+    },
+    "country": {
+      "label": "Land"
+    },
+    "street": {
+      "label": "Strasse"
+    },
+    "number": {
+      "label": "Nr"
+    },
+    "postalCode": {
+      "label": "PLZ"
+    },
+    "city": {
+      "label": "Ort"
+    },
+    "person": {
+      "heading": "Person",
+      "add": "Person hinzufügen",
+      "remove": "Person entfernen",
+      "firstName": {
+        "label": "Vorname"
+      },
+      "lastName": {
+        "label": "Name"
+      },
+      "email": {
+        "label": "E-Mail"
+      },
+      "function": {
+        "label": "Funktion"
+      },
+      "agateNumber": {
+        "label": "agate-Nummer"
+      }
+    },
+    "submit": "Einreichen",
+    "success": {
+      "title": "Erfolgreich eingereicht",
+      "message": "Ihr Formular wurde erfolgreich an agridata.ch übermittelt. Wir melden uns baldmöglichst bei Ihnen."
+    },
+    "error": {
+      "title": "Fehler",
+      "message": "Das Formular konnte nicht eingereicht werden. Versuchen Sie es nochmals."
+    },
+    "contactPerson": {
+      "salutation": {
+        "label": "Anrede"
+      },
+      "firstName": {
+        "label": "Vorname"
+      },
+      "lastName": {
+        "label": "Name"
+      },
+      "email": {
+        "label": "E-Mail"
+      },
+      "phone": {
+        "label": "Mobile Nummer"
+      }
+    },
+    "data-request-person": {
+      "subheading": "Die hier erfassten Personen erhalten Zugriff auf agridata.ch. Damit neue Datenanträge erfasst und bestehende verwaltet werden können. Sowie die Verträge direkt digitale unterzeichnen. Deshalb müssen Sie hier auch zeichnungsberechtigte Personen erfassen.",
+      "heading": "Personen mit Zugriff auf agridata.ch"
+    },
+    "additionals": {
+      "heading": "Zusätzliche Angaben",
+      "wishedDateRange": {
+        "label": "Gewünschtes Datum für Abschluss des Onboardings"
+      },
+      "interestedDataDescription": {
+        "label": "Beschreibung der Daten, an denen Sie interessiert sind"
+      },
+      "ownSystemDescription": {
+        "label": "Beschreibung Ihres Systems und des Datenbezuges"
+      },
+      "additionalNotes": {
+        "label": "Weitere Angaben, Bemerkungen oder Fragen"
+      },
+      "existingAgateSystems": {
+        "label": "Verwenden Sie agate bereits für andere Systeme? Wen ja, für welche?"
+      }
+    },
+    "companyInformation": {
+      "heading": "Name und Adresse gemäss Handelsregistereintrag",
+      "contactPerson": "Kontaktperson für Onboardingprozess"
+    }
   }
 }
