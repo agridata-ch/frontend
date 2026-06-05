@@ -1,3 +1,9 @@
+## [1.12.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.8...v1.12.0-rc.9) (2026-06-05)
+
+### Features
+
+- **cms:** add onboarding form ([2173697](https://github.com/agridata-ch/frontend/commit/2173697d646eeef5799637000d069ea30fdad611)), closes [DIGIB2-1441](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1441)
+
 ## [1.12.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.7...v1.12.0-rc.8) (2026-06-04)
 
 ### Bug Fixes
