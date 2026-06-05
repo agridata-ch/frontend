@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 
 import { FormControlWithMessages, getErrorMessage } from '@/shared/lib/form.helper';
 import { AgridataDigitInputComponent } from '@/shared/ui/agridata-digit-input';
@@ -76,6 +76,14 @@ export class FormControlComponent {
     // First check if the maxLength was directly set on the control
     if (control?.maxLength) {
       return control.maxLength;
+    }
+
+    if (control?.validator) {
+      const result = control.validator({ value: 'x'.repeat(100_000) } as AbstractControl);
+      const requiredLength = result?.['maxlength']?.requiredLength;
+      if (requiredLength != null) {
+        return requiredLength as number;
+      }
     }
 
     // For specific known controls, provide hardcoded values

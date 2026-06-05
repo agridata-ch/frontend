@@ -144,6 +144,61 @@ describe('SectionOnboardingFormBlockComponent', () => {
     });
   });
 
+  describe('validators', () => {
+    describe('contactPerson email', () => {
+      it('is invalid with a non-email string', () => {
+        component['contactPersonGroup'].get('email')?.setValue('not-an-email');
+        expect(component['contactPersonGroup'].get('email')?.valid).toBe(false);
+      });
+
+      it('is valid with an empty value', () => {
+        component['contactPersonGroup'].get('email')?.setValue('');
+        expect(component['contactPersonGroup'].get('email')?.valid).toBe(true);
+      });
+
+      it('is valid with a proper email address', () => {
+        component['contactPersonGroup'].get('email')?.setValue('test@example.com');
+        expect(component['contactPersonGroup'].get('email')?.valid).toBe(true);
+      });
+    });
+
+    describe('person email', () => {
+      it('is invalid with a non-email string', () => {
+        component['personGroup'](0).get('email')?.setValue('not-an-email');
+        expect(component['personGroup'](0).get('email')?.valid).toBe(false);
+      });
+
+      it('is valid with a proper email address', () => {
+        component['personGroup'](0).get('email')?.setValue('test@example.com');
+        expect(component['personGroup'](0).get('email')?.valid).toBe(true);
+      });
+    });
+
+    describe('textarea maxLength', () => {
+      it.each([
+        ['additionalNotes', 500],
+        ['existingAgateSystems', 500],
+        ['interestedDataDescription', 500],
+        ['ownSystemDescription', 500],
+        ['wishedDateRange', 250],
+      ])('%s is invalid when exceeding %i characters', (field, max) => {
+        component['onboardingForm'].get(field)?.setValue('x'.repeat(max + 1));
+        expect(component['onboardingForm'].get(field)?.valid).toBe(false);
+      });
+
+      it.each([
+        ['additionalNotes', 500],
+        ['existingAgateSystems', 500],
+        ['interestedDataDescription', 500],
+        ['ownSystemDescription', 500],
+        ['wishedDateRange', 250],
+      ])('%s is valid at exactly %i characters', (field, max) => {
+        component['onboardingForm'].get(field)?.setValue('x'.repeat(max));
+        expect(component['onboardingForm'].get(field)?.valid).toBe(true);
+      });
+    });
+  });
+
   describe('handleSubmit', () => {
     const fillForm = (comp: SectionOnboardingFormBlockComponent) => {
       const form = comp['onboardingForm'];
@@ -160,6 +215,39 @@ describe('SectionOnboardingFormBlockComponent', () => {
       form.get('contactPerson')?.get('email')?.setValue('john@example.com');
       form.get('contactPerson')?.get('phone')?.setValue('+41791234567');
     };
+
+    describe('when form is invalid', () => {
+      beforeEach(() => {
+        component['contactPersonGroup'].get('email')?.setValue('not-an-email');
+      });
+
+      it('does not call submitOnboardingForm', async () => {
+        await component['handleSubmit']();
+        expect(mockCmsService.submitOnboardingForm).not.toHaveBeenCalled();
+      });
+
+      it('marks all controls as touched', async () => {
+        const spy = jest.spyOn(component['onboardingForm'], 'markAllAsTouched');
+        await component['handleSubmit']();
+        expect(spy).toHaveBeenCalled();
+      });
+
+      it('scrolls to the first invalid element', async () => {
+        const mockScrollIntoView = jest.fn();
+        jest
+          .spyOn(component['elementRef'].nativeElement, 'querySelector')
+          .mockReturnValue({ scrollIntoView: mockScrollIntoView });
+
+        await component['handleSubmit']();
+
+        expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'center' });
+      });
+
+      it('does not throw when no invalid element exists in the DOM', async () => {
+        jest.spyOn(component['elementRef'].nativeElement, 'querySelector').mockReturnValue(null);
+        await expect(component['handleSubmit']()).resolves.toBeUndefined();
+      });
+    });
 
     it('calls submitOnboardingForm with mapped form data', async () => {
       fillForm(component);
