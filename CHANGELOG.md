@@ -1,3 +1,9 @@
+## [1.12.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.9...v1.12.0-rc.10) (2026-06-05)
+
+### Features
+
+- **onboarding-form:** add minimal validations ([67002cf](https://github.com/agridata-ch/frontend/commit/67002cf6a8516cb3c96a9d27dfc483f923169d06)), closes [DIGIB2-1441](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1441)
+
 ## [1.12.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.8...v1.12.0-rc.9) (2026-06-05)
 
 ### Features
