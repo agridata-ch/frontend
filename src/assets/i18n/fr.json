@@ -803,5 +803,100 @@
     "markAllAsRead": "Marquer toutes les notifications comme lues",
     "markAsRead": "Marquer comme lu",
     "markAsUnread": "Marquer comme non lu"
+  },
+  "onboardingForm": {
+    "uid": {
+      "label": "Numéro IDE (CHE-XXX.XXX.XXX)"
+    },
+    "company": {
+      "label": "Nom de l'entreprise (raison sociale officielle)"
+    },
+    "country": {
+      "label": "Pays"
+    },
+    "street": {
+      "label": "Rue"
+    },
+    "number": {
+      "label": "N°"
+    },
+    "postalCode": {
+      "label": "NPA"
+    },
+    "city": {
+      "label": "Localité"
+    },
+    "person": {
+      "heading": "Personne",
+      "add": "Ajouter une personne",
+      "remove": "Supprimer la personne",
+      "firstName": {
+        "label": "Prénom"
+      },
+      "lastName": {
+        "label": "Nom"
+      },
+      "email": {
+        "label": "E-mail"
+      },
+      "function": {
+        "label": "Fonction (p. ex. directeur, propriétaire, président du CA)"
+      },
+      "agateNumber": {
+        "label": "Numéro agate"
+      }
+    },
+    "submit": "Transmettre les informations",
+    "success": {
+      "title": "Soumis mit succès",
+      "message": "Votre formulaire a été transmis avec succès à agridata.ch. Nous vous contacterons dans les plus brefs délais."
+    },
+    "error": {
+      "title": "Erreur",
+      "message": "Le formulaire n'a pas pu être soumis. Veuillez réessayer."
+    },
+    "contactPerson": {
+      "salutation": {
+        "label": "Formule d'appel"
+      },
+      "firstName": {
+        "label": "Prénom"
+      },
+      "lastName": {
+        "label": "Nom"
+      },
+      "email": {
+        "label": "E-mail"
+      },
+      "phone": {
+        "label": "Numéro de mobile"
+      }
+    },
+    "data-request-person": {
+      "subheading": "Les contrats d’accès aux données étant signés numériquement, vous devez impérativement saisir ici les personnes ayant le droit de signature. Si nécessaire, ajoutez d'autres personnes devant obtenir un accès pour gérer les demandes de données.",
+      "heading": "Personnes autorisées à accéder et ayant le droit de signature"
+    },
+    "additionals": {
+      "heading": "Informations complémentaires",
+      "wishedDateRange": {
+        "label": "Date de finalisation souhaitée"
+      },
+      "interestedDataDescription": {
+        "label": "Veuillez énumérer brièvement les données ou les produits de données spécifiques qui vous intéressent."
+      },
+      "ownSystemDescription": {
+        "label": "Veuillez décrire brièvement votre logiciel und la manière dont les données doivent y être transférées."
+      },
+      "additionalNotes": {
+        "label": "Autres informations, remarques ou questions"
+      },
+      "existingAgateSystems": {
+        "label": "Utilisez-vous déjà agate für d'autres systèmes ? Si oui, lesquels ?"
+      }
+    },
+    "companyInformation": {
+      "heading": "Nom et adresse selon l'inscription au registre du commerce",
+      "contactPerson": "Personne de contact pour le processus d'onboarding"
+    }
   }
 }
