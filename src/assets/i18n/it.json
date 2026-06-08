@@ -845,6 +845,9 @@
       },
       "agateNumber": {
         "label": "Numero agate"
+      },
+      "mobileNumber": {
+        "label": "Numero di cellulare"
       }
     },
     "submit": "Trasmetti i dati",
@@ -874,7 +877,7 @@
       }
     },
     "data-request-person": {
-      "subheading": "Poiché i contratti di accesso ai dati vengono firmati digitalmente, è obbligatorio inserire qui le persone con diritto di firma. Se necessario, è possibile aggiungere altre persone che dovranno accedere per gestire le richieste di dati.",
+      "subheading": "Per la firma digitale dei contratti di accesso ai dati, è obbligatorio inserire le persone con diritto di firma della vostra azienda (persone autorizzate a firmare contratti per la società). Se necessario, è possibile aggiungere altre persone che gestiranno in seguito le richieste di dati. Inoltre, per tutte le persone inserite è strettamente necessario un account personale agate (informazioni su [blw.admin.ch]).",
       "heading": "Persone autorizzate all'accesso e con diritto di firma"
     },
     "additionals": {
@@ -886,7 +889,7 @@
         "label": "Vi preghiamo di elencare brevemente i dati o i prodotti dati specifici a cui siete interessati."
       },
       "ownSystemDescription": {
-        "label": "Vi preghiamo di descrivere brevemente il vostro software e il modo in care i dati dovranno esservi trasferiti."
+        "label": "Vi preghiamo di descrivere brevemente il vostro software, chi ne è il gestore (produttore) e il modo in cui i dati dovranno esservi trasferiti."
       },
       "additionalNotes": {
         "label": "Ulteriori informazioni, note o domande"

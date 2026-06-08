@@ -844,6 +844,9 @@
       },
       "agateNumber": {
         "label": "Numéro agate"
+      },
+      "mobileNumber": {
+        "label": "Numéro de mobile"
       }
     },
     "submit": "Transmettre les informations",
@@ -873,7 +876,7 @@
       }
     },
     "data-request-person": {
-      "subheading": "Les contrats d’accès aux données étant signés numériquement, vous devez impérativement saisir ici les personnes ayant le droit de signature. Si nécessaire, ajoutez d'autres personnes devant obtenir un accès pour gérer les demandes de données.",
+      "subheading": "Pour la signature numérique des contrats d’accès aux données, vous devez impérativement saisir les personnes ayant le droit de signature de votre entreprise (personnes autorisées à signer des contrats pour la société). Si nécessaire, vous pouvez ajouter d’autres personnes pour gérer ultérieurement les demandes de données. De plus, un compte personnel agate est obligatoire pour toutes les personnes saisies (informations sous [blw.admin.ch]).",
       "heading": "Personnes autorisées à accéder et ayant le droit de signature"
     },
     "additionals": {
@@ -885,7 +888,7 @@
         "label": "Veuillez énumérer brièvement les données ou les produits de données spécifiques qui vous intéressent."
       },
       "ownSystemDescription": {
-        "label": "Veuillez décrire brièvement votre logiciel und la manière dont les données doivent y être transférées."
+        "label": "Veuillez décrire brièvement votre logiciel, qui en ist l'exploitant (fabricant) et de quelle manière les données doivent y être transférées."
       },
       "additionalNotes": {
         "label": "Autres informations, remarques ou questions"

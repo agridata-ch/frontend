@@ -186,6 +186,7 @@ export interface PersonData {
   email: string;
   function: string;
   agateNumber: string;
+  mobileNumber: string;
 }
 
 export interface OnboardingFormData {
