@@ -98,10 +98,11 @@ describe('SectionOnboardingFormBlockComponent', () => {
       const person = component['personGroup'](0);
 
       expect(person.contains('agateNumber')).toBe(true);
-      expect(person.contains('firstName')).toBe(true);
-      expect(person.contains('lastName')).toBe(true);
       expect(person.contains('email')).toBe(true);
+      expect(person.contains('firstName')).toBe(true);
       expect(person.contains('function')).toBe(true);
+      expect(person.contains('lastName')).toBe(true);
+      expect(person.contains('mobileNumber')).toBe(true);
     });
   });
 
@@ -118,10 +119,11 @@ describe('SectionOnboardingFormBlockComponent', () => {
       const newPerson = component['personGroup'](1);
 
       expect(newPerson.contains('agateNumber')).toBe(true);
-      expect(newPerson.contains('firstName')).toBe(true);
-      expect(newPerson.contains('lastName')).toBe(true);
       expect(newPerson.contains('email')).toBe(true);
+      expect(newPerson.contains('firstName')).toBe(true);
       expect(newPerson.contains('function')).toBe(true);
+      expect(newPerson.contains('lastName')).toBe(true);
+      expect(newPerson.contains('mobileNumber')).toBe(true);
     });
   });
 
@@ -195,6 +197,60 @@ describe('SectionOnboardingFormBlockComponent', () => {
       ])('%s is valid at exactly %i characters', (field, max) => {
         component['onboardingForm'].get(field)?.setValue('x'.repeat(max));
         expect(component['onboardingForm'].get(field)?.valid).toBe(true);
+      });
+    });
+  });
+
+  describe('agateUrl', () => {
+    it.each([
+      ['de', 'https://www.blw.admin.ch/de/anwendung-agate'],
+      ['fr', 'https://www.blw.admin.ch/fr/application-agate'],
+      ['it', 'https://www.blw.admin.ch/it/applicazione-agate'],
+    ])('returns the correct URL for lang=%s', (lang, expectedUrl) => {
+      mockI18nService.lang.set(lang);
+
+      expect(component['agateUrl']()).toBe(expectedUrl);
+    });
+
+    it('falls back to the German URL for an unrecognised lang', () => {
+      mockI18nService.lang.set('es');
+
+      expect(component['agateUrl']()).toBe('https://www.blw.admin.ch/de/anwendung-agate');
+    });
+  });
+
+  describe('personSubheadingParts', () => {
+    it('parses the bracket link from the translation into before/linkText/after', () => {
+      mockI18nService.translate.mockImplementation((key: string) =>
+        key === 'onboardingForm.data-request-person.subheading'
+          ? 'Please check [agate] for details.'
+          : key,
+      );
+
+      const testFixture = TestBed.createComponent(SectionOnboardingFormBlockComponent);
+      testFixture.componentRef.setInput('block', mockBlock);
+      testFixture.detectChanges();
+
+      expect(testFixture.componentInstance['personSubheadingParts']()).toEqual({
+        before: 'Please check ',
+        linkText: 'agate',
+        after: ' for details.',
+      });
+    });
+
+    it('returns linkText null when the translation has no bracket syntax', () => {
+      mockI18nService.translate.mockImplementation((key: string) =>
+        key === 'onboardingForm.data-request-person.subheading' ? 'No link here.' : key,
+      );
+
+      const testFixture = TestBed.createComponent(SectionOnboardingFormBlockComponent);
+      testFixture.componentRef.setInput('block', mockBlock);
+      testFixture.detectChanges();
+
+      expect(testFixture.componentInstance['personSubheadingParts']()).toEqual({
+        before: 'No link here.',
+        linkText: null,
+        after: '',
       });
     });
   });

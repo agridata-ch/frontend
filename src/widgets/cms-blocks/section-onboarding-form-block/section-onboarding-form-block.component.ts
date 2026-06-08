@@ -8,20 +8,19 @@ import {
 } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import {
-  Block,
-  CmsService,
-  ContactPersonData,
-  OnboardingFormData,
-  PersonData,
-  SectionOnboardingFormBlock,
-} from '@/entities/cms';
+import { Block, CmsService, OnboardingFormData, SectionOnboardingFormBlock } from '@/entities/cms';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createFormControl, getFormControl } from '@/shared/lib/form.helper';
 import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
 import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
+
+import {
+  AGATE_URLS,
+  SubheadingParts,
+  parseSubheadingParts,
+} from './section-onboarding-form-block.model';
 
 /**
  * Renders an onboarding form with company details and a dynamic list of persons.
@@ -49,7 +48,15 @@ export class SectionOnboardingFormBlockComponent {
   readonly getFormControl = getFormControl;
 
   // Computed signals
+  protected readonly agateUrl = computed(
+    () => AGATE_URLS[this.i18nService.lang()] ?? AGATE_URLS['de'],
+  );
   protected readonly cmsData = computed(() => this.block() as SectionOnboardingFormBlock);
+  protected readonly personSubheadingParts = computed<SubheadingParts>(() =>
+    parseSubheadingParts(
+      this.i18nService.translate('onboardingForm.data-request-person.subheading'),
+    ),
+  );
 
   protected readonly onboardingForm = new FormGroup({
     uid: createFormControl(''),
@@ -86,13 +93,8 @@ export class SectionOnboardingFormBlockComponent {
     }),
   });
 
-  protected get contactPersonGroup(): FormGroup {
-    return this.onboardingForm.get('contactPerson') as FormGroup;
-  }
-
-  protected get personsArray(): FormArray {
-    return this.onboardingForm.get('persons') as FormArray;
-  }
+  protected readonly contactPersonGroup = this.onboardingForm.get('contactPerson') as FormGroup;
+  protected readonly personsArray = this.onboardingForm.get('persons') as FormArray;
 
   protected personGroup(index: number): FormGroup {
     return this.personsArray.at(index) as FormGroup;
@@ -118,23 +120,7 @@ export class SectionOnboardingFormBlockComponent {
       return;
     }
 
-    const formValue = this.onboardingForm.value;
-    const data: OnboardingFormData = {
-      uid: formValue.uid as string,
-      company: formValue.company as string,
-      country: formValue.country as string,
-      street: formValue.street as string,
-      number: formValue.number as string,
-      postalCode: formValue.postalCode as string,
-      city: formValue.city as string,
-      contactPerson: formValue.contactPerson as ContactPersonData,
-      persons: formValue.persons as PersonData[],
-      ownSystemDescription: formValue.ownSystemDescription as string,
-      interestedDataDescription: formValue.interestedDataDescription as string,
-      wishedDateRange: formValue.wishedDateRange as string,
-      existingAgateSystems: formValue.existingAgateSystems as string,
-      additionalNotes: formValue.additionalNotes as string,
-    };
+    const data = this.onboardingForm.getRawValue() as OnboardingFormData;
 
     await this.cmsService
       .submitOnboardingForm(data)
@@ -164,13 +150,13 @@ export class SectionOnboardingFormBlockComponent {
       firstName: createFormControl(''),
       function: createFormControl(''),
       lastName: createFormControl(''),
+      mobileNumber: createFormControl(''),
     });
   }
 
   private resetForm(): void {
     this.onboardingForm.reset();
-    while (this.personsArray.length > 1) {
-      this.personsArray.removeAt(1);
-    }
+    this.personsArray.clear();
+    this.personsArray.push(this.createPersonGroup());
   }
 }

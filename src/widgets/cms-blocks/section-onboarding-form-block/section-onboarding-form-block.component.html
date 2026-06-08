@@ -113,7 +113,16 @@
     <div class="flex flex-col gap-6 w-full">
       <div class="flex flex-col gap-4 w-full">
         <h3 class="w-full text-lg font-semibold">{{ t('data-request-person.heading') }}</h3>
-        <p class="w-full text-md font-medium">{{ t('data-request-person.subheading') }}</p>
+        <p class="w-full text-md font-medium">
+          {{ personSubheadingParts().before }}
+          <a
+            [href]="agateUrl()"
+            target="_blank"
+            class="underline hover:text-agridata-primary-600"
+            >{{ personSubheadingParts().linkText }}</a
+          >
+          {{ personSubheadingParts().after }}
+        </p>
       </div>
       @for (person of personsArray.controls; track $index) {
         <div class="flex flex-col gap-4 p-6 border border-gray-300 rounded-lg">
@@ -168,6 +177,12 @@
               [control]="getFormControl(personGroup($index), 'email')"
               [id]="'personEmail_' + $index"
               [label]="t('person.email.label')"
+              class="w-full"
+            />
+            <app-form-control
+              [control]="getFormControl(personGroup($index), 'mobileNumber')"
+              [id]="'personMobileNumber_' + $index"
+              [label]="t('person.mobileNumber.label')"
               class="w-full"
             />
           </div>
