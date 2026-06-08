@@ -1,3 +1,9 @@
+## [1.12.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.10...v1.12.0-rc.11) (2026-06-08)
+
+### Features
+
+- **onboarding-form:** add mobileNumber ([abb4770](https://github.com/agridata-ch/frontend/commit/abb4770caacc01cec90e076e60ff0ac60c774390)), closes [DIGIB2-1441](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1441)
+
 ## [1.12.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.9...v1.12.0-rc.10) (2026-06-05)
 
 ### Features
