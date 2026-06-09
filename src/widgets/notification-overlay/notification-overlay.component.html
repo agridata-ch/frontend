@@ -17,10 +17,7 @@
     </span>
   </button>
   <app-popover [isOpen]="showPopover()" class="hidden lg:block max-w-105">
-    <app-notification-overlay-content
-      [notifications]="notificationResource.value()?.items"
-      (reloadNotifications)="reloadNotifications()"
-    />
+    <app-notification-overlay-content [notifications]="notificationResource.value()?.items" />
   </app-popover>
   <div class="block lg:hidden"></div>
 </div>

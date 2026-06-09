@@ -5,7 +5,11 @@ import { lastValueFrom } from 'rxjs';
 
 import { UserService } from '@/entities/api/user.service';
 import { UidDto, UserInfoDto } from '@/entities/openapi';
-import { AGATE_LOGIN_ID_IMPERSONATION_HEADER, USER_ROLES } from '@/shared/constants/constants';
+import {
+  ActingRole,
+  AGATE_LOGIN_ID_IMPERSONATION_HEADER,
+  USER_ROLES,
+} from '@/shared/constants/constants';
 
 /**
  * Manages authentication state, user profile data, and role extraction from user info. Provides login,
@@ -45,6 +49,9 @@ export class AuthService {
     () => this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) ?? false,
   );
   readonly isAdmin = computed(() => this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) ?? false);
+  readonly isImpersonating = computed(
+    () => sessionStorage.getItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER) !== null,
+  );
 
   // Effects
   private readonly resetUserInfoEffect = effect(() => {
@@ -130,7 +137,9 @@ export class AuthService {
       return cachedUids;
     }
 
-    this.userUidsPromise ??= lastValueFrom(this.userService.getAuthorizedUids());
+    this.userUidsPromise ??= lastValueFrom(
+      this.userService.getAuthorizedUids(this.resolveUidActingRole()),
+    );
     const promise = this.userUidsPromise; // capture before cache may be cleared mid-flight
     const uids = await promise;
     this._userUids.set(uids);
@@ -151,14 +160,16 @@ export class AuthService {
     await this.router.navigate(['/']);
   }
 
+  private resolveUidActingRole(): ActingRole {
+    if (this.isImpersonating()) return 'SUPPORT';
+    if (this.isProducer()) return 'PRODUCER';
+    return undefined as unknown as ActingRole; // Let API default to consumer role if not producer/support
+  }
+
   private shouldSkipAuthorizedUids(): boolean {
-    if (!this.isAuthenticated()) {
-      return true;
-    }
+    if (!this.isAuthenticated()) return true;
+    if (this.isProducer()) return false;
 
-    const isImpersonating = sessionStorage.getItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER);
-    const isProducer = this.isProducer();
-
-    return !isProducer && !isImpersonating;
+    return !(this.isSupporter() && this.isImpersonating());
   }
 }

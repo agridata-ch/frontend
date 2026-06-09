@@ -36,6 +36,7 @@ model/contractRevisionSignatureDto.ts
 model/createConsentRequestDto.ts
 model/dataProductDto.ts
 model/dataProviderDto.ts
+model/dataProviderExceptionDto.ts
 model/dataProviderReferenceDto.ts
 model/dataRequestContextDto.ts
 model/dataRequestDescriptionDto.ts
@@ -67,6 +68,7 @@ model/resourceQueryDto.ts
 model/sealAttemptStateEnum.ts
 model/signatureSlotCodeEnum.ts
 model/signatureTypeEnum.ts
+model/targetTypeCodeEnum.ts
 model/translationDto.ts
 model/uidDto.ts
 model/uidRegisterAddressDto.ts

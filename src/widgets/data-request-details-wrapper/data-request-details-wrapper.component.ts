@@ -5,6 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
 import { DATA_REQUEST_NEW_ID, DataRequestWizardComponent } from '@/widgets/data-request-wizard';
@@ -26,6 +27,7 @@ export class DataRequestDetailsWrapperComponent {
   private readonly errorService = inject(ErrorHandlerService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly stateService = inject(AgridataStateService);
 
   // Constants
   protected readonly faSpinnerThird = faSpinnerThird;
@@ -49,12 +51,13 @@ export class DataRequestDetailsWrapperComponent {
 
   // Resources
   protected readonly dataRequestsResource = resource({
-    params: () => ({ id: this.dataRequestId() }),
+    params: () => ({ actingRole: this.stateService.actingRole(), id: this.dataRequestId() }),
     loader: ({ params }) => {
+      console.log('Loading data request with ID:', params.id);
       if (!params?.id || params.id === DATA_REQUEST_NEW_ID) {
         return Promise.resolve(undefined);
       }
-      return this.dataRequestService.fetchDataRequest(params.id);
+      return this.dataRequestService.fetchDataRequest(params.id, params.actingRole);
     },
   });
 

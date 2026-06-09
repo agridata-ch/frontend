@@ -14,6 +14,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { SidepanelComponent } from '@/shared/sidepanel';
@@ -48,6 +49,7 @@ export class DataRequestDetailsComponent {
   private readonly dataRequestService = inject(DataRequestService);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
+  private readonly stateService = inject(AgridataStateService);
 
   // Constants
   protected readonly faSpinnerThird = faSpinnerThird;
@@ -79,10 +81,10 @@ export class DataRequestDetailsComponent {
   readonly dataRequestResource = resource({
     params: () => {
       const id = this.dataRequestId();
-      return id ? { id } : undefined;
+      return id ? { actingRole: this.stateService.actingRole(), id } : undefined;
     },
     loader: ({ params }) => {
-      return this.dataRequestService.fetchDataRequest(params.id);
+      return this.dataRequestService.fetchDataRequest(params.id, params.actingRole);
     },
   });
 

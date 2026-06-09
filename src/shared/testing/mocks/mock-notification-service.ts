@@ -1,3 +1,5 @@
+import { signal } from '@angular/core';
+
 import { NotificationService } from '@/entities/api/notification.service';
 import { InboxEntryDto, PageResponseDtoInboxEntryDto } from '@/entities/openapi';
 import { Mockify } from '@/shared/testing/mocks';
@@ -43,9 +45,15 @@ export type MockNotificationService = Mockify<NotificationService>;
  * CommentLastReviewed: 2026-05-11
  */
 export function createMockNotificationService(): MockNotificationService {
+  const mutationTrigger = signal(0);
   return {
+    mutationTrigger,
+    notifyMutation: jest.fn().mockImplementation(() => mutationTrigger.update((n) => n + 1)),
     fetchHeaderNotifications: jest.fn().mockResolvedValue(mockHeaderNotifications),
+    fetchNotifications: jest.fn().mockResolvedValue(undefined),
     markNotificationAsRead: jest.fn().mockResolvedValue(undefined),
+    markNotificationAsUnread: jest.fn().mockResolvedValue(undefined),
+    toggleReadStatus: jest.fn().mockResolvedValue(undefined),
     markAllAsRead: jest.fn().mockResolvedValue(undefined),
   } satisfies MockNotificationService;
 }

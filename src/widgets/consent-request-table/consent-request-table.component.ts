@@ -52,7 +52,7 @@ import { ConsentRequestProducerViewDtoDirective } from './consent-request-produc
  * with undo support, and toast notifications. It highlights open requests and integrates avatars
  * and badges for clear presentation.
  *
- * CommentLastReviewed: 2025-09-18
+ * CommentLastReviewed: 2026-05-21
  */
 @Component({
   selector: 'app-consent-request-table',
@@ -103,9 +103,11 @@ export class ConsentRequestTableComponent {
   protected readonly dataRequestStateHeader = 'consent-request.dataRequest.state';
   protected readonly dataRequestConsumerHeader = 'consent-request.dataRequest.consumerName';
   protected readonly dataRequestDateHeader = 'consent-request.dataRequest.date';
+
   protected readonly stateCodeFilter = signal<string | null>(null);
   protected readonly showAcceptedLoading = signal(false);
   private readonly elementLoadingSignals = new Map<string, WritableSignal<boolean>>();
+
   protected readonly acceptConsentActionDisabled = computed(() =>
     this.agridataStateService.isImpersonating(),
   );
@@ -180,6 +182,7 @@ export class ConsentRequestTableComponent {
       rowAction: this.openDetails,
       showRowActionButton: true,
       highlightFn: (item) => item.stateCode === ConsentRequestStateEnum.Opened,
+      highlightClickedRowFn: (item) => item.id === this.consentRequestId(),
       searchFn: (data, searchTerm) =>
         data.filter((item) => this.getTranslation(item.dataRequest?.title).includes(searchTerm)),
     };

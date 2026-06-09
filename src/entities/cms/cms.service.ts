@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { environment } from '@/environments/environment';
 
-import { ContactFormData } from './cms.model';
+import { ContactFormData, OnboardingFormData } from './cms.model';
 
 /**
  * Service for retrieving CMS-managed content. Provides methods to fetch localized landing pages
@@ -19,6 +19,7 @@ export class CmsService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = environment.cmsBaseUrl;
   private readonly cmsContactUrl = environment.cmsContactUrl;
+  private readonly cmsOnboardingFormUrl = environment.cmsOnboardingFormUrl;
   private readonly isDevMode = !environment.production;
 
   readonly fetchLandingPage = (locale: string) =>
@@ -49,6 +50,13 @@ export class CmsService {
       ),
     );
 
+  readonly fetchOnboardingPage = (locale: string) =>
+    firstValueFrom(
+      this.http.get(
+        `${this.apiUrl}/api/onboarding?locale=${locale}${this.isDevMode ? '&status=draft' : ''}`,
+      ),
+    );
+
   readonly fetchCmsPages = (locale: string) =>
     firstValueFrom(
       this.http.get(
@@ -66,6 +74,14 @@ export class CmsService {
   readonly submitContactForm = (data: ContactFormData) => {
     return firstValueFrom(
       this.http.post(`${this.cmsContactUrl}`, data, {
+        withCredentials: true,
+      }),
+    );
+  };
+
+  readonly submitOnboardingForm = (data: OnboardingFormData) => {
+    return firstValueFrom(
+      this.http.post(`${this.cmsOnboardingFormUrl}`, data, {
         withCredentials: true,
       }),
     );

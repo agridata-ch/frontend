@@ -1,16 +1,19 @@
-import { Component, inject, input, output, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, computed, inject, input, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { faExternalLink, faEye } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { faMailbox } from '@awesome.me/kit-0b6d1ed528/icons/duotone/light';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { NotificationService } from '@/entities/api/notification.service';
-import { InboxEntryDto, MarkAsReadRequestDto } from '@/entities/openapi';
+import { InboxEntryDto } from '@/entities/openapi';
+import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
 import { I18nDirective, I18nService } from '@/shared/i18n';
+import { AuthService } from '@/shared/lib/auth';
+import { getNotificationRoute, markAllAsRead, toggleReadStatus } from '@/shared/notification';
 import { ScrollFadeDirective } from '@/shared/scroll-fade';
-import { ToastService, ToastType } from '@/shared/toast';
+import { ToastService } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/button';
 
 /**
@@ -26,6 +29,8 @@ import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/butto
     ButtonComponent,
     FontAwesomeModule,
     ScrollFadeDirective,
+    RouterLink,
+    ClickStopPropagationDirective,
   ],
   templateUrl: './notification-overlay-content.component.html',
 })
@@ -35,10 +40,10 @@ export class NotificationOverlayContentComponent {
   protected readonly i18nService = inject(I18nService);
   private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
+  private readonly authService = inject(AuthService);
 
   // Inputs
   readonly notifications = input<InboxEntryDto[]>();
-  readonly reloadNotifications = output<void>();
 
   // Constants
   protected readonly ButtonVariants = ButtonVariants;
@@ -50,58 +55,26 @@ export class NotificationOverlayContentComponent {
   // Signals
   protected readonly isLoadingMarkAllAsRead = signal(false);
 
-  // Methods
-  protected readonly handleMarkAsRead = (notification: InboxEntryDto) => {
-    if (!notification.id) {
-      console.error('Notification ID is missing. Cannot mark as read.');
-      return;
-    }
-    if (notification.isRead) return;
+  // Computed signals
+  protected readonly notificationRoutes = computed(
+    () =>
+      new Map(
+        (this.notifications() ?? []).map((n) => [n.id!, getNotificationRoute(n, this.authService)]),
+      ),
+  );
 
-    this.notificationService
-      .markNotificationAsRead(notification.id)
-      .then(() => {
-        this.reloadNotifications.emit();
-      })
-      .catch(() => {
-        this.toastService.show(
-          this.i18nService.translate('notifications.markAsRead.error.title'),
-          this.i18nService.translate('notifications.markAsRead.error.message'),
-          ToastType.Error,
-        );
-      });
-  };
+  // Methods
+  protected readonly handleToggleReadStatus = (notification: InboxEntryDto) =>
+    toggleReadStatus(notification, this.notificationService, this.toastService, this.i18nService);
 
   protected readonly handleMarkAllAsRead = () => {
     this.isLoadingMarkAllAsRead.set(true);
-    const inbox: MarkAsReadRequestDto = {
-      inboxIds:
-        this.notifications()
-          ?.filter((n) => !n.isRead && n.id)
-          .map((n) => n.id!) || [],
-    };
-    this.notificationService
-      .markAllAsRead(inbox)
-      .then(() => {
-        this.reloadNotifications.emit();
-        this.toastService.show(
-          this.i18nService.translate('notifications.markAllAsRead.success.title'),
-          this.i18nService.translate('notifications.markAllAsRead.success.message'),
-          ToastType.Success,
-        );
-      })
-      .catch((error) => {
-        this.toastService.show(
-          this.i18nService.translate('notifications.markAllAsRead.error.title'),
-          this.i18nService.translate('notifications.markAllAsRead.error.message', {
-            error: error.message,
-          }),
-          ToastType.Error,
-        );
-      })
-      .finally(() => {
-        this.isLoadingMarkAllAsRead.set(false);
-      });
+    markAllAsRead(
+      this.notifications() ?? [],
+      this.notificationService,
+      this.toastService,
+      this.i18nService,
+    ).finally(() => this.isLoadingMarkAllAsRead.set(false));
   };
 
   protected navigateToNotifications = () => {

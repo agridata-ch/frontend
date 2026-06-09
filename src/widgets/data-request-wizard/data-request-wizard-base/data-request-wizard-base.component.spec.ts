@@ -5,17 +5,19 @@ import { provideRouter, Router } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
-  createMockDataRequestService,
-  createMockI18nService,
-  MockDataRequestService,
+  createMockAgridataStateService,
   createMockAuthService,
   MockAuthService,
+  createMockDataRequestService,
+  MockDataRequestService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
+  createMockI18nService,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
@@ -75,6 +77,7 @@ describe('DataRequestWizardBaseComponent', () => {
         createTranslocoTestingModule(),
       ],
       providers: [
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
         { provide: AuthService, useValue: authService },
         { provide: DataRequestService, useValue: dataRequestService },
         { provide: ErrorHandlerService, useValue: errorService },
@@ -209,7 +212,7 @@ describe('DataRequestWizardBaseComponent', () => {
 
       await component['handleReloadDataRequest']();
 
-      expect(dataRequestService.fetchDataRequest).toHaveBeenCalledWith('reloaded');
+      expect(dataRequestService.fetchDataRequest).toHaveBeenCalledWith('reloaded', undefined);
       expect(component['dataRequest']()).toEqual(dr);
       expect(component['refreshListNeeded']()).toBe(true);
     });

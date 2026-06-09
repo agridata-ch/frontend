@@ -546,7 +546,8 @@
       "markAllAsRead": "Benachrichtigungen als gelesen markieren",
       "showAll": "Alle Benachrichtigungen anzeigen",
       "empty": "Sie haben keine Benachrichtigungen",
-      "markAsRead": "Als gelesen markieren"
+      "markAsRead": "Als gelesen markieren",
+      "markAsUnread": "Als ungelesen markieren"
     }
   },
   "contact-form": {
@@ -765,6 +766,12 @@
         "title": "Alle Benachrichtigungen als gelesen markiert",
         "message": "Alle Benachrichtigungen wurden erfolgreich als gelesen markiert"
       }
+    },
+    "markAsUnread": {
+      "error": {
+        "title": "Als ungelesen markieren fehlgeschlagen",
+        "message": "Bei der Aktion \"Als ungelesen markieren\" ist ein Fehler aufgetreten. Bitte versuchen Sie es noch einmal"
+      }
     }
   },
   "dataProducts": {
@@ -775,6 +782,125 @@
       "actions": {
         "viewDetails": "Anzeigen"
       }
+    },
+    "createNew": "Datenprodukt erfassen",
+    "create": {
+      "title": "Neues Datenprodukt erfassen",
+      "name": {
+        "de": {
+          "label": "Name Deutsch"
+        }
+      }
+    }
+  },
+  "notificationCenter": {
+    "pageTitle": "Alle Benachrichtigungen",
+    "table": {
+      "title": "Titel",
+      "text": "Nachricht",
+      "date": "Datum",
+      "actions": "Aktionen"
+    },
+    "markAllAsRead": "Alle Benachrichtigungen als gelesen markieren",
+    "markAsRead": "Als gelesen markieren",
+    "markAsUnread": "Als ungelesen markieren"
+  },
+  "onboardingForm": {
+    "uid": {
+      "label": "UID-Nummer (CHE-XXX.XXX.XXX)"
+    },
+    "company": {
+      "label": "Unternehmensname (offizieller Firmenname)"
+    },
+    "country": {
+      "label": "Land"
+    },
+    "street": {
+      "label": "Strasse"
+    },
+    "number": {
+      "label": "Nr"
+    },
+    "postalCode": {
+      "label": "PLZ"
+    },
+    "city": {
+      "label": "Ort"
+    },
+    "person": {
+      "heading": "Person",
+      "add": "Person hinzufügen",
+      "remove": "Person entfernen",
+      "firstName": {
+        "label": "Vorname"
+      },
+      "lastName": {
+        "label": "Name"
+      },
+      "email": {
+        "label": "E-Mail"
+      },
+      "function": {
+        "label": "Funktion (z. B. Geschäftsführer, Inhaber, VR-Präsident)"
+      },
+      "agateNumber": {
+        "label": "agate-Nummer"
+      },
+      "mobileNumber": {
+        "label": "Mobile Nummer"
+      }
+    },
+    "submit": "Angaben übermitteln",
+    "success": {
+      "title": "Erfolgreich eingereicht",
+      "message": "Ihr Formular wurde erfolgreich an agridata.ch übermittelt. Wir melden uns baldmöglichst bei Ihnen."
+    },
+    "error": {
+      "title": "Fehler",
+      "message": "Das Formular konnte nicht eingereicht werden. Versuchen Sie es nochmals."
+    },
+    "contactPerson": {
+      "salutation": {
+        "label": "Anrede"
+      },
+      "firstName": {
+        "label": "Vorname"
+      },
+      "lastName": {
+        "label": "Name"
+      },
+      "email": {
+        "label": "E-Mail"
+      },
+      "phone": {
+        "label": "Mobile Nummer"
+      }
+    },
+    "data-request-person": {
+      "subheading": "Für die digitale Unterzeichnung der Datenbezugsverträge müssen Sie zwingend zeichnungsberechtigte Personen (Personen, die Verträge für die Firma unterschreiben dürfen) Ihres Unternehmens erfassen. Bei Bedarf können Sie zusätzliche Personen hinzufügen, die später Datenanträge verwalten sollen. Zudem ist für alle erfassten Personen ein persönliches Agate-Konto zwingend erforderlich  (Informationen unter [blw.admin.ch]).",
+      "heading": "Zugriffsberechtigte & Zeichnungsberechtigte Personen"
+    },
+    "additionals": {
+      "heading": "Zusätzliche Angaben",
+      "wishedDateRange": {
+        "label": "Angestrebtes Abschlussdatum"
+      },
+      "interestedDataDescription": {
+        "label": "Bitte listen Sie kurz auf, an welchen Daten oder konkreten Datenprodukten Sie Interesse haben."
+      },
+      "ownSystemDescription": {
+        "label": "Bitte beschreiben Sie kurz Ihre Software, wer der Betreiber (Hersteller) ist und auf welchem Weg die Daten dorthin übertragen werden sollen."
+      },
+      "additionalNotes": {
+        "label": "Weitere Angaben, Bemerkungen oder Fragen"
+      },
+      "existingAgateSystems": {
+        "label": "Verwenden Sie agate bereits für andere Systeme? Wenn ja, für welche?"
+      }
+    },
+    "companyInformation": {
+      "heading": "Name und Adresse gemäss Handelsregistereintrag",
+      "contactPerson": "Kontaktperson für Onboardingprozess"
     }
   }
 }

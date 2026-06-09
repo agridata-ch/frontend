@@ -4,6 +4,7 @@ import { FormGroup, Validators } from '@angular/forms';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
   ContractRevisionDto,
   ExceptionEnum,
@@ -52,6 +53,7 @@ export class ContractSignatureInputComponent {
   private readonly contractRevisionService = inject(ContractRevisionService);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
+  private readonly stateService = inject(AgridataStateService);
   private readonly toastService = inject(ToastService);
 
   // Input properties
@@ -182,7 +184,7 @@ export class ContractSignatureInputComponent {
     if (!contractId) return;
 
     this.contractRevisionService
-      .startSigningProcess(contractId, this.slotId())
+      .startSigningProcess(contractId, this.slotId(), this.stateService.actingRole())
       .then((challenge) => {
         this.currentChallenge.set({ slotId: this.slotId(), challenge });
         this.showResendCooldownAlert.set(false);
@@ -206,7 +208,13 @@ export class ContractSignatureInputComponent {
     if (!contractId || !challengeId || !otpCode) return;
 
     this.contractRevisionService
-      .verifySigningProcess(challengeId, contractId, this.slotId(), { otpCode })
+      .verifySigningProcess(
+        challengeId,
+        contractId,
+        this.slotId(),
+        { otpCode },
+        this.stateService.actingRole(),
+      )
       .then((response: ContractRevisionDto) => {
         this.toastService.show(
           this.i18nService.translate('data-request.contractSigning.verifySigning.success.title'),

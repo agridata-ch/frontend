@@ -1,0 +1,248 @@
+<div
+  class="container mx-auto px-6 lg:px-10 py-10 lg:py-20 flex flex-col items-center gap-10"
+  [attr.id]="cmsData().anchorId ? cmsData().anchorId : null"
+>
+  <div class="flex flex-col gap-4 text-center w-full">
+    <h2>{{ cmsData().heading }}</h2>
+    @if (cmsData().subHeading) {
+      <p class="text-md lg:text-lg font-medium">{{ cmsData().subHeading }}</p>
+    }
+  </div>
+
+  <form
+    [formGroup]="onboardingForm"
+    class="flex flex-col gap-10 w-full"
+    (submit)="handleSubmit()"
+    *i18n="let t; prefix: 'onboardingForm'"
+  >
+    <div class="flex flex-col gap-6 w-full">
+      <h3 class="w-full text-lg font-semibold">{{ t('companyInformation.heading') }}</h3>
+      <div class="flex flex-col gap-6 w-full">
+        <app-form-control
+          [control]="getFormControl(onboardingForm, 'uid')"
+          id="onboardingFormUid"
+          [label]="t('uid.label')"
+          class="w-full"
+        />
+        <app-form-control
+          [control]="getFormControl(onboardingForm, 'company')"
+          id="onboardingFormCompany"
+          [label]="t('company.label')"
+          class="w-full"
+        />
+
+        <app-form-control
+          [control]="getFormControl(onboardingForm, 'country')"
+          id="onboardingFormCountry"
+          [label]="t('country.label')"
+          class="w-full"
+        />
+      </div>
+
+      <div class="flex flex-col lg:flex-row gap-6 w-full">
+        <app-form-control
+          [control]="getFormControl(onboardingForm, 'street')"
+          id="onboardingFormStreet"
+          [label]="t('street.label')"
+          class="w-full lg:w-1/2"
+        />
+        <app-form-control
+          [control]="getFormControl(onboardingForm, 'number')"
+          id="onboardingFormNumber"
+          [label]="t('number.label')"
+          class="w-full lg:w-1/2"
+        />
+      </div>
+
+      <div class="flex flex-col lg:flex-row gap-6 w-full">
+        <app-form-control
+          [control]="getFormControl(onboardingForm, 'postalCode')"
+          id="onboardingFormPostalCode"
+          [label]="t('postalCode.label')"
+          class="w-full lg:w-1/2"
+        />
+        <app-form-control
+          [control]="getFormControl(onboardingForm, 'city')"
+          id="onboardingFormCity"
+          [label]="t('city.label')"
+          class="w-full lg:w-1/2"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-6 w-full" [formGroup]="contactPersonGroup">
+      <h3 class="w-full text-lg font-semibold">{{ t('companyInformation.contactPerson') }}</h3>
+
+      <app-form-control
+        [control]="getFormControl(contactPersonGroup, 'salutation')"
+        id="contactPersonSalutation"
+        [label]="t('contactPerson.salutation.label')"
+        class="w-full"
+      />
+
+      <div class="flex flex-col lg:flex-row gap-6 w-full">
+        <app-form-control
+          [control]="getFormControl(contactPersonGroup, 'firstName')"
+          id="contactPersonFirstName"
+          [label]="t('contactPerson.firstName.label')"
+          class="w-full lg:w-1/2"
+        />
+        <app-form-control
+          [control]="getFormControl(contactPersonGroup, 'lastName')"
+          id="contactPersonLastName"
+          [label]="t('contactPerson.lastName.label')"
+          class="w-full lg:w-1/2"
+        />
+      </div>
+
+      <app-form-control
+        [control]="getFormControl(contactPersonGroup, 'email')"
+        id="contactPersonEmail"
+        [label]="t('contactPerson.email.label')"
+        class="w-full"
+      />
+
+      <app-form-control
+        [control]="getFormControl(contactPersonGroup, 'phone')"
+        id="contactPersonPhone"
+        [label]="t('contactPerson.phone.label')"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex flex-col gap-6 w-full">
+      <div class="flex flex-col gap-4 w-full">
+        <h3 class="w-full text-lg font-semibold">{{ t('data-request-person.heading') }}</h3>
+        <p class="w-full text-md font-medium">
+          {{ personSubheadingParts().before }}
+          <a
+            [href]="agateUrl()"
+            target="_blank"
+            class="underline hover:text-agridata-primary-600"
+            >{{ personSubheadingParts().linkText }}</a
+          >
+          {{ personSubheadingParts().after }}
+        </p>
+      </div>
+      @for (person of personsArray.controls; track $index) {
+        <div class="flex flex-col gap-4 p-6 border border-gray-300 rounded-lg">
+          <div class="flex items-center justify-between">
+            <h4 class="text-base font-semibold">{{ t('person.heading') }} {{ $index + 1 }}</h4>
+            @if ($index > 0) {
+              <app-agridata-button
+                (handleClick)="removePerson($index)"
+                [variant]="ButtonVariants.Tertiary"
+              >
+                <span>{{ t('person.remove') }}</span>
+              </app-agridata-button>
+            }
+          </div>
+
+          <div class="flex flex-col gap-6 w-full">
+            <div class="flex flex-col lg:flex-row gap-6 w-full">
+              <app-form-control
+                [control]="getFormControl(personGroup($index), 'agateNumber')"
+                [id]="'personAgateNumber_' + $index"
+                [label]="t('person.agateNumber.label')"
+                class="w-full lg:w-1/2"
+              />
+              <div class="w-full hidden lg:block lg:w-1/2">
+                <!-- Empty DIV for layout spacing -->
+              </div>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-6 w-full">
+              <app-form-control
+                [control]="getFormControl(personGroup($index), 'firstName')"
+                [id]="'personFirstName_' + $index"
+                [label]="t('person.firstName.label')"
+                class="w-full lg:w-1/2"
+              />
+              <app-form-control
+                [control]="getFormControl(personGroup($index), 'lastName')"
+                [id]="'personLastName_' + $index"
+                [label]="t('person.lastName.label')"
+                class="w-full lg:w-1/2"
+              />
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-6 w-full">
+            <app-form-control
+              [control]="getFormControl(personGroup($index), 'function')"
+              [id]="'personFunction_' + $index"
+              [label]="t('person.function.label')"
+              class="w-full"
+            />
+            <app-form-control
+              [control]="getFormControl(personGroup($index), 'email')"
+              [id]="'personEmail_' + $index"
+              [label]="t('person.email.label')"
+              class="w-full"
+            />
+            <app-form-control
+              [control]="getFormControl(personGroup($index), 'mobileNumber')"
+              [id]="'personMobileNumber_' + $index"
+              [label]="t('person.mobileNumber.label')"
+              class="w-full"
+            />
+          </div>
+        </div>
+      }
+      <div>
+        <app-agridata-button (handleClick)="addPerson()" [variant]="ButtonVariants.Secondary">
+          <span>{{ t('person.add') }}</span>
+        </app-agridata-button>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-6 w-full">
+      <h3 class="w-full text-lg font-semibold">{{ t('additionals.heading') }}</h3>
+
+      <app-form-control
+        [control]="getFormControl(onboardingForm, 'ownSystemDescription')"
+        id="onboardingFormOwnSystemDescription"
+        [label]="t('additionals.ownSystemDescription.label')"
+        [controlType]="ControlTypes.TEXT_AREA"
+        class="w-full"
+      />
+
+      <app-form-control
+        [control]="getFormControl(onboardingForm, 'interestedDataDescription')"
+        id="onboardingFormInterestedDataDescription"
+        [label]="t('additionals.interestedDataDescription.label')"
+        [controlType]="ControlTypes.TEXT_AREA"
+        class="w-full"
+      />
+
+      <app-form-control
+        [control]="getFormControl(onboardingForm, 'wishedDateRange')"
+        id="onboardingFormWishedDateRange"
+        [label]="t('additionals.wishedDateRange.label')"
+        [controlType]="ControlTypes.TEXT_AREA"
+        class="w-full"
+      />
+
+      <app-form-control
+        [control]="getFormControl(onboardingForm, 'existingAgateSystems')"
+        id="onboardingFormExistingAgateSystems"
+        [label]="t('additionals.existingAgateSystems.label')"
+        [controlType]="ControlTypes.TEXT_AREA"
+        class="w-full"
+      />
+
+      <app-form-control
+        [control]="getFormControl(onboardingForm, 'additionalNotes')"
+        id="onboardingFormAdditionalNotes"
+        [label]="t('additionals.additionalNotes.label')"
+        [controlType]="ControlTypes.TEXT_AREA"
+        class="w-full"
+      />
+    </div>
+
+    <div class="flex justify-end">
+      <app-agridata-button (handleClick)="handleSubmit()" [variant]="ButtonVariants.Primary">
+        <span>{{ t('submit') }}</span>
+      </app-agridata-button>
+    </div>
+  </form>
+</div>

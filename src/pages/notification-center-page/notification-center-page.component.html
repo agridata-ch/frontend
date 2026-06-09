@@ -1,0 +1,53 @@
+<ng-container *i18n="let t; prefix: 'notificationCenter'">
+  <div class="flex items-center justify-between">
+    <h2 class="page-title">
+      <fa-icon [icon]="faBell" class="mr-3" />
+      {{ t('pageTitle') }}
+    </h2>
+    <app-agridata-button
+      [variant]="ButtonVariants.IconLink"
+      (handleClick)="handleMarkAllAsRead()"
+      [icon]="faEye"
+      [iconPosition]="IconPosition.Left"
+      [loading]="isLoadingMarkAllAsRead()"
+    >
+      {{ t('markAllAsRead') }}
+    </app-agridata-button>
+  </div>
+  <app-error-outlet></app-error-outlet>
+  <app-agridata-table
+    [dataProvider]="fetchNotificationsResource"
+    [tableMetadata]="tableMetaData()"
+    [(queryParameters)]="resourceQueryDto"
+  >
+    <ng-template #titleTemplate let-item>
+      <span class="agridata-ellipsis-multiline">
+        {{ i18nService.useObjectTranslation(item.title) }}
+      </span>
+    </ng-template>
+
+    <ng-template #textTemplate let-item>
+      <span class="text-sm font-semibold text-agridata-primary-600 agridata-ellipsis-multiline">
+        {{ i18nService.useObjectTranslation(item.text) }}
+      </span>
+    </ng-template>
+
+    <ng-template #dateTemplate let-item>
+      {{ item.createdAt | agridataDate: 'middle' }}
+    </ng-template>
+
+    <ng-template #actionTemplate let-item>
+      <div
+        class="flex items-center justify-center border border-transparent transition-all duration-300 rounded-full w-10 h-10 hover:border-gray-400"
+        (click)="handleToggleReadStatus(item)"
+        (keydown)="handleToggleReadStatus(item)"
+        [title]="item.isRead ? t('markAsUnread') : t('markAsRead')"
+      >
+        <div
+          class="w-2 h-2 rounded-full border-2 border-agridata-brand-green"
+          [class.bg-agridata-brand-green]="!item.isRead"
+        ></div>
+      </div>
+    </ng-template>
+  </app-agridata-table>
+</ng-container>

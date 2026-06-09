@@ -545,7 +545,8 @@
       "markAllAsRead": "Marquer les notifications comme lues",
       "showAll": "Afficher toutes les notifications",
       "empty": "Vous n'avez aucune notification",
-      "markAsRead": "Marquer comme lu"
+      "markAsRead": "Marquer comme lu",
+      "markAsUnread": "Marquer comme non lu"
     }
   },
   "contact-form": {
@@ -764,6 +765,12 @@
         "title": "Toutes les notifications sont marquées comme lues",
         "message": "Toutes les notifications ont été marquées comme lues"
       }
+    },
+    "markAsUnread": {
+      "error": {
+        "title": "Échec de la mise en marqueur non lu",
+        "message": "Une erreur s'est produite lors de l'opération \"Marquer comme non lu\". Veuillez réessayer."
+      }
     }
   },
   "dataProducts": {
@@ -774,6 +781,125 @@
       "actions": {
         "viewDetails": "Afficher"
       }
+    },
+    "createNew": "Saisir un produit de données",
+    "create": {
+      "title": "Créer un nouveau produit de données",
+      "name": {
+        "de": {
+          "label": "Nom en allemand"
+        }
+      }
+    }
+  },
+  "notificationCenter": {
+    "pageTitle": "Toutes les notifications",
+    "table": {
+      "title": "Titre",
+      "text": "Message",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "markAllAsRead": "Marquer toutes les notifications comme lues",
+    "markAsRead": "Marquer comme lu",
+    "markAsUnread": "Marquer comme non lu"
+  },
+  "onboardingForm": {
+    "uid": {
+      "label": "Numéro IDE (CHE-XXX.XXX.XXX)"
+    },
+    "company": {
+      "label": "Nom de l'entreprise (raison sociale officielle)"
+    },
+    "country": {
+      "label": "Pays"
+    },
+    "street": {
+      "label": "Rue"
+    },
+    "number": {
+      "label": "N°"
+    },
+    "postalCode": {
+      "label": "NPA"
+    },
+    "city": {
+      "label": "Localité"
+    },
+    "person": {
+      "heading": "Personne",
+      "add": "Ajouter une personne",
+      "remove": "Supprimer la personne",
+      "firstName": {
+        "label": "Prénom"
+      },
+      "lastName": {
+        "label": "Nom"
+      },
+      "email": {
+        "label": "E-mail"
+      },
+      "function": {
+        "label": "Fonction (p. ex. directeur, propriétaire, président du CA)"
+      },
+      "agateNumber": {
+        "label": "Numéro agate"
+      },
+      "mobileNumber": {
+        "label": "Numéro de mobile"
+      }
+    },
+    "submit": "Transmettre les informations",
+    "success": {
+      "title": "Soumis mit succès",
+      "message": "Votre formulaire a été transmis avec succès à agridata.ch. Nous vous contacterons dans les plus brefs délais."
+    },
+    "error": {
+      "title": "Erreur",
+      "message": "Le formulaire n'a pas pu être soumis. Veuillez réessayer."
+    },
+    "contactPerson": {
+      "salutation": {
+        "label": "Formule d'appel"
+      },
+      "firstName": {
+        "label": "Prénom"
+      },
+      "lastName": {
+        "label": "Nom"
+      },
+      "email": {
+        "label": "E-mail"
+      },
+      "phone": {
+        "label": "Numéro de mobile"
+      }
+    },
+    "data-request-person": {
+      "subheading": "Pour la signature numérique des contrats d’accès aux données, vous devez impérativement saisir les personnes ayant le droit de signature de votre entreprise (personnes autorisées à signer des contrats pour la société). Si nécessaire, vous pouvez ajouter d’autres personnes pour gérer ultérieurement les demandes de données. De plus, un compte personnel agate est obligatoire pour toutes les personnes saisies (informations sous [blw.admin.ch]).",
+      "heading": "Personnes autorisées à accéder et ayant le droit de signature"
+    },
+    "additionals": {
+      "heading": "Informations complémentaires",
+      "wishedDateRange": {
+        "label": "Date de finalisation souhaitée"
+      },
+      "interestedDataDescription": {
+        "label": "Veuillez énumérer brièvement les données ou les produits de données spécifiques qui vous intéressent."
+      },
+      "ownSystemDescription": {
+        "label": "Veuillez décrire brièvement votre logiciel, qui en ist l'exploitant (fabricant) et de quelle manière les données doivent y être transférées."
+      },
+      "additionalNotes": {
+        "label": "Autres informations, remarques ou questions"
+      },
+      "existingAgateSystems": {
+        "label": "Utilisez-vous déjà agate für d'autres systèmes ? Si oui, lesquels ?"
+      }
+    },
+    "companyInformation": {
+      "heading": "Nom et adresse selon l'inscription au registre du commerce",
+      "contactPerson": "Personne de contact pour le processus d'onboarding"
     }
   }
 }

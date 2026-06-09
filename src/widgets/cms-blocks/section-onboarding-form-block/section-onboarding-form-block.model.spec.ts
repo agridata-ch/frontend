@@ -1,0 +1,59 @@
+import { parseSubheadingParts } from './section-onboarding-form-block.model';
+
+describe('parseSubheadingParts', () => {
+  it('splits the string into before, linkText, and after', () => {
+    expect(parseSubheadingParts('Please check [agate] for details.')).toEqual({
+      before: 'Please check ',
+      linkText: 'agate',
+      after: ' for details.',
+    });
+  });
+
+  it('handles a link at the very start of the string', () => {
+    expect(parseSubheadingParts('[agate] is the system.')).toEqual({
+      before: '',
+      linkText: 'agate',
+      after: ' is the system.',
+    });
+  });
+
+  it('handles a link at the very end of the string', () => {
+    expect(parseSubheadingParts('See the [agate]')).toEqual({
+      before: 'See the ',
+      linkText: 'agate',
+      after: '',
+    });
+  });
+
+  it('returns linkText null and full text as before when no brackets are present', () => {
+    expect(parseSubheadingParts('No link in this text.')).toEqual({
+      before: 'No link in this text.',
+      linkText: null,
+      after: '',
+    });
+  });
+
+  it('returns linkText null when only the opening bracket is present', () => {
+    expect(parseSubheadingParts('Missing [closing bracket.')).toEqual({
+      before: 'Missing [closing bracket.',
+      linkText: null,
+      after: '',
+    });
+  });
+
+  it('returns linkText null for an empty string', () => {
+    expect(parseSubheadingParts('')).toEqual({
+      before: '',
+      linkText: null,
+      after: '',
+    });
+  });
+
+  it('uses the first bracket pair when multiple pairs exist', () => {
+    expect(parseSubheadingParts('See [first] and [second].')).toEqual({
+      before: 'See ',
+      linkText: 'first',
+      after: ' and [second].',
+    });
+  });
+});

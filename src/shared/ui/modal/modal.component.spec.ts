@@ -30,7 +30,7 @@ describe('ModalComponent', () => {
     componentRef.setInput('open', false);
     fixture.detectChanges();
 
-    const modalContainer = fixture.debugElement.query(By.css('.absolute.h-screen'));
+    const modalContainer = fixture.debugElement.query(By.css('.fixed.h-screen'));
     expect(modalContainer).toBeNull();
   });
 
@@ -38,7 +38,7 @@ describe('ModalComponent', () => {
     componentRef.setInput('open', true);
     fixture.detectChanges();
 
-    const modalContainer = fixture.debugElement.query(By.css('.absolute.h-screen'));
+    const modalContainer = fixture.debugElement.query(By.css('.fixed.h-screen'));
     expect(modalContainer).not.toBeNull();
   });
 
@@ -125,7 +125,7 @@ describe('ModalComponent', () => {
     componentRef.setInput('open', true);
     fixture.detectChanges();
 
-    const overlay = fixture.debugElement.query(By.css('.absolute.h-screen'));
+    const overlay = fixture.debugElement.query(By.css('.fixed.h-screen'));
     expect(overlay.nativeElement.classList.contains('items-center')).toBe(true);
     expect(overlay.nativeElement.classList.contains('justify-center')).toBe(true);
   });

@@ -23,7 +23,7 @@ jobs:
           private-key: ${{ secrets.PRIVATE_KEY_GITHUB_APP_GITLEAKS }}
 
       - name: Run Gitleaks Scan
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           GITLEAKS_LICENSE: ${{ secrets.LICENSE_KEY_GITLEAKS }}

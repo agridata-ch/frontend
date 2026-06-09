@@ -12,7 +12,11 @@ import { filter, map } from 'rxjs';
 import { BackendInfoService } from '@/entities/api/backend-info.service';
 import { UserService } from '@/entities/api/user.service';
 import { UidDto, UserPreferencesDto } from '@/entities/openapi';
-import { AGATE_LOGIN_ID_IMPERSONATION_HEADER, ROUTE_PATHS } from '@/shared/constants/constants';
+import {
+  ActingRole,
+  AGATE_LOGIN_ID_IMPERSONATION_HEADER,
+  ROUTE_PATHS,
+} from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 
 export const DISMISSED_MIGRATIONS_KEY = 'dismissedMigrationAlerts';
@@ -34,6 +38,9 @@ export class AgridataStateService {
   private readonly userService = inject(UserService);
   private readonly authService = inject(AuthService);
   private readonly backendInfoService = inject(BackendInfoService);
+
+  // Constants
+  private readonly _initialRoute = this.extractRoutePath();
 
   // Signals
   private readonly _userPreferences = signal<UserPreferencesDto>({}); // we want to locally track changes before persisting
@@ -65,6 +72,11 @@ export class AgridataStateService {
 
   // Computed signals
   readonly activeUid = computed<string | undefined>(() => this._userPreferences()?.activeUid);
+
+  readonly actingRole = computed<ActingRole | undefined>(() => {
+    const route = this.currentRouteWithoutQueryParams() ?? this._initialRoute.split('?')[0];
+    return this.resolveActingRole(route);
+  });
 
   readonly currentRouteWithoutQueryParams = computed(() => {
     const route = this.currentRoute();
@@ -176,6 +188,25 @@ export class AgridataStateService {
    */
   private extractRoutePath(): string {
     return this.router.url;
+  }
+
+  private resolveActingRole(route: string): ActingRole | undefined {
+    if (route.startsWith(`/${ROUTE_PATHS.DATA_REQUESTS_PROVIDER_PATH}`)) return 'PROVIDER';
+    if (route.startsWith(`/${ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH}`)) return 'CONSUMER';
+    if (route.startsWith(`/${ROUTE_PATHS.ADMIN_PATH}`)) return 'ADMIN';
+    if (route.startsWith(`/${ROUTE_PATHS.SUPPORT_PATH}`)) {
+      if (this.authService.isSupporter()) return 'SUPPORT';
+      if (this.authService.isAdmin()) return 'ADMIN';
+      return undefined;
+    }
+    if (route.startsWith(`/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`)) {
+      if (this.authService.isProducer()) return 'PRODUCER';
+      if (this.authService.isAdmin()) return 'ADMIN';
+      if (this.authService.isSupporter()) return 'SUPPORT';
+      return undefined;
+    }
+    if (!route.startsWith(`/${ROUTE_PATHS.DATA_PRODUCTS_PATH}`)) return undefined;
+    return this.authService.isAdmin() ? 'ADMIN' : 'PROVIDER';
   }
 
   private shouldLoadBackendInfo(route: string) {

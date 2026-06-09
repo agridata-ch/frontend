@@ -18,6 +18,7 @@ export const ExceptionEnum = {
     OtpLocked: 'OTP_LOCKED',
     OtpExpired: 'OTP_EXPIRED',
     OtpResendCooldown: 'OTP_RESEND_COOLDOWN',
+    DataProviderError: 'DATA_PROVIDER_ERROR',
     Maintenance: 'MAINTENANCE'
 } as const;
 export type ExceptionEnum = typeof ExceptionEnum[keyof typeof ExceptionEnum];

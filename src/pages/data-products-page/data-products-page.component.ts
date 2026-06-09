@@ -11,6 +11,7 @@ import { faEye, faLayerGroup } from '@awesome.me/kit-0b6d1ed528/icons/classic/re
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProductDto, PageResponseDto, ResourceQueryDto } from '@/entities/openapi';
 import { DataProductDtoDirective } from '@/shared/data-product';
@@ -43,6 +44,7 @@ import {
 export class DataProductsPageComponent {
   private readonly dataProductService = inject(DataProductService);
   private readonly errorService = inject(ErrorHandlerService);
+  private readonly stateService = inject(AgridataStateService);
   protected readonly i18nService = inject(I18nService);
 
   protected readonly NAME_HEADER = 'dataProducts.table.name';
@@ -93,10 +95,12 @@ export class DataProductsPageComponent {
 
   readonly fetchDataProductsResource = resource({
     params: () => ({
-      query: this.resourceQueryDto() ?? {},
+      actingRole: this.stateService.actingRole(),
       locale: this.i18nService.lang(),
+      query: this.resourceQueryDto() ?? {},
     }),
-    loader: ({ params }) => this.dataProductService.getAllDataProducts(params.query, params.locale),
+    loader: ({ params }) =>
+      this.dataProductService.getAllDataProducts(params.query, params.locale, params.actingRole),
     defaultValue: {} as PageResponseDto,
   });
 

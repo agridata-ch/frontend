@@ -60,7 +60,8 @@
         @for (row of pageData().items; track getRowId(row)) {
           <tr
             class="hover:bg-agridata-primary-50 cursor-pointer transition-colors duration-150"
-            [class.bg-sky-50]="isRowHighlighted(row)"
+            [class.bg-sky-50]="isRowHighlighted(row) && !isRowSelected(row)"
+            [class.bg-agridata-primary-50]="isRowSelected(row)"
             [attr.aria-selected]="isRowHighlighted(row)"
             [attr.id]="tableMetadata().tableId + '-row-' + $index"
             (click)="handleRowClick(row)"

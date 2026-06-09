@@ -3,8 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import {
+  createMockAgridataStateService,
   createMockContractRevisionService,
   MockContractRevisionService,
   createMockErrorHandlerService,
@@ -40,6 +42,7 @@ describe('DataRequestDetailsContractComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestDetailsContractComponent],
       providers: [
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
         { provide: ContractRevisionService, useValue: contractRevisionService },
         { provide: ErrorHandlerService, useValue: errorService },
       ],
@@ -58,6 +61,6 @@ describe('DataRequestDetailsContractComponent', () => {
 
   it('should fetch contract for the current revision id', async () => {
     await fixture.whenStable();
-    expect(contractRevisionService.fetchContract).toHaveBeenCalledWith('cr-1');
+    expect(contractRevisionService.fetchContract).toHaveBeenCalledWith('cr-1', undefined);
   });
 });

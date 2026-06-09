@@ -4,6 +4,7 @@ import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/button';
@@ -26,6 +27,7 @@ export class DataRequestContractPdfComponent {
   private readonly contractRevisionService = inject(ContractRevisionService);
   private readonly errorHandler = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
+  private readonly stateService = inject(AgridataStateService);
 
   // Inputs
   readonly dataRequest = input.required<DataRequestDto>();
@@ -58,7 +60,7 @@ export class DataRequestContractPdfComponent {
 
     this.isLoadingOpen.set(true);
     this.contractRevisionService
-      .getContractRevisionPdf(this.contractRevisionId())
+      .getContractRevisionPdf(this.contractRevisionId(), this.stateService.actingRole())
       .then((pdfBlob) => {
         const url = URL.createObjectURL(pdfBlob);
         window.open(url, '_blank');
@@ -79,7 +81,7 @@ export class DataRequestContractPdfComponent {
 
     this.isLoadingDownload.set(true);
     this.contractRevisionService
-      .getContractRevisionPdf(this.contractRevisionId())
+      .getContractRevisionPdf(this.contractRevisionId(), this.stateService.actingRole())
       .then((pdfBlob) => {
         const url = URL.createObjectURL(pdfBlob);
         const a = document.createElement('a');

@@ -50,7 +50,8 @@ export class DataRequestsConsumerPage {
   protected readonly stateService = inject(AgridataStateService);
 
   protected readonly dataRequestsResource = resource({
-    loader: () => this.dataRequestService.fetchDataRequests(),
+    params: () => ({ actingRole: this.stateService.actingRole() }),
+    loader: ({ params }) => this.dataRequestService.fetchDataRequests(params.actingRole),
     defaultValue: [],
   });
   protected readonly dataRequests = createResourceValueComputed(this.dataRequestsResource, []);

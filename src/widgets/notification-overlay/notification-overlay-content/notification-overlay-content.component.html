@@ -24,8 +24,9 @@
         appScrollFade
       >
         @for (notification of notifications(); track notification.id) {
-          <div
+          <a
             class="flex gap-4 px-3 py-3 pr-1 justify-between hover:bg-agridata-content-gray cursor-pointer"
+            [routerLink]="notificationRoutes().get(notification.id!)"
           >
             <div class="flex flex-col gap-1">
               <span class="text-sm font-semibold">
@@ -42,11 +43,11 @@
             </div>
             <div class="flex grow items-center justify-end">
               <div
-                class="flex items-center justify-center border border-transparent transition-all duration-300 rounded-full w-10 h-10"
-                [class.hover:border-gray-400]="!notification.isRead"
-                (click)="handleMarkAsRead(notification)"
-                (keydown)="handleMarkAsRead(notification)"
-                [title]="notification.isRead ? '' : t('markAsRead')"
+                click-stop-propagation
+                class="flex items-center justify-center border border-transparent transition-all duration-300 rounded-full w-10 h-10 hover:border-gray-400"
+                (click)="handleToggleReadStatus(notification)"
+                (keydown)="handleToggleReadStatus(notification)"
+                [title]="notification.isRead ? t('markAsUnread') : t('markAsRead')"
               >
                 <div
                   class="w-2 h-2 rounded-full border-2 border-agridata-brand-green"
@@ -54,7 +55,7 @@
                 ></div>
               </div>
             </div>
-          </div>
+          </a>
         }
       </div>
       <app-agridata-button
@@ -72,7 +73,6 @@
         (handleClick)="navigateToNotifications()"
         [icon]="faLink"
         [iconPosition]="IconPosition.Right"
-        disabled
       >
         {{ t('showAll') }}
       </app-agridata-button>
