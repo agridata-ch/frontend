@@ -1,3 +1,23 @@
+## [1.12.0](https://github.com/agridata-ch/frontend/compare/v1.11.0...v1.12.0) (2026-06-09)
+
+### Features
+
+- **cms:** add onboarding form ([2173697](https://github.com/agridata-ch/frontend/commit/2173697d646eeef5799637000d069ea30fdad611)), closes [DIGIB2-1441](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1441)
+- **coding-agent:** add a11y-reviewer ([269c51f](https://github.com/agridata-ch/frontend/commit/269c51f5df715b833b2b583f9c3622ffeb070481))
+- **consent_request:** highlight clicked rows table when sidepanel open ([bfab3b8](https://github.com/agridata-ch/frontend/commit/bfab3b83193022e4ec6a4500095bb92743ba3be0)), closes [DIGIB2-483](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-483)
+- **deps:** update gitleaks/gitleaks-action action to v3 ([de78ada](https://github.com/agridata-ch/frontend/commit/de78ada351a466bbfb0692e80aad23d42d5bbba5))
+- **multi-roles:** allow multiple roles ([2ea0ff1](https://github.com/agridata-ch/frontend/commit/2ea0ff1df0e8925e3222b16bdabb9354df9f43df)), closes [DIGIB2-1214](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1214)
+- **notification-center:** add notifications page ([213c7a0](https://github.com/agridata-ch/frontend/commit/213c7a0b3492e1102d25bda09d36c9207b7db7ee)), closes [DIGIB2-315](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-315)
+- **onboarding-form:** add minimal validations ([67002cf](https://github.com/agridata-ch/frontend/commit/67002cf6a8516cb3c96a9d27dfc483f923169d06)), closes [DIGIB2-1441](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1441)
+- **onboarding-form:** add mobileNumber ([abb4770](https://github.com/agridata-ch/frontend/commit/abb4770caacc01cec90e076e60ff0ac60c774390)), closes [DIGIB2-1441](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1441)
+
+### Bug Fixes
+
+- **consent_request:** set activeUid for opened side panel ([f381bdf](https://github.com/agridata-ch/frontend/commit/f381bdfe40a00cfc781430e1b5292a19320fa308)), closes [DIGIB2-1420](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1420)
+- **modal:** fix backdrop ([00e8905](https://github.com/agridata-ch/frontend/commit/00e89059cad9f4deb41ae6fdc29e22a804220d61)), closes [DIGIB2-1307](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1307)
+- **notifications:** fix table deeplink ([6a2eaa5](https://github.com/agridata-ch/frontend/commit/6a2eaa5dc396397f09e196ee7a02af4d03244955)), closes [DIGIB2-315](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-315)
+- **ui:** navigation item order ([b2cb7e8](https://github.com/agridata-ch/frontend/commit/b2cb7e839484d5d95306e46db332a5636ea1cbeb)), closes [DIGIB2-1214](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1214)
+
 ## [1.12.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.12.0-rc.10...v1.12.0-rc.11) (2026-06-08)
 
 ### Features
