@@ -11,22 +11,29 @@
   <div
     #sidepanelContent
     tabindex="-1"
-    class="flex flex-col h-full p-6 transition-opacity duration-100 ease-in-out relative"
+    class="flex flex-col h-full p-6 transition-opacity duration-100 ease-in-out relative gap-6"
     [class.opacity-0]="!isOpen()"
     [class.opacity-100]="isOpen()"
   >
-    <div class="flex items-center justify-between sticky top-0 min-h-11">
-      <h4>
-        {{ title() }}
-      </h4>
-      <app-agridata-button
-        [variant]="ButtonVariants.Icon"
-        [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
-        (handleClick)="handleClose()"
-        [disabled]="preventManualClose()"
-      >
-        <fa-icon size="xl" [icon]="closeIcon" />
-      </app-agridata-button>
+    <div class="flex flex-col">
+      <div class="flex items-center justify-between sticky top-0 min-h-11">
+        <h4>
+          {{ title() }}
+        </h4>
+        <app-agridata-button
+          [variant]="ButtonVariants.Icon"
+          [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
+          (handleClick)="handleClose()"
+          [disabled]="preventManualClose()"
+        >
+          <fa-icon size="xl" [icon]="closeIcon" />
+        </app-agridata-button>
+      </div>
+      @if (subTitle()) {
+        <span class="text-agridata-secondary-text">
+          {{ subTitle() }}
+        </span>
+      }
     </div>
     <ng-content></ng-content>
   </div>

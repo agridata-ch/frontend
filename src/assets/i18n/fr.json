@@ -677,6 +677,11 @@
   "breadcrumb": {
     "home": "Accueil"
   },
+  "common": {
+    "ariaLabel": {
+      "close": "Fermer"
+    }
+  },
   "footer": {
     "logoBund": {
       "altText": "Image avec drapeau suisse et inscription Confédération suisse"
@@ -773,7 +778,7 @@
       }
     }
   },
-  "dataProducts": {
+  "data-products": {
     "pageTitle": "Produits de données",
     "table": {
       "name": "Produit de données",
@@ -783,12 +788,102 @@
       }
     },
     "createNew": "Saisir un produit de données",
-    "create": {
+    "detailPanel": {
       "title": "Créer un nouveau produit de données",
+      "subTitle": "Un produit de données est une livraison de données versionnée et clairement délimitée, fournie par un système source. Il sert de pont entre la compréhensibilité métier et l'intégrabilité technique."
+    },
+    "detailForm": {
       "name": {
         "de": {
-          "label": "Nom en allemand"
+          "label": "Nom en allemand",
+          "placeholder": "z.B. Nutztiere in Sömmerung"
+        },
+        "fr": {
+          "label": "Nom Français",
+          "placeholder": "p.ex. Animaux de rente en estivage"
+        },
+        "it": {
+          "label": "Nom Italien",
+          "placeholder": "p.es. Animali da reddito estivati"
         }
+      },
+      "dataProduct": "Nom et description du produit de données",
+      "infoTitle": "Langage simple",
+      "infoMessage": "Choisissez un langage facilement compréhensible pour les noms et la description des produits. Les produits de données seront affichés directement sur agridata.ch après avoir été enregistrés et publiés, et doivent être rédigés de manière compréhensible.",
+      "system": "Système",
+      "technicalFields": "Informations techniques",
+      "description": {
+        "de": {
+          "label": "Description Allemand",
+          "placeholder": "z.B. Dieses Datenprodukt enthält die Art und Anzahl Nutztiere pro Betrieb, die im Inland gesömmert wurden."
+        },
+        "fr": {
+          "label": "Description Français",
+          "placeholder": "Par exemple, ce produit de données contient le type et le nombre d'animaux d'élevage par exploitation qui ont été gardés localement pendant l'été."
+        },
+        "it": {
+          "label": "Description Italien",
+          "placeholder": "Ad esempio, questo prodotto di dati contiene il tipo e il numero di animali da allevamento per azienda agricola che sono stati ospitati in loco durante l'estate."
+        }
+      },
+      "provider": {
+        "label": "Sélectionner le fournisseur de données",
+        "placeholder": "Veuillez sélectionner le fournisseur de données"
+      },
+      "dataSourceSystem": {
+        "label": "Sélectionner le système",
+        "placeholder": "Veuillez sélectionner le système"
+      },
+      "restClientIdentifier": {
+        "label": "Sélectionner l'interface système",
+        "placeholder": "Veuillez sélectionner l'interface système"
+      },
+      "restClientMethod": {
+        "label": "Sélectionner la méthode de transfert",
+        "placeholder": "Veuillez sélectionner la méthode de transfert"
+      },
+      "restClientPathTemplate": {
+        "label": "Modèle de chemin URL (Interface)",
+        "placeholder": "par ex. /api/v1/bur/{{bur}}/animaux_d_elevage"
+      },
+      "restClientRequestTemplate": {
+        "label": "Modèle de corps de requête (JSON/XML)",
+        "placeholder": "par ex. { \"statut\": \"actif\" }"
+      },
+      "restClientChangeDetectionPathTemplate": {
+        "label": "Chemin pour la détection des modifications",
+        "placeholder": "par ex. /api/v1/animaux_d_elevage/modifications"
+      },
+      "cancel": "Annuler",
+      "saveDraft": "Enregistrer comme brouillon",
+      "saveAndPublish": "Enregistrer et publier",
+      "flowCode": {
+        "label": "Sélectionner le mode de transfert",
+        "placeholder": "Veuillez sélectionner le mode de transfert"
+      },
+      "tab": {
+        "technicalFields": "Informations techniques",
+        "nameAndDescription": "Nom et description"
+      }
+    },
+    "saveAndPublish": {
+      "success": {
+        "title": "Enregistrement et publication réussis",
+        "message": "Le produit de données a été enregistré et publié avec succès."
+      },
+      "error": {
+        "title": "Échec de l'enregistrement et de la publication",
+        "message": "Un problème est survenu lors de l'enregistrement et de la publication. Veuillez réessayer plus tard."
+      }
+    },
+    "saveDraft": {
+      "success": {
+        "title": "Enregistré comme brouillon",
+        "message": "Le produit de données a été enregistré avec succès en tant que brouillon."
+      },
+      "error": {
+        "title": "Échec de l'enregistrement comme brouillon.",
+        "message": "Un problème est survenu lors de l'enregistrement en tant que brouillon. Veuillez réessayer plus tard."
       }
     }
   },

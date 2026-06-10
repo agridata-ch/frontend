@@ -1,4 +1,6 @@
 import { Component, input, model, output } from '@angular/core';
+import { faWarning } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { Tab } from '@/shared/ui/agridata-tabs/agridata-tabs.model';
 
@@ -11,7 +13,7 @@ import { Tab } from '@/shared/ui/agridata-tabs/agridata-tabs.model';
  */
 @Component({
   selector: 'app-agridata-tabs',
-  imports: [],
+  imports: [FontAwesomeModule],
   templateUrl: './agridata-tabs.component.html',
 })
 export class AgridataTabsComponent {
@@ -20,6 +22,8 @@ export class AgridataTabsComponent {
   readonly activeTabId = model.required<string>();
 
   readonly tabChange = output<string>();
+
+  protected readonly faWarning = faWarning;
 
   protected handleTabClick(tab: Tab): void {
     if (tab.disabled) {

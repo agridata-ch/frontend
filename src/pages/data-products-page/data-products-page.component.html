@@ -1,9 +1,22 @@
-<ng-container *i18n="let t; prefix: 'dataProducts'">
-  <h2 class="page-title">
-    <fa-icon [icon]="faLayerGroup" class="mr-3" />
-    {{ t('pageTitle') }}
-  </h2>
+<ng-container *i18n="let t; prefix: 'data-products'">
+  <div class="flex justify-between">
+    <h2 class="page-title">
+      <fa-icon [icon]="faLayerGroup" class="mr-3" />
+      {{ t('pageTitle') }}
+    </h2>
+    <div>
+      <app-agridata-button
+        [variant]="ButtonVariants.Primary"
+        (handleClick)="newProduct()"
+        (keydown.enter)="newProduct()"
+      >
+        <fa-icon [icon]="buttonIcon" class="mr-2" />
+        <span>{{ t('createNew') }}</span>
+      </app-agridata-button>
+    </div>
+  </div>
   <app-error-outlet></app-error-outlet>
+  <router-outlet />
   <app-agridata-table
     [dataProvider]="fetchDataProductsResource"
     [tableMetadata]="dataProductsTableMetaData()"

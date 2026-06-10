@@ -1,6 +1,6 @@
 import { FormGroup } from '@angular/forms';
 
-import { FORM_COMPLETION_STRATEGIES, FormModel } from './data-request-wizard.model';
+import { FORM_COMPLETION_STRATEGIES, FormModel } from '@/shared/lib/form.helper';
 
 export function isStepCompleted(
   formGroup: FormGroup,

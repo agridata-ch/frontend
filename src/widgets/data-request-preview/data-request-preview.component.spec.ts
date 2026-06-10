@@ -54,8 +54,8 @@ describe('DataRequestPreviewComponent', () => {
   describe('computed signals', () => {
     it('should compute productsList correctly', () => {
       const mockProducts: DataProductDto[] = [
-        { id: 'product1', name: { de: 'Product 1' } },
-        { id: 'product2', name: { de: 'Product 2' } },
+        { id: 'product1', name: { de: 'Product 1' }, stateCode: 'DRAFT' },
+        { id: 'product2', name: { de: 'Product 2' }, stateCode: 'DRAFT' },
       ];
 
       const mockDataRequest: DataRequestDto = {
@@ -71,11 +71,15 @@ describe('DataRequestPreviewComponent', () => {
 
       const productsList = component.productsList();
       expect(productsList).toHaveLength(1);
-      expect(productsList).toEqual([{ id: 'product1', name: { de: 'Product 1' } }]);
+      expect(productsList).toEqual([
+        { id: 'product1', name: { de: 'Product 1' }, stateCode: 'DRAFT' },
+      ]);
     });
 
     it('should handle empty products list', () => {
-      const mockProducts: DataProductDto[] = [{ id: 'product1', name: { de: 'Product 1' } }];
+      const mockProducts: DataProductDto[] = [
+        { id: 'product1', name: { de: 'Product 1' }, stateCode: 'DRAFT' },
+      ];
 
       const mockDataRequest: DataRequestDto = {
         id: 'test-id',

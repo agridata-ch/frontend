@@ -36,6 +36,7 @@ const mockDataRequest: DataRequestDto = {
 const mockDataProduct: DataProductDto = {
   id: 'product-1',
   name: { de: 'Produkt A', fr: 'Produit A', it: 'Prodotto A' },
+  stateCode: 'DRAFT',
 };
 
 describe('DataRequestCompletionComponent', () => {
@@ -117,7 +118,11 @@ describe('DataRequestCompletionComponent', () => {
     });
 
     it('should filter out products not in the data request', () => {
-      const otherProduct: DataProductDto = { id: 'product-99', name: { de: 'Other' } };
+      const otherProduct: DataProductDto = {
+        id: 'product-99',
+        name: { de: 'Other' },
+        stateCode: 'DRAFT',
+      };
       masterDataService.__testSignals.productsByProvider.set(
         new Map([['provider-1', [mockDataProduct, otherProduct]]]),
       );

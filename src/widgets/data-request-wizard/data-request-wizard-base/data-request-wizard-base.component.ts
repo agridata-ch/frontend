@@ -29,14 +29,19 @@ import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
-import { buildReactiveForm, populateFormFromDto, setControlValue } from '@/shared/lib/form.helper';
+import {
+  buildReactiveForm,
+  FormModel,
+  populateFormFromDto,
+  setControlValue,
+} from '@/shared/lib/form.helper';
 import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonVariants } from '@/shared/ui/button';
 import { AgridataWizardComponent, WizardStep } from '@/widgets/agridata-wizard';
 import {
   isStepCompleted,
   dataRequestFormsModel,
-  FormModel,
+  DataRequestFormModel,
   FORM_GROUP_NAMES,
   DATA_REQUEST_NEW_ID,
 } from '@/widgets/data-request-wizard';
@@ -93,7 +98,7 @@ export abstract class DataRequestWizardBaseComponent {
   });
 
   // Abstract properties
-  protected abstract readonly formsModel: FormModel[];
+  protected abstract readonly formsModel: DataRequestFormModel[];
   protected abstract readonly listRoutePath: string;
   protected abstract readonly stepLabelMap: Record<string, Signal<string | undefined>>;
 

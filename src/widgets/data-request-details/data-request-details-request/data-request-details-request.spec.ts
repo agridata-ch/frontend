@@ -60,9 +60,9 @@ describe('DataRequestDetailsRequestComponent', () => {
 
     it('should compute productsList correctly', () => {
       const mockProducts: DataProductDto[] = [
-        { id: 'product1', name: { de: 'Product 1' } },
-        { id: 'product2', name: { de: 'Product 2' } },
-        { id: 'product3', name: { de: 'Product 3' } },
+        { id: 'product1', name: { de: 'Product 1' }, stateCode: 'DRAFT' },
+        { id: 'product2', name: { de: 'Product 2' }, stateCode: 'DRAFT' },
+        { id: 'product3', name: { de: 'Product 3' }, stateCode: 'DRAFT' },
       ];
 
       const productsByProvider = new Map<string, DataProductDto[]>();
@@ -80,8 +80,8 @@ describe('DataRequestDetailsRequestComponent', () => {
       const productsList = component['productsList']();
       expect(productsList).toHaveLength(2);
       expect(productsList).toEqual([
-        { id: 'product1', name: { de: 'Product 1' } },
-        { id: 'product2', name: { de: 'Product 2' } },
+        { id: 'product1', name: { de: 'Product 1' }, stateCode: 'DRAFT' },
+        { id: 'product2', name: { de: 'Product 2' }, stateCode: 'DRAFT' },
       ]);
     });
   });

@@ -1,14 +1,12 @@
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 import type { I18nService } from '@/shared/i18n';
-import {
-  FormModel,
-  FORM_COMPLETION_STRATEGIES,
-  FORM_GROUP_NAMES,
-} from '@/widgets/data-request-wizard';
+import { FORM_GROUP_NAMES } from '@/widgets/data-request-wizard';
 
 import {
   buildReactiveForm,
+  FORM_COMPLETION_STRATEGIES,
+  FormModel,
   getErrorMessage,
   JsonSchema,
   populateFormFromDto,

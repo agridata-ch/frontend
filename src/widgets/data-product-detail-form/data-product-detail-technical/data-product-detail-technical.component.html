@@ -1,0 +1,37 @@
+<ng-container *i18n="let t; prefix: 'data-products.detailForm'">
+  <div class="flex flex-col gap-4">
+    <h3>{{ t('technicalFields') }}</h3>
+    <app-form-control
+      [control]="getFormControl('flowCode')"
+      [controlType]="ControlTypes.SELECT"
+      [options]="flowCodeOptions"
+      [label]="t('flowCode.label')"
+      [placeholder]="t('flowCode.placeholder')"
+      id="flowCode"
+    />
+
+    <app-form-control
+      [control]="getFormControl('restClientPathTemplate')"
+      [controlType]="ControlTypes.TEXT_AREA"
+      [label]="t('restClientPathTemplate.label')"
+      [placeholder]="t('restClientPathTemplate.placeholder')"
+      id="restClientPathTemplate"
+    />
+
+    <app-form-control
+      [control]="getFormControl('restClientRequestTemplate')"
+      [controlType]="ControlTypes.TEXT_AREA"
+      [label]="t('restClientRequestTemplate.label')"
+      [placeholder]="t('restClientRequestTemplate.placeholder')"
+      id="restClientRequestTemplate"
+    />
+
+    <app-form-control
+      [control]="getFormControl('restClientChangeDetectionPathTemplate')"
+      [controlType]="ControlTypes.TEXT_AREA"
+      [label]="t('restClientChangeDetectionPathTemplate.label')"
+      [placeholder]="t('restClientChangeDetectionPathTemplate.placeholder')"
+      id="restClientChangeDetectionPathTemplate"
+    />
+  </div>
+</ng-container>

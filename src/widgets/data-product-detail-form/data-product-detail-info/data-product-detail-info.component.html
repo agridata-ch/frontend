@@ -1,0 +1,104 @@
+<ng-container *i18n="let t; prefix: 'data-products.detailForm'">
+  <div class="flex flex-col gap-4">
+    <h3>{{ t('system') }}</h3>
+    @if (isAdmin()) {
+      <div class="flex flex-col">
+        <span class="mb-2 font-medium leading-[130%]" [class.text-red-500]="providerSelectHasError">
+          {{ t('provider.label') }}
+        </span>
+        <app-agridata-select
+          [options]="providerOptions()"
+          [selectedOption]="selectedProviderId()"
+          [placeholder]="t('provider.placeholder')"
+          [hasError]="providerSelectHasError"
+          (selectedOptionChange)="onProviderChange($event)"
+        />
+        <span
+          class="min-h-[1.5em] block text-gray-700"
+          [class.text-red-500]="providerSelectHasError"
+        >
+          @if (providerSelectHasError) {
+            <span class="text-sm">{{ providerSelectErrorMessage }}</span>
+          }
+        </span>
+      </div>
+    }
+    <div class="flex flex-col lg:flex-row gap-6">
+      <app-form-control
+        [control]="getFormControl('dataSourceSystemId')"
+        [controlType]="ControlTypes.SELECT"
+        [options]="dataSourceOptions()"
+        [label]="t('dataSourceSystem.label')"
+        [placeholder]="t('dataSourceSystem.placeholder')"
+        [disabled]="!selectedProviderId()"
+        class="lg:w-1/2"
+        id="dataSourceSystemId"
+      />
+      <app-form-control
+        [control]="getFormControl('restClientId')"
+        [controlType]="ControlTypes.SELECT"
+        [options]="restClientOptions()"
+        [label]="t('restClientIdentifier.label')"
+        [placeholder]="t('restClientIdentifier.placeholder')"
+        [disabled]="!selectedProviderId()"
+        class="lg:w-1/2"
+        id="restClientId"
+      />
+    </div>
+
+    <app-form-control
+      [control]="getFormControl('restClientMethodCode')"
+      [controlType]="ControlTypes.SELECT"
+      [options]="methodCodeOptions"
+      [label]="t('restClientMethod.label')"
+      [placeholder]="t('restClientMethod.placeholder')"
+      id="restClientMethodCode"
+    />
+  </div>
+
+  <div class="flex flex-col gap-4">
+    <h3>{{ t('dataProduct') }}</h3>
+    <app-alert [title]="t('infoTitle')" [message]="t('infoMessage')" [type]="AlertType.INFO" />
+    <app-form-control
+      [control]="getFormControl('name.de')"
+      [label]="t('name.de.label')"
+      [placeholder]="t('name.de.placeholder')"
+      id="name-de"
+    />
+    <app-form-control
+      [control]="getFormControl('description.de')"
+      [controlType]="ControlTypes.TEXT_AREA"
+      [label]="t('description.de.label')"
+      [placeholder]="t('description.de.placeholder')"
+      id="description-de"
+    />
+
+    <app-form-control
+      [control]="getFormControl('name.fr')"
+      [label]="t('name.fr.label')"
+      [placeholder]="t('name.fr.placeholder')"
+      id="name-fr"
+    />
+    <app-form-control
+      [control]="getFormControl('description.fr')"
+      [controlType]="ControlTypes.TEXT_AREA"
+      [label]="t('description.fr.label')"
+      [placeholder]="t('description.fr.placeholder')"
+      id="description-fr"
+    />
+
+    <app-form-control
+      [control]="getFormControl('name.it')"
+      [label]="t('name.it.label')"
+      [placeholder]="t('name.it.placeholder')"
+      id="name-it"
+    />
+    <app-form-control
+      [control]="getFormControl('description.it')"
+      [controlType]="ControlTypes.TEXT_AREA"
+      [label]="t('description.it.label')"
+      [placeholder]="t('description.it.placeholder')"
+      id="description-it"
+    />
+  </div>
+</ng-container>

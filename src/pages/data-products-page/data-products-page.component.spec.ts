@@ -57,6 +57,7 @@ describe('DataProductsPageComponent - component behavior', () => {
     it('should load data products on init', async () => {
       const mockProduct: DataProductDto = {
         id: 'product-1',
+        stateCode: 'DRAFT',
         name: { de: 'Test Product', fr: 'Produit Test' },
         description: { de: 'A test product' },
         dataSourceSystem: {
@@ -143,7 +144,7 @@ describe('DataProductsPageComponent - component behavior', () => {
       const metadata = component['dataProductsTableMetaData']();
       const nameColumn = metadata.columns[0];
 
-      expect(nameColumn.name).toBe('dataProducts.table.name');
+      expect(nameColumn.name).toBe('data-products.table.name');
       expect(nameColumn.sortable).toBe(true);
       expect(nameColumn.sortField).toBe('productName');
       expect(nameColumn.renderer.type).toBe(CellRendererTypes.TEMPLATE);
@@ -153,7 +154,7 @@ describe('DataProductsPageComponent - component behavior', () => {
       const metadata = component['dataProductsTableMetaData']();
       const systemColumn = metadata.columns[1];
 
-      expect(systemColumn.name).toBe('dataProducts.table.system');
+      expect(systemColumn.name).toBe('data-products.table.system');
       expect(systemColumn.sortable).toBe(true);
       expect(systemColumn.sortField).toBe('systemName');
       expect(systemColumn.renderer.type).toBe(CellRendererTypes.FUNCTION);
@@ -165,6 +166,7 @@ describe('DataProductsPageComponent - component behavior', () => {
 
       const mockProduct: DataProductDto = {
         id: 'product-1',
+        stateCode: 'DRAFT',
         dataSourceSystem: {
           id: 'system-1',
           dataProvider: { id: 'provider-1' },
@@ -186,7 +188,7 @@ describe('DataProductsPageComponent - component behavior', () => {
 
       expect(actions).toBeDefined();
       expect(actions?.length).toBe(1);
-      expect(actions?.[0].label).toBe('dataProducts.table.actions.viewDetails');
+      expect(actions?.[0].label).toBe('data-products.table.actions.viewDetails');
     });
   });
 });
