@@ -11,9 +11,9 @@ import { ButtonVariants, HrefTarget, IconPosition } from './button.model';
  * ARIA label, selection state, custom classes, and optional hyperlink mode. It emits click events
  * and ensures accessibility through keyboard interaction support.
  * The IconLink variant renders an icon (left or right) alongside content; during loading the icon
- * is replaced by a spinner without disabling the button.
+ * is replaced by a spinner and the button is disabled.
  *
- * CommentLastReviewed: 2026-04-21
+ * CommentLastReviewed: 2026-06-16
  */
 @Component({
   selector: 'app-agridata-button',
@@ -52,6 +52,7 @@ export class ButtonComponent {
   protected readonly isIconLink = computed(
     () => this.variant() === ButtonVariants.IconLink || this.icon() !== undefined,
   );
+  protected readonly isDisabled = computed(() => this.disabled() || this.loading());
 
   onButtonClick(event: Event) {
     event.preventDefault();

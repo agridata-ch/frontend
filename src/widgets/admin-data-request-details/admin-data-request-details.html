@@ -10,7 +10,8 @@
         <app-agridata-button
           class="flex-1"
           [variant]="ButtonVariants.PrimaryAccept"
-          [disabled]="details.dataRequest()?.stateCode !== DataRequestStateEnum.InReview"
+          [loading]="isAccepting()"
+          [disabled]="isActionPending() || details.dataRequest()?.stateCode !== DataRequestStateEnum.InReview"
           (handleClick)="acceptRequest()"
         >
           {{ t('actions.accept') }}
@@ -18,7 +19,8 @@
         <app-agridata-button
           class="flex-1"
           [variant]="ButtonVariants.SecondaryReject"
-          [disabled]="details.dataRequest()?.stateCode !== DataRequestStateEnum.InReview"
+          [loading]="isRejecting()"
+          [disabled]="isActionPending() || details.dataRequest()?.stateCode !== DataRequestStateEnum.InReview"
           (handleClick)="rejectRequest()"
         >
           {{ t('actions.reject') }}
@@ -28,6 +30,7 @@
       <app-agridata-button
         class="flex-1"
         [variant]="ButtonVariants.PrimaryAccept"
+        [loading]="isActivating()"
         (handleClick)="activateRequest()"
       >
         {{ t('actions.activate') }}
