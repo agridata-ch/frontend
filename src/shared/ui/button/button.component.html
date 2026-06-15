@@ -14,7 +14,7 @@
   <div class="contents" [title]="disabled() ? disabledInfo() : ''">
     <button
       [type]="type()"
-      [disabled]="disabled()"
+      [disabled]="isDisabled()"
       [tabindex]="tabindex()"
       [attr.aria-label]="ariaLabel()"
       [attr.data-testid]="dataTestId()"
