@@ -1,3 +1,13 @@
+## [1.13.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.3...v1.13.0-rc.4) (2026-06-16)
+
+### Features
+
+- **data-request:** show button spinner while accepting/rejecting data request, ([5c6b191](https://github.com/agridata-ch/frontend/commit/5c6b191a18bd89d8a701db108aa08bf4f9f61366)), closes [DIGIB2-1435](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1435)
+
+### Bug Fixes
+
+- **data-products:** fix view details, placeholder stripping ([2164d16](https://github.com/agridata-ch/frontend/commit/2164d16854821d44295a237e937970065db83d58)), closes [DIGIB2-1353](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1353)
+
 ## [1.13.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.2...v1.13.0-rc.3) (2026-06-16)
 
 ### Bug Fixes
