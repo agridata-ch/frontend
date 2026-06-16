@@ -19,6 +19,7 @@ export function createMockDataProductService(): MockDataProductService {
       currentPage: 0,
       pageSize: 10,
     }),
+    getDataProductById: jest.fn().mockResolvedValue({}),
     setDataProductStatus: jest.fn().mockResolvedValue({}),
     updateDataProduct: jest.fn().mockResolvedValue({}),
   } satisfies MockDataProductService;

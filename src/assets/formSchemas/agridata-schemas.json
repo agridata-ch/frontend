@@ -204,12 +204,12 @@
       "restClientPathTemplate": {
         "type": "string",
         "minLength": 0,
-        "maxLength": 4000
+        "maxLength": 1000
       },
       "restClientRequestTemplate": {
         "type": "string",
         "minLength": 0,
-        "maxLength": 4000
+        "maxLength": 1000
       },
       "restClientMethodCode": {
         "type": "string",
@@ -231,7 +231,7 @@
       "restClientChangeDetectionPathTemplate": {
         "type": "string",
         "minLength": 0,
-        "maxLength": 4000
+        "maxLength": 1000
       }
     },
     "required": [

@@ -7,6 +7,9 @@ import {
   DataSourceSystemDto,
   RestClientDto,
 } from '@/entities/openapi';
+import { ActingRole } from '@/shared/constants/constants';
+
+type DataProviderActingRoles = 'PROVIDER' | 'ADMIN' | undefined;
 
 /**
  * Entity-level wrapper for data provider API calls.
@@ -23,11 +26,21 @@ export class DataProvidersService {
     return firstValueFrom(this.apiService.getDataProviders());
   }
 
-  getDataSourceSystems(providerId: string): Promise<DataSourceSystemDto[]> {
-    return firstValueFrom(this.apiService.getDataSourceSystemsByProviderId(providerId));
+  getDataSourceSystems(
+    providerId: string,
+    actingRole?: ActingRole,
+  ): Promise<DataSourceSystemDto[]> {
+    return firstValueFrom(
+      this.apiService.getDataSourceSystemsByProviderId(
+        providerId,
+        actingRole as DataProviderActingRoles,
+      ),
+    );
   }
 
-  getRestClients(providerId: string): Promise<RestClientDto[]> {
-    return firstValueFrom(this.apiService.getRestClientsByProviderId(providerId));
+  getRestClients(providerId: string, actingRole?: ActingRole): Promise<RestClientDto[]> {
+    return firstValueFrom(
+      this.apiService.getRestClientsByProviderId(providerId, actingRole as DataProviderActingRoles),
+    );
   }
 }

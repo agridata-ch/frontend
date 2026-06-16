@@ -21,6 +21,7 @@ export class AgridataTextareaComponent {
   readonly placeholder = input<string>('');
   readonly maxCharacters = input<number | null>(1000);
   readonly hasError = input<boolean>(false);
+  readonly isViewMode = input<boolean>(false);
   readonly disabled = input<boolean>(false);
 
   readonly handleBlur = output<void>();

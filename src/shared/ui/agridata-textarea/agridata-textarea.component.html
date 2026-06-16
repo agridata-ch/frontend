@@ -1,18 +1,35 @@
 <div class="flex flex-col relative">
+  <span
+    [class.opacity-0]="!isViewMode()"
+    [class.opacity-100]="isViewMode()"
+    [class.h-0]="!isViewMode()"
+    [class.h-auto]="isViewMode()"
+    class="transition-all duration-300 ease-in-out"
+  >
+    {{ control()?.value }}
+  </span>
   <textarea
     [id]="id()"
     [name]="id()!"
     [formControl]="control()!"
     [placeholder]="placeholder()"
     (blur)="handleBlur.emit()"
-    class="border rounded-md border-gray-300 pl-5 py-3 pr-4 h-[120px]"
+    class="border rounded-md border-gray-300 transition-all duration-300 ease-in-out"
+    [class.h-0]="isViewMode()"
+    [class.h-30]="!isViewMode()"
+    [class.p-0]="isViewMode()"
+    [class.pl-5]="!isViewMode()"
+    [class.py-3]="!isViewMode()"
+    [class.pr-4]="!isViewMode()"
+    [class.opacity-0]="isViewMode()"
+    [class.opacity-100]="!isViewMode()"
     [class.border-red-500]="hasError()"
     [class.bg-gray-100]="disabled()"
     [class.bg-white]="!disabled()"
     [class.cursor-not-allowed]="disabled()"
     [attr.maxlength]="maxCharacters()"
   ></textarea>
-  @if (maxCharacters()) {
+  @if (!isViewMode() && maxCharacters()) {
     <p class="text-sm text-gray-500 self-end absolute -bottom-6" [class.text-red-500]="hasError()">
       {{ control()?.value?.length }} / {{ maxCharacters() }}
     </p>

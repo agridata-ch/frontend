@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, input, resource, signal } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
@@ -9,6 +10,7 @@ import { AuthService } from '@/shared/lib/auth';
 import { getErrorMessage, getFormControl } from '@/shared/lib/form.helper';
 import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
 import { ControlTypes, FormControlComponent } from '@/shared/ui/form-control';
+import { ViewSectionDirective } from '@/shared/view-section';
 import { AlertComponent, AlertType } from '@/widgets/alert';
 import { METHOD_CODE_OPTIONS } from '@/widgets/data-product-detail-form/data-product-detail-form.model';
 
@@ -19,7 +21,14 @@ import { METHOD_CODE_OPTIONS } from '@/widgets/data-product-detail-form/data-pro
  */
 @Component({
   selector: 'app-data-product-detail-info',
-  imports: [AgridataSelectComponent, AlertComponent, FormControlComponent, I18nDirective],
+  imports: [
+    CommonModule,
+    AgridataSelectComponent,
+    AlertComponent,
+    FormControlComponent,
+    I18nDirective,
+    ViewSectionDirective,
+  ],
   templateUrl: './data-product-detail-info.component.html',
   host: { class: 'contents' },
 })
@@ -38,6 +47,8 @@ export class DataProductDetailInfoComponent {
 
   // Input properties
   readonly form = input.required<FormGroup>();
+  readonly isViewMode = input<boolean>(false);
+  readonly preselectedProviderId = input<string>('');
 
   // Signals
   protected readonly selectedProviderId = signal<string>('');
@@ -77,14 +88,21 @@ export class DataProductDetailInfoComponent {
     params: () => this.selectedProviderId() || undefined,
     loader: async ({ params: providerId }) => {
       const [systems, clients] = await Promise.all([
-        this.dataProvidersService.getDataSourceSystems(providerId),
-        this.dataProvidersService.getRestClients(providerId),
+        this.dataProvidersService.getDataSourceSystems(providerId, this.stateService.actingRole()),
+        this.dataProvidersService.getRestClients(providerId, this.stateService.actingRole()),
       ]);
       return { systems, clients };
     },
   });
 
   // Effects
+  private readonly applyPreselectedProviderEffect = effect(() => {
+    const preselected = this.preselectedProviderId();
+    if (preselected && !this.selectedProviderId()) {
+      this.selectedProviderId.set(preselected);
+    }
+  });
+
   private readonly resolveProviderEffect = effect(() => {
     const providers = this.masterDataService.dataProviders();
     if (this.isAdmin() || !providers.length) return;

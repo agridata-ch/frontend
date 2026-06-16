@@ -785,12 +785,14 @@
       "system": "Sistema",
       "actions": {
         "viewDetails": "Visualizza"
-      }
+      },
+      "stateCode": "Stato"
     },
     "createNew": "Inserire un prodotto dati",
     "detailPanel": {
-      "title": "Crea un nuovo prodotto dati",
-      "subTitle": "Un prodotto dati è una consegna di dati versionata e chiaramente delimitata, fornita tramite un sistema sorgente. Serve come ponte tra la comprensibilità specialistica e la capacità di integrazione tecnica."
+      "titleCreateNew": "Crea un nuovo prodotto dati",
+      "subTitle": "Un prodotto dati è una consegna di dati versionata e chiaramente delimitata, fornita tramite un sistema sorgente. Serve come ponte tra la comprensibilità specialistica e la capacità di integrazione tecnica.",
+      "titleUpdate": "Modifica prodotto dati"
     },
     "detailForm": {
       "name": {
@@ -864,7 +866,8 @@
       "tab": {
         "technicalFields": "Informazioni tecniche",
         "nameAndDescription": "Nome e descrizione"
-      }
+      },
+      "edit": "Modifica"
     },
     "saveAndPublish": {
       "success": {
@@ -995,6 +998,12 @@
     "companyInformation": {
       "heading": "Nome e indirizzo secondo l'iscrizione nel registro di commercio",
       "contactPerson": "Persona di contatto per il processo di onboarding"
+    }
+  },
+  "data-product": {
+    "stateCode": {
+      "DRAFT": "Bozza",
+      "ACTIVE": "Pubblicato"
     }
   }
 }

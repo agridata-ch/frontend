@@ -30,5 +30,12 @@
         {{ this.i18nService.useObjectTranslation(item?.name) }}
       </span>
     </ng-template>
+    <ng-template #stateCodeTemplate [appDataProductDtoGuard] let-item>
+      <app-agridata-badge
+        [text]="getStatusTranslation(item?.stateCode ?? '', i18nService)"
+        [variant]="getBadgeVariant(item?.stateCode)"
+        [size]="BadgeSize.SM"
+      />
+    </ng-template>
   </app-agridata-table>
 </ng-container>

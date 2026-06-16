@@ -785,12 +785,14 @@
       "system": "System",
       "actions": {
         "viewDetails": "Anzeigen"
-      }
+      },
+      "stateCode": "Status"
     },
     "createNew": "Datenprodukt erfassen",
     "detailPanel": {
-      "title": "Neues Datenprodukt erfassen",
-      "subTitle": "Ein Datenprodukt ist eine versionierte und klar abgegrenzte Datenlieferung, die über ein Quellsystem bereitgestellt wird. Es dient als Brücke zwischen fachlicher Verständlichkeit und technischer Integrationsfähigkeit."
+      "titleCreateNew": "Neues Datenprodukt erfassen",
+      "subTitle": "Ein Datenprodukt ist eine versionierte und klar abgegrenzte Datenlieferung, die über ein Quellsystem bereitgestellt wird. Es dient als Brücke zwischen fachlicher Verständlichkeit und technischer Integrationsfähigkeit.",
+      "titleUpdate": "Datenprodukt bearbeiten"
     },
     "detailForm": {
       "name": {
@@ -864,7 +866,8 @@
       "tab": {
         "technicalFields": "Technische Informationen",
         "nameAndDescription": "Name und Beschreibung"
-      }
+      },
+      "edit": "Bearbeiten"
     },
     "saveAndPublish": {
       "success": {
@@ -995,6 +998,12 @@
     "companyInformation": {
       "heading": "Name und Adresse gemäss Handelsregistereintrag",
       "contactPerson": "Kontaktperson für Onboardingprozess"
+    }
+  },
+  "data-product": {
+    "stateCode": {
+      "DRAFT": "Entwurf",
+      "ACTIVE": "Publiziert"
     }
   }
 }

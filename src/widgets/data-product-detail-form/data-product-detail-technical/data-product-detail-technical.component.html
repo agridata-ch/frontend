@@ -7,6 +7,7 @@
       [options]="flowCodeOptions"
       [label]="t('flowCode.label')"
       [placeholder]="t('flowCode.placeholder')"
+      [isViewMode]="isViewMode()"
       id="flowCode"
     />
 
@@ -15,6 +16,7 @@
       [controlType]="ControlTypes.TEXT_AREA"
       [label]="t('restClientPathTemplate.label')"
       [placeholder]="t('restClientPathTemplate.placeholder')"
+      [isViewMode]="isViewMode()"
       id="restClientPathTemplate"
     />
 
@@ -23,6 +25,7 @@
       [controlType]="ControlTypes.TEXT_AREA"
       [label]="t('restClientRequestTemplate.label')"
       [placeholder]="t('restClientRequestTemplate.placeholder')"
+      [isViewMode]="isViewMode()"
       id="restClientRequestTemplate"
     />
 
@@ -31,6 +34,7 @@
       [controlType]="ControlTypes.TEXT_AREA"
       [label]="t('restClientChangeDetectionPathTemplate.label')"
       [placeholder]="t('restClientChangeDetectionPathTemplate.placeholder')"
+      [isViewMode]="isViewMode()"
       id="restClientChangeDetectionPathTemplate"
     />
   </div>

@@ -703,7 +703,7 @@ components:
           type: string
         name:
           $ref: "#/components/schemas/TranslationDto"
-          description: How this product i categorized
+          description: How this product is categorized
           type: object
           examples:
           - R01
@@ -779,13 +779,13 @@ components:
           description: Template for the path from which the data product will be fetched
           examples:
           - "v1/animal/{{uid}}"
-          maxLength: 4000
+          maxLength: 1000
         restClientRequestTemplate:
           type: string
           description: Template for the path from which the data product will be fetched
           examples:
           - "{\"search\":{\"uid\":\"{{uid}}\"}}"
-          maxLength: 4000
+          maxLength: 1000
         restClientMethodCode:
           $ref: "#/components/schemas/RestClientMethodCodeEnum"
           description: The http-method used to fetch the data product
@@ -803,9 +803,7 @@ components:
           description: Template for the path for retrieving updates to the data product
           examples:
           - "v1/animal-updates/{{uid}}?since={{LAST_CHANGED_SINCE}}"
-          maxLength: 4000
-      required:
-      - dataSourceSystemId
+          maxLength: 1000
     DataProviderDto:
       type: object
       required:
@@ -3601,7 +3599,8 @@ paths:
       x-api-subset: agridata.ch Web App
   /api/products/v1/data-providers/{providerId}/dataSourceSystems:
     get:
-      description: Lorem Ipsum
+      description: Retrieves all data source systems belonging to a specific data
+        provider
       operationId: getDataSourceSystemsByProviderId
       tags:
       - Data Providers
@@ -3611,6 +3610,20 @@ paths:
         required: true
         schema:
           $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
       responses:
         "200":
           description: OK
@@ -3690,7 +3703,8 @@ paths:
       x-api-subset: agridata.ch Web App
   /api/products/v1/data-providers/{providerId}/restClient:
     get:
-      description: Lorem Ipsum
+      description: Retrieves all rest clients that are assigned to a specific data
+        provider
       operationId: getRestClientsByProviderId
       tags:
       - Data Providers
@@ -3700,6 +3714,20 @@ paths:
         required: true
         schema:
           $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
       responses:
         "200":
           description: OK
@@ -3813,7 +3841,8 @@ paths:
       - agridata.ch Web App
       - Mobile App
     post:
-      description: Lorem Ipsum
+      description: Creates a new data product in draft status. Only accessible to
+        users with the admin or provider role.
       operationId: createDataProductDraft
       tags:
       - Data Products
@@ -3848,7 +3877,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-      summary: Create Data Request Draft
+      summary: Create Data Product Draft
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenanbieter
@@ -3932,8 +3961,63 @@ paths:
         - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
+    get:
+      description: Retrieves a single data product. Acessible to users with the provider
+        and admin role
+      operationId: getDataProduct
+      tags:
+      - Data Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProductDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Product
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Datenanbieter
+      x-api-subset: agridata.ch Web App
   /api/products/v2/{id}/status:
-    post:
+    put:
       description: Sets the status of a data product. Only accessible to the provider
         who owns the data product. Admins on the other hand can set the state to any
         data product. Only specific transitions are allowed.
@@ -4449,7 +4533,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.10.0-rc.10
+  version: 1.11.0-rc.3
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

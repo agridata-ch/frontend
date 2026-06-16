@@ -1,7 +1,17 @@
-<div class="flex flex-col">
-  <label [for]="id()" class="mb-2 font-medium leading-[130%]" [class.text-red-500]="hasError()">{{
-    label()
-  }}</label>
+<div
+  class="flex flex-col transition-all duration-300 ease-in-out"
+  [class.gap-2]="!isViewMode()"
+  [class.gap-1]="isViewMode()"
+>
+  <label
+    [for]="id()"
+    class="font-medium leading-[130%] transition-all duration-300 ease-in-out"
+    [class.text-red-500]="hasError()"
+    [class.text-agridata-secondary-text]="isViewMode()"
+    [class.text-xs]="isViewMode()"
+  >
+    {{ label() }}
+  </label>
   @if (controlType() === ControlTypes.INPUT) {
     <app-agridata-input
       [control]="control()"
@@ -13,6 +23,7 @@
       [hasError]="hasError()"
       [inputPrefix]="inputPrefix()"
       [disabled]="disabled()"
+      [isViewMode]="isViewMode()"
     />
   }
   @if (controlType() === ControlTypes.SELECT) {
@@ -22,6 +33,7 @@
       [placeholder]="placeholder()"
       [hasError]="hasError()"
       [disabled]="disabled()"
+      [isViewMode]="isViewMode()"
     />
   }
   @if (controlType() === ControlTypes.MULTI_SELECT) {
@@ -33,6 +45,7 @@
       [options]="options()"
       [placeholder]="placeholder()"
       [singleCategorySelection]="singleCategorySelection()"
+      [isViewMode]="isViewMode()"
     />
   }
   @if (controlType() === ControlTypes.TEXT_AREA) {
@@ -44,16 +57,23 @@
       [maxCharacters]="getMaxCharacters()"
       [hasError]="hasError()"
       [disabled]="disabled()"
+      [isViewMode]="isViewMode()"
     />
   }
   @if (controlType() === ControlTypes.DIGIT_INPUT) {
-    <app-agridata-digit-input [control]="control()!" [length]="length()" />
+    <app-agridata-digit-input
+      [control]="control()!"
+      [length]="length()"
+      [isViewMode]="isViewMode()"
+    />
   }
-  <span class="min-h-[1.5em] block text-gray-700" [class.text-red-500]="hasError()">
-    @if (hasError()) {
-      <span class="text-sm">{{ errorMessage() }}</span>
-    } @else if (helperText()) {
-      <span class="text-sm">{{ helperText() }}</span>
-    }
-  </span>
+  @if (!isViewMode()) {
+    <span class="min-h-[1.5em] block text-gray-700" [class.text-red-500]="hasError()">
+      @if (hasError()) {
+        <span class="text-sm">{{ errorMessage() }}</span>
+      } @else if (helperText()) {
+        <span class="text-sm">{{ helperText() }}</span>
+      }
+    </span>
+  }
 </div>

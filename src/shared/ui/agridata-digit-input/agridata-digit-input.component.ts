@@ -16,6 +16,7 @@ export class AgridataDigitInputComponent {
   // Input properties
   readonly control = input.required<AbstractControl>();
   readonly length = input<number>(1);
+  readonly isViewMode = input<boolean>(false);
 
   // Signals
   private readonly digitBoxes = viewChildren<ElementRef<HTMLInputElement>>('digitBox');
