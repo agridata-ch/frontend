@@ -113,16 +113,19 @@ export class DataProductsPageComponent {
             template: this.stateCodeTemplate(),
           },
           cellCssClasses: 'whitespace-nowrap',
-          sortable: true,
+          sortable: false,
           sortValueFn: (item: DataProductDto) =>
             item ? this.getStatusTranslation(item?.stateCode, this.i18nService) : '',
         },
       ],
-      rowMenuActions: () => [
+      rowMenuActions: (row) => [
         {
           label: 'data-products.table.actions.viewDetails',
           icon: faEye,
-          callback: async () => {},
+          callback: async () => {
+            if (!row?.id) return;
+            this.router.navigate([ROUTE_PATHS.DATA_PRODUCTS_PATH, row.id]);
+          },
         },
       ],
       rowAction: (row) => {
