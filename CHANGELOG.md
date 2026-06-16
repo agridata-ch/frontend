@@ -1,3 +1,9 @@
+## [1.13.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.2...v1.13.0-rc.3) (2026-06-16)
+
+### Bug Fixes
+
+- **data-product:** fix load of data-providers ([fc8e7b9](https://github.com/agridata-ch/frontend/commit/fc8e7b9943bc5861a9ea234a60adfd5eef408b75)), closes [DIGIB2-1353](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1353)
+
 ## [1.13.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.1...v1.13.0-rc.2) (2026-06-16)
 
 ### Features
