@@ -1,3 +1,9 @@
+## [1.13.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.12.0...v1.13.0-rc.1) (2026-06-16)
+
+### Features
+
+- **data-products:** create data-product ([e433a80](https://github.com/agridata-ch/frontend/commit/e433a80d899faceeee8e13cf6a1676882bfe8685)), closes [DIGIB2-1351](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1351)
+
 ## [1.12.0](https://github.com/agridata-ch/frontend/compare/v1.11.0...v1.12.0) (2026-06-09)
 
 ### Features
