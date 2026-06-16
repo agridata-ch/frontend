@@ -4,26 +4,33 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   inject,
+  Injector,
   input,
   resource,
   signal,
+  untracked,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DataProductUpdateDto as DataProductUpdateDtoSchema } from '@/assets/formSchemas/agridata-schemas.json';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
-import { DataProductDto, DataProductDtoStateCode } from '@/entities/openapi';
+import { DataProductDto, DataProductDtoStateCode, DataProductStateEnum } from '@/entities/openapi';
+import { getBadgeVariant, getStatusTranslation } from '@/pages/data-products-page';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { buildReactiveForm } from '@/shared/lib/form.helper';
+import { buildReactiveForm, populateFormFromDto } from '@/shared/lib/form.helper';
 import { ScrollFadeDirective } from '@/shared/scroll-fade';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService, ToastType } from '@/shared/toast';
 import { AgridataTabsComponent, Tab } from '@/shared/ui/agridata-tabs';
+import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 import {
@@ -49,24 +56,32 @@ import { DataProductDetailTechnicalComponent } from './data-product-detail-techn
     ButtonComponent,
     DataProductDetailInfoComponent,
     DataProductDetailTechnicalComponent,
+    FontAwesomeModule,
     I18nDirective,
     ScrollFadeDirective,
     SidepanelComponent,
+    AgridataBadgeComponent,
   ],
   templateUrl: './data-product-detail-form.component.html',
 })
 export class DataProductDetailFormComponent {
   // Injects
+  protected readonly i18nService = inject(I18nService);
   private readonly dataProductService = inject(DataProductService);
-  private readonly i18nService = inject(I18nService);
+  private readonly elementRef = inject(ElementRef);
+  private readonly injector = inject(Injector);
   private readonly location = inject(Location);
   private readonly router = inject(Router);
   private readonly stateService = inject(AgridataStateService);
   private readonly toastService = inject(ToastService);
 
   // Constants
+  protected readonly BadgeSize = BadgeSize;
   protected readonly ButtonVariants = ButtonVariants;
+  protected readonly faSpinnerThird = faSpinnerThird;
   protected readonly FORM_TAB_IDS = FORM_TAB_IDS;
+  protected readonly getBadgeVariant = getBadgeVariant;
+  protected readonly getStatusTranslation = getStatusTranslation;
 
   // Input properties
   readonly dataProductId = input<string | undefined>();
@@ -76,6 +91,7 @@ export class DataProductDetailFormComponent {
   protected readonly isOpen = signal(false);
   protected readonly isSaving = signal(false);
   private readonly currentDataProductId = signal<string | null>(null);
+  private readonly isEditMode = signal(false);
   private readonly publishAttempted = signal(false);
   private readonly refreshListNeeded = signal(false);
 
@@ -86,6 +102,16 @@ export class DataProductDetailFormComponent {
   );
 
   // Computed Signals
+  protected readonly canSaveDraft = computed(
+    () => this.stateCode() !== DataProductStateEnum.Active,
+  );
+
+  protected readonly dataProductTitle = computed(() =>
+    this.i18nService.useObjectTranslation(this.dataProductResource.value()?.name),
+  );
+
+  protected readonly stateCode = computed(() => this.dataProductResource.value()?.stateCode);
+
   private readonly formStatusVersion = (() => {
     const version = signal(0);
     this.form.statusChanges
@@ -111,17 +137,57 @@ export class DataProductDetailFormComponent {
     ];
   });
 
-  private readonly dataProductResource = resource({
-    params: () => this.currentDataProductId(),
-    loader: async ({ params: id }): Promise<DataProductDto | undefined> => {
+  protected readonly isViewMode = computed(() => {
+    const product = this.dataProductResource.value();
+    return product?.stateCode === DataProductDtoStateCode.Active && !this.isEditMode();
+  });
+
+  protected readonly preselectedProviderId = computed(
+    () => this.dataProductResource.value()?.dataSourceSystem?.dataProvider?.id ?? '',
+  );
+
+  protected readonly sidepanelTitle = computed(() => {
+    const id = this.dataProductId();
+    if (!id) return '';
+
+    if (id === DATA_PRODUCT_NEW_ID)
+      return this.i18nService.translate('data-products.detailPanel.titleCreateNew');
+
+    const dataProduct = this.dataProductResource.value();
+    if (!dataProduct?.stateCode) return '';
+    if (this.isViewMode()) return this.i18nService.useObjectTranslation(dataProduct.name);
+
+    return this.i18nService.translate('data-products.detailPanel.titleUpdate');
+  });
+
+  protected readonly dataProductResource = resource({
+    params: () => {
+      const id = this.currentDataProductId();
       if (!id) return undefined;
-      // TODO: implement once getDataProductById is available in DataProductService
-      return undefined;
+      return { id, actingRole: this.stateService.actingRole() };
+    },
+    loader: async ({ params }): Promise<DataProductDto | undefined> => {
+      return this.dataProductService.getDataProductById(params.id, params.actingRole);
     },
   });
 
   // Effects
   private readonly openAfterRender = afterNextRender(() => this.isOpen.set(true));
+
+  private readonly patchFormEffect = effect(() => {
+    const product = this.dataProductResource.value();
+    if (!product) return;
+    untracked(() => {
+      populateFormFromDto(
+        this.form,
+        product as unknown as Record<string, unknown>,
+        dataProductFormsModel,
+      );
+      const infoGroup = this.getTabForm(FORM_TAB_IDS.NAME_AND_DESCRIPTION);
+      infoGroup.get('dataSourceSystemId')?.setValue(product.dataSourceSystem?.id ?? '');
+      infoGroup.get('restClientId')?.setValue(product.restClient?.id ?? '');
+    });
+  });
 
   private readonly syncRouteIdEffect = effect(() => {
     const id = this.dataProductId();
@@ -135,8 +201,21 @@ export class DataProductDetailFormComponent {
   }
 
   protected cancel(): void {
+    if (this.isEditMode()) {
+      this.isEditMode.set(false);
+    } else {
+      this.closeSidepanel();
+    }
+  }
+
+  protected closeSidepanel(): void {
     this.navigateToList(this.refreshListNeeded());
   }
+
+  // TODO: enable it with edit mode DIGIB2-1354
+  // protected enterEditMode(): void {
+  //   this.isEditMode.set(true);
+  // }
 
   protected navigateToList(refresh: boolean): void {
     this.router.navigate([ROUTE_PATHS.DATA_PRODUCTS_PATH], {
@@ -156,7 +235,10 @@ export class DataProductDetailFormComponent {
     if (publish) {
       this.publishAttempted.set(true);
       this.form.markAllAsTouched();
-      if (!this.form.valid) return;
+      if (!this.form.valid) {
+        this.scrollToFirstError();
+        return;
+      }
     }
 
     this.isSaving.set(true);
@@ -203,5 +285,23 @@ export class DataProductDetailFormComponent {
     } finally {
       this.isSaving.set(false);
     }
+  }
+
+  private scrollToFirstError(): void {
+    const targetTabId = this.form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION)?.invalid
+      ? FORM_TAB_IDS.NAME_AND_DESCRIPTION
+      : FORM_TAB_IDS.TECHNICAL_FIELDS;
+
+    this.activeTabId.set(targetTabId);
+
+    afterNextRender(
+      () => {
+        const firstError = this.elementRef.nativeElement.querySelector(
+          'app-form-control.has-error',
+        );
+        firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      },
+      { injector: this.injector },
+    );
   }
 }

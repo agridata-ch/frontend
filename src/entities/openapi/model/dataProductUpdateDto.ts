@@ -25,7 +25,7 @@ export interface DataProductUpdateDto {
      * Description of the data product
      */
     description?: DataProductDescriptionDto;
-    dataSourceSystemId: string;
+    dataSourceSystemId?: string;
     restClientId?: string;
     /**
      * Template for the path from which the data product will be fetched

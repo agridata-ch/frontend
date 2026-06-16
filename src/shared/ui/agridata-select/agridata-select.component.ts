@@ -37,6 +37,7 @@ export class AgridataSelectComponent {
 
   readonly control = input<FormControlWithMessages>();
   readonly customClass = input<string>('');
+  readonly isViewMode = input<boolean>(false);
   readonly disabled = input<boolean>(false);
   readonly hasError = input<boolean>(false);
   readonly options = input<SelectOption[]>([]);

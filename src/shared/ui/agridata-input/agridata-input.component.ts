@@ -27,6 +27,7 @@ export class AgridataInputComponent {
   readonly hasError = input<boolean>(false);
   readonly inputPrefix = input<string>('');
   readonly inputPrefixIcon = input<IconDefinition>();
+  readonly isViewMode = input<boolean>(false);
   readonly suffixTemplate = input<TemplateRef<unknown>>();
   readonly disabled = input<boolean>(false);
 

@@ -64,6 +64,10 @@ export class DataProductService {
     );
   };
 
+  getDataProductById = (id: string, actingRole?: ActingRole): Promise<DataProductDto> => {
+    return firstValueFrom(this.apiService.getDataProduct(id, actingRole as DataProductActingRoles));
+  };
+
   updateDataProduct = (
     id: string,
     dto: Record<string, unknown>,

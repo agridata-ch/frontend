@@ -25,6 +25,7 @@ export class DataProductDetailTechnicalComponent {
 
   // Input properties
   readonly form = input.required<FormGroup>();
+  readonly isViewMode = input<boolean>(false);
 
   protected getFormControl(path: string) {
     return getFormControl(this.form(), path);

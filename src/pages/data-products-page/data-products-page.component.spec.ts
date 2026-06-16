@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -39,6 +40,7 @@ describe('DataProductsPageComponent - component behavior', () => {
         { provide: DataProductService, useValue: dataProductService },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: i18nService },
+        provideRouter([]),
       ],
     }).compileComponents();
 
@@ -137,7 +139,7 @@ describe('DataProductsPageComponent - component behavior', () => {
   describe('table metadata computed signal', () => {
     it('should include two columns in table metadata', () => {
       const metadata = component['dataProductsTableMetaData']();
-      expect(metadata.columns.length).toBe(2);
+      expect(metadata.columns.length).toBe(3);
     });
 
     it('should configure the name column with template renderer', () => {

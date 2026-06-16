@@ -46,7 +46,7 @@ export interface DataProductDto {
      */
     flowCode?: FlowCodeEnum;
     /**
-     * How this product i categorized
+     * How this product is categorized
      */
     name?: TranslationDto;
     /**

@@ -1,7 +1,10 @@
 <div
-  class="flex items-center bg-white rounded-md border has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2"
+  class="flex items-center bg-white rounded-md"
+  [class.border]="!isViewMode()"
   [class.border-gray-300]="!hasError()"
   [class.border-red-500]="hasError()"
+  [class.has-[input:focus-within]:outline-2]="!isViewMode()"
+  [class.has-[input:focus-within]:-outline-offset-2]="!isViewMode()"
 >
   @if (inputPrefix()) {
     <span
@@ -26,16 +29,20 @@
       [formControl]="control()!"
       [type]="type()"
       [placeholder]="placeholder()"
-      class="pl-5 py-3 pr-4 placeholder-gray-400 w-full outline-none focus:outline-none rounded-md"
+      class="placeholder-gray-400 outline-none w-full rounded-md transition-all duration-300 ease-in-out"
+      [class.py-3]="!isViewMode()"
+      [class.pr-4]="!isViewMode()"
+      [class.pl-5]="!isViewMode()"
       [class.bg-white]="!disabled()"
       [class.bg-gray-100]="disabled()"
       [class.pl-15]="inputPrefix()"
-      [class.cursor-not-allowed]="disabled()"
+      [class.cursor-not-allowed]="disabled() && !isViewMode()"
       [attr.maxlength]="maxCharacters()"
       [attr.aria-label]="
         inputPrefix() ? inputPrefix() + '-' + (placeholder() || '') : placeholder()
       "
       (blur)="handleBlur.emit()"
+      [class.pointer-events-none]="isViewMode()"
     />
   } @else {
     <input
@@ -48,10 +55,12 @@
       [attr.aria-label]="
         inputPrefix() ? inputPrefix() + '-' + (placeholder() || '') : placeholder()
       "
-      class="py-3 pr-4 placeholder-gray-400 w-full outline-none focus:outline-none rounded-md"
+      class="placeholder-gray-400 w-full outline-none rounded-md transition-all duration-400 ease-in-out"
       [class.bg-white]="!disabled()"
       [class.bg-gray-100]="disabled()"
       [class.pl-5]="!inputPrefix()"
+      [class.py-3]="!isViewMode()"
+      [class.pr-4]="!isViewMode()"
       [class.rounded-md]="!inputPrefix()"
       [class.rounded-r-md]="inputPrefix()"
       [class.border-l-0]="inputPrefix()"

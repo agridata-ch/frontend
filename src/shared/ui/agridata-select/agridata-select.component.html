@@ -2,20 +2,29 @@
   <button
     #trigger
     type="button"
-    class="w-full border border-gray-300 px-5 py-3 text-left flex justify-between items-center rounded-md"
+    class="w-full text-left flex justify-between items-center rounded-md transition-all duration-300 ease-in-out"
     [class]="customClass()"
+    [class.border]="!isViewMode()"
+    [class.border-gray-300]="!isViewMode()"
+    [class.border-transparent]="isViewMode()"
     [class.border-red-500]="hasError()"
+    [class.px-5]="!isViewMode()"
+    [class.py-3]="!isViewMode()"
     [class.bg-white]="!disabled()"
-    [class.bg-gray-100]="disabled()"
-    [class.cursor-not-allowed]="disabled()"
+    [class.bg-gray-100]="disabled() && !isViewMode()"
+    [class.cursor-default]="!disabled()"
+    [class.cursor-not-allowed]="disabled() && !isViewMode()"
     [attr.aria-label]="'input.common.ariaLabel.open' | i18n"
     (click)="toggleDropdown()"
     [disabled]="disabled()"
+    [class.pointer-events-none]="isViewMode()"
   >
     <span class="truncate">
       {{ getSelectedOptionLabel() || placeholder() }}
     </span>
-    <fa-icon [icon]="dropdownIcon()" class="ml-2 text-gray-500" />
+    @if (!isViewMode()) {
+      <fa-icon [icon]="dropdownIcon()" class="ml-2 text-gray-500" />
+    }
   </button>
 
   @if (isDropdownOpen()) {
