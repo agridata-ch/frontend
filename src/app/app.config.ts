@@ -12,7 +12,7 @@ import {
   withInMemoryScrolling,
   withViewTransitions,
 } from '@angular/router';
-import { provideTransloco } from '@jsverse/transloco';
+import { provideTransloco, TRANSLOCO_TRANSPILER } from '@jsverse/transloco';
 import { authInterceptor, provideAuth } from 'angular-auth-oidc-client';
 
 import { GlobalErrorHandler } from '@/app/error/global-error-handler';
@@ -26,6 +26,7 @@ import { oidcConfig } from '@/shared/lib/auth';
 import { GA_MEASUREMENT_ID, GA_SCRIPT_URL } from './analytics.config';
 import { routes } from './app.routes';
 import { i18nConfig } from './i18n.config';
+import { SkipMissingParamTranspiler } from './skip-missing-param-transpiler';
 import { TranslocoHttpLoader } from './transloco-loader';
 
 export const appConfig: ApplicationConfig = {
@@ -63,5 +64,6 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
+    { provide: TRANSLOCO_TRANSPILER, useClass: SkipMissingParamTranspiler },
   ],
 };
