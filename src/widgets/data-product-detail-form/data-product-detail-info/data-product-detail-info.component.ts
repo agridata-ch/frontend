@@ -17,7 +17,7 @@ import { METHOD_CODE_OPTIONS } from '@/widgets/data-product-detail-form/data-pro
 /**
  * Tab component for the system configuration and name/description fields of a data product.
  *
- * CommentLastReviewed: 2026-06-09
+ * CommentLastReviewed: 2026-06-16
  */
 @Component({
   selector: 'app-data-product-detail-info',
@@ -107,8 +107,12 @@ export class DataProductDetailInfoComponent {
     const providers = this.masterDataService.dataProviders();
     if (this.isAdmin() || !providers.length) return;
 
-    const activeUid = this.stateService.activeUid();
-    const ownProvider = providers.find((provider) => provider.uid === activeUid) ?? providers[0];
+    const uid = this.authService.userInfo()?.uid;
+    if (!uid) return;
+
+    const ownProvider = providers.find((provider) => provider.uid === uid);
+    if (!ownProvider) return;
+
     this.selectedProviderId.set(ownProvider.id);
   });
 
