@@ -53,9 +53,7 @@ export class AccountOverlayComponent {
   readonly dropdownIcon = computed(() => {
     return this.isOverlayOpen() ? faChevronUp : faChevronDown;
   });
-  readonly activeUid = computed(() => {
-    return this.agridataStateService.activeUid();
-  });
+  readonly activeUid = computed(() => this.agridataStateService.activeUid());
 
   logout = () => {
     this.authService.logout();

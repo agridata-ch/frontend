@@ -122,18 +122,27 @@ describe('DataProductDetailInfoComponent', () => {
       expect(component['selectedProviderId']()).toBe('');
     });
 
-    it('should auto-select first provider for non-admin when no UID matches', async () => {
+    it('should not auto-select any provider when no UID matches', async () => {
       authService.__testSignals.isAdmin.set(false);
-      stateService.__testSignals.activeUid.set('no-match');
+      authService.__testSignals.userInfo.set({ uid: 'no-match' });
       masterDataService.__testSignals.dataProviders.set([mockProvider1, mockProvider2]);
       fixture.detectChanges();
       await fixture.whenStable();
-      expect(component['selectedProviderId']()).toBe('p1');
+      expect(component['selectedProviderId']()).toBe('');
     });
 
-    it('should select provider matching activeUid for non-admin', async () => {
+    it('should not auto-select any provider when uid is undefined', async () => {
       authService.__testSignals.isAdmin.set(false);
-      stateService.__testSignals.activeUid.set('u2');
+      authService.__testSignals.userInfo.set(undefined);
+      masterDataService.__testSignals.dataProviders.set([mockProvider1, mockProvider2]);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(component['selectedProviderId']()).toBe('');
+    });
+
+    it('should select provider matching user uid for non-admin', async () => {
+      authService.__testSignals.isAdmin.set(false);
+      authService.__testSignals.userInfo.set({ uid: 'u2' });
       masterDataService.__testSignals.dataProviders.set([mockProvider1, mockProvider2]);
       fixture.detectChanges();
       await fixture.whenStable();
