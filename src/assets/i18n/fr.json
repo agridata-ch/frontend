@@ -109,65 +109,65 @@
     },
     "form": {
       "request": {
-        "headline": "Informations sur la référence des données",
+        "headline": "Définir le contenu de la demande de données",
         "provider": {
           "label": "Fournisseur de données",
-          "sublabel": "Actuellement, un seul fournisseur de données est disponible. D'autres fournisseurs sont continuellement connectés.",
+          "sublabel": "Déterminez le fournisseur de données souhaité ainsi que les produits de données spécifiques pour votre demande.",
           "placeholder": "Sélectionner un fournisseur de données",
           "heading": "Sélection des produits de données"
         },
         "products": {
-          "label": "Quel produit de données souhaitez-vous ?",
-          "placeholder": "Sélectionnez les produits pour lesquels vous souhaitez demander des données.",
+          "label": "Système et produits souhaités",
+          "placeholder": "Sélectionner des produits",
           "moreInfos": "Plus d'informations",
-          "sublabel": "Vous ne pouvez sélectionner que des produits d'une seule catégorie à la fois."
+          "sublabel": "Vous ne pouvez demander simultanément que des produits issus d'un seul et même système. Pour les produits de données provenant d'autres systèmes, veuillez créer une demande de données distincte."
         },
         "title": {
-          "label": "Nom de la demande de données",
-          "sublabel": "Le nom sera affiché à tous les producteurs de données dans leur langue préférée lorsqu'ils décideront de partager vos données.",
+          "label": "Titre de la demande de données",
+          "sublabel": "Choisissez un titre explicite pour la demande de données. Il sera affiché aux producteurs de données (p. ex. aux agriculteurs) dans la langue qu'ils ont configurée lorsqu'ils se prononceront sur la demande de données.",
           "de": {
-            "label": "Nom de la demande de données DE",
-            "placeholder": "Anfrage von [...] zum Bezug von [...]-Daten"
+            "label": "Titre en allemand (Auf Deutsch)",
+            "placeholder": "Anfrage für [zusammenfassende Datenart, z. B. Rinderdaten]"
           },
           "fr": {
-            "label": "Nom de la demande de données FR",
-            "placeholder": "Demande de [...] pour obtenir des données [...]"
+            "label": "Titre en français",
+            "placeholder": "Demande pour [Type de données global, p. ex. données sur les bovins]"
           },
           "it": {
-            "label": "Nom de la demande de données IT",
-            "placeholder": "Richiesta di [...] per ottenere [...] dati"
+            "label": "Titre en italien (in italiano)",
+            "placeholder": "Richiesta per [Tipo di dati globale, ad es. dati sui bovini]"
           }
         },
         "description": {
-          "label": "Description de la demande",
-          "sublabel": "La description s'affiche dans la langue préférée de tous les producteurs de données afin qu'ils puissent prendre une décision éclairée.",
+          "label": "Description succincte de la demande",
+          "sublabel": "Résumez la demande de manière objective en 2 ou 3 phrases. Ce texte s'affichera directement sous le titre comme explication principale pour l'agriculteur. (Vous saisirez les avantages et la finalité de l'utilisation séparément plus bas).",
           "de": {
-            "label": "Description de la demande DE",
-            "placeholder": "Wenn Sie der Datenweitergabe an [...]  zustimmen, vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
+            "label": "Description succincte en allemand (Auf Deutsch)",
+            "placeholder": "[Name Ihrer Organisation] benötigt Zugriff auf Ihre [zusammenfassende Datenart, z. B. Rinderdaten] aus dem System [Name des Systems, z. B. TVD], um [Grund der Anfrage]."
           },
           "fr": {
-            "label": "Description de la demande FR",
-            "placeholder": "En donnant votre approbation à la transmission de données à [...], vous simplifiez votre travail quotidien, réduisez les saisies multiples et accélérez les processus."
+            "label": "Description succincte en français",
+            "placeholder": "[Nom de votre organisation] a besoin d'accéder à vos [Type de données global, p. ex. données sur les bovins] dans le système [Nom du système, p. ex. BDTA] afin de [motif de la demande]."
           },
           "it": {
-            "label": "Description de la demande IT",
-            "placeholder": "Con il consenso all'inoltro dei dati a [...] si semplifica il lavoro quotidiano, si riducono gli inserimenti multipli di dati a più riprese e si velocizzano i processi."
+            "label": "Description succincte en italien (in italiano)",
+            "placeholder": "[Nome della vostra organizzazione] richiede l'accesso ai vostri [Tipo di dati globale, ad es. dati sui bovini] nel sistema [Nome del sistema, ad es. BDTA] al fine di [motivo della richiesta]."
           }
         },
         "purpose": {
-          "label": "But de l'utilisation des données",
-          "sublabel": "Le but de l'utilisation de données est indiquée à tous les producteurs de données dans leur langue préférée afin de garantir une transparence maximale quant à l'utilisation de leurs données.",
+          "label": "Finalité de l'utilisation des données",
+          "sublabel": "Présentez de manière transparente la façon dont votre organisation utilisera les données transmises, à quelles fins, et si une transmission à des tiers a lieu.",
           "de": {
-            "label": "But d'utilisation des données DE",
-            "placeholder": "[...] nutzt die angefragten Daten für ... (Beschreibung durch Datenbezüger). Die Daten werden (nicht) an Dritte weitergegeben. [...] verpflichtet sich, im Umgang mit den Daten geltende Vorschriften einzuhalten."
+            "label": "Finalité de l'utilisation en allemand (Auf Deutsch)",
+            "placeholder": "Formulieren Sie hier den Nutzungszweck gemäss Leitfaden..."
           },
           "fr": {
-            "label": "But d'utilisation des données FR",
-            "placeholder": "[...] utilise les données demandées pour ... (description par le bénéficiaire des données). Les données sont (non) transmises à des tiers. [...] s'engage à respecter la réglementation en vigueur en matière de traitement des données."
+            "label": "Finalité de l'utilisation en français",
+            "placeholder": "Formulez ici la finalité de l'utilisation selon le guide..."
           },
           "it": {
-            "label": "Objectif d'utilisation des données IT",
-            "placeholder": "[...] utilizza i dati richiesti per ... (descrizione dell’acquirente dil destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
+            "label": "Finalité de l'utilisation en italien (in italiano)",
+            "placeholder": "Formulare qui la finalità d'uso in base alla guida..."
           }
         }
       },
@@ -254,7 +254,7 @@
       }
     },
     "preview": {
-      "title": "Aperçu"
+      "title": "Aperçu de la demande de données (vue pour les agriculteurs)"
     },
     "privacy": {
       "consent": {
@@ -311,10 +311,7 @@
           }
         }
       },
-      "releaseContract": "Approuver la demande",
-      "error": {
-        "mobileNumberMissing": "Pour la signature électronique, nous avons besoin de votre numéro de téléphone mobile. Veuillez l’ajouter dans votre compte AGOV ou contacter le support à l’adresse support@agridata.ch."
-      }
+      "releaseContract": "Approuver la demande"
     },
     "submit": {
       "error": "Erreur lors de la soumission de la demande"
@@ -423,6 +420,10 @@
         },
         "alreadySigned": {
           "description": "Signé par {{ name }}"
+        },
+        "missingMobileNumber": {
+          "message": "Pour la signature électronique, nous avons besoin de votre numéro de téléphone mobile. Veuillez l’ajouter dans votre compte AGOV ou contacter le support à l’adresse support@agridata.ch.",
+          "title": "Numéro de portable manquant"
         }
       },
       "verifySigning": {

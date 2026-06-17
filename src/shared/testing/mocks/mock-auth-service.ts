@@ -10,6 +10,7 @@ import { MockifyWithWritableSignals } from '@/shared/testing/mocks';
  * Test signals exposed by the mock so tests can mutate the underlying writable signals.
  */
 export type MockAuthServiceTestSignals = {
+  hasMobileNumber: WritableSignal<boolean>;
   isAdmin: WritableSignal<boolean>;
   isAuthenticated: WritableSignal<boolean>;
   isConsumer: WritableSignal<boolean>;
@@ -29,6 +30,7 @@ export type MockAuthService = MockifyWithWritableSignals<AuthService, MockAuthSe
  * Methods are jest mocks; signals are real signals and can be mutated via `__testSignals`.
  */
 export function createMockAuthService(): MockAuthService {
+  const hasMobileNumber = signal(true);
   const isAdmin = signal(false);
   const isAuthenticated = signal<boolean>(false);
   const isConsumer = signal(false);
@@ -47,6 +49,7 @@ export function createMockAuthService(): MockAuthService {
     userRoles,
     userUids,
     // Computed signals (keep as simple signals for tests)
+    hasMobileNumber,
     isAdmin,
     isConsumer,
     isDataProvider,
@@ -65,6 +68,7 @@ export function createMockAuthService(): MockAuthService {
     logout: jest.fn(),
     // test-only writable signals
     __testSignals: {
+      hasMobileNumber,
       isAdmin,
       isAuthenticated,
       isConsumer,
@@ -89,6 +93,7 @@ export const mockUserInfo: UserInfoDto = {
   givenName: 'Producer',
   ktIdP: '***081',
   lastLoginDate: '2025-08-29T09:55:33.589684',
-  phoneNumber: '+4179123456789',
+  mobileNumber: '+4179123456789',
+  phoneNumber: '+41611234567',
   userPreferences: { mainMenuOpened: false, dismissedMigratedIds: [] },
 };

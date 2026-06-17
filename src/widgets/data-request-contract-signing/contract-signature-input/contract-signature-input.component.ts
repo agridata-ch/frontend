@@ -125,6 +125,7 @@ export class ContractSignatureInputComponent {
   protected readonly createFormControl = createFormControl;
   protected readonly getFormControl = getFormControl;
   protected readonly isDataConsumer = this.authService.isConsumer();
+  protected readonly hasMobileNumber = this.authService.hasMobileNumber;
 
   private countdownTimer?: ReturnType<typeof setInterval>;
 

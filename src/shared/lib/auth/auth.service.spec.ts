@@ -274,4 +274,22 @@ describe('AuthService User Properties', () => {
 
     expect(fullName).toBe('');
   });
+
+  it('should expose hasMobileNumber as true when the user has a mobile number', async () => {
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
+    createTestModule({ ...mockUserInfo, mobileNumber: '+41791234567' });
+
+    await authService.initializeAuth();
+
+    expect(authService.hasMobileNumber()).toBe(true);
+  });
+
+  it('should expose hasMobileNumber as false when the user has no mobile number', async () => {
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
+    createTestModule({ ...mockUserInfo, mobileNumber: undefined });
+
+    await authService.initializeAuth();
+
+    expect(authService.hasMobileNumber()).toBe(false);
+  });
 });
