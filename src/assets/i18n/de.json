@@ -120,7 +120,7 @@
           "label": "Gewünschtes System und Produkte",
           "placeholder": "Produkte auswählen",
           "moreInfos": "Weitere Infos",
-          "sublabel": "Sie können nur Produkte aus demselben System gleichzeitig beantragen. Bei der Auswahl eines Produkts wird das System automatisch zugeordnet."
+          "sublabel": "Sie können nur Produkte aus einem einzigen System gleichzeitig beantragen. Für Datenprodukte aus anderen Systemen erfassen Sie bitte einen separaten Datenantrag."
         },
         "title": {
           "label": "Titel des Datenantrages",
@@ -140,7 +140,7 @@
         },
         "description": {
           "label": "Kurzbeschreibung des Antrags",
-          "sublabel": "Fassen Sie den Antrag in 2–3 Sätzen sachlich zusammen. Dieser Text wird dem Landwirt direkt als Haupterklärung unter dem Titel angezeigt. (Vorteile und Nutzungszweck erfassen Sie weiter unten separat).",
+          "sublabel": "Fassen Sie den Antrag in 2–3 Sätzen sachlich zusammen. Dieser Text wird dem Landwirt direkt als Haupterklärung unter dem Titel angezeigt. Vorteile und Nutzungszweck erfassen Sie weiter unten separat.",
           "de": {
             "label": "Kurzbeschreibung auf Deutsch",
             "placeholder": "[Name Ihrer Organisation] benötigt Zugriff auf Ihre [zusammenfassende Datenart, z. B. Rinderdaten] aus dem System [Name des Systems, z. B. TVD], um [Grund der Anfrage]."
@@ -254,7 +254,7 @@
       }
     },
     "preview": {
-      "title": "Vorschau"
+      "title": "Vorschau der Datenanfrage (Ansicht für Landwirte)"
     },
     "privacy": {
       "consent": {
@@ -279,7 +279,7 @@
       "consumer": {
         "steps": {
           "consumer": "Bezüger",
-          "request": "Anfrage",
+          "request": "Antrag",
           "preview": "Vorschau",
           "producer": "Produzent",
           "contract": "Vertrag",
@@ -311,10 +311,7 @@
           }
         }
       },
-      "releaseContract": "Antrag genehmigen",
-      "error": {
-        "mobileNumberMissing": "Für die elektronische Unterschrift benötigen wir Ihre Mobilnummer. Bitte ergänzen Sie diese in Ihrem AGOV-Konto oder kontaktieren Sie den Support unter support@agridata.ch."
-      }
+      "releaseContract": "Antrag genehmigen"
     },
     "submit": {
       "error": "Fehler beim Einreichen des Antrags"
@@ -423,6 +420,10 @@
         },
         "alreadySigned": {
           "description": "Unterzeichnet von {{ name }}"
+        },
+        "missingMobileNumber": {
+          "message": "Für die elektronische Unterschrift benötigen wir Ihre Mobilnummer. Bitte ergänzen Sie diese in Ihrem AGOV-Konto oder kontaktieren Sie den Support unter support@agridata.ch.",
+          "title": "Fehlende Mobilenummer"
         }
       },
       "verifySigning": {

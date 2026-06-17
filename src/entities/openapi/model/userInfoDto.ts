@@ -40,9 +40,13 @@ export interface UserInfoDto {
      */
     email?: string;
     /**
-     * Phone number of the user
+     * Landline number of the user
      */
     phoneNumber?: string;
+    /**
+     * Mobile number of the user
+     */
+    mobileNumber?: string;
     /**
      * Street name and house number of the user\'s residence.
      */
