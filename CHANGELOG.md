@@ -1,3 +1,9 @@
+## [1.13.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.4...v1.13.0-rc.5) (2026-06-18)
+
+### Features
+
+- **data-request:** add separate signature texts ([71458cc](https://github.com/agridata-ch/frontend/commit/71458ccbcb29710efa73fa3af8e81566cdf8ae2a)), closes [DIGIB2-1463](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1463)
+
 ## [1.13.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.3...v1.13.0-rc.4) (2026-06-16)
 
 ### Features
