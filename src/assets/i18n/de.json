@@ -109,64 +109,65 @@
     },
     "form": {
       "request": {
-        "headline": "Angaben zum Datenbezug",
+        "headline": "Inhalt des Datenantrags definieren",
         "provider": {
           "label": "Datenanbieter",
-          "sublabel": "Aktuell steht nur ein Datenabieter zur Verfügung. Es werden kontinuierlich weitere Anbieter angebunden.",
-          "placeholder": "Datenanbieter auswählen"
+          "sublabel": "Bestimmen Sie den gewünschten Datenanbieter sowie die spezifischen Datenprodukte für Ihren Antrag.",
+          "placeholder": "Datenanbieter auswählen",
+          "heading": "Datenprodukte auswählen"
         },
         "products": {
-          "label": "Welches Datenprodukt möchten Sie?",
-          "placeholder": "Wählen Sie die Produkte aus, für die Sie Daten anfordern möchten.",
+          "label": "Gewünschtes System und Produkte",
+          "placeholder": "Produkte auswählen",
           "moreInfos": "Weitere Infos",
-          "sublabel": "Sie können Produkte aus nur einer Kategorie gleichzeitig wählen."
+          "sublabel": "Sie können nur Produkte aus demselben System gleichzeitig beantragen. Bei der Auswahl eines Produkts wird das System automatisch zugeordnet."
         },
         "title": {
-          "label": "Antragname Datenanfrage",
-          "sublabel": "Der Name wird allen Datenproduzenten in ihrer bevorzugten Sprache angezeigt, wenn sie über die Freigabe Ihrer Daten entscheiden. ",
+          "label": "Titel des Datenantrages",
+          "sublabel": "Wählen Sie einen aussagekräftigen Titel für den Datenantrag. Dieser wird den Datenproduzenten (z. B. Landwirten) in ihrer jeweiligen eingestellten Sprache angezeigt, wenn sie auf der Datenanfrage über die Zustimmung entscheiden.",
           "de": {
-            "label": "Antragname Datenanfrage DE",
-            "placeholder": "Anfrage von [...] zum Bezug von [...]-Daten"
+            "label": "Titel auf Deutsch",
+            "placeholder": "Anfrage für [zusammenfassende Datenart, z. B. Rinderdaten]"
           },
           "fr": {
-            "label": "Antragname Datenanfrage FR",
-            "placeholder": "Demande de [...] pour obtenir des données [...]"
+            "label": "Titel auf Französisch (en français)",
+            "placeholder": "Demande pour [Type de données global, p. ex. données sur les bovins]"
           },
           "it": {
-            "label": "Antragname Datenanfrage IT",
-            "placeholder": "Richiesta di [...] per ottenere [...] dati"
+            "label": "Titel auf Italienisch (in italiano)",
+            "placeholder": "Richiesta per [Tipo di dati globale, ad es. dati sui bovini]"
           }
         },
         "description": {
-          "label": "Beschreibung des Antrags",
-          "sublabel": "Die Beschreibung wird allen Datenproduzent:innen in ihrer bevorzugten Sprache angezeigt, damit sie eine informierte Entscheidung treffen können.",
+          "label": "Kurzbeschreibung des Antrags",
+          "sublabel": "Fassen Sie den Antrag in 2–3 Sätzen sachlich zusammen. Dieser Text wird dem Landwirt direkt als Haupterklärung unter dem Titel angezeigt. (Vorteile und Nutzungszweck erfassen Sie weiter unten separat).",
           "de": {
-            "label": "Beschreibung des Antrags DE",
-            "placeholder": "Wenn Sie der Datenweitergabe an [...]  zustimmen, vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
+            "label": "Kurzbeschreibung auf Deutsch",
+            "placeholder": "[Name Ihrer Organisation] benötigt Zugriff auf Ihre [zusammenfassende Datenart, z. B. Rinderdaten] aus dem System [Name des Systems, z. B. TVD], um [Grund der Anfrage]."
           },
           "fr": {
-            "label": "Beschreibung des Antrags FR",
-            "placeholder": "En donnant votre approbation à la transmission de données à [...], vous simplifiez votre travail quotidien, réduisez les saisies multiples et accélérez les processus."
+            "label": "Kurzbeschreibung auf Französisch (en français)",
+            "placeholder": "[Nom de votre organisation] a besoin d'accéder à vos [Type de données global, p. ex. données sur les bovins] dans le système [Nom du système, p. ex. BDTA] afin de [motif de la demande]."
           },
           "it": {
-            "label": "Beschreibung des Antrags IT",
-            "placeholder": "Con il consenso all'inoltro dei dati a [...] si semplifica il lavoro quotidiano, si riducono gli inserimenti multipli di dati a più riprese e si velocizzano i processi."
+            "label": "Kurzbeschreibung auf Italienisch (in italiano)",
+            "placeholder": "[Nome della vostra organizzazione] richiede l'accesso ai vostri [Tipo di dati globale, ad es. dati sui bovini] nel sistema [Nome del sistema, ad es. BDTA] al fine di [motivo della richiesta]."
           }
         },
         "purpose": {
           "label": "Nutzungszweck der Daten",
-          "sublabel": "Der Nutzungszweck wird allen Datenproduzent:innen in ihrer bevorzugten Sprache angezeigt, um maximale Transparenz über die Verwendung ihrer Daten zu gewährleisten.",
+          "sublabel": "Legen Sie transparent dar, wie und wofür Ihre Organisation die freigegebenen Daten verwendet und ob eine Weitergabe an Dritte erfolgt.",
           "de": {
-            "label": "Nutzungszweck der Daten DE",
-            "placeholder": "[...] nutzt die angefragten Daten für ... (Beschreibung durch Datenbezüger). Die Daten werden (nicht) an Dritte weitergegeben. [...] verpflichtet sich, im Umgang mit den Daten geltende Vorschriften einzuhalten."
+            "label": "Nutzungszweck auf Deutsch",
+            "placeholder": "Formulieren Sie hier den Nutzungszweck gemäss Leitfaden..."
           },
           "fr": {
-            "label": "Nutzungszweck der Daten FR",
-            "placeholder": "[...] utilise les données demandées pour ... (description par le bénéficiaire des données). Les données sont (non) transmises à des tiers. [...] s'engage à respecter la réglementation en vigueur en matière de traitement des données."
+            "label": "Nutzungszweck auf Französisch (en français)",
+            "placeholder": "Formulez ici la finalité de l'utilisation selon le guide..."
           },
           "it": {
-            "label": "Nutzungszweck der Daten IT",
-            "placeholder": "[...] utilizza i dati richiesti per ... (descrizione dell’acquirente dil destinatario dei dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
+            "label": "Nutzungszweck auf Italienisch (in italiano)",
+            "placeholder": "Formulare qui la finalità d'uso in base alla guida..."
           }
         }
       },
@@ -310,7 +311,10 @@
           }
         }
       },
-      "releaseContract": "Antrag genehmigen"
+      "releaseContract": "Antrag genehmigen",
+      "error": {
+        "mobileNumberMissing": "Für die elektronische Unterschrift benötigen wir Ihre Mobilnummer. Bitte ergänzen Sie diese in Ihrem AGOV-Konto oder kontaktieren Sie den Support unter support@agridata.ch."
+      }
     },
     "submit": {
       "error": "Fehler beim Einreichen des Antrags"
@@ -377,7 +381,8 @@
       "contract": {
         "description": "Unterzeichnen Sie den Vertrag zwischen den Vertragspartnern: {{ consumer }} und {{ provider }}. Sobald alle erforderlichen Unterschriften vorliegen, wird der Vertrag dem Administrator zur finalen Prüfung und Aktivierung übermittelt.",
         "signing": {
-          "info": "Pro Vertragspartner sind zwei Unterschriften erforderlich. Stellen Sie sicher, dass auch eine zweite zeichnungsberechtigte Person aus {{ company }} den Vertrag unterzeichnet."
+          "infoSingle": "Mit Ihrer Unterschrift schliessen Sie die Signatur für den {{ company }} vollständig ab. Es ist keine weitere Person Ihrer Organisation erforderlich.",
+          "infoCollective": "Dies ist die erste von zwei erforderlichen Unterschriften. Bitte informieren Sie eine zweite zeichnungsberechtigte Person aus dem {{ company }} selbstständig, damit diese ebenfalls unterzeichnet."
         }
       },
       "signatureInput": {
