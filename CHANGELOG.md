@@ -1,3 +1,9 @@
+## [1.13.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.5...v1.13.0-rc.6) (2026-06-18)
+
+### Features
+
+- **data-request:** add mobile number checks and error handling in data request wizard when signing ([11b11bf](https://github.com/agridata-ch/frontend/commit/11b11bfaa09ceccd92256e678e7e9e1cf937d4b6)), closes [DIGIB2-1465](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1465)
+
 ## [1.13.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.4...v1.13.0-rc.5) (2026-06-18)
 
 ### Features
