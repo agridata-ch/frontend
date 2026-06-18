@@ -35,11 +35,19 @@
         [skin]="AvatarSkin.LIGHT"
       />
       <span class="text-gray-700">
-        {{
-          t('contract.signing.info', {
-            company: companyName(),
-          })
-        }}
+        @if (isCollectiveSignatureType()) {
+          {{
+            t('contract.signing.infoCollective', {
+              company: companyName(),
+            })
+          }}
+        } @else {
+          {{
+            t('contract.signing.infoSingle', {
+              company: companyName(),
+            })
+          }}
+        }
       </span>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <app-contract-signature-input

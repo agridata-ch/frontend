@@ -113,7 +113,8 @@
         "provider": {
           "label": "Fournisseur de données",
           "sublabel": "Actuellement, un seul fournisseur de données est disponible. D'autres fournisseurs sont continuellement connectés.",
-          "placeholder": "Sélectionner un fournisseur de données"
+          "placeholder": "Sélectionner un fournisseur de données",
+          "heading": "Sélection des produits de données"
         },
         "products": {
           "label": "Quel produit de données souhaitez-vous ?",
@@ -310,7 +311,10 @@
           }
         }
       },
-      "releaseContract": "Approuver la demande"
+      "releaseContract": "Approuver la demande",
+      "error": {
+        "mobileNumberMissing": "Pour la signature électronique, nous avons besoin de votre numéro de téléphone mobile. Veuillez l’ajouter dans votre compte AGOV ou contacter le support à l’adresse support@agridata.ch."
+      }
     },
     "submit": {
       "error": "Erreur lors de la soumission de la demande"
@@ -377,7 +381,8 @@
       "contract": {
         "description": "Signez le contrat entre les partenaires contractuels : {{ consumer }} et {{ provider }}. Une fois que toutes les signatures requises ont été apposées, le contrat est transmis à l'administrateur pour vérification finale et activation.",
         "signing": {
-          "info": "Deux signatures sont requises pour chaque partie contractante. Veuillez vous assurer qu'une deuxième personne habilitée à signer au nom de {{ company }} signe également le contrat."
+          "infoSingle": "Avec votre signature, vous finalisez complètement la signature pour le {{ company }}. Aucune autre personne de votre organisation n'est requise.",
+          "infoCollective": "Il s'agit de la première des deux signatures requises. Veuillez informer vous-même une seconde personne autorisée au sein du {{ company }} afin qu'elle signe également."
         }
       },
       "signatureInput": {
