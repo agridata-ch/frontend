@@ -31,6 +31,7 @@ const mockDataRequest: DataRequestDto = {
   dataProviderId: 'provider-1',
   products: ['product-1'],
   currentContractRevisionId: 'cr-1',
+  advantages: [],
 };
 
 const mockDataProduct: DataProductDto = {

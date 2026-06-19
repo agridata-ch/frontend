@@ -26,11 +26,12 @@ import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing
 
 import { DataRequestContractSigningComponent } from './data-request-contract-signing.component';
 
-const mockDataRequest: DataRequestDto = { id: 'dr-1', stateCode: 'draft' };
+const mockDataRequest: DataRequestDto = { id: 'dr-1', stateCode: 'draft', advantages: [] };
 const mockDataRequestWithContract: DataRequestDto = {
   id: 'dr-1',
   stateCode: 'draft',
   currentContractRevisionId: 'cr-1',
+  advantages: [],
 };
 
 describe('DataRequestContractSigningComponent', () => {

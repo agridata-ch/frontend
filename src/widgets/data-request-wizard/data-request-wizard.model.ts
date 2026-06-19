@@ -31,6 +31,7 @@ export const dataRequestFormsModel: DataRequestFormModel[] = [
   {
     formGroupName: FORM_GROUP_NAMES.REQUEST,
     fields: [
+      { name: 'advantages' },
       { name: 'products' },
       { name: 'title.de', i18nDefaultValue: 'data-request.form.request.title.de.placeholder' },
       { name: 'title.fr', i18nDefaultValue: 'data-request.form.request.title.fr.placeholder' },

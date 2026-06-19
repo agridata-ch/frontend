@@ -48,6 +48,7 @@ describe('ConsentRequestTableComponent', () => {
         dataConsumerDisplayName: 'Test AG',
         stateCode: DataRequestStateEnum.Active,
         dataProviderId: 'dp1',
+        advantages: [],
       },
     },
     {
@@ -60,6 +61,7 @@ describe('ConsentRequestTableComponent', () => {
         dataConsumerDisplayName: 'Demo GmbH',
         stateCode: DataRequestStateEnum.Active,
         dataProviderId: 'dp2',
+        advantages: [],
       },
     },
   ];

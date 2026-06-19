@@ -1,0 +1,57 @@
+<div *i18n="let t; prefix: 'data-request.form'" class="flex flex-col gap-4">
+  <div class="mb-2">
+    <h4 class="text-agridata-primary-text">{{ t('request.advantages.heading') }}</h4>
+    <span class="text-agridata-tertiary-text">{{ t('request.advantages.subHeading') }}</span>
+  </div>
+  @for (_ of getAdvantagesControls(); track $index) {
+    <div
+      class="flex flex-col gap-3 border border-gray-200 rounded-lg p-4"
+      [formGroup]="advantageGroup($index)"
+      (input)="syncToControl()"
+    >
+      <div class="flex items-center justify-between">
+        <h5 class="text-base font-semibold">
+          {{ t('request.advantages.group.heading') }} {{ $index + 1 }}
+        </h5>
+        @if ($index > 0 && !formDisabled()) {
+          <app-agridata-button
+            [variant]="ButtonVariants.Tertiary"
+            (handleClick)="removeAdvantage($index)"
+          >
+            {{ t('request.advantages.remove') }}
+          </app-agridata-button>
+        }
+      </div>
+      <app-form-control
+        [control]="getFormControl(advantageGroup($index), 'de')"
+        [label]="t('request.advantages.de.label', { position: $index + 1 })"
+        [placeholder]="t('request.advantages.de.placeholder')"
+        [disabled]="formDisabled()"
+      />
+      <app-form-control
+        [control]="getFormControl(advantageGroup($index), 'fr')"
+        [label]="t('request.advantages.fr.label', { position: $index + 1 })"
+        [placeholder]="t('request.advantages.fr.placeholder')"
+        [disabled]="formDisabled()"
+      />
+      <app-form-control
+        [control]="getFormControl(advantageGroup($index), 'it')"
+        [label]="t('request.advantages.it.label', { position: $index + 1 })"
+        [placeholder]="t('request.advantages.it.placeholder')"
+        [disabled]="formDisabled()"
+      />
+    </div>
+  }
+  <div>
+    @if (!formDisabled()) {
+      <app-agridata-button
+        [variant]="ButtonVariants.IconLink"
+        (handleClick)="addAdvantage()"
+        [icon]="faAdd"
+        [disabled]="!canAdd()"
+      >
+        {{ t('request.advantages.add') }}
+      </app-agridata-button>
+    }
+  </div>
+</div>

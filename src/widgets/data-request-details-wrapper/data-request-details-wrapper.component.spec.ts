@@ -71,6 +71,7 @@ describe('DataRequestDetailsWrapperComponent', () => {
       id: 'test-id',
       stateCode: 'ACTIVE',
       dataProviderId: 'provider-id',
+      advantages: [],
     });
     componentRef.setInput('dataRequestId', 'test-id');
 
@@ -85,6 +86,7 @@ describe('DataRequestDetailsWrapperComponent', () => {
       id: 'test-id',
       stateCode: 'DRAFT',
       dataProviderId: 'provider-id',
+      advantages: [],
     });
     componentRef.setInput('dataRequestId', 'test-id');
 

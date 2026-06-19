@@ -3,7 +3,7 @@ import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { DataRequestDto } from '@/entities/openapi';
+import { DataRequestAdvantageDto, DataRequestDto } from '@/entities/openapi';
 import { getFieldFromLang } from '@/shared/data-request';
 import { I18nDirective } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
@@ -61,4 +61,8 @@ export class DataRequestPreviewComponent {
       .getProductsForProvider(this.dataRequest().dataProviderId!)
       ?.filter((product) => this.dataRequest()?.products?.includes(product.id));
   });
+
+  protected getAdvantageText(advantage: DataRequestAdvantageDto, lang: string): string {
+    return (advantage as Record<string, string>)[lang] ?? '';
+  }
 }

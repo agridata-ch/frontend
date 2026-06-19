@@ -125,6 +125,31 @@
           "format": "uuid"
         },
         "minItems": 1
+      },
+      "advantages": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "de": {
+              "type": "string",
+              "minLength": 5,
+              "maxLength": 255
+            },
+            "fr": {
+              "type": "string",
+              "minLength": 5,
+              "maxLength": 255
+            },
+            "it": {
+              "type": "string",
+              "minLength": 5,
+              "maxLength": 255
+            }
+          }
+        },
+        "minItems": 0,
+        "maxItems": 5
       }
     },
     "required": [
@@ -139,7 +164,8 @@
       "contactPhoneNumber",
       "contactEmailAddress",
       "targetGroup",
-      "products"
+      "products",
+      "advantages"
     ]
   },
   "DataProductUpdateDto": {

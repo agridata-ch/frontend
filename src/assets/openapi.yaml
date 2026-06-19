@@ -57,6 +57,7 @@ components:
           required:
           - id
           - stateCode
+          - advantages
           properties:
             id:
               $ref: "#/components/schemas/UUID"
@@ -200,6 +201,12 @@ components:
               $ref: "#/components/schemas/SignatureTypeEnum"
               description: Signature type for provider
               type: string
+            advantages:
+              type: array
+              items:
+                $ref: "#/components/schemas/DataRequestAdvantageDto"
+              description: A list of advantages to the producer for sharing their
+                data
         consentRequests:
           type: array
           items:
@@ -373,6 +380,7 @@ components:
           required:
           - id
           - stateCode
+          - advantages
           properties:
             id:
               $ref: "#/components/schemas/UUID"
@@ -516,6 +524,12 @@ components:
               $ref: "#/components/schemas/SignatureTypeEnum"
               description: Signature type for provider
               type: string
+            advantages:
+              type: array
+              items:
+                $ref: "#/components/schemas/DataRequestAdvantageDto"
+              description: A list of advantages to the producer for sharing their
+                data
     ConsentRequestStateEnum:
       description: |
         Possible states of a consent request:
@@ -727,6 +741,11 @@ components:
           description: State of the data product
           examples:
           - DRAFT
+        restClientChangeDetectionPathTemplate:
+          type: string
+          description: Template for the path for retrieving updates to the data product
+          examples:
+          - "v1/animal-updates/{{uid}}?since={{LAST_CHANGED_SINCE}}"
     DataProductNameDto:
       type: object
       properties:
@@ -842,6 +861,21 @@ components:
           $ref: "#/components/schemas/TranslationDto"
         uid:
           type: string
+    DataRequestAdvantageDto:
+      type: object
+      properties:
+        de:
+          type: string
+          examples:
+          - Vermeiden von Mehreingaben
+        fr:
+          type: string
+          examples:
+          - Éviter les saisies multiples
+        it:
+          type: string
+          examples:
+          - Evitare inserimenti multipli
     DataRequestContextDto:
       description: Data transfer object representing a minimal version of a data request
         for UI/UX use.
@@ -882,6 +916,7 @@ components:
       required:
       - id
       - stateCode
+      - advantages
       properties:
         id:
           $ref: "#/components/schemas/UUID"
@@ -1025,6 +1060,11 @@ components:
           $ref: "#/components/schemas/SignatureTypeEnum"
           description: Signature type for provider
           type: string
+        advantages:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataRequestAdvantageDto"
+          description: A list of advantages to the producer for sharing their data
     DataRequestPurposeDto:
       type: object
       properties:
@@ -1134,6 +1174,13 @@ components:
           description: List of data products requested
           examples:
           - - c661ea48-106d-4d7a-a5d1-a9a6db48dd8c
+        advantages:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataRequestAdvantageDto"
+          description: A list of advantages to the producer for sharing their data
+      required:
+      - advantages
     DataRequestValidRedirectUriRegexUpdateDto:
       type: object
       properties:
@@ -1700,7 +1747,12 @@ components:
           - anna.muster@example.com
         phoneNumber:
           type: string
-          description: Phone number of the user
+          description: Landline number of the user
+          examples:
+          - "+41331234567"
+        mobileNumber:
+          type: string
+          description: Mobile number of the user
           examples:
           - "+41791234567"
         addressStreet:
@@ -4533,7 +4585,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.11.0-rc.3
+  version: 1.11.0-rc.10
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

@@ -169,6 +169,27 @@
             "label": "Nutzungszweck auf Italienisch (in italiano)",
             "placeholder": "Formulare qui la finalità d'uso in base alla guida..."
           }
+        },
+        "advantages": {
+          "heading": "Vorteile der Datenproduzenten erfassen",
+          "subHeading": "Zählen Sie hier die konkreten Vorteile auf, die Datenproduzenten (z. B. Landwirte durch Zeitersparnis oder automatische Übernahme) von der Freigabe haben. Formulieren Sie pro Feld ein kurzes Argument. Weitere Vorteile fügen Sie über das Plus-Symbol hinzu.",
+          "de": {
+            "label": "Vorteil {{ position }} DE",
+            "placeholder": "Listen Sie einen Vorteil für die Datenproduzenten auf"
+          },
+          "fr": {
+            "label": "Vorteil {{ position }} FR",
+            "placeholder": "Énumérez un avantage pour les producteurs de données"
+          },
+          "it": {
+            "label": "Vorteil {{ position }} IT",
+            "placeholder": "Elenca un vantaggio per i produttori di dati"
+          },
+          "add": "Weiterer Vorteil erfassen",
+          "remove": "Vorteil entfernen",
+          "group": {
+            "heading": "Vorteil"
+          }
         }
       },
       "consumer": {
@@ -254,7 +275,8 @@
       }
     },
     "preview": {
-      "title": "Vorschau der Datenanfrage (Ansicht für Landwirte)"
+      "title": "Vorschau der Datenanfrage (Ansicht für Landwirte)",
+      "advantages": "Meine Vorteile"
     },
     "privacy": {
       "consent": {

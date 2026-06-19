@@ -24,6 +24,7 @@ const mockDataRequest: DataRequestDto = {
   id: 'dr-1',
   stateCode: 'draft',
   currentContractRevisionId: CONTRACT_REVISION_ID,
+  advantages: [],
 };
 
 describe('DataRequestContractPdfComponent', () => {
