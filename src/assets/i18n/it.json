@@ -169,6 +169,27 @@
             "label": "Finalità dell'uso in italiano",
             "placeholder": "Formulare qui la finalità d'uso in base alla guida..."
           }
+        },
+        "advantages": {
+          "heading": "Registra i vantaggi dei produttori di dati",
+          "subHeading": "Elencate qui i vantaggi concreti che i produttori di dati (ad es. gli agricoltori, grazie al risparmio di tempo o al trasferimento automatico) traggono dalla condivisione. Formulate un breve argomento per ogni campo. È possibile aggiungere ulteriori vantaggi tramite il simbolo del più.",
+          "de": {
+            "label": "Vantaggio {{ position }} DE",
+            "placeholder": "Listen Sie einen Vorteil für die Datenproduzenten auf"
+          },
+          "fr": {
+            "label": "Vantaggio {{ position }} FR",
+            "placeholder": "Énumérez un avantage pour les producteurs de données"
+          },
+          "it": {
+            "label": "Vantaggio {{ position }} IT",
+            "placeholder": "Elenca un vantaggio per i produttori di dati"
+          },
+          "add": "Registra un altro vantaggio",
+          "remove": "Rimuovi vantaggio",
+          "group": {
+            "heading": "Vantaggio"
+          }
         }
       },
       "consumer": {
@@ -254,7 +275,8 @@
       }
     },
     "preview": {
-      "title": "Anteprima della richiesta di dati (vista per gli agricoltori)"
+      "title": "Anteprima della richiesta di dati (vista per gli agricoltori)",
+      "advantages": "I miei vantaggi"
     },
     "privacy": {
       "consent": {

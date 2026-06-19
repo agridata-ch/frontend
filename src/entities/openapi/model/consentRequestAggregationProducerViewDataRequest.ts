@@ -9,6 +9,7 @@
  */
 import { DataSourceSystemReferenceDto } from './dataSourceSystemReferenceDto';
 import { DataRequestPurposeDto } from './dataRequestPurposeDto';
+import { DataRequestAdvantageDto } from './dataRequestAdvantageDto';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
 import { SignatureTypeEnum } from './signatureTypeEnum';
@@ -101,6 +102,10 @@ export interface ConsentRequestAggregationProducerViewDataRequest {
      * Signature type for provider
      */
     providerSignatureType?: SignatureTypeEnum;
+    /**
+     * A list of advantages to the producer for sharing their data
+     */
+    advantages: Array<DataRequestAdvantageDto>;
 }
 export namespace ConsentRequestAggregationProducerViewDataRequest {
 }

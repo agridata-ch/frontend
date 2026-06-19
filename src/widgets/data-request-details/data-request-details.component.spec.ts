@@ -87,6 +87,7 @@ describe('DataRequestDetailsComponent', () => {
         id: 'test-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Draft,
+        advantages: [],
         dataConsumerDisplayName: 'Test Consumer',
         dataConsumerCity: 'Test City',
         contactPhoneNumber: '1234567890',
@@ -112,6 +113,7 @@ describe('DataRequestDetailsComponent', () => {
         id: 'test-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Draft,
+        advantages: [],
       };
 
       let resolveRequest: (value: DataRequestDto) => void;
@@ -140,6 +142,7 @@ describe('DataRequestDetailsComponent', () => {
         id: 'test-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Draft,
+        advantages: [],
         dataConsumerDisplayName: 'Test Consumer',
       };
 
@@ -189,6 +192,7 @@ describe('DataRequestDetailsComponent', () => {
         id: 'test-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Draft,
+        advantages: [],
       };
 
       dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
@@ -214,6 +218,7 @@ describe('DataRequestDetailsComponent', () => {
         id: 'test-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Draft,
+        advantages: [],
       };
 
       dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
@@ -240,6 +245,7 @@ describe('DataRequestDetailsComponent', () => {
         currentContractRevisionId: 'contract-revision-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+        advantages: [],
       };
       dataRequestService.fetchDataRequest.mockResolvedValue(requestWithContract);
 
@@ -258,6 +264,7 @@ describe('DataRequestDetailsComponent', () => {
         currentContractRevisionId: 'contract-revision-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+        advantages: [],
       };
       dataRequestService.fetchDataRequest.mockResolvedValue(requestWithContract);
 
@@ -283,6 +290,7 @@ describe('DataRequestDetailsComponent', () => {
         currentContractRevisionId: 'contract-revision-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+        advantages: [],
       };
       dataRequestService.fetchDataRequest.mockResolvedValue(requestWithContract);
 

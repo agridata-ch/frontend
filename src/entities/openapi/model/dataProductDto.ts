@@ -55,6 +55,10 @@ export interface DataProductDto {
     description?: TranslationDto;
     deprecatedSince?: string;
     stateCode: DataProductDtoStateCode;
+    /**
+     * Template for the path for retrieving updates to the data product
+     */
+    restClientChangeDetectionPathTemplate?: string;
 }
 export namespace DataProductDto {
 }

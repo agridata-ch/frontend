@@ -3,7 +3,7 @@ import { Component, computed, effect, Signal, signal, untracked } from '@angular
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import { DataRequestDto, DataRequestStateEnum, DataRequestUpdateDto } from '@/entities/openapi';
 import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/pages/data-requests-consumer';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
@@ -179,7 +179,7 @@ export class DataRequestWizardConsumerComponent extends DataRequestWizardBaseCom
   protected override async saveDataRequest() {
     this.refreshListNeeded.set(true);
     this.isSaving.set(true);
-    const flattenForm = flattenFormGroup(this.form);
+    const flattenForm = flattenFormGroup<DataRequestUpdateDto>(this.form);
     const dataRequestId = this.currentDataRequestId();
 
     if (dataRequestId) {

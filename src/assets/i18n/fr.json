@@ -169,6 +169,27 @@
             "label": "Finalité de l'utilisation en italien (in italiano)",
             "placeholder": "Formulare qui la finalità d'uso in base alla guida..."
           }
+        },
+        "advantages": {
+          "heading": "Saisir les avantages des producteurs de données",
+          "subHeading": "Énumérez ici les avantages concrets dont bénéficient les producteurs de données (p. ex. les agriculteurs, grâce au gain de temps ou à la saisie automatique) suite au partage. Formulez un argument court par champ. Vous pouvez ajouter des avantages supplémentaires via le symbole plus.",
+          "de": {
+            "label": "Avantage {{ position }} DE",
+            "placeholder": "Listen Sie einen Vorteil für die Datenproduzenten auf"
+          },
+          "fr": {
+            "label": "Avantage {{ position }} FR",
+            "placeholder": "Énumérez un avantage pour les producteurs de données"
+          },
+          "it": {
+            "label": "Avantage {{ position }} IT",
+            "placeholder": "Elenca un vantaggio per i produttori di dati"
+          },
+          "add": "Ajouter un autre avantage",
+          "remove": "Supprimer l'avantage",
+          "group": {
+            "heading": "Avantage"
+          }
         }
       },
       "consumer": {
@@ -254,7 +275,8 @@
       }
     },
     "preview": {
-      "title": "Aperçu de la demande de données (vue pour les agriculteurs)"
+      "title": "Aperçu de la demande de données (vue pour les agriculteurs)",
+      "advantages": "Mes avantages"
     },
     "privacy": {
       "consent": {

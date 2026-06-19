@@ -43,6 +43,7 @@ model/dataProductUpdateDto.ts
 model/dataProviderDto.ts
 model/dataProviderExceptionDto.ts
 model/dataProviderReferenceDto.ts
+model/dataRequestAdvantageDto.ts
 model/dataRequestContextDto.ts
 model/dataRequestDescriptionDto.ts
 model/dataRequestDto.ts

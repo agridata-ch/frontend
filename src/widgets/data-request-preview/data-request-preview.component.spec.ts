@@ -37,6 +37,7 @@ describe('DataRequestPreviewComponent', () => {
     const mockDataRequest: DataRequestDto = {
       id: 'test-id',
       stateCode: DataRequestStateEnum.Draft,
+      advantages: [],
       title: { de: 'Test Title' },
       description: { de: 'Test Description' },
       products: ['product1'],
@@ -61,6 +62,7 @@ describe('DataRequestPreviewComponent', () => {
       const mockDataRequest: DataRequestDto = {
         id: 'test-id',
         stateCode: DataRequestStateEnum.Draft,
+        advantages: [],
         products: ['product1'],
         dataProviderId: 'provider-1',
       };
@@ -84,6 +86,7 @@ describe('DataRequestPreviewComponent', () => {
       const mockDataRequest: DataRequestDto = {
         id: 'test-id',
         stateCode: DataRequestStateEnum.Draft,
+        advantages: [],
         products: [],
       };
 

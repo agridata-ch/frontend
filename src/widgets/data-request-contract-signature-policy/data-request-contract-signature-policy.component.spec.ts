@@ -31,6 +31,7 @@ const mockContract: ContractRevisionDto = {
 const mockDataRequest: DataRequestDto = {
   id: 'dr-1',
   stateCode: '',
+  advantages: [],
 };
 
 describe('DataRequestContractSignaturePolicyComponent', () => {

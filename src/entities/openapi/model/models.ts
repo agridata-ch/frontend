@@ -20,6 +20,7 @@ export * from './dataProductUpdateDto';
 export * from './dataProviderDto';
 export * from './dataProviderExceptionDto';
 export * from './dataProviderReferenceDto';
+export * from './dataRequestAdvantageDto';
 export * from './dataRequestContextDto';
 export * from './dataRequestDescriptionDto';
 export * from './dataRequestDto';

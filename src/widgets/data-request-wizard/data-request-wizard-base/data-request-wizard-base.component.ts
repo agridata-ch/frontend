@@ -12,7 +12,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   faArrowLeft,
@@ -38,6 +38,7 @@ import {
 import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonVariants } from '@/shared/ui/button';
 import { AgridataWizardComponent, WizardStep } from '@/widgets/agridata-wizard';
+import { validateAdvantages } from '@/widgets/data-request-form/data-request-form-request/data-request-advantages';
 import {
   isStepCompleted,
   dataRequestFormsModel,
@@ -128,7 +129,12 @@ export abstract class DataRequestWizardBaseComponent {
       completed: false,
       disabled: this.getInitialStepDisabled(step.formGroupName),
     }));
-    untracked(() => this.formControlSteps.set(steps));
+    untracked(() => {
+      this.formControlSteps.set(steps);
+      if (this.dataRequest()) {
+        this.updateFormSteps();
+      }
+    });
   });
 
   private readonly updateDataRequestFromInputEffect = effect(() => {
@@ -259,6 +265,13 @@ export abstract class DataRequestWizardBaseComponent {
       dataRequestFormsModel,
       this.i18nService,
     );
+
+    // Register validateAdvantages early so step validity is correct before the advantages
+    // component mounts (it is lazily rendered via @switch). See data-request-advantages.model.ts
+    // for why this cannot go through buildReactiveForm.
+    const advantagesControl = newForm.get('request.advantages');
+    advantagesControl?.removeValidators(Validators.required);
+    advantagesControl?.addValidators(validateAdvantages);
 
     dataRequestFormsModel.forEach((form) => {
       const fg = newForm.get(form.formGroupName) as unknown as FormGroup;

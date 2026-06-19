@@ -28,6 +28,7 @@ describe('DataRequestFormContractComponent', () => {
   const mockDataRequest: DataRequestDto = {
     id: 'dr-1',
     stateCode: DataRequestStateEnum.InReview,
+    advantages: [],
   };
 
   beforeEach(async () => {

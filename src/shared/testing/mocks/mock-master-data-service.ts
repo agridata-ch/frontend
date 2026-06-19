@@ -25,6 +25,7 @@ export function createMockMasterDataService(): MockMasterDataService {
   const dataProductsGrouped = signal<Array<MultiSelectCategory>>([]);
   const dataProviders = signal<Array<DataProviderDto>>([]);
   const productsByProvider = signal<Map<string, DataProductDto[]>>(new Map());
+  const providersLoading = signal<boolean>(false);
   const userPreferences = signal(undefined);
 
   const getProductsForProvider = jest.fn((providerId: string) => {
@@ -40,6 +41,7 @@ export function createMockMasterDataService(): MockMasterDataService {
     dataProviders,
     fetchProductsByProvider: jest.fn(),
     getProductsForProvider,
+    providersLoading,
     __testSignals: {
       dataProducts,
       dataProductsCategories,

@@ -58,6 +58,7 @@ describe('ConsentRequestListComponent', () => {
         stateCode: DataRequestStateEnum.Active,
         dataProviderId: 'provider-123',
         id: 'data-request-123',
+        advantages: [],
       },
     };
 
