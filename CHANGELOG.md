@@ -1,3 +1,9 @@
+## [1.13.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.6...v1.13.0-rc.7) (2026-06-22)
+
+### Features
+
+- **deps:** update actions/checkout action to v7 ([83cf358](https://github.com/agridata-ch/frontend/commit/83cf358ab8a85c455d857b2a4749f8ec97a8ceb6))
+
 ## [1.13.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.5...v1.13.0-rc.6) (2026-06-18)
 
 ### Features
