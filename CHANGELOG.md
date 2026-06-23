@@ -1,3 +1,9 @@
+## [1.13.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.9...v1.13.0-rc.10) (2026-06-23)
+
+### Features
+
+- **data-request:** add title translation and current language to consent details for advantages ([15958e2](https://github.com/agridata-ch/frontend/commit/15958e2d3782c481614460615deded36f6f662c2)), closes [DIGIB2-1460](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1460)
+
 ## [1.13.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.8...v1.13.0-rc.9) (2026-06-23)
 
 ### Features
