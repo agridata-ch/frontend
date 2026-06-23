@@ -1,3 +1,9 @@
+## [1.13.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.10...v1.13.0-rc.11) (2026-06-23)
+
+### Bug Fixes
+
+- **advantages:** fix translations ([45e60a3](https://github.com/agridata-ch/frontend/commit/45e60a3d03a9347fa86fdf12cd2429091d3860fb)), closes [DIGIB2-1460](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1460)
+
 ## [1.13.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.9...v1.13.0-rc.10) (2026-06-23)
 
 ### Features
