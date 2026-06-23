@@ -7,7 +7,7 @@ import { ToastService, ToastType } from '@/shared/toast';
 
 export function getNotificationRoute(
   notification: InboxEntryDto,
-  authService: AuthService,
+  authService: Pick<AuthService, 'isConsumer' | 'isDataProvider' | 'isAdmin'>,
 ): string | null {
   const route = getRouteForTarget(notification.targetType, notification.targetId, authService);
   if (!route && notification.targetType) {
@@ -23,7 +23,7 @@ export function getNotificationRoute(
 export function getRouteForTarget(
   targetType: TargetTypeCodeEnum | undefined,
   targetId: string | undefined,
-  authService: AuthService,
+  authService: Pick<AuthService, 'isConsumer' | 'isDataProvider' | 'isAdmin'>,
 ): string | null {
   if (!targetId) return null;
 
@@ -44,9 +44,9 @@ export function getRouteForTarget(
 
 export function toggleReadStatus(
   notification: InboxEntryDto,
-  notificationService: NotificationService,
-  toastService: ToastService,
-  i18nService: I18nService,
+  notificationService: Pick<NotificationService, 'toggleReadStatus' | 'notifyMutation'>,
+  toastService: Pick<ToastService, 'show'>,
+  i18nService: Pick<I18nService, 'translate'>,
 ): Promise<void> {
   const errorKey = notification.isRead ? 'markAsUnread' : 'markAsRead';
   return notificationService
@@ -63,9 +63,9 @@ export function toggleReadStatus(
 
 export function markAllAsRead(
   notifications: InboxEntryDto[],
-  notificationService: NotificationService,
-  toastService: ToastService,
-  i18nService: I18nService,
+  notificationService: Pick<NotificationService, 'markAllAsRead' | 'notifyMutation'>,
+  toastService: Pick<ToastService, 'show'>,
+  i18nService: Pick<I18nService, 'translate'>,
 ): Promise<void> {
   const inbox: MarkAsReadRequestDto = {
     inboxIds: notifications.filter((n) => !n.isRead && n.id).map((n) => n.id!) || [],

@@ -8,7 +8,7 @@ import { createFormControl, getFormControl } from '@/shared/lib/form.helper';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
 
-import { crossLanguageValidator, MAX_ADVANTAGES, validateAdvantages } from './';
+import { crossLanguageValidator, MAX_ADVANTAGES, validateAdvantages } from '.';
 
 /**
  * Manages the dynamic list of advantages for a data request. Allows adding up to five
@@ -17,11 +17,11 @@ import { crossLanguageValidator, MAX_ADVANTAGES, validateAdvantages } from './';
  * CommentLastReviewed: 2026-06-19
  */
 @Component({
-  selector: 'app-data-request-advantages',
+  selector: 'app-data-request-form-request-advantages',
   imports: [ButtonComponent, FormControlComponent, I18nDirective, ReactiveFormsModule],
-  templateUrl: './data-request-advantages.component.html',
+  templateUrl: './data-request-form-request-advantages.component.html',
 })
-export class DataRequestAdvantagesComponent {
+export class DataRequestFormRequestAdvantagesComponent {
   // Injects
   private readonly i18nService = inject(I18nService);
 

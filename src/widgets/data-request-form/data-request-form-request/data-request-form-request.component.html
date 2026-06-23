@@ -9,12 +9,12 @@
     *i18n="let t; prefix: 'data-request.form'"
   >
     <h2>{{ t('request.headline') }}</h2>
-    <app-data-request-product
+    <app-data-request-form-request-product
       [form]="form()!"
       [formDisabled]="formDisabled()"
       [dataProviderId]="dataProviderId()"
     />
-    <app-data-request-description [form]="form()!" [formDisabled]="formDisabled()" />
-    <app-data-request-advantages [form]="form()!" [formDisabled]="formDisabled()" />
+    <app-data-request-form-request-description [form]="form()!" [formDisabled]="formDisabled()" />
+    <app-data-request-form-request-advantages [form]="form()!" [formDisabled]="formDisabled()" />
   </form>
 }

@@ -12,14 +12,13 @@ import {
   MultiSelectCategory,
 } from '@/shared/ui/agridata-multi-select';
 import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
-import { FormControlComponent } from '@/shared/ui/form-control';
 import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
 
 import {
   buildCategoriesMap,
   getDataSourceCode,
   mapProductToOption,
-} from './data-request-product.model';
+} from './data-request-form-request-product.model';
 
 /**
  * Manages provider selection and product selection for a data request. Handles dynamic product
@@ -28,18 +27,17 @@ import {
  * CommentLastReviewed: 2026-06-19
  */
 @Component({
-  selector: 'app-data-request-product',
+  selector: 'app-data-request-form-request-product',
   imports: [
     AgridataMultiSelectComponent,
     AgridataSelectComponent,
     FontAwesomeModule,
-    FormControlComponent,
     I18nDirective,
     ReactiveFormsModule,
   ],
-  templateUrl: './data-request-product.component.html',
+  templateUrl: './data-request-form-request-product.component.html',
 })
-export class DataRequestProductComponent {
+export class DataRequestFormRequestProductComponent {
   // Injects
   private readonly i18nService = inject(I18nService);
   private readonly metaDataService = inject(MasterDataService);
@@ -101,9 +99,9 @@ export class DataRequestProductComponent {
     const catMap = this.categoriesMap();
 
     const entries =
-      selectedCat !== null
-        ? [[selectedCat, catMap.get(selectedCat) ?? selectedCat] as [string, string]]
-        : Array.from(catMap.entries());
+      selectedCat === null
+        ? Array.from(catMap.entries())
+        : [[selectedCat, catMap.get(selectedCat) ?? selectedCat] as [string, string]];
 
     return entries.map(([code, name]) => ({
       categoryLabel: name,

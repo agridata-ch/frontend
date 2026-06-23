@@ -4,6 +4,7 @@ export const environment = {
   appBaseUrl: 'https://test.agridata.ch',
   apiBaseUrl: 'https://api.test.agridata.ch',
   cmsBaseUrl: 'https://remarkable-growth-2947108bb8.strapiapp.com',
+  cmsMediaUrl: 'https://media.agridata.ch/',
   cmsContactUrl: 'https://cms.agridata.ch/api/contact',
   cmsOnboardingFormUrl: 'https://cms.agridata.ch/api/onboarding-form',
   canResetTestData: true,

@@ -156,7 +156,7 @@
         },
         "purpose": {
           "label": "Nutzungszweck der Daten",
-          "sublabel": "Legen Sie transparent dar, wie und wofür Ihre Organisation die freigegebenen Daten verwendet und ob eine Weitergabe an Dritte erfolgt.",
+          "sublabel": "Legen Sie transparent dar, wie und wofür Ihre Organisation die freigegebenen Daten verwendet und ob eine Weitergabe an Dritte erfolgt. Den Leitfaden finden Sie [hier]",
           "de": {
             "label": "Nutzungszweck auf Deutsch",
             "placeholder": "Formulieren Sie hier den Nutzungszweck gemäss Leitfaden..."
@@ -174,18 +174,18 @@
           "heading": "Vorteile der Datenproduzenten erfassen",
           "subHeading": "Zählen Sie hier die konkreten Vorteile auf, die Datenproduzenten (z. B. Landwirte durch Zeitersparnis oder automatische Übernahme) von der Freigabe haben. Formulieren Sie pro Feld ein kurzes Argument. Weitere Vorteile fügen Sie über das Plus-Symbol hinzu.",
           "de": {
-            "label": "Vorteil {{ position }} DE",
+            "label": "Vorteil auf Deutsch",
             "placeholder": "Listen Sie einen Vorteil für die Datenproduzenten auf"
           },
           "fr": {
-            "label": "Vorteil {{ position }} FR",
+            "label": "Vorteil auf Französisch (en français)",
             "placeholder": "Énumérez un avantage pour les producteurs de données"
           },
           "it": {
-            "label": "Vorteil {{ position }} IT",
+            "label": "Vorteil auf Italienisch (in italiano)",
             "placeholder": "Elenca un vantaggio per i produttori di dati"
           },
-          "add": "Weiterer Vorteil erfassen",
+          "add": "Weiteren Vorteil erfassen",
           "remove": "Vorteil entfernen",
           "group": {
             "heading": "Vorteil"
