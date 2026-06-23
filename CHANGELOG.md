@@ -1,3 +1,23 @@
+## [1.13.0](https://github.com/agridata-ch/frontend/compare/v1.12.0...v1.13.0) (2026-06-23)
+
+### Features
+
+- **data-product:** data-product detail view ([ce898b2](https://github.com/agridata-ch/frontend/commit/ce898b2950a4a53c09a058867d3a3229d5641d66)), closes [DIGIB2-1353](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1353)
+- **data-products:** create data-product ([e433a80](https://github.com/agridata-ch/frontend/commit/e433a80d899faceeee8e13cf6a1676882bfe8685)), closes [DIGIB2-1351](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1351)
+- **data-request:** add advantages ([285d45d](https://github.com/agridata-ch/frontend/commit/285d45d57d5dbac69ad83d4e3d96777ccfa29584)), closes [DIGIB2-1460](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1460)
+- **data-request:** add mobile number checks and error handling in data request wizard when signing ([11b11bf](https://github.com/agridata-ch/frontend/commit/11b11bfaa09ceccd92256e678e7e9e1cf937d4b6)), closes [DIGIB2-1465](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1465)
+- **data-request:** add separate signature texts ([71458cc](https://github.com/agridata-ch/frontend/commit/71458ccbcb29710efa73fa3af8e81566cdf8ae2a)), closes [DIGIB2-1463](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1463)
+- **data-request:** add title translation and current language to consent details for advantages ([15958e2](https://github.com/agridata-ch/frontend/commit/15958e2d3782c481614460615deded36f6f662c2)), closes [DIGIB2-1460](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1460)
+- **data-request:** show button spinner while accepting/rejecting data request, ([5c6b191](https://github.com/agridata-ch/frontend/commit/5c6b191a18bd89d8a701db108aa08bf4f9f61366)), closes [DIGIB2-1435](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1435)
+- **deps:** update actions/checkout action to v7 ([83cf358](https://github.com/agridata-ch/frontend/commit/83cf358ab8a85c455d857b2a4749f8ec97a8ceb6))
+- **purpose:** add link to purpose pdf ([4cc9816](https://github.com/agridata-ch/frontend/commit/4cc98166938922ca53e8b18a2066c02e53413c87)), closes [DIGIB2-1664](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1664)
+
+### Bug Fixes
+
+- **advantages:** fix translations ([45e60a3](https://github.com/agridata-ch/frontend/commit/45e60a3d03a9347fa86fdf12cd2429091d3860fb)), closes [DIGIB2-1460](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1460)
+- **data-product:** fix load of data-providers ([fc8e7b9](https://github.com/agridata-ch/frontend/commit/fc8e7b9943bc5861a9ea234a60adfd5eef408b75)), closes [DIGIB2-1353](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1353)
+- **data-products:** fix view details, placeholder stripping ([2164d16](https://github.com/agridata-ch/frontend/commit/2164d16854821d44295a237e937970065db83d58)), closes [DIGIB2-1353](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1353)
+
 ## [1.13.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.10...v1.13.0-rc.11) (2026-06-23)
 
 ### Bug Fixes
