@@ -4,6 +4,7 @@ export const environment = {
   appBaseUrl: 'http://localhost:4200',
   apiBaseUrl: 'http://localhost:8060',
   cmsBaseUrl: 'http://localhost:1337',
+  cmsMediaUrl: 'http://localhost:1337/uploads',
   cmsContactUrl: 'https://cms.agridata.ch/api/contact',
   cmsOnboardingFormUrl: 'https://cms.agridata.ch/api/onboarding-form',
   canResetTestData: true,

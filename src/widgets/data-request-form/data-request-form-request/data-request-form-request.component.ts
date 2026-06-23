@@ -6,9 +6,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { I18nDirective } from '@/shared/i18n';
 
-import { DataRequestAdvantagesComponent } from './data-request-advantages';
-import { DataRequestDescriptionComponent } from './data-request-description';
-import { DataRequestProductComponent } from './data-request-product';
+import { DataRequestFormRequestAdvantagesComponent } from './data-request-form-request-advantages';
+import { DataRequestFormRequestDescriptionComponent } from './data-request-form-request-description';
+import { DataRequestFormRequestProductComponent } from './data-request-form-request-product';
 
 /**
  * Composes the request step of the data request form. Delegates product selection,
@@ -19,9 +19,9 @@ import { DataRequestProductComponent } from './data-request-product';
 @Component({
   selector: 'app-data-request-form-request',
   imports: [
-    DataRequestAdvantagesComponent,
-    DataRequestDescriptionComponent,
-    DataRequestProductComponent,
+    DataRequestFormRequestAdvantagesComponent,
+    DataRequestFormRequestDescriptionComponent,
+    DataRequestFormRequestProductComponent,
     FontAwesomeModule,
     I18nDirective,
     ReactiveFormsModule,

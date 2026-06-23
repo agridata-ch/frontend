@@ -11,6 +11,7 @@ export type MockMasterDataServiceTestSignals = {
   dataProductsGrouped: WritableSignal<Array<MultiSelectCategory>>;
   dataProviders: WritableSignal<Array<DataProviderDto>>;
   productsByProvider: WritableSignal<Map<string, DataProductDto[]>>;
+  providersLoading: WritableSignal<boolean>;
   userPreferences: WritableSignal<undefined | UserPreferencesDto>;
 };
 
@@ -48,6 +49,7 @@ export function createMockMasterDataService(): MockMasterDataService {
       dataProductsGrouped,
       dataProviders,
       productsByProvider,
+      providersLoading,
       userPreferences,
     },
   } satisfies MockMasterDataService;

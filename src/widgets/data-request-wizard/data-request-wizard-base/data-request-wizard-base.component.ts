@@ -38,7 +38,7 @@ import {
 import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonVariants } from '@/shared/ui/button';
 import { AgridataWizardComponent, WizardStep } from '@/widgets/agridata-wizard';
-import { validateAdvantages } from '@/widgets/data-request-form/data-request-form-request/data-request-advantages';
+import { validateAdvantages } from '@/widgets/data-request-form/data-request-form-request/data-request-form-request-advantages';
 import {
   isStepCompleted,
   dataRequestFormsModel,

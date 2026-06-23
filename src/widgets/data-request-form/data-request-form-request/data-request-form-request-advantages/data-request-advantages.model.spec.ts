@@ -1,6 +1,9 @@
 import { FormControl, FormGroup } from '@angular/forms';
 
-import { crossLanguageValidator, validateAdvantages } from './data-request-advantages.model';
+import {
+  crossLanguageValidator,
+  validateAdvantages,
+} from './data-request-form-request-advantages.model';
 
 const makeControl = (value: unknown) => new FormControl(value);
 

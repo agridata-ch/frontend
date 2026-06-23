@@ -156,7 +156,7 @@
         },
         "purpose": {
           "label": "Finalità dell'uso dei dati",
-          "sublabel": "Spiegate in modo trasparente come e per quali scopi la vostra organizzazione utilizzerà i dati condivisi e se questi verranno trasmessi a terzi.",
+          "sublabel": "Spiegate in modo trasparente come e per quali scopi la vostra organizzazione utilizzerà i dati condivisi e se questi verranno trasmessi a terzi. Potete trovare la guida [qui]",
           "de": {
             "label": "Finalità dell'uso in tedesco (Auf Deutsch)",
             "placeholder": "Formulieren Sie hier den Nutzungszweck gemäss Leitfaden..."
@@ -174,15 +174,15 @@
           "heading": "Registra i vantaggi dei produttori di dati",
           "subHeading": "Elencate qui i vantaggi concreti che i produttori di dati (ad es. gli agricoltori, grazie al risparmio di tempo o al trasferimento automatico) traggono dalla condivisione. Formulate un breve argomento per ogni campo. È possibile aggiungere ulteriori vantaggi tramite il simbolo del più.",
           "de": {
-            "label": "Vantaggio {{ position }} DE",
+            "label": "Vantaggio in tedesco (Auf Deutsch)",
             "placeholder": "Listen Sie einen Vorteil für die Datenproduzenten auf"
           },
           "fr": {
-            "label": "Vantaggio {{ position }} FR",
+            "label": "Vantaggio in francese (en français)",
             "placeholder": "Énumérez un avantage pour les producteurs de données"
           },
           "it": {
-            "label": "Vantaggio {{ position }} IT",
+            "label": "Vantaggio in italiano",
             "placeholder": "Elenca un vantaggio per i produttori di dati"
           },
           "add": "Registra un altro vantaggio",

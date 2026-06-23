@@ -156,7 +156,7 @@
         },
         "purpose": {
           "label": "Finalité de l'utilisation des données",
-          "sublabel": "Présentez de manière transparente la façon dont votre organisation utilisera les données transmises, à quelles fins, et si une transmission à des tiers a lieu.",
+          "sublabel": "Présentez de manière transparente la façon dont votre organisation utilisera les données transmises, à quelles fins, et si une transmission à des tiers a lieu. Vous trouverez le guide [ici]",
           "de": {
             "label": "Finalité de l'utilisation en allemand (Auf Deutsch)",
             "placeholder": "Formulieren Sie hier den Nutzungszweck gemäss Leitfaden..."
@@ -174,15 +174,15 @@
           "heading": "Saisir les avantages des producteurs de données",
           "subHeading": "Énumérez ici les avantages concrets dont bénéficient les producteurs de données (p. ex. les agriculteurs, grâce au gain de temps ou à la saisie automatique) suite au partage. Formulez un argument court par champ. Vous pouvez ajouter des avantages supplémentaires via le symbole plus.",
           "de": {
-            "label": "Avantage {{ position }} DE",
+            "label": "Avantage en allemand (Auf Deutsch)",
             "placeholder": "Listen Sie einen Vorteil für die Datenproduzenten auf"
           },
           "fr": {
-            "label": "Avantage {{ position }} FR",
+            "label": "Avantage en français",
             "placeholder": "Énumérez un avantage pour les producteurs de données"
           },
           "it": {
-            "label": "Avantage {{ position }} IT",
+            "label": "Avantage en italien (in italiano)",
             "placeholder": "Elenca un vantaggio per i produttori di dati"
           },
           "add": "Ajouter un autre avantage",

@@ -60,7 +60,13 @@
     <div class="mb-6">
       <div class="mb-6">
         <h4 class="text-agridata-primary-text mb-2">{{ t('request.purpose.label') }}</h4>
-        <span class="text-agridata-tertiary-text">{{ t('request.purpose.sublabel') }}</span>
+        <span class="text-agridata-tertiary-text">
+          {{ purposeSublabelParts().before }}
+          <a [href]="pdfUrl()" target="_blank" class="underline hover:text-agridata-primary-600">
+            {{ purposeSublabelParts().linkText }}
+          </a>
+          {{ purposeSublabelParts().after }}
+        </span>
       </div>
       <app-form-control
         [control]="getFormControl(this.form()!, 'request.purpose.de')"

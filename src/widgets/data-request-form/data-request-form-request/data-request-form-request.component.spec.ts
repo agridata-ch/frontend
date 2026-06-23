@@ -95,7 +95,7 @@ describe('DataRequestFormRequestComponent', () => {
     });
 
     it('should reflect the master data service loading state', () => {
-      masterDataService.providersLoading.set(true);
+      masterDataService.__testSignals.providersLoading.set(true);
       fixture.detectChanges();
 
       expect(component['providerLoading']()).toBe(true);

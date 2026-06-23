@@ -12,7 +12,7 @@ import {
   MockMasterDataService,
 } from '@/shared/testing/mocks';
 
-import { DataRequestProductComponent } from './data-request-product.component';
+import { DataRequestFormRequestProductComponent } from './data-request-form-request-product.component';
 
 const createMockForm = () =>
   new FormGroup({
@@ -96,9 +96,9 @@ const mockDataProducts: DataProductDto[] = [
   },
 ];
 
-let fixture: ComponentFixture<DataRequestProductComponent>;
-let component: DataRequestProductComponent;
-let componentRef: ComponentRef<DataRequestProductComponent>;
+let fixture: ComponentFixture<DataRequestFormRequestProductComponent>;
+let component: DataRequestFormRequestProductComponent;
+let componentRef: ComponentRef<DataRequestFormRequestProductComponent>;
 let masterDataService: MockMasterDataService;
 let i18nService: MockI18nService;
 
@@ -108,14 +108,14 @@ describe('DataRequestProductComponent', () => {
     i18nService = createMockI18nService();
 
     await TestBed.configureTestingModule({
-      imports: [DataRequestProductComponent],
+      imports: [DataRequestFormRequestProductComponent],
       providers: [
         { provide: I18nService, useValue: i18nService },
         { provide: MasterDataService, useValue: masterDataService },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DataRequestProductComponent);
+    fixture = TestBed.createComponent(DataRequestFormRequestProductComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
     componentRef.setInput('form', createMockForm());
@@ -136,7 +136,7 @@ describe('DataRequestProductComponent', () => {
       fixture.detectChanges();
 
       const options = component['providersOptions']();
-      expect(options.length).toBe(2);
+      expect(options).toHaveLength(2);
       expect(options[0]).toEqual({ label: 'Anbieter 1', value: 'provider-1' });
       expect(options[1]).toEqual({ label: 'Anbieter 2', value: 'provider-2' });
     });
@@ -183,7 +183,7 @@ describe('DataRequestProductComponent', () => {
 
       const categories = component['dataProductsCategories']();
 
-      expect(categories.length).toBe(3); // "All Systems" + AGIS + TVD
+      expect(categories).toHaveLength(3); // "All Systems" + AGIS + TVD
       expect(categories[0].value).toBeNull(); // "All Systems"
       expect(categories[1].value).toBe('AGIS');
       expect(categories[2].value).toBe('TVD');
@@ -200,7 +200,7 @@ describe('DataRequestProductComponent', () => {
       component['productsLoading'].set(false);
 
       const categories = component['dataProductsCategories']();
-      expect(categories.length).toBe(1);
+      expect(categories).toHaveLength(1);
       expect(categories[0].value).toBe('AGIS');
     });
 
@@ -219,11 +219,11 @@ describe('DataRequestProductComponent', () => {
 
       const grouped = component['productsGrouped']();
 
-      expect(grouped.length).toBe(2);
+      expect(grouped).toHaveLength(2);
       expect(grouped[0].categoryLabel).toBe('AGIS System');
-      expect(grouped[0].options.length).toBe(2);
+      expect(grouped[0].options).toHaveLength(2);
       expect(grouped[1].categoryLabel).toBe('TVD System');
-      expect(grouped[1].options.length).toBe(1);
+      expect(grouped[1].options).toHaveLength(1);
     });
 
     it('should filter products by selected category', () => {
@@ -234,9 +234,9 @@ describe('DataRequestProductComponent', () => {
 
       const grouped = component['productsGrouped']();
 
-      expect(grouped.length).toBe(1);
+      expect(grouped).toHaveLength(1);
       expect(grouped[0].categoryLabel).toBe('AGIS System');
-      expect(grouped[0].options.length).toBe(2);
+      expect(grouped[0].options).toHaveLength(2);
     });
 
     it('should use current language for product labels', () => {
@@ -317,7 +317,7 @@ describe('DataRequestProductComponent', () => {
 
   describe('syncProviderIdEffect', () => {
     it('should set provider from input only on initial load', async () => {
-      const newFixture = TestBed.createComponent(DataRequestProductComponent);
+      const newFixture = TestBed.createComponent(DataRequestFormRequestProductComponent);
       const newComponentRef = newFixture.componentRef;
       newComponentRef.setInput('form', createMockForm());
       newComponentRef.setInput('dataProviderId', 'provider-1');
@@ -328,7 +328,7 @@ describe('DataRequestProductComponent', () => {
     });
 
     it('should not override user selection after initial sync', async () => {
-      const newFixture = TestBed.createComponent(DataRequestProductComponent);
+      const newFixture = TestBed.createComponent(DataRequestFormRequestProductComponent);
       const newComponentRef = newFixture.componentRef;
       newComponentRef.setInput('form', createMockForm());
       newComponentRef.setInput('dataProviderId', 'provider-1');

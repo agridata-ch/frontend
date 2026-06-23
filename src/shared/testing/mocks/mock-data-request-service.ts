@@ -9,6 +9,7 @@ export const mockDataRequests: DataRequestDto[] = [
     submissionDate: '2025-01-01',
     humanFriendlyId: 'REQ-001',
     title: { de: 'Request A' },
+    advantages: [],
     dataSourceSystem: {
       dataProvider: {
         name: { de: 'Provider A' },
@@ -21,6 +22,7 @@ export const mockDataRequests: DataRequestDto[] = [
     submissionDate: '2025-01-02',
     humanFriendlyId: 'REQ-002',
     title: { de: 'Request B' },
+    advantages: [],
     dataSourceSystem: {
       dataProvider: {
         name: { de: 'Provider B' },
@@ -33,6 +35,7 @@ export const mockDataRequests: DataRequestDto[] = [
     submissionDate: '2025-01-03',
     humanFriendlyId: 'REQ-003',
     title: { de: 'Request C' },
+    advantages: [],
   } as DataRequestDto,
 ];
 

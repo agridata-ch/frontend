@@ -6,7 +6,7 @@ import { DataRequestAdvantageDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { createMockI18nService } from '@/shared/testing/mocks';
 
-import { DataRequestAdvantagesComponent, MAX_ADVANTAGES } from './';
+import { DataRequestFormRequestAdvantagesComponent, MAX_ADVANTAGES } from '.';
 
 const createMockForm = (initial: DataRequestAdvantageDto[] = []) => {
   const advantages = new FormControl<DataRequestAdvantageDto[]>(initial, { nonNullable: true });
@@ -14,19 +14,19 @@ const createMockForm = (initial: DataRequestAdvantageDto[] = []) => {
   return { form, advantages };
 };
 
-let fixture: ComponentFixture<DataRequestAdvantagesComponent>;
-let component: DataRequestAdvantagesComponent;
-let componentRef: ComponentRef<DataRequestAdvantagesComponent>;
+let fixture: ComponentFixture<DataRequestFormRequestAdvantagesComponent>;
+let component: DataRequestFormRequestAdvantagesComponent;
+let componentRef: ComponentRef<DataRequestFormRequestAdvantagesComponent>;
 let advantagesControl: FormControl<DataRequestAdvantageDto[]>;
 
 describe('DataRequestAdvantagesComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DataRequestAdvantagesComponent],
+      imports: [DataRequestFormRequestAdvantagesComponent],
       providers: [{ provide: I18nService, useValue: createMockI18nService() }],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DataRequestAdvantagesComponent);
+    fixture = TestBed.createComponent(DataRequestFormRequestAdvantagesComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
     const mock = createMockForm();
@@ -43,7 +43,7 @@ describe('DataRequestAdvantagesComponent', () => {
     it('should append a new advantage group', () => {
       component['addAdvantage']();
 
-      expect(component['advantagesArray'].length).toBe(2);
+      expect(component['advantagesArray']).toHaveLength(2);
     });
 
     it('should sync the new advantage to the outer control', () => {
@@ -58,7 +58,7 @@ describe('DataRequestAdvantagesComponent', () => {
       }
       component['addAdvantage']();
 
-      expect(component['advantagesArray'].length).toBe(MAX_ADVANTAGES);
+      expect(component['advantagesArray']).toHaveLength(MAX_ADVANTAGES);
     });
   });
 
@@ -69,7 +69,7 @@ describe('DataRequestAdvantagesComponent', () => {
 
       component['removeAdvantage'](0);
 
-      expect(component['advantagesArray'].length).toBe(2);
+      expect(component['advantagesArray']).toHaveLength(2);
     });
 
     it('should sync the updated list to the outer control', () => {
@@ -78,7 +78,7 @@ describe('DataRequestAdvantagesComponent', () => {
 
       component['removeAdvantage'](0);
 
-      expect(advantagesControl.value?.length).toBe(0);
+      expect(advantagesControl.value).toHaveLength(0);
     });
   });
 
@@ -229,12 +229,12 @@ describe('DataRequestAdvantagesComponent', () => {
       ];
       const { form: preloadedForm } = createMockForm(existingAdvantages);
 
-      const newFixture = TestBed.createComponent(DataRequestAdvantagesComponent);
+      const newFixture = TestBed.createComponent(DataRequestFormRequestAdvantagesComponent);
       newFixture.componentRef.setInput('form', preloadedForm);
       newFixture.detectChanges();
       await newFixture.whenStable();
 
-      expect(newFixture.componentInstance['advantagesArray'].length).toBe(2);
+      expect(newFixture.componentInstance['advantagesArray']).toHaveLength(2);
       expect(newFixture.componentInstance['advantageGroup'](0).get('de')?.value).toBe('Vorteil 1');
       expect(newFixture.componentInstance['advantageGroup'](1).get('fr')?.value).toBe('Avantage 2');
     });
@@ -243,7 +243,7 @@ describe('DataRequestAdvantagesComponent', () => {
       const partialAdvantages: DataRequestAdvantageDto[] = [{ de: 'Vorteil 1', fr: '', it: '' }];
       const { form: preloadedForm } = createMockForm(partialAdvantages);
 
-      const newFixture = TestBed.createComponent(DataRequestAdvantagesComponent);
+      const newFixture = TestBed.createComponent(DataRequestFormRequestAdvantagesComponent);
       newFixture.componentRef.setInput('form', preloadedForm);
       newFixture.detectChanges();
       await newFixture.whenStable();

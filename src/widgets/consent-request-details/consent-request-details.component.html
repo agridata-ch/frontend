@@ -42,6 +42,9 @@
       [purpose]="requestPurpose()"
       [products]="requestProducts()"
     />
+    @if (request()?.dataRequest?.advantages?.length) {
+      <app-data-request-advantages [advantages]="request()?.dataRequest?.advantages" />
+    }
     <app-data-request-contact
       [phoneNumber]="request()?.dataRequest?.contactPhoneNumber"
       [email]="request()?.dataRequest?.contactEmailAddress"

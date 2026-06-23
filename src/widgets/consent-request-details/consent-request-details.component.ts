@@ -13,6 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { DataRequestAdvantagesComponent } from '@/data-request-advantages';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
@@ -73,6 +74,7 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
     I18nPipe,
     ModalComponent,
     SidepanelComponent,
+    DataRequestAdvantagesComponent,
   ],
   templateUrl: './consent-request-details.component.html',
 })

@@ -22,18 +22,9 @@
             [products]="productsList()"
             [lang]="lang"
           />
-          <div class="flex flex-col gap-2">
-            <h4>{{ t('advantages') }}</h4>
-            <ol class="list-inside list-disc px-4 flex flex-col gap-2 justify-center">
-              @for (advantage of request.advantages; track advantage) {
-                <li
-                  class="flex items-center gap-3 before:content-['•'] before:text-[1.5em] before:leading-none"
-                >
-                  {{ getAdvantageText(advantage, lang) }}
-                </li>
-              }
-            </ol>
-          </div>
+          @if (request.advantages.length) {
+            <app-data-request-advantages [advantages]="request.advantages" [lang]="lang" />
+          }
           <app-data-request-contact
             [phoneNumber]="request.contactPhoneNumber"
             [email]="request.contactEmailAddress"
