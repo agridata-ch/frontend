@@ -105,8 +105,7 @@
     "state": "Stato",
     "contact": {
       "title": "Informazioni di contatto",
-      "description": "Per qualsiasi domanda o chiarimento sulla richiesta di dati, contattare direttamente l'organizzazione:",
-      "advantages": "I miei vantaggi"
+      "description": "Per qualsiasi domanda o chiarimento sulla richiesta di dati, contattare direttamente l'organizzazione:"
     },
     "form": {
       "request": {
@@ -276,8 +275,7 @@
       }
     },
     "preview": {
-      "title": "Anteprima della richiesta di dati (vista per gli agricoltori)",
-      "advantages": "I miei vantaggi"
+      "title": "Anteprima della richiesta di dati (vista per gli agricoltori)"
     },
     "privacy": {
       "consent": {
@@ -519,6 +517,9 @@
       },
       "title": "Regolamento sulle firme",
       "subtitle": "Selezionare la procedura di firma in conformità con le direttive di {{ company }}."
+    },
+    "advantages": {
+      "heading": "I miei vantaggi"
     }
   },
   "forms": {
