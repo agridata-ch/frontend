@@ -1,3 +1,9 @@
+## [1.13.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.8...v1.13.0-rc.9) (2026-06-23)
+
+### Features
+
+- **purpose:** add link to purpose pdf ([4cc9816](https://github.com/agridata-ch/frontend/commit/4cc98166938922ca53e8b18a2066c02e53413c87)), closes [DIGIB2-1664](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1664)
+
 ## [1.13.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.13.0-rc.7...v1.13.0-rc.8) (2026-06-22)
 
 ### Features
