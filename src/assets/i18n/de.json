@@ -105,7 +105,8 @@
     "state": "Status",
     "contact": {
       "title": "Kontaktdaten",
-      "description": "Bei Fragen oder Unklarheiten zum Datenantrag, kontaktieren Sie bitte direkt die Organisation:"
+      "description": "Bei Fragen oder Unklarheiten zum Datenantrag, kontaktieren Sie bitte direkt die Organisation:",
+      "advantages": "Meine Vorteile"
     },
     "form": {
       "request": {
