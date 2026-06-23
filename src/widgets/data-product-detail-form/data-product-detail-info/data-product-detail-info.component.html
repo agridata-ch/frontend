@@ -1,0 +1,148 @@
+<ng-container *i18n="let t; prefix: 'data-products.detailForm'">
+  <div class="flex flex-col gap-4">
+    <h3>{{ t('system') }}</h3>
+    <div appViewSection [isViewMode]="isViewMode()">
+      @if (isAdmin() && !isViewMode()) {
+        <div class="flex flex-col">
+          <span
+            class="mb-2 font-medium leading-[130%]"
+            [class.text-red-500]="providerSelectHasError"
+          >
+            {{ t('provider.label') }}
+          </span>
+          <app-agridata-select
+            [options]="providerOptions()"
+            [selectedOption]="selectedProviderId()"
+            [placeholder]="t('provider.placeholder')"
+            [hasError]="providerSelectHasError"
+            (selectedOptionChange)="onProviderChange($event)"
+          />
+          <span
+            class="min-h-[1.5em] block text-gray-700"
+            [class.text-red-500]="providerSelectHasError"
+          >
+            @if (providerSelectHasError) {
+              <span class="text-sm">{{ providerSelectErrorMessage }}</span>
+            }
+          </span>
+        </div>
+      }
+      <div
+        class="flex flex-col lg:flex-row gap-6 transition-all duration-300 ease-in-out"
+        [class.py-3]="isViewMode()"
+        [class.px-4]="isViewMode()"
+      >
+        <app-form-control
+          [control]="getFormControl('dataSourceSystemId')"
+          [controlType]="ControlTypes.SELECT"
+          [options]="dataSourceOptions()"
+          [label]="t('dataSourceSystem.label')"
+          [placeholder]="t('dataSourceSystem.placeholder')"
+          [disabled]="!selectedProviderId()"
+          [isViewMode]="isViewMode()"
+          class="lg:w-1/2"
+          id="dataSourceSystemId"
+        />
+        <app-form-control
+          [control]="getFormControl('restClientId')"
+          [controlType]="ControlTypes.SELECT"
+          [options]="restClientOptions()"
+          [label]="t('restClientIdentifier.label')"
+          [placeholder]="t('restClientIdentifier.placeholder')"
+          [disabled]="!selectedProviderId()"
+          [isViewMode]="isViewMode()"
+          class="lg:w-1/2"
+          id="restClientId"
+        />
+      </div>
+
+      <app-form-control
+        [class.py-3]="isViewMode()"
+        [class.px-4]="isViewMode()"
+        [control]="getFormControl('restClientMethodCode')"
+        [controlType]="ControlTypes.SELECT"
+        [options]="methodCodeOptions"
+        [label]="t('restClientMethod.label')"
+        [placeholder]="t('restClientMethod.placeholder')"
+        [isViewMode]="isViewMode()"
+        id="restClientMethodCode"
+      />
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-4">
+    <h3>{{ t('dataProduct') }}</h3>
+    <div
+      class="transition-all duration-300 ease-in-out"
+      [class.h-0]="isViewMode()"
+      [class.h-full]="!isViewMode()"
+      [class.opacity-0]="isViewMode()"
+      [class.opacity-100]="!isViewMode()"
+    >
+      <app-alert [title]="t('infoTitle')" [message]="t('infoMessage')" [type]="AlertType.INFO" />
+    </div>
+    <div appViewSection [isViewMode]="isViewMode()">
+      <app-form-control
+        [control]="getFormControl('name.de')"
+        [label]="t('name.de.label')"
+        [placeholder]="t('name.de.placeholder')"
+        [isViewMode]="isViewMode()"
+        id="name-de"
+        [class.py-3]="isViewMode()"
+        [class.px-4]="isViewMode()"
+      />
+      <app-form-control
+        [control]="getFormControl('description.de')"
+        [controlType]="ControlTypes.TEXT_AREA"
+        [label]="t('description.de.label')"
+        [placeholder]="t('description.de.placeholder')"
+        [isViewMode]="isViewMode()"
+        id="description-de"
+        [class.py-3]="isViewMode()"
+        [class.px-4]="isViewMode()"
+      />
+    </div>
+    <div appViewSection [isViewMode]="isViewMode()">
+      <app-form-control
+        [control]="getFormControl('name.fr')"
+        [label]="t('name.fr.label')"
+        [placeholder]="t('name.fr.placeholder')"
+        [isViewMode]="isViewMode()"
+        id="name-fr"
+        [class.py-3]="isViewMode()"
+        [class.px-4]="isViewMode()"
+      />
+      <app-form-control
+        [control]="getFormControl('description.fr')"
+        [controlType]="ControlTypes.TEXT_AREA"
+        [label]="t('description.fr.label')"
+        [placeholder]="t('description.fr.placeholder')"
+        [isViewMode]="isViewMode()"
+        id="description-fr"
+        [class.py-3]="isViewMode()"
+        [class.px-4]="isViewMode()"
+      />
+    </div>
+    <div appViewSection [isViewMode]="isViewMode()">
+      <app-form-control
+        [control]="getFormControl('name.it')"
+        [label]="t('name.it.label')"
+        [placeholder]="t('name.it.placeholder')"
+        [isViewMode]="isViewMode()"
+        id="name-it"
+        [class.py-3]="isViewMode()"
+        [class.px-4]="isViewMode()"
+      />
+      <app-form-control
+        [control]="getFormControl('description.it')"
+        [controlType]="ControlTypes.TEXT_AREA"
+        [label]="t('description.it.label')"
+        [placeholder]="t('description.it.placeholder')"
+        [isViewMode]="isViewMode()"
+        id="description-it"
+        [class.py-3]="isViewMode()"
+        [class.px-4]="isViewMode()"
+      />
+    </div>
+  </div>
+</ng-container>

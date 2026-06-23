@@ -22,6 +22,9 @@
             [products]="productsList()"
             [lang]="lang"
           />
+          @if (request.advantages.length) {
+            <app-data-request-advantages [advantages]="request.advantages" [lang]="lang" />
+          }
           <app-data-request-contact
             [phoneNumber]="request.contactPhoneNumber"
             [email]="request.contactEmailAddress"

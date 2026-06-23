@@ -50,4 +50,6 @@ Object.defineProperty(globalThis, 'ResizeObserver', {
   value: ResizeObserverMock,
 });
 
+HTMLElement.prototype.scrollIntoView = jest.fn();
+
 setupZonelessTestEnv();

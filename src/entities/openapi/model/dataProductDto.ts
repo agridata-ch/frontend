@@ -8,6 +8,10 @@
  * Do not edit the class manually.
  */
 import { DataSourceSystemDto } from './dataSourceSystemDto';
+import { FlowCodeEnum } from './flowCodeEnum';
+import { RestClientMethodCodeEnum } from './restClientMethodCodeEnum';
+import { RestClientDto } from './restClientDto';
+import { DataProductDtoStateCode } from './dataProductDtoStateCode';
 import { TranslationDto } from './translationDto';
 
 
@@ -22,6 +26,26 @@ export interface DataProductDto {
      */
     dataSourceSystem?: DataSourceSystemDto;
     /**
+     * Rest client used to fetch the data product
+     */
+    restClient?: RestClientDto;
+    /**
+     * Template for the path where the data product is fetched from
+     */
+    restClientPathTemplate?: string;
+    /**
+     * Template of the request body for fetching the data product
+     */
+    restClientRequestTemplate?: string;
+    /**
+     * Http-Method used to fetch the data product
+     */
+    restClientMethodCode?: RestClientMethodCodeEnum;
+    /**
+     * Code of the flow used to fetch the data product
+     */
+    flowCode?: FlowCodeEnum;
+    /**
      * How this product is categorized
      */
     name?: TranslationDto;
@@ -30,5 +54,13 @@ export interface DataProductDto {
      */
     description?: TranslationDto;
     deprecatedSince?: string;
+    stateCode: DataProductDtoStateCode;
+    /**
+     * Template for the path for retrieving updates to the data product
+     */
+    restClientChangeDetectionPathTemplate?: string;
 }
+export namespace DataProductDto {
+}
+
 

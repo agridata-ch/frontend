@@ -1,0 +1,81 @@
+<ng-container *i18n="let t; prefix: 'data-products.detailPanel'">
+  <app-sidepanel
+    [isOpen]="isOpen()"
+    [title]="sidepanelTitle()"
+    [maxWidth]="'1080px'"
+    [dataTestId]="'data-product-detail-sidepanel'"
+    (closeSidepanel)="closeSidepanel()"
+    [subTitle]="t('subTitle')"
+  >
+    <ng-container *i18n="let t; prefix: 'data-products.detailForm'">
+      @if (dataProductResource.isLoading()) {
+        <fa-icon
+          animation="spin"
+          [icon]="faSpinnerThird"
+          size="3x"
+          class="absolute flex items-center justify-center inset-0"
+        />
+      } @else {
+        @if (stateCode()) {
+          <app-agridata-badge
+            [text]="getStatusTranslation(stateCode() ?? '', i18nService)"
+            [variant]="getBadgeVariant(stateCode())"
+            [size]="BadgeSize.SM"
+          />
+        }
+        <app-agridata-tabs
+          class="sticky top-0 z-10 bg-white"
+          [tabs]="tabs()"
+          [(activeTabId)]="activeTabId"
+        />
+        <div
+          class="flex flex-col flex-1 min-h-0 overflow-y-auto overflow-x-hidden gap-8 pb-4"
+          appScrollFade
+        >
+          <app-data-product-detail-info
+            [form]="getTabForm(FORM_TAB_IDS.NAME_AND_DESCRIPTION)"
+            [isViewMode]="isViewMode()"
+            [preselectedProviderId]="preselectedProviderId()"
+            [class.hidden]="activeTabId() !== FORM_TAB_IDS.NAME_AND_DESCRIPTION"
+          />
+          <app-data-product-detail-technical
+            [form]="getTabForm(FORM_TAB_IDS.TECHNICAL_FIELDS)"
+            [isViewMode]="isViewMode()"
+            [class.hidden]="activeTabId() !== FORM_TAB_IDS.TECHNICAL_FIELDS"
+          />
+        </div>
+
+        <div class="flex justify-between">
+          <app-agridata-button
+            [variant]="ButtonVariants.Tertiary"
+            [disabled]="isSaving()"
+            (handleClick)="cancel()"
+          >
+            {{ t('cancel') }}
+          </app-agridata-button>
+          @if (isViewMode()) {
+            <!-- TODO: enable edit with edit mode DIGIB2-1354 -->
+            <!-- <app-agridata-button (handleClick)="enterEditMode()">
+              {{ t('edit') }}
+            </app-agridata-button> -->
+          } @else {
+            <div class="flex gap-4">
+              @if (canSaveDraft()) {
+                <app-agridata-button
+                  [variant]="ButtonVariants.Secondary"
+                  [loading]="isSaving()"
+                  (handleClick)="saveDraft()"
+                >
+                  {{ t('saveDraft') }}
+                </app-agridata-button>
+              }
+              <app-agridata-button [loading]="isSaving()" (handleClick)="saveAndPublish()">
+                {{ t('saveAndPublish') }}
+              </app-agridata-button>
+            </div>
+          }
+        </div>
+      }
+    </ng-container>
+  </app-sidepanel>
+</ng-container>

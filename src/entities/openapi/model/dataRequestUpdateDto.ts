@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { DataRequestPurposeDto } from './dataRequestPurposeDto';
+import { DataRequestAdvantageDto } from './dataRequestAdvantageDto';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
 
@@ -64,5 +65,9 @@ export interface DataRequestUpdateDto {
      * List of data products requested
      */
     products?: Array<string>;
+    /**
+     * A list of advantages to the producer for sharing their data
+     */
+    advantages: Array<DataRequestAdvantageDto>;
 }
 

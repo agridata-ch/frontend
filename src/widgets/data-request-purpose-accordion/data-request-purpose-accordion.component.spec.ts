@@ -48,10 +48,12 @@ describe('DataRequestPurposeAccordionComponent', () => {
         {
           id: '123',
           name: { de: 'Produkt 1', fr: 'Produit 1', it: 'Prodotto 1' },
+          stateCode: 'DRAFT',
         },
         {
           id: '456',
           name: { de: 'Produkt 2', fr: 'Produit 2', it: 'Prodotto 2' },
+          stateCode: 'DRAFT',
         },
       ];
 
@@ -69,6 +71,7 @@ describe('DataRequestPurposeAccordionComponent', () => {
       const singleProduct: DataProductDto = {
         id: '123',
         name: { de: 'Produkt', fr: 'Produit', it: 'Prodotto' },
+        stateCode: 'DRAFT',
       };
 
       fixture.componentRef.setInput('products', singleProduct);
@@ -84,6 +87,7 @@ describe('DataRequestPurposeAccordionComponent', () => {
   it('should return the correct lang field from products', () => {
     const mockProduct: DataProductDto = {
       id: '123',
+      stateCode: 'DRAFT',
       name: {
         de: 'Produkt Name',
         fr: 'Nom du produit',

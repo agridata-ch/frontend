@@ -1,4 +1,4 @@
-import { Component, inject, input, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, input, signal, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
@@ -35,29 +35,38 @@ export class AdminDataRequestDetailsComponent {
   protected readonly DataRequestStateEnum = DataRequestStateEnum;
 
   // Signals
+  protected readonly isAccepting = signal(false);
+  protected readonly isRejecting = signal(false);
+  protected readonly isActivating = signal(false);
   private readonly refreshListNeeded = signal(false);
+
+  protected readonly isActionPending = computed(() => this.isAccepting() || this.isRejecting());
 
   // View Children
   private readonly detailsComponent = viewChild.required(DataRequestDetailsComponent);
 
   protected acceptRequest(): void {
+    this.isAccepting.set(true);
     this.dataRequestService
       .approveDataRequest(this.dataRequestId(), this.stateService.actingRole())
       .then(() => {
         this.refreshListNeeded.set(true);
         this.detailsComponent().dataRequestResource.reload();
       })
-      .catch((error) => this.errorService.handleError(error));
+      .catch((error) => this.errorService.handleError(error))
+      .finally(() => this.isAccepting.set(false));
   }
 
   protected activateRequest(): void {
+    this.isActivating.set(true);
     this.dataRequestService
       .activateDataRequest(this.dataRequestId(), this.stateService.actingRole())
       .then(() => {
         this.refreshListNeeded.set(true);
         this.detailsComponent().dataRequestResource.reload();
       })
-      .catch((error) => this.errorService.handleError(error));
+      .catch((error) => this.errorService.handleError(error))
+      .finally(() => this.isActivating.set(false));
   }
 
   protected handleClose(): void {
@@ -68,12 +77,14 @@ export class AdminDataRequestDetailsComponent {
   }
 
   protected rejectRequest(): void {
+    this.isRejecting.set(true);
     this.dataRequestService
       .retreatDataRequest(this.dataRequestId(), this.stateService.actingRole())
       .then(() => {
         this.refreshListNeeded.set(true);
         this.handleClose();
       })
-      .catch((error) => this.errorService.handleError(error));
+      .catch((error) => this.errorService.handleError(error))
+      .finally(() => this.isRejecting.set(false));
   }
 }

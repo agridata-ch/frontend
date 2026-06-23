@@ -24,6 +24,7 @@ import { ControlTypes } from './form-control.model';
  */
 @Component({
   selector: 'app-form-control',
+  host: { '[class.has-error]': 'hasError()' },
   imports: [
     ReactiveFormsModule,
     AgridataMultiSelectComponent,
@@ -49,6 +50,7 @@ export class FormControlComponent {
   readonly length = input<number>(1);
   readonly singleCategorySelection = input<boolean>(false);
   readonly type = input<'text' | 'number'>('text');
+  readonly isViewMode = input<boolean>(false);
 
   readonly handleBlur = output<void>();
 

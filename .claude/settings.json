@@ -7,7 +7,8 @@
       "Bash(npm run test:coverage)",
       "Read(~/.zshrc)"
     ],
-    "deny": ["Read(./.env.*)"]
+    "deny": ["Read(./.env.*)"],
+    "defaultMode": "plan"
   },
   "enabledPlugins": {
     "ti8m-improvement-claude-md@ti8m-claude-code-marketplace": true

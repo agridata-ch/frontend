@@ -29,6 +29,7 @@ const mockOnboardingData: OnboardingFormData = {
       lastName: 'Smith',
       email: 'jane@example.com',
       function: 'Manager',
+      mobileNumber: '0123456789',
     },
   ],
 };

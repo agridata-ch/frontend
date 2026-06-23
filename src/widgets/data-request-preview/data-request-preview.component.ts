@@ -2,13 +2,14 @@ import { Component, computed, inject, input } from '@angular/core';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { DataRequestAdvantagesComponent } from '@/data-request-advantages';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto } from '@/entities/openapi';
 import { getFieldFromLang } from '@/shared/data-request';
 import { I18nDirective } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
-import { DataRequestContactComponent } from '@/widgets/data-request-contact/data-request-contact.component';
-import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos/data-request-privacy-infos.component';
+import { DataRequestContactComponent } from '@/widgets/data-request-contact';
+import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
 import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
 
 import { availableLangs } from '../../../transloco.config';
@@ -31,6 +32,7 @@ import { AgridataContactCardComponent } from '../agridata-contact-card';
     DataRequestContactComponent,
     AgridataContactCardComponent,
     FontAwesomeModule,
+    DataRequestAdvantagesComponent,
   ],
   templateUrl: './data-request-preview.component.html',
 })

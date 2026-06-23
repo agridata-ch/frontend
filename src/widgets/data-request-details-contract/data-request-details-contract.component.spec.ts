@@ -26,6 +26,7 @@ describe('DataRequestDetailsContractComponent', () => {
     currentContractRevisionId: 'cr-1',
     id: 'dr-1',
     stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+    advantages: [],
   };
 
   beforeEach(async () => {

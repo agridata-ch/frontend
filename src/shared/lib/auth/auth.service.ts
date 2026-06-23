@@ -52,6 +52,7 @@ export class AuthService {
   readonly isImpersonating = computed(
     () => sessionStorage.getItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER) !== null,
   );
+  readonly hasMobileNumber = computed(() => !!this.userInfo()?.mobileNumber);
 
   // Effects
   private readonly resetUserInfoEffect = effect(() => {

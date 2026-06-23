@@ -60,6 +60,7 @@ export class AgridataMultiSelectComponent {
   readonly options = input<MultiSelectOption[]>([]);
   readonly placeholder = input<string>('');
   readonly singleCategorySelection = input<boolean>(false);
+  readonly isViewMode = input<boolean>(false);
 
   // Signals
   readonly isDropdownOpen = signal<boolean>(false);

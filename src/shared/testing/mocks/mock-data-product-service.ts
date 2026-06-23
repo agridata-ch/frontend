@@ -7,10 +7,11 @@ export type MockDataProductService = Mockify<DataProductService>;
 /**
  * Factory that creates a strict mock implementation of DataProductService for tests.
  *
- * CommentLastReviewed: 2026-05-19
+ * CommentLastReviewed: 2026-06-08
  */
 export function createMockDataProductService(): MockDataProductService {
   return {
+    createDataProduct: jest.fn().mockResolvedValue({}),
     getAllDataProducts: jest.fn().mockResolvedValue({
       items: [] as DataProductDto[],
       totalItems: 0,
@@ -18,5 +19,8 @@ export function createMockDataProductService(): MockDataProductService {
       currentPage: 0,
       pageSize: 10,
     }),
+    getDataProductById: jest.fn().mockResolvedValue({}),
+    setDataProductStatus: jest.fn().mockResolvedValue({}),
+    updateDataProduct: jest.fn().mockResolvedValue({}),
   } satisfies MockDataProductService;
 }

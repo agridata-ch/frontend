@@ -110,6 +110,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['dataRequest'].set({
         id: '123',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+        advantages: [],
       });
       expect(component['canReleaseContract']()).toBe(false);
     });
@@ -118,6 +119,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['dataRequest'].set({
         id: '123',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
+        advantages: [],
       });
       expect(component['canReleaseContract']()).toBe(true);
     });
@@ -126,6 +128,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['dataRequest'].set({
         id: '123',
         stateCode: DataRequestStateEnum.Draft,
+        advantages: [],
       });
       expect(component['canReleaseContract']()).toBe(false);
     });
@@ -134,6 +137,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['dataRequest'].set({
         id: '123',
         stateCode: DataRequestStateEnum.ToBeReleasedByConsumer,
+        advantages: [],
       });
       expect(component['canReleaseContract']()).toBe(false);
     });
@@ -144,6 +148,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['dataRequest'].set({
         id: '123',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
+        advantages: [],
       });
       expect(component['checkExternalCompletion']('contract')).toBe(true);
     });
@@ -152,6 +157,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['dataRequest'].set({
         id: '123',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+        advantages: [],
       });
       expect(component['checkExternalCompletion']('contract')).toBe(false);
     });
@@ -160,6 +166,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['dataRequest'].set({
         id: '123',
         stateCode: DataRequestStateEnum.Active,
+        advantages: [],
       });
       expect(component['checkExternalCompletion']('completion')).toBe(true);
     });
@@ -168,6 +175,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['dataRequest'].set({
         id: '123',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+        advantages: [],
       });
       expect(component['checkExternalCompletion']('completion')).toBe(false);
     });
@@ -192,6 +200,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['dataRequest'].set({
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+        advantages: [],
       });
 
       await component['handleReleaseContract']();
@@ -203,11 +212,13 @@ describe('DataRequestWizardProviderComponent', () => {
       const released: DataRequestDto = {
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeActivated,
+        advantages: [],
       };
       component['currentDataRequestId'].set('test-id');
       component['dataRequest'].set({
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
+        advantages: [],
       });
       dataRequestService.releaseDataRequestToBeActivated.mockResolvedValue(released);
 
@@ -220,11 +231,13 @@ describe('DataRequestWizardProviderComponent', () => {
       const released: DataRequestDto = {
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeActivated,
+        advantages: [],
       };
       component['currentDataRequestId'].set('test-id');
       component['dataRequest'].set({
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
+        advantages: [],
       });
       dataRequestService.releaseDataRequestToBeActivated.mockResolvedValue(released);
 
@@ -238,11 +251,13 @@ describe('DataRequestWizardProviderComponent', () => {
       const released: DataRequestDto = {
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeActivated,
+        advantages: [],
       };
       component['currentDataRequestId'].set('test-id');
       component['dataRequest'].set({
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
+        advantages: [],
       });
       dataRequestService.releaseDataRequestToBeActivated.mockResolvedValue(released);
 
@@ -257,6 +272,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['dataRequest'].set({
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
+        advantages: [],
       });
       dataRequestService.releaseDataRequestToBeActivated.mockRejectedValue(testError);
 
@@ -270,6 +286,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['dataRequest'].set({
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
+        advantages: [],
       });
       dataRequestService.releaseDataRequestToBeActivated.mockRejectedValue(new Error('fail'));
 
@@ -298,6 +315,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['dataRequest'].set({
         id: '123',
         stateCode: DataRequestStateEnum.Draft,
+        advantages: [],
       });
       expect(component['formDisabled']()).toBe(false);
     });
@@ -306,6 +324,7 @@ describe('DataRequestWizardProviderComponent', () => {
       component['dataRequest'].set({
         id: '123',
         stateCode: DataRequestStateEnum.InReview,
+        advantages: [],
       });
       fixture.detectChanges();
       await fixture.whenStable();
@@ -372,6 +391,7 @@ describe('DataRequestWizardProviderComponent', () => {
       const newRequest: DataRequestDto = {
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
+        advantages: [],
       };
       componentRef.setInput('initialDataRequest', newRequest);
 

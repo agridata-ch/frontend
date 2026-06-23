@@ -24,14 +24,18 @@ export class MasterDataService {
   // Signals
   private readonly _dataProviders = signal<DataProviderDto[]>([]);
   readonly dataProviders = this._dataProviders.asReadonly();
+  private readonly _providersLoading = signal<boolean>(false);
+  readonly providersLoading = this._providersLoading.asReadonly();
   private readonly _productsByProvider = signal<Map<string, DataProductDto[]>>(new Map());
 
   // Effects
   private readonly dataFetchEffect = effect(() => {
     if (this.authService.isAuthenticated()) {
+      this._providersLoading.set(true);
       this.fetchDataProviders()
         .then((providers) => this._dataProviders.set(providers))
-        .catch((error) => this.errorService.handleError(error));
+        .catch((error) => this.errorService.handleError(error))
+        .finally(() => this._providersLoading.set(false));
     }
   });
 

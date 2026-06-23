@@ -109,64 +109,86 @@
     },
     "form": {
       "request": {
-        "headline": "Informazioni sull’acquisizione di dati",
+        "headline": "Definire il contenuto della domanda di dati",
         "provider": {
           "label": "Fornitore di dati",
-          "sublabel": "Attualmente è disponibile solo un fornitore di dati. Altri fornitori vengono continuamente collegati.",
-          "placeholder": "Selezionare il fornitore dei dati"
+          "sublabel": "Determinate il fornitore di dati desiderato e i prodotti dati specifici per la vostra domanda.",
+          "placeholder": "Selezionare un fornitore di dati",
+          "heading": "Selezione dei prodotti dati"
         },
         "products": {
-          "label": "Quale prodotto desideri?",
-          "placeholder": "Seleziona i prodotti per i quali desideri richiedere dati.",
+          "label": "Sistema e prodotti desiderati",
+          "placeholder": "Selezionare i prodotti",
           "moreInfos": "Ulteriori informazioni",
-          "sublabel": "È possibile selezionare prodotti appartenenti a una sola categoria alla volta."
+          "sublabel": "Potete richiedere contemporaneamente solo prodotti provenienti da un unico sistema. Per prodotti dati di altri sistemi, registrate una domanda di dati separata."
         },
         "title": {
-          "label": "Nome della richiesta Richiesta di dati",
-          "sublabel": "Il nome è visualizzato presso tutti i produttori di dati nella loro lingua preferita quando decidono se condividere i tuoi dati.",
+          "label": "Titolo della domanda di dati",
+          "sublabel": "Scegliete un titolo esplicativo per la domanda di dati. Questo verrà mostrato ai produttori di dati (ad es. agricoltori) nella lingua da loro impostata quando dovranno esprimersi sulla richiesta di dati.",
           "de": {
-            "label": "Nome della richiesta Richiesta di dati DE",
-            "placeholder": "Anfrage von [...] zum Bezug von [...]-Daten"
+            "label": "Titolo in tedesco (Auf Deutsch)",
+            "placeholder": "Anfrage für [zusammenfassende Datenart, z. B. Rinderdaten]"
           },
           "fr": {
-            "label": "Nome della richiesta Richiesta di dati FR",
-            "placeholder": "Demande de [...] pour obtenir des données [...]"
+            "label": "Titolo in francese (en français)",
+            "placeholder": "Demande pour [Type de données global, p. ex. données sur les bovins]"
           },
           "it": {
-            "label": "Nome della richiesta Richiesta di dati IT",
-            "placeholder": "Richiesta di [...] per ottenere [...] dati"
+            "label": "Titolo in italiano",
+            "placeholder": "Richiesta per [Tipo di dati globale, ad es. dati sui bovini]"
           }
         },
         "description": {
-          "label": "Descrizione della richiesta",
-          "sublabel": "La descrizione è visualizzata presso tutti i produttori di dati nella loro lingua preferita, affinché possano prendere una decisione con cognizione di causa.",
+          "label": "Descrizione dettagliata della domanda",
+          "sublabel": "Riassumete la domanda in modo oggettivo in 2 o 3 frasi. Questo testo verrà visualizzato direttamente sotto il titolo come spiegazione principale per l'agricoltore. I vantaggi e la finalità d'uso saranno registrati separatamente più in basso.",
           "de": {
-            "label": "Descrizione della richiesta DE",
-            "placeholder": "Wenn Sie der Datenweitergabe an [...]  zustimmen, vereinfachen Sie Ihre tägliche Arbeit, reduzieren mehrfache Dateneingaben und beschleunigen Prozesse."
+            "label": "Descrizione dettagliata in tedesco (Auf Deutsch)",
+            "placeholder": "[Name Ihrer Organisation] benötigt Zugriff auf Ihre [zusammenfassende Datenart, z. B. Rinderdaten] aus dem System [Name des Systems, z. B. TVD], um [Grund der Anfrage]."
           },
           "fr": {
-            "label": "Descrizione della richiesta FR",
-            "placeholder": "En donnant votre approbation à la transmission de données à [...], vous simplifiez votre travail quotidien, réduisez les saisies multiples et accélérez les processus."
+            "label": "Descrizione dettagliata in francese (en français)",
+            "placeholder": "[Nom de votre organisation] a besoin d'accéder à vos [Type de données global, p. ex. données sur les bovins] dans le système [Nom du système, p. ex. BDTA] afin de [motif de la demande]."
           },
           "it": {
-            "label": "Descrizione della richiesta IT",
-            "placeholder": "Con il consenso all'inoltro dei dati a [...] si semplifica il lavoro quotidiano, si riducono gli inserimenti di dati a più riprese e si velocizzano i processi."
+            "label": "Descrizione dettagliata in italiano",
+            "placeholder": "[Nome della vostra organizzazione] richiede l'accesso ai vostri [Tipo di dati globale, ad es. dati sui bovini] nel sistema [Nome del sistema, ad es. BDTA] al fine di [motivo della richiesta]."
           }
         },
         "purpose": {
-          "label": "Scopo di utilizzo dei dati",
-          "sublabel": "Lo scopo di utilizzo è visualizzato presso tutti i produttori di dati nella loro lingua preferita, per garantire la massima trasparenza sull'uso dei loro dati.",
+          "label": "Finalità dell'uso dei dati",
+          "sublabel": "Spiegate in modo trasparente come e per quali scopi la vostra organizzazione utilizzerà i dati condivisi e se questi verranno trasmessi a terzi. Potete trovare la guida [qui]",
           "de": {
-            "label": "Scopo di utilizzo dei dati DE",
-            "placeholder": "[...] nutzt die angefragten Daten für ... (Beschreibung durch Datenbezüger). Die Daten werden (nicht) an Dritte weitergegeben. [...] verpflichtet sich, im Umgang mit den Daten geltende Vorschriften einzuhalten."
+            "label": "Finalità dell'uso in tedesco (Auf Deutsch)",
+            "placeholder": "Formulieren Sie hier den Nutzungszweck gemäss Leitfaden..."
           },
           "fr": {
-            "label": "Scopo di utilizzo dei dati FR",
-            "placeholder": "[...] utilise les données demandées pour ... (description par le bénéficiaire des données). Les données sont (non) transmises à des tiers. [...] s'engage à respecter la réglementation en vigueur en matière de traitement des données."
+            "label": "Finalità dell'uso in francese (en français)",
+            "placeholder": "Formulez ici la finalité de l'utilisation selon le guide..."
           },
           "it": {
-            "label": "Scopo di utilizzo dei dati IT",
-            "placeholder": "[...] utilizza i dati richiesti per ... (descrizione dell’acquirente di dati). I dati non saranno trasmessi a terzi. [...] si impegna a rispettare le normative vigenti nel trattamento dei dati."
+            "label": "Finalità dell'uso in italiano",
+            "placeholder": "Formulare qui la finalità d'uso in base alla guida..."
+          }
+        },
+        "advantages": {
+          "heading": "Registra i vantaggi dei produttori di dati",
+          "subHeading": "Elencate qui i vantaggi concreti che i produttori di dati (ad es. gli agricoltori, grazie al risparmio di tempo o al trasferimento automatico) traggono dalla condivisione. Formulate un breve argomento per ogni campo. È possibile aggiungere ulteriori vantaggi tramite il simbolo del più.",
+          "de": {
+            "label": "Vantaggio in tedesco (Auf Deutsch)",
+            "placeholder": "Listen Sie einen Vorteil für die Datenproduzenten auf"
+          },
+          "fr": {
+            "label": "Vantaggio in francese (en français)",
+            "placeholder": "Énumérez un avantage pour les producteurs de données"
+          },
+          "it": {
+            "label": "Vantaggio in italiano",
+            "placeholder": "Elenca un vantaggio per i produttori di dati"
+          },
+          "add": "Registra un altro vantaggio",
+          "remove": "Rimuovi vantaggio",
+          "group": {
+            "heading": "Vantaggio"
           }
         }
       },
@@ -253,7 +275,7 @@
       }
     },
     "preview": {
-      "title": "Anteprima"
+      "title": "Anteprima della richiesta di dati (vista per gli agricoltori)"
     },
     "privacy": {
       "consent": {
@@ -377,7 +399,8 @@
       "contract": {
         "description": "Firmate il contratto tra le parti contraenti: {{ consumer }} e {{ provider }}. Non appena tutte le firme necessarie sono state apposte, il contratto verrà trasmesso all'amministratore per la verifica finale e l'attivazione.",
         "signing": {
-          "info": "Sono necessarie due firme per ciascuna parte contraente. Assicurarsi che anche una seconda persona autorizzata alla firma da parte di {{ company }} firmi il contratto."
+          "infoSingle": "Con la vostra firma si conclude completamente la firma per il {{ company }}. Non è necessaria un'altra persona della vostra organizzazione.",
+          "infoCollective": "Questa è la prima delle due firme richieste. Vi preghiamo di informare autonomamente una seconda persona autorizzata all'interno del {{ company }} affinché firmi a sua volta."
         }
       },
       "signatureInput": {
@@ -418,6 +441,10 @@
         },
         "alreadySigned": {
           "description": "Firmato da {{ name }}"
+        },
+        "missingMobileNumber": {
+          "message": "Per la firma elettronica abbiamo bisogno del suo numero di cellulare. La preghiamo di aggiungerlo nel suo account AGOV o di contattare il supporto all’indirizzo support@agridata.ch.",
+          "title": "Numero di cellulare mancante"
         }
       },
       "verifySigning": {
@@ -490,6 +517,9 @@
       },
       "title": "Regolamento sulle firme",
       "subtitle": "Selezionare la procedura di firma in conformità con le direttive di {{ company }}."
+    },
+    "advantages": {
+      "heading": "I miei vantaggi"
     }
   },
   "forms": {
@@ -531,7 +561,6 @@
     "CH": "Svizzera",
     "LI": "Liechtenstein"
   },
-  "account.loginForm.loginButton": "Accedi",
   "header": {
     "helpAndSupport": {
       "title": "Aiuto e supporto",
@@ -678,6 +707,11 @@
   "breadcrumb": {
     "home": "Casa"
   },
+  "common": {
+    "ariaLabel": {
+      "close": "Chiudi"
+    }
+  },
   "footer": {
     "logoBund": {
       "altText": "Immagine con bandiera svizzera e scritta Confederazione Svizzera"
@@ -774,22 +808,115 @@
       }
     }
   },
-  "dataProducts": {
+  "data-products": {
     "pageTitle": "Prodotti informativi",
     "table": {
       "name": "Prodotto di dati",
       "system": "Sistema",
       "actions": {
         "viewDetails": "Visualizza"
-      }
+      },
+      "stateCode": "Stato"
     },
     "createNew": "Inserire un prodotto dati",
-    "create": {
-      "title": "Crea un nuovo prodotto dati",
+    "detailPanel": {
+      "titleCreateNew": "Crea un nuovo prodotto dati",
+      "subTitle": "Un prodotto dati è una consegna di dati versionata e chiaramente delimitata, fornita tramite un sistema sorgente. Serve come ponte tra la comprensibilità specialistica e la capacità di integrazione tecnica.",
+      "titleUpdate": "Modifica prodotto dati"
+    },
+    "detailForm": {
       "name": {
         "de": {
-          "label": "Nome in tedesco"
+          "label": "Nome in tedesco",
+          "placeholder": "z.B. Nutztiere in Sömmerung"
+        },
+        "fr": {
+          "label": "Nome Francese",
+          "placeholder": "p.ex. Animaux de rente en estivage"
+        },
+        "it": {
+          "label": "Nome Italiano",
+          "placeholder": "p.es. Animali da reddito estivati"
         }
+      },
+      "dataProduct": "Nome e descrizione prodotto dati",
+      "infoTitle": "Linguaggio Semplice",
+      "infoMessage": "Scegliete un linguaggio di facile comprensione per i nomi e la descrizione dei prodotti. I prodotti di dati, una volta salvati e pubblicati, verranno visualizzati direttamente su agridata.ch e dovranno essere scritti in modo comprensibile.",
+      "system": "Sistema",
+      "technicalFields": "Informazioni tecniche",
+      "description": {
+        "de": {
+          "label": "Descrizione Tedesco",
+          "placeholder": "z.B. Dieses Datenprodukt enthält die Art und Anzahl Nutztiere pro Betrieb, die im Inland gesömmert wurden."
+        },
+        "fr": {
+          "label": "Descrizione Francese",
+          "placeholder": "Par exemple, ce produit de données contient le type et le nombre d'animaux d'élevage par exploitation qui ont été gardés localement pendant l'été."
+        },
+        "it": {
+          "label": "Descrizione Italiano",
+          "placeholder": "Ad esempio, questo prodotto di dati contiene il tipo e il numero di animali da allevamento per azienda agricola che sono stati ospitati in loco durante l'estate."
+        }
+      },
+      "provider": {
+        "label": "Seleziona fornitore di dati",
+        "placeholder": "Si prega di selezionare il fornitore di dati"
+      },
+      "dataSourceSystem": {
+        "label": "Seleziona sistema",
+        "placeholder": "Si prega di selezionare il sistema"
+      },
+      "restClientIdentifier": {
+        "label": "Seleziona interfaccia di sistema",
+        "placeholder": "Si prega di selezionare l'interfaccia di sistema"
+      },
+      "restClientMethod": {
+        "label": "Seleziona metodo di trasferimento",
+        "placeholder": "Si prega di selezionare il metodo di trasferimento"
+      },
+      "restClientPathTemplate": {
+        "label": "Template percorso URL (interfaccia)",
+        "placeholder": "es. /api/v1/bur/{{bur}}/nutztiere"
+      },
+      "restClientRequestTemplate": {
+        "label": "Template corpo della richiesta (JSON/XML)",
+        "placeholder": "es. { \"status\": \"active\" }"
+      },
+      "restClientChangeDetectionPathTemplate": {
+        "label": "Percorso per il rilevamento delle modifiche (Change Detection)",
+        "placeholder": "es. /api/v1/nutztiere/changes"
+      },
+      "cancel": "Annulla",
+      "saveDraft": "Salva come bozza",
+      "saveAndPublish": "Salva e pubblica",
+      "flowCode": {
+        "label": "Seleziona modalità di trasferimento",
+        "placeholder": "Si prega di selezionare la modalità di trasferimento"
+      },
+      "tab": {
+        "technicalFields": "Informazioni tecniche",
+        "nameAndDescription": "Nome e descrizione"
+      },
+      "edit": "Modifica"
+    },
+    "saveAndPublish": {
+      "success": {
+        "title": "Salvataggio e pubblicazione riusciti",
+        "message": "Il prodotto dati è stato salvato e pubblicato con successo."
+      },
+      "error": {
+        "title": "Salvataggio e pubblicazione falliti",
+        "message": "Qualcosa è andato storto durante il salvataggio e la pubblicazione. Si prega di riprovare più tardi."
+      }
+    },
+    "saveDraft": {
+      "success": {
+        "title": "Salvato come bozza",
+        "message": "Il prodotto dati è stato salvato con successo come bozza."
+      },
+      "error": {
+        "title": "Salvataggio come bozza fallito.",
+        "message": "Qualcosa è andato storto durante il salvataggio come bozza. Si prega di riprovare più tardi."
       }
     }
   },
@@ -901,6 +1028,12 @@
     "companyInformation": {
       "heading": "Nome e indirizzo secondo l'iscrizione nel registro di commercio",
       "contactPerson": "Persona di contatto per il processo di onboarding"
+    }
+  },
+  "data-product": {
+    "stateCode": {
+      "DRAFT": "Bozza",
+      "ACTIVE": "Pubblicato"
     }
   }
 }

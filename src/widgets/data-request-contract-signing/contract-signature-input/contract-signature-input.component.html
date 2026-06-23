@@ -80,8 +80,15 @@
         [message]="t('otp.error.resendCooldownAlert.message')"
       />
     }
+    @if (!hasMobileNumber()) {
+      <app-alert
+        [type]="AlertType.ERROR"
+        [title]="t('missingMobileNumber.title')"
+        [message]="t('missingMobileNumber.message')"
+      />
+    }
     <div class="flex gap-3 p-2 items-center bg-agridata-content-gray rounded-lg">
-      <app-agridata-toggle [(checked)]="agbChecked" />
+      <app-agridata-toggle [disabled]="!hasMobileNumber()" [(checked)]="agbChecked" />
       <span>
         {{ agbParts().before }}
         <a

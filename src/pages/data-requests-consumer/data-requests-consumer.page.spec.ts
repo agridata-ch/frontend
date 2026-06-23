@@ -166,6 +166,7 @@ describe('DataRequestsConsumerPage - component behavior', () => {
       Array.from({ length: count }, (_, index) => ({
         id: `request-${index}`,
         stateCode: DataRequestStateEnum.Draft,
+        advantages: [],
       }));
 
     dataRequestService.fetchDataRequests.mockResolvedValueOnce(createDraftRequests(9));
