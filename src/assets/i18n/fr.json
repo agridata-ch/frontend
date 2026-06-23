@@ -105,7 +105,8 @@
     "state": "Statut",
     "contact": {
       "title": "Coordonnées",
-      "description": "Si vous avez des questions ou des doutes concernant la demande de données, veuillez contacter directement l'organisation:"
+      "description": "Si vous avez des questions ou des doutes concernant la demande de données, veuillez contacter directement l'organisation:",
+      "advantages": "Mes avantages"
     },
     "form": {
       "request": {

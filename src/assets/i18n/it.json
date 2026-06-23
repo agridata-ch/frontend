@@ -105,7 +105,8 @@
     "state": "Stato",
     "contact": {
       "title": "Informazioni di contatto",
-      "description": "Per qualsiasi domanda o chiarimento sulla richiesta di dati, contattare direttamente l'organizzazione:"
+      "description": "Per qualsiasi domanda o chiarimento sulla richiesta di dati, contattare direttamente l'organizzazione:",
+      "advantages": "I miei vantaggi"
     },
     "form": {
       "request": {
