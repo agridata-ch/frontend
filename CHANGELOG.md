@@ -1,3 +1,9 @@
+## [1.14.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.13.0...v1.14.0-rc.1) (2026-06-24)
+
+### Features
+
+- **advantages:** show advantages on active request ([cd27551](https://github.com/agridata-ch/frontend/commit/cd27551c0e1d76b52007673ae9a6ba975f014f14)), closes [DIGIB2-1460](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1460)
+
 ## [1.13.0](https://github.com/agridata-ch/frontend/compare/v1.12.0...v1.13.0) (2026-06-23)
 
 ### Features
