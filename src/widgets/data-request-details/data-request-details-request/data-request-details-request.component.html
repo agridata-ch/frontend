@@ -64,6 +64,9 @@
       [purpose]="getFieldFromLang('purpose', locale, dataRequest())"
       [products]="productsList()"
     />
+    @if (dataRequest().advantages.length) {
+      <app-data-request-advantages [advantages]="dataRequest().advantages" />
+    }
     <app-data-request-redirect-uri
       [dataRequest]="dataRequest()"
       [isValidRedirectUriRegexEditable]="isRedirectUriRegexEditable()"

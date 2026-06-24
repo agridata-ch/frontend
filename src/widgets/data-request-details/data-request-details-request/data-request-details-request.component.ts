@@ -2,6 +2,7 @@ import { Component, computed, inject, input } from '@angular/core';
 import { faCopy } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { DataRequestAdvantagesComponent } from '@/data-request-advantages';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { getBadgeVariant, getFieldFromLang } from '@/shared/data-request';
@@ -30,6 +31,7 @@ import { DataRequestRedirectUriComponent } from '@/widgets/data-request-redirect
     FontAwesomeModule,
     I18nDirective,
     DataRequestRedirectUriComponent,
+    DataRequestAdvantagesComponent,
   ],
   templateUrl: './data-request-details-request.component.html',
 })
