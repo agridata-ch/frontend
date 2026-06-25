@@ -390,6 +390,13 @@
         "description": "Definiert, auf welche redirect_uri nach einem Entscheid weitergeleitet werden darf.",
         "label": "Regex für gültige redirect_uri",
         "save": "Speichern"
+      },
+      "contract": {
+        "sealing": {
+          "heading": "Vertragssiegelung",
+          "description": "Alle erforderlichen Signaturen der Datenbezüger und Datenanbieter sind erfasst und im PDF abgebildet. Zur finalen Abschliessung muss nun die Siegelung des Vertrags über den Signaturdienst des BIT initiiert werden.",
+          "action": "Vertrag siegeln"
+        }
       }
     },
     "invitationLink": "Einladungslink",

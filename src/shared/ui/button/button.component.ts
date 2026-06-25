@@ -12,8 +12,11 @@ import { ButtonVariants, HrefTarget, IconPosition } from './button.model';
  * and ensures accessibility through keyboard interaction support.
  * The IconLink variant renders an icon (left or right) alongside content; during loading the icon
  * is replaced by a spinner and the button is disabled.
+ * The optional `success` input renders a transient green success state with a drawn checkmark and
+ * keeps the button disabled. The parent owns when success shows and for how long — the button holds
+ * no timer.
  *
- * CommentLastReviewed: 2026-06-16
+ * CommentLastReviewed: 2026-06-25
  */
 @Component({
   selector: 'app-agridata-button',
@@ -30,6 +33,7 @@ export class ButtonComponent {
   ariaLabel = input<string>('');
   selected = input(false, { transform: booleanAttribute });
   loading = input(false, { transform: booleanAttribute });
+  success = input(false, { transform: booleanAttribute });
   disabledInfo = input<string>('');
   additionalClass = input<string>('');
   href = input<string>('');
@@ -52,7 +56,10 @@ export class ButtonComponent {
   protected readonly isIconLink = computed(
     () => this.variant() === ButtonVariants.IconLink || this.icon() !== undefined,
   );
-  protected readonly isDisabled = computed(() => this.disabled() || this.loading());
+  protected readonly isDisabled = computed(
+    () => this.disabled() || this.loading() || this.success(),
+  );
+  protected readonly showSuccess = computed(() => this.success() && !this.loading());
 
   onButtonClick(event: Event) {
     event.preventDefault();

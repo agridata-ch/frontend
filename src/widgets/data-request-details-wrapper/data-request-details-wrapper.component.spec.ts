@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { DataRequestService, UidRegisterService } from '@/entities/api';
+import { ContractRevisionService, DataRequestService, UidRegisterService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
@@ -12,6 +12,7 @@ import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAgridataStateService,
   createMockAuthService,
+  createMockContractRevisionService,
   createMockDataRequestService,
   createMockErrorHandlerService,
   createMockI18nService,
@@ -38,6 +39,7 @@ describe('DataRequestDetailsWrapperComponent', () => {
       providers: [
         { provide: AgridataStateService, useValue: createMockAgridataStateService() },
         { provide: AuthService, useValue: createMockAuthService() },
+        { provide: ContractRevisionService, useValue: createMockContractRevisionService() },
         { provide: DataRequestService, useValue: dataRequestService },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: createMockI18nService() },

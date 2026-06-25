@@ -1,10 +1,10 @@
-import { Component, computed, inject, input, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, input, resource, signal, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { DataRequestService } from '@/entities/api';
+import { ContractRevisionService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { DataRequestStateEnum } from '@/entities/openapi';
+import { DataRequestStateEnum, SealAttemptStateEnum } from '@/entities/openapi';
 import { I18nDirective } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
@@ -12,8 +12,9 @@ import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
 /**
  * Admin page for viewing data request details with action buttons.
  * Wraps the reusable details component and provides accept, reject, and activate actions.
+ * The activate action stays disabled until the underlying contract revision is sealed.
  *
- * CommentLastReviewed: 2026-02-11
+ * CommentLastReviewed: 2026-06-25
  */
 @Component({
   selector: 'app-admin-data-request-details',
@@ -22,6 +23,7 @@ import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
 })
 export class AdminDataRequestDetailsComponent {
   // Injects
+  private readonly contractRevisionService = inject(ContractRevisionService);
   private readonly dataRequestService = inject(DataRequestService);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly route = inject(ActivatedRoute);
@@ -43,7 +45,24 @@ export class AdminDataRequestDetailsComponent {
   protected readonly isActionPending = computed(() => this.isAccepting() || this.isRejecting());
 
   // View Children
-  private readonly detailsComponent = viewChild.required(DataRequestDetailsComponent);
+  private readonly detailsComponent = viewChild(DataRequestDetailsComponent);
+
+  // Resources
+  private readonly contractResource = resource({
+    params: () => {
+      const contractRevisionId = this.detailsComponent()?.dataRequest()?.currentContractRevisionId;
+      return contractRevisionId
+        ? { actingRole: this.stateService.actingRole(), contractRevisionId }
+        : undefined;
+    },
+    loader: ({ params }) =>
+      this.contractRevisionService.fetchContract(params.contractRevisionId, params.actingRole),
+  });
+
+  // Computed Signals
+  protected readonly contractNotSealed = computed(
+    () => this.contractResource.value()?.sealState !== SealAttemptStateEnum.Completed,
+  );
 
   protected acceptRequest(): void {
     this.isAccepting.set(true);
@@ -51,7 +70,7 @@ export class AdminDataRequestDetailsComponent {
       .approveDataRequest(this.dataRequestId(), this.stateService.actingRole())
       .then(() => {
         this.refreshListNeeded.set(true);
-        this.detailsComponent().dataRequestResource.reload();
+        this.detailsComponent()?.dataRequestResource.reload();
       })
       .catch((error) => this.errorService.handleError(error))
       .finally(() => this.isAccepting.set(false));
@@ -63,7 +82,7 @@ export class AdminDataRequestDetailsComponent {
       .activateDataRequest(this.dataRequestId(), this.stateService.actingRole())
       .then(() => {
         this.refreshListNeeded.set(true);
-        this.detailsComponent().dataRequestResource.reload();
+        this.detailsComponent()?.dataRequestResource.reload();
       })
       .catch((error) => this.errorService.handleError(error))
       .finally(() => this.isActivating.set(false));
@@ -74,6 +93,10 @@ export class AdminDataRequestDetailsComponent {
       relativeTo: this.route,
       state: { refresh: this.refreshListNeeded() },
     });
+  }
+
+  protected handleContractSealed(): void {
+    this.contractResource.reload();
   }
 
   protected rejectRequest(): void {

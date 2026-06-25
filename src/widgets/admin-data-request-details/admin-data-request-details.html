@@ -2,7 +2,9 @@
   <app-data-request-details
     [dataRequestId]="dataRequestId()"
     [isRedirectUriRegexEditable]="true"
+    [autoOpenUnsealedContractTab]="true"
     (closeSidepanel)="handleClose()"
+    (contractSealed)="handleContractSealed()"
     #details
   >
     <div footer class="flex gap-2 justify-between">
@@ -29,6 +31,7 @@
       @if (details.dataRequest()?.stateCode === DataRequestStateEnum.ToBeActivated) {
       <app-agridata-button
         class="flex-1"
+        [disabled]="contractNotSealed()"
         [variant]="ButtonVariants.PrimaryAccept"
         [loading]="isActivating()"
         (handleClick)="activateRequest()"

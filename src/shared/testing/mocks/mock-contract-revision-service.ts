@@ -56,6 +56,7 @@ export function createMockContractRevisionService(): MockContractRevisionService
     getContractRevisionPdf: jest
       .fn()
       .mockResolvedValue(new Blob(['pdf'], { type: 'application/pdf' })),
+    sealContract: jest.fn().mockResolvedValue(undefined),
     startSigningProcess: jest.fn().mockResolvedValue(mockOtpChallenge),
     verifySigningProcess: jest.fn().mockResolvedValue(mockContractRevision),
   } satisfies MockContractRevisionService;
