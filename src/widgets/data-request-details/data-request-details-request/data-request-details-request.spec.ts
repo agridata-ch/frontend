@@ -39,6 +39,7 @@ describe('DataRequestDetailsRequestComponent', () => {
       dataProviderId: 'test-provider',
       submissionDate: '2026-01-09T10:00:00Z',
       stateCode: DataRequestStateEnum.Draft,
+      advantages: [],
     } as DataRequestDto);
 
     fixture.detectChanges();
@@ -51,6 +52,7 @@ describe('DataRequestDetailsRequestComponent', () => {
         dataProviderId: 'test-provider',
         submissionDate: '2026-01-09T10:00:00Z',
         stateCode: DataRequestStateEnum.Draft,
+        advantages: [],
       } as DataRequestDto);
       fixture.detectChanges();
 
@@ -74,6 +76,7 @@ describe('DataRequestDetailsRequestComponent', () => {
         dataProviderId: 'test-provider',
         products: ['product1', 'product2'],
         stateCode: DataRequestStateEnum.Draft,
+        advantages: [],
       } as DataRequestDto);
       fixture.detectChanges();
 

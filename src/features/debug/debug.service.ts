@@ -1,4 +1,4 @@
-import { computed, effect, inject, Injectable, OnDestroy, signal, untracked } from '@angular/core';
+import { computed, effect, inject, OnDestroy, Service, signal, untracked } from '@angular/core';
 
 import { ErrorDto } from '@/app/error/error-dto';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
@@ -28,9 +28,7 @@ export interface ResponseInfo {
  *
  * CommentLastReviewed: 2025-10-13
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class DebugService implements OnDestroy {
   private readonly stateService = inject(AgridataStateService);
   private readonly errorService = inject(ErrorHandlerService);

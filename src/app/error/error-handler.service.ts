@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable, OnDestroy, type Signal, signal, WritableSignal } from '@angular/core';
+import { OnDestroy, Service, type Signal, signal, WritableSignal } from '@angular/core';
 
 import { ErrorDto, TranslationItem } from '@/app/error/error-dto';
 import { getErrorMethod } from '@/app/interceptors/error-http-interceptor';
@@ -29,9 +29,7 @@ export interface ErrorWithCause extends Error {
  *
  * CommentLastReviewed: 2025-10-08
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class ErrorHandlerService implements OnDestroy {
   // Track all errors that occur in the application
   private readonly allErrors = signal<ErrorDto[]>([]);

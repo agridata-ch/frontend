@@ -8,7 +8,7 @@ export function getBadgeVariant(stateCode?: string) {
   return BadgeVariant.DEFAULT;
 }
 
-export function getStatusTranslation(value: string, i18nService: I18nService) {
+export function getStatusTranslation(value: string | undefined, i18nService: I18nService) {
   if (!value) return '';
   return i18nService.translate(`data-product.stateCode.${value}`);
 }

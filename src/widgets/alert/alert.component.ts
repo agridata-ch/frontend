@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, input, output } from '@angular/core';
 import {
   faBan,
@@ -22,7 +22,7 @@ import { AlertType } from './alert.model';
  */
 @Component({
   selector: 'app-alert',
-  imports: [CommonModule, FontAwesomeModule, ButtonComponent],
+  imports: [NgTemplateOutlet, FontAwesomeModule, ButtonComponent],
   templateUrl: './alert.component.html',
   host: { class: 'block' },
 })

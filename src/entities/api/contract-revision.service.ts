@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import {
@@ -16,9 +16,7 @@ import { ActingRole } from '@/shared/constants/constants';
  *
  * CommentLastReviewed: 2026-06-25
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class ContractRevisionService {
   private readonly apiService = inject(ContractRevisionsService);
 

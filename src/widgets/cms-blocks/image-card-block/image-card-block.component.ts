@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 
 import { Block, ImageCardBlock } from '@/entities/cms';
@@ -13,7 +12,7 @@ import { CardBlockComponent } from '../card-block';
  */
 @Component({
   selector: 'app-image-card-block',
-  imports: [CommonModule, CardBlockComponent],
+  imports: [CardBlockComponent],
   templateUrl: './image-card-block.component.html',
 })
 export class ImageCardBlockComponent {

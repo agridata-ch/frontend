@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input, output } from '@angular/core';
 
 import { ErrorDto } from '@/app/error/error-dto';
@@ -13,7 +12,7 @@ import { AlertComponent, AlertType } from '@/widgets/alert';
  */
 @Component({
   selector: 'app-error-alert',
-  imports: [I18nDirective, AgridataDatePipe, AlertComponent, CommonModule],
+  imports: [I18nDirective, AgridataDatePipe, AlertComponent],
   templateUrl: './error-alert.component.html',
 })
 export class ErrorAlertComponent {

@@ -21,3 +21,4 @@ export * from './test-model';
 export * from './mock-product-tour.service';
 export * from './mock-contract-revision-service';
 export * from './mock-data-providers-service';
+export * from './mock-document';

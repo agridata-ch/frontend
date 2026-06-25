@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { InfoResourceService } from '@/entities/openapi/api/infoResource.service';
@@ -9,7 +9,7 @@ import { InfoResourceService } from '@/entities/openapi/api/infoResource.service
  *
  * CommentLastReviewed: 2025-08-25
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class BackendInfoService {
   private readonly infoResourceService = inject(InfoResourceService);
 

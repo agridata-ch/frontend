@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, signal, untracked } from '@angular/core';
+import { effect, inject, Service, signal, untracked } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { debounceTime } from 'rxjs';
@@ -19,9 +19,7 @@ declare let gtag: (
  *
  * CommentLastReviewed: 2025-11-06
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class AnalyticsService {
   private readonly oidcSecurityService = inject(OidcSecurityService);
   private readonly gaId = inject(GA_MEASUREMENT_ID, { optional: true }) ?? 'G-TEST';

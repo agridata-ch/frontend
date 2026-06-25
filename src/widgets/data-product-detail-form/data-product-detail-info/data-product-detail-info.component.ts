@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, input, resource, signal } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
@@ -22,7 +21,6 @@ import { METHOD_CODE_OPTIONS } from '@/widgets/data-product-detail-form/data-pro
 @Component({
   selector: 'app-data-product-detail-info',
   imports: [
-    CommonModule,
     AgridataSelectComponent,
     AlertComponent,
     FormControlComponent,

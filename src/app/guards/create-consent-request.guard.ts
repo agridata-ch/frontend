@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 
@@ -22,9 +22,7 @@ import { AuthService } from '@/shared/lib/auth';
  *
  * CommentLastReviewed: 2025-06-03
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class CreateConsentRequestGuard implements CanActivate {
   // Injects
   private readonly agridataStateService = inject(AgridataStateService);

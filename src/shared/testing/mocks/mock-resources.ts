@@ -1,6 +1,13 @@
 /// <reference types="jest" />
 
-import { ResourceRef, ResourceStatus, Signal, signal } from '@angular/core';
+import {
+  computed,
+  ResourceRef,
+  ResourceSnapshot,
+  ResourceStatus,
+  Signal,
+  signal,
+} from '@angular/core';
 
 /**
  * Supplies mock data objects and constants used across different tests.
@@ -16,11 +23,26 @@ export class MockResources {
     const errorSignal = signal<Error | undefined>(undefined);
     const statusSignal = signal<ResourceStatus>('resolved');
 
+    const snapshotSignal: Signal<ResourceSnapshot<T>> = computed(() => {
+      const status = statusSignal();
+      if (status === 'error') {
+        return { status, error: errorSignal() ?? new Error('Mock resource error') };
+      }
+      if (status === 'idle') {
+        return { status, value: valueSignal() };
+      }
+      if (status === 'loading' || status === 'reloading') {
+        return { status, value: valueSignal() };
+      }
+      return { status, value: valueSignal() };
+    });
+
     return {
       value: valueSignal,
       error: errorSignal,
       isLoading: loadingSignal ?? signal(false),
       status: statusSignal,
+      snapshot: snapshotSignal,
 
       asReadonly: jest.fn(),
       reload: jest.fn().mockReturnValue(false),

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   Component,
   computed,
@@ -53,7 +53,7 @@ import {
 @Component({
   selector: 'app-agridata-table',
   imports: [
-    CommonModule,
+    NgTemplateOutlet,
     TableRowMenuComponent,
     FontAwesomeModule,
     SearchInputComponent,

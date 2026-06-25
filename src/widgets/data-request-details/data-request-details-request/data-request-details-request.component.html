@@ -57,15 +57,15 @@
         [skin]="AvatarSkin.LIGHT"
       />
       <span class="text-agridata-secondary-text">
-        {{ getFieldFromLang('description', locale, dataRequest()) }}
+        {{ getFieldFromLang('description', locale(), dataRequest()) }}
       </span>
     </div>
     <app-data-request-purpose-accordion
-      [purpose]="getFieldFromLang('purpose', locale, dataRequest())"
+      [purpose]="getFieldFromLang('purpose', locale(), dataRequest())"
       [products]="productsList()"
     />
     @if (dataRequest().advantages.length) {
-      <app-data-request-advantages [advantages]="dataRequest().advantages" />
+      <app-data-request-advantages [advantages]="dataRequest().advantages" [lang]="locale()" />
     }
     <app-data-request-redirect-uri
       [dataRequest]="dataRequest()"

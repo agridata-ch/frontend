@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, signal, untracked } from '@angular/core';
+import { effect, inject, Service, signal, untracked } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { first } from 'rxjs';
 
@@ -10,9 +10,7 @@ import { I18nService } from '@/shared/i18n';
  * Service to manage and set the document title based on the current route and language.
  * CommentLastReviewed: 2025-11-17
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class TitleService {
   // Injects
   private readonly htmlTitle = inject(Title);

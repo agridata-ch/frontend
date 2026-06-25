@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  DOCUMENT,
   inject,
   resource,
   signal,
@@ -51,6 +52,11 @@ import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card/';
 export class SupporterPageComponent {
   private readonly userService = inject(UserService);
   private readonly errorService = inject(ErrorHandlerService);
+  // Use the injected DOCUMENT instead of globalThis/window.location so location reads go through a
+  // mockable seam in tests. jsdom 26 (Angular 22 toolchain) fully locks window.location, making it
+  // impossible to stub directly. SonarQube prefers globalThis over window, but DOCUMENT is both
+  // Sonar-clean and testable.
+  private readonly document = inject(DOCUMENT);
   protected readonly NAME_HEADER = 'supporter.table.name';
   protected readonly EMAIL_HEADER = 'supporter.table.email';
   protected readonly PHONE_HEADER = 'supporter.table.phone';
@@ -140,7 +146,7 @@ export class SupporterPageComponent {
   }
 
   protected openImpersonationTab(item: UserInfoDto) {
-    const absoluteUrl = `${globalThis.location.origin}?${AGATE_LOGIN_ID_IMPERSONATION_HEADER}=${item.agateLoginId}`;
+    const absoluteUrl = `${this.document.location.origin}?${AGATE_LOGIN_ID_IMPERSONATION_HEADER}=${item.agateLoginId}`;
     globalThis.open(absoluteUrl, '_blank');
   }
 }

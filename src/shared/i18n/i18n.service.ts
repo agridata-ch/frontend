@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { inject, Service, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoService } from '@jsverse/transloco';
 
@@ -13,7 +13,7 @@ import { TranslationDto } from '@/entities/openapi';
  *
  * CommentLastReviewed: 2025-08-25
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class I18nService {
   private readonly translocoService = inject(TranslocoService);
 

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, HostBinding, booleanAttribute, computed, input, output } from '@angular/core';
 import { faSpinner } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
@@ -21,7 +21,7 @@ import { ButtonVariants, HrefTarget, IconPosition } from './button.model';
 @Component({
   selector: 'app-agridata-button',
   templateUrl: './button.component.html',
-  imports: [CommonModule, FaIconComponent],
+  imports: [NgTemplateOutlet, FaIconComponent],
   styleUrl: './button.component.css',
 })
 export class ButtonComponent {

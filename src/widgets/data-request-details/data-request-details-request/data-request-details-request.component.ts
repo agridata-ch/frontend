@@ -19,7 +19,7 @@ import { DataRequestRedirectUriComponent } from '@/widgets/data-request-redirect
 /**
  * Component for displaying the details of a data request in the "Request" tab of the Data Request Details sidepanel.
  *
- * CommentLastReviewed: 2026-02-12
+ * CommentLastReviewed: 2026-06-30
  */
 @Component({
   selector: 'app-data-request-details-request',
@@ -49,13 +49,13 @@ export class DataRequestDetailsRequestComponent {
   protected readonly faCopy = faCopy;
   protected readonly getBadgeVariant = getBadgeVariant;
   protected readonly getFieldFromLang = getFieldFromLang;
-  protected readonly locale = this.i18nService.lang();
 
   // Input properties
   readonly dataRequest = input.required<DataRequestDto>();
   readonly isRedirectUriRegexEditable = input(false);
 
   // Computed signals
+  protected readonly locale = computed(() => this.i18nService.lang());
   protected readonly formattedSubmissionDate = computed(() =>
     formatDate(this.dataRequest().submissionDate),
   );
