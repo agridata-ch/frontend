@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 
 import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
@@ -14,9 +14,7 @@ import { AuthService } from '@/shared/lib/auth';
  *
  * CommentLastReviewed: 2026-04-13
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class HomeRedirectGuard implements CanActivate {
   // Injects
   private readonly authService = inject(AuthService);

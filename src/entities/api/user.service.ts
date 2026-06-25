@@ -1,5 +1,5 @@
 import { HttpContext } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -19,9 +19,7 @@ import { PageResponseDto, arrayToObjectSortParams, asPageResponse } from '@/shar
  *
  * CommentLastReviewed: 2025-08-25
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class UserService {
   private readonly apiService = inject(UsersService);
 

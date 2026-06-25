@@ -32,6 +32,8 @@ import {
   MockErrorHandlerService,
   createMockMasterDataService,
   MockMasterDataService,
+  createMockDocument,
+  MockLocation,
 } from '@/shared/testing/mocks';
 
 describe('ConsentRequestProducerPage - component behavior', () => {
@@ -46,6 +48,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   let dataRequestService: MockDataRequestService;
   let activeRoute: MockActivatedRoute;
   let authService: MockAuthService;
+  let mockLocation: MockLocation;
   const activeUid = '123';
 
   beforeEach(async () => {
@@ -65,9 +68,12 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     authService = createMockAuthService();
     activeRoute = createMockActivatedRoute();
     agridataStateService = createMockAgridataStateService();
+    const mockDocument = createMockDocument();
+    mockLocation = mockDocument.location;
     await TestBed.configureTestingModule({
       providers: [
         ConsentRequestProducerPage,
+        mockDocument.provider,
         { provide: ConsentRequestService, useValue: consentRequestService },
         { provide: Router, useValue: mockRouter },
         { provide: I18nService, useValue: i18nService },
@@ -220,27 +226,21 @@ describe('ConsentRequestProducerPage - component behavior', () => {
 
     it('should redirect to URL and reset redirectUrlFromQuery when redirect is called', () => {
       const testUrl = 'https://example.com/callback';
-      delete (globalThis as { location?: unknown }).location;
-      globalThis.location = { href: '' } as Location;
 
       component['redirectUrlFromQuery'].set(testUrl);
 
       component['redirect']();
 
-      expect(globalThis.location.href).toBe(testUrl);
+      expect(mockLocation.href).toBe(testUrl);
       expect(component['redirectUrlFromQuery']()).toBeNull();
     });
 
     it('should not redirect when redirectUrl is null', () => {
-      delete (globalThis as { location?: unknown }).location;
-      globalThis.location = { href: 'http://localhost/' } as Location;
-      const originalLocation = globalThis.location.href;
-
       component['redirectUrlFromQuery'].set(null);
 
       component['redirect']();
 
-      expect(globalThis.location.href).toBe(originalLocation);
+      expect(mockLocation.href).toBe('');
     });
   });
 });

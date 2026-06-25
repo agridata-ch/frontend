@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 
 import { ROUTE_PATHS } from '@/shared/constants/constants';
@@ -10,9 +10,7 @@ import { AuthService } from '@/shared/lib/auth';
  *
  * CommentLastReviewed: 2025-08-25
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class LoginAuthGuard implements CanActivate {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);

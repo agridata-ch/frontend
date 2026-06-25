@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { faChevronLeft, faChevronRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
@@ -24,7 +23,6 @@ import { SupporterOverlayComponent } from '@/widgets/supporter-overlay/supporter
 @Component({
   selector: 'app-default-layout',
   imports: [
-    CommonModule,
     FontAwesomeModule,
     I18nPipe,
     RouterModule,

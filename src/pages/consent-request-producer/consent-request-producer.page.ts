@@ -1,4 +1,13 @@
-import { Component, computed, effect, inject, resource, signal, untracked } from '@angular/core';
+import {
+  Component,
+  computed,
+  DOCUMENT,
+  effect,
+  inject,
+  resource,
+  signal,
+  untracked,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { faFileCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
@@ -51,6 +60,11 @@ import { FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM } from './consent-request-pro
 export class ConsentRequestProducerPage {
   private readonly agridataStateService = inject(AgridataStateService);
   private readonly consentRequestService = inject(ConsentRequestService);
+  // Use the injected DOCUMENT instead of globalThis/window.location so the redirect goes through a
+  // mockable seam in tests. jsdom 26 (Angular 22 toolchain) fully locks window.location, making it
+  // impossible to stub directly. SonarQube prefers globalThis over window, but DOCUMENT is both
+  // Sonar-clean and testable.
+  private readonly document = inject(DOCUMENT);
   private readonly router = inject(Router);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
@@ -180,7 +194,7 @@ export class ConsentRequestProducerPage {
     const url = this.redirectUrl();
     if (url) {
       this.redirectUrlFromQuery.set(null);
-      globalThis.location.href = url;
+      this.document.location.href = url;
     }
   };
 }

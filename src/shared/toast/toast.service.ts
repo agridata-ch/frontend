@@ -1,4 +1,4 @@
-import { Injectable, Signal, signal } from '@angular/core';
+import { Service, Signal, signal } from '@angular/core';
 
 import { Toast, ToastState, ToastType } from '@/shared/toast';
 
@@ -9,7 +9,7 @@ import { Toast, ToastState, ToastType } from '@/shared/toast';
  *
  * CommentLastReviewed: 2025-08-25
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class ToastService {
   private counter = 0;
 

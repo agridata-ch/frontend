@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 
 import { Block } from '@/entities/cms';
@@ -26,7 +25,6 @@ import { SectionTimelineComponent } from '@/widgets/cms-blocks/section-timeline/
 @Component({
   selector: 'app-cms-block-renderer',
   imports: [
-    CommonModule,
     SectionMediaBlockComponent,
     SectionTextImageBlockComponent,
     SectionUserFeedbackBlockComponent,

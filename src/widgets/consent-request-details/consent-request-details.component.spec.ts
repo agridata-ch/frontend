@@ -25,6 +25,8 @@ import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
   createMockMasterDataService,
+  createMockDocument,
+  MockLocation,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ToastService } from '@/shared/toast';
@@ -40,6 +42,7 @@ describe('ConsentRequestDetailsComponent', () => {
   let errorService: MockErrorHandlerService;
   let mockRouter: Router;
   let activeRoute: MockActivatedRoute;
+  let mockLocation: MockLocation;
   beforeEach(async () => {
     toastService = { show: jest.fn() };
     agridataStateService = createMockAgridataStateService();
@@ -49,6 +52,8 @@ describe('ConsentRequestDetailsComponent', () => {
     mockRouter = {
       navigate: jest.fn().mockResolvedValue(true),
     } as unknown as jest.Mocked<Router>;
+    const mockDocument = createMockDocument();
+    mockLocation = mockDocument.location;
 
     await TestBed.configureTestingModule({
       imports: [
@@ -70,6 +75,7 @@ describe('ConsentRequestDetailsComponent', () => {
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: Router, useValue: mockRouter },
+        mockDocument.provider,
       ],
     }).compileComponents();
 
@@ -277,11 +283,6 @@ describe('ConsentRequestDetailsComponent', () => {
 
     it('should redirect when timer is finished', () => {
       jest.useFakeTimers();
-      const originalLocation = window.location;
-      Object.defineProperty(globalThis, 'location', {
-        writable: true,
-        value: { href: '' },
-      });
       const testRedirectUrl = 'https://test-redirect-with-timeout.com';
       component['redirectUrl'].set(testRedirectUrl);
       component['showRedirect'].set(true);
@@ -290,13 +291,8 @@ describe('ConsentRequestDetailsComponent', () => {
 
       jest.advanceTimersByTime(REDIRECT_TIMEOUT + 1);
 
-      expect(globalThis.location.href).toBe(testRedirectUrl);
+      expect(mockLocation.href).toBe(testRedirectUrl);
 
-      Object.defineProperty(globalThis, 'location', {
-        writable: true,
-        configurable: true,
-        value: originalLocation,
-      });
       jest.useRealTimers();
     });
   });
@@ -338,9 +334,16 @@ describe('ConsentRequestDetailsComponent', () => {
 
       const initialValue = component['countdownValue']();
 
+      // The redirect timeout fires at the same instant as the countdown's final tick, so depending
+      // on timer ordering the interval is cleared at 0 or 1. Either way the countdown must have run
+      // to completion (<= 1, never negative) and then stopped (no further decrements).
+      jest.advanceTimersByTime(initialValue * 1000);
+      const valueAfterCountdown = component['countdownValue']();
+
       jest.advanceTimersByTime(initialValue * 1000);
 
-      expect(component['countdownValue']()).toBe(0);
+      expect(valueAfterCountdown).toBeLessThanOrEqual(1);
+      expect(component['countdownValue']()).toBe(valueAfterCountdown);
     });
 
     it('should clear the interval when starting with countdown value 1', () => {
@@ -382,32 +385,9 @@ describe('ConsentRequestDetailsComponent', () => {
       const testRedirectUrl = 'https://test-redirect-flow.com';
       component['redirectUrl'].set(testRedirectUrl);
 
-      const locationHrefSetter = jest.fn();
-      const originalLocation = window.location;
-
-      const mockLocation = {
-        ...originalLocation,
-      };
-
-      Object.defineProperty(mockLocation, 'href', {
-        get: () => originalLocation.href,
-        set: locationHrefSetter,
-        configurable: true,
-      });
-
-      Object.defineProperty(window, 'location', {
-        value: mockLocation,
-        configurable: true,
-      });
-
       component['redirectDirectly']();
 
-      expect(locationHrefSetter).toHaveBeenCalledWith(testRedirectUrl);
-
-      Object.defineProperty(window, 'location', {
-        value: originalLocation,
-        configurable: true,
-      });
+      expect(mockLocation.href).toBe(testRedirectUrl);
     });
 
     it('should decrement countdown correctly when startCountdown is called', () => {
@@ -433,64 +413,18 @@ describe('ConsentRequestDetailsComponent', () => {
       component['showRedirect'].set(true);
       component['redirectUrl'].set(testRedirectUrl);
 
-      const locationHrefSetter = jest.fn();
-      const originalLocation = window.location;
-
-      const mockLocation = {
-        ...originalLocation,
-      };
-
-      Object.defineProperty(mockLocation, 'href', {
-        get: () => originalLocation.href,
-        set: locationHrefSetter,
-        configurable: true,
-      });
-
-      Object.defineProperty(window, 'location', {
-        value: mockLocation,
-        configurable: true,
-      });
-
       component['redirectDirectly']();
 
-      expect(locationHrefSetter).toHaveBeenCalledWith(testRedirectUrl);
-
-      Object.defineProperty(window, 'location', {
-        value: originalLocation,
-        configurable: true,
-      });
+      expect(mockLocation.href).toBe(testRedirectUrl);
     });
 
     it('should not redirect when redirectUrl is null', () => {
       component['redirectUrl'].set(null);
       component['showRedirect'].set(true);
 
-      const locationHrefSetter = jest.fn();
-      const originalLocation = window.location;
-
-      const mockLocation = {
-        ...originalLocation,
-      };
-
-      Object.defineProperty(mockLocation, 'href', {
-        get: () => originalLocation.href,
-        set: locationHrefSetter,
-        configurable: true,
-      });
-
-      Object.defineProperty(window, 'location', {
-        value: mockLocation,
-        configurable: true,
-      });
-
       component['redirectDirectly']();
 
-      expect(locationHrefSetter).not.toHaveBeenCalled();
-
-      Object.defineProperty(window, 'location', {
-        value: originalLocation,
-        configurable: true,
-      });
+      expect(mockLocation.href).toBe('');
     });
   });
 

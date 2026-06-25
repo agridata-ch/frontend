@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Service, signal } from '@angular/core';
 import { driver, type Config, type DriveStep } from 'driver.js';
 
 import { I18nService } from '@/shared/i18n';
@@ -9,9 +9,7 @@ import { I18nService } from '@/shared/i18n';
  *
  * CommentLastReviewed: 2026-02-25
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class ProductTourService {
   readonly i18nService = inject(I18nService);
 

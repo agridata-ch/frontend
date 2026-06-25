@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
@@ -36,7 +35,6 @@ import { DataRequestDetailsContractComponent } from '../data-request-details-con
   selector: 'app-data-request-details',
   imports: [
     I18nDirective,
-    CommonModule,
     ErrorOutletComponent,
     SidepanelComponent,
     AgridataTabsComponent,

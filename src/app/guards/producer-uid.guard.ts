@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
@@ -13,9 +13,7 @@ import { AuthService } from '@/shared/lib/auth';
  *
  * CommentLastReviewed: 2025-12-01
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class ProducerUidGuard implements CanActivate {
   // Injects
   private readonly agridataStateService = inject(AgridataStateService);

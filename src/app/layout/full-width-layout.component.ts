@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, inject, ViewEncapsulation } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -18,7 +17,6 @@ import { NewYearBannerComponent } from '@/widgets/new-year-banner';
 @Component({
   selector: 'app-full-width-layout',
   imports: [
-    CommonModule,
     RouterModule,
     HeaderWidgetComponent,
     FooterWidgetComponent,

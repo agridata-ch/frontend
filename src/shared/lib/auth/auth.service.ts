@@ -1,4 +1,4 @@
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Service, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { lastValueFrom } from 'rxjs';
@@ -17,7 +17,7 @@ import {
  *
  * CommentLastReviewed: 2026-04-22
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class AuthService {
   // Injects
   private readonly oidcService = inject(OidcSecurityService);

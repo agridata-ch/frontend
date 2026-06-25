@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, effect, signal, Signal, untracked } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -29,7 +28,6 @@ import { DataRequestWizardBaseComponent } from '@/widgets/data-request-wizard/da
   imports: [
     AgridataWizardComponent,
     ButtonComponent,
-    CommonModule,
     DataRequestCompletionComponent,
     DataRequestFormContractComponent,
     DataRequestPreviewComponent,

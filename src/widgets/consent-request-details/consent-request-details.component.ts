@@ -1,6 +1,7 @@
 import {
   Component,
   computed,
+  DOCUMENT,
   effect,
   inject,
   input,
@@ -84,6 +85,11 @@ export class ConsentRequestDetailsComponent {
   private readonly activeRoute = inject(ActivatedRoute);
   private readonly analyticsService = inject(AnalyticsService);
   private readonly consentRequestService = inject(ConsentRequestService);
+  // Use the injected DOCUMENT instead of globalThis/window.location so redirects go through a
+  // mockable seam in tests. jsdom 26 (Angular 22 toolchain) fully locks window.location, making it
+  // impossible to stub directly. SonarQube prefers globalThis over window, but DOCUMENT is both
+  // Sonar-clean and testable.
+  private readonly document = inject(DOCUMENT);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
   private readonly metaDataService = inject(MasterDataService);
@@ -252,7 +258,7 @@ export class ConsentRequestDetailsComponent {
         this.clearAllTimers();
         this.resetRedirect();
         if (url) {
-          globalThis.location.href = url;
+          this.document.location.href = url;
         }
       }, REDIRECT_TIMEOUT);
 
@@ -286,7 +292,7 @@ export class ConsentRequestDetailsComponent {
     if (url) {
       this.clearAllTimers();
       this.resetRedirect();
-      globalThis.location.href = url;
+      this.document.location.href = url;
     }
   };
 
