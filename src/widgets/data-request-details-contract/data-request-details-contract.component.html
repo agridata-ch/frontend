@@ -15,5 +15,25 @@
       [contract]="contract"
       [dataRequestStateCode]="dataRequest().stateCode"
     />
+    @if (canSealContract()) {
+      <ng-container *i18n="let t; prefix: 'data-request.details.contract.sealing'">
+        <h4>{{ t('heading') }}</h4>
+        <div class="flex flex-col gap-4">
+          <span class="text-agridata-secondary-text">
+            {{ t('description') }}
+          </span>
+          <div class="flex justify-end">
+            <app-agridata-button
+              [variant]="ButtonVariants.PrimaryAccept"
+              [loading]="isSealing()"
+              [success]="sealSucceeded()"
+              (handleClick)="sealContract()"
+            >
+              {{ t('action') }}
+            </app-agridata-button>
+          </div>
+        </div>
+      </ng-container>
+    }
   }
 </div>

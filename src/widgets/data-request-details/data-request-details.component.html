@@ -34,7 +34,10 @@
           </div>
         }
         @if (activeTabId() === DETAILS_TABS_ID.CONTRACT) {
-          <app-data-request-details-contract [dataRequest]="request" />
+          <app-data-request-details-contract
+            [dataRequest]="request"
+            (sealed)="contractSealed.emit()"
+          />
         }
         @if (activeTabId() === DETAILS_TABS_ID.EMAIL) {
           <div class="flex flex-col gap-4 pt-4">

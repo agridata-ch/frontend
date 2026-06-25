@@ -611,6 +611,10 @@ components:
           description: Defines whether the provider party uses a individual or a collective
             signature
           type: string
+        sealState:
+          $ref: "#/components/schemas/SealAttemptStateEnum"
+          description: Defines the sealing state of the contract
+          type: string
     ContractRevisionSignatureDto:
       type: object
       required:

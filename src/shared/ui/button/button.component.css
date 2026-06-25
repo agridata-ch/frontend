@@ -252,3 +252,33 @@
   border-color: var(--color-agridata-primary-text);
   color: var(--color-agridata-primary-text);
 }
+
+.agridata-button.success,
+.agridata-button.success:disabled {
+  color: white;
+  border-color: var(--color-green-600);
+  background-color: var(--color-green-600);
+  cursor: default;
+}
+
+.success-check {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.success-check path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: draw-check 0.35s ease-out forwards;
+}
+
+@keyframes draw-check {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

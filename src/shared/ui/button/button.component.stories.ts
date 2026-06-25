@@ -20,6 +20,7 @@ const sharedTemplate = (content: string): string => `
     [ariaLabel]="ariaLabel"
     [selected]="selected"
     [loading]="loading"
+    [success]="success"
     [href]="href"
     [target]="target"
   >${content}</app-agridata-button>
@@ -94,6 +95,7 @@ const meta: Meta<ButtonComponent> = {
     href: '',
     loading: false,
     selected: false,
+    success: false,
     tabindex: 0,
     target: HrefTarget.Self,
     type: 'button',
@@ -182,4 +184,10 @@ export const Loading = textStory('Saving...', {
   variant: ButtonVariants.Primary,
   ariaLabel: 'Saving',
   loading: true,
+});
+
+export const Success = textStory('Sealed', {
+  variant: ButtonVariants.PrimaryAccept,
+  ariaLabel: 'Sealed',
+  success: true,
 });
