@@ -1,3 +1,9 @@
+## [1.14.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.1...v1.14.0-rc.2) (2026-06-29)
+
+### Features
+
+- **contract-sealing:** implement contract sealing functionality with success feedback ([d0ab3f1](https://github.com/agridata-ch/frontend/commit/d0ab3f1cb130c0a81490560830fdf9b17cd89477)), closes [DIGIB2-311](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-311)
+
 ## [1.14.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.13.0...v1.14.0-rc.1) (2026-06-24)
 
 ### Features
