@@ -36,7 +36,7 @@
         @if (activeTabId() === DETAILS_TABS_ID.CONTRACT) {
           <app-data-request-details-contract
             [dataRequest]="request"
-            (sealed)="contractSealed.emit()"
+            (handleSeal)="contractSealed.emit()"
           />
         }
         @if (activeTabId() === DETAILS_TABS_ID.EMAIL) {
