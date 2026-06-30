@@ -1,3 +1,9 @@
+## [1.14.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.3...v1.14.0-rc.4) (2026-06-30)
+
+### Bug Fixes
+
+- **contract-sealing:** fix findings ([29d7797](https://github.com/agridata-ch/frontend/commit/29d7797d30eeb1b96203de560fd9955e0eb7c432)), closes [DIGIB2-311](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-311)
+
 ## [1.14.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.2...v1.14.0-rc.3) (2026-06-30)
 
 ### Features
