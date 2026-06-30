@@ -65,11 +65,11 @@ describe('DataRequestDetailsContractComponent', () => {
     expect(contractRevisionService.fetchContract).toHaveBeenCalledWith('cr-1', undefined);
   });
 
-  it('should emit sealed immediately and reload the contract after the success delay', async () => {
+  it('should emit handleSeal immediately and reload the contract after the success delay', async () => {
     jest.useFakeTimers();
     const reloadSpy = jest.spyOn(component.contractResource, 'reload');
     const sealedSpy = jest.fn();
-    component.sealed.subscribe(sealedSpy);
+    component.handleSeal.subscribe(sealedSpy);
 
     component['sealContract']();
     await Promise.resolve();

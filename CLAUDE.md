@@ -86,6 +86,10 @@ Within each category: public → protected → private
 
 Sort alphabetically and by visibility: public → protected → private
 
+## Output Naming
+
+Output names must contain a verb (e.g. `handle`) so they read as methods — `saveClicked` → `handleSave`. Never prefix with `on`.
+
 ## Arrays
 
 Never sort in place - always sort a copy: `[...myArray].sort(...)`

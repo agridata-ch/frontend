@@ -62,7 +62,7 @@ export class DataRequestDetailsContractComponent {
   readonly dataRequest = input.required<DataRequestDto>();
 
   // Output properties
-  readonly sealed = output<void>();
+  readonly handleSeal = output<void>();
 
   // Signals
   protected readonly isSealing = signal(false);
@@ -123,7 +123,7 @@ export class DataRequestDetailsContractComponent {
       .then(() => {
         this.isSealing.set(false);
         this.sealSucceeded.set(true);
-        this.sealed.emit();
+        this.handleSeal.emit();
         const timeoutId = setTimeout(() => {
           this.contractResource.reload();
         }, this.successFeedbackMs);

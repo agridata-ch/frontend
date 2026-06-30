@@ -20,7 +20,8 @@
       [attr.data-testid]="dataTestId()"
       (click)="onButtonClick($event)"
       (keydown.enter)="onButtonClick($event)"
-      [class]="`relative agridata-button agridata-button-${variant()} ${selected() ? 'selected' : ''} ${showSuccess() ? 'success' : ''} ${additionalClass()}`"
+      [class]="`relative agridata-button agridata-button-${variant()} ${selected() ? 'selected' : ''} ${additionalClass()}`"
+      [class.success]="showSuccess()"
     >
       @if (isIconLink()) {
         <span class="flex items-center gap-2">
