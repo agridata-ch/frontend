@@ -1,3 +1,9 @@
+## [1.14.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.2...v1.14.0-rc.3) (2026-06-30)
+
+### Features
+
+- **deps:** upgrade Angular v20 to v22 ([a6b805e](https://github.com/agridata-ch/frontend/commit/a6b805e504cb3b8a9caac9afef8a80f76029737c)), closes [DIGIB2-1446](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1446)
+
 ## [1.14.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.1...v1.14.0-rc.2) (2026-06-29)
 
 ### Features
