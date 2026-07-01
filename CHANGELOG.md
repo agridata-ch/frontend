@@ -1,3 +1,9 @@
+## [1.14.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.4...v1.14.0-rc.5) (2026-07-01)
+
+### Features
+
+- **deps:** update dependencies ([cf1b9b7](https://github.com/agridata-ch/frontend/commit/cf1b9b7bb6ade2fe37ada3d176179e36506940f6))
+
 ## [1.14.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.3...v1.14.0-rc.4) (2026-06-30)
 
 ### Bug Fixes
