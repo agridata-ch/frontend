@@ -115,7 +115,6 @@ export class DataProductLinksComponent {
   // Protected methods
   protected addLink(): void {
     const control = this.linksControl();
-
     if (!control?.buildItem || !this.canAdd()) return;
 
     // buildItem is wrapped in initEffect, so the new row is initialized and linksVersion bumped.

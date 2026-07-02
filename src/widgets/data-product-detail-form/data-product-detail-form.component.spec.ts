@@ -1,9 +1,11 @@
 import { Location } from '@angular/common';
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AbstractControl } from '@angular/forms';
 import { provideRouter, Router } from '@angular/router';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { DataProductDocumentService } from '@/entities/api/data-product-document.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProvidersService } from '@/entities/api/data-providers.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
@@ -13,6 +15,7 @@ import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAgridataStateService,
   createMockAuthService,
+  createMockDataProductDocumentService,
   createMockDataProductService,
   createMockDataProvidersService,
   createMockI18nService,
@@ -72,6 +75,7 @@ describe('DataProductDetailFormComponent', () => {
       providers: [
         { provide: AgridataStateService, useValue: stateService },
         { provide: AuthService, useValue: createMockAuthService() },
+        { provide: DataProductDocumentService, useValue: createMockDataProductDocumentService() },
         { provide: DataProductService, useValue: dataProductService },
         { provide: DataProvidersService, useValue: createMockDataProvidersService() },
         { provide: I18nService, useValue: createMockI18nService() },
@@ -101,14 +105,15 @@ describe('DataProductDetailFormComponent', () => {
   });
 
   describe('tabs', () => {
-    it('should return two tabs', () => {
-      expect(component['tabs']()).toHaveLength(2);
+    it('should return three tabs', () => {
+      expect(component['tabs']()).toHaveLength(3);
     });
 
     it('should have correct tab IDs', () => {
       const ids = component['tabs']().map((t) => t.id);
       expect(ids).toContain(FORM_TAB_IDS.NAME_AND_DESCRIPTION);
       expect(ids).toContain(FORM_TAB_IDS.TECHNICAL_FIELDS);
+      expect(ids).toContain(FORM_TAB_IDS.LINKS_DOCUMENTS);
     });
 
     it('should have hasError=false on all tabs before publish is attempted', () => {
@@ -124,6 +129,21 @@ describe('DataProductDetailFormComponent', () => {
 
       const nameTab = component['tabs']().find((t) => t.id === FORM_TAB_IDS.NAME_AND_DESCRIPTION);
       expect(nameTab?.hasError).toBe(true);
+    });
+  });
+
+  describe('scrollToFirstError', () => {
+    it('activates the links & documents tab when it is the first invalid tab', () => {
+      jest.spyOn(component['form'], 'get').mockImplementation(
+        (path) =>
+          ({
+            invalid: path === FORM_TAB_IDS.LINKS_DOCUMENTS,
+          }) as unknown as AbstractControl,
+      );
+
+      component['scrollToFirstError']();
+
+      expect(component['activeTabId']()).toBe(FORM_TAB_IDS.LINKS_DOCUMENTS);
     });
   });
 

@@ -99,18 +99,6 @@ describe('DataRequestFormConsumerComponent', () => {
     expect(errorService.handleError).toHaveBeenCalledWith(testError);
   });
 
-  describe('formatBytes', () => {
-    it('should format bytes < 1024 as B', () => {
-      expect(component['formatBytes'](512)).toBe('512B');
-    });
-    it('should format bytes < 1MB as kB', () => {
-      expect(component['formatBytes'](2048)).toBe('2kB');
-    });
-    it('should format bytes >= 1MB as MB', () => {
-      expect(component['formatBytes'](2 * 1024 * 1024)).toBe('2.00MB');
-    });
-  });
-
   describe('onFileSelected', () => {
     it('should set error if file is too large', () => {
       const file = new File(['a'.repeat(200 * 1024)], 'large.png', { type: 'image/png' });

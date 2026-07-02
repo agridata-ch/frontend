@@ -1,0 +1,14 @@
+<div
+  class="h-1.5 w-full overflow-hidden rounded-full bg-gray-200"
+  role="progressbar"
+  [attr.aria-label]="label() || null"
+  [attr.aria-valuenow]="clampedValue()"
+  [attr.aria-valuetext]="clampedValue() + '%'"
+  aria-valuemin="0"
+  aria-valuemax="100"
+>
+  <div
+    class="h-1.5 rounded-full bg-agridata-primary-600 transition-[width] duration-200"
+    [style.width.%]="clampedValue()"
+  ></div>
+</div>

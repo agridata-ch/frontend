@@ -43,22 +43,27 @@
             [preselectedProviderId]="preselectedProviderId()"
             [class.hidden]="activeTabId() !== FORM_TAB_IDS.TECHNICAL_FIELDS"
           />
+          <app-data-product-detail-links-documents
+            [form]="getTabForm(FORM_TAB_IDS.LINKS_DOCUMENTS)"
+            [isViewMode]="isViewMode()"
+            [class.hidden]="activeTabId() !== FORM_TAB_IDS.LINKS_DOCUMENTS"
+          />
         </div>
 
         <div class="flex justify-between">
-          <app-agridata-button
-            [variant]="ButtonVariants.Tertiary"
-            [disabled]="isSaving()"
-            (handleClick)="cancel()"
-          >
-            {{ t('cancel') }}
-          </app-agridata-button>
           @if (isViewMode()) {
             <!-- TODO: enable edit with edit mode DIGIB2-1354 -->
             <!-- <app-agridata-button (handleClick)="enterEditMode()">
               {{ t('edit') }}
             </app-agridata-button> -->
           } @else {
+            <app-agridata-button
+              [variant]="ButtonVariants.Tertiary"
+              [disabled]="isSaving()"
+              (handleClick)="cancel()"
+            >
+              {{ t('cancel') }}
+            </app-agridata-button>
             <div class="flex gap-4">
               @if (canSaveDraft()) {
                 <app-agridata-button

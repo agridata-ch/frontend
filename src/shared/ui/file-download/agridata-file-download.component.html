@@ -1,0 +1,63 @@
+<div class="flex min-w-0 items-center gap-3" [class.opacity-60]="markedForRemoval()">
+  @if (downloadable()) {
+    <app-agridata-button
+      [variant]="ButtonVariants.IconLink"
+      [icon]="fileIcon()"
+      [iconPosition]="IconPosition.Left"
+      [loading]="isOpening()"
+      [disabled]="isOpening()"
+      (handleClick)="handleOpen.emit()"
+    >
+      <span [class.line-through]="markedForRemoval()">{{ fileName() }}</span>
+    </app-agridata-button>
+  } @else {
+    <span class="font-semibold text-agridata-primary-600 flex gap-2 items-center">
+      <fa-icon [icon]="fileIcon()" />
+      <span [class.line-through]="markedForRemoval()">{{ fileName() }}</span>
+    </span>
+  }
+
+  @if (sizeBytes(); as size) {
+    @if (size > 0) {
+      <span class="text-xs text-agridata-tertiary-text">{{ formatBytes(size) }}</span>
+    }
+  }
+</div>
+
+<div class="flex shrink-0 items-center gap-2">
+  @if (badgeText(); as text) {
+    <app-agridata-badge aria-live="polite" [text]="text" [variant]="badgeVariant()" />
+  }
+
+  @if (downloadable()) {
+    <app-agridata-button
+      [variant]="ButtonVariants.IconLink"
+      [icon]="faDownload"
+      [iconPosition]="IconPosition.Right"
+      [loading]="isDownloading()"
+      [disabled]="isDownloading()"
+      [ariaLabel]="downloadLabel() ? '' : downloadAriaLabel()"
+      (handleClick)="handleDownload.emit()"
+    >
+      @if (downloadLabel(); as label) {
+        {{ label }}
+      }
+    </app-agridata-button>
+  }
+
+  @if (markedForRemoval()) {
+    <app-agridata-button
+      [variant]="ButtonVariants.IconLink"
+      [icon]="faRotateLeft"
+      [ariaLabel]="restoreAriaLabel()"
+      (handleClick)="handleRestore.emit()"
+    />
+  } @else if (removable()) {
+    <app-agridata-button
+      [variant]="ButtonVariants.IconLink"
+      [icon]="faTrashCan"
+      [ariaLabel]="removeAriaLabel()"
+      (handleClick)="handleRemove.emit()"
+    />
+  }
+</div>

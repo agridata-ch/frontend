@@ -32,6 +32,7 @@ import { ToastService, ToastType } from '@/shared/toast';
 import { AgridataTabsComponent, Tab } from '@/shared/ui/agridata-tabs';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { DocumentUploadStore } from '@/widgets/data-product-detail-form/data-product-detail-links-documents';
 
 import {
   buildDataProductPayload,
@@ -41,6 +42,7 @@ import {
   FORM_TAB_IDS,
 } from './data-product-detail-form.model';
 import { DataProductDetailInfoComponent } from './data-product-detail-info';
+import { DataProductDetailLinksDocumentsComponent } from './data-product-detail-links-documents';
 import { DataProductDetailTechnicalComponent } from './data-product-detail-technical';
 
 /**
@@ -61,8 +63,10 @@ import { DataProductDetailTechnicalComponent } from './data-product-detail-techn
     ScrollFadeDirective,
     SidepanelComponent,
     AgridataBadgeComponent,
+    DataProductDetailLinksDocumentsComponent,
   ],
   templateUrl: './data-product-detail-form.component.html',
+  providers: [DocumentUploadStore],
 })
 export class DataProductDetailFormComponent {
   // Injects
@@ -74,6 +78,7 @@ export class DataProductDetailFormComponent {
   private readonly router = inject(Router);
   private readonly stateService = inject(AgridataStateService);
   private readonly toastService = inject(ToastService);
+  private readonly uploadStore = inject(DocumentUploadStore);
 
   // Constants
   protected readonly BadgeSize = BadgeSize;
@@ -133,6 +138,14 @@ export class DataProductDetailFormComponent {
         id: FORM_TAB_IDS.TECHNICAL_FIELDS,
         label: this.i18nService.translate('data-products.detailForm.tab.technicalFields'),
         hasError: attempted && (this.form.get(FORM_TAB_IDS.TECHNICAL_FIELDS)?.invalid ?? false),
+      },
+      {
+        id: FORM_TAB_IDS.LINKS_DOCUMENTS,
+        label: this.i18nService.translate('data-products.detailForm.tab.linksAndDocuments'),
+        hasError:
+          attempted &&
+          ((this.form.get(FORM_TAB_IDS.LINKS_DOCUMENTS)?.invalid ?? false) ||
+            this.uploadStore.hasUnreadyDocuments()),
       },
     ];
   });
@@ -196,6 +209,14 @@ export class DataProductDetailFormComponent {
     }
   });
 
+  private readonly loadDocumentsEffect = effect(() => {
+    const id = this.dataProductId();
+    if (id && id !== DATA_PRODUCT_NEW_ID) {
+      // Swallow transient load errors here; the tab renders its own empty/list state regardless.
+      untracked(() => this.uploadStore.loadExisting(id).catch(() => undefined));
+    }
+  });
+
   protected getTabForm(tabId: string): FormGroup {
     return this.form.get(tabId) as FormGroup;
   }
@@ -253,6 +274,22 @@ export class DataProductDetailFormComponent {
           )
         : this.dataProductService.createDataProduct(payload, this.stateService.actingRole()));
 
+      this.currentDataProductId.set(saved.id);
+      this.location.replaceState(`${ROUTE_PATHS.DATA_PRODUCTS_PATH}/${saved.id}`);
+      this.refreshListNeeded.set(true);
+
+      // Upload the newly staged documents; existing untouched documents are skipped. This resolves
+      // once the uploads are POSTed; the antivirus scan then runs in the background.
+      await this.uploadStore.uploadAll(saved.id);
+
+      // Commit the staged removals: documents the user marked for removal are deleted on save.
+      await this.uploadStore.commitRemovals(saved.id);
+
+      if (publish && this.uploadStore.hasUnreadyDocuments()) {
+        this.activeTabId.set(FORM_TAB_IDS.LINKS_DOCUMENTS);
+        return;
+      }
+
       if (publish) {
         await this.dataProductService.setDataProductStatus(
           saved.id,
@@ -266,14 +303,11 @@ export class DataProductDetailFormComponent {
         );
         this.navigateToList(true);
       } else {
-        this.currentDataProductId.set(saved.id);
-        this.location.replaceState(`${ROUTE_PATHS.DATA_PRODUCTS_PATH}/${saved.id}`);
         this.toastService.show(
           this.i18nService.translate('data-products.saveDraft.success.title'),
           this.i18nService.translate('data-products.saveDraft.success.message'),
           ToastType.Success,
         );
-        this.refreshListNeeded.set(true);
       }
     } catch {
       const key = publish ? 'saveAndPublish' : 'saveDraft';
@@ -288,9 +322,13 @@ export class DataProductDetailFormComponent {
   }
 
   private scrollToFirstError(): void {
-    const targetTabId = this.form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION)?.invalid
-      ? FORM_TAB_IDS.NAME_AND_DESCRIPTION
-      : FORM_TAB_IDS.TECHNICAL_FIELDS;
+    const tabOrder = [
+      FORM_TAB_IDS.NAME_AND_DESCRIPTION,
+      FORM_TAB_IDS.TECHNICAL_FIELDS,
+      FORM_TAB_IDS.LINKS_DOCUMENTS,
+    ];
+    const targetTabId =
+      tabOrder.find((tabId) => this.form.get(tabId)?.invalid) ?? FORM_TAB_IDS.NAME_AND_DESCRIPTION;
 
     this.activeTabId.set(targetTabId);
 

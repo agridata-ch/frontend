@@ -28,6 +28,33 @@
   .animate-toast-out {
     animation: toast-out 0.5s cubic-bezier(0.68, -0.55, 0.25, 1.35);
   }
+
+  /* scanning indicator: subtle brand-tinted shimmer sweeping across a row background */
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+  .animate-shimmer {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-agridata-primary-50) 80%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    animation: shimmer 2.6s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-shimmer {
+      animation: none;
+      background-position: 50% 0;
+    }
+  }
 }
 
 .agridata-ellipsis {

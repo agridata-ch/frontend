@@ -11,6 +11,7 @@ export const FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM = 'refresh';
 export const FORM_TAB_IDS = {
   NAME_AND_DESCRIPTION: 'nameAndDescription',
   TECHNICAL_FIELDS: 'technicalFields',
+  LINKS_DOCUMENTS: 'linksAndDocuments',
 } as const;
 
 export const FLOW_CODE_OPTIONS: MultiSelectOption[] = Object.values(FlowCodeEnum)
@@ -48,7 +49,6 @@ export const dataProductFormsModel: FormModel[] = [
       { name: 'technicalDescription.de', isRichText: true },
       { name: 'technicalDescription.fr', isRichText: true },
       { name: 'technicalDescription.it', isRichText: true },
-      { name: 'links', asFormArray: true },
     ],
   },
   {
@@ -63,5 +63,12 @@ export const dataProductFormsModel: FormModel[] = [
       { name: 'restClientRequestTemplate' },
       { name: 'restClientChangeDetectionPathTemplate' },
     ],
+  },
+  {
+    // Documents are managed outside the reactive form (see DocumentUploadStore); this empty group
+    // keeps the tab's required `form` input satisfied and reserves the tab for future link fields.
+    completionStrategy: FORM_COMPLETION_STRATEGIES.ALWAYS_COMPLETE,
+    formGroupName: FORM_TAB_IDS.LINKS_DOCUMENTS,
+    fields: [{ name: 'links', asFormArray: true }],
   },
 ];

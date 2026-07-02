@@ -5,10 +5,14 @@
     Never wrap this value in bypassSecurityTrustHtml. Note: this only protects our own rendering;
     the authoritative sanitization boundary is server-side (the API can be written directly).
   -->
-  <div
-    class="rich-text-content text-agridata-primary-text whitespace-pre-line"
-    [innerHTML]="control()?.value"
-  ></div>
+  @if (!control()?.value) {
+    <span class="text-agridata-primary-text">-</span>
+  } @else {
+    <div
+      class="rich-text-content text-agridata-primary-text whitespace-pre-line"
+      [innerHTML]="control()?.value"
+    ></div>
+  }
 } @else {
   <div
     *i18n="let t; prefix: 'wysiwyg'"

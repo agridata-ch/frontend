@@ -902,7 +902,7 @@
       "tab": {
         "technicalFields": "Informations techniques",
         "nameAndDescription": "Nom et description",
-        "linksAndDocuments": "Documents"
+        "linksAndDocuments": "Liens et documents"
       },
       "edit": "Modifier",
       "links": {
@@ -919,7 +919,8 @@
           "label": "URL",
           "placeholder": "https://agridata.ch/",
           "error": "Veuillez saisir une URL complète, y compris http:// ou https://."
-        }
+        },
+        "empty": "Aucun lien disponible."
       },
       "additionalInfo": "Informations complémentaires (facultatif)",
       "technicalDescription": {
@@ -932,9 +933,36 @@
           "placeholder": "Concrètement, les données suivantes sont transmises : \n- Date resp. la saisie ou la dernière modification du jeu de données dans le système cantonal\n- KT_ID_B Numéro cantonal de la forme d’exploitation au niveau de laquelle les données suivantes ont été saisies\n..."
         },
         "it": {
-          "label": "Description technique italienne",
+          "label": "Description technique italien",
           "placeholder": "Concretamente vengono trasmessi i dati seguenti:\n- Data di registrazione o dell’ultima modifica di questo set di dati nel sistema cantonale\n- KT_ID_B Numero d’identificazione cantonale della forma di azienda al livello a cui sono stati registrati i dati seguenti:\n..."
         }
+      },
+      "documents": {
+        "title": "Documents",
+        "dropzone": {
+          "label": "Cliquez ou glissez-déposez le fichier",
+          "hint": "Formats autorisés : PDF, max. 10 Mo, jusqu'à 5 fichiers"
+        },
+        "maxFilesReached": "Nombre maximal de fichiers atteint",
+        "status": {
+          "UPLOADING": "Téléchargement en cours",
+          "PENDING_SCAN": "Vérification en cours",
+          "AVAILABLE": "Disponible",
+          "REJECTED": "Rejeté",
+          "ERROR": "Erreur",
+          "STAGED": "Prêt"
+        },
+        "remove": "Supprimer {{ fileName }}",
+        "progress": "{{ fileName }} est en cours de téléchargement",
+        "error": {
+          "fileType": "{{ fileName }} n'est pas un fichier PDF",
+          "tooLarge": "{{ fileName }} dépasse la taille maximale de {{ maxSize }}",
+          "maxFiles": "Un maximum de {{ max }} fichiers peut être téléchargé"
+        },
+        "uploadDocuments": "Télécharger des documents",
+        "documentsToUpload": "Fichiers à télécharger",
+        "uploadedDocuments": "Documents disponibles",
+        "markedForRemoval": "Sera supprimé"
       }
     },
     "saveAndPublish": {
@@ -1081,5 +1109,10 @@
     "bulletList": "Puces",
     "orderedList": "Liste numérotée",
     "resetFormat": "Réinitialiser le formatage"
+  },
+  "fileDownload": {
+    "download": "Télécharger",
+    "remove": "Supprimer",
+    "restore": "Annuler"
   }
 }

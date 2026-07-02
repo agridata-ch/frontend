@@ -1,13 +1,12 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { faDownload, faFilePdf } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
-import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/button';
+import { AgridataFileDownloadComponent } from '@/shared/ui/file-download';
+import { downloadBlob, openBlobInNewTab } from '@/shared/utils';
 
 /**
  * Component for displaying and handling interactions with a contract PDF related to a data request.
@@ -19,7 +18,7 @@ import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/butto
  */
 @Component({
   selector: 'app-data-request-contract-pdf',
-  imports: [ButtonComponent, I18nDirective],
+  imports: [AgridataFileDownloadComponent, I18nDirective],
   templateUrl: './data-request-contract-pdf.component.html',
 })
 export class DataRequestContractPdfComponent {
@@ -32,13 +31,6 @@ export class DataRequestContractPdfComponent {
   // Inputs
   readonly dataRequest = input.required<DataRequestDto>();
   readonly contractRevisionId = input.required<string>();
-
-  // Constants
-  protected readonly ButtonVariants = ButtonVariants;
-  protected readonly IconPosition = IconPosition;
-  protected readonly faPdf = faFilePdf;
-  protected readonly faSpinnerThird = faSpinnerThird;
-  protected readonly faDownload = faDownload;
 
   // Signals
   protected readonly isLoadingOpen = signal(false);
@@ -62,9 +54,7 @@ export class DataRequestContractPdfComponent {
     this.contractRevisionService
       .getContractRevisionPdf(this.contractRevisionId(), this.stateService.actingRole())
       .then((pdfBlob) => {
-        const url = URL.createObjectURL(pdfBlob);
-        window.open(url, '_blank');
-        URL.revokeObjectURL(url);
+        openBlobInNewTab(pdfBlob);
       })
       .catch((error) => {
         this.errorHandler.handleError(error);
@@ -83,14 +73,7 @@ export class DataRequestContractPdfComponent {
     this.contractRevisionService
       .getContractRevisionPdf(this.contractRevisionId(), this.stateService.actingRole())
       .then((pdfBlob) => {
-        const url = URL.createObjectURL(pdfBlob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = this.fileName();
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
+        downloadBlob(pdfBlob, this.fileName());
       })
       .catch((error) => {
         this.errorHandler.handleError(error);
