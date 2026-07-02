@@ -22,6 +22,7 @@ import { AgridataInputComponent } from '@/shared/ui/agridata-input';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
 import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
+import { formatBytes } from '@/shared/utils';
 
 /**
  * Implements the logic for filling consumer information such as name, UID, address, and contact
@@ -145,7 +146,7 @@ export class DataRequestFormConsumerComponent {
     if (file.size > MAX_SIZE) {
       this.logoErrorMessage.set(
         this.i18nService.translate('data-request.form.consumer.logo.error.size', {
-          maxSize: this.formatBytes(MAX_SIZE),
+          maxSize: formatBytes(MAX_SIZE),
         }),
       );
       return;
@@ -154,11 +155,5 @@ export class DataRequestFormConsumerComponent {
     }
     this.logoFile.set(file);
     this.saveLogo.emit(file);
-  }
-
-  private formatBytes(bytes: number): string {
-    if (bytes < 1024) return `${bytes}B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)}kB`;
-    return `${(bytes / (1024 * 1024)).toFixed(2)}MB`;
   }
 }

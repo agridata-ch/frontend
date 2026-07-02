@@ -80,8 +80,8 @@ describe('DataRequestContractPdfComponent', () => {
         undefined,
       );
       expect(URL.createObjectURL).toHaveBeenCalled();
-      expect(openSpy).toHaveBeenCalledWith(mockUrl, '_blank');
-      expect(URL.revokeObjectURL).toHaveBeenCalledWith(mockUrl);
+      // Revoke is deferred (see openBlobInNewTab); it is covered by download.util.spec.
+      expect(openSpy).toHaveBeenCalledWith(mockUrl, '_blank', 'noopener');
 
       openSpy.mockRestore();
     });

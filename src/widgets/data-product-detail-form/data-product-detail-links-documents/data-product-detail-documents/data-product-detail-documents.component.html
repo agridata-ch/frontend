@@ -1,0 +1,111 @@
+<ng-container *i18n="let t; prefix: 'data-products.detailForm.documents'">
+  <div class="flex flex-col gap-4">
+    <h3>{{ t('title') }}</h3>
+
+    @if (!isViewMode()) {
+      <div class="flex flex-col gap-2">
+        <span>{{ t('uploadDocuments') }}</span>
+        <app-agridata-dropzone
+          accept="application/pdf"
+          [disabled]="!store.canAddMore()"
+          [ariaDescribedBy]="
+            store.validationError()
+              ? 'document-upload-error'
+              : !store.canAddMore()
+                ? 'document-upload-max-hint'
+                : null
+          "
+          (filesSelected)="store.addFiles($event)"
+          [label]="t('dropzone.label')"
+          [hint]="t('dropzone.hint')"
+        />
+
+        @if (store.validationError(); as error) {
+          <span id="document-upload-error" class="text-sm text-red-500" role="alert">{{
+            error
+          }}</span>
+        } @else if (!store.canAddMore()) {
+          <span id="document-upload-max-hint" class="text-sm text-agridata-tertiary-text">
+            {{ t('maxFilesReached') }}
+          </span>
+        }
+      </div>
+    }
+
+    @if (store.stagedItems().length > 0) {
+      <div class="flex flex-col gap-2">
+        <span>{{ t('documentsToUpload') }}</span>
+        <ul
+          class="flex flex-col rounded-lg border border-agridata-stroke divide-y divide-agridata-stroke"
+        >
+          @for (item of store.stagedItems(); track item.localId) {
+            <li
+              class="flex flex-col p-3 gap-2"
+              [class.animate-shimmer]="isScanning(item)"
+              [attr.aria-busy]="isScanning(item) ? 'true' : null"
+            >
+              <app-agridata-file-download
+                [fileName]="item.filename"
+                [sizeBytes]="item.sizeBytes"
+                [badgeText]="t('status.' + item.status)"
+                [badgeVariant]="badgeVariant(item.status)"
+                [removable]="!isViewMode() && !isUploading(item)"
+                (handleRemove)="handleRemove(item)"
+              />
+
+              @if (isUploading(item)) {
+                <app-progress-bar
+                  [value]="item.progress"
+                  [label]="t('progress', { fileName: item.filename })"
+                />
+              }
+            </li>
+          }
+        </ul>
+      </div>
+    }
+
+    @if (store.uploadedItems().length > 0) {
+      <div class="flex flex-col gap-2">
+        @if (!isViewMode()) {
+          <span>{{ t('uploadedDocuments') }}</span>
+        }
+        <ul
+          class="flex flex-col rounded-lg border border-agridata-stroke divide-y divide-agridata-stroke"
+        >
+          @for (item of store.uploadedItems(); track item.localId) {
+            <li
+              class="p-3"
+              [class.animate-shimmer]="isScanning(item)"
+              [attr.aria-busy]="isScanning(item) ? 'true' : null"
+            >
+              <app-agridata-file-download
+                [fileName]="item.filename"
+                [sizeBytes]="item.sizeBytes"
+                [downloadable]="isDownloadable(item)"
+                [isOpening]="isOpening(item)"
+                [isDownloading]="isDownloading(item)"
+                [removable]="!isViewMode()"
+                [markedForRemoval]="item.markedForRemoval ?? false"
+                [badgeText]="
+                  isViewMode()
+                    ? undefined
+                    : item.markedForRemoval
+                      ? t('markedForRemoval')
+                      : t('status.' + item.status)
+                "
+                [badgeVariant]="
+                  item.markedForRemoval ? BadgeVariant.DEFAULT : badgeVariant(item.status)
+                "
+                (handleOpen)="handleOpen(item)"
+                (handleDownload)="handleDownload(item)"
+                (handleRemove)="handleRemove(item)"
+                (handleRestore)="handleRestore(item)"
+              />
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+</ng-container>

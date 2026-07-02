@@ -680,6 +680,18 @@ components:
           - Questo prodotto dati contiene informazioni sui controlli dell'area di
             controllo 03 Protezione degli animali con i risultati per punto di controllo.
             Massimo gli ultimi 4 anni o dal cambio di gestore.
+    DataProductDocumentMetadataDto:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+        fileName:
+          type: string
+        sizeBytes:
+          type: integer
+          format: int64
+        scanStatus:
+          $ref: "#/components/schemas/DocumentScanStatus"
     DataProductDto:
       type: object
       required:
@@ -1322,6 +1334,13 @@ components:
           $ref: "#/components/schemas/UUID"
           description: Identifier of the corresponding consent request
           type: string
+    DocumentScanStatus:
+      type: string
+      enum:
+      - PENDING_SCAN
+      - AVAILABLE
+      - REJECTED
+      - SCAN_FAILED
     ExceptionDto:
       type: object
       properties:
@@ -4131,6 +4150,316 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenanbieter
+      x-api-subset: agridata.ch Web App
+  /api/products/v2/{id}/documents:
+    get:
+      description: Retrieves metadata for all documents of a data product. Accessible
+        to the owning provider and admins.
+      operationId: getDataProductDocumentsMetadata
+      tags:
+      - Data Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataProductDocumentMetadataDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Product Documents Metadata
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+    post:
+      description: Uploads a document to a data product. Accessible to the owning
+        provider and admins.
+      operationId: addDataProductDocument
+      tags:
+      - Data Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                document:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProductDocumentMetadataDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Add Data Product Document
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+  /api/products/v2/{id}/documents/{documentId}:
+    get:
+      description: "Retrieves metadata for a single data product document, optionally\
+        \ long-polling until the scan completes. Accessible to the owning provider\
+        \ and admins."
+      operationId: getDataProductDocumentMetadata
+      tags:
+      - Data Products
+      parameters:
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: longPolling
+        in: query
+        schema:
+          type: boolean
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProductDocumentMetadataDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Product Document Metadata
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+    delete:
+      description: Deletes a document from a data product. Accessible to the owning
+        provider and admins.
+      operationId: deleteDataProductDocument
+      tags:
+      - Data Products
+      parameters:
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Delete Data Product Document
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+  /api/products/v2/{id}/documents/{documentId}/download:
+    get:
+      description: Downloads the content of a data product document. Accessible to
+        the owning provider and admins.
+      operationId: getDataProductDocument
+      tags:
+      - Data Products
+      parameters:
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
+      responses:
+        "200":
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Data Product Document
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/products/v2/{id}/status:
     put:

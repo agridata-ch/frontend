@@ -34,6 +34,7 @@ model/contractRevisionDto.ts
 model/contractRevisionSignatureDto.ts
 model/createConsentRequestDto.ts
 model/dataProductDescriptionDto.ts
+model/dataProductDocumentMetadataDto.ts
 model/dataProductDto.ts
 model/dataProductDtoStateCode.ts
 model/dataProductNameDto.ts
@@ -55,6 +56,7 @@ model/dataRequestValidRedirectUriRegexUpdateDto.ts
 model/dataSourceSystemDto.ts
 model/dataSourceSystemReferenceDto.ts
 model/dataTransferResponse.ts
+model/documentScanStatus.ts
 model/exceptionDto.ts
 model/exceptionDto1.ts
 model/exceptionEnum.ts
