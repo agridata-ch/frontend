@@ -12,5 +12,6 @@
 export interface RestClientDto { 
     id?: string;
     code?: string;
+    url?: string;
 }
 

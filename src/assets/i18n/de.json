@@ -849,7 +849,6 @@
       "dataProduct": "Name und Beschreibung Datenprodukt",
       "infoTitle": "Wichtiger Hinweis zur verständlichen Sprache",
       "infoMessage": "Bitte wählen Sie für den Produktnamen und die Beschreibung eine einfach verständliche Sprache (kein reines IT-Fachdeutsch).\n\nWarum? Diese Texte werden nicht nur im öffentlichen Datenkatalog publiziert, sondern direkt dem Landwirten / Tierhalter angezeigt, wenn dieser im System eine Datenanfrage sichtet und seine formelle Zustimmung zur Datenfreigabe erteilt.",
-      "system": "System",
       "technicalFields": "Technische Informationen",
       "description": {
         "de": {

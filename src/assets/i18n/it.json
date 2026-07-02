@@ -849,7 +849,6 @@
       "dataProduct": "Nome e descrizione prodotto dati",
       "infoTitle": "Linguaggio Semplice",
       "infoMessage": "Scegliete un linguaggio di facile comprensione per i nomi e la descrizione dei prodotti. I prodotti di dati, una volta salvati e pubblicati, verranno visualizzati direttamente su agridata.ch e dovranno essere scritti in modo comprensibile.",
-      "system": "Sistema",
       "technicalFields": "Informazioni tecniche",
       "description": {
         "de": {
