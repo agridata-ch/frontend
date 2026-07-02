@@ -183,9 +183,9 @@ export class DataProductDetailFormComponent {
         product as unknown as Record<string, unknown>,
         dataProductFormsModel,
       );
-      const infoGroup = this.getTabForm(FORM_TAB_IDS.NAME_AND_DESCRIPTION);
-      infoGroup.get('dataSourceSystemId')?.setValue(product.dataSourceSystem?.id ?? '');
-      infoGroup.get('restClientId')?.setValue(product.restClient?.id ?? '');
+      const technicalGroup = this.getTabForm(FORM_TAB_IDS.TECHNICAL_FIELDS);
+      technicalGroup.get('dataSourceSystemId')?.setValue(product.dataSourceSystem?.id ?? '');
+      technicalGroup.get('restClientId')?.setValue(product.restClient?.id ?? '');
     });
   });
 

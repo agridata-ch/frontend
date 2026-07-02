@@ -35,12 +35,12 @@
           <app-data-product-detail-info
             [form]="getTabForm(FORM_TAB_IDS.NAME_AND_DESCRIPTION)"
             [isViewMode]="isViewMode()"
-            [preselectedProviderId]="preselectedProviderId()"
             [class.hidden]="activeTabId() !== FORM_TAB_IDS.NAME_AND_DESCRIPTION"
           />
           <app-data-product-detail-technical
             [form]="getTabForm(FORM_TAB_IDS.TECHNICAL_FIELDS)"
             [isViewMode]="isViewMode()"
+            [preselectedProviderId]="preselectedProviderId()"
             [class.hidden]="activeTabId() !== FORM_TAB_IDS.TECHNICAL_FIELDS"
           />
         </div>

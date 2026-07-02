@@ -74,7 +74,7 @@ describe('data-product-detail-form.model', () => {
     it('should convert empty string restClientMethodCode to null', () => {
       const form = buildForm();
       getFormControl(
-        form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION) as FormGroup,
+        form.get(FORM_TAB_IDS.TECHNICAL_FIELDS) as FormGroup,
         'restClientMethodCode',
       ).setValue('');
       const payload = buildDataProductPayload(form);
@@ -93,7 +93,7 @@ describe('data-product-detail-form.model', () => {
     it('should keep non-empty restClientMethodCode value intact', () => {
       const form = buildForm();
       getFormControl(
-        form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION) as FormGroup,
+        form.get(FORM_TAB_IDS.TECHNICAL_FIELDS) as FormGroup,
         'restClientMethodCode',
       ).setValue(RestClientMethodCodeEnum.Post);
       const payload = buildDataProductPayload(form);
@@ -103,7 +103,7 @@ describe('data-product-detail-form.model', () => {
     it('should flatten nested tab groups into a top-level payload', () => {
       const form = buildForm();
       getFormControl(
-        form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION) as FormGroup,
+        form.get(FORM_TAB_IDS.TECHNICAL_FIELDS) as FormGroup,
         'dataSourceSystemId',
       ).setValue('sys-1');
       const payload = buildDataProductPayload(form);

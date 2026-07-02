@@ -40,15 +40,15 @@ export const dataProductFormsModel: FormModel[] = [
       { name: 'description.de' },
       { name: 'description.fr' },
       { name: 'description.it' },
-      { name: 'dataSourceSystemId' },
-      { name: 'restClientId' },
-      { name: 'restClientMethodCode' },
     ],
   },
   {
     completionStrategy: FORM_COMPLETION_STRATEGIES.FORM_VALIDATION,
     formGroupName: FORM_TAB_IDS.TECHNICAL_FIELDS,
     fields: [
+      { name: 'dataSourceSystemId' },
+      { name: 'restClientId' },
+      { name: 'restClientMethodCode' },
       { name: 'flowCode' },
       { name: 'restClientPathTemplate' },
       { name: 'restClientRequestTemplate' },

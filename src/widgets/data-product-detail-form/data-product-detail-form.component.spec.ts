@@ -41,11 +41,11 @@ function fillValidForm(component: DataProductDetailFormComponent): void {
         fr: 'Description FR',
         it: 'Description IT',
       },
+    },
+    [FORM_TAB_IDS.TECHNICAL_FIELDS]: {
       dataSourceSystemId: 'sys-1',
       restClientId: 'rc-1',
       restClientMethodCode: 'GET',
-    },
-    [FORM_TAB_IDS.TECHNICAL_FIELDS]: {
       flowCode: 'UID_BASED_PRE_VALIDATION',
       restClientPathTemplate: '/api/path',
       restClientRequestTemplate: '{}',

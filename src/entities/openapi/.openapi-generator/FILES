@@ -3,7 +3,6 @@ README.md
 api.base.service.ts
 api.module.ts
 api/api.ts
-api/bITSignatureTest.service.ts
 api/consentRequestAggregations.service.ts
 api/consentRequests.service.ts
 api/contractRevisions.service.ts
