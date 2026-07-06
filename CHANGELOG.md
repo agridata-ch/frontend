@@ -1,3 +1,9 @@
+## [1.14.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.5...v1.14.0-rc.6) (2026-07-06)
+
+### Bug Fixes
+
+- **validation:** fix validation ([d1a38d0](https://github.com/agridata-ch/frontend/commit/d1a38d085df32a91fd2300eb3a914dbc9a899c76))
+
 ## [1.14.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.4...v1.14.0-rc.5) (2026-07-01)
 
 ### Features
