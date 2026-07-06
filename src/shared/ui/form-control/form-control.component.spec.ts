@@ -1,6 +1,6 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { getErrorMessage } from '@/shared/lib/form.helper';
 
@@ -34,21 +34,38 @@ describe('FormControlComponent', () => {
     ctrl.markAsTouched();
     ctrl.setErrors({ required: true });
     componentRef.setInput('control', ctrl);
-    expect(component.hasError()).toBe(true);
+    fixture.detectChanges();
+    expect(component['hasError']()).toBe(true);
   });
 
   it('should return false from hasError() if control is untouched', () => {
     const ctrl = new FormControl('');
     componentRef.setInput('control', ctrl);
     fixture.detectChanges();
-    expect(component.hasError()).toBe(false);
+    expect(component['hasError']()).toBe(false);
   });
 
   it('should return false from hasError() if control is touched and valid', () => {
     const ctrl = new FormControl('value');
     ctrl.markAsTouched();
     componentRef.setInput('control', ctrl);
-    expect(component.hasError()).toBe(false);
+    fixture.detectChanges();
+    expect(component['hasError']()).toBe(false);
+  });
+
+  it('should reactively update hasError() when the control is touched after first render', () => {
+    // Regression: under zoneless change detection, markAllAsTouched()/blur mutate only the
+    // control's touched state, which is not a signal. hasError() must still update via the
+    // control.events subscription rather than staying at its initial value.
+    const ctrl = new FormControl('', Validators.required);
+    componentRef.setInput('control', ctrl);
+    fixture.detectChanges(); // runs the effect so it subscribes to control.events
+
+    expect(component['hasError']()).toBe(false);
+
+    ctrl.markAsTouched(); // emits a TouchedChangeEvent -> subscription updates the signal
+
+    expect(component['hasError']()).toBe(true);
   });
 
   describe('getErrorMessage()', () => {
@@ -59,8 +76,9 @@ describe('FormControlComponent', () => {
       componentRef.setInput('control', ctrl);
 
       (getErrorMessage as jest.Mock).mockReturnValue('This field is required.');
+      fixture.detectChanges();
 
-      expect(component.errorMessage()).toBe('This field is required.');
+      expect(component['errorMessage']()).toBe('This field is required.');
       expect(getErrorMessage).toHaveBeenCalledWith(ctrl, 'required');
     });
 
@@ -68,8 +86,9 @@ describe('FormControlComponent', () => {
       const ctrl = new FormControl('');
       ctrl.setErrors({ required: true });
       componentRef.setInput('control', ctrl);
+      fixture.detectChanges();
 
-      expect(component.errorMessage()).toBeNull();
+      expect(component['errorMessage']()).toBeNull();
       expect(getErrorMessage).not.toHaveBeenCalled();
     });
 
@@ -77,8 +96,9 @@ describe('FormControlComponent', () => {
       const ctrl = new FormControl('value');
       ctrl.markAsTouched();
       componentRef.setInput('control', ctrl);
+      fixture.detectChanges();
 
-      expect(component.errorMessage()).toBeNull();
+      expect(component['errorMessage']()).toBeNull();
       expect(getErrorMessage).not.toHaveBeenCalled();
     });
 
@@ -86,8 +106,9 @@ describe('FormControlComponent', () => {
       const ctrl = new FormControl('');
       ctrl.markAsTouched();
       componentRef.setInput('control', ctrl);
+      fixture.detectChanges();
 
-      expect(component.errorMessage()).toBeNull();
+      expect(component['errorMessage']()).toBeNull();
       expect(getErrorMessage).not.toHaveBeenCalled();
     });
   });

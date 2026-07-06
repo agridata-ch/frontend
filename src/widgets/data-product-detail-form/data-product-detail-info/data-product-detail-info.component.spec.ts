@@ -234,11 +234,11 @@ describe('DataProductDetailInfoComponent', () => {
   describe('providerSelectHasError', () => {
     it('should return false when a provider is selected', () => {
       component['selectedProviderId'].set('p1');
-      expect(component['providerSelectHasError']).toBe(false);
+      expect(component['providerSelectHasError']()).toBe(false);
     });
 
     it('should return false when no controls are touched', () => {
-      expect(component['providerSelectHasError']).toBe(false);
+      expect(component['providerSelectHasError']()).toBe(false);
     });
 
     it('should return true when dataSourceSystemId is invalid and touched', () => {
@@ -246,7 +246,7 @@ describe('DataProductDetailInfoComponent', () => {
       const ctrl = component['getFormControl']('dataSourceSystemId');
       ctrl.markAsTouched();
       ctrl.setErrors({ required: true });
-      expect(component['providerSelectHasError']).toBe(true);
+      expect(component['providerSelectHasError']()).toBe(true);
     });
   });
 
@@ -254,12 +254,12 @@ describe('DataProductDetailInfoComponent', () => {
     it('should return empty string when controls are valid', () => {
       component['getFormControl']('dataSourceSystemId').setValue('sys-1');
       component['getFormControl']('restClientId').setValue('rc-1');
-      expect(component['providerSelectErrorMessage']).toBe('');
+      expect(component['providerSelectErrorMessage']()).toBe('');
     });
 
     it('should return error message when restClientId has errors', () => {
       // restClientId is required; with empty value it will have a required error
-      const message = component['providerSelectErrorMessage'];
+      const message = component['providerSelectErrorMessage']();
       expect(message).not.toBe('');
     });
   });
