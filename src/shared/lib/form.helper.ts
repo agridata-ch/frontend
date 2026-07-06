@@ -1,4 +1,11 @@
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 
 import { I18nService } from '@/shared/i18n';
 
@@ -11,6 +18,9 @@ export enum FORM_COMPLETION_STRATEGIES {
 export type FormField = {
   readonly name: string;
   readonly i18nDefaultValue?: string;
+  // Opt-in: build this array-of-object field as a real FormArray<FormGroup> (schema-driven per-item
+  // controls) instead of a single flat control. Only fields that explicitly set this are affected.
+  readonly asFormArray?: boolean;
 };
 
 export interface FormModel<T extends string = string> {
@@ -23,6 +33,7 @@ export interface FormModel<T extends string = string> {
 export interface JsonSchema {
   type: string;
   properties?: Record<string, JsonSchema>;
+  items?: JsonSchema;
   required?: string[];
   minLength?: number;
   maxLength?: number;
@@ -43,8 +54,19 @@ export interface FormControlWithMessages extends FormControl {
   pattern?: string;
 }
 
+// Extension of FormArray for array-of-object schema fields. Carries translated error
+// message generators plus a factory that builds one empty item group from the schema,
+// so consumers can add rows without knowing the item schema themselves.
+export interface FormArrayWithMessages extends FormArray<FormGroup> {
+  errorMessages?: Record<string, () => string>;
+  minItems?: number;
+  maxItems?: number;
+  buildItem?: () => FormGroup;
+}
+
 interface FieldPath {
   name: string;
+  asFormArray?: boolean;
 }
 
 /**
@@ -193,7 +215,13 @@ function addFieldToGroup(
     return; // Skip if no last segment
   }
   const { schemaNode, parentRequiredList } = getSchemaNode(jsonSchema, pathSegments);
-  const control = createControl(schemaNode, parentRequiredList, lastSegment, i18nService);
+  const control = createControl(
+    schemaNode,
+    parentRequiredList,
+    lastSegment,
+    i18nService,
+    fieldPath.asFormArray ?? false,
+  );
 
   // Mark as touched if pre-filled to show validation state immediately
 
@@ -217,7 +245,14 @@ function createControl(
   parentRequiredList: string[],
   lastSegment: string,
   i18nService: I18nService,
-) {
+  asFormArray = false,
+): AbstractControl {
+  // Opt-in array of objects → real FormArray of item groups, so each row's fields become
+  // schema-driven controls (with their own validators) instead of a single opaque control.
+  if (asFormArray && schemaNode.type === 'array' && schemaNode.items?.type === 'object') {
+    return createArrayControl(schemaNode, parentRequiredList, lastSegment, i18nService);
+  }
+
   const defaultValue = schemaNode.type === 'array' ? [] : '';
   const validators = buildValidatorFunctions(schemaNode, parentRequiredList, lastSegment);
 
@@ -237,6 +272,52 @@ function createControl(
   control.pattern = schemaNode.pattern;
 
   return control;
+}
+
+function createArrayControl(
+  schemaNode: JsonSchema,
+  parentRequiredList: string[],
+  lastSegment: string,
+  i18nService: I18nService,
+): FormArrayWithMessages {
+  const itemSchema = schemaNode.items;
+  const validators = buildValidatorFunctions(schemaNode, parentRequiredList, lastSegment);
+
+  const array = new FormArray<FormGroup>([], validators) as FormArrayWithMessages;
+  array.errorMessages = buildErrorMessages(
+    schemaNode,
+    parentRequiredList,
+    lastSegment,
+    i18nService,
+  );
+  array.minItems = schemaNode.minItems;
+  array.maxItems = schemaNode.maxItems;
+  array.buildItem = () =>
+    itemSchema ? buildItemGroup(itemSchema, i18nService) : new FormGroup({});
+
+  return array;
+}
+
+/**
+ * Build a single FormGroup for one item of an array-of-object schema field, wiring up
+ * schema-derived validators and translated error messages per property.
+ */
+export function buildItemGroup(itemSchema: JsonSchema, i18nService: I18nService): FormGroup {
+  const group = new FormGroup({});
+  const properties = itemSchema.properties ?? {};
+  const requiredList = itemSchema.required ?? [];
+
+  for (const propertyName of Object.keys(properties)) {
+    const control = createControl(
+      properties[propertyName],
+      requiredList,
+      propertyName,
+      i18nService,
+    );
+    group.addControl(propertyName, control);
+  }
+
+  return group;
 }
 /**
  * Build a FormGroup tree from schema + DTO + field map, wiring up
@@ -302,6 +383,11 @@ export function flattenFormGroup<T = Record<string, unknown>>(
       } else {
         result[key] = nestedResult;
       }
+    } else if (control instanceof FormArray) {
+      // Array-of-object fields: flatten each item group into an array of plain objects
+      result[key] = control.controls.map((item) =>
+        item instanceof FormGroup ? flattenFormGroup(item, false) : item.value,
+      );
     } else if (control instanceof FormControl) {
       result[key] = control.value;
     }
@@ -312,6 +398,14 @@ export function flattenFormGroup<T = Record<string, unknown>>(
 
 export function getFormControl(form: FormGroup, key: string) {
   return form.get(key) as FormControl;
+}
+
+export function getFormArray(form: FormGroup, key: string) {
+  return form.get(key) as FormArrayWithMessages;
+}
+
+export function getFormControlWithMessages(form: FormGroup, key: string): FormControlWithMessages {
+  return form.get(key) as FormControlWithMessages;
 }
 
 export function setControlValue(
@@ -375,11 +469,39 @@ export function populateFormFromDto<T extends Dto>(
         controlField = controlField.get(parts[1]);
       }
 
+      if (controlField instanceof FormArray) {
+        hydrateFormArray(controlField, value, emitEvent);
+        return;
+      }
+
       if (controlField) {
         controlField.setValue(value, { emitEvent });
       }
     });
   });
+}
+
+/**
+ * Rebuild a schema-generated FormArray from a DTO array: clear it and push one freshly
+ * built item group per element, patching in the element's values.
+ */
+function hydrateFormArray(array: FormArray, value: unknown, emitEvent: boolean) {
+  const items = Array.isArray(value) ? (value as Dto[]) : [];
+  const buildItem = (array as FormArrayWithMessages).buildItem;
+
+  if (items.length > 0 && !buildItem) {
+    console.error('hydrateFormArray: FormArray has no buildItem factory; DTO values were dropped.');
+  }
+
+  array.clear({ emitEvent });
+  for (const item of items) {
+    const group = buildItem?.();
+    if (!group) {
+      continue;
+    }
+    group.patchValue(item, { emitEvent });
+    array.push(group, { emitEvent });
+  }
 }
 
 export function createFormControl(

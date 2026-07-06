@@ -3,7 +3,7 @@ import type { FormGroup } from '@angular/forms';
 import { DataProductUpdateDto as DataProductUpdateDtoSchema } from '@/assets/formSchemas/agridata-schemas.json';
 import { FlowCodeEnum, RestClientMethodCodeEnum } from '@/entities/openapi';
 import type { I18nService } from '@/shared/i18n';
-import { buildReactiveForm, getFormControl } from '@/shared/lib/form.helper';
+import { buildReactiveForm, getFormControl, populateFormFromDto } from '@/shared/lib/form.helper';
 import { createMockI18nService } from '@/shared/testing/mocks';
 
 import {
@@ -118,6 +118,25 @@ describe('data-product-detail-form.model', () => {
       ).setValue('Test DE');
       const payload = buildDataProductPayload(form);
       expect((payload['name'] as Record<string, string>)?.['de']).toBe('Test DE');
+    });
+
+    it('should drop empty and whitespace-only link rows before save', () => {
+      const form = buildForm();
+      populateFormFromDto(
+        form,
+        {
+          links: [
+            { displayText: 'Docs', url: 'https://example.com' },
+            { displayText: '', url: '' },
+            { displayText: '  ', url: '  ' },
+          ],
+        },
+        dataProductFormsModel,
+      );
+
+      const payload = buildDataProductPayload(form);
+
+      expect(payload['links']).toEqual([{ displayText: 'Docs', url: 'https://example.com' }]);
     });
   });
 });

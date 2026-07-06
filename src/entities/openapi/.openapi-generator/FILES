@@ -61,6 +61,7 @@ model/farmTypeEnum.ts
 model/flowCodeEnum.ts
 model/inboxEntryDto.ts
 model/legalFormEnum.ts
+model/linkDto.ts
 model/markAsReadRequestDto.ts
 model/models.ts
 model/otpChallengeDto.ts

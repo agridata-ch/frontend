@@ -74,4 +74,46 @@
       />
     </div>
   </div>
+
+  <div class="flex flex-col gap-4">
+    <h3>{{ t('additionalInfo') }}</h3>
+    <div appViewSection [isViewMode]="isViewMode()">
+      <app-form-control
+        [control]="getFormControl('technicalDescription.de')"
+        [controlType]="ControlTypes.TEXT_AREA"
+        [label]="t('technicalDescription.de.label')"
+        [placeholder]="t('technicalDescription.de.placeholder')"
+        [isViewMode]="isViewMode()"
+        id="technicalDescription-de"
+        [class.py-3]="isViewMode()"
+        [class.px-4]="isViewMode()"
+      />
+    </div>
+    <div appViewSection [isViewMode]="isViewMode()">
+      <app-form-control
+        [control]="getFormControl('technicalDescription.fr')"
+        [controlType]="ControlTypes.TEXT_AREA"
+        [label]="t('technicalDescription.fr.label')"
+        [placeholder]="t('technicalDescription.fr.placeholder')"
+        [isViewMode]="isViewMode()"
+        id="technicalDescription-fr"
+        [class.py-3]="isViewMode()"
+        [class.px-4]="isViewMode()"
+      />
+    </div>
+    <div appViewSection [isViewMode]="isViewMode()">
+      <app-form-control
+        [control]="getFormControl('technicalDescription.it')"
+        [controlType]="ControlTypes.TEXT_AREA"
+        [label]="t('technicalDescription.it.label')"
+        [placeholder]="t('technicalDescription.it.placeholder')"
+        [isViewMode]="isViewMode()"
+        id="technicalDescription-it"
+        [class.py-3]="isViewMode()"
+        [class.px-4]="isViewMode()"
+      />
+    </div>
+
+    <app-data-product-links [form]="form()" [formDisabled]="isViewMode()" />
+  </div>
 </ng-container>

@@ -1,17 +1,38 @@
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 
 import type { I18nService } from '@/shared/i18n';
 import { FORM_GROUP_NAMES } from '@/widgets/data-request-wizard';
 
 import {
   buildReactiveForm,
+  flattenFormGroup,
   FORM_COMPLETION_STRATEGIES,
+  FormArrayWithMessages,
   FormModel,
   getErrorMessage,
+  getFormArray,
   JsonSchema,
   populateFormFromDto,
   setControlValue,
 } from './form.helper';
+
+const arrayOfObjectSchema: JsonSchema = {
+  type: 'object',
+  properties: {
+    links: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          displayText: { type: 'string', minLength: 1, maxLength: 255 },
+          url: { type: 'string', minLength: 1, maxLength: 2048 },
+        },
+      },
+      minItems: 0,
+      maxItems: 3,
+    },
+  },
+};
 
 describe('Form Helper', () => {
   // Create mock I18nService directly
@@ -366,6 +387,86 @@ describe('Form Helper', () => {
       const control = form.get(field) as AbstractControl;
       // Assert
       expect(control.value).toEqual('test value');
+    });
+  });
+
+  describe('array-of-object fields', () => {
+    const arrayFieldMaps: FormModel[] = [
+      {
+        completionStrategy: FORM_COMPLETION_STRATEGIES.ALWAYS_COMPLETE,
+        fields: [{ name: 'links', asFormArray: true }],
+      },
+    ];
+
+    it('builds a flat control when asFormArray is not set (backward compatible)', () => {
+      const fieldMaps: FormModel[] = [
+        {
+          completionStrategy: FORM_COMPLETION_STRATEGIES.ALWAYS_COMPLETE,
+          fields: [{ name: 'links' }],
+        },
+      ];
+
+      const form = buildReactiveForm(arrayOfObjectSchema, fieldMaps, i18n);
+
+      expect(form.get('links')).not.toBeInstanceOf(FormArray);
+      expect(form.get('links')?.value).toEqual([]);
+    });
+
+    it('builds a FormArray with a schema-driven buildItem factory when opted in', () => {
+      const form = buildReactiveForm(arrayOfObjectSchema, arrayFieldMaps, i18n);
+      const array = getFormArray(form, 'links');
+
+      expect(array).toBeInstanceOf(FormArray);
+      expect(array).toHaveLength(0);
+
+      const item = array.buildItem?.();
+      expect(item?.get('displayText')).toBeTruthy();
+      expect(item?.get('url')).toBeTruthy();
+
+      // schema validators are wired onto the item controls
+      item?.get('url')?.setValue('x'.repeat(2049));
+      expect(item?.get('url')?.errors).toHaveProperty('maxlength');
+    });
+
+    it('applies maxItems from the schema to the FormArray', () => {
+      const form = buildReactiveForm(arrayOfObjectSchema, arrayFieldMaps, i18n);
+      const array = getFormArray(form, 'links');
+
+      for (let i = 0; i < 4; i++) {
+        const item = array.buildItem?.();
+        if (item) array.push(item);
+      }
+
+      expect(array.errors).toHaveProperty('maxItems');
+    });
+
+    it('flattens a FormArray into an array of plain objects', () => {
+      const form = buildReactiveForm(arrayOfObjectSchema, arrayFieldMaps, i18n);
+      const array = getFormArray(form, 'links');
+      const item = array.buildItem?.() as FormGroup;
+      item.setValue({ displayText: 'Docs', url: 'https://example.com' });
+      array.push(item);
+
+      const flattened = flattenFormGroup<{ links: unknown[] }>(form);
+
+      expect(flattened.links).toEqual([{ displayText: 'Docs', url: 'https://example.com' }]);
+    });
+
+    it('hydrates a FormArray from a DTO array via populateFormFromDto', () => {
+      const form = buildReactiveForm(arrayOfObjectSchema, arrayFieldMaps, i18n);
+      const dto = {
+        links: [
+          { displayText: 'Docs', url: 'https://example.com' },
+          { displayText: 'API', url: 'https://api.example.com' },
+        ],
+      };
+
+      populateFormFromDto(form, dto, arrayFieldMaps);
+      const array: FormArrayWithMessages = getFormArray(form, 'links');
+
+      expect(array).toHaveLength(2);
+      expect(array.at(0).get('displayText')?.value).toBe('Docs');
+      expect(array.at(1).get('url')?.value).toBe('https://api.example.com');
     });
   });
 });

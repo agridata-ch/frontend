@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { DataRequestAdvantageDto } from '@/entities/openapi';
+import { revalidateCrossFieldGroup } from '@/shared/forms/cross-field.validators';
 import { I18nService } from '@/shared/i18n';
 import { createMockI18nService } from '@/shared/testing/mocks';
 
@@ -129,6 +130,15 @@ describe('DataRequestAdvantagesComponent', () => {
 
       expect(advantagesControl.value?.length).toBe(1);
     });
+
+    it('should drop advantages whose only content is whitespace', () => {
+      component['advantageGroup'](0).get('de')?.setValue('   ');
+
+      component['syncToControl']();
+
+      expect(advantagesControl.value).toEqual([]);
+      expect(advantagesControl.valid).toBe(true);
+    });
   });
 
   describe('validateAdvantages', () => {
@@ -179,10 +189,14 @@ describe('DataRequestAdvantagesComponent', () => {
   });
 
   describe('cross-language errors', () => {
+    // CrossFieldGroupDirective revalidates the group on input via revalidateCrossFieldGroup;
+    // the tests call that helper directly to mirror the on-input path.
+    const revalidate = () => revalidateCrossFieldGroup(component['advantageGroup'](0));
+
     it('should set required error on empty sibling fields when one language is filled', () => {
       component['advantageGroup'](0).get('de')?.setValue('Vorteil');
 
-      component['syncToControl']();
+      revalidate();
 
       expect(component['advantageGroup'](0).get('fr')?.errors).toEqual({ required: true });
       expect(component['advantageGroup'](0).get('it')?.errors).toEqual({ required: true });
@@ -191,7 +205,7 @@ describe('DataRequestAdvantagesComponent', () => {
     it('should mark empty sibling fields as touched when one language is filled', () => {
       component['advantageGroup'](0).get('de')?.setValue('Vorteil');
 
-      component['syncToControl']();
+      revalidate();
 
       expect(component['advantageGroup'](0).get('fr')?.touched).toBe(true);
       expect(component['advantageGroup'](0).get('it')?.touched).toBe(true);
@@ -199,11 +213,11 @@ describe('DataRequestAdvantagesComponent', () => {
 
     it('should clear required error on sibling once all languages are filled', () => {
       component['advantageGroup'](0).get('de')?.setValue('Vorteil');
-      component['syncToControl']();
+      revalidate();
 
       component['advantageGroup'](0).get('fr')?.setValue('Avantage');
       component['advantageGroup'](0).get('it')?.setValue('Vantaggio');
-      component['syncToControl']();
+      revalidate();
 
       expect(component['advantageGroup'](0).get('fr')?.errors).toBeNull();
       expect(component['advantageGroup'](0).get('it')?.errors).toBeNull();
@@ -211,10 +225,10 @@ describe('DataRequestAdvantagesComponent', () => {
 
     it('should clear all cross-language errors when all fields are emptied', () => {
       component['advantageGroup'](0).get('de')?.setValue('Vorteil');
-      component['syncToControl']();
+      revalidate();
 
       component['advantageGroup'](0).get('de')?.setValue('');
-      component['syncToControl']();
+      revalidate();
 
       expect(component['advantageGroup'](0).get('fr')?.errors).toBeNull();
       expect(component['advantageGroup'](0).get('it')?.errors).toBeNull();

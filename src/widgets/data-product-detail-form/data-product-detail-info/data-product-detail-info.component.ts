@@ -6,7 +6,7 @@ import { getFormControl } from '@/shared/lib/form.helper';
 import { ControlTypes, FormControlComponent } from '@/shared/ui/form-control';
 import { ViewSectionDirective } from '@/shared/view-section';
 import { AlertComponent, AlertType } from '@/widgets/alert';
-
+import { DataProductLinksComponent } from '@/widgets/data-product-links';
 /**
  * Tab component for the system configuration and name/description fields of a data product.
  *
@@ -14,7 +14,13 @@ import { AlertComponent, AlertType } from '@/widgets/alert';
  */
 @Component({
   selector: 'app-data-product-detail-info',
-  imports: [AlertComponent, FormControlComponent, I18nDirective, ViewSectionDirective],
+  imports: [
+    AlertComponent,
+    FormControlComponent,
+    I18nDirective,
+    ViewSectionDirective,
+    DataProductLinksComponent,
+  ],
   templateUrl: './data-product-detail-info.component.html',
   host: { class: 'contents' },
 })

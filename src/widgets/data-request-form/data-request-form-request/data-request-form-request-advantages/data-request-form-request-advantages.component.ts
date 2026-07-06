@@ -3,12 +3,18 @@ import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } fr
 import { faAdd } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 
 import { DataRequestAdvantageDto } from '@/entities/openapi';
+import { CrossFieldGroupDirective } from '@/shared/forms/cross-field-group.directive';
+import {
+  crossFieldValidation,
+  hasText,
+  revalidateCrossFieldGroup,
+} from '@/shared/forms/cross-field.validators';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createFormControl, getFormControl } from '@/shared/lib/form.helper';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
 
-import { crossLanguageValidator, MAX_ADVANTAGES, validateAdvantages } from '.';
+import { MAX_ADVANTAGES, validateAdvantages } from '.';
 
 /**
  * Manages the dynamic list of advantages for a data request. Allows adding up to five
@@ -18,7 +24,13 @@ import { crossLanguageValidator, MAX_ADVANTAGES, validateAdvantages } from '.';
  */
 @Component({
   selector: 'app-data-request-form-request-advantages',
-  imports: [ButtonComponent, FormControlComponent, I18nDirective, ReactiveFormsModule],
+  imports: [
+    ButtonComponent,
+    CrossFieldGroupDirective,
+    FormControlComponent,
+    I18nDirective,
+    ReactiveFormsModule,
+  ],
   templateUrl: './data-request-form-request-advantages.component.html',
 })
 export class DataRequestFormRequestAdvantagesComponent {
@@ -50,15 +62,15 @@ export class DataRequestFormRequestAdvantagesComponent {
     untracked(() => {
       control?.removeValidators(Validators.required);
       control?.addValidators(validateAdvantages);
-      control?.updateValueAndValidity({ emitEvent: false });
+      control?.updateValueAndValidity();
 
       const advantages = (control?.value as DataRequestAdvantageDto[]) ?? [];
       this.advantagesArray.clear();
       for (const advantage of advantages) {
         const group = this.createAdvantageGroup(advantage);
-        if (advantage.de || advantage.fr || advantage.it) {
-          group.markAllAsTouched();
-        }
+        // Surface errors on rows that are already filled on load; on-input revalidation is
+        // handled by CrossFieldGroupDirective in the template.
+        revalidateCrossFieldGroup(group);
         this.advantagesArray.push(group);
       }
       if (this.advantagesArray.length === 0) {
@@ -66,7 +78,6 @@ export class DataRequestFormRequestAdvantagesComponent {
       }
       this.advantagesCount.set(this.advantagesArray.length);
       if (advantages.length > 0) {
-        this.updateCrossLanguageErrors();
         control?.markAsDirty();
         control?.updateValueAndValidity();
       }
@@ -97,11 +108,10 @@ export class DataRequestFormRequestAdvantagesComponent {
 
   protected syncToControl(): void {
     const values = (this.advantagesArray.getRawValue() as DataRequestAdvantageDto[]).filter(
-      (a) => a.de || a.fr || a.it,
+      (a) => hasText(a.de) || hasText(a.fr) || hasText(a.it),
     );
     this.advantagesControl()?.setValue(values);
     this.advantagesControl()?.markAsDirty();
-    this.updateCrossLanguageErrors();
   }
 
   // Private methods
@@ -109,7 +119,7 @@ export class DataRequestFormRequestAdvantagesComponent {
     return new FormGroup({
       de: createFormControl(
         advantage.de ?? '',
-        [Validators.minLength(5), Validators.maxLength(255), crossLanguageValidator],
+        [Validators.minLength(5), Validators.maxLength(255), crossFieldValidation],
         {
           required: () => this.i18nService.translate('forms.error.required'),
           minlength: () => this.i18nService.translate('forms.error.minlength', { min: 5 }),
@@ -118,7 +128,7 @@ export class DataRequestFormRequestAdvantagesComponent {
       ),
       fr: createFormControl(
         advantage.fr ?? '',
-        [Validators.minLength(5), Validators.maxLength(255), crossLanguageValidator],
+        [Validators.minLength(5), Validators.maxLength(255), crossFieldValidation],
         {
           required: () => this.i18nService.translate('forms.error.required'),
           minlength: () => this.i18nService.translate('forms.error.minlength', { min: 5 }),
@@ -127,7 +137,7 @@ export class DataRequestFormRequestAdvantagesComponent {
       ),
       it: createFormControl(
         advantage.it ?? '',
-        [Validators.minLength(5), Validators.maxLength(255), crossLanguageValidator],
+        [Validators.minLength(5), Validators.maxLength(255), crossFieldValidation],
         {
           required: () => this.i18nService.translate('forms.error.required'),
           minlength: () => this.i18nService.translate('forms.error.minlength', { min: 5 }),
@@ -135,22 +145,5 @@ export class DataRequestFormRequestAdvantagesComponent {
         },
       ),
     });
-  }
-
-  private updateCrossLanguageErrors(): void {
-    for (const group of this.advantagesArray.controls) {
-      const de = group.get('de')?.value as string;
-      const fr = group.get('fr')?.value as string;
-      const it = group.get('it')?.value as string;
-      const anyFilled = de || fr || it;
-      group.get('de')?.updateValueAndValidity({ emitEvent: false, onlySelf: true });
-      group.get('fr')?.updateValueAndValidity({ emitEvent: false, onlySelf: true });
-      group.get('it')?.updateValueAndValidity({ emitEvent: false, onlySelf: true });
-      if (anyFilled) {
-        if (!de) group.get('de')?.markAsTouched();
-        if (!fr) group.get('fr')?.markAsTouched();
-        if (!it) group.get('it')?.markAsTouched();
-      }
-    }
   }
 }

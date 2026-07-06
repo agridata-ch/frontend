@@ -729,6 +729,15 @@ components:
           $ref: "#/components/schemas/TranslationDto"
           description: Description of the product
           type: object
+        links:
+          type: array
+          items:
+            $ref: "#/components/schemas/LinkDto"
+          description: List of relevant product links
+        technicalDescription:
+          $ref: "#/components/schemas/TranslationDto"
+          description: Technical product details
+          type: object
         deprecatedSince:
           $ref: "#/components/schemas/LocalDateTime"
           description: Timestamp indicating when the product was marked as deprecated.
@@ -827,6 +836,15 @@ components:
           examples:
           - "v1/animal-updates/{{uid}}?since={{LAST_CHANGED_SINCE}}"
           maxLength: 1000
+        links:
+          type: array
+          items:
+            $ref: "#/components/schemas/LinkDto"
+          description: List of relevant product links
+        technicalDescription:
+          $ref: "#/components/schemas/DataProductDescriptionDto"
+          description: Technical product details
+          type: object
     DataProviderDto:
       type: object
       required:
@@ -1345,6 +1363,15 @@ components:
       - OEFF_RECHT_KOERPERSCHAFT_BETRIEB
       - EQUIDENEIGENTUEMER
       - UNKNOWN
+    LinkDto:
+      type: object
+      properties:
+        url:
+          type: string
+          maxLength: 2048
+        displayText:
+          type: string
+          maxLength: 255
     LocalDate:
       type: string
       format: date

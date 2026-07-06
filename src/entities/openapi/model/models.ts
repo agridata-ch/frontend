@@ -39,6 +39,7 @@ export * from './farmTypeEnum';
 export * from './flowCodeEnum';
 export * from './inboxEntryDto';
 export * from './legalFormEnum';
+export * from './linkDto';
 export * from './markAsReadRequestDto';
 export * from './otpChallengeDto';
 export * from './pageResponseDto';

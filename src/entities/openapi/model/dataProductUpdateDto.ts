@@ -9,6 +9,7 @@
  */
 import { FlowCodeEnum } from './flowCodeEnum';
 import { RestClientMethodCodeEnum } from './restClientMethodCodeEnum';
+import { LinkDto } from './linkDto';
 import { DataProductNameDto } from './dataProductNameDto';
 import { DataProductDescriptionDto } from './dataProductDescriptionDto';
 
@@ -47,6 +48,14 @@ export interface DataProductUpdateDto {
      * Template for the path for retrieving updates to the data product
      */
     restClientChangeDetectionPathTemplate?: string;
+    /**
+     * List of relevant product links
+     */
+    links?: Array<LinkDto>;
+    /**
+     * Technical product details
+     */
+    technicalDescription?: DataProductDescriptionDto;
 }
 export namespace DataProductUpdateDto {
 }
