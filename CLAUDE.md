@@ -1,6 +1,6 @@
 # agridata.ch
 
-Open-source zoneless Angular 20 (TypeScript 5.9) application using signals and resources for API data retrieval.
+Open-source zoneless Angular 22 (TypeScript 6.0) application using signals and resources for API data retrieval.
 
 ## Development Commands
 
@@ -45,7 +45,7 @@ Dependency direction: `app` → `pages` → `widgets` → `features` → `entiti
 ## Framework & Patterns
 
 - No RxJS - use signals or promises instead
-- Use Angular 20 recommended techniques: effects, computed signals, resources
+- Use Angular 22 recommended techniques: effects, computed signals, resources
 - Zoneless application - keep this in mind for change detection
 
 ## Type Safety

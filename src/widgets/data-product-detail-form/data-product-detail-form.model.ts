@@ -1,8 +1,9 @@
 import { FormGroup } from '@angular/forms';
 
-import { FlowCodeEnum, RestClientMethodCodeEnum } from '@/entities/openapi';
+import { FlowCodeEnum, LinkDto, RestClientMethodCodeEnum } from '@/entities/openapi';
 import { FORM_COMPLETION_STRATEGIES, FormModel, flattenFormGroup } from '@/shared/lib/form.helper';
 import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
+import { filterFilledLinks } from '@/widgets/data-product-links';
 
 export const DATA_PRODUCT_NEW_ID = 'new';
 export const FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM = 'refresh';
@@ -26,6 +27,10 @@ export function buildDataProductPayload(form: FormGroup): Record<string, unknown
   // because these are ENUM values and the backend will reject an empty string, but will accept null
   if (payload['restClientMethodCode'] === '') payload['restClientMethodCode'] = null;
   if (payload['flowCode'] === '') payload['flowCode'] = null;
+  // Links are optional and empty rows are UI-only scaffolding; drop them before save.
+  if (Array.isArray(payload['links'])) {
+    payload['links'] = filterFilledLinks(payload['links'] as LinkDto[]);
+  }
   return payload;
 }
 
@@ -40,6 +45,10 @@ export const dataProductFormsModel: FormModel[] = [
       { name: 'description.de' },
       { name: 'description.fr' },
       { name: 'description.it' },
+      { name: 'technicalDescription.de' },
+      { name: 'technicalDescription.fr' },
+      { name: 'technicalDescription.it' },
+      { name: 'links', asFormArray: true },
     ],
   },
   {

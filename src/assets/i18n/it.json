@@ -903,7 +903,38 @@
         "technicalFields": "Informazioni tecniche",
         "nameAndDescription": "Nome e descrizione"
       },
-      "edit": "Modifica"
+      "edit": "Modifica",
+      "links": {
+        "heading": "Links",
+        "action": {
+          "add": "Aggiungere un link",
+          "remove": "Rimuovere"
+        },
+        "displayText": {
+          "label": "Etichetta",
+          "placeholder": "agridata.ch"
+        },
+        "url": {
+          "label": "URL",
+          "placeholder": "https://agridata.ch/",
+          "error": "Inserisca un URL completo, incluso http:// o https://."
+        }
+      },
+      "additionalInfo": "Ulteriori informazioni (facoltativo)",
+      "technicalDescription": {
+        "de": {
+          "label": "Descrizione tecnica tedesco",
+          "placeholder": "Konkret werden folgende Daten übermittelt:\n- Datum der Erfassung bzw. der letzten Änderung dieses Datensatzes im kantonalen System\n- KT_ID_B Kantonale Identifikationsnummer der Betriebsform auf der Stufe, auf der die nachfolgenden Daten erfasst wurden\n..."
+        },
+        "fr": {
+          "label": "Descrizione tecnica francese",
+          "placeholder": "Concrètement, les données suivantes sont transmises : \n- Date resp. la saisie ou la dernière modification du jeu de données dans le système cantonal\n- KT_ID_B Numéro cantonal de la forme d’exploitation au niveau de laquelle les données suivantes ont été saisies\n..."
+        },
+        "it": {
+          "label": "Italiano",
+          "placeholder": "Concretamente vengono trasmessi i dati seguenti:\n- Data di registrazione o dell’ultima modifica di questo set di dati nel sistema cantonale\n- KT_ID_B Numero d’identificazione cantonale della forma di azienda al livello a cui sono stati registrati i dati seguenti:\n..."
+        }
+      }
     },
     "saveAndPublish": {
       "success": {

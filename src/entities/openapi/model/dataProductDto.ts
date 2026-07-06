@@ -10,6 +10,7 @@
 import { DataSourceSystemDto } from './dataSourceSystemDto';
 import { FlowCodeEnum } from './flowCodeEnum';
 import { RestClientMethodCodeEnum } from './restClientMethodCodeEnum';
+import { LinkDto } from './linkDto';
 import { RestClientDto } from './restClientDto';
 import { DataProductDtoStateCode } from './dataProductDtoStateCode';
 import { TranslationDto } from './translationDto';
@@ -53,6 +54,14 @@ export interface DataProductDto {
      * Description of the product
      */
     description?: TranslationDto;
+    /**
+     * List of relevant product links
+     */
+    links?: Array<LinkDto>;
+    /**
+     * Technical product details
+     */
+    technicalDescription?: TranslationDto;
     deprecatedSince?: string;
     stateCode: DataProductDtoStateCode;
     /**

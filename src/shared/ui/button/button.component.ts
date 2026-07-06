@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, HostBinding, booleanAttribute, computed, input, output } from '@angular/core';
+import { booleanAttribute, Component, computed, input, output } from '@angular/core';
 import { faSpinner } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FaIconComponent, IconDefinition } from '@fortawesome/angular-fontawesome';
@@ -23,6 +23,7 @@ import { ButtonVariants, HrefTarget, IconPosition } from './button.model';
   templateUrl: './button.component.html',
   imports: [NgTemplateOutlet, FaIconComponent],
   styleUrl: './button.component.css',
+  host: { class: 'contents' },
 })
 export class ButtonComponent {
   // Input properties
@@ -45,8 +46,6 @@ export class ButtonComponent {
   // Output properties
   handleClick = output<Event>();
 
-  @HostBinding('style.display') display = 'contents';
-
   // Constants
   protected readonly faSpinner = faSpinner;
   protected readonly faSpinnerThird = faSpinnerThird;
@@ -54,7 +53,10 @@ export class ButtonComponent {
 
   // Computed signals
   protected readonly isIconLink = computed(
-    () => this.variant() === ButtonVariants.IconLink || this.icon() !== undefined,
+    () =>
+      this.variant() === ButtonVariants.IconLink ||
+      this.variant() === ButtonVariants.IconLinkReject ||
+      this.icon() !== undefined,
   );
   protected readonly isDisabled = computed(
     () => this.disabled() || this.loading() || this.success(),

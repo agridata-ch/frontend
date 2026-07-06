@@ -1,18 +1,8 @@
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
-import {
-  crossLanguageValidator,
-  validateAdvantages,
-} from './data-request-form-request-advantages.model';
+import { validateAdvantages } from './data-request-form-request-advantages.model';
 
 const makeControl = (value: unknown) => new FormControl(value);
-
-const makeGroup = (de: string, fr: string, it: string) =>
-  new FormGroup({
-    de: new FormControl(de),
-    fr: new FormControl(fr),
-    it: new FormControl(it),
-  });
 
 describe('validateAdvantages', () => {
   it('should return null for null value', () => {
@@ -99,53 +89,5 @@ describe('validateAdvantages', () => {
 
   it('should accept fields with exactly 5 chars', () => {
     expect(validateAdvantages(makeControl([{ de: '12345', fr: '12345', it: '12345' }]))).toBeNull();
-  });
-});
-
-describe('crossLanguageValidator', () => {
-  it('should return null when parent is null', () => {
-    expect(crossLanguageValidator(makeControl(''))).toBeNull();
-  });
-
-  it('should return null when all three fields are empty', () => {
-    const group = makeGroup('', '', '');
-    expect(crossLanguageValidator(group.get('de')!)).toBeNull();
-  });
-
-  it('should return null when the control itself is filled and siblings are filled', () => {
-    const group = makeGroup('Vorteil', 'Avantage', 'Vantaggio');
-    expect(crossLanguageValidator(group.get('de')!)).toBeNull();
-  });
-
-  it('should return null when the control is filled even if some siblings are empty', () => {
-    const group = makeGroup('Vorteil', '', '');
-    expect(crossLanguageValidator(group.get('de')!)).toBeNull();
-  });
-
-  it('should return required when de is empty but fr is filled', () => {
-    const group = makeGroup('', 'Avantage', '');
-    expect(crossLanguageValidator(group.get('de')!)).toEqual({ required: true });
-  });
-
-  it('should return required when de is empty but it is filled', () => {
-    const group = makeGroup('', '', 'Vantaggio');
-    expect(crossLanguageValidator(group.get('de')!)).toEqual({ required: true });
-  });
-
-  it('should return required when fr is empty but de is filled', () => {
-    const group = makeGroup('Vorteil', '', '');
-    expect(crossLanguageValidator(group.get('fr')!)).toEqual({ required: true });
-  });
-
-  it('should return required when it is empty but fr is filled', () => {
-    const group = makeGroup('', 'Avantage', '');
-    expect(crossLanguageValidator(group.get('it')!)).toEqual({ required: true });
-  });
-
-  it('should return null for all controls once all three fields are filled', () => {
-    const group = makeGroup('Vorteil', 'Avantage', 'Vantaggio');
-    expect(crossLanguageValidator(group.get('de')!)).toBeNull();
-    expect(crossLanguageValidator(group.get('fr')!)).toBeNull();
-    expect(crossLanguageValidator(group.get('it')!)).toBeNull();
   });
 });

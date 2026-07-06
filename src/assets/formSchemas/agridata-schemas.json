@@ -221,6 +221,23 @@
           "it"
         ]
       },
+      "technicalDescription": {
+        "type": "object",
+        "properties": {
+          "de": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "fr": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "it": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        }
+      },
       "dataSourceSystemId": {
         "type": "string"
       },
@@ -258,6 +275,26 @@
         "type": "string",
         "minLength": 0,
         "maxLength": 1000
+      },
+      "links": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "displayText": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "url": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        },
+        "minItems": 0,
+        "maxItems": 5
       }
     },
     "required": [
