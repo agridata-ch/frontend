@@ -8,18 +8,22 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/UUID"
-          description: Unique identifier of the data request
+          description: Unique identifier of the agb revision
           type: string
           examples:
           - 3fa85f64-5717-4562-b3fc-2c963f66afb7
         version:
           type: string
-          description: Version of the data request
+          description: Version of the agb revision
           examples:
           - "1.0"
         validFrom:
           $ref: "#/components/schemas/LocalDateTime"
           description: Date and time from which the agb revision is valid
+          type: string
+        enforceConsentFrom:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Date and time from which the agb revision enforces consent
           type: string
         agbText:
           $ref: "#/components/schemas/AgbTextDto"
@@ -1986,6 +1990,18 @@ components:
           items:
             type: string
           description: Roles of the user at the last login
+        lastAcceptedAgbDate:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Date and time when the user last accepted the AGB.
+          type: string
+          examples:
+          - 2026-07-20T14:35:00
+        lastAcceptedAgbRevisionId:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the AGB revision the user last accepted.
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
     UserPreferencesDto:
       type: object
       properties:
@@ -4732,6 +4748,46 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
+  /api/user/v1/agb-revisions/{agb-revision-id}/accept:
+    post:
+      description: Records acceptance of the current AGB revision for the currently
+        authenticated user.
+      operationId: acceptAgb
+      tags:
+      - Users
+      parameters:
+      - description: The id of the AGB revision the user is accepting.
+        example: 3fa85f64-5717-4562-b3fc-2c963f66afb7
+        name: agb-revision-id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "201":
+          description: Created
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Accept Agb
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Datenanbieter
+      x-api-subset: agridata.ch Web App
   /api/user/v1/authorized-uids:
     get:
       description: Retrieves all UIDs authorized for the currently authenticated data
@@ -5069,7 +5125,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.13.0-rc.11
+  version: 1.13.1-rc.1
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

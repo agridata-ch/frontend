@@ -416,7 +416,6 @@
           "dataProvider": "Unterzeichnung Datenanbieter"
         },
         "badgeText": "Person {{ position }}",
-        "agbText": "Mit meiner Unterzeichnung bestätige ich die [Allgemeinen Geschäftsbedingungen] gelesen zu haben.",
         "inReviewBox": {
           "description": "Unterzeichnung noch ausstehend...",
           "iconAltText": "Bild mit einer Sanduhr und einer Uhr im Hintergrund"
@@ -790,6 +789,16 @@
     },
     "startTour": "Tour starten",
     "title": "Anleitung"
+  },
+  "agb": {
+    "modal": {
+      "toggleText": "Hiermit bestätige ich die [Allgemeinen Geschäftsbedingungen] gelesen zu haben.",
+      "title": "AGBs bestätigen",
+      "remindLater": "Später erinnern",
+      "accept": "Bestätigen",
+      "blockingInfo": "Die Übergangsfrist für die neuen AGB ist am {{enforceConsentFrom}} abgelaufen. Um [agridata.ch] weiterhin zu nutzen, ist deine Bestätigung notwendig.",
+      "info": "Wir haben unsere Allgemeinen Geschäftsbedingungen (AGB) aktualisiert. Bitte lies die neuen Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein. Die Zustimmung zu den aktualisierten Bedingungen kannst du über die untenstehende Auswahl erteilen."
+    }
   },
   "notifications": {
     "markAsRead": {

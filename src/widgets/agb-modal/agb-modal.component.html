@@ -1,0 +1,61 @@
+<app-modal
+  [open]="open()"
+  [title]="'agb.modal.title' | i18n"
+  [showCloseButton]="!isBlocking()"
+  [dataTestId]="'agb-modal'"
+  (closed)="dismiss()"
+>
+  <div class="flex flex-col gap-6" *i18n="let t; prefix: 'agb.modal'">
+    @if (isBlocking()) {
+      <p>
+        <span>
+          {{ isBlockingParts().before }}
+          <a
+            href="{{ appBaseUrl }}"
+            target="_blank"
+            class="underline hover:text-agridata-primary-600"
+          >
+            {{ isBlockingParts().linkText }}
+          </a>
+          {{ isBlockingParts().after }}
+        </span>
+      </p>
+    } @else {
+      <p>{{ t('info') }}</p>
+    }
+
+    <div class="flex items-center gap-3 p-2 bg-agridata-content-gray rounded-lg">
+      <app-agridata-toggle [(checked)]="consentChecked" [ariaLabel]="consentLabel()" />
+      <div>
+        {{ agbParts().before }}
+        <a
+          href="{{ contractAgbUrl() }}"
+          target="_blank"
+          class="underline hover:text-agridata-primary-600"
+        >
+          {{ agbParts().linkText }}
+        </a>
+        {{ agbParts().after }}
+      </div>
+    </div>
+    <div class="flex justify-end gap-2">
+      @if (!isBlocking()) {
+        <app-agridata-button
+          [variant]="ButtonVariants.Secondary"
+          [additionalClass]="'mr-auto'"
+          [dataTestId]="'agb-modal-remind-later'"
+          (handleClick)="dismiss()"
+          >{{ t('remindLater') }}</app-agridata-button
+        >
+      }
+
+      <app-agridata-button
+        [variant]="ButtonVariants.Primary"
+        [disabled]="!consentChecked()"
+        [dataTestId]="'agb-modal-accept'"
+        (handleClick)="accept()"
+        >{{ t('accept') }}</app-agridata-button
+      >
+    </div>
+  </div>
+</app-modal>

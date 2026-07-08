@@ -416,7 +416,6 @@
           "dataProvider": "Firma dei fornitore di dati"
         },
         "badgeText": "Persona {{ position }}",
-        "agbText": "Con la mia firma confermo di aver letto le [Condizioni generali di contratto].",
         "inReviewBox": {
           "description": "Firma ancora in sospeso...",
           "iconAltText": "Immagine con una clessidra e un orologio sullo sfondo"
@@ -790,6 +789,16 @@
     },
     "startTour": "Inizia il tour",
     "title": "Istruzioni"
+  },
+  "agb": {
+    "modal": {
+      "toggleText": "Confermo con la presente di aver letto le [condizioni generali].",
+      "title": "Confermare le condizioni generali",
+      "remindLater": "Ricordamelo più tardi",
+      "accept": "Confermare",
+      "blockingInfo": "Il periodo di transizione per le nuove condizioni generali è scaduto il {{enforceConsentFrom}}. Per continuare a utilizzare [agridata.ch], è necessaria la tua conferma.",
+      "info": "Abbiamo aggiornato le nostre Condizioni generali (CG). Ti invitiamo a leggere attentamente le nuove condizioni per essere informato sulle modifiche. Puoi accettare le condizioni aggiornate tramite la selezione sottostante."
+    }
   },
   "notifications": {
     "markAsRead": {
