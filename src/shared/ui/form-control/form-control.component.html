@@ -49,16 +49,44 @@
     />
   }
   @if (controlType() === ControlTypes.TEXT_AREA) {
-    <app-agridata-textarea
-      [control]="control()"
-      [id]="id()!"
-      [placeholder]="placeholder()"
-      (handleBlur)="handleBlur.emit()"
-      [maxCharacters]="getMaxCharacters()"
-      [hasError]="hasError()"
-      [disabled]="disabled()"
-      [isViewMode]="isViewMode()"
-    />
+    @if (isWysiwyg()) {
+      @defer (on immediate) {
+        <app-agridata-wysiwyg
+          [control]="control()"
+          [id]="id()!"
+          [placeholder]="placeholder()"
+          (handleBlur)="handleBlur.emit()"
+          [maxCharacters]="getMaxCharacters()"
+          [hasError]="hasError()"
+          [disabled]="disabled()"
+          [isViewMode]="isViewMode()"
+        />
+      } @placeholder {
+        <div class="h-40 rounded-md border border-gray-300 bg-gray-50"></div>
+      } @error {
+        <!--
+          The editor chunk failed to load. Falling back to an editable textarea would show the raw
+          HTML markup as literal text and write the corrupted value back on save, so render the
+          stored content read-only instead. Safe: the bound value is a plain string, so Angular's
+          DomSanitizer runs automatically on [innerHTML].
+        -->
+        <div
+          class="rich-text-content text-agridata-primary-text whitespace-pre-line"
+          [innerHTML]="control()?.value"
+        ></div>
+      }
+    } @else {
+      <app-agridata-textarea
+        [control]="control()"
+        [id]="id()!"
+        [placeholder]="placeholder()"
+        (handleBlur)="handleBlur.emit()"
+        [maxCharacters]="getMaxCharacters()"
+        [hasError]="hasError()"
+        [disabled]="disabled()"
+        [isViewMode]="isViewMode()"
+      />
+    }
   }
   @if (controlType() === ControlTypes.DIGIT_INPUT) {
     <app-agridata-digit-input

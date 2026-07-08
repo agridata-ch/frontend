@@ -138,8 +138,8 @@ describe('TablePaginationComponent', () => {
       const prevButton = fixture.debugElement.query(By.css('[aria-label="table.previousPage"]'));
       const nextButton = fixture.debugElement.query(By.css('[aria-label="table.nextPage"]'));
 
-      expect(prevButton.attributes['disabled']).toBe('');
-      expect(nextButton.attributes['disabled']).toBeFalsy();
+      expect(prevButton.attributes['aria-disabled']).toBe('true');
+      expect(nextButton.attributes['aria-disabled']).toBeFalsy();
     });
   });
 });

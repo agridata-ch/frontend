@@ -15,6 +15,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
 import { I18nPipe } from '@/shared/i18n';
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
+import { calculateVerticalPlacement, VerticalPlacement } from '@/shared/utils';
 
 import { SelectOption } from './agridata-select.model';
 
@@ -56,11 +57,14 @@ export class AgridataSelectComponent {
   );
 
   protected readonly popoverCalculator = effect(() => {
-    if (this.popover() && this.trigger()) {
-      const rect = this.trigger()?.nativeElement.getBoundingClientRect();
-      const rectPopover = this.popover()?.nativeElement.getBoundingClientRect();
-      const spaceBelow = window.innerHeight - rect.bottom;
-      this.openAbove.set(spaceBelow < rectPopover.height);
+    const trigger = this.trigger()?.nativeElement;
+    const popover = this.popover()?.nativeElement;
+    if (trigger && popover) {
+      const placement = calculateVerticalPlacement(
+        trigger.getBoundingClientRect(),
+        popover.getBoundingClientRect().height,
+      );
+      this.openAbove.set(placement === VerticalPlacement.TOP);
     }
   });
 

@@ -1,4 +1,4 @@
-import { Component, effect, input, output, signal } from '@angular/core';
+import { booleanAttribute, Component, effect, input, output, signal } from '@angular/core';
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 
 import { FormControlWithMessages, getErrorMessage } from '@/shared/lib/form.helper';
@@ -11,6 +11,7 @@ import {
 } from '@/shared/ui/agridata-multi-select';
 import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
 import { AgridataTextareaComponent } from '@/shared/ui/agridata-textarea';
+import { AgridataWysiwygComponent } from '@/shared/ui/agridata-wysiwyg';
 
 import { ControlTypes } from './form-control.model';
 
@@ -32,6 +33,7 @@ import { ControlTypes } from './form-control.model';
     AgridataSelectComponent,
     AgridataInputComponent,
     AgridataDigitInputComponent,
+    AgridataWysiwygComponent,
   ],
   templateUrl: './form-control.component.html',
 })
@@ -51,6 +53,7 @@ export class FormControlComponent {
   readonly singleCategorySelection = input<boolean>(false);
   readonly type = input<'text' | 'number'>('text');
   readonly isViewMode = input<boolean>(false);
+  readonly isWysiwyg = input(false, { transform: booleanAttribute });
 
   readonly handleBlur = output<void>();
 
