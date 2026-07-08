@@ -16,10 +16,11 @@ import { AgbTextDto } from './agbTextDto';
 export interface AgbRevisionDto { 
     id?: string;
     /**
-     * Version of the data request
+     * Version of the agb revision
      */
     version?: string;
     validFrom?: string;
+    enforceConsentFrom?: string;
     /**
      * Data transfer object representing an agb text
      */

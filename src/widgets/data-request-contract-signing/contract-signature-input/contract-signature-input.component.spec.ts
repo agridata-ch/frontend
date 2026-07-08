@@ -78,34 +78,6 @@ describe('ContractSignatureInputComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('agbParts', () => {
-    it('should parse agbParts when translation contains brackets', () => {
-      i18nService.translate.mockImplementation(() => 'Before [Link Text] After');
-
-      const newFixture = TestBed.createComponent(ContractSignatureInputComponent);
-      newFixture.componentRef.setInput('slotId', SignatureSlotCodeEnum.DataConsumer01);
-      newFixture.detectChanges();
-
-      const parts = newFixture.componentInstance['agbParts']();
-      expect(parts.before).toBe('Before ');
-      expect(parts.linkText).toBe('Link Text');
-      expect(parts.after).toBe(' After');
-    });
-
-    it('should return full text in before when translation has no brackets', () => {
-      i18nService.translate.mockImplementation(() => 'No brackets here');
-
-      const newFixture = TestBed.createComponent(ContractSignatureInputComponent);
-      newFixture.componentRef.setInput('slotId', SignatureSlotCodeEnum.DataConsumer01);
-      newFixture.detectChanges();
-
-      const parts = newFixture.componentInstance['agbParts']();
-      expect(parts.before).toBe('No brackets here');
-      expect(parts.linkText).toBeNull();
-      expect(parts.after).toBe('');
-    });
-  });
-
   describe('position', () => {
     it('should return 1 for DataConsumer01', () => {
       componentRef.setInput('slotId', SignatureSlotCodeEnum.DataConsumer01);
@@ -174,8 +146,7 @@ describe('ContractSignatureInputComponent', () => {
 
   describe('handleStartSigning', () => {
     it('should call startSigningProcess and set the internal challenge on success', async () => {
-      component['handleStartSigning']();
-      await fixture.whenStable();
+      await component['handleStartSigning']();
 
       expect(contractRevisionService.startSigningProcess).toHaveBeenCalledWith(
         'cr-1',
@@ -197,16 +168,14 @@ describe('ContractSignatureInputComponent', () => {
         new HttpErrorResponse({ error: { type: ExceptionEnum.OtpResendCooldown } }),
       );
 
-      component['handleStartSigning']();
-      await fixture.whenStable();
+      await component['handleStartSigning']();
 
       expect(component['showResendCooldownAlert']()).toBe(true);
     });
 
     it('should clear showResendCooldownAlert on successful start', async () => {
       component['showResendCooldownAlert'].set(true);
-      component['handleStartSigning']();
-      await fixture.whenStable();
+      await component['handleStartSigning']();
 
       expect(component['showResendCooldownAlert']()).toBe(false);
     });
@@ -215,8 +184,7 @@ describe('ContractSignatureInputComponent', () => {
       const error = new HttpErrorResponse({ error: { type: ExceptionEnum.Generic } });
       contractRevisionService.startSigningProcess.mockRejectedValueOnce(error);
 
-      component['handleStartSigning']();
-      await fixture.whenStable();
+      await component['handleStartSigning']();
 
       expect(errorService.handleError).toHaveBeenCalledWith(error);
     });
@@ -224,8 +192,7 @@ describe('ContractSignatureInputComponent', () => {
     it('should not call startSigningProcess when contractId is not set', async () => {
       componentRef.setInput('contractId', undefined);
 
-      component['handleStartSigning']();
-      await fixture.whenStable();
+      await component['handleStartSigning']();
 
       expect(contractRevisionService.startSigningProcess).not.toHaveBeenCalled();
     });

@@ -91,24 +91,11 @@
         [message]="t('missingMobileNumber.message')"
       />
     }
-    <div class="flex gap-3 p-2 items-center bg-agridata-content-gray rounded-lg">
-      <app-agridata-toggle [disabled]="!hasMobileNumber()" [(checked)]="agbChecked" />
-      <span>
-        {{ agbParts().before }}
-        <a
-          href="{{ contractAgbUrl() }}"
-          target="_blank"
-          class="underline hover:text-agridata-primary-600"
-          >{{ agbParts().linkText }}</a
-        >
-        {{ agbParts().after }}
-      </span>
-    </div>
-    <app-agridata-button [disabled]="!agbChecked()" (handleClick)="handleStartSigning()">
-      {{ t('signingButton') }}
-    </app-agridata-button>
     <span>
       {{ t('signingHint') }}
     </span>
+    <app-agridata-button [disabled]="!hasMobileNumber()" (handleClick)="handleStartSigning()">
+      {{ t('signingButton') }}
+    </app-agridata-button>
   }
 </div>
