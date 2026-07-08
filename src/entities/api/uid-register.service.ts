@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { UIDRegisterSearchService } from '@/entities/openapi';
@@ -10,9 +10,7 @@ import { UIDRegisterSearchService } from '@/entities/openapi';
  *
  * CommentLastReviewed: 2025-08-25
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class UidRegisterService {
   private readonly apiService = inject(UIDRegisterSearchService);
 

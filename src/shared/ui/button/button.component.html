@@ -21,6 +21,7 @@
       (click)="onButtonClick($event)"
       (keydown.enter)="onButtonClick($event)"
       [class]="`relative agridata-button agridata-button-${variant()} ${selected() ? 'selected' : ''} ${additionalClass()}`"
+      [class.success]="showSuccess()"
     >
       @if (isIconLink()) {
         <span class="flex items-center gap-2">
@@ -39,8 +40,12 @@
             [icon]="faSpinnerThird"
             class="absolute flex items-center justify-center inset-0"
           ></fa-icon>
+        } @else if (showSuccess()) {
+          <svg class="success-check absolute inset-0 m-auto" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
         }
-        <span [class.invisible]="loading()">
+        <span [class.invisible]="loading() || showSuccess()">
           <ng-container [ngTemplateOutlet]="content"></ng-container>
         </span>
       }

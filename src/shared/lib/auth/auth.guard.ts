@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
  *
  * CommentLastReviewed: 2025-12-01
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class AuthorizationGuard implements CanActivate {
   // Injects
   private readonly authService = inject(AuthService);

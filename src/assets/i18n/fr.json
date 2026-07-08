@@ -390,6 +390,13 @@
         "description": "Définit vers quelle URL de redirection (redirect_uri) la redirection peut être effectuée après une décision.",
         "label": "Expression régulière pour une valeur valide de redirect_uri",
         "save": "Enregistrer"
+      },
+      "contract": {
+        "sealing": {
+          "heading": "Scellement du contrat",
+          "description": "Toutes les signatures requises des bénéficiaires et des fournisseurs de données ont été saisies et sont affichées dans le PDF. Pour finaliser le contrat, le scellement du contrat via le service de signature d’OFIT doit maintenant être initié.",
+          "action": "Sceller le contrat"
+        }
       }
     },
     "invitationLink": "Lien d'invitation",

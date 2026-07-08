@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
@@ -40,7 +39,6 @@ import { ContractSignatureInputComponent } from './contract-signature-input/cont
   imports: [
     FontAwesomeModule,
     I18nDirective,
-    CommonModule,
     AgridataContactCardComponent,
     ContractSignatureInputComponent,
     DataRequestContractPdfComponent,

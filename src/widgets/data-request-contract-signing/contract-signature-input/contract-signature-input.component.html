@@ -33,7 +33,11 @@
       <app-alert
         [type]="AlertType.INFO"
         [title]="t('otp.title')"
-        [message]="t('otp.info', { phoneNumber: currentChallenge()?.challenge?.maskedPhoneNumber })"
+        [message]="
+          t('otp.info', {
+            phoneNumber: currentChallenge()?.challenge?.maskedPhoneNumber,
+          })
+        "
       />
       @if (showLockedAlert()) {
         <app-alert

@@ -7,12 +7,19 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService, DataRequestService, UidRegisterService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import {
+  ContractRevisionDto,
+  DataRequestDto,
+  DataRequestStateEnum,
+  SealAttemptStateEnum,
+} from '@/entities/openapi';
+import { ACTING_ROLES } from '@/shared/constants/constants';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import {
   createMockAgridataStateService,
+  MockAgridataStateService,
   createMockAuthService,
   MockAuthService,
   createMockContractRevisionService,
@@ -40,12 +47,14 @@ describe('DataRequestDetailsComponent', () => {
   let dataRequestService: MockDataRequestService;
   let errorService: MockErrorHandlerService;
   let masterDataService: MockMasterDataService;
+  let stateService: MockAgridataStateService;
 
   beforeEach(async () => {
     contractRevisionService = createMockContractRevisionService();
     dataRequestService = createMockDataRequestService();
     errorService = createMockErrorHandlerService();
     masterDataService = createMockMasterDataService();
+    stateService = createMockAgridataStateService();
 
     // Create factory mock and provide it so tests can mutate signals directly
     authService = createMockAuthService();
@@ -53,7 +62,7 @@ describe('DataRequestDetailsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestDetailsComponent, ReactiveFormsModule, AgridataWizardComponent],
       providers: [
-        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
+        { provide: AgridataStateService, useValue: stateService },
         { provide: AuthService, useValue: authService },
         { provide: ContractRevisionService, useValue: contractRevisionService },
         { provide: DataRequestService, useValue: dataRequestService },
@@ -313,6 +322,92 @@ describe('DataRequestDetailsComponent', () => {
       await newFixture.whenStable();
 
       expect(contractRevisionService.fetchContract).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('autoOpenUnsealedContractTab', () => {
+    const buildContract = (sealState: SealAttemptStateEnum): ContractRevisionDto => ({
+      id: 'contract-revision-id',
+      dataRequestId: 'test-id',
+      dataConsumerName: 'Test Consumer',
+      dataConsumerCity: 'Test City',
+      dataProviderName: 'Test Provider',
+      dataProviderCity: 'Provider City',
+      dataRequestContext: {} as ContractRevisionDto['dataRequestContext'],
+      sealState,
+    });
+
+    const createDetails = async (options: {
+      autoOpen: boolean;
+      stateCode?: DataRequestStateEnum;
+      currentContractRevisionId?: string;
+      sealState?: SealAttemptStateEnum;
+    }): Promise<ComponentFixture<DataRequestDetailsComponent>> => {
+      const request: DataRequestDto = {
+        id: 'test-id',
+        dataProviderId: 'test-provider',
+        currentContractRevisionId: options.currentContractRevisionId ?? 'contract-revision-id',
+        stateCode: options.stateCode ?? DataRequestStateEnum.ToBeActivated,
+        advantages: [],
+      };
+      dataRequestService.fetchDataRequest.mockResolvedValue(request);
+      contractRevisionService.fetchContract.mockResolvedValue(
+        buildContract(options.sealState ?? SealAttemptStateEnum.NotStarted),
+      );
+      stateService.__testSignals.actingRole.set(ACTING_ROLES.ADMIN);
+
+      const newFixture = TestBed.createComponent(DataRequestDetailsComponent);
+      const newComponentRef = newFixture.componentRef;
+      newComponentRef.setInput('dataRequestId', 'test-id');
+      newComponentRef.setInput('autoOpenUnsealedContractTab', options.autoOpen);
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      return newFixture;
+    };
+
+    it('should open the contract tab when activatable and the contract is not sealed', async () => {
+      const newFixture = await createDetails({ autoOpen: true });
+
+      expect(newFixture.componentInstance['activeTabId']()).toBe(DETAILS_TABS_ID.CONTRACT);
+    });
+
+    it('should stay on the request tab when the contract is sealed', async () => {
+      const newFixture = await createDetails({
+        autoOpen: true,
+        sealState: SealAttemptStateEnum.Completed,
+      });
+
+      expect(newFixture.componentInstance['activeTabId']()).toBe(DETAILS_TABS_ID.REQUEST);
+    });
+
+    it('should not fetch the contract for other states and stay on the request tab', async () => {
+      const newFixture = await createDetails({
+        autoOpen: true,
+        stateCode: DataRequestStateEnum.InReview,
+      });
+
+      expect(contractRevisionService.fetchContract).not.toHaveBeenCalled();
+      expect(newFixture.componentInstance['activeTabId']()).toBe(DETAILS_TABS_ID.REQUEST);
+    });
+
+    it('should not fetch the contract when the behavior is not opted in', async () => {
+      const newFixture = await createDetails({ autoOpen: false });
+
+      expect(contractRevisionService.fetchContract).not.toHaveBeenCalled();
+      expect(newFixture.componentInstance['activeTabId']()).toBe(DETAILS_TABS_ID.REQUEST);
+    });
+
+    it('should not override a manual tab switch when the data request reloads', async () => {
+      const newFixture = await createDetails({ autoOpen: true });
+      expect(newFixture.componentInstance['activeTabId']()).toBe(DETAILS_TABS_ID.CONTRACT);
+
+      newFixture.componentInstance['activeTabId'].set(DETAILS_TABS_ID.REQUEST);
+      newFixture.componentInstance.dataRequestResource.reload();
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      expect(newFixture.componentInstance['activeTabId']()).toBe(DETAILS_TABS_ID.REQUEST);
     });
   });
 });

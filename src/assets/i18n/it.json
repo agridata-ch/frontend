@@ -390,6 +390,13 @@
         "description": "Definisce a quale redirect_uri è possibile reindirizzare dopo una decisione.",
         "label": "Espressione regolare per un redirect_uri valido",
         "save": "Salva"
+      },
+      "contract": {
+        "sealing": {
+          "heading": "Sigillatura del contratto",
+          "description": "Tutte le firme richieste dei beneficiari e dei fornitori di dati sono state acquisite e sono riportate nel PDF. Per finalizzare il contratto, deve ora essere avviata la sigillatura del contratto tramite il servizio di firma di UFIT.",
+          "action": "Sigillare il contratto"
+        }
       }
     },
     "invitationLink": "Link di invito",

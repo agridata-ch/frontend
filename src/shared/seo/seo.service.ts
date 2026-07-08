@@ -1,5 +1,4 @@
-import { DOCUMENT } from '@angular/common';
-import { inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { DOCUMENT, inject, Renderer2, RendererFactory2, Service } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
@@ -26,7 +25,7 @@ interface DefaultMetaTags {
  *
  * CommentLastReviewed: 2025-11-20
  */
-@Injectable({ providedIn: 'root' })
+@Service()
 export class SeoService {
   private readonly doc = inject(DOCUMENT);
   private readonly meta = inject(Meta);

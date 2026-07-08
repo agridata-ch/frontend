@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Service, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
@@ -11,9 +11,7 @@ import { AuthService } from '@/shared/lib/auth';
  *
  * CommentLastReviewed: 2026-02-03
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class MasterDataService {
   // Injects
   private readonly authService = inject(AuthService);

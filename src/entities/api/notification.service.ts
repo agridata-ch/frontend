@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Service, signal } from '@angular/core';
 import { firstValueFrom, map } from 'rxjs';
 
 import { PageResponseDto, arrayToObjectSortParams, asPageResponse } from '@/shared/lib/api.helper';
@@ -16,9 +16,7 @@ import {
  *
  * CommentLastReviewed: 2026-05-11
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class NotificationService {
   private readonly apiService = inject(NotificationsService);
 

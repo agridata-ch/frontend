@@ -1,4 +1,4 @@
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Service, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   NavigationCancel,
@@ -29,9 +29,7 @@ const BACKEND_INFO_ROUTE_BLACKLIST = ['/', `/${ROUTE_PATHS.MAINTENANCE}`];
  *
  * CommentLastReviewed: 2025-08-25
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class AgridataStateService {
   // Injects
   private readonly router = inject(Router);

@@ -2,6 +2,7 @@ import { Component, computed, inject, input } from '@angular/core';
 import { faCopy } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { DataRequestAdvantagesComponent } from '@/data-request-advantages';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { getBadgeVariant, getFieldFromLang } from '@/shared/data-request';
@@ -18,7 +19,7 @@ import { DataRequestRedirectUriComponent } from '@/widgets/data-request-redirect
 /**
  * Component for displaying the details of a data request in the "Request" tab of the Data Request Details sidepanel.
  *
- * CommentLastReviewed: 2026-02-12
+ * CommentLastReviewed: 2026-06-30
  */
 @Component({
   selector: 'app-data-request-details-request',
@@ -30,6 +31,7 @@ import { DataRequestRedirectUriComponent } from '@/widgets/data-request-redirect
     FontAwesomeModule,
     I18nDirective,
     DataRequestRedirectUriComponent,
+    DataRequestAdvantagesComponent,
   ],
   templateUrl: './data-request-details-request.component.html',
 })
@@ -47,13 +49,13 @@ export class DataRequestDetailsRequestComponent {
   protected readonly faCopy = faCopy;
   protected readonly getBadgeVariant = getBadgeVariant;
   protected readonly getFieldFromLang = getFieldFromLang;
-  protected readonly locale = this.i18nService.lang();
 
   // Input properties
   readonly dataRequest = input.required<DataRequestDto>();
   readonly isRedirectUriRegexEditable = input(false);
 
   // Computed signals
+  protected readonly locale = computed(() => this.i18nService.lang());
   protected readonly formattedSubmissionDate = computed(() =>
     formatDate(this.dataRequest().submissionDate),
   );

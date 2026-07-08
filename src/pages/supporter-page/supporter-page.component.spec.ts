@@ -11,6 +11,7 @@ import {
   MockUserService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
+  createMockDocument,
 } from '@/shared/testing/mocks';
 
 describe('SupporterPageComponent', () => {
@@ -29,6 +30,7 @@ describe('SupporterPageComponent', () => {
       providers: [
         { provide: UserService, useValue: userService },
         { provide: ErrorHandlerService, useValue: errorService },
+        createMockDocument({ origin: 'https://test.example.com' }).provider,
       ],
     }).compileComponents();
 
@@ -137,27 +139,15 @@ describe('SupporterPageComponent', () => {
 
   describe('openImpersonationTab', () => {
     let windowOpenSpy: jest.SpyInstance;
-    let originalLocation: Location;
 
     beforeEach(() => {
+      // location.origin is provided via the mock DOCUMENT (origin: https://test.example.com);
+      // jsdom 26 no longer allows redefining window.location directly.
       windowOpenSpy = jest.spyOn(globalThis, 'open').mockImplementation(() => null);
-      originalLocation = globalThis.location;
-      Object.defineProperty(globalThis, 'location', {
-        value: {
-          origin: 'https://test.example.com',
-        },
-        writable: true,
-        configurable: true,
-      });
     });
 
     afterEach(() => {
       windowOpenSpy.mockRestore();
-      Object.defineProperty(globalThis, 'location', {
-        value: originalLocation,
-        writable: true,
-        configurable: true,
-      });
     });
 
     it('should open a new tab with correct impersonation URL', () => {

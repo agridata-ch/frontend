@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { environment } from '@/environments/environment';
@@ -12,9 +12,7 @@ import { ContactFormData, OnboardingFormData } from './cms.model';
  *
  * CommentLastReviewed: 2025-10-09
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class CmsService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = environment.cmsBaseUrl;

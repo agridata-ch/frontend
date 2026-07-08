@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
 
 import { DataProductDto } from '@/entities/openapi';
@@ -15,7 +14,7 @@ import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
  */
 @Component({
   selector: 'app-data-request-purpose-accordion',
-  imports: [AgridataAccordionComponent, CommonModule, I18nDirective],
+  imports: [AgridataAccordionComponent, I18nDirective],
   templateUrl: './data-request-purpose-accordion.component.html',
 })
 export class DataRequestPurposeAccordionComponent {

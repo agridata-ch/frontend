@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   Component,
   computed,
@@ -13,8 +12,10 @@ import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { DataRequestService } from '@/entities/api';
+import { ContractRevisionService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { DataRequestStateEnum, SealAttemptStateEnum } from '@/entities/openapi';
+import { ACTING_ROLES } from '@/shared/constants/constants';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { SidepanelComponent } from '@/shared/sidepanel';
@@ -34,7 +35,6 @@ import { DataRequestDetailsContractComponent } from '../data-request-details-con
   selector: 'app-data-request-details',
   imports: [
     I18nDirective,
-    CommonModule,
     ErrorOutletComponent,
     SidepanelComponent,
     AgridataTabsComponent,
@@ -46,6 +46,7 @@ import { DataRequestDetailsContractComponent } from '../data-request-details-con
 })
 export class DataRequestDetailsComponent {
   // Injects
+  private readonly contractRevisionService = inject(ContractRevisionService);
   private readonly dataRequestService = inject(DataRequestService);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
@@ -56,11 +57,13 @@ export class DataRequestDetailsComponent {
   protected readonly DETAILS_TABS_ID = DETAILS_TABS_ID;
 
   // Input properties
+  readonly autoOpenUnsealedContractTab = input(false);
   readonly dataRequestId = input.required<string>();
   readonly isRedirectUriRegexEditable = input(false);
 
   // Output properties
   readonly closeSidepanel = output<void>();
+  readonly contractSealed = output<void>();
 
   // Signals
   protected readonly activeTabId = signal(DETAILS_TABS_ID.REQUEST);
@@ -105,10 +108,52 @@ export class DataRequestDetailsComponent {
     // { id: DETAILS_TABS_ID.EMAIL, label: this.emailTabLabel() },
   ]);
 
+  private readonly initialContractResource = resource({
+    params: () => {
+      const request = this.dataRequest();
+
+      if (
+        !this.autoOpenUnsealedContractTab() ||
+        this.stateService.actingRole() !== ACTING_ROLES.ADMIN ||
+        request?.stateCode !== DataRequestStateEnum.ToBeActivated ||
+        !request.currentContractRevisionId
+      ) {
+        return undefined;
+      }
+
+      return {
+        actingRole: this.stateService.actingRole(),
+        contractRevisionId: request.currentContractRevisionId,
+      };
+    },
+    loader: ({ params }) =>
+      this.contractRevisionService.fetchContract(params.contractRevisionId, params.actingRole),
+  });
+
   private readonly errorHandlerEffect = effect(() => {
     const error = this.dataRequestResource.error();
     if (error) {
       this.errorService.handleError(error);
+    }
+  });
+
+  private hasAppliedInitialTab = false;
+
+  private readonly initialTabEffect = effect(() => {
+    if (this.hasAppliedInitialTab || this.initialContractResource.isLoading()) {
+      return;
+    }
+
+    const contract = this.initialContractResource.value();
+
+    if (!contract) {
+      return;
+    }
+
+    this.hasAppliedInitialTab = true;
+
+    if (contract.sealState !== SealAttemptStateEnum.Completed) {
+      this.activeTabId.set(DETAILS_TABS_ID.CONTRACT);
     }
   });
 

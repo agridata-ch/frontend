@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { firstValueFrom, map } from 'rxjs';
 
 import {
@@ -17,9 +17,7 @@ type DataProductActingRoles = 'PROVIDER' | 'ADMIN' | undefined;
  *
  * CommentLastReviewed: 2026-06-08
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class DataProductService {
   private readonly apiService = inject(DataProductsService);
 

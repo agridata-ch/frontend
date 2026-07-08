@@ -1,3 +1,39 @@
+## [1.14.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.5...v1.14.0-rc.6) (2026-07-06)
+
+### Bug Fixes
+
+- **validation:** fix validation ([d1a38d0](https://github.com/agridata-ch/frontend/commit/d1a38d085df32a91fd2300eb3a914dbc9a899c76))
+
+## [1.14.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.4...v1.14.0-rc.5) (2026-07-01)
+
+### Features
+
+- **deps:** update dependencies ([cf1b9b7](https://github.com/agridata-ch/frontend/commit/cf1b9b7bb6ade2fe37ada3d176179e36506940f6))
+
+## [1.14.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.3...v1.14.0-rc.4) (2026-06-30)
+
+### Bug Fixes
+
+- **contract-sealing:** fix findings ([29d7797](https://github.com/agridata-ch/frontend/commit/29d7797d30eeb1b96203de560fd9955e0eb7c432)), closes [DIGIB2-311](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-311)
+
+## [1.14.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.2...v1.14.0-rc.3) (2026-06-30)
+
+### Features
+
+- **deps:** upgrade Angular v20 to v22 ([a6b805e](https://github.com/agridata-ch/frontend/commit/a6b805e504cb3b8a9caac9afef8a80f76029737c)), closes [DIGIB2-1446](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1446)
+
+## [1.14.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.14.0-rc.1...v1.14.0-rc.2) (2026-06-29)
+
+### Features
+
+- **contract-sealing:** implement contract sealing functionality with success feedback ([d0ab3f1](https://github.com/agridata-ch/frontend/commit/d0ab3f1cb130c0a81490560830fdf9b17cd89477)), closes [DIGIB2-311](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-311)
+
+## [1.14.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.13.0...v1.14.0-rc.1) (2026-06-24)
+
+### Features
+
+- **advantages:** show advantages on active request ([cd27551](https://github.com/agridata-ch/frontend/commit/cd27551c0e1d76b52007673ae9a6ba975f014f14)), closes [DIGIB2-1460](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1460)
+
 ## [1.13.0](https://github.com/agridata-ch/frontend/compare/v1.12.0...v1.13.0) (2026-06-23)
 
 ### Features

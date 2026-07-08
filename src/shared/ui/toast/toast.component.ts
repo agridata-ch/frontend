@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
 import { faCheck, faClose } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -16,7 +15,7 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
  */
 @Component({
   selector: 'app-toast-container',
-  imports: [CommonModule, FontAwesomeModule, I18nPipe, ButtonComponent],
+  imports: [FontAwesomeModule, I18nPipe, ButtonComponent],
   templateUrl: './toast.component.html',
 })
 export class ToastComponent {

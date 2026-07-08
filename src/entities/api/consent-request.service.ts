@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { ConsentRequestStateEnum, CreateConsentRequestDto } from '@/entities/openapi';
@@ -11,9 +11,7 @@ import { ConsentRequestsService } from '@/entities/openapi/api/consentRequests.s
  *
  * CommentLastReviewed: 2025-10-23
  */
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class ConsentRequestService {
   private readonly apiService = inject(ConsentRequestsService);
 

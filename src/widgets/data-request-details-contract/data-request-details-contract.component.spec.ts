@@ -64,4 +64,31 @@ describe('DataRequestDetailsContractComponent', () => {
     await fixture.whenStable();
     expect(contractRevisionService.fetchContract).toHaveBeenCalledWith('cr-1', undefined);
   });
+
+  it('should emit handleSeal immediately and reload the contract after the success delay', async () => {
+    jest.useFakeTimers();
+    const reloadSpy = jest.spyOn(component.contractResource, 'reload');
+    const sealedSpy = jest.fn();
+    component.handleSeal.subscribe(sealedSpy);
+
+    component['sealContract']();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(contractRevisionService.sealContract).toHaveBeenCalledWith('cr-1');
+    expect(component['sealSucceeded']()).toBe(true);
+    expect(component['isSealing']()).toBe(false);
+    // The admin gate signal fires as soon as the backend confirms the seal,
+    // not on the cosmetic success-feedback timer, so it cannot be lost on destroy.
+    expect(sealedSpy).toHaveBeenCalledTimes(1);
+    expect(reloadSpy).not.toHaveBeenCalled();
+
+    jest.advanceTimersByTime(1500);
+
+    // The local view refresh that hides the seal button stays on the timer.
+    expect(reloadSpy).toHaveBeenCalledTimes(1);
+    expect(sealedSpy).toHaveBeenCalledTimes(1);
+
+    jest.useRealTimers();
+  });
 });

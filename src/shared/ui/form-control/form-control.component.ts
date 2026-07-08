@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 
 import { FormControlWithMessages, getErrorMessage } from '@/shared/lib/form.helper';
@@ -56,21 +56,29 @@ export class FormControlComponent {
 
   readonly ControlTypes = ControlTypes;
 
-  hasError() {
-    return (this.control()?.touched && this.control()?.invalid) ?? false;
-  }
+  // Signals
+  protected readonly hasError = signal(false);
+  protected readonly errorMessage = signal<string | null>(null);
 
-  errorMessage() {
+  // Effects
+  // The control's touched/status state is not a signal, so in zoneless change detection a
+  // markAllAsTouched() or blur would not re-render the error state. Feed the state signals from the
+  // control's events stream so hasError()/errorMessage() stay reactive.
+  private readonly syncErrorStateEffect = effect((onCleanup) => {
     const control = this.control();
-    if (control?.touched && control?.invalid) {
-      const errors = control.errors;
-      if (errors) {
-        const errorKey = Object.keys(errors)[0];
-        return getErrorMessage(control, errorKey);
-      }
-    }
-    return null;
-  }
+    const update = () => {
+      const invalid = (control?.touched && control?.invalid) ?? false;
+      this.hasError.set(invalid);
+      this.errorMessage.set(
+        invalid && control?.errors
+          ? getErrorMessage(control, Object.keys(control.errors)[0])
+          : null,
+      );
+    };
+    update();
+    const subscription = control?.events.subscribe(update);
+    onCleanup(() => subscription?.unsubscribe());
+  });
 
   getMaxCharacters() {
     const control = this.control();

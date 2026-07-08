@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, input, resource, signal } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
@@ -22,7 +21,6 @@ import { METHOD_CODE_OPTIONS } from '@/widgets/data-product-detail-form/data-pro
 @Component({
   selector: 'app-data-product-detail-info',
   imports: [
-    CommonModule,
     AgridataSelectComponent,
     AlertComponent,
     FormControlComponent,
@@ -52,6 +50,8 @@ export class DataProductDetailInfoComponent {
 
   // Signals
   protected readonly selectedProviderId = signal<string>('');
+  protected readonly providerSelectHasError = signal(false);
+  protected readonly providerSelectErrorMessage = signal('');
 
   // Computed Signals
   protected readonly dataSourceOptions = computed(() =>
@@ -116,6 +116,25 @@ export class DataProductDetailInfoComponent {
     this.selectedProviderId.set(ownProvider.id);
   });
 
+  // The provider controls' touched/status state is not a signal, so feed the error state signals from
+  // the form's events stream (plus selectedProviderId) to stay reactive under zoneless change detection.
+  private readonly syncProviderSelectErrorEffect = effect((onCleanup) => {
+    const hasProvider = !!this.selectedProviderId();
+    const update = () => {
+      const dss = this.getFormControl('dataSourceSystemId');
+      const rc = this.getFormControl('restClientId');
+      this.providerSelectHasError.set(
+        !hasProvider && ((dss.invalid && dss.touched) || (rc.invalid && rc.touched)),
+      );
+      const ctrl = dss.invalid && dss.touched ? dss : rc;
+      const firstKey = Object.keys(ctrl.errors ?? {})[0];
+      this.providerSelectErrorMessage.set(firstKey ? (getErrorMessage(ctrl, firstKey) ?? '') : '');
+    };
+    update();
+    const subscription = this.form().events.subscribe(update);
+    onCleanup(() => subscription.unsubscribe());
+  });
+
   protected getFormControl(path: string) {
     return getFormControl(this.form(), path);
   }
@@ -124,21 +143,5 @@ export class DataProductDetailInfoComponent {
     this.selectedProviderId.set(value?.toString() ?? '');
     this.getFormControl('dataSourceSystemId').setValue('');
     this.getFormControl('restClientId').setValue('');
-  }
-
-  protected get providerSelectErrorMessage(): string {
-    const dss = this.getFormControl('dataSourceSystemId');
-    const rc = this.getFormControl('restClientId');
-    const ctrl = dss.invalid && dss.touched ? dss : rc;
-    const firstKey = Object.keys(ctrl.errors ?? {})[0];
-    if (!firstKey) return '';
-    return getErrorMessage(ctrl, firstKey) ?? '';
-  }
-
-  protected get providerSelectHasError(): boolean {
-    if (this.selectedProviderId()) return false;
-    const dss = this.getFormControl('dataSourceSystemId');
-    const rc = this.getFormControl('restClientId');
-    return (dss.invalid && dss.touched) || (rc.invalid && rc.touched);
   }
 }
