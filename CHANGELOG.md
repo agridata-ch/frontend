@@ -1,3 +1,9 @@
+## [1.15.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.14.0...v1.15.0-rc.1) (2026-07-08)
+
+### Features
+
+- **data-product:** refactor detail technical ([8e0bfbd](https://github.com/agridata-ch/frontend/commit/8e0bfbd79fa0b022e0b34b375611eed873a8a495)), closes [DIGIB2-1466](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1466)
+
 ## [1.14.0](https://github.com/agridata-ch/frontend/compare/v1.13.0...v1.14.0) (2026-07-08)
 
 ### Features
