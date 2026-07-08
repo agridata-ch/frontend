@@ -124,6 +124,103 @@ describe('Form Helper', () => {
       control.setValue(['a', 'b']);
       expect(control.errors).toBeNull();
     });
+
+    it('measures visible text (not HTML markup) for rich-text fields', () => {
+      // Arrange
+      const schema: JsonSchema = {
+        type: 'object',
+        properties: {
+          description: { type: 'string', minLength: 10, maxLength: 20 },
+        },
+      };
+      const fieldMaps: FormModel[] = [
+        {
+          formGroupName: FORM_GROUP_NAMES.CONSUMER,
+          completionStrategy: FORM_COMPLETION_STRATEGIES.ALWAYS_COMPLETE,
+          fields: [{ name: 'description', isRichText: true }],
+        },
+      ];
+
+      // Act
+      const form = buildReactiveForm(schema, fieldMaps, i18n);
+      const control = form.get('consumer.description') as AbstractControl;
+
+      // Assert: markup wrapper must not satisfy minLength — only 2 visible chars
+      control.setValue('<p>hi</p>');
+      expect(control.errors).toHaveProperty('minlength');
+
+      // Enough visible text passes, even wrapped in markup
+      control.setValue('<p><strong>hello there</strong></p>');
+      expect(control.errors).toBeNull();
+
+      // maxLength counts visible text, so heavy markup around short text does not trip it
+      control.setValue('<p><em><u>short text</u></em></p>');
+      expect(control.errors).toBeNull();
+
+      // But too much visible text still fails
+      control.setValue('<p>this visible text is definitely too long</p>');
+      expect(control.errors).toHaveProperty('maxlength');
+    });
+
+    it('counts raw length for non-rich-text string fields', () => {
+      // Arrange
+      const schema: JsonSchema = {
+        type: 'object',
+        properties: {
+          description: { type: 'string', minLength: 10, maxLength: 20 },
+        },
+      };
+      const fieldMaps: FormModel[] = [
+        {
+          formGroupName: FORM_GROUP_NAMES.CONSUMER,
+          completionStrategy: FORM_COMPLETION_STRATEGIES.ALWAYS_COMPLETE,
+          fields: [{ name: 'description' }],
+        },
+      ];
+
+      // Act
+      const form = buildReactiveForm(schema, fieldMaps, i18n);
+      const control = form.get('consumer.description') as AbstractControl;
+
+      // Assert: raw string length is used, so markup counts toward the limit.
+      // "<p>short</p>" is 12 raw chars (passes minLength 10) though only 5 visible chars
+      // would fail under rich-text counting.
+      control.setValue('<p>short</p>');
+      expect(control.errors).toBeNull();
+    });
+
+    it('fails required for markup-only rich-text values with no visible text', () => {
+      // Arrange
+      const schema: JsonSchema = {
+        type: 'object',
+        properties: {
+          description: { type: 'string' },
+        },
+        required: ['description'],
+      };
+      const fieldMaps: FormModel[] = [
+        {
+          formGroupName: FORM_GROUP_NAMES.CONSUMER,
+          completionStrategy: FORM_COMPLETION_STRATEGIES.ALWAYS_COMPLETE,
+          fields: [{ name: 'description', isRichText: true }],
+        },
+      ];
+
+      // Act
+      const form = buildReactiveForm(schema, fieldMaps, i18n);
+      const control = form.get('consumer.description') as AbstractControl;
+
+      // Assert: markup with no visible text must fail required (Validators.required would pass here)
+      control.setValue('<p></p>');
+      expect(control.errors).toHaveProperty('required');
+
+      control.setValue('<p><br></p>');
+      expect(control.errors).toHaveProperty('required');
+
+      // Visible text satisfies required
+      control.setValue('<p>hello</p>');
+      expect(control.errors).toBeNull();
+    });
   });
 
   describe('populateFormFromDto', () => {

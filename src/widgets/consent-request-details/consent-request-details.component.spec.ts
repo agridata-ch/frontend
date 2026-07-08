@@ -159,8 +159,8 @@ describe('ConsentRequestDetailsComponent', () => {
       btn.nativeElement.textContent.includes('actions.reject'),
     );
 
-    expect(acceptButton?.nativeElement.disabled).toBe(true);
-    expect(rejectButton?.nativeElement.disabled).toBe(true);
+    expect(acceptButton?.nativeElement.getAttribute('aria-disabled')).toBe('true');
+    expect(rejectButton?.nativeElement.getAttribute('aria-disabled')).toBe('true');
   });
 
   describe('checkForRedirect', () => {

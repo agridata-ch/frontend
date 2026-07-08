@@ -8,7 +8,12 @@
       [class.opacity-0]="isViewMode()"
       [class.opacity-100]="!isViewMode()"
     >
-      <app-alert [title]="t('infoTitle')" [message]="t('infoMessage')" [type]="AlertType.INFO" />
+      <app-alert
+        [title]="t('infoTitle')"
+        [message]="t('infoMessage')"
+        [type]="AlertType.INFO"
+        [class.hidden]="isViewMode()"
+      />
     </div>
     <div appViewSection [isViewMode]="isViewMode()">
       <app-form-control
@@ -87,6 +92,7 @@
         id="technicalDescription-de"
         [class.py-3]="isViewMode()"
         [class.px-4]="isViewMode()"
+        isWysiwyg
       />
     </div>
     <div appViewSection [isViewMode]="isViewMode()">
@@ -99,6 +105,7 @@
         id="technicalDescription-fr"
         [class.py-3]="isViewMode()"
         [class.px-4]="isViewMode()"
+        isWysiwyg
       />
     </div>
     <div appViewSection [isViewMode]="isViewMode()">
@@ -111,6 +118,7 @@
         id="technicalDescription-it"
         [class.py-3]="isViewMode()"
         [class.px-4]="isViewMode()"
+        isWysiwyg
       />
     </div>
 

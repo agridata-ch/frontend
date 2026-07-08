@@ -4,6 +4,8 @@ import { faSpinner } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FaIconComponent, IconDefinition } from '@fortawesome/angular-fontawesome';
 
+import { TooltipDirective } from '@/shared/tooltip';
+
 import { ButtonVariants, HrefTarget, IconPosition } from './button.model';
 
 /**
@@ -21,7 +23,7 @@ import { ButtonVariants, HrefTarget, IconPosition } from './button.model';
 @Component({
   selector: 'app-agridata-button',
   templateUrl: './button.component.html',
-  imports: [NgTemplateOutlet, FaIconComponent],
+  imports: [NgTemplateOutlet, FaIconComponent, TooltipDirective],
   styleUrl: './button.component.css',
   host: { class: 'contents' },
 })
@@ -36,6 +38,7 @@ export class ButtonComponent {
   loading = input(false, { transform: booleanAttribute });
   success = input(false, { transform: booleanAttribute });
   disabledInfo = input<string>('');
+  tooltip = input<string>('');
   additionalClass = input<string>('');
   href = input<string>('');
   target = input<HrefTarget>(HrefTarget.Self);
@@ -62,10 +65,21 @@ export class ButtonComponent {
     () => this.disabled() || this.loading() || this.success(),
   );
   protected readonly showSuccess = computed(() => this.success() && !this.loading());
+  // When disabled, surface the reason as the tooltip on the button itself; otherwise an explicit
+  // tooltip wins and falls back to the aria-label so icon-only buttons get a visual hint for free.
+  // The tooltip is aria-hidden, so it never double-announces the button's own name.
+  protected readonly tooltipText = computed(
+    () => (this.disabled() && this.disabledInfo()) || this.tooltip() || this.ariaLabel(),
+  );
 
   onButtonClick(event: Event) {
     event.preventDefault();
     event.stopPropagation();
+    // The button uses aria-disabled (stays hoverable for the tooltip), so the native disabled
+    // attribute no longer blocks the click — guard the action here instead.
+    if (this.isDisabled()) {
+      return;
+    }
     this.handleClick.emit(event);
   }
 }

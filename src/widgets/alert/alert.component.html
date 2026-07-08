@@ -39,7 +39,7 @@
   <!-- close button -->
   @if (showCloseButton()) {
     <app-agridata-button
-      ariaLabel="common.ariaLabel.close"
+      [ariaLabel]="'common.ariaLabel.close' | i18n"
       [variant]="ButtonVariants.Icon"
       [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
       (handleClick)="closeAlert.emit(true)"

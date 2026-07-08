@@ -541,8 +541,8 @@
     }
   },
   "navigation": {
-    "open": "Navigation Öffnen",
-    "close": "Navigation Schließen",
+    "open": "Navigation erweitern",
+    "close": "Navigation einklappen",
     "menuItems": {
       "helpAndSupport": "Hilfe & Support",
       "notifications": "Benachrichtigungen",
@@ -901,7 +901,8 @@
       },
       "tab": {
         "technicalFields": "Technische Informationen",
-        "nameAndDescription": "Name und Beschreibung"
+        "nameAndDescription": "Name und Beschreibung",
+        "linksAndDocuments": "Dokumente"
       },
       "edit": "Bearbeiten",
       "links": {
@@ -1072,5 +1073,13 @@
       "DRAFT": "Entwurf",
       "ACTIVE": "Publiziert"
     }
+  },
+  "wysiwyg": {
+    "bold": "Fett",
+    "italic": "Kursiv",
+    "underline": "Unterstrichen",
+    "bulletList": "Aufzählung",
+    "orderedList": "Nummerierte Liste",
+    "resetFormat": "Formatierung zurücksetzen"
   }
 }

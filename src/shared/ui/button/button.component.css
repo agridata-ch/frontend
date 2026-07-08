@@ -7,8 +7,8 @@
   font-weight: 600;
 }
 
-.agridata-button:disabled {
-  pointer-events: filled;
+.agridata-button[aria-disabled='true'] {
+  /* aria-disabled (not the native attribute) keeps the button hoverable so its tooltip can show. */
   cursor: not-allowed;
 }
 
@@ -23,7 +23,7 @@
   border-color: var(--color-agridata-primary-400);
 }
 
-.agridata-button.agridata-button-primary:disabled {
+.agridata-button.agridata-button-primary[aria-disabled='true'] {
   background-color: var(--color-gray-200);
   border-color: var(--color-gray-200);
   cursor: not-allowed;
@@ -47,7 +47,7 @@
   outline-style: solid;
 }
 
-.agridata-button.agridata-button-primary-accept:disabled {
+.agridata-button.agridata-button-primary-accept[aria-disabled='true'] {
   background-color: var(--color-gray-200);
   border-color: var(--color-gray-200);
   cursor: not-allowed;
@@ -64,7 +64,7 @@
   border-color: var(--color-gray-200);
 }
 
-.agridata-button.agridata-button-primary-cms:disabled {
+.agridata-button.agridata-button-primary-cms[aria-disabled='true'] {
   background-color: var(--color-gray-200);
   border-color: var(--color-gray-200);
   cursor: not-allowed;
@@ -81,7 +81,7 @@
   color: var(--color-agridata-primary-400);
 }
 
-.agridata-button.agridata-button-secondary:disabled {
+.agridata-button.agridata-button-secondary[aria-disabled='true'] {
   border-color: var(--color-agridata-primary-300);
   color: var(--color-agridata-primary-300);
   cursor: not-allowed;
@@ -104,7 +104,7 @@
   outline-style: solid;
 }
 
-.agridata-button.agridata-button-secondary-reject:disabled {
+.agridata-button.agridata-button-secondary-reject[aria-disabled='true'] {
   border-color: var(--color-gray-200);
   color: var(--color-gray-200);
   background-color: transparent;
@@ -121,7 +121,7 @@
   background-color: var(--color-agridata-primary-50);
 }
 
-.agridata-button.agridata-button-secondary-cms:disabled {
+.agridata-button.agridata-button-secondary-cms[aria-disabled='true'] {
   border-color: var(--color-gray-200);
   color: var(--color-gray-200);
   cursor: not-allowed;
@@ -138,7 +138,7 @@
   background-color: var(--color-agridata-primary-50);
 }
 
-.agridata-button.agridata-button-tertiary:disabled {
+.agridata-button.agridata-button-tertiary[aria-disabled='true'] {
   color: var(--color-agridata-primary-300);
   background-color: transparent;
   cursor: not-allowed;
@@ -175,8 +175,8 @@
   border-color: var(--color-blue-100);
 }
 
-.agridata-button.agridata-button-icon:disabled,
-.agridata-button.agridata-button-icon-outline:disabled {
+.agridata-button.agridata-button-icon[aria-disabled='true'],
+.agridata-button.agridata-button-icon-outline[aria-disabled='true'] {
   background-color: transparent;
   border-color: transparent;
   cursor: not-allowed;
@@ -197,7 +197,7 @@
   text-decoration: underline;
 }
 
-.agridata-button.agridata-button-link:disabled {
+.agridata-button.agridata-button-link[aria-disabled='true'] {
   border: 0;
   color: var(--color-agridata-primary-100);
   padding: 0;
@@ -216,7 +216,7 @@
   text-decoration: underline;
 }
 
-.agridata-button.agridata-button-icon-link:disabled {
+.agridata-button.agridata-button-icon-link[aria-disabled='true'] {
   border: 0;
   color: var(--color-agridata-primary-100);
   padding: 0;
@@ -225,7 +225,7 @@
   background-color: transparent;
 }
 
-.agridata-button.agridata-button-icon-link:disabled .loading-spinner {
+.agridata-button.agridata-button-icon-link[aria-disabled='true'] .loading-spinner {
   color: var(--color-agridata-primary-600);
 }
 
@@ -240,7 +240,7 @@
   text-decoration: underline;
 }
 
-.agridata-button.agridata-button-icon-link-reject:disabled {
+.agridata-button.agridata-button-icon-link-reject[aria-disabled='true'] {
   border: 0;
   color: var(--color-gray-200);
   padding: 0;
@@ -249,7 +249,7 @@
   background-color: transparent;
 }
 
-.agridata-button.agridata-button-icon-link-reject:disabled .loading-spinner {
+.agridata-button.agridata-button-icon-link-reject[aria-disabled='true'] .loading-spinner {
   color: var(--color-red-600);
 }
 
@@ -278,7 +278,7 @@
 }
 
 .agridata-button.success,
-.agridata-button.success:disabled {
+.agridata-button.success[aria-disabled='true'] {
   color: white;
   border-color: var(--color-green-600);
   background-color: var(--color-green-600);

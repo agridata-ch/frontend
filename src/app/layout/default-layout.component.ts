@@ -4,8 +4,9 @@ import { faChevronLeft, faChevronRight } from '@awesome.me/kit-0b6d1ed528/icons/
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { I18nPipe } from '@/shared/i18n/i18n.pipe';
+import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
+import { TooltipDirective } from '@/shared/tooltip';
 import { ToastComponent } from '@/shared/ui/toast';
 import { CookiebannerComponent } from '@/widgets/cookiebanner';
 import { FooterWidgetComponent } from '@/widgets/footer-widget';
@@ -24,7 +25,6 @@ import { SupporterOverlayComponent } from '@/widgets/supporter-overlay/supporter
   selector: 'app-default-layout',
   imports: [
     FontAwesomeModule,
-    I18nPipe,
     RouterModule,
     CookiebannerComponent,
     FooterWidgetComponent,
@@ -33,12 +33,19 @@ import { SupporterOverlayComponent } from '@/widgets/supporter-overlay/supporter
     NewYearBannerComponent,
     SupporterOverlayComponent,
     ToastComponent,
+    TooltipDirective,
   ],
   templateUrl: './default-layout.component.html',
 })
 export class DefaultLayoutComponent {
-  private readonly authService = inject(AuthService);
   protected readonly agridataStateService = inject(AgridataStateService);
+  private readonly authService = inject(AuthService);
+  private readonly i18nService = inject(I18nService);
+
+  // Signals
+  private readonly navigationOpenTranslation = this.i18nService.translateSignal('navigation.open');
+  private readonly navigationCloseTranslation =
+    this.i18nService.translateSignal('navigation.close');
 
   protected readonly isNavigationOpen = computed(
     () => this.agridataStateService.userPreferences()?.mainMenuOpened,
@@ -50,6 +57,9 @@ export class DefaultLayoutComponent {
     this.agridataStateService.showCookiebanner(),
   );
   protected readonly showNavigation = computed(() => this.authService.isAuthenticated());
+  protected readonly navIconAriaText = computed(() =>
+    this.isNavigationOpen() ? this.navigationCloseTranslation() : this.navigationOpenTranslation(),
+  );
 
   protected toggleNavigation = () => {
     this.agridataStateService.setMainMenuOpened(!this.isNavigationOpen());
