@@ -67,7 +67,7 @@ export class DataProductDetailTechnicalComponent {
   );
   protected readonly restClientOptions = computed(() =>
     this.restClients().map((client) => ({
-      label: client.url ?? client.code ?? '',
+      label: `${client.displayName} (${client.url})`,
       value: client.id ?? '',
     })),
   );

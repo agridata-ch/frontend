@@ -16,6 +16,7 @@ export * from './dataProductDto';
 export * from './dataProductDtoStateCode';
 export * from './dataProductNameDto';
 export * from './dataProductStateEnum';
+export * from './dataProductTechnicalDescriptionDto';
 export * from './dataProductUpdateDto';
 export * from './dataProviderDto';
 export * from './dataProviderExceptionDto';
