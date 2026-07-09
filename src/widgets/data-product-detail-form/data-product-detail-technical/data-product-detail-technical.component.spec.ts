@@ -44,7 +44,12 @@ const mockProvider2: DataProviderDto = {
   name: { de: 'Provider 2' },
 } as DataProviderDto;
 const mockSystem: DataSourceSystemDto = { id: 'sys1', code: 'SYS1' } as DataSourceSystemDto;
-const mockClient: RestClientDto = { id: 'rc1', code: 'CLIENT1' } as RestClientDto;
+const mockClient: RestClientDto = {
+  id: 'rc1',
+  code: 'CLIENT1',
+  url: 'https://example.com',
+  displayName: 'client 1',
+} as RestClientDto;
 
 describe('DataProductDetailTechnicalComponent', () => {
   let fixture: ComponentFixture<DataProductDetailTechnicalComponent>;
@@ -225,7 +230,9 @@ describe('DataProductDetailTechnicalComponent', () => {
       await testFixture.whenStable();
 
       expect(testComponent['dataSourceOptions']()).toEqual([{ label: 'SYS1', value: 'sys1' }]);
-      expect(testComponent['restClientOptions']()).toEqual([{ label: 'CLIENT1', value: 'rc1' }]);
+      expect(testComponent['restClientOptions']()).toEqual([
+        { label: 'client 1 (https://example.com)', value: 'rc1' },
+      ]);
     });
 
     it('should return empty arrays while loading', () => {
@@ -239,6 +246,7 @@ describe('DataProductDetailTechnicalComponent', () => {
       const clientWithUrl: RestClientDto = {
         id: 'rc2',
         url: 'https://example.com',
+        displayName: 'restClient 2',
         code: 'CODE2',
       } as RestClientDto;
       dataProvidersService.getDataSourceSystems.mockResolvedValue([]);
@@ -253,25 +261,7 @@ describe('DataProductDetailTechnicalComponent', () => {
       await testFixture.whenStable();
 
       expect(testFixture.componentInstance['restClientOptions']()).toEqual([
-        { label: 'https://example.com', value: 'rc2' },
-      ]);
-    });
-
-    it('should fall back to code as label when url is absent', async () => {
-      const clientWithoutUrl: RestClientDto = { id: 'rc3', code: 'CODE3' } as RestClientDto;
-      dataProvidersService.getDataSourceSystems.mockResolvedValue([]);
-      dataProvidersService.getRestClients.mockResolvedValue([clientWithoutUrl]);
-
-      const testFixture = createFixture();
-      testFixture.detectChanges();
-      await testFixture.whenStable();
-
-      testFixture.componentInstance['selectedProviderId'].set('p1');
-      testFixture.detectChanges();
-      await testFixture.whenStable();
-
-      expect(testFixture.componentInstance['restClientOptions']()).toEqual([
-        { label: 'CODE3', value: 'rc3' },
+        { label: 'restClient 2 (https://example.com)', value: 'rc2' },
       ]);
     });
   });

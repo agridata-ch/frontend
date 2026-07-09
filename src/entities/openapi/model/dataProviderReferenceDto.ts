@@ -12,8 +12,17 @@ import { TranslationDto } from './translationDto';
 
 export interface DataProviderReferenceDto { 
     id?: string;
+    /**
+     * Stable technical code of the provider
+     */
     code?: string;
+    /**
+     * Display name of the provider
+     */
     name?: TranslationDto;
+    /**
+     * UID of the data provider
+     */
     uid?: string;
 }
 

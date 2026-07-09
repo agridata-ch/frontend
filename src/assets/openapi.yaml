@@ -782,6 +782,36 @@ components:
       enum:
       - DRAFT
       - ACTIVE
+    DataProductTechnicalDescriptionDto:
+      type: object
+      properties:
+        de:
+          type: string
+          description: German technical description of the data product
+          examples:
+          - |-
+            Konkret werden folgende Daten übermittelt:
+            - Datum der Erfassung bzw. der letzten Änderung dieses Datensatzes im kantonalen System
+            - KT_ID_B Kantonale Identifikationsnummer der Betriebsform auf der Stufe, auf der die nachfolgenden Daten...
+          maxLength: 1000
+        fr:
+          type: string
+          description: French technical description of the data product
+          examples:
+          - |-
+            Concrètement, les données suivantes sont transmises :
+            - Date resp. la saisie ou la dernière modification du jeu de données dans le système cantonal
+            - KT_ID_B Numéro cantonal de la forme d’exploitation au niveau de laquelle les données suivantes ont été saisies...
+          maxLength: 1000
+        it:
+          type: string
+          description: Italian technical description of the data product
+          examples:
+          - |-
+            Concretamente vengono trasmessi i dati seguenti:
+            - Data di registrazione o dell’ultima modifica di questo set di dati nel sistema cantonale
+            - KT_ID_B Numero d’identificazione cantonale della forma di azienda al livello a cui sono stati registrati i dati...
+          maxLength: 1000
     DataProductUpdateDto:
       description: Data transfer object representing a data product
       type: object
@@ -842,7 +872,7 @@ components:
             $ref: "#/components/schemas/LinkDto"
           description: List of relevant product links
         technicalDescription:
-          $ref: "#/components/schemas/DataProductDescriptionDto"
+          $ref: "#/components/schemas/DataProductTechnicalDescriptionDto"
           description: Technical product details
           type: object
     DataProviderDto:
@@ -852,12 +882,22 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the provider
+          type: string
         code:
           type: string
+          description: Stable technical code of the provider
+          examples:
+          - BLW
         name:
           $ref: "#/components/schemas/TranslationDto"
+          description: Display name of the provider
+          type: object
         uid:
           type: string
+          description: UID of the data provider
+          examples:
+          - CHE123456789
     DataProviderExceptionDto:
       type: object
       properties:
@@ -877,12 +917,22 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the provider
+          type: string
         code:
           type: string
+          description: Stable technical code of the provider
+          examples:
+          - BLW
         name:
           $ref: "#/components/schemas/TranslationDto"
+          description: Display name of the provider
+          type: object
         uid:
           type: string
+          description: UID of the data provider
+          examples:
+          - CHE123456789
     DataRequestAdvantageDto:
       type: object
       properties:
@@ -1221,23 +1271,41 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the source
+          type: string
         code:
           type: string
+          description: Stable technical code of the source
+          examples:
+          - AGIS
         name:
           $ref: "#/components/schemas/TranslationDto"
+          description: Display name of the data source
+          type: object
         dataProvider:
           $ref: "#/components/schemas/DataProviderDto"
+          description: Reference to the data provider
+          type: object
     DataSourceSystemReferenceDto:
       type: object
       properties:
         id:
           $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the source
+          type: string
         code:
           type: string
+          description: Stable technical code of the source
+          examples:
+          - AGIS
         name:
           $ref: "#/components/schemas/TranslationDto"
+          description: Display name of the data source
+          type: object
         dataProvider:
           $ref: "#/components/schemas/DataProviderReferenceDto"
+          description: Reference to the data provider
+          type: object
       required:
       - dataProvider
     DataTransferResponse:
@@ -1655,10 +1723,26 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the rest client
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
         code:
           type: string
+          description: Stable technical code of the rest client
+          examples:
+          - AGIS_API
+        displayName:
+          type: string
+          description: "Human-readable name of the REST client, intended for display\
+            \ in user interfaces"
+          examples:
+          - Agis
         url:
           type: string
+          description: Base URL of the external API accessed by this REST client
+          examples:
+          - http://example.com/agis
     RestClientMethodCodeEnum:
       type: string
       enum:
@@ -4565,7 +4649,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.12.0
+  version: 1.13.0-rc.4
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 
