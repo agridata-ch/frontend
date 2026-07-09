@@ -1,3 +1,9 @@
+## [1.15.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.2...v1.15.0-rc.3) (2026-07-09)
+
+### Bug Fixes
+
+- **data-product:** show client name ([b339eb2](https://github.com/agridata-ch/frontend/commit/b339eb2c68e1a18b91be00872ae3677e1617486e)), closes [DIGIB2-1466](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1466)
+
 ## [1.15.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.1...v1.15.0-rc.2) (2026-07-09)
 
 ### Features
