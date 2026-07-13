@@ -61,6 +61,20 @@ describe('DataProductDetailDocumentsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('shows the empty placeholder in view mode when there are no documents', () => {
+    componentRef.setInput('isViewMode', true);
+    fixture.detectChanges();
+
+    expect(store.uploadedItems()).toHaveLength(0);
+    expect(fixture.nativeElement.querySelector('span.italic')).toBeTruthy();
+  });
+
+  it('does not show the empty placeholder in edit mode when there are no documents', () => {
+    expect(component['isViewMode']()).toBe(false);
+    expect(store.uploadedItems()).toHaveLength(0);
+    expect(fixture.nativeElement.querySelector('span.italic')).toBeNull();
+  });
+
   it('stages files selected via the dropzone into the staged section', () => {
     const dropzone = fixture.nativeElement.querySelector('app-agridata-dropzone input[type=file]');
     expect(dropzone).toBeTruthy();

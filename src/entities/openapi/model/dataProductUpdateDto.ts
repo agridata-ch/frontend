@@ -10,7 +10,7 @@
 import { FlowCodeEnum } from './flowCodeEnum';
 import { RestClientMethodCodeEnum } from './restClientMethodCodeEnum';
 import { LinkDto } from './linkDto';
-import { DataProductTechnicalDescriptionDto } from './dataProductTechnicalDescriptionDto';
+import { DataProductExtendedDescriptionDto } from './dataProductExtendedDescriptionDto';
 import { DataProductNameDto } from './dataProductNameDto';
 import { DataProductDescriptionDto } from './dataProductDescriptionDto';
 
@@ -54,9 +54,9 @@ export interface DataProductUpdateDto {
      */
     links?: Array<LinkDto>;
     /**
-     * Technical product details
+     * Extended product details
      */
-    technicalDescription?: DataProductTechnicalDescriptionDto;
+    extendedDescription?: DataProductExtendedDescriptionDto;
 }
 export namespace DataProductUpdateDto {
 }

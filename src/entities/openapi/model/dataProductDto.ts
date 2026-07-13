@@ -59,9 +59,9 @@ export interface DataProductDto {
      */
     links?: Array<LinkDto>;
     /**
-     * Technical product details
+     * Extended product details
      */
-    technicalDescription?: TranslationDto;
+    extendedDescription?: TranslationDto;
     deprecatedSince?: string;
     stateCode: DataProductDtoStateCode;
     /**

@@ -15,111 +15,54 @@
         [class.hidden]="isViewMode()"
       />
     </div>
-    <div appViewSection [isViewMode]="isViewMode()">
-      <app-form-control
-        [control]="getFormControl('name.de')"
-        [label]="t('name.de.label')"
-        [placeholder]="t('name.de.placeholder')"
-        [isViewMode]="isViewMode()"
-        id="name-de"
-        [class.py-3]="isViewMode()"
-        [class.px-4]="isViewMode()"
-      />
-      <app-form-control
-        [control]="getFormControl('description.de')"
-        [controlType]="ControlTypes.TEXT_AREA"
-        [label]="t('description.de.label')"
-        [placeholder]="t('description.de.placeholder')"
-        [isViewMode]="isViewMode()"
-        id="description-de"
-        [class.py-3]="isViewMode()"
-        [class.px-4]="isViewMode()"
-      />
-    </div>
-    <div appViewSection [isViewMode]="isViewMode()">
-      <app-form-control
-        [control]="getFormControl('name.fr')"
-        [label]="t('name.fr.label')"
-        [placeholder]="t('name.fr.placeholder')"
-        [isViewMode]="isViewMode()"
-        id="name-fr"
-        [class.py-3]="isViewMode()"
-        [class.px-4]="isViewMode()"
-      />
-      <app-form-control
-        [control]="getFormControl('description.fr')"
-        [controlType]="ControlTypes.TEXT_AREA"
-        [label]="t('description.fr.label')"
-        [placeholder]="t('description.fr.placeholder')"
-        [isViewMode]="isViewMode()"
-        id="description-fr"
-        [class.py-3]="isViewMode()"
-        [class.px-4]="isViewMode()"
-      />
-    </div>
-    <div appViewSection [isViewMode]="isViewMode()">
-      <app-form-control
-        [control]="getFormControl('name.it')"
-        [label]="t('name.it.label')"
-        [placeholder]="t('name.it.placeholder')"
-        [isViewMode]="isViewMode()"
-        id="name-it"
-        [class.py-3]="isViewMode()"
-        [class.px-4]="isViewMode()"
-      />
-      <app-form-control
-        [control]="getFormControl('description.it')"
-        [controlType]="ControlTypes.TEXT_AREA"
-        [label]="t('description.it.label')"
-        [placeholder]="t('description.it.placeholder')"
-        [isViewMode]="isViewMode()"
-        id="description-it"
-        [class.py-3]="isViewMode()"
-        [class.px-4]="isViewMode()"
-      />
-    </div>
+
+    @for (lang of availableLangs; track lang) {
+      <div appViewSection [isViewMode]="isViewMode()">
+        <app-form-control
+          [control]="getFormControl(`name.${lang}`)"
+          [label]="t(`name.${lang}.label`)"
+          [placeholder]="t(`name.${lang}.placeholder`)"
+          [isViewMode]="isViewMode()"
+          [id]="`name-${lang}`"
+          [class.py-3]="isViewMode()"
+          [class.px-4]="isViewMode()"
+        />
+
+        <app-form-control
+          [control]="getFormControl(`description.${lang}`)"
+          [controlType]="ControlTypes.TEXT_AREA"
+          [label]="t(`description.${lang}.label`)"
+          [placeholder]="t(`description.${lang}.placeholder`)"
+          [isViewMode]="isViewMode()"
+          [id]="'description-' + lang"
+          [class.py-3]="isViewMode()"
+          [class.px-4]="isViewMode()"
+        />
+      </div>
+    }
   </div>
 
   <div class="flex flex-col gap-4">
     <h3>{{ t('additionalInfo') }}</h3>
-    <div appViewSection [isViewMode]="isViewMode()">
-      <app-form-control
-        [control]="getFormControl('technicalDescription.de')"
-        [controlType]="ControlTypes.TEXT_AREA"
-        [label]="t('technicalDescription.de.label')"
-        [placeholder]="t('technicalDescription.de.placeholder')"
-        [isViewMode]="isViewMode()"
-        id="technicalDescription-de"
-        [class.py-3]="isViewMode()"
-        [class.px-4]="isViewMode()"
-        isWysiwyg
-      />
-    </div>
-    <div appViewSection [isViewMode]="isViewMode()">
-      <app-form-control
-        [control]="getFormControl('technicalDescription.fr')"
-        [controlType]="ControlTypes.TEXT_AREA"
-        [label]="t('technicalDescription.fr.label')"
-        [placeholder]="t('technicalDescription.fr.placeholder')"
-        [isViewMode]="isViewMode()"
-        id="technicalDescription-fr"
-        [class.py-3]="isViewMode()"
-        [class.px-4]="isViewMode()"
-        isWysiwyg
-      />
-    </div>
-    <div appViewSection [isViewMode]="isViewMode()">
-      <app-form-control
-        [control]="getFormControl('technicalDescription.it')"
-        [controlType]="ControlTypes.TEXT_AREA"
-        [label]="t('technicalDescription.it.label')"
-        [placeholder]="t('technicalDescription.it.placeholder')"
-        [isViewMode]="isViewMode()"
-        id="technicalDescription-it"
-        [class.py-3]="isViewMode()"
-        [class.px-4]="isViewMode()"
-        isWysiwyg
-      />
-    </div>
+
+    <h4 class="text-agridata-primary-text">
+      {{ t('extendedDescription.heading') }}
+    </h4>
+
+    @for (lang of availableLangs; track lang) {
+      <div appViewSection [isViewMode]="isViewMode()">
+        <app-form-control
+          [control]="getFormControl(`extendedDescription.${lang}`)"
+          [controlType]="ControlTypes.TEXT_AREA"
+          [label]="t(`extendedDescription.${lang}.label`)"
+          [placeholder]="t(`extendedDescription.${lang}.placeholder`)"
+          [isViewMode]="isViewMode()"
+          [id]="`extendedDescription-${lang}`"
+          [class.py-3]="isViewMode()"
+          [class.px-4]="isViewMode()"
+          isWysiwyg
+        />
+      </div>
+    }
   </div>
 </ng-container>

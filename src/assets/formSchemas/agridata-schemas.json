@@ -221,7 +221,7 @@
           "it"
         ]
       },
-      "technicalDescription": {
+      "extendedDescription": {
         "type": "object",
         "properties": {
           "de": {

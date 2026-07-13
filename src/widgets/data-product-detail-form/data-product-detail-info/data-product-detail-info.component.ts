@@ -6,7 +6,9 @@ import { getFormControl } from '@/shared/lib/form.helper';
 import { ControlTypes, FormControlComponent } from '@/shared/ui/form-control';
 import { ViewSectionDirective } from '@/shared/view-section';
 import { AlertComponent, AlertType } from '@/widgets/alert';
-import { DataProductLinksComponent } from '@/widgets/data-product-links';
+
+import { availableLangs } from '../../../../transloco.config';
+
 /**
  * Tab component for the system configuration and name/description fields of a data product.
  *
@@ -14,13 +16,7 @@ import { DataProductLinksComponent } from '@/widgets/data-product-links';
  */
 @Component({
   selector: 'app-data-product-detail-info',
-  imports: [
-    AlertComponent,
-    FormControlComponent,
-    I18nDirective,
-    ViewSectionDirective,
-    DataProductLinksComponent,
-  ],
+  imports: [AlertComponent, FormControlComponent, I18nDirective, ViewSectionDirective],
   templateUrl: './data-product-detail-info.component.html',
   host: { class: 'contents' },
 })
@@ -36,4 +32,6 @@ export class DataProductDetailInfoComponent {
   protected getFormControl(path: string) {
     return getFormControl(this.form(), path);
   }
+
+  protected readonly availableLangs = availableLangs;
 }

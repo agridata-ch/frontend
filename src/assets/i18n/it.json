@@ -923,19 +923,20 @@
         "empty": "Nessun link disponibile."
       },
       "additionalInfo": "Ulteriori informazioni (facoltativo)",
-      "technicalDescription": {
+      "extendedDescription": {
         "de": {
-          "label": "Descrizione tecnica tedesco",
+          "label": "Descrizione estesa in tedesco",
           "placeholder": "Konkret werden folgende Daten übermittelt:\n- Datum der Erfassung bzw. der letzten Änderung dieses Datensatzes im kantonalen System\n- KT_ID_B Kantonale Identifikationsnummer der Betriebsform auf der Stufe, auf der die nachfolgenden Daten erfasst wurden\n..."
         },
         "fr": {
-          "label": "Descrizione tecnica francese",
+          "label": "Descrizione estesa in francese",
           "placeholder": "Concrètement, les données suivantes sont transmises : \n- Date resp. la saisie ou la dernière modification du jeu de données dans le système cantonal\n- KT_ID_B Numéro cantonal de la forme d’exploitation au niveau de laquelle les données suivantes ont été saisies\n..."
         },
         "it": {
-          "label": "Descrizione tecnica italiano",
+          "label": "Descrizione estesa in italiano",
           "placeholder": "Concretamente vengono trasmessi i dati seguenti:\n- Data di registrazione o dell’ultima modifica di questo set di dati nel sistema cantonale\n- KT_ID_B Numero d’identificazione cantonale della forma di azienda al livello a cui sono stati registrati i dati seguenti:\n..."
-        }
+        },
+        "heading": "Descrizione estesa"
       },
       "documents": {
         "title": "Documenti",
@@ -962,7 +963,8 @@
         "uploadDocuments": "Carica documenti",
         "documentsToUpload": "File da caricare",
         "uploadedDocuments": "Documenti disponibili",
-        "markedForRemoval": "Verrà rimosso"
+        "markedForRemoval": "Verrà rimosso",
+        "empty": "Nessun documento disponibile."
       }
     },
     "saveAndPublish": {
