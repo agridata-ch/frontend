@@ -9,17 +9,17 @@
  */
 
 
-export interface DataProductTechnicalDescriptionDto { 
+export interface DataProductExtendedDescriptionDto { 
     /**
-     * German technical description of the data product
+     * German extended description of the data product
      */
     de?: string;
     /**
-     * French technical description of the data product
+     * French extended description of the data product
      */
     fr?: string;
     /**
-     * Italian technical description of the data product
+     * Italian extended description of the data product
      */
     it?: string;
 }

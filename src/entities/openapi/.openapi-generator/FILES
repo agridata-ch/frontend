@@ -37,9 +37,9 @@ model/dataProductDescriptionDto.ts
 model/dataProductDocumentMetadataDto.ts
 model/dataProductDto.ts
 model/dataProductDtoStateCode.ts
+model/dataProductExtendedDescriptionDto.ts
 model/dataProductNameDto.ts
 model/dataProductStateEnum.ts
-model/dataProductTechnicalDescriptionDto.ts
 model/dataProductUpdateDto.ts
 model/dataProviderDto.ts
 model/dataProviderExceptionDto.ts

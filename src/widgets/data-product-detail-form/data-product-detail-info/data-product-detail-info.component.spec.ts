@@ -7,6 +7,7 @@ import { buildReactiveForm } from '@/shared/lib/form.helper';
 import { createMockI18nService } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
+import { availableLangs } from '../../../../transloco.config';
 import { dataProductFormsModel, FORM_TAB_IDS } from '../data-product-detail-form.model';
 import { DataProductDetailInfoComponent } from './data-product-detail-info.component';
 
@@ -44,6 +45,20 @@ describe('DataProductDetailInfoComponent', () => {
 
     it('should return the description.de control', () => {
       expect(component['getFormControl']('description.de')).toBeTruthy();
+    });
+
+    it('should return the extendedDescription.de control', () => {
+      expect(component['getFormControl']('extendedDescription.de')).toBeTruthy();
+    });
+  });
+
+  describe('language rendering', () => {
+    it('should render name, description and extendedDescription controls for each available language', () => {
+      for (const lang of availableLangs) {
+        expect(fixture.nativeElement.querySelector(`#name-${lang}`)).toBeTruthy();
+        expect(fixture.nativeElement.querySelector(`#description-${lang}`)).toBeTruthy();
+        expect(fixture.nativeElement.querySelector(`#extendedDescription-${lang}`)).toBeTruthy();
+      }
     });
   });
 });

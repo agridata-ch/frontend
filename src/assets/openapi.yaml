@@ -746,9 +746,9 @@ components:
           items:
             $ref: "#/components/schemas/LinkDto"
           description: List of relevant product links
-        technicalDescription:
+        extendedDescription:
           $ref: "#/components/schemas/TranslationDto"
-          description: Technical product details
+          description: Extended product details
           type: object
         deprecatedSince:
           $ref: "#/components/schemas/LocalDateTime"
@@ -771,6 +771,36 @@ components:
           description: Template for the path for retrieving updates to the data product
           examples:
           - "v1/animal-updates/{{uid}}?since={{LAST_CHANGED_SINCE}}"
+    DataProductExtendedDescriptionDto:
+      type: object
+      properties:
+        de:
+          type: string
+          description: German extended description of the data product
+          examples:
+          - |-
+            Konkret werden folgende Daten übermittelt:
+            - Datum der Erfassung bzw. der letzten Änderung dieses Datensatzes im kantonalen System
+            - KT_ID_B Kantonale Identifikationsnummer der Betriebsform auf der Stufe, auf der die nachfolgenden Daten...
+          maxLength: 1000
+        fr:
+          type: string
+          description: French extended description of the data product
+          examples:
+          - |-
+            Concrètement, les données suivantes sont transmises :
+            - Date resp. la saisie ou la dernière modification du jeu de données dans le système cantonal
+            - KT_ID_B Numéro cantonal de la forme d’exploitation au niveau de laquelle les données suivantes ont été saisies...
+          maxLength: 1000
+        it:
+          type: string
+          description: Italian extended description of the data product
+          examples:
+          - |-
+            Concretamente vengono trasmessi i dati seguenti:
+            - Data di registrazione o dell’ultima modifica di questo set di dati nel sistema cantonale
+            - KT_ID_B Numero d’identificazione cantonale della forma di azienda al livello a cui sono stati registrati i dati...
+          maxLength: 1000
     DataProductNameDto:
       type: object
       properties:
@@ -794,36 +824,6 @@ components:
       enum:
       - DRAFT
       - ACTIVE
-    DataProductTechnicalDescriptionDto:
-      type: object
-      properties:
-        de:
-          type: string
-          description: German technical description of the data product
-          examples:
-          - |-
-            Konkret werden folgende Daten übermittelt:
-            - Datum der Erfassung bzw. der letzten Änderung dieses Datensatzes im kantonalen System
-            - KT_ID_B Kantonale Identifikationsnummer der Betriebsform auf der Stufe, auf der die nachfolgenden Daten...
-          maxLength: 1000
-        fr:
-          type: string
-          description: French technical description of the data product
-          examples:
-          - |-
-            Concrètement, les données suivantes sont transmises :
-            - Date resp. la saisie ou la dernière modification du jeu de données dans le système cantonal
-            - KT_ID_B Numéro cantonal de la forme d’exploitation au niveau de laquelle les données suivantes ont été saisies...
-          maxLength: 1000
-        it:
-          type: string
-          description: Italian technical description of the data product
-          examples:
-          - |-
-            Concretamente vengono trasmessi i dati seguenti:
-            - Data di registrazione o dell’ultima modifica di questo set di dati nel sistema cantonale
-            - KT_ID_B Numero d’identificazione cantonale della forma di azienda al livello a cui sono stati registrati i dati...
-          maxLength: 1000
     DataProductUpdateDto:
       description: Data transfer object representing a data product
       type: object
@@ -883,9 +883,9 @@ components:
           items:
             $ref: "#/components/schemas/LinkDto"
           description: List of relevant product links
-        technicalDescription:
-          $ref: "#/components/schemas/DataProductTechnicalDescriptionDto"
-          description: Technical product details
+        extendedDescription:
+          $ref: "#/components/schemas/DataProductExtendedDescriptionDto"
+          description: Extended product details
           type: object
     DataProviderDto:
       type: object
@@ -4978,7 +4978,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.13.0-rc.4
+  version: 1.13.0-rc.6
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

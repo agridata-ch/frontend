@@ -214,6 +214,16 @@ describe('DataProductLinksComponent', () => {
     });
   });
 
+  describe('empty state', () => {
+    it('should show the empty placeholder in view mode when there are no links', async () => {
+      componentRef.setInput('formDisabled', true);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(fixture.nativeElement.querySelector('span.italic')).toBeTruthy();
+    });
+  });
+
   describe('viewLinks', () => {
     it('should recompute after async hydration even when read while empty first', async () => {
       await createComponent();
