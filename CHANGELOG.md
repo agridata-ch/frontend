@@ -1,3 +1,9 @@
+## [1.15.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.4...v1.15.0-rc.5) (2026-07-13)
+
+### Features
+
+- **data-product:** add pdf and links tab ([64654f8](https://github.com/agridata-ch/frontend/commit/64654f807eed0820bf900912fe0d1ac117de61a6)), closes [DIGIB2-1475](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1475)
+
 ## [1.15.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.3...v1.15.0-rc.4) (2026-07-13)
 
 ### Features
