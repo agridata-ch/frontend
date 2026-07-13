@@ -1,3 +1,9 @@
+## [1.15.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.3...v1.15.0-rc.4) (2026-07-13)
+
+### Features
+
+- **wysiwyg:** add wysiwyg editor ([f9cd6b0](https://github.com/agridata-ch/frontend/commit/f9cd6b0e733e0c9088ba48b38bd990d6f1ca1e04)), closes [DIGIB2-1355](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1355)
+
 ## [1.15.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.2...v1.15.0-rc.3) (2026-07-09)
 
 ### Bug Fixes
