@@ -1,3 +1,9 @@
+## [1.15.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.5...v1.15.0-rc.6) (2026-07-14)
+
+### Features
+
+- **data-products:** change display of empty extended description and links, update translations ([a30f930](https://github.com/agridata-ch/frontend/commit/a30f9309b9ba0267cf77a0bbe3326e80ceaf9c4a)), closes [DIGIB2-1352](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1352)
+
 ## [1.15.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.4...v1.15.0-rc.5) (2026-07-13)
 
 ### Features
