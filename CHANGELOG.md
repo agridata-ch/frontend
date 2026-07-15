@@ -1,3 +1,9 @@
+## [1.15.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.6...v1.15.0-rc.7) (2026-07-15)
+
+### Bug Fixes
+
+- **client-table:** fix page-size ([fc40b8c](https://github.com/agridata-ch/frontend/commit/fc40b8c24f35b1afca7379a7a7b7a3413749a047)), closes [DIGIB2-1540](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1540)
+
 ## [1.15.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.5...v1.15.0-rc.6) (2026-07-14)
 
 ### Features
