@@ -63,8 +63,9 @@ export class AgridataClientTableComponent<T> {
     query: ResourceQueryDto | undefined,
   ): PageResponseDto<T> {
     const rows = data ?? [];
+    const pageSize = query?.size ?? this.pageSize();
     const searchedRows = this.applySearch(rows, query?.searchTerm);
-    const totalPages = this.calculateTotalPages(searchedRows);
+    const totalPages = this.calculateTotalPages(searchedRows, pageSize);
     const currentPage = this.normalizePageIndex(query?.page, totalPages);
     const sortedRows = this.applySorting(searchedRows, query?.sortParams);
 
@@ -72,22 +73,22 @@ export class AgridataClientTableComponent<T> {
       totalPages,
       currentPage,
       totalItems: rows.length,
-      items: this.extractPageItems(sortedRows, currentPage),
-      pageSize: this.pageSize(),
+      items: this.extractPageItems(sortedRows, currentPage, pageSize),
+      pageSize,
     };
   }
 
-  private calculateTotalPages(data: Array<T>): number {
-    return Math.ceil(data.length / this.pageSize());
+  private calculateTotalPages(data: Array<T>, pageSize: number): number {
+    return Math.ceil(data.length / pageSize);
   }
 
   private normalizePageIndex(page: number | undefined, totalPages: number): number {
     return !page || page >= totalPages ? 0 : page;
   }
 
-  private extractPageItems(data: Array<T>, page: number): Array<T> {
-    const startIndex = page * this.pageSize();
-    return data.slice(startIndex, startIndex + this.pageSize());
+  private extractPageItems(data: Array<T>, page: number, pageSize: number): Array<T> {
+    const startIndex = page * pageSize;
+    return data.slice(startIndex, startIndex + pageSize);
   }
 
   private applySearch(data: Array<T>, searchTerm: string | undefined): Array<T> {

@@ -123,8 +123,26 @@ describe('AgridataClientTableComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should paginate data correctly', () => {
+    it('should paginate using the page size input when the query has no size', () => {
       fixture.componentRef.setInput('pageSize', 2);
+      fixture.detectChanges();
+
+      const fetchedData = component['computeData'](component.rawData(), undefined);
+      const mockResourceRef = MockResources.createMockResourceRef(fetchedData);
+
+      expect(mockResourceRef.value().items).toHaveLength(2);
+      expect(mockResourceRef.value().totalPages).toBe(2);
+      expect(mockResourceRef.value().pageSize).toBe(2);
+    });
+
+    it('should paginate using the query page size over the default input', () => {
+      component.resourceQueryDto.set({
+        searchTerm: '',
+        page: 0,
+        size: 2,
+        sortParams: [],
+      });
+
       fixture.detectChanges();
 
       const fetchedData = component['computeData'](
@@ -133,8 +151,9 @@ describe('AgridataClientTableComponent', () => {
       );
       const mockResourceRef = MockResources.createMockResourceRef(fetchedData);
 
-      expect(mockResourceRef.value().items.length).toBe(2);
+      expect(mockResourceRef.value().items).toHaveLength(2);
       expect(mockResourceRef.value().totalPages).toBe(2);
+      expect(mockResourceRef.value().pageSize).toBe(2);
     });
 
     it('should search data by text', () => {
