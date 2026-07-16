@@ -1,3 +1,9 @@
+## [1.15.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.8...v1.15.0-rc.9) (2026-07-16)
+
+### Features
+
+- **deps:** update actions/setup-node action to v7 ([0ba2d04](https://github.com/agridata-ch/frontend/commit/0ba2d045a65004266030f88fc42435bbd91b9249))
+
 ## [1.15.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.7...v1.15.0-rc.8) (2026-07-16)
 
 ### Bug Fixes
