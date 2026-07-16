@@ -11,7 +11,7 @@ import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
 } from '@/shared/testing/mocks';
-import { ModalComponent } from '@/shared/ui/modal/modal.component';
+import { ModalComponent } from '@/shared/ui/modal';
 
 import { ErrorModal } from './error-modal.component';
 

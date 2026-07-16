@@ -4,7 +4,7 @@ import { buildConsentRequestTourSteps } from '@/shared/consent-request';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { ProductTourService } from '@/shared/product-tour';
 import { ButtonVariants, ButtonComponent } from '@/shared/ui/button';
-import { ModalComponent } from '@/shared/ui/modal/modal.component';
+import { ModalComponent } from '@/shared/ui/modal';
 
 /**
  * Displays an intro modal asking the user to start or skip the consent request tour.

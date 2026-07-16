@@ -25,7 +25,7 @@ import {
   createResourceValueComputed,
 } from '@/shared/lib/api.helper';
 import { ButtonComponent } from '@/shared/ui/button';
-import { ModalComponent } from '@/shared/ui/modal/modal.component';
+import { ModalComponent } from '@/shared/ui/modal';
 import { AlertComponent, AlertType } from '@/widgets/alert';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 import { ConsentRequestsTourIntroComponent } from '@/widgets/consent-requests-tour/consent-requests-tour-intro/consent-requests-tour-intro.component';

@@ -83,4 +83,29 @@
       }
     </ng-container>
   </app-sidepanel>
+  <app-modal
+    [(open)]="showPublishModal"
+    [title]="t('publishConfirmation.title')"
+    [dataTestId]="'publish-data-product-modal'"
+    (closed)="cancelPublish()"
+  >
+    <div class="flex flex-col gap-4">
+      <span
+        class="whitespace-pre-line text-center"
+        [innerHTML]="t('publishConfirmation.description')"
+      ></span>
+      <div class="flex justify-between gap-2">
+        <app-agridata-button [variant]="ButtonVariants.Secondary" (handleClick)="cancelPublish()">
+          {{ t('publishConfirmation.cancel') }}
+        </app-agridata-button>
+        <app-agridata-button
+          [variant]="ButtonVariants.Primary"
+          [loading]="isSaving()"
+          (handleClick)="confirmPublish()"
+        >
+          {{ t('publishConfirmation.publish') }}
+        </app-agridata-button>
+      </div>
+    </div>
+  </app-modal>
 </ng-container>

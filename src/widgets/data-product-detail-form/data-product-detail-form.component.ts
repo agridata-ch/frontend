@@ -32,6 +32,7 @@ import { ToastService, ToastType } from '@/shared/toast';
 import { AgridataTabsComponent, Tab } from '@/shared/ui/agridata-tabs';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ModalComponent } from '@/shared/ui/modal';
 import { DocumentUploadStore } from '@/widgets/data-product-detail-form/data-product-detail-links-documents';
 
 import {
@@ -60,6 +61,7 @@ import { DataProductDetailTechnicalComponent } from './data-product-detail-techn
     DataProductDetailTechnicalComponent,
     FontAwesomeModule,
     I18nDirective,
+    ModalComponent,
     ScrollFadeDirective,
     SidepanelComponent,
     AgridataBadgeComponent,
@@ -95,6 +97,7 @@ export class DataProductDetailFormComponent {
   protected readonly activeTabId = signal<string>(FORM_TAB_IDS.NAME_AND_DESCRIPTION);
   protected readonly isOpen = signal(false);
   protected readonly isSaving = signal(false);
+  protected readonly showPublishModal = signal(false);
   private readonly currentDataProductId = signal<string | null>(null);
   private readonly isEditMode = signal(false);
   private readonly publishAttempted = signal(false);
@@ -248,7 +251,22 @@ export class DataProductDetailFormComponent {
     return this.save(false);
   }
 
-  protected async saveAndPublish(): Promise<void> {
+  protected saveAndPublish(): void {
+    this.publishAttempted.set(true);
+    this.form.markAllAsTouched();
+    if (!this.form.valid) {
+      this.scrollToFirstError();
+      return;
+    }
+    this.showPublishModal.set(true);
+  }
+
+  protected cancelPublish(): void {
+    this.showPublishModal.set(false);
+  }
+
+  protected async confirmPublish(): Promise<void> {
+    this.showPublishModal.set(false);
     return this.save(true);
   }
 

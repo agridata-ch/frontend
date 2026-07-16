@@ -42,7 +42,7 @@ import { ToastService } from '@/shared/toast';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
-import { ModalComponent } from '@/shared/ui/modal/modal.component';
+import { ModalComponent } from '@/shared/ui/modal';
 import { startCountdown } from '@/shared/utils/ui.util';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { AlertComponent, AlertType } from '@/widgets/alert';

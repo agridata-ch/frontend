@@ -7,7 +7,7 @@ import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { ErrorAlertList } from '@/shared/error-alert-list/error-alert-list.component';
 import { I18nPipe } from '@/shared/i18n';
 import { ButtonVariants } from '@/shared/ui/button';
-import { ModalComponent } from '@/shared/ui/modal/modal.component';
+import { ModalComponent } from '@/shared/ui/modal';
 
 /**
  * Displays a list of error messages to the user. It retrieves errors from the
