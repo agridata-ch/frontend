@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DataProductUpdateDto as DataProductUpdateDtoSchema } from '@/assets/formSchemas/agridata-schemas.json';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductDocumentService } from '@/entities/api/data-product-document.service';
-import { DocumentScanStatus } from '@/entities/openapi';
+import { DocumentScanStatusEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { buildReactiveForm } from '@/shared/lib/form.helper';
 import {
@@ -89,7 +89,12 @@ describe('DataProductDetailDocumentsComponent', () => {
 
   it('renders previously uploaded documents in a separate section', async () => {
     documentService.listDocuments.mockResolvedValueOnce([
-      { id: 'doc-1', fileName: 'existing.pdf', scanStatus: DocumentScanStatus.Available },
+      {
+        id: 'doc-1',
+        fileName: 'existing.pdf',
+        scanStatus: DocumentScanStatusEnum.Available,
+        sizeBytes: 50,
+      },
     ]);
     await store.loadExisting('product-1');
     store.addFiles([pdf('new.pdf')]);
@@ -113,7 +118,12 @@ describe('DataProductDetailDocumentsComponent', () => {
 
   it('marks an existing document for removal instead of deleting it immediately', async () => {
     documentService.listDocuments.mockResolvedValueOnce([
-      { id: 'doc-1', fileName: 'existing.pdf', scanStatus: DocumentScanStatus.Available },
+      {
+        id: 'doc-1',
+        fileName: 'existing.pdf',
+        scanStatus: DocumentScanStatusEnum.Available,
+        sizeBytes: 50,
+      },
     ]);
     await store.loadExisting('product-1');
     fixture.detectChanges();
@@ -127,7 +137,12 @@ describe('DataProductDetailDocumentsComponent', () => {
 
   it('restores a document that was marked for removal', async () => {
     documentService.listDocuments.mockResolvedValueOnce([
-      { id: 'doc-1', fileName: 'existing.pdf', scanStatus: DocumentScanStatus.Available },
+      {
+        id: 'doc-1',
+        fileName: 'existing.pdf',
+        scanStatus: DocumentScanStatusEnum.Available,
+        sizeBytes: 50,
+      },
     ]);
     await store.loadExisting('product-1');
     component['handleRemove'](store.items()[0]);
@@ -160,7 +175,12 @@ describe('DataProductDetailDocumentsComponent', () => {
     URL.createObjectURL = jest.fn().mockReturnValue('blob:mock');
     URL.revokeObjectURL = jest.fn();
     documentService.listDocuments.mockResolvedValueOnce([
-      { id: 'doc-1', fileName: 'existing.pdf', scanStatus: DocumentScanStatus.Available },
+      {
+        id: 'doc-1',
+        fileName: 'existing.pdf',
+        scanStatus: DocumentScanStatusEnum.Available,
+        sizeBytes: 50,
+      },
     ]);
     await store.loadExisting('product-1');
 
@@ -175,7 +195,12 @@ describe('DataProductDetailDocumentsComponent', () => {
     URL.revokeObjectURL = jest.fn();
     const openSpy = jest.spyOn(globalThis, 'open').mockImplementation(() => null);
     documentService.listDocuments.mockResolvedValueOnce([
-      { id: 'doc-1', fileName: 'existing.pdf', scanStatus: DocumentScanStatus.Available },
+      {
+        id: 'doc-1',
+        fileName: 'existing.pdf',
+        scanStatus: DocumentScanStatusEnum.Available,
+        sizeBytes: 50,
+      },
     ]);
     await store.loadExisting('product-1');
 

@@ -6,6 +6,7 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { TitleService } from '@/app/title.service';
+import { AgbService } from '@/entities/api';
 import {
   CmsService,
   StrapiSingleTypeResponse,
@@ -28,6 +29,7 @@ import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
   templateUrl: './agb-page.page.html',
 })
 export class AgbPage {
+  private readonly agbService = inject(AgbService);
   private readonly strapiService = inject(CmsService);
   private readonly i18nService = inject(I18nService);
   private readonly router = inject(Router);
@@ -36,20 +38,27 @@ export class AgbPage {
 
   protected readonly agbPageResource = resource({
     params: () => ({ locale: this.i18nService.lang() }),
-    loader: ({ params }) => {
-      return this.strapiService.fetchAgbPage(params.locale);
+    loader: async ({ params }) => {
+      const [cmsPage, agbs] = await Promise.all([
+        this.strapiService.fetchAgbPage(params.locale),
+        this.agbService.fetchAgbs(),
+      ]);
+      return { cmsPage, agbs };
     },
   });
 
   protected readonly agbPage = createResourceValueComputed(this.agbPageResource);
 
   protected readonly content = computed(() => {
-    const response = this.agbPage() as StrapiSingleTypeResponseWithContent;
-    return response.data.content;
+    const response = this.agbPage()?.agbs;
+    if (!response) return '';
+
+    const lang = this.i18nService.lang() as keyof typeof response.agbText;
+    return response?.agbText?.[lang] ?? '';
   });
 
   protected readonly footerBlock = computed(() => {
-    const response = this.agbPage() as StrapiSingleTypeResponseWithContent;
+    const response = this.agbPage()?.cmsPage as StrapiSingleTypeResponseWithContent;
     return response.data.footer;
   });
 
@@ -66,7 +75,7 @@ export class AgbPage {
   });
 
   private readonly updatePageHtmlTitle = effect(() => {
-    const response = this.agbPageResource.value() as StrapiSingleTypeResponse;
+    const response = this.agbPageResource.value()?.cmsPage as StrapiSingleTypeResponse;
     this.titleService.setTranslatedTitle(response?.data?.title);
   });
 

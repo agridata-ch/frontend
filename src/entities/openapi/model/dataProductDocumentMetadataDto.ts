@@ -7,14 +7,23 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DocumentScanStatus } from './documentScanStatus';
+import { DocumentScanStatusEnum } from './documentScanStatusEnum';
 
 
 export interface DataProductDocumentMetadataDto { 
-    id?: string;
-    fileName?: string;
-    sizeBytes?: number;
-    scanStatus?: DocumentScanStatus;
+    id: string;
+    /**
+     * Filename of the document
+     */
+    fileName: string;
+    /**
+     * Filesize of the document
+     */
+    sizeBytes: number;
+    /**
+     * Status of the document scan
+     */
+    scanStatus: DocumentScanStatusEnum;
 }
 export namespace DataProductDocumentMetadataDto {
 }

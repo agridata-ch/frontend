@@ -1,5 +1,5 @@
 import { DataProductDocumentService } from '@/entities/api/data-product-document.service';
-import { DocumentScanStatus } from '@/entities/openapi';
+import { DocumentScanStatusEnum } from '@/entities/openapi';
 import { Mockify } from '@/shared/testing/mocks';
 
 export type MockDataProductDocumentService = Mockify<DataProductDocumentService>;
@@ -11,7 +11,7 @@ export type MockDataProductDocumentService = Mockify<DataProductDocumentService>
  */
 export function createMockDataProductDocumentService(): MockDataProductDocumentService {
   return {
-    awaitDocumentProcessed: jest.fn().mockResolvedValue(DocumentScanStatus.Available),
+    awaitDocumentProcessed: jest.fn().mockResolvedValue(DocumentScanStatusEnum.Available),
     deleteDocument: jest.fn().mockResolvedValue(undefined),
     downloadDocument: jest.fn().mockResolvedValue(new Blob()),
     getDocument: jest.fn().mockResolvedValue({}),
