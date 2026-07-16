@@ -182,3 +182,32 @@ We use Storybook for our UI components. You can run Storybook with the following
 ```bash 
 npm run storybook
 ```
+
+## AI
+We use Claude for AI assistance. You can access it via the [Claude website](https://www.anthropic.com/).
+Also you can use the Claude API to integrate it into your workflow. You can find the API documentation [here](https://www.anthropic.com/docs/).
+
+### CodeSight
+
+We use CodeSight for context generation and therefore cost optimization. You can find more information about it on its [GitHub repository](https://github.com/Houseofmvps/codesight).
+To use CodeSight, you need to install the CodeSight CLI and run it in your project directory.
+Just install it via npx:
+
+```bash
+npx codesight
+```
+
+Then you can run the following command to analyze your code:
+
+```bash
+npx codesight --wiki                       # Generate wiki knowledge base (.codesight/wiki/)
+npx codesight --init                       # Generate CLAUDE.md, .cursorrules, codex.md, AGENTS.md
+npx codesight --open                       # Open interactive HTML report in browser
+npx codesight --mcp                        # Start as MCP server (14 tools) for Claude Code / Cursor
+npx codesight --blast src/lib/db.ts        # Show blast radius for a file
+npx codesight --profile claude-code        # Generate optimized config for a specific AI tool
+npx codesight --benchmark                  # Show detailed token savings breakdown
+npx codesight --native-ast                 # Opt-in: AST plugins for more languages (see docs/wasm-plugins.md)
+npx codesight --mode knowledge             # Map knowledge base (.md notes → KNOWLEDGE.md)
+npx codesight --mode knowledge ~/vault     # Map Obsidian vault, ADRs, meeting notes, retros
+```

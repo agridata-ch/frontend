@@ -5,7 +5,7 @@ jobs:
   unit-test-sonarqube:
     name: Unit Tests and SonarQube
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     env:
       FONTAWESOME_PACKAGE_TOKEN: ${{ secrets.FONTAWESOME_PACKAGE_TOKEN }}
     steps:

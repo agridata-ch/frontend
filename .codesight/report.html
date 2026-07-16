@@ -1,0 +1,1773 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>frontend — codesight report</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --bg: #0a0a0f;
+        --card: #12121a;
+        --border: #1e1e2e;
+        --text: #e0e0e8;
+        --muted: #6b6b80;
+        --accent: #6366f1;
+        --accent2: #22d3ee;
+        --green: #22c55e;
+        --orange: #f59e0b;
+        --red: #ef4444;
+        --pink: #ec4899;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        padding: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.25rem;
+      }
+      .subtitle {
+        color: var(--muted);
+        font-size: 1rem;
+        margin-bottom: 2rem;
+      }
+      .stack-badge {
+        display: inline-block;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 2px 10px;
+        font-size: 0.85rem;
+        color: var(--accent2);
+        margin: 0 4px 4px 0;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1rem;
+        margin: 2rem 0;
+      }
+      .stat {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.25rem;
+        text-align: center;
+      }
+      .stat-value {
+        font-size: 2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .stat-label {
+        color: var(--muted);
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+      }
+      .token-hero {
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        border: 1px solid var(--accent);
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 2rem 0;
+        text-align: center;
+      }
+      .token-saved {
+        font-size: 3rem;
+        font-weight: 900;
+        color: var(--green);
+      }
+      .token-detail {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+      }
+      .section {
+        margin: 2.5rem 0;
+      }
+      .section h2 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1rem;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1rem;
+        transition: border-color 0.2s;
+      }
+      .card:hover {
+        border-color: var(--accent);
+      }
+      .card-title {
+        font-weight: 700;
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+      }
+      .card-meta {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+      .tag {
+        display: inline-block;
+        background: rgba(99, 102, 241, 0.15);
+        color: var(--accent);
+        border-radius: 4px;
+        padding: 1px 6px;
+        font-size: 0.75rem;
+        margin: 1px;
+      }
+      .tag-auth {
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--red);
+      }
+      .tag-db {
+        background: rgba(34, 211, 238, 0.15);
+        color: var(--accent2);
+      }
+      .tag-ai {
+        background: rgba(236, 72, 153, 0.15);
+        color: var(--pink);
+      }
+      .tag-payment {
+        background: rgba(245, 158, 11, 0.15);
+        color: var(--orange);
+      }
+      .tag-email {
+        background: rgba(34, 197, 94, 0.15);
+        color: var(--green);
+      }
+      .tag-queue {
+        background: rgba(168, 85, 247, 0.15);
+        color: #a855f7;
+      }
+      .tag-cache {
+        background: rgba(245, 158, 11, 0.15);
+        color: var(--orange);
+      }
+      .method {
+        font-weight: 700;
+        font-size: 0.8rem;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-right: 6px;
+      }
+      .method-GET {
+        background: rgba(34, 197, 94, 0.2);
+        color: var(--green);
+      }
+      .method-POST {
+        background: rgba(99, 102, 241, 0.2);
+        color: var(--accent);
+      }
+      .method-PUT {
+        background: rgba(245, 158, 11, 0.2);
+        color: var(--orange);
+      }
+      .method-PATCH {
+        background: rgba(245, 158, 11, 0.2);
+        color: var(--orange);
+      }
+      .method-DELETE {
+        background: rgba(239, 68, 68, 0.2);
+        color: var(--red);
+      }
+      .method-ALL {
+        background: rgba(107, 107, 128, 0.2);
+        color: var(--muted);
+      }
+      .route-path {
+        font-family: 'Fira Code', monospace;
+        font-size: 0.9rem;
+      }
+      .route-contract {
+        color: var(--muted);
+        font-size: 0.8rem;
+        font-style: italic;
+        margin-left: 0.5rem;
+      }
+      .field {
+        display: flex;
+        gap: 0.5rem;
+        padding: 3px 0;
+        font-size: 0.9rem;
+      }
+      .field-name {
+        font-family: monospace;
+        color: var(--accent2);
+      }
+      .field-type {
+        color: var(--muted);
+        font-family: monospace;
+      }
+      .field-flags {
+        display: flex;
+        gap: 3px;
+      }
+      .flag {
+        font-size: 0.7rem;
+        padding: 0 4px;
+        border-radius: 3px;
+        background: rgba(99, 102, 241, 0.1);
+        color: var(--accent);
+      }
+      .flag-pk {
+        background: rgba(245, 158, 11, 0.2);
+        color: var(--orange);
+      }
+      .flag-fk {
+        background: rgba(34, 211, 238, 0.2);
+        color: var(--accent2);
+      }
+      .flag-unique {
+        background: rgba(236, 72, 153, 0.2);
+        color: var(--pink);
+      }
+      .hot-bar {
+        height: 8px;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        border-radius: 4px;
+        margin-top: 4px;
+      }
+      .component-props {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      .badge-client {
+        background: rgba(34, 197, 94, 0.15);
+        color: var(--green);
+        font-size: 0.75rem;
+        padding: 1px 6px;
+        border-radius: 4px;
+      }
+      .badge-server {
+        background: rgba(99, 102, 241, 0.15);
+        color: var(--accent);
+        font-size: 0.75rem;
+        padding: 1px 6px;
+        border-radius: 4px;
+      }
+      .env-required {
+        color: var(--red);
+        font-weight: 600;
+        font-size: 0.8rem;
+      }
+      .env-default {
+        color: var(--green);
+        font-size: 0.8rem;
+      }
+      .footer {
+        text-align: center;
+        color: var(--muted);
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+        font-size: 0.85rem;
+      }
+      .footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      table td,
+      table th {
+        padding: 8px 12px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.9rem;
+      }
+      table th {
+        color: var(--muted);
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>frontend</h1>
+    <div class="subtitle">AI Context Map — generated by codesight</div>
+
+    <div>
+      <span class="stack-badge">angular</span>
+
+      <span class="stack-badge">angular</span>
+      <span class="stack-badge">typescript</span>
+    </div>
+
+    <div class="token-hero">
+      <div class="token-saved">~102,920 tokens saved</div>
+      <div class="token-detail">
+        Output: 17,460 tokens — Exploration cost without codesight: ~120,380 tokens — 702 files
+        scanned
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">4</div>
+        <div class="stat-label">Routes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Models</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">143</div>
+        <div class="stat-label">Components</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">218</div>
+        <div class="stat-label">Libraries</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">6</div>
+        <div class="stat-label">Env Vars</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">18</div>
+        <div class="stat-label">Middleware</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">2146</div>
+        <div class="stat-label">Import Links</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Routes</h2>
+      <table>
+        <tr>
+          <th>Method</th>
+          <th>Path</th>
+          <th>Contract</th>
+          <th>Tags</th>
+          <th>File</th>
+        </tr>
+        <tr>
+          <td><span class="method method-GET">GET</span></td>
+          <td class="route-path">/auth-response</td>
+          <td></td>
+          <td><span class="tag tag-auth">auth</span></td>
+          <td class="card-meta">src/app/app.routes.ts</td>
+        </tr>
+        <tr>
+          <td><span class="method method-GET">GET</span></td>
+          <td class="route-path">/</td>
+          <td></td>
+          <td><span class="tag tag-auth">auth</span></td>
+          <td class="card-meta">src/app/app.routes.ts</td>
+        </tr>
+        <tr>
+          <td><span class="method method-GET">GET</span></td>
+          <td class="route-path">
+            /:dataProductId <span class="route-contract">params: dataProductId</span>
+          </td>
+          <td></td>
+          <td><span class="tag tag-auth">auth</span></td>
+          <td class="card-meta">src/app/app.routes.ts</td>
+        </tr>
+        <tr>
+          <td><span class="method method-GET">GET</span></td>
+          <td class="route-path">/**</td>
+          <td></td>
+          <td><span class="tag tag-auth">auth</span></td>
+          <td class="card-meta">src/app/app.routes.ts</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>Components</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="card-title">AppComponent <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/app/app.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DefaultLayoutComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">src/app/layout/default-layout.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            FullWidthLayoutComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">src/app/layout/full-width-layout.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestAdvantagesComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: advantages, lang</div>
+          <div class="card-meta">
+            src/data-request-advantages/data-request-advantages.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            BlockRendererComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block, index, isDynamicPage</div>
+          <div class="card-meta">src/features/cms-blocks/cms-block-renderer.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">DebugModalComponent <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/features/debug/debug-modal.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            LanguageSelectComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">src/features/language-select/language-select.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">AdminPage <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/pages/admin-page/admin.page.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">AgbPage <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/pages/agb-page/agb-page.page.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">CmsPage <span class="badge-client">client</span></div>
+          <div class="component-props">props: slug</div>
+          <div class="card-meta">src/pages/cms-page/cms-page.page.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ConsentRequestProducerPage <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">
+            src/pages/consent-request-producer/consent-request-producer.page.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataProductsPageComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">src/pages/data-products-page/data-products-page.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestsConsumerPage <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">
+            src/pages/data-requests-consumer/data-requests-consumer.page.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestsProviderPage <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">
+            src/pages/data-requests-provider/data-requests-provider.page.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">ErrorPage <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/pages/error-page/error-page.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ExternalServiceErrorPage <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">
+            src/pages/external-service-error/external-service-error.page.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">ForbiddenPage <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/pages/forbidden/forbidden.page.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">ImprintPage <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/pages/imprint-page/imprint-page.page.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">LandingPage <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/pages/landing-page/landing-page.page.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">MaintenancePage <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/pages/maintenance/maintenance.page.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">NotFoundPage <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/pages/not-found/not-found.page.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            NotificationCenterPageComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">
+            src/pages/notification-center-page/notification-center-page.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">OnboardingPage <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/pages/onboarding-page/onboarding-page.page.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">PrivacyPolicyPage <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/pages/privacy-policy-page/privacy-policy-page.page.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            SupporterPageComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">src/pages/supporter-page/supporter-page.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">ErrorAlertList <span class="badge-client">client</span></div>
+          <div class="component-props">props: errors</div>
+          <div class="card-meta">src/shared/error-alert-list/error-alert-list.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ErrorOutletComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">src/shared/error-alert-outlet/error-outlet.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">ErrorModal <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/shared/error-modal/error-modal.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">SidepanelComponent <span class="badge-client">client</span></div>
+          <div class="component-props">
+            props: backgroundColor, dataTestId, isOpen, maxWidth, preventManualClose, title,
+            subTitle
+          </div>
+          <div class="card-meta">src/shared/sidepanel/sidepanel.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">DummyComponent <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/shared/testing/mocks/dummy-components.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataAvatarComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: name, imageUrl, size, skin</div>
+          <div class="card-meta">src/shared/ui/agridata-avatar/agridata-avatar.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataClientTableComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: pageSize, enableSearch, loading</div>
+          <div class="card-meta">
+            src/shared/ui/agridata-client-table/agridata-client-table.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataDigitInputComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: control, length, isViewMode</div>
+          <div class="card-meta">
+            src/shared/ui/agridata-digit-input/agridata-digit-input.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataDropzoneComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">
+            props: accept, ariaDescribedBy, disabled, multiple, label, hint
+          </div>
+          <div class="card-meta">
+            src/shared/ui/agridata-dropzone/agridata-dropzone.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataInputComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">
+            props: id, control, type, placeholder, maxCharacters, hasError, inputPrefix,
+            inputPrefixIcon, isViewMode, disabled
+          </div>
+          <div class="card-meta">src/shared/ui/agridata-input/agridata-input.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataMultiSelectOptionComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: control, option, disabled</div>
+          <div class="card-meta">
+            src/shared/ui/agridata-multi-select/agridata-multi-select-option/agridata-multi-select-option.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataMultiSelectComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">
+            props: categories, control, customClass, disabled, enableSearch, hasError, options,
+            placeholder, singleCategorySelection, isViewMode
+          </div>
+          <div class="card-meta">
+            src/shared/ui/agridata-multi-select/agridata-multi-select.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataRadioGroupComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: ariaLabel, control, disabled, name, options</div>
+          <div class="card-meta">
+            src/shared/ui/agridata-radio-group/agridata-radio-group.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataSelectComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">
+            props: control, customClass, isViewMode, disabled, hasError, options, placeholder
+          </div>
+          <div class="card-meta">src/shared/ui/agridata-select/agridata-select.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataTableComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: enableSearch</div>
+          <div class="card-meta">src/shared/ui/agridata-table/agridata-table.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">TableCellComponent <span class="badge-client">client</span></div>
+          <div class="component-props">props: row</div>
+          <div class="card-meta">
+            src/shared/ui/agridata-table/table-cell/table-cell.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            TableHeaderCellComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: sortDirection</div>
+          <div class="card-meta">
+            src/shared/ui/agridata-table/table-header-cell/table-header-cell.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            TablePaginationComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: currentPageIndex, totalPages, pageSize</div>
+          <div class="card-meta">
+            src/shared/ui/agridata-table/table-pagination/table-pagination.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            TableRowMenuComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: actions, dataTestId</div>
+          <div class="card-meta">
+            src/shared/ui/agridata-table/table-row-menu/table-row-menu.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataTabsComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: tabs</div>
+          <div class="card-meta">src/shared/ui/agridata-tabs/agridata-tabs.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataTextareaComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">
+            props: control, id, placeholder, maxCharacters, hasError, isViewMode, disabled
+          </div>
+          <div class="card-meta">
+            src/shared/ui/agridata-textarea/agridata-textarea.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataToggleComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: ariaLabel, disabled, label</div>
+          <div class="card-meta">src/shared/ui/agridata-toggle/agridata-toggle.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataWysiwygComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">
+            props: control, id, placeholder, maxCharacters, hasError, isViewMode, disabled
+          </div>
+          <div class="card-meta">src/shared/ui/agridata-wysiwyg/agridata-wysiwyg.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataBadgeComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: text, variant, size</div>
+          <div class="card-meta">src/shared/ui/badge/agridata-badge.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">ButtonComponent <span class="badge-client">client</span></div>
+          <div class="component-props">
+            props: variant, type, disabled, tabindex, ariaLabel, selected, loading, success,
+            disabledInfo, tooltip
+          </div>
+          <div class="card-meta">src/shared/ui/button/button.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">EmptyStateComponent <span class="badge-client">client</span></div>
+          <div class="component-props">props: title, message, additionalInfo</div>
+          <div class="card-meta">src/shared/ui/empty-state/empty-state.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataFileDownloadComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">
+            props: fileName, sizeBytes, isOpening, downloadable, isDownloading, downloadLabel,
+            removable, markedForRemoval, badgeText, badgeVariant
+          </div>
+          <div class="card-meta">
+            src/shared/ui/file-download/agridata-file-download.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            FormControlComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">
+            props: categories, control, controlType, disabled, helperText, id, inputPrefix, label,
+            options, pattern
+          </div>
+          <div class="card-meta">src/shared/ui/form-control/form-control.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">ModalComponent <span class="badge-client">client</span></div>
+          <div class="component-props">props: title, showCloseButton, dataTestId</div>
+          <div class="card-meta">src/shared/ui/modal/modal.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">PopoverComponent <span class="badge-client">client</span></div>
+          <div class="component-props">props: isOpen, class</div>
+          <div class="card-meta">src/shared/ui/popover/popover.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ProgressBarComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: label, value</div>
+          <div class="card-meta">src/shared/ui/progress-bar/progress-bar.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            SearchInputComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: minSearchLength, debounceTime, isLoading</div>
+          <div class="card-meta">src/shared/ui/search-input/search-input.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ToastStoryWrapperComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">src/shared/ui/toast/toast.component.stories.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">ToastComponent <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/shared/ui/toast/toast.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AccountOverlayComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: userInfo</div>
+          <div class="card-meta">src/widgets/account-overlay/account-overlay.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AdminDataRequestDetailsComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequestId</div>
+          <div class="card-meta">
+            src/widgets/admin-data-request-details/admin-data-request-details.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AdminDataRequestTableComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequests</div>
+          <div class="card-meta">
+            src/widgets/admin-data-request-table/admin-data-request-table.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataAccordionComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: header, isLarge</div>
+          <div class="card-meta">
+            src/widgets/agridata-accordion/agridata-accordion.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataContactCardComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: name, secondaryName, imageUrl, size, skin</div>
+          <div class="card-meta">
+            src/widgets/agridata-contact-card/agridata-contact-card.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataWizardStepperComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: steps, currentStep</div>
+          <div class="card-meta">
+            src/widgets/agridata-wizard/agridata-wizard-stepper/agridata-wizard-stepper.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            AgridataWizardComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: steps</div>
+          <div class="card-meta">src/widgets/agridata-wizard/agridata-wizard.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">AlertComponent <span class="badge-client">client</span></div>
+          <div class="component-props">
+            props: type, showCloseButton, dataTestId, title, message, additionalInfo
+          </div>
+          <div class="card-meta">src/widgets/alert/alert.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">CardBlockComponent <span class="badge-client">client</span></div>
+          <div class="component-props">props: card, size, bgColorClass</div>
+          <div class="card-meta">src/widgets/cms-blocks/card-block/card-block.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            CmsFooterBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/cms-footer-block/cms-footer-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">HeroBlockComponent <span class="badge-client">client</span></div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">src/widgets/cms-blocks/hero-block/hero-block.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ImageCardBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/image-card-block/image-card-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ImageGridBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/image-grid-block/image-grid-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ImageListBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/image-list-block/image-list-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">ListBlockComponent <span class="badge-client">client</span></div>
+          <div class="component-props">props: list, cols</div>
+          <div class="card-meta">src/widgets/cms-blocks/list-block/list-block.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            SectionCardGridBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/section-card-grid-block/section-card-grid-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            SectionContactFormBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/section-contact-form-block/section-contact-form-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            SectionFaqBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/section-faq-block/section-faq-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            SectionImageCardBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/section-image-card-block/section-image-card-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            SectionImageListComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/section-image-list/section-image-list.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            SectionMediaBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/section-media-block/section-media-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            SectionOnboardingFormBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/section-onboarding-form-block/section-onboarding-form-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            SectionTextImageBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/section-text-image-block/section-text-image-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            SectionTimelineComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/section-timeline/section-timeline.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            SectionUserFeedbackBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/section-user-feedback-block/section-user-feedback-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            TextImageBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/text-image-block/text-image-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            TimelineCardComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block, lastItem, index</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/timeline-card/timeline-card.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            UserFeedbackBlockComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: block</div>
+          <div class="card-meta">
+            src/widgets/cms-blocks/user-feedback-block/user-feedback-block.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ConsentRequestDetailsComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: consentRequestId</div>
+          <div class="card-meta">
+            src/widgets/consent-request-details/consent-request-details.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ConsentRequestEmptyStateComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">
+            src/widgets/consent-request-empty-state/consent-request-empty-state.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ConsentRequestFilterComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: requests</div>
+          <div class="card-meta">
+            src/widgets/consent-request-table/consent-request-filter/consent-request-filter.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ConsentRequestListComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: consentRequests</div>
+          <div class="card-meta">
+            src/widgets/consent-request-table/consent-request-list/consent-request-list.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ConsentRequestTableComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: consentRequestId, consentRequests</div>
+          <div class="card-meta">
+            src/widgets/consent-request-table/consent-request-table.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ConsentRequestsTourIntroComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">
+            src/widgets/consent-requests-tour/consent-requests-tour-intro/consent-requests-tour-intro.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ConsentRequestsTourTriggerComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">
+            src/widgets/consent-requests-tour/consent-requests-tour-trigger/consent-requests-tour-trigger.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ContactSupportInfoContentComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">
+            src/widgets/contact-support-info/contact-support-info-content/contact-support-info-content.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ContactSupportInfoComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">
+            src/widgets/contact-support-info/contact-support-info.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            CookiebannerComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">src/widgets/cookiebanner/cookiebanner.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataProductDetailFormComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataProductId</div>
+          <div class="card-meta">
+            src/widgets/data-product-detail-form/data-product-detail-form.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataProductDetailInfoComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: form, isViewMode</div>
+          <div class="card-meta">
+            src/widgets/data-product-detail-form/data-product-detail-info/data-product-detail-info.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataProductDetailDocumentsComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: form, isViewMode</div>
+          <div class="card-meta">
+            src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-documents/data-product-detail-documents.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataProductDetailLinksDocumentsComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: form, isViewMode</div>
+          <div class="card-meta">
+            src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-links-documents.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataProductDetailTechnicalComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: form, isViewMode, preselectedProviderId</div>
+          <div class="card-meta">
+            src/widgets/data-product-detail-form/data-product-detail-technical/data-product-detail-technical.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataProductLinksComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: form, formDisabled</div>
+          <div class="card-meta">
+            src/widgets/data-product-links/data-product-links.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestCompletionSignatureComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: signature, position</div>
+          <div class="card-meta">
+            src/widgets/data-request-completion/data-request-completion-signature/data-request-completion-signature.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestCompletionSigningStatusComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: contract, dataRequestStateCode</div>
+          <div class="card-meta">
+            src/widgets/data-request-completion/data-request-completion-signing-status/data-request-completion-signing-status.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestCompletionComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequest, hasReleasedToProvider</div>
+          <div class="card-meta">
+            src/widgets/data-request-completion/data-request-completion.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestContactComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: phoneNumber, email, organisationName, lang</div>
+          <div class="card-meta">
+            src/widgets/data-request-contact/data-request-contact.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestContractPdfComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequest, contractRevisionId</div>
+          <div class="card-meta">
+            src/widgets/data-request-contract-pdf/data-request-contract-pdf.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestContractSignaturePolicyComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequest, contract, disabled</div>
+          <div class="card-meta">
+            src/widgets/data-request-contract-signature-policy/data-request-contract-signature-policy.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ContractSignatureInputComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">
+            props: contractId, existingSignature, slotId, showWaitingState
+          </div>
+          <div class="card-meta">
+            src/widgets/data-request-contract-signing/contract-signature-input/contract-signature-input.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestContractSigningComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequest</div>
+          <div class="card-meta">
+            src/widgets/data-request-contract-signing/data-request-contract-signing.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestDetailsRequestComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequest, isRedirectUriRegexEditable</div>
+          <div class="card-meta">
+            src/widgets/data-request-details/data-request-details-request/data-request-details-request.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestDetailsComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">
+            props: autoOpenUnsealedContractTab, dataRequestId, isRedirectUriRegexEditable
+          </div>
+          <div class="card-meta">
+            src/widgets/data-request-details/data-request-details.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestDetailsContractComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequest</div>
+          <div class="card-meta">
+            src/widgets/data-request-details-contract/data-request-details-contract.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestDetailsWrapperComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequestId</div>
+          <div class="card-meta">
+            src/widgets/data-request-details-wrapper/data-request-details-wrapper.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestFormConsumerComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: form, formDisabled, dataRequestLogo</div>
+          <div class="card-meta">
+            src/widgets/data-request-form/data-request-form-consumer/data-request-form-consumer.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestFormContractComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequest</div>
+          <div class="card-meta">
+            src/widgets/data-request-form/data-request-form-contract/data-request-form-contract.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestFormProducerComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: form, formDisabled</div>
+          <div class="card-meta">
+            src/widgets/data-request-form/data-request-form-producer/data-request-form-producer.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestFormRequestAdvantagesComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: form, formDisabled</div>
+          <div class="card-meta">
+            src/widgets/data-request-form/data-request-form-request/data-request-form-request-advantages/data-request-form-request-advantages.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestFormRequestDescriptionComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: form, formDisabled</div>
+          <div class="card-meta">
+            src/widgets/data-request-form/data-request-form-request/data-request-form-request-description/data-request-form-request-description.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestFormRequestProductComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataProviderId, form, formDisabled</div>
+          <div class="card-meta">
+            src/widgets/data-request-form/data-request-form-request/data-request-form-request-product/data-request-form-request-product.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestFormRequestComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataProviderId, form, formDisabled</div>
+          <div class="card-meta">
+            src/widgets/data-request-form/data-request-form-request/data-request-form-request.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestPreviewComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequest</div>
+          <div class="card-meta">
+            src/widgets/data-request-preview/data-request-preview.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestPrivacyInfosComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataConsumerName, dataProvider, lang</div>
+          <div class="card-meta">
+            src/widgets/data-request-privacy-infos/data-request-privacy-infos.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestProviderTableComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequests</div>
+          <div class="card-meta">
+            src/widgets/data-request-provider-table/data-request-provider-table.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestPurposeAccordionComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: purpose, products, lang</div>
+          <div class="card-meta">
+            src/widgets/data-request-purpose-accordion/data-request-purpose-accordion.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestRedirectUriComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequest, isValidRedirectUriRegexEditable</div>
+          <div class="card-meta">
+            src/widgets/data-request-redirect-uri/data-request-redirect-uri.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestTableComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequests</div>
+          <div class="card-meta">
+            src/widgets/data-request-table/data-request-table.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestWizardConsumerComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">
+            src/widgets/data-request-wizard/data-request-wizard-consumer/data-request-wizard-consumer.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestWizardProviderComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">
+            src/widgets/data-request-wizard/data-request-wizard-provider/data-request-wizard-provider.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            DataRequestWizardComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequestId, initialDataRequest, isLoading</div>
+          <div class="card-meta">
+            src/widgets/data-request-wizard/data-request-wizard.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">ErrorAlertComponent <span class="badge-client">client</span></div>
+          <div class="component-props">props: error</div>
+          <div class="card-meta">src/widgets/error-alert/error-alert.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            FooterWidgetComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">src/widgets/footer-widget/ui/footer-widget.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            HeaderWidgetComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">src/widgets/header-widget/header-widget.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            MobileNavigationWidgetComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: cmsPages</div>
+          <div class="card-meta">
+            src/widgets/navigation-widget/mobile-navigation-widget/mobile-navigation-widget.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            NavigationWidgetComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: cmsPages</div>
+          <div class="card-meta">src/widgets/navigation-widget/navigation-widget.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            NewYearBannerComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">src/widgets/new-year-banner/new-year-banner.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            NotificationOverlayContentComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: notifications</div>
+          <div class="card-meta">
+            src/widgets/notification-overlay/notification-overlay-content/notification-overlay-content.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            NotificationOverlayComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">
+            src/widgets/notification-overlay/notification-overlay.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            ProviderDataRequestDetailsComponent <span class="badge-client">client</span>
+          </div>
+          <div class="component-props">props: dataRequestId</div>
+          <div class="card-meta">
+            src/widgets/provider-data-request-details/provider-data-request-details.component.ts
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">SliderComponent <span class="badge-client">client</span></div>
+
+          <div class="card-meta">src/widgets/slider/slider.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            SupporterOverlayComponent <span class="badge-client">client</span>
+          </div>
+
+          <div class="card-meta">src/widgets/supporter-overlay/supporter-overlay.component.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">UidSwitchComponent <span class="badge-client">client</span></div>
+          <div class="component-props">props: additionalClass, variant</div>
+          <div class="card-meta">src/widgets/uid-switch/uid-switch.component.ts</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Dependency Hot Files</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="card-title" style="font-size: 0.9rem">src/shared/i18n/index.ts</div>
+          <div class="card-meta">imported by 145 files</div>
+          <div class="hot-bar" style="width: 100%"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size: 0.9rem">src/entities/openapi/index.ts</div>
+          <div class="card-meta">imported by 123 files</div>
+          <div class="hot-bar" style="width: 85%"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size: 0.9rem">
+            src/entities/api/agridata-state.service.ts
+          </div>
+          <div class="card-meta">imported by 81 files</div>
+          <div class="hot-bar" style="width: 56%"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size: 0.9rem">src/shared/constants/constants.ts</div>
+          <div class="card-meta">imported by 76 files</div>
+          <div class="hot-bar" style="width: 52%"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size: 0.9rem">
+            src/app/error/error-handler.service.ts
+          </div>
+          <div class="card-meta">imported by 66 files</div>
+          <div class="hot-bar" style="width: 46%"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size: 0.9rem">src/shared/ui/button/index.ts</div>
+          <div class="card-meta">imported by 64 files</div>
+          <div class="hot-bar" style="width: 44%"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size: 0.9rem">src/shared/lib/auth/index.ts</div>
+          <div class="card-meta">imported by 62 files</div>
+          <div class="hot-bar" style="width: 43%"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size: 0.9rem">src/entities/api/index.ts</div>
+          <div class="card-meta">imported by 51 files</div>
+          <div class="hot-bar" style="width: 35%"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size: 0.9rem">src/shared/testing/mocks/index.ts</div>
+          <div class="card-meta">imported by 48 files</div>
+          <div class="hot-bar" style="width: 33%"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size: 0.9rem">
+            src/shared/testing/transloco-testing.module.ts
+          </div>
+          <div class="card-meta">imported by 41 files</div>
+          <div class="hot-bar" style="width: 28%"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size: 0.9rem">src/entities/cms/index.ts</div>
+          <div class="card-meta">imported by 41 files</div>
+          <div class="hot-bar" style="width: 28%"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="font-size: 0.9rem">src/shared/lib/form.helper.ts</div>
+          <div class="card-meta">imported by 31 files</div>
+          <div class="hot-bar" style="width: 21%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Environment Variables</h2>
+      <table>
+        <tr>
+          <th>Variable</th>
+          <th>Status</th>
+          <th>Source</th>
+        </tr>
+        <tr>
+          <td><code>CI</code></td>
+          <td><span class="env-required">required</span></td>
+          <td class="card-meta">jest.config.ts</td>
+        </tr>
+        <tr>
+          <td><code>EMAIL_SECRET</code></td>
+          <td><span class="env-default">has default</span></td>
+          <td class="card-meta">.env.example</td>
+        </tr>
+        <tr>
+          <td><code>FONTAWESOME_PACKAGE_TOKEN</code></td>
+          <td><span class="env-default">has default</span></td>
+          <td class="card-meta">.env</td>
+        </tr>
+        <tr>
+          <td><code>NODE_OPTIONS</code></td>
+          <td><span class="env-default">has default</span></td>
+          <td class="card-meta">.env.example</td>
+        </tr>
+        <tr>
+          <td><code>POEDITOR_API_TOKEN</code></td>
+          <td><span class="env-default">has default</span></td>
+          <td class="card-meta">.env.example</td>
+        </tr>
+        <tr>
+          <td><code>POEDITOR_PROJECT_ID</code></td>
+          <td><span class="env-default">has default</span></td>
+          <td class="card-meta">.env.example</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>Middleware</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="card-title">
+            create-consent-request.guard.spec
+            <span class="tag tag-error-handler">error-handler</span>
+          </div>
+          <div class="card-meta">src/app/guards/create-consent-request.guard.spec.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            create-consent-request.guard <span class="tag tag-error-handler">error-handler</span>
+          </div>
+          <div class="card-meta">src/app/guards/create-consent-request.guard.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            home-redirect.guard.spec <span class="tag tag-auth">auth</span>
+          </div>
+          <div class="card-meta">src/app/guards/home-redirect.guard.spec.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">home-redirect.guard <span class="tag tag-auth">auth</span></div>
+          <div class="card-meta">src/app/guards/home-redirect.guard.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">login.guard.spec <span class="tag tag-auth">auth</span></div>
+          <div class="card-meta">src/app/guards/login.guard.spec.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">login.guard <span class="tag tag-auth">auth</span></div>
+          <div class="card-meta">src/app/guards/login.guard.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            producer-uid.guard.spec <span class="tag tag-custom">custom</span>
+          </div>
+          <div class="card-meta">src/app/guards/producer-uid.guard.spec.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">producer-uid.guard <span class="tag tag-auth">auth</span></div>
+          <div class="card-meta">src/app/guards/producer-uid.guard.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            error-http-interceptor.spec <span class="tag tag-custom">custom</span>
+          </div>
+          <div class="card-meta">src/app/interceptors/error-http-interceptor.spec.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            error-http-interceptor <span class="tag tag-custom">custom</span>
+          </div>
+          <div class="card-meta">src/app/interceptors/error-http-interceptor.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            impersonation-interceptor.spec <span class="tag tag-custom">custom</span>
+          </div>
+          <div class="card-meta">src/app/interceptors/impersonation-interceptor.spec.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            impersonation-interceptor <span class="tag tag-auth">auth</span>
+          </div>
+          <div class="card-meta">src/app/interceptors/impersonation-interceptor.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">title.strategy <span class="tag tag-custom">custom</span></div>
+          <div class="card-meta">src/app/title.strategy.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">auth.config <span class="tag tag-auth">auth</span></div>
+          <div class="card-meta">src/shared/lib/auth/auth.config.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">auth.guard.spec <span class="tag tag-auth">auth</span></div>
+          <div class="card-meta">src/shared/lib/auth/auth.guard.spec.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">auth.guard <span class="tag tag-auth">auth</span></div>
+          <div class="card-meta">src/shared/lib/auth/auth.guard.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">auth.service.spec <span class="tag tag-auth">auth</span></div>
+          <div class="card-meta">src/shared/lib/auth/auth.service.spec.ts</div>
+        </div>
+        <div class="card">
+          <div class="card-title">auth.service <span class="tag tag-auth">auth</span></div>
+          <div class="card-meta">src/shared/lib/auth/auth.service.ts</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Generated by <a href="https://github.com/Houseofmvps/codesight">codesight</a> — see your
+      codebase clearly
+    </div>
+  </body>
+</html>

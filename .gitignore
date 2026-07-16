@@ -46,3 +46,6 @@ Thumbs.db
 
 *storybook.log
 storybook-static
+
+#ai
+.codesight/wiki/log.md
