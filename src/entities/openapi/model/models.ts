@@ -1,3 +1,5 @@
+export * from './agbRevisionDto';
+export * from './agbTextDto';
 export * from './burDto';
 export * from './consentRequestAggregationProducerView';
 export * from './consentRequestAggregationProducerViewDataRequest';
@@ -34,7 +36,7 @@ export * from './dataRequestValidRedirectUriRegexUpdateDto';
 export * from './dataSourceSystemDto';
 export * from './dataSourceSystemReferenceDto';
 export * from './dataTransferResponse';
-export * from './documentScanStatus';
+export * from './documentScanStatusEnum';
 export * from './exceptionDto';
 export * from './exceptionDto1';
 export * from './exceptionEnum';

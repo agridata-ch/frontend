@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import {
   DataProductDocumentMetadataDto,
   DataProductsService,
-  DocumentScanStatus,
+  DocumentScanStatusEnum,
 } from '@/entities/openapi';
 import { ActingRole } from '@/shared/constants/constants';
 
@@ -39,7 +39,7 @@ export class DataProductDocumentService {
     documentId: string,
     actingRole?: ActingRole,
     abortSignal?: AbortSignal,
-  ): Promise<DocumentScanStatus> {
+  ): Promise<DocumentScanStatusEnum> {
     const deadline = Date.now() + this.maxPollDurationMs;
     while (!abortSignal?.aborted && Date.now() < deadline) {
       try {
@@ -50,7 +50,7 @@ export class DataProductDocumentService {
           true,
           abortSignal,
         );
-        if (metadata.scanStatus && metadata.scanStatus !== DocumentScanStatus.PendingScan) {
+        if (metadata.scanStatus && metadata.scanStatus !== DocumentScanStatusEnum.PendingScan) {
           return metadata.scanStatus;
         }
       } catch {
@@ -61,8 +61,8 @@ export class DataProductDocumentService {
       await this.delay(this.pollIntervalMs, abortSignal);
     }
     // Aborted (panel closed): return a non-terminal state; the caller ignores results after abort.
-    if (abortSignal?.aborted) return DocumentScanStatus.PendingScan;
-    return DocumentScanStatus.ScanFailed;
+    if (abortSignal?.aborted) return DocumentScanStatusEnum.PendingScan;
+    return DocumentScanStatusEnum.ScanFailed;
   }
 
   async deleteDocument(

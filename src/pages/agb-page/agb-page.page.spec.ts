@@ -2,9 +2,17 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 
+import { AgbService } from '@/entities/api';
 import { CmsService } from '@/entities/cms';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { mockCmsResponse, mockCmsService } from '@/shared/testing/mocks';
+import { I18nService } from '@/shared/i18n';
+import {
+  createMockAgbService,
+  createMockI18nService,
+  mockAgbRevision,
+  mockCmsResponse,
+  mockCmsService,
+} from '@/shared/testing/mocks';
 
 import { AgbPage } from './agb-page.page';
 
@@ -20,7 +28,9 @@ describe('AgbPage', () => {
 
     await TestBed.configureTestingModule({
       providers: [
+        { provide: AgbService, useValue: createMockAgbService() },
         { provide: CmsService, useValue: mockCmsService },
+        { provide: I18nService, useValue: createMockI18nService() },
         { provide: Router, useValue: mockRouter },
       ],
     }).compileComponents();
@@ -35,11 +45,17 @@ describe('AgbPage', () => {
   });
 
   describe('computed signals', () => {
-    it('content returns content from the CMS page data', () => {
-      expect(component['content']()).toBe(mockCmsResponse.data.content);
+    it('content returns the localized AGB text from the backend', async () => {
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(component['content']()).toBe(mockAgbRevision.agbText!.de);
     });
 
-    it('footerBlock returns footer from the CMS page data', () => {
+    it('footerBlock returns footer from the CMS page data', async () => {
+      fixture.detectChanges();
+      await fixture.whenStable();
+
       expect(component['footerBlock']()).toBe(mockCmsResponse.data.footer);
     });
   });

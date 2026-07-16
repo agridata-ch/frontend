@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductDocumentService } from '@/entities/api/data-product-document.service';
-import { DocumentScanStatus } from '@/entities/openapi';
+import { DocumentScanStatusEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import {
   createMockAgridataStateService,
@@ -75,11 +75,36 @@ describe('DocumentUploadStore', () => {
 
     it('enforces the cap even when a document is marked for removal (still occupies a slot)', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: '1.pdf', scanStatus: DocumentScanStatus.Available },
-        { id: 'doc-2', fileName: '2.pdf', scanStatus: DocumentScanStatus.Available },
-        { id: 'doc-3', fileName: '3.pdf', scanStatus: DocumentScanStatus.Available },
-        { id: 'doc-4', fileName: '4.pdf', scanStatus: DocumentScanStatus.Available },
-        { id: 'doc-5', fileName: '5.pdf', scanStatus: DocumentScanStatus.Available },
+        {
+          id: 'doc-1',
+          fileName: '1.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
+        {
+          id: 'doc-2',
+          fileName: '2.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
+        {
+          id: 'doc-3',
+          fileName: '3.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
+        {
+          id: 'doc-4',
+          fileName: '4.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
+        {
+          id: 'doc-5',
+          fileName: '5.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
       ]);
       await store.loadExisting('product-1');
       store.removeItem(store.items()[0]);
@@ -104,7 +129,12 @@ describe('DocumentUploadStore', () => {
 
     it('only marks an existing document for removal, without calling the API', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: 'existing.pdf', scanStatus: DocumentScanStatus.Available },
+        {
+          id: 'doc-1',
+          fileName: 'existing.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
       ]);
       await store.loadExisting('product-1');
 
@@ -119,7 +149,12 @@ describe('DocumentUploadStore', () => {
   describe('restoreItem', () => {
     it('clears the marked-for-removal flag', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: 'existing.pdf', scanStatus: DocumentScanStatus.Available },
+        {
+          id: 'doc-1',
+          fileName: 'existing.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
       ]);
       await store.loadExisting('product-1');
       store.removeItem(store.items()[0]);
@@ -133,8 +168,18 @@ describe('DocumentUploadStore', () => {
   describe('commitRemovals', () => {
     it('deletes every marked document and drops it from the list', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: 'a.pdf', scanStatus: DocumentScanStatus.Available },
-        { id: 'doc-2', fileName: 'b.pdf', scanStatus: DocumentScanStatus.Available },
+        {
+          id: 'doc-1',
+          fileName: 'a.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
+        {
+          id: 'doc-2',
+          fileName: 'b.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
       ]);
       await store.loadExisting('product-1');
       store.removeItem(store.items()[0]);
@@ -148,7 +193,12 @@ describe('DocumentUploadStore', () => {
 
     it('does nothing when no document is marked for removal', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: 'a.pdf', scanStatus: DocumentScanStatus.Available },
+        {
+          id: 'doc-1',
+          fileName: 'a.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
       ]);
       await store.loadExisting('product-1');
 
@@ -160,7 +210,12 @@ describe('DocumentUploadStore', () => {
 
     it('keeps a marked document from blocking publishing', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: 'a.pdf', scanStatus: DocumentScanStatus.Rejected },
+        {
+          id: 'doc-1',
+          fileName: 'a.pdf',
+          scanStatus: DocumentScanStatusEnum.Rejected,
+          sizeBytes: 50,
+        },
       ]);
       await store.loadExisting('product-1');
       expect(store.hasBlockingState()).toBe(true);
@@ -175,8 +230,18 @@ describe('DocumentUploadStore', () => {
   describe('loadExisting', () => {
     it('populates items from the server list', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: 'a.pdf', scanStatus: DocumentScanStatus.Available },
-        { id: 'doc-2', fileName: 'b.pdf', scanStatus: DocumentScanStatus.PendingScan },
+        {
+          id: 'doc-1',
+          fileName: 'a.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
+        {
+          id: 'doc-2',
+          fileName: 'b.pdf',
+          scanStatus: DocumentScanStatusEnum.PendingScan,
+          sizeBytes: 50,
+        },
       ]);
 
       await store.loadExisting('product-1');
@@ -187,9 +252,14 @@ describe('DocumentUploadStore', () => {
 
     it('resumes scan polling for documents still pending', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: 'a.pdf', scanStatus: DocumentScanStatus.PendingScan },
+        {
+          id: 'doc-1',
+          fileName: 'a.pdf',
+          scanStatus: DocumentScanStatusEnum.PendingScan,
+          sizeBytes: 50,
+        },
       ]);
-      documentService.awaitDocumentProcessed.mockResolvedValue(DocumentScanStatus.Available);
+      documentService.awaitDocumentProcessed.mockResolvedValue(DocumentScanStatusEnum.Available);
 
       await store.loadExisting('product-1');
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
@@ -207,7 +277,12 @@ describe('DocumentUploadStore', () => {
   describe('stagedItems / uploadedItems', () => {
     it('partitions items by whether they already exist on the server', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: 'existing.pdf', scanStatus: DocumentScanStatus.Available },
+        {
+          id: 'doc-1',
+          fileName: 'existing.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
       ]);
       await store.loadExisting('product-1');
       store.addFiles([pdf('new.pdf')]);
@@ -220,7 +295,8 @@ describe('DocumentUploadStore', () => {
       documentService.uploadDocument.mockResolvedValue({
         id: 'doc-1',
         fileName: 'a.pdf',
-        scanStatus: DocumentScanStatus.PendingScan,
+        scanStatus: DocumentScanStatusEnum.PendingScan,
+        sizeBytes: 50,
       });
       // Scan never resolves so we observe the post-POST / pre-scan state.
       documentService.awaitDocumentProcessed.mockReturnValue(new Promise<never>(() => {}));
@@ -237,7 +313,12 @@ describe('DocumentUploadStore', () => {
   describe('downloadDocument', () => {
     it('delegates to the service with the data product and document id', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: 'existing.pdf', scanStatus: DocumentScanStatus.Available },
+        {
+          id: 'doc-1',
+          fileName: 'existing.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
       ]);
       await store.loadExisting('product-1');
 
@@ -263,9 +344,10 @@ describe('DocumentUploadStore', () => {
       documentService.uploadDocument.mockResolvedValue({
         id: 'doc-1',
         fileName: 'a.pdf',
-        scanStatus: DocumentScanStatus.PendingScan,
+        scanStatus: DocumentScanStatusEnum.PendingScan,
+        sizeBytes: 50,
       });
-      documentService.awaitDocumentProcessed.mockResolvedValue(DocumentScanStatus.Available);
+      documentService.awaitDocumentProcessed.mockResolvedValue(DocumentScanStatusEnum.Available);
       store.addFiles([pdf('a.pdf')]);
 
       await store.uploadAll('product-1');
@@ -280,9 +362,10 @@ describe('DocumentUploadStore', () => {
       documentService.uploadDocument.mockResolvedValue({
         id: 'doc-1',
         fileName: 'a.pdf',
-        scanStatus: DocumentScanStatus.PendingScan,
+        scanStatus: DocumentScanStatusEnum.PendingScan,
+        sizeBytes: 50,
       });
-      documentService.awaitDocumentProcessed.mockResolvedValue(DocumentScanStatus.Rejected);
+      documentService.awaitDocumentProcessed.mockResolvedValue(DocumentScanStatusEnum.Rejected);
       store.addFiles([pdf('a.pdf')]);
 
       await store.uploadAll('product-1');
@@ -296,9 +379,10 @@ describe('DocumentUploadStore', () => {
       documentService.uploadDocument.mockResolvedValue({
         id: 'doc-1',
         fileName: 'a.pdf',
-        scanStatus: DocumentScanStatus.PendingScan,
+        scanStatus: DocumentScanStatusEnum.PendingScan,
+        sizeBytes: 50,
       });
-      documentService.awaitDocumentProcessed.mockResolvedValue(DocumentScanStatus.ScanFailed);
+      documentService.awaitDocumentProcessed.mockResolvedValue(DocumentScanStatusEnum.ScanFailed);
       store.addFiles([pdf('a.pdf')]);
 
       await store.uploadAll('product-1');
@@ -318,7 +402,12 @@ describe('DocumentUploadStore', () => {
 
     it('does not re-upload existing documents', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: 'existing.pdf', scanStatus: DocumentScanStatus.Available },
+        {
+          id: 'doc-1',
+          fileName: 'existing.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
       ]);
       await store.loadExisting('product-1');
 
@@ -332,12 +421,13 @@ describe('DocumentUploadStore', () => {
       documentService.uploadDocument.mockResolvedValue({
         id: 'doc-1',
         fileName: 'x.pdf',
-        scanStatus: DocumentScanStatus.PendingScan,
+        scanStatus: DocumentScanStatusEnum.PendingScan,
+        sizeBytes: 50,
       });
       // The first document's scan never resolves during the test; concurrent uploads must still
       // POST the second file.
       documentService.awaitDocumentProcessed.mockReturnValueOnce(new Promise<never>(() => {}));
-      documentService.awaitDocumentProcessed.mockResolvedValue(DocumentScanStatus.Available);
+      documentService.awaitDocumentProcessed.mockResolvedValue(DocumentScanStatusEnum.Available);
       store.addFiles([pdf('a.pdf'), pdf('b.pdf')]);
 
       void store.uploadAll('product-1');
@@ -350,7 +440,12 @@ describe('DocumentUploadStore', () => {
   describe('polling lifecycle', () => {
     it('aborts in-flight scan polling when the store is destroyed', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: 'a.pdf', scanStatus: DocumentScanStatus.PendingScan },
+        {
+          id: 'doc-1',
+          fileName: 'a.pdf',
+          scanStatus: DocumentScanStatusEnum.PendingScan,
+          sizeBytes: 50,
+        },
       ]);
       documentService.awaitDocumentProcessed.mockReturnValue(new Promise<never>(() => {}));
 
@@ -372,7 +467,12 @@ describe('DocumentUploadStore', () => {
 
     it('is true while a document is not yet available', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: 'a.pdf', scanStatus: DocumentScanStatus.PendingScan },
+        {
+          id: 'doc-1',
+          fileName: 'a.pdf',
+          scanStatus: DocumentScanStatusEnum.PendingScan,
+          sizeBytes: 50,
+        },
       ]);
       documentService.awaitDocumentProcessed.mockReturnValue(new Promise<never>(() => {}));
 
@@ -383,7 +483,12 @@ describe('DocumentUploadStore', () => {
 
     it('is false once every document is available', async () => {
       documentService.listDocuments.mockResolvedValueOnce([
-        { id: 'doc-1', fileName: 'a.pdf', scanStatus: DocumentScanStatus.Available },
+        {
+          id: 'doc-1',
+          fileName: 'a.pdf',
+          scanStatus: DocumentScanStatusEnum.Available,
+          sizeBytes: 50,
+        },
       ]);
 
       await store.loadExisting('product-1');

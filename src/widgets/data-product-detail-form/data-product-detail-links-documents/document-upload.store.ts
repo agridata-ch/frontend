@@ -2,7 +2,7 @@ import { computed, DestroyRef, inject, Service, signal } from '@angular/core';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductDocumentService } from '@/entities/api/data-product-document.service';
-import { DataProductDocumentMetadataDto, DocumentScanStatus } from '@/entities/openapi';
+import { DataProductDocumentMetadataDto, DocumentScanStatusEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 
 import { DocumentUploadItem, DocumentUploadStatus } from './document-upload.model';
@@ -212,13 +212,13 @@ export class DocumentUploadStore {
     };
   }
 
-  private mapState(status?: DocumentScanStatus): DocumentUploadStatus {
+  private mapState(status?: DocumentScanStatusEnum): DocumentUploadStatus {
     switch (status) {
-      case DocumentScanStatus.Available:
+      case DocumentScanStatusEnum.Available:
         return DocumentUploadStatus.Available;
-      case DocumentScanStatus.Rejected:
+      case DocumentScanStatusEnum.Rejected:
         return DocumentUploadStatus.Rejected;
-      case DocumentScanStatus.ScanFailed:
+      case DocumentScanStatusEnum.ScanFailed:
         return DocumentUploadStatus.Error;
       default:
         return DocumentUploadStatus.PendingScan;

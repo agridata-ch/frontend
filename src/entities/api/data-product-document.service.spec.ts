@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import {
   DataProductDocumentMetadataDto,
   DataProductsService,
-  DocumentScanStatus,
+  DocumentScanStatusEnum,
 } from '@/entities/openapi';
 
 import { DataProductDocumentService } from './data-product-document.service';
@@ -13,7 +13,8 @@ import { DataProductDocumentService } from './data-product-document.service';
 const available: DataProductDocumentMetadataDto = {
   id: 'doc-1',
   fileName: 'a.pdf',
-  scanStatus: DocumentScanStatus.Available,
+  scanStatus: DocumentScanStatusEnum.Available,
+  sizeBytes: 50,
 };
 
 function createMockApiService() {
@@ -78,17 +79,17 @@ describe('DataProductDocumentService', () => {
         true,
         'PROVIDER',
       );
-      expect(result).toBe(DocumentScanStatus.Available);
+      expect(result).toBe(DocumentScanStatusEnum.Available);
     });
 
     it('resolves with REJECTED without waiting further', async () => {
       apiService.getDataProductDocumentMetadata.mockReturnValue(
-        of({ ...available, scanStatus: DocumentScanStatus.Rejected }),
+        of({ ...available, scanStatus: DocumentScanStatusEnum.Rejected }),
       );
 
       const result = await service.awaitDocumentProcessed('product-1', 'doc-1');
 
-      expect(result).toBe(DocumentScanStatus.Rejected);
+      expect(result).toBe(DocumentScanStatusEnum.Rejected);
     });
 
     it('stops polling immediately when the abort signal is already aborted', async () => {
@@ -103,7 +104,7 @@ describe('DataProductDocumentService', () => {
       );
 
       expect(apiService.getDataProductDocumentMetadata).not.toHaveBeenCalled();
-      expect(result).toBe(DocumentScanStatus.PendingScan);
+      expect(result).toBe(DocumentScanStatusEnum.PendingScan);
     });
 
     it('retries after a transient failure instead of failing the scan', async () => {
@@ -116,7 +117,7 @@ describe('DataProductDocumentService', () => {
       // Let the failing poll settle, then advance past the poll interval so it retries.
       await jest.advanceTimersByTimeAsync(2000);
 
-      await expect(resultPromise).resolves.toBe(DocumentScanStatus.Available);
+      await expect(resultPromise).resolves.toBe(DocumentScanStatusEnum.Available);
       expect(apiService.getDataProductDocumentMetadata).toHaveBeenCalledTimes(2);
       jest.useRealTimers();
     });

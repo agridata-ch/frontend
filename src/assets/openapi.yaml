@@ -2,6 +2,47 @@
 openapi: 3.1.0
 components:
   schemas:
+    AgbRevisionDto:
+      description: Data transfer object representing an agb revision
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the data request
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+        version:
+          type: string
+          description: Version of the data request
+          examples:
+          - "1.0"
+        validFrom:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Date and time from which the agb revision is valid
+          type: string
+        agbText:
+          $ref: "#/components/schemas/AgbTextDto"
+          description: Data transfer object representing an agb text
+          type: object
+    AgbTextDto:
+      type: object
+      properties:
+        de:
+          type: string
+          examples:
+          - <h1>AGB</h2>
+          maxLength: 50000
+        fr:
+          type: string
+          examples:
+          - <h1>CG</h2>
+          maxLength: 50000
+        it:
+          type: string
+          examples:
+          - <h1>CG</h2>
+          maxLength: 50000
     BurDto:
       description: Data transfer object representing a bur
       type: object
@@ -682,16 +723,35 @@ components:
             Massimo gli ultimi 4 anni o dal cambio di gestore.
     DataProductDocumentMetadataDto:
       type: object
+      required:
+      - id
+      - fileName
+      - sizeBytes
+      - scanStatus
       properties:
         id:
           $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the product
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
         fileName:
           type: string
+          description: Filename of the document
+          examples:
+          - example.pdf
         sizeBytes:
           type: integer
           format: int64
+          description: Filesize of the document
+          examples:
+          - 1024
         scanStatus:
-          $ref: "#/components/schemas/DocumentScanStatus"
+          $ref: "#/components/schemas/DocumentScanStatusEnum"
+          description: Status of the document scan
+          type: string
+          examples:
+          - AVAILABLE
     DataProductDto:
       type: object
       required:
@@ -1334,7 +1394,7 @@ components:
           $ref: "#/components/schemas/UUID"
           description: Identifier of the corresponding consent request
           type: string
-    DocumentScanStatus:
+    DocumentScanStatusEnum:
       type: string
       enum:
       - PENDING_SCAN
@@ -1970,6 +2030,8 @@ components:
       description: Authentication
       openIdConnectUrl: http://localhost:6999/realms/agate/.well-known/openid-configuration
 tags:
+- name: Agb Revision
+  description: Provides access to Agb revisions.
 - name: Consent Request Aggregations
   description: Provides access to aggregated consent requests for data producers.
     Each aggregation groups consent requests by the data request they belong to.
@@ -4926,6 +4988,35 @@ paths:
         - agridata.ch.Agridata_Support
         - agridata.ch.Agridata_Datenanbieter
       x-api-subset: agridata.ch Web App
+  /public/api/user/v1/current-agb-revision:
+    get:
+      description: Returns the current Agb revision.
+      operationId: getCurrentAgbRevision
+      tags:
+      - Agb Revision
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgbRevisionDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Current Agb Revision
+      x-api-subset:
+      - agridata.ch Web App
+      - Mobile App
   /q/info:
     get:
       responses:
@@ -4978,7 +5069,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.13.0-rc.6
+  version: 1.13.0-rc.11
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

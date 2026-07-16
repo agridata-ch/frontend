@@ -9,11 +9,11 @@
  */
 
 
-export const DocumentScanStatus = {
+export const DocumentScanStatusEnum = {
     PendingScan: 'PENDING_SCAN',
     Available: 'AVAILABLE',
     Rejected: 'REJECTED',
     ScanFailed: 'SCAN_FAILED'
 } as const;
-export type DocumentScanStatus = typeof DocumentScanStatus[keyof typeof DocumentScanStatus];
+export type DocumentScanStatusEnum = typeof DocumentScanStatusEnum[keyof typeof DocumentScanStatusEnum];
 
