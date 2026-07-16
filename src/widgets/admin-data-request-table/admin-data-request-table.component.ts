@@ -13,7 +13,7 @@ import { DataRequestDto } from '@/entities/openapi';
 import { DataRequestDtoDirective, getBadgeVariant } from '@/shared/data-request';
 import { I18nService } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
-import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table/agridata-client-table.component';
+import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table';
 import { ClientTableMetadata } from '@/shared/ui/agridata-client-table/client-table-model';
 import { CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';

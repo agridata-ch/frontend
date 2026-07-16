@@ -829,7 +829,13 @@
     "detailPanel": {
       "titleCreateNew": "Crea un nuovo prodotto dati",
       "subTitle": "Un prodotto dati è una consegna di dati versionata e chiaramente delimitata, fornita tramite un sistema sorgente. Serve come ponte tra la comprensibilità specialistica e la capacità di integrazione tecnica.",
-      "titleUpdate": "Modifica prodotto dati"
+      "titleUpdate": "Modifica prodotto dati",
+      "publishConfirmation": {
+        "title": "Pubblicare il prodotto dati?",
+        "description": "Con la pubblicazione, questo prodotto dati sarà attivato su agridata.ch. \nSi prega di notare:\n\n<b>Catalogo pubblico:</b> Il prodotto è immediatamente visibile a tutti gli acquirenti di dati.\n<b>Richiesta di dati:</b> Gli acquirenti di dati possono presentare direttamente una richiesta digitale per questi dati.\n<b>Consenso dei produttori:</b> Nome e descrizione verranno mostrati esattamente agli agricoltori e agli allevatori quando daranno il loro consenso alla condivisione dei dati. Si prega di utilizzare un linguaggio semplice e comprensibile.",
+        "cancel": "Annulla",
+        "publish": "Sì, pubblica"
+      }
     },
     "detailForm": {
       "name": {

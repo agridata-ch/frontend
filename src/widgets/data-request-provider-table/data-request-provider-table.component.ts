@@ -18,12 +18,12 @@ import { DataRequestDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { DataRequestDtoDirective, getBadgeVariant } from '@/shared/data-request';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table/agridata-client-table.component';
+import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table';
 import { ClientTableMetadata } from '@/shared/ui/agridata-client-table/client-table-model';
 import { ActionDTO, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonVariants } from '@/shared/ui/button';
-import { EmptyStateComponent } from '@/shared/ui/empty-state/empty-state.component';
+import { EmptyStateComponent } from '@/shared/ui/empty-state';
 import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-wizard';
 
 /**

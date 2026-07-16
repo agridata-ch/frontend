@@ -297,20 +297,75 @@ describe('DataProductDetailFormComponent', () => {
   });
 
   describe('saveAndPublish', () => {
-    it('should set publishAttempted=true', async () => {
-      await component['saveAndPublish']();
+    it('should set publishAttempted=true', () => {
+      component['saveAndPublish']();
       expect(component['publishAttempted']()).toBe(true);
     });
 
-    it('should mark all form controls as touched', async () => {
-      await component['saveAndPublish']();
+    it('should mark all form controls as touched', () => {
+      component['saveAndPublish']();
       expect(component['form'].touched).toBe(true);
     });
 
-    it('should not call createDataProduct when form is invalid', async () => {
+    it('should not open the publish modal when form is invalid', () => {
       // form has required dataSourceSystemId, so it is invalid by default
-      await component['saveAndPublish']();
+      component['saveAndPublish']();
+      expect(component['showPublishModal']()).toBe(false);
+    });
+
+    it('should not call createDataProduct when form is invalid', () => {
+      component['saveAndPublish']();
       expect(dataProductService.createDataProduct).not.toHaveBeenCalled();
+    });
+
+    it('should open the publish modal when form is valid', () => {
+      fillValidForm(component);
+
+      component['saveAndPublish']();
+
+      expect(component['showPublishModal']()).toBe(true);
+    });
+
+    it('should not publish directly when form is valid', () => {
+      fillValidForm(component);
+
+      component['saveAndPublish']();
+
+      expect(dataProductService.createDataProduct).not.toHaveBeenCalled();
+      expect(dataProductService.setDataProductStatus).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('cancelPublish', () => {
+    it('should close the publish modal', () => {
+      component['showPublishModal'].set(true);
+
+      component['cancelPublish']();
+
+      expect(component['showPublishModal']()).toBe(false);
+    });
+
+    it('should not publish', () => {
+      component['showPublishModal'].set(true);
+
+      component['cancelPublish']();
+
+      expect(dataProductService.createDataProduct).not.toHaveBeenCalled();
+      expect(dataProductService.setDataProductStatus).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('confirmPublish', () => {
+    it('should close the publish modal', async () => {
+      const savedProduct = { id: 'pub-id' } as DataProductDto;
+      dataProductService.createDataProduct.mockResolvedValue(savedProduct);
+      dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
+      fillValidForm(component);
+      component['showPublishModal'].set(true);
+
+      await component['confirmPublish']();
+
+      expect(component['showPublishModal']()).toBe(false);
     });
 
     it('should call setDataProductStatus when form is valid and product is created', async () => {
@@ -319,7 +374,7 @@ describe('DataProductDetailFormComponent', () => {
       dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
       fillValidForm(component);
 
-      await component['saveAndPublish']();
+      await component['confirmPublish']();
 
       expect(dataProductService.setDataProductStatus).toHaveBeenCalledWith(
         'pub-id',
@@ -335,7 +390,7 @@ describe('DataProductDetailFormComponent', () => {
       dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
       fillValidForm(component);
 
-      await component['saveAndPublish']();
+      await component['confirmPublish']();
 
       expect(navigateSpy).toHaveBeenCalledWith(['data-products'], {
         state: { [FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM]: true },
@@ -348,7 +403,7 @@ describe('DataProductDetailFormComponent', () => {
       dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
       fillValidForm(component);
 
-      await component['saveAndPublish']();
+      await component['confirmPublish']();
 
       expect(toastService.show).toHaveBeenCalledWith(
         expect.anything(),
@@ -361,7 +416,7 @@ describe('DataProductDetailFormComponent', () => {
       dataProductService.createDataProduct.mockRejectedValue(new Error('API error'));
       fillValidForm(component);
 
-      await component['saveAndPublish']();
+      await component['confirmPublish']();
 
       expect(toastService.show).toHaveBeenCalledWith(
         expect.anything(),
@@ -376,7 +431,7 @@ describe('DataProductDetailFormComponent', () => {
       dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
       fillValidForm(component);
 
-      await component['saveAndPublish']();
+      await component['confirmPublish']();
 
       expect(component['isSaving']()).toBe(false);
     });
@@ -385,7 +440,7 @@ describe('DataProductDetailFormComponent', () => {
       dataProductService.createDataProduct.mockRejectedValue(new Error('API error'));
       fillValidForm(component);
 
-      await component['saveAndPublish']();
+      await component['confirmPublish']();
 
       expect(component['isSaving']()).toBe(false);
     });

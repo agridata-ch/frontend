@@ -2,7 +2,7 @@ import { Component, DOCUMENT, effect, inject, signal } from '@angular/core';
 
 import { DebugService } from '@/features/debug/debug.service';
 import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
-import { ModalComponent } from '@/shared/ui/modal/modal.component';
+import { ModalComponent } from '@/shared/ui/modal';
 
 /**
  * Debug component to display error information, requests, and route navigation in a unified log.

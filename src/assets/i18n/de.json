@@ -829,7 +829,13 @@
     "detailPanel": {
       "titleCreateNew": "Neues Datenprodukt erfassen",
       "subTitle": "Ein Datenprodukt ist eine versionierte und klar abgegrenzte Datenlieferung, die über ein Quellsystem bereitgestellt wird. Es dient als Brücke zwischen fachlicher Verständlichkeit und technischer Integrationsfähigkeit.",
-      "titleUpdate": "Datenprodukt bearbeiten"
+      "titleUpdate": "Datenprodukt bearbeiten",
+      "publishConfirmation": {
+        "title": "Datenprodukt publizieren?",
+        "description": "Mit dem Publizieren wird dieses Datenprodukt auf agridata.ch live geschaltet. \nBitte beachten Sie:\n\n<b>Öffentlicher Katalog:</b> Das Produkt ist ab sofort für alle Datenbezüger sichtbar.\n<b>Datenantrag:</b> Datenbezüger können direkt einen digitalen Antrag für diese Daten stellen.\n<b>Produzenten-Zustimmung:</b> Name und Beschreibung werden eins zu eins den Landwirten und Tierhaltern angezeigt, wenn sie ihre Zustimmung zur Datenfreigabe erteilen. Bitte achten Sie auf eine einfache, verständliche Sprache.",
+        "cancel": "Abbrechen",
+        "publish": "Ja, publizieren"
+      }
     },
     "detailForm": {
       "name": {

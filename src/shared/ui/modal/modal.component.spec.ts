@@ -99,6 +99,61 @@ describe('ModalComponent', () => {
     expect(closedSpy).toHaveBeenCalledWith(true);
   });
 
+  it('should close modal and emit closed event when Escape is pressed while open', () => {
+    componentRef.setInput('open', true);
+    fixture.detectChanges();
+
+    const closedSpy = jest.fn();
+    component.closed.subscribe(closedSpy);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    fixture.detectChanges();
+
+    expect(component.open()).toBe(false);
+    expect(closedSpy).toHaveBeenCalledWith(true);
+  });
+
+  it('should not close on Escape when showCloseButton is false', () => {
+    componentRef.setInput('open', true);
+    componentRef.setInput('showCloseButton', false);
+    fixture.detectChanges();
+
+    const closedSpy = jest.fn();
+    component.closed.subscribe(closedSpy);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    fixture.detectChanges();
+
+    expect(component.open()).toBe(true);
+    expect(closedSpy).not.toHaveBeenCalled();
+  });
+
+  it('should ignore Escape when modal is closed', () => {
+    componentRef.setInput('open', false);
+    fixture.detectChanges();
+
+    const closedSpy = jest.fn();
+    component.closed.subscribe(closedSpy);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    fixture.detectChanges();
+
+    expect(closedSpy).not.toHaveBeenCalled();
+  });
+
+  it('should stop Escape from reaching bubble-phase document listeners while open', () => {
+    componentRef.setInput('open', true);
+    fixture.detectChanges();
+
+    const bubbleListener = jest.fn();
+    document.addEventListener('keydown', bubbleListener);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+
+    expect(bubbleListener).not.toHaveBeenCalled();
+    document.removeEventListener('keydown', bubbleListener);
+  });
+
   it('should project content into modal body', () => {
     const testContent = 'Test modal content';
     const fixtureWithContent = TestBed.createComponent(ModalComponent);

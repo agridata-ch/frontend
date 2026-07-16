@@ -829,7 +829,13 @@
     "detailPanel": {
       "titleCreateNew": "Créer un nouveau produit de données",
       "subTitle": "Un produit de données est une livraison de données versionnée et clairement délimitée, fournie par un système source. Il sert de pont entre la compréhensibilité métier et l'intégrabilité technique.",
-      "titleUpdate": "Modifier le produit de données"
+      "titleUpdate": "Modifier le produit de données",
+      "publishConfirmation": {
+        "title": "Publier le produit de données?",
+        "description": "En publiant, ce produit de données sera mis en ligne sur agridata.ch. \nVeuillez noter:\n\n<b>Catalogue public:</b> Le produit est désormais visible par tous les utilisateurs de données.\n<b>Demande de données:</b> Les utilisateurs de données peuvent directement soumettre une demande numérique pour ces données.\n<b>Consentement du producteur:</b> Le nom et la description seront affichés tels quels aux agriculteurs et éleveurs lorsqu'ils donneront leur consentement pour le partage des données. Veuillez utiliser un langage simple et compréhensible.",
+        "cancel": "Annuler",
+        "publish": "Oui, publier"
+      }
     },
     "detailForm": {
       "name": {
