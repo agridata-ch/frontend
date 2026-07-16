@@ -1,3 +1,9 @@
+## [1.15.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.9...v1.15.0-rc.10) (2026-07-16)
+
+### Features
+
+- **agb:** load agb from backend ([fd4a9b9](https://github.com/agridata-ch/frontend/commit/fd4a9b9d0fcba7d3a4429e311149689d43bb1f5a)), closes [DIGIB2-1526](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1526)
+
 ## [1.15.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.8...v1.15.0-rc.9) (2026-07-16)
 
 ### Features
