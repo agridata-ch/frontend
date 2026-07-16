@@ -1,3 +1,9 @@
+## [1.15.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.7...v1.15.0-rc.8) (2026-07-16)
+
+### Bug Fixes
+
+- **seo:** fix favicon ([0680993](https://github.com/agridata-ch/frontend/commit/0680993ab33ed0c10d62a142137a2beadb1badd6)), closes [DIGIB2-1530](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1530)
+
 ## [1.15.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.6...v1.15.0-rc.7) (2026-07-15)
 
 ### Bug Fixes
