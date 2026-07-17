@@ -1,3 +1,9 @@
+## [1.15.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.10...v1.15.0-rc.11) (2026-07-17)
+
+### Features
+
+- **data-product:** add confirmation modal ([56a43de](https://github.com/agridata-ch/frontend/commit/56a43dec455aad80aa6c7ea2a9cf97ddb7fb4ad7)), closes [DIGIB2-1451](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1451)
+
 ## [1.15.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.9...v1.15.0-rc.10) (2026-07-16)
 
 ### Features
