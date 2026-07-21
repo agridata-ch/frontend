@@ -1,9 +1,11 @@
 import { Location } from '@angular/common';
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AbstractControl } from '@angular/forms';
 import { provideRouter, Router } from '@angular/router';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { DataProductDocumentService } from '@/entities/api/data-product-document.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProvidersService } from '@/entities/api/data-providers.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
@@ -13,6 +15,7 @@ import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAgridataStateService,
   createMockAuthService,
+  createMockDataProductDocumentService,
   createMockDataProductService,
   createMockDataProvidersService,
   createMockI18nService,
@@ -41,11 +44,11 @@ function fillValidForm(component: DataProductDetailFormComponent): void {
         fr: 'Description FR',
         it: 'Description IT',
       },
+    },
+    [FORM_TAB_IDS.TECHNICAL_FIELDS]: {
       dataSourceSystemId: 'sys-1',
       restClientId: 'rc-1',
       restClientMethodCode: 'GET',
-    },
-    [FORM_TAB_IDS.TECHNICAL_FIELDS]: {
       flowCode: 'UID_BASED_PRE_VALIDATION',
       restClientPathTemplate: '/api/path',
       restClientRequestTemplate: '{}',
@@ -72,6 +75,7 @@ describe('DataProductDetailFormComponent', () => {
       providers: [
         { provide: AgridataStateService, useValue: stateService },
         { provide: AuthService, useValue: createMockAuthService() },
+        { provide: DataProductDocumentService, useValue: createMockDataProductDocumentService() },
         { provide: DataProductService, useValue: dataProductService },
         { provide: DataProvidersService, useValue: createMockDataProvidersService() },
         { provide: I18nService, useValue: createMockI18nService() },
@@ -101,14 +105,15 @@ describe('DataProductDetailFormComponent', () => {
   });
 
   describe('tabs', () => {
-    it('should return two tabs', () => {
-      expect(component['tabs']()).toHaveLength(2);
+    it('should return three tabs', () => {
+      expect(component['tabs']()).toHaveLength(3);
     });
 
     it('should have correct tab IDs', () => {
       const ids = component['tabs']().map((t) => t.id);
       expect(ids).toContain(FORM_TAB_IDS.NAME_AND_DESCRIPTION);
       expect(ids).toContain(FORM_TAB_IDS.TECHNICAL_FIELDS);
+      expect(ids).toContain(FORM_TAB_IDS.LINKS_DOCUMENTS);
     });
 
     it('should have hasError=false on all tabs before publish is attempted', () => {
@@ -124,6 +129,21 @@ describe('DataProductDetailFormComponent', () => {
 
       const nameTab = component['tabs']().find((t) => t.id === FORM_TAB_IDS.NAME_AND_DESCRIPTION);
       expect(nameTab?.hasError).toBe(true);
+    });
+  });
+
+  describe('scrollToFirstError', () => {
+    it('activates the links & documents tab when it is the first invalid tab', () => {
+      jest.spyOn(component['form'], 'get').mockImplementation(
+        (path) =>
+          ({
+            invalid: path === FORM_TAB_IDS.LINKS_DOCUMENTS,
+          }) as unknown as AbstractControl,
+      );
+
+      component['scrollToFirstError']();
+
+      expect(component['activeTabId']()).toBe(FORM_TAB_IDS.LINKS_DOCUMENTS);
     });
   });
 
@@ -277,20 +297,75 @@ describe('DataProductDetailFormComponent', () => {
   });
 
   describe('saveAndPublish', () => {
-    it('should set publishAttempted=true', async () => {
-      await component['saveAndPublish']();
+    it('should set publishAttempted=true', () => {
+      component['saveAndPublish']();
       expect(component['publishAttempted']()).toBe(true);
     });
 
-    it('should mark all form controls as touched', async () => {
-      await component['saveAndPublish']();
+    it('should mark all form controls as touched', () => {
+      component['saveAndPublish']();
       expect(component['form'].touched).toBe(true);
     });
 
-    it('should not call createDataProduct when form is invalid', async () => {
+    it('should not open the publish modal when form is invalid', () => {
       // form has required dataSourceSystemId, so it is invalid by default
-      await component['saveAndPublish']();
+      component['saveAndPublish']();
+      expect(component['showPublishModal']()).toBe(false);
+    });
+
+    it('should not call createDataProduct when form is invalid', () => {
+      component['saveAndPublish']();
       expect(dataProductService.createDataProduct).not.toHaveBeenCalled();
+    });
+
+    it('should open the publish modal when form is valid', () => {
+      fillValidForm(component);
+
+      component['saveAndPublish']();
+
+      expect(component['showPublishModal']()).toBe(true);
+    });
+
+    it('should not publish directly when form is valid', () => {
+      fillValidForm(component);
+
+      component['saveAndPublish']();
+
+      expect(dataProductService.createDataProduct).not.toHaveBeenCalled();
+      expect(dataProductService.setDataProductStatus).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('cancelPublish', () => {
+    it('should close the publish modal', () => {
+      component['showPublishModal'].set(true);
+
+      component['cancelPublish']();
+
+      expect(component['showPublishModal']()).toBe(false);
+    });
+
+    it('should not publish', () => {
+      component['showPublishModal'].set(true);
+
+      component['cancelPublish']();
+
+      expect(dataProductService.createDataProduct).not.toHaveBeenCalled();
+      expect(dataProductService.setDataProductStatus).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('confirmPublish', () => {
+    it('should close the publish modal', async () => {
+      const savedProduct = { id: 'pub-id' } as DataProductDto;
+      dataProductService.createDataProduct.mockResolvedValue(savedProduct);
+      dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
+      fillValidForm(component);
+      component['showPublishModal'].set(true);
+
+      await component['confirmPublish']();
+
+      expect(component['showPublishModal']()).toBe(false);
     });
 
     it('should call setDataProductStatus when form is valid and product is created', async () => {
@@ -299,7 +374,7 @@ describe('DataProductDetailFormComponent', () => {
       dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
       fillValidForm(component);
 
-      await component['saveAndPublish']();
+      await component['confirmPublish']();
 
       expect(dataProductService.setDataProductStatus).toHaveBeenCalledWith(
         'pub-id',
@@ -315,7 +390,7 @@ describe('DataProductDetailFormComponent', () => {
       dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
       fillValidForm(component);
 
-      await component['saveAndPublish']();
+      await component['confirmPublish']();
 
       expect(navigateSpy).toHaveBeenCalledWith(['data-products'], {
         state: { [FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM]: true },
@@ -328,7 +403,7 @@ describe('DataProductDetailFormComponent', () => {
       dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
       fillValidForm(component);
 
-      await component['saveAndPublish']();
+      await component['confirmPublish']();
 
       expect(toastService.show).toHaveBeenCalledWith(
         expect.anything(),
@@ -341,7 +416,7 @@ describe('DataProductDetailFormComponent', () => {
       dataProductService.createDataProduct.mockRejectedValue(new Error('API error'));
       fillValidForm(component);
 
-      await component['saveAndPublish']();
+      await component['confirmPublish']();
 
       expect(toastService.show).toHaveBeenCalledWith(
         expect.anything(),
@@ -356,7 +431,7 @@ describe('DataProductDetailFormComponent', () => {
       dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
       fillValidForm(component);
 
-      await component['saveAndPublish']();
+      await component['confirmPublish']();
 
       expect(component['isSaving']()).toBe(false);
     });
@@ -365,7 +440,7 @@ describe('DataProductDetailFormComponent', () => {
       dataProductService.createDataProduct.mockRejectedValue(new Error('API error'));
       fillValidForm(component);
 
-      await component['saveAndPublish']();
+      await component['confirmPublish']();
 
       expect(component['isSaving']()).toBe(false);
     });

@@ -1,0 +1,72 @@
+<div *i18n="let t; prefix: 'data-products.detailForm'" class="flex flex-col gap-4">
+  <div>
+    <h3 class="text-agridata-primary-text">{{ t('links.heading') }}</h3>
+  </div>
+
+  @let isViewMode = formDisabled();
+
+  @if (!isViewMode) {
+    @for (group of linkGroups(); track $index) {
+      <div class="flex flex-col gap-2" [formGroup]="group" appCrossFieldGroup>
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-center">
+          <app-form-control
+            [control]="getFormControl(group, 'displayText')"
+            [label]="t('links.displayText.label')"
+            [placeholder]="t('links.displayText.placeholder')"
+            [disabled]="isViewMode"
+            class="lg:w-1/2"
+          />
+
+          <app-form-control
+            [control]="getFormControl(group, 'url')"
+            [label]="t('links.url.label')"
+            [placeholder]="t('links.url.placeholder')"
+            [disabled]="isViewMode"
+            class="lg:w-1/2"
+          />
+
+          <div>
+            <app-agridata-button
+              [variant]="ButtonVariants.IconLinkReject"
+              [icon]="faTrashCan"
+              (handleClick)="removeLink($index)"
+            >
+              {{ t('links.action.remove') }}
+            </app-agridata-button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div>
+      <app-agridata-button
+        [variant]="ButtonVariants.IconLink"
+        (handleClick)="addLink()"
+        [icon]="faAdd"
+        [disabled]="!canAdd()"
+      >
+        {{ t('links.action.add') }}
+      </app-agridata-button>
+    </div>
+  } @else {
+    @let links = viewLinks();
+
+    @if (links.length) {
+      <div appViewSection [isViewMode]="isViewMode">
+        @for (link of links; track $index) {
+          <a
+            class="flex items-center gap-2 px-4 py-3 text-agridata-primary-600 hover:underline"
+            [href]="link.url"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <fa-icon [icon]="faLink" />
+            <span>{{ link.displayText }}</span>
+          </a>
+        }
+      </div>
+    } @else {
+      <span class="italic">{{ t('links.empty') }}</span>
+    }
+  }
+</div>

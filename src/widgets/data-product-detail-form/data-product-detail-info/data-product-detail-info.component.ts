@@ -1,17 +1,13 @@
-import { Component, computed, effect, inject, input, resource, signal } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { DataProvidersService } from '@/entities/api/data-providers.service';
-import { MasterDataService } from '@/entities/api/master-data.service';
-import { I18nDirective, I18nService } from '@/shared/i18n';
-import { AuthService } from '@/shared/lib/auth';
-import { getErrorMessage, getFormControl } from '@/shared/lib/form.helper';
-import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
+import { I18nDirective } from '@/shared/i18n';
+import { getFormControl } from '@/shared/lib/form.helper';
 import { ControlTypes, FormControlComponent } from '@/shared/ui/form-control';
 import { ViewSectionDirective } from '@/shared/view-section';
 import { AlertComponent, AlertType } from '@/widgets/alert';
-import { METHOD_CODE_OPTIONS } from '@/widgets/data-product-detail-form/data-product-detail-form.model';
+
+import { availableLangs } from '../../../../transloco.config';
 
 /**
  * Tab component for the system configuration and name/description fields of a data product.
@@ -20,128 +16,22 @@ import { METHOD_CODE_OPTIONS } from '@/widgets/data-product-detail-form/data-pro
  */
 @Component({
   selector: 'app-data-product-detail-info',
-  imports: [
-    AgridataSelectComponent,
-    AlertComponent,
-    FormControlComponent,
-    I18nDirective,
-    ViewSectionDirective,
-  ],
+  imports: [AlertComponent, FormControlComponent, I18nDirective, ViewSectionDirective],
   templateUrl: './data-product-detail-info.component.html',
   host: { class: 'contents' },
 })
 export class DataProductDetailInfoComponent {
-  // Injects
-  private readonly authService = inject(AuthService);
-  private readonly dataProvidersService = inject(DataProvidersService);
-  private readonly i18nService = inject(I18nService);
-  private readonly masterDataService = inject(MasterDataService);
-  private readonly stateService = inject(AgridataStateService);
-
   // Constants
   protected readonly AlertType = AlertType;
   protected readonly ControlTypes = ControlTypes;
-  protected readonly methodCodeOptions = METHOD_CODE_OPTIONS;
 
   // Input properties
   readonly form = input.required<FormGroup>();
   readonly isViewMode = input<boolean>(false);
-  readonly preselectedProviderId = input<string>('');
-
-  // Signals
-  protected readonly selectedProviderId = signal<string>('');
-  protected readonly providerSelectHasError = signal(false);
-  protected readonly providerSelectErrorMessage = signal('');
-
-  // Computed Signals
-  protected readonly dataSourceOptions = computed(() =>
-    this.dataSourceSystems().map((system) => ({
-      label: this.i18nService.useObjectTranslation(system.name) || system.code || system.id,
-      value: system.id,
-    })),
-  );
-  protected readonly isAdmin = computed(() => this.authService.isAdmin());
-  protected readonly providerOptions = computed(() =>
-    this.masterDataService.dataProviders().map((provider) => ({
-      label: this.i18nService.useObjectTranslation(provider.name) || provider.id,
-      value: provider.id,
-    })),
-  );
-  protected readonly restClientOptions = computed(() =>
-    this.restClients().map((client) => ({
-      label: client.code ?? client.id ?? '',
-      value: client.id ?? '',
-    })),
-  );
-  private readonly dataSourceSystems = computed(
-    () =>
-      (this.providerDataResource.isLoading() ? [] : this.providerDataResource.value()?.systems) ??
-      [],
-  );
-  private readonly restClients = computed(
-    () =>
-      (this.providerDataResource.isLoading() ? [] : this.providerDataResource.value()?.clients) ??
-      [],
-  );
-
-  private readonly providerDataResource = resource({
-    params: () => this.selectedProviderId() || undefined,
-    loader: async ({ params: providerId }) => {
-      const [systems, clients] = await Promise.all([
-        this.dataProvidersService.getDataSourceSystems(providerId, this.stateService.actingRole()),
-        this.dataProvidersService.getRestClients(providerId, this.stateService.actingRole()),
-      ]);
-      return { systems, clients };
-    },
-  });
-
-  // Effects
-  private readonly applyPreselectedProviderEffect = effect(() => {
-    const preselected = this.preselectedProviderId();
-    if (preselected && !this.selectedProviderId()) {
-      this.selectedProviderId.set(preselected);
-    }
-  });
-
-  private readonly resolveProviderEffect = effect(() => {
-    const providers = this.masterDataService.dataProviders();
-    if (this.isAdmin() || !providers.length) return;
-
-    const uid = this.authService.userInfo()?.uid;
-    if (!uid) return;
-
-    const ownProvider = providers.find((provider) => provider.uid === uid);
-    if (!ownProvider) return;
-
-    this.selectedProviderId.set(ownProvider.id);
-  });
-
-  // The provider controls' touched/status state is not a signal, so feed the error state signals from
-  // the form's events stream (plus selectedProviderId) to stay reactive under zoneless change detection.
-  private readonly syncProviderSelectErrorEffect = effect((onCleanup) => {
-    const hasProvider = !!this.selectedProviderId();
-    const update = () => {
-      const dss = this.getFormControl('dataSourceSystemId');
-      const rc = this.getFormControl('restClientId');
-      this.providerSelectHasError.set(
-        !hasProvider && ((dss.invalid && dss.touched) || (rc.invalid && rc.touched)),
-      );
-      const ctrl = dss.invalid && dss.touched ? dss : rc;
-      const firstKey = Object.keys(ctrl.errors ?? {})[0];
-      this.providerSelectErrorMessage.set(firstKey ? (getErrorMessage(ctrl, firstKey) ?? '') : '');
-    };
-    update();
-    const subscription = this.form().events.subscribe(update);
-    onCleanup(() => subscription.unsubscribe());
-  });
 
   protected getFormControl(path: string) {
     return getFormControl(this.form(), path);
   }
 
-  protected onProviderChange(value: string | number | null): void {
-    this.selectedProviderId.set(value?.toString() ?? '');
-    this.getFormControl('dataSourceSystemId').setValue('');
-    this.getFormControl('restClientId').setValue('');
-  }
+  protected readonly availableLangs = availableLangs;
 }

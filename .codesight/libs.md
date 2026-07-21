@@ -1,0 +1,317 @@
+# Libraries
+
+- `src/data-request-advantages/data-request-advantages.component.ts` — class DataRequestAdvantagesComponent
+- `src/entities/api/agridata-state.service.ts` — class AgridataStateService, const DISMISSED_MIGRATIONS_KEY
+- `src/entities/api/backend-info.service.ts` — class BackendInfoService
+- `src/entities/api/consent-request.service.ts` — class ConsentRequestService
+- `src/entities/api/contract-revision.service.ts` — class ContractRevisionService
+- `src/entities/api/data-product-document.service.ts` — class DataProductDocumentService
+- `src/entities/api/data-product.service.ts` — class DataProductService
+- `src/entities/api/data-providers.service.ts` — class DataProvidersService
+- `src/entities/api/data-request.service.ts` — class DataRequestService
+- `src/entities/api/master-data.service.ts` — class MasterDataService
+- `src/entities/api/notification.service.ts` — class NotificationService
+- `src/entities/api/uid-register.service.ts` — class UidRegisterService
+- `src/entities/api/user.service.ts` — class UserService
+- `src/entities/cms/cms.service.ts` — class CmsService
+- `src/entities/openapi/api/bITSignatureTest.service.ts` — class BITSignatureTestService
+- `src/entities/openapi/api/consentRequestAggregations.service.ts` — class ConsentRequestAggregationsService
+- `src/entities/openapi/api/consentRequests.service.ts` — class ConsentRequestsService
+- `src/entities/openapi/api/contractRevisions.service.ts` — class ContractRevisionsService
+- `src/entities/openapi/api/dataProducts.service.ts` — class DataProductsService
+- `src/entities/openapi/api/dataProviders.service.ts` — class DataProvidersService
+- `src/entities/openapi/api/dataRequests.service.ts` — class DataRequestsService
+- `src/entities/openapi/api/dataTransfer.service.ts` — class DataTransferService
+- `src/entities/openapi/api/dataTransferV2.service.ts` — class DataTransferV2Service
+- `src/entities/openapi/api/infoResource.service.ts` — class InfoResourceService
+- `src/entities/openapi/api/notifications.service.ts` — class NotificationsService
+- `src/entities/openapi/api/testData.service.ts` — class TestDataService
+- `src/entities/openapi/api/uIDRegisterSearch.service.ts` — class UIDRegisterSearchService
+- `src/entities/openapi/api/users.service.ts` — class UsersService
+- `src/entities/openapi/api.base.service.ts` — class BaseService
+- `src/entities/openapi/api.module.ts` — class ApiModule
+- `src/entities/openapi/configuration.ts` — class Configuration, interface ConfigurationParameters
+- `src/entities/openapi/encoder.ts` — class CustomHttpParameterCodec
+- `src/features/cms-blocks/cms-block-renderer.component.ts` — class BlockRendererComponent
+- `src/features/debug/debug-modal.component.ts` — class DebugModalComponent
+- `src/features/debug/debug.service.ts`
+  - class DebugService
+  - interface RequestInfo
+  - interface ResponseInfo
+- `src/features/language-select/language-select.component.ts` — class LanguageSelectComponent
+- `src/shared/click-outside/click-outside.directive.ts` — class ClickOutsideDirective
+- `src/shared/click-stop-propagation/click-stop-propagation.directive.ts` — class ClickStopPropagationDirective
+- `src/shared/consent-request/consent-request.utils.ts`
+  - function getToastTitle: (stateCode) => void
+  - function getToastMessage: (stateCode) => void
+  - function getToastType: (stateCode) => void
+  - function getUndoAction: (undoAction) => void
+  - function buildConsentRequestTourSteps: (i18nService, injector) => DriveStep[]
+- `src/shared/data-product/data-product-dto.directive.ts` — class DataProductDtoDirective
+- `src/shared/data-request/data-request-dto.directive.ts` — class DataRequestDtoDirective
+- `src/shared/data-request/data-request.utils.ts` — function getBadgeVariant: (stateCode?) => void, function getFieldFromLang: (field, lang, dataRequest) => void
+- `src/shared/date/agridata-date.pipe.ts` — class AgridataDatePipe
+- `src/shared/date/date-utils.ts` — function formatDate: (value) => string | undefined
+- `src/shared/error-alert-list/error-alert-list.component.ts` — class ErrorAlertList
+- `src/shared/error-alert-outlet/error-outlet.component.ts` — class ErrorOutletComponent
+- `src/shared/error-modal/error-modal.component.ts` — class ErrorModal
+- `src/shared/forms/cross-field-group.directive.ts` — class CrossFieldGroupDirective
+- `src/shared/forms/cross-field.validators.ts`
+  - function hasText: (value) => boolean
+  - function crossFieldValidation: (control) => ValidationErrors | null
+  - function revalidateCrossFieldGroup: (group) => void
+- `src/shared/i18n/i18n.directive.ts` — class I18nDirective
+- `src/shared/i18n/i18n.pipe.ts` — class I18nPipe, type OrArray
+- `src/shared/i18n/i18n.service.ts` — class I18nService
+- `src/shared/lib/api.helper.ts`
+  - function arrayToObjectSortParams: (sortParams, paramName) => void
+  - function createResourceErrorHandlerEffect: (resource, errorService) => void
+  - function createResourceValueComputed: (resource, fallbackValue) => Signal<T>
+  - interface PageResponseDto
+- `src/shared/lib/auth/auth.guard.ts` — class AuthorizationGuard
+- `src/shared/lib/auth/auth.service.ts` — class AuthService
+- `src/shared/lib/cms/cms.utils.ts`
+  - function generateMediaUrl
+  - function isVideo
+  - function contractAgbUrl
+- `src/shared/lib/form.helper.ts`
+  - function buildItemGroup: (itemSchema, i18nService, isRichText) => FormGroup
+  - function buildReactiveForm: (jsonSchema, fieldMaps, i18nService) => void
+  - function getErrorMessage: (control, errorKey) => void
+  - function getFormControl: (form, key) => void
+  - function getFormArray: (form, key) => void
+  - function getFormControlWithMessages: (form, key) => FormControlWithMessages
+  - _...10 more_
+- `src/shared/markdown/markdown.pipe.ts` — class MarkdownPipe
+- `src/shared/notification/notification.util.ts`
+  - function getNotificationRoute: (notification, authService, 'isConsumer' | 'isDataProvider' | 'isAdmin'>) => string | null
+  - function getRouteForTarget: (targetType, targetId, authService, 'isConsumer' | 'isDataProvider' | 'isAdmin'>) => string | null
+  - function toggleReadStatus: (notification, notificationService, 'toggleReadStatus' | 'notifyMutation'>, toastService, 'show'>, i18nService, 'translate'>) => Promise<void>
+  - function markAllAsRead: (notifications, notificationService, 'markAllAsRead' | 'notifyMutation'>, toastService, 'show'>, i18nService, 'translate'>) => Promise<void>
+- `src/shared/product-tour/product-tour.service.ts` — class ProductTourService
+- `src/shared/scroll-fade/scroll-fade.directive.ts` — class ScrollFadeDirective
+- `src/shared/seo/seo.service.ts` — class SeoService
+- `src/shared/sidepanel/sidepanel.component.ts` — class SidepanelComponent
+- `src/shared/testing/mocks/dummy-components.ts` — class DummyComponent
+- `src/shared/testing/mocks/mock-activated-route.ts` — function createMockActivatedRoute: (queryParams, string>, params, string>) => MockActivatedRoute, interface MockActivatedRoute
+- `src/shared/testing/mocks/mock-agridata-state-service.ts`
+  - function createMockAgridataStateService: () => MockAgridataStateService
+  - type MockAgridataStateServiceTestSignals
+  - type MockAgridataStateService
+  - const BE_VERSION
+  - const mockUids
+- `src/shared/testing/mocks/mock-analytics-service.ts` — function createMockAnalyticsService: () => MockAnalyticsService, type MockAnalyticsService
+- `src/shared/testing/mocks/mock-auth-service.ts`
+  - function createMockAuthService: () => MockAuthService
+  - type MockAuthServiceTestSignals
+  - type MockAuthService
+  - const mockUserInfo: UserInfoDto
+- `src/shared/testing/mocks/mock-cms-service.ts`
+  - function createMockCmsService: () => MockCmsService
+  - type MockCmsService
+  - const mockCmsResponse
+  - const mockCmsService
+- `src/shared/testing/mocks/mock-consent-request-service.ts`
+  - function createMockConsentRequestService: () => MockConsentRequestService
+  - type MockConsentRequestService
+  - const mockConsentRequests: ConsentRequestProducerViewDto[]
+- `src/shared/testing/mocks/mock-contract-revision-service.ts`
+  - function createMockContractRevisionService: () => MockContractRevisionService
+  - type MockContractRevisionService
+  - const mockOtpChallenge: OtpChallengeDto
+  - const mockContractRevision: ContractRevisionDto
+- `src/shared/testing/mocks/mock-data-product-document-service.ts` — function createMockDataProductDocumentService: () => MockDataProductDocumentService, type MockDataProductDocumentService
+- `src/shared/testing/mocks/mock-data-product-service.ts` — function createMockDataProductService: () => MockDataProductService, type MockDataProductService
+- `src/shared/testing/mocks/mock-data-providers-service.ts` — function createMockDataProvidersService: () => MockDataProvidersService, type MockDataProvidersService
+- `src/shared/testing/mocks/mock-data-request-service.ts`
+  - function createMockDataRequestService: () => MockDataRequestService
+  - type MockDataRequestService
+  - const mockDataRequests: DataRequestDto[]
+- `src/shared/testing/mocks/mock-document.ts`
+  - function createMockDocument: (location) => MockDocumentResult
+  - interface MockLocation
+  - interface MockDocumentResult
+- `src/shared/testing/mocks/mock-error-handler.service.ts` — function createMockErrorHandlerService: () => MockErrorHandlerService, type MockErrorHandlerService
+- `src/shared/testing/mocks/mock-i18n-service.ts` — function createMockI18nService: () => MockI18nService, type MockI18nService
+- `src/shared/testing/mocks/mock-local-store.ts` — function installMockLocalStorage: (initial) => void, type LocalStore
+- `src/shared/testing/mocks/mock-master-data-service.ts`
+  - function createMockMasterDataService: () => MockMasterDataService
+  - type MockMasterDataServiceTestSignals
+  - type MockMasterDataService
+- `src/shared/testing/mocks/mock-notification-service.ts`
+  - function createMockNotificationService: () => MockNotificationService
+  - type MockNotificationService
+  - const mockInboxEntries: InboxEntryDto[]
+  - const mockHeaderNotifications: PageResponseDtoInboxEntryDto
+- `src/shared/testing/mocks/mock-product-tour.service.ts` — function createMockProductTourService: () => MockProductTourService, type MockProductTourService
+- `src/shared/testing/mocks/mock-resources.ts` — class MockResources
+- `src/shared/testing/mocks/mock-title-service.ts`
+  - function createMockTitleService: () => MockTitleService
+  - type MockTitleServiceSignals
+  - type MockTitleService
+- `src/shared/testing/mocks/mock-toast-service.ts` — function createMockToastService: () => MockToastService, type MockToastService
+- `src/shared/testing/mocks/mock-uid-register-service.ts` — function createMockUidRegisterService: () => MockUidRegisterService, type MockUidRegisterService
+- `src/shared/testing/mocks/mock-user-service.ts`
+  - function createMockUserService: () => MockUserService
+  - type MockUserService
+  - const mockUserService
+- `src/shared/testing/transloco-testing.module.ts` — function createTranslocoTestingModule: (options) => void
+- `src/shared/toast/toast.service.ts` — class ToastService
+- `src/shared/tooltip/tooltip.directive.ts` — class TooltipDirective
+- `src/shared/ui/agridata-avatar/agridata-avatar.component.ts` — class AgridataAvatarComponent
+- `src/shared/ui/agridata-client-table/agridata-client-table.component.ts` — class AgridataClientTableComponent
+- `src/shared/ui/agridata-digit-input/agridata-digit-input.component.ts` — class AgridataDigitInputComponent
+- `src/shared/ui/agridata-dropzone/agridata-dropzone.component.ts` — class AgridataDropzoneComponent
+- `src/shared/ui/agridata-input/agridata-input.component.ts` — class AgridataInputComponent
+- `src/shared/ui/agridata-multi-select/agridata-multi-select-option/agridata-multi-select-option.component.ts` — class AgridataMultiSelectOptionComponent
+- `src/shared/ui/agridata-multi-select/agridata-multi-select.component.ts` — class AgridataMultiSelectComponent
+- `src/shared/ui/agridata-radio-group/agridata-radio-group.component.ts` — class AgridataRadioGroupComponent
+- `src/shared/ui/agridata-select/agridata-select.component.ts` — class AgridataSelectComponent
+- `src/shared/ui/agridata-table/agridata-table.component.ts` — class AgridataTableComponent
+- `src/shared/ui/agridata-table/table-cell/table-cell.component.ts` — class TableCellComponent
+- `src/shared/ui/agridata-table/table-header-cell/table-header-cell.component.ts` — class TableHeaderCellComponent
+- `src/shared/ui/agridata-table/table-pagination/table-pagination.component.ts` — class TablePaginationComponent
+- `src/shared/ui/agridata-table/table-row-menu/table-row-menu.component.ts` — class TableRowMenuComponent, interface ActionDTO
+- `src/shared/ui/agridata-tabs/agridata-tabs.component.ts` — class AgridataTabsComponent
+- `src/shared/ui/agridata-textarea/agridata-textarea.component.ts` — class AgridataTextareaComponent
+- `src/shared/ui/agridata-toggle/agridata-toggle.component.ts` — class AgridataToggleComponent
+- `src/shared/ui/agridata-wysiwyg/agridata-wysiwyg.component.ts` — class AgridataWysiwygComponent
+- `src/shared/ui/badge/agridata-badge.component.ts`
+  - class AgridataBadgeComponent
+  - enum BadgeVariant
+  - enum BadgeSize
+- `src/shared/ui/button/button.component.ts` — class ButtonComponent
+- `src/shared/ui/empty-state/empty-state.component.ts` — class EmptyStateComponent
+- `src/shared/ui/file-download/agridata-file-download.component.ts` — class AgridataFileDownloadComponent
+- `src/shared/ui/form-control/form-control.component.ts` — class FormControlComponent
+- `src/shared/ui/modal/modal.component.ts` — class ModalComponent
+- `src/shared/ui/popover/popover.component.ts` — class PopoverComponent
+- `src/shared/ui/progress-bar/progress-bar.component.ts` — class ProgressBarComponent
+- `src/shared/ui/search-input/search-input.component.ts` — class SearchInputComponent
+- `src/shared/ui/toast/toast.component.ts` — class ToastComponent
+- `src/shared/utils/download.util.ts` — function downloadBlob: (blob, fileName) => void, function openBlobInNewTab: (blob, mimeType?) => void
+- `src/shared/utils/file-icon.util.ts` — function getFileIcon: (fileName) => IconDefinition
+- `src/shared/utils/format.util.ts` — function formatBytes: (bytes) => string
+- `src/shared/utils/ui.util.ts`
+  - function calculateVerticalPlacement: (triggerRect, contentHeight, viewportHeight) => VerticalPlacement
+  - function copyToClipboard: (text) => Promise<void>
+  - function startCountdown: (countdownValue, durationSeconds, existingTimer?) => ReturnType<typeof setInterval>
+  - enum VerticalPlacement
+- `src/shared/view-section/view-section.directive.ts` — class ViewSectionDirective
+- `src/widgets/account-overlay/account-overlay.component.ts` — class AccountOverlayComponent
+- `src/widgets/admin-data-request-details/admin-data-request-details.component.ts` — class AdminDataRequestDetailsComponent
+- `src/widgets/admin-data-request-table/admin-data-request-table.component.ts` — class AdminDataRequestTableComponent
+- `src/widgets/agridata-accordion/agridata-accordion.component.ts` — class AgridataAccordionComponent
+- `src/widgets/agridata-contact-card/agridata-contact-card.component.ts` — class AgridataContactCardComponent
+- `src/widgets/agridata-wizard/agridata-wizard-stepper/agridata-wizard-stepper.component.ts` — class AgridataWizardStepperComponent
+- `src/widgets/agridata-wizard/agridata-wizard.component.ts` — class AgridataWizardComponent
+- `src/widgets/alert/alert.component.ts` — class AlertComponent
+- `src/widgets/cms-blocks/card-block/card-block.component.ts` — class CardBlockComponent, type CardSize
+- `src/widgets/cms-blocks/cms-footer-block/cms-footer-block.component.ts` — class CmsFooterBlockComponent
+- `src/widgets/cms-blocks/hero-block/hero-block.component.ts` — class HeroBlockComponent
+- `src/widgets/cms-blocks/image-card-block/image-card-block.component.ts` — class ImageCardBlockComponent
+- `src/widgets/cms-blocks/image-grid-block/image-grid-block.component.ts` — class ImageGridBlockComponent
+- `src/widgets/cms-blocks/image-list-block/image-list-block.component.ts` — class ImageListBlockComponent
+- `src/widgets/cms-blocks/list-block/list-block.component.ts` — class ListBlockComponent
+- `src/widgets/cms-blocks/section-card-grid-block/section-card-grid-block.component.ts` — class SectionCardGridBlockComponent
+- `src/widgets/cms-blocks/section-contact-form-block/section-contact-form-block.component.ts` — class SectionContactFormBlockComponent
+- `src/widgets/cms-blocks/section-faq-block/section-faq-block.component.ts` — class SectionFaqBlockComponent
+- `src/widgets/cms-blocks/section-image-card-block/section-image-card-block.component.ts` — class SectionImageCardBlockComponent
+- `src/widgets/cms-blocks/section-image-list/section-image-list.component.ts` — class SectionImageListComponent
+- `src/widgets/cms-blocks/section-media-block/section-media-block.component.ts` — class SectionMediaBlockComponent
+- `src/widgets/cms-blocks/section-onboarding-form-block/section-onboarding-form-block.component.ts` — class SectionOnboardingFormBlockComponent
+- `src/widgets/cms-blocks/section-onboarding-form-block/section-onboarding-form-block.model.ts`
+  - function parseSubheadingParts: (translated) => SubheadingParts
+  - interface SubheadingParts
+  - const AGATE_URLS: Record<string, string>
+- `src/widgets/cms-blocks/section-text-image-block/section-text-image-block.component.ts` — class SectionTextImageBlockComponent
+- `src/widgets/cms-blocks/section-timeline/section-timeline.component.ts` — class SectionTimelineComponent
+- `src/widgets/cms-blocks/section-user-feedback-block/section-user-feedback-block.component.ts` — class SectionUserFeedbackBlockComponent
+- `src/widgets/cms-blocks/text-image-block/text-image-block.component.ts` — class TextImageBlockComponent
+- `src/widgets/cms-blocks/timeline-card/timeline-card.component.ts` — class TimelineCardComponent
+- `src/widgets/cms-blocks/user-feedback-block/user-feedback-block.component.ts` — class UserFeedbackBlockComponent
+- `src/widgets/consent-request-details/consent-request-details.component.ts` — class ConsentRequestDetailsComponent
+- `src/widgets/consent-request-empty-state/consent-request-empty-state.component.ts` — class ConsentRequestEmptyStateComponent
+- `src/widgets/consent-request-table/consent-request-filter/consent-request-filter.component.ts` — class ConsentRequestFilterComponent
+- `src/widgets/consent-request-table/consent-request-list/consent-request-list.component.ts` — class ConsentRequestListComponent
+- `src/widgets/consent-request-table/consent-request-producer-view-dto.directive.ts` — class ConsentRequestProducerViewDtoDirective
+- `src/widgets/consent-request-table/consent-request-table.component.ts` — class ConsentRequestTableComponent
+- `src/widgets/consent-requests-tour/consent-requests-tour-intro/consent-requests-tour-intro.component.ts` — class ConsentRequestsTourIntroComponent
+- `src/widgets/consent-requests-tour/consent-requests-tour-trigger/consent-requests-tour-trigger.component.ts` — class ConsentRequestsTourTriggerComponent
+- `src/widgets/contact-support-info/contact-support-info-content/contact-support-info-content.component.ts` — class ContactSupportInfoContentComponent
+- `src/widgets/contact-support-info/contact-support-info.component.ts` — class ContactSupportInfoComponent
+- `src/widgets/cookiebanner/cookiebanner.component.ts` — class CookiebannerComponent
+- `src/widgets/data-product-detail-form/data-product-detail-form.component.ts` — class DataProductDetailFormComponent
+- `src/widgets/data-product-detail-form/data-product-detail-form.model.ts`
+  - function buildDataProductPayload: (form) => Record<string, unknown>
+  - const DATA_PRODUCT_NEW_ID
+  - const FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM
+  - const FORM_TAB_IDS
+  - const FLOW_CODE_OPTIONS: MultiSelectOption[]
+  - const METHOD_CODE_OPTIONS: MultiSelectOption[]
+  - _...1 more_
+- `src/widgets/data-product-detail-form/data-product-detail-info/data-product-detail-info.component.ts` — class DataProductDetailInfoComponent
+- `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-documents/data-product-detail-documents.component.ts` — class DataProductDetailDocumentsComponent
+- `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-links-documents.component.ts` — class DataProductDetailLinksDocumentsComponent
+- `src/widgets/data-product-detail-form/data-product-detail-links-documents/document-upload.store.ts` — class DocumentUploadStore
+- `src/widgets/data-product-detail-form/data-product-detail-technical/data-product-detail-technical.component.ts` — class DataProductDetailTechnicalComponent
+- `src/widgets/data-product-links/data-product-links.component.ts` — class DataProductLinksComponent
+- `src/widgets/data-product-links/data-product-links.validators.ts`
+  - function isEmptyLink: (link) => boolean
+  - function filterFilledLinks: (links) => LinkDto[]
+  - function absoluteUrlValidator
+  - const MAX_LINKS
+  - const URL_PATTERN
+- `src/widgets/data-request-completion/data-request-completion-signature/data-request-completion-signature.component.ts` — class DataRequestCompletionSignatureComponent
+- `src/widgets/data-request-completion/data-request-completion-signing-status/data-request-completion-signing-status.component.ts` — class DataRequestCompletionSigningStatusComponent
+- `src/widgets/data-request-completion/data-request-completion.component.ts` — class DataRequestCompletionComponent
+- `src/widgets/data-request-contact/data-request-contact.component.ts` — class DataRequestContactComponent
+- `src/widgets/data-request-contract-pdf/data-request-contract-pdf.component.ts` — class DataRequestContractPdfComponent
+- `src/widgets/data-request-contract-signature-policy/data-request-contract-signature-policy.component.ts` — class DataRequestContractSignaturePolicyComponent
+- `src/widgets/data-request-contract-signing/contract-signature-input/contract-signature-input.component.ts` — class ContractSignatureInputComponent
+- `src/widgets/data-request-contract-signing/data-request-contract-signing.component.ts` — class DataRequestContractSigningComponent
+- `src/widgets/data-request-details/data-request-details-request/data-request-details-request.component.ts` — class DataRequestDetailsRequestComponent
+- `src/widgets/data-request-details/data-request-details.component.ts` — class DataRequestDetailsComponent
+- `src/widgets/data-request-details-contract/data-request-details-contract.component.ts` — class DataRequestDetailsContractComponent
+- `src/widgets/data-request-details-wrapper/data-request-details-wrapper.component.ts` — class DataRequestDetailsWrapperComponent
+- `src/widgets/data-request-form/data-request-form-consumer/data-request-form-consumer.component.ts` — class DataRequestFormConsumerComponent
+- `src/widgets/data-request-form/data-request-form-contract/data-request-form-contract.component.ts` — class DataRequestFormContractComponent
+- `src/widgets/data-request-form/data-request-form-producer/data-request-form-producer.component.ts` — class DataRequestFormProducerComponent
+- `src/widgets/data-request-form/data-request-form-request/data-request-form-request-advantages/data-request-form-request-advantages.component.ts` — class DataRequestFormRequestAdvantagesComponent
+- `src/widgets/data-request-form/data-request-form-request/data-request-form-request-advantages/data-request-form-request-advantages.model.ts` — function validateAdvantages, const MAX_ADVANTAGES
+- `src/widgets/data-request-form/data-request-form-request/data-request-form-request-description/data-request-form-request-description.component.ts` — class DataRequestFormRequestDescriptionComponent
+- `src/widgets/data-request-form/data-request-form-request/data-request-form-request-description/data-request-form-request-description.model.ts`
+  - function parsePurposeSublabel: (translated) => PurposeSublabelParts
+  - interface PurposeSublabelParts
+  - const PURPOSE_PDF_FILENAMES: Record<string, string>
+- `src/widgets/data-request-form/data-request-form-request/data-request-form-request-product/data-request-form-request-product.component.ts` — class DataRequestFormRequestProductComponent
+- `src/widgets/data-request-form/data-request-form-request/data-request-form-request-product/data-request-form-request-product.model.ts`
+  - function getDataSourceCode: (product) => string
+  - function mapProductToOption: (product, lang) => ProductOption
+  - function buildCategoriesMap: (products, lang) => Map<string, string>
+  - interface ProductOption
+- `src/widgets/data-request-form/data-request-form-request/data-request-form-request.component.ts` — class DataRequestFormRequestComponent
+- `src/widgets/data-request-preview/data-request-preview.component.ts` — class DataRequestPreviewComponent
+- `src/widgets/data-request-privacy-infos/data-request-privacy-infos.component.ts` — class DataRequestPrivacyInfosComponent
+- `src/widgets/data-request-provider-table/data-request-provider-table.component.ts` — class DataRequestProviderTableComponent
+- `src/widgets/data-request-purpose-accordion/data-request-purpose-accordion.component.ts` — class DataRequestPurposeAccordionComponent
+- `src/widgets/data-request-redirect-uri/data-request-redirect-uri.component.ts` — class DataRequestRedirectUriComponent
+- `src/widgets/data-request-table/data-request-table.component.ts` — class DataRequestTableComponent
+- `src/widgets/data-request-wizard/data-request-wizard-base/data-request-wizard-base.component.ts` — class DataRequestWizardBaseComponent
+- `src/widgets/data-request-wizard/data-request-wizard-consumer/data-request-wizard-consumer.component.ts` — class DataRequestWizardConsumerComponent
+- `src/widgets/data-request-wizard/data-request-wizard-provider/data-request-wizard-provider.component.ts` — class DataRequestWizardProviderComponent
+- `src/widgets/data-request-wizard/data-request-wizard.component.ts` — class DataRequestWizardComponent
+- `src/widgets/data-request-wizard/data-request-wizard.helper.ts` — function isStepCompleted: (formGroup, formsModel, formGroupName, checkExternalCompletion) => void
+- `src/widgets/error-alert/error-alert.component.ts` — class ErrorAlertComponent
+- `src/widgets/footer-widget/api/test-data.service.ts` — class TestDataApiService
+- `src/widgets/footer-widget/ui/footer-widget.component.ts` — class FooterWidgetComponent
+- `src/widgets/header-widget/header-widget.component.ts` — class HeaderWidgetComponent
+- `src/widgets/navigation-widget/mobile-navigation-widget/mobile-navigation-widget.component.ts` — class MobileNavigationWidgetComponent
+- `src/widgets/navigation-widget/navigation-widget.component.ts` — class NavigationWidgetComponent
+- `src/widgets/new-year-banner/new-year-banner.component.ts` — class NewYearBannerComponent
+- `src/widgets/notification-overlay/notification-overlay-content/notification-overlay-content.component.ts` — class NotificationOverlayContentComponent
+- `src/widgets/notification-overlay/notification-overlay.component.ts` — class NotificationOverlayComponent
+- `src/widgets/provider-data-request-details/provider-data-request-details.component.ts` — class ProviderDataRequestDetailsComponent
+- `src/widgets/slider/slider.component.ts` — class SliderComponent
+- `src/widgets/supporter-overlay/supporter-overlay.component.ts` — class SupporterOverlayComponent
+- `src/widgets/uid-switch/uid-switch.component.ts` — class UidSwitchComponent

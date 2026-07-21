@@ -9,6 +9,7 @@ import {
 } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { I18nPipe } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 import { AlertType } from './alert.model';
@@ -22,7 +23,7 @@ import { AlertType } from './alert.model';
  */
 @Component({
   selector: 'app-alert',
-  imports: [NgTemplateOutlet, FontAwesomeModule, ButtonComponent],
+  imports: [NgTemplateOutlet, FontAwesomeModule, ButtonComponent, I18nPipe],
   templateUrl: './alert.component.html',
   host: { class: 'block' },
 })

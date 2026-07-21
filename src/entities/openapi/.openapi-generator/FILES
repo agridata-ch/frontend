@@ -1,9 +1,10 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.base.service.ts
 api.module.ts
+api/agbRevision.service.ts
 api/api.ts
-api/bITSignatureTest.service.ts
 api/consentRequestAggregations.service.ts
 api/consentRequests.service.ts
 api/contractRevisions.service.ts
@@ -21,6 +22,8 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/agbRevisionDto.ts
+model/agbTextDto.ts
 model/burDto.ts
 model/consentRequestAggregationProducerView.ts
 model/consentRequestAggregationProducerViewDataRequest.ts
@@ -35,8 +38,10 @@ model/contractRevisionDto.ts
 model/contractRevisionSignatureDto.ts
 model/createConsentRequestDto.ts
 model/dataProductDescriptionDto.ts
+model/dataProductDocumentMetadataDto.ts
 model/dataProductDto.ts
 model/dataProductDtoStateCode.ts
+model/dataProductExtendedDescriptionDto.ts
 model/dataProductNameDto.ts
 model/dataProductStateEnum.ts
 model/dataProductUpdateDto.ts
@@ -55,6 +60,7 @@ model/dataRequestValidRedirectUriRegexUpdateDto.ts
 model/dataSourceSystemDto.ts
 model/dataSourceSystemReferenceDto.ts
 model/dataTransferResponse.ts
+model/documentScanStatusEnum.ts
 model/exceptionDto.ts
 model/exceptionDto1.ts
 model/exceptionEnum.ts
@@ -62,6 +68,7 @@ model/farmTypeEnum.ts
 model/flowCodeEnum.ts
 model/inboxEntryDto.ts
 model/legalFormEnum.ts
+model/linkDto.ts
 model/markAsReadRequestDto.ts
 model/models.ts
 model/otpChallengeDto.ts

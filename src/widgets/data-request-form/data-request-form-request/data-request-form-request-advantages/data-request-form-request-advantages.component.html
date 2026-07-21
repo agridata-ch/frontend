@@ -7,6 +7,7 @@
     <div
       class="flex flex-col gap-3 border border-gray-200 rounded-lg p-4"
       [formGroup]="advantageGroup($index)"
+      appCrossFieldGroup
       (input)="syncToControl()"
     >
       <div class="flex items-center justify-between">

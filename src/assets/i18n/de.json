@@ -541,8 +541,8 @@
     }
   },
   "navigation": {
-    "open": "Navigation Öffnen",
-    "close": "Navigation Schließen",
+    "open": "Navigation erweitern",
+    "close": "Navigation einklappen",
     "menuItems": {
       "helpAndSupport": "Hilfe & Support",
       "notifications": "Benachrichtigungen",
@@ -829,7 +829,13 @@
     "detailPanel": {
       "titleCreateNew": "Neues Datenprodukt erfassen",
       "subTitle": "Ein Datenprodukt ist eine versionierte und klar abgegrenzte Datenlieferung, die über ein Quellsystem bereitgestellt wird. Es dient als Brücke zwischen fachlicher Verständlichkeit und technischer Integrationsfähigkeit.",
-      "titleUpdate": "Datenprodukt bearbeiten"
+      "titleUpdate": "Datenprodukt bearbeiten",
+      "publishConfirmation": {
+        "title": "Datenprodukt publizieren?",
+        "description": "Mit dem Publizieren wird dieses Datenprodukt auf agridata.ch live geschaltet. \nBitte beachten Sie:\n\n<b>Öffentlicher Katalog:</b> Das Produkt ist ab sofort für alle Datenbezüger sichtbar.\n<b>Datenantrag:</b> Datenbezüger können direkt einen digitalen Antrag für diese Daten stellen.\n<b>Produzenten-Zustimmung:</b> Name und Beschreibung werden eins zu eins den Landwirten und Tierhaltern angezeigt, wenn sie ihre Zustimmung zur Datenfreigabe erteilen. Bitte achten Sie auf eine einfache, verständliche Sprache.",
+        "cancel": "Abbrechen",
+        "publish": "Ja, publizieren"
+      }
     },
     "detailForm": {
       "name": {
@@ -849,7 +855,6 @@
       "dataProduct": "Name und Beschreibung Datenprodukt",
       "infoTitle": "Wichtiger Hinweis zur verständlichen Sprache",
       "infoMessage": "Bitte wählen Sie für den Produktnamen und die Beschreibung eine einfach verständliche Sprache (kein reines IT-Fachdeutsch).\n\nWarum? Diese Texte werden nicht nur im öffentlichen Datenkatalog publiziert, sondern direkt dem Landwirten / Tierhalter angezeigt, wenn dieser im System eine Datenanfrage sichtet und seine formelle Zustimmung zur Datenfreigabe erteilt.",
-      "system": "System",
       "technicalFields": "Technische Informationen",
       "description": {
         "de": {
@@ -902,9 +907,71 @@
       },
       "tab": {
         "technicalFields": "Technische Informationen",
-        "nameAndDescription": "Name und Beschreibung"
+        "nameAndDescription": "Name und Beschreibung",
+        "linksAndDocuments": "Links und Dokumente"
       },
-      "edit": "Bearbeiten"
+      "edit": "Bearbeiten",
+      "links": {
+        "heading": "Links",
+        "action": {
+          "add": "Link hinzufügen",
+          "remove": "Entfernen"
+        },
+        "displayText": {
+          "label": "Label",
+          "placeholder": "agridata.ch"
+        },
+        "url": {
+          "label": "URL",
+          "placeholder": "https://agridata.ch/",
+          "error": "Bitte geben Sie eine vollständige URL inkl. http:// oder https:// ein."
+        },
+        "empty": "Keine Links vorhanden."
+      },
+      "additionalInfo": "Weitere Angaben (optional)",
+      "extendedDescription": {
+        "de": {
+          "label": "Erweiterte Beschreibung Deutsch",
+          "placeholder": "Konkret werden folgende Daten übermittelt:\n- Datum der Erfassung bzw. der letzten Änderung dieses Datensatzes im kantonalen System\n- KT_ID_B Kantonale Identifikationsnummer der Betriebsform auf der Stufe, auf der die nachfolgenden Daten erfasst wurden\n..."
+        },
+        "fr": {
+          "label": "Erweiterte Beschreibung Französisch",
+          "placeholder": "Concrètement, les données suivantes sont transmises : \n- Date resp. la saisie ou la dernière modification du jeu de données dans le système cantonal\n- KT_ID_B Numéro cantonal de la forme d’exploitation au niveau de laquelle les données suivantes ont été saisies\n..."
+        },
+        "it": {
+          "label": "Erweiterte Beschreibung Italienisch",
+          "placeholder": "Concretamente vengono trasmessi i dati seguenti:\n- Data di registrazione o dell’ultima modifica di questo set di dati nel sistema cantonale\n- KT_ID_B Numero d’identificazione cantonale della forma di azienda al livello a cui sono stati registrati i dati seguenti:\n..."
+        },
+        "heading": "Erweiterte Beschreibung"
+      },
+      "documents": {
+        "title": "Dokumente",
+        "dropzone": {
+          "label": "Klicke oder ziehe mittels Drag & Drop die Datei hinein",
+          "hint": "Erlaubte Formate: PDF, max. 10 MB, bis zu 5 Dateien"
+        },
+        "maxFilesReached": "Maximale Anzahl Dateien erreicht",
+        "status": {
+          "UPLOADING": "Wird hochgeladen",
+          "PENDING_SCAN": "Wird geprüft",
+          "AVAILABLE": "Verfügbar",
+          "REJECTED": "Abgelehnt",
+          "ERROR": "Fehler",
+          "STAGED": "Bereit"
+        },
+        "remove": "{{ fileName }} entfernen",
+        "progress": "{{ fileName }} wird hochgeladen",
+        "error": {
+          "fileType": "{{ fileName }} ist keine PDF-Datei",
+          "tooLarge": "{{ fileName }} überschreitet die maximale Grösse von {{ maxSize }}",
+          "maxFiles": "Es können maximal {{ max }} Dateien hochgeladen werden"
+        },
+        "uploadDocuments": "Dokumente hochladen",
+        "documentsToUpload": "Hochzuladene Dateien",
+        "uploadedDocuments": "Vorhandene Dokumente",
+        "markedForRemoval": "Wird entfernt",
+        "empty": "Keine Dokumente vorhanden."
+      }
     },
     "saveAndPublish": {
       "success": {
@@ -1042,5 +1109,18 @@
       "DRAFT": "Entwurf",
       "ACTIVE": "Publiziert"
     }
+  },
+  "wysiwyg": {
+    "bold": "Fett",
+    "italic": "Kursiv",
+    "underline": "Unterstrichen",
+    "bulletList": "Aufzählung",
+    "orderedList": "Nummerierte Liste",
+    "resetFormat": "Formatierung zurücksetzen"
+  },
+  "fileDownload": {
+    "download": "Herunterladen",
+    "remove": "Löschen",
+    "restore": "Rückgängig"
   }
 }

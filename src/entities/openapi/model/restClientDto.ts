@@ -11,6 +11,17 @@
 
 export interface RestClientDto { 
     id?: string;
+    /**
+     * Stable technical code of the rest client
+     */
     code?: string;
+    /**
+     * Human-readable name of the REST client, intended for display in user interfaces
+     */
+    displayName?: string;
+    /**
+     * Base URL of the external API accessed by this REST client
+     */
+    url?: string;
 }
 

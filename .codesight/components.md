@@ -1,0 +1,145 @@
+# Components
+
+- **AppComponent** [client] — `src/app/app.component.ts`
+- **DefaultLayoutComponent** [client] — `src/app/layout/default-layout.component.ts`
+- **FullWidthLayoutComponent** [client] — `src/app/layout/full-width-layout.component.ts`
+- **DataRequestAdvantagesComponent** [client] — props: advantages, lang — `src/data-request-advantages/data-request-advantages.component.ts`
+- **BlockRendererComponent** [client] — props: block, index, isDynamicPage — `src/features/cms-blocks/cms-block-renderer.component.ts`
+- **DebugModalComponent** [client] — `src/features/debug/debug-modal.component.ts`
+- **LanguageSelectComponent** [client] — `src/features/language-select/language-select.component.ts`
+- **AdminPage** [client] — `src/pages/admin-page/admin.page.ts`
+- **AgbPage** [client] — `src/pages/agb-page/agb-page.page.ts`
+- **CmsPage** [client] — props: slug — `src/pages/cms-page/cms-page.page.ts`
+- **ConsentRequestProducerPage** [client] — `src/pages/consent-request-producer/consent-request-producer.page.ts`
+- **DataProductsPageComponent** [client] — `src/pages/data-products-page/data-products-page.component.ts`
+- **DataRequestsConsumerPage** [client] — `src/pages/data-requests-consumer/data-requests-consumer.page.ts`
+- **DataRequestsProviderPage** [client] — `src/pages/data-requests-provider/data-requests-provider.page.ts`
+- **ErrorPage** [client] — `src/pages/error-page/error-page.component.ts`
+- **ExternalServiceErrorPage** [client] — `src/pages/external-service-error/external-service-error.page.ts`
+- **ForbiddenPage** [client] — `src/pages/forbidden/forbidden.page.ts`
+- **ImprintPage** [client] — `src/pages/imprint-page/imprint-page.page.ts`
+- **LandingPage** [client] — `src/pages/landing-page/landing-page.page.ts`
+- **MaintenancePage** [client] — `src/pages/maintenance/maintenance.page.ts`
+- **NotFoundPage** [client] — `src/pages/not-found/not-found.page.ts`
+- **NotificationCenterPageComponent** [client] — `src/pages/notification-center-page/notification-center-page.component.ts`
+- **OnboardingPage** [client] — `src/pages/onboarding-page/onboarding-page.page.ts`
+- **PrivacyPolicyPage** [client] — `src/pages/privacy-policy-page/privacy-policy-page.page.ts`
+- **SupporterPageComponent** [client] — `src/pages/supporter-page/supporter-page.component.ts`
+- **ErrorAlertList** [client] — props: errors — `src/shared/error-alert-list/error-alert-list.component.ts`
+- **ErrorOutletComponent** [client] — `src/shared/error-alert-outlet/error-outlet.component.ts`
+- **ErrorModal** [client] — `src/shared/error-modal/error-modal.component.ts`
+- **SidepanelComponent** [client] — props: backgroundColor, dataTestId, isOpen, maxWidth, preventManualClose, title, subTitle — `src/shared/sidepanel/sidepanel.component.ts`
+- **DummyComponent** [client] — `src/shared/testing/mocks/dummy-components.ts`
+- **AgridataAvatarComponent** [client] — props: name, imageUrl, size, skin — `src/shared/ui/agridata-avatar/agridata-avatar.component.ts`
+- **AgridataClientTableComponent** [client] — props: pageSize, enableSearch, loading — `src/shared/ui/agridata-client-table/agridata-client-table.component.ts`
+- **AgridataDigitInputComponent** [client] — props: control, length, isViewMode — `src/shared/ui/agridata-digit-input/agridata-digit-input.component.ts`
+- **AgridataDropzoneComponent** [client] — props: accept, ariaDescribedBy, disabled, multiple, label, hint — `src/shared/ui/agridata-dropzone/agridata-dropzone.component.ts`
+- **AgridataInputComponent** [client] — props: id, control, type, placeholder, maxCharacters, hasError, inputPrefix, inputPrefixIcon, isViewMode, disabled — `src/shared/ui/agridata-input/agridata-input.component.ts`
+- **AgridataMultiSelectOptionComponent** [client] — props: control, option, disabled — `src/shared/ui/agridata-multi-select/agridata-multi-select-option/agridata-multi-select-option.component.ts`
+- **AgridataMultiSelectComponent** [client] — props: categories, control, customClass, disabled, enableSearch, hasError, options, placeholder, singleCategorySelection, isViewMode — `src/shared/ui/agridata-multi-select/agridata-multi-select.component.ts`
+- **AgridataRadioGroupComponent** [client] — props: ariaLabel, control, disabled, name, options — `src/shared/ui/agridata-radio-group/agridata-radio-group.component.ts`
+- **AgridataSelectComponent** [client] — props: control, customClass, isViewMode, disabled, hasError, options, placeholder — `src/shared/ui/agridata-select/agridata-select.component.ts`
+- **AgridataTableComponent** [client] — props: enableSearch — `src/shared/ui/agridata-table/agridata-table.component.ts`
+- **TableCellComponent** [client] — props: row — `src/shared/ui/agridata-table/table-cell/table-cell.component.ts`
+- **TableHeaderCellComponent** [client] — props: sortDirection — `src/shared/ui/agridata-table/table-header-cell/table-header-cell.component.ts`
+- **TablePaginationComponent** [client] — props: currentPageIndex, totalPages, pageSize — `src/shared/ui/agridata-table/table-pagination/table-pagination.component.ts`
+- **TableRowMenuComponent** [client] — props: actions, dataTestId — `src/shared/ui/agridata-table/table-row-menu/table-row-menu.component.ts`
+- **AgridataTabsComponent** [client] — props: tabs — `src/shared/ui/agridata-tabs/agridata-tabs.component.ts`
+- **AgridataTextareaComponent** [client] — props: control, id, placeholder, maxCharacters, hasError, isViewMode, disabled — `src/shared/ui/agridata-textarea/agridata-textarea.component.ts`
+- **AgridataToggleComponent** [client] — props: ariaLabel, disabled, label — `src/shared/ui/agridata-toggle/agridata-toggle.component.ts`
+- **AgridataWysiwygComponent** [client] — props: control, id, placeholder, maxCharacters, hasError, isViewMode, disabled — `src/shared/ui/agridata-wysiwyg/agridata-wysiwyg.component.ts`
+- **AgridataBadgeComponent** [client] — props: text, variant, size — `src/shared/ui/badge/agridata-badge.component.ts`
+- **ButtonComponent** [client] — props: variant, type, disabled, tabindex, ariaLabel, selected, loading, success, disabledInfo, tooltip — `src/shared/ui/button/button.component.ts`
+- **EmptyStateComponent** [client] — props: title, message, additionalInfo — `src/shared/ui/empty-state/empty-state.component.ts`
+- **AgridataFileDownloadComponent** [client] — props: fileName, sizeBytes, isOpening, downloadable, isDownloading, downloadLabel, removable, markedForRemoval, badgeText, badgeVariant — `src/shared/ui/file-download/agridata-file-download.component.ts`
+- **FormControlComponent** [client] — props: categories, control, controlType, disabled, helperText, id, inputPrefix, label, options, pattern — `src/shared/ui/form-control/form-control.component.ts`
+- **ModalComponent** [client] — props: title, showCloseButton, dataTestId — `src/shared/ui/modal/modal.component.ts`
+- **PopoverComponent** [client] — props: isOpen, class — `src/shared/ui/popover/popover.component.ts`
+- **ProgressBarComponent** [client] — props: label, value — `src/shared/ui/progress-bar/progress-bar.component.ts`
+- **SearchInputComponent** [client] — props: minSearchLength, debounceTime, isLoading — `src/shared/ui/search-input/search-input.component.ts`
+- **ToastStoryWrapperComponent** [client] — `src/shared/ui/toast/toast.component.stories.ts`
+- **ToastComponent** [client] — `src/shared/ui/toast/toast.component.ts`
+- **AccountOverlayComponent** [client] — props: userInfo — `src/widgets/account-overlay/account-overlay.component.ts`
+- **AdminDataRequestDetailsComponent** [client] — props: dataRequestId — `src/widgets/admin-data-request-details/admin-data-request-details.component.ts`
+- **AdminDataRequestTableComponent** [client] — props: dataRequests — `src/widgets/admin-data-request-table/admin-data-request-table.component.ts`
+- **AgridataAccordionComponent** [client] — props: header, isLarge — `src/widgets/agridata-accordion/agridata-accordion.component.ts`
+- **AgridataContactCardComponent** [client] — props: name, secondaryName, imageUrl, size, skin — `src/widgets/agridata-contact-card/agridata-contact-card.component.ts`
+- **AgridataWizardStepperComponent** [client] — props: steps, currentStep — `src/widgets/agridata-wizard/agridata-wizard-stepper/agridata-wizard-stepper.component.ts`
+- **AgridataWizardComponent** [client] — props: steps — `src/widgets/agridata-wizard/agridata-wizard.component.ts`
+- **AlertComponent** [client] — props: type, showCloseButton, dataTestId, title, message, additionalInfo — `src/widgets/alert/alert.component.ts`
+- **CardBlockComponent** [client] — props: card, size, bgColorClass — `src/widgets/cms-blocks/card-block/card-block.component.ts`
+- **CmsFooterBlockComponent** [client] — props: block — `src/widgets/cms-blocks/cms-footer-block/cms-footer-block.component.ts`
+- **HeroBlockComponent** [client] — props: block — `src/widgets/cms-blocks/hero-block/hero-block.component.ts`
+- **ImageCardBlockComponent** [client] — props: block — `src/widgets/cms-blocks/image-card-block/image-card-block.component.ts`
+- **ImageGridBlockComponent** [client] — props: block — `src/widgets/cms-blocks/image-grid-block/image-grid-block.component.ts`
+- **ImageListBlockComponent** [client] — props: block — `src/widgets/cms-blocks/image-list-block/image-list-block.component.ts`
+- **ListBlockComponent** [client] — props: list, cols — `src/widgets/cms-blocks/list-block/list-block.component.ts`
+- **SectionCardGridBlockComponent** [client] — props: block — `src/widgets/cms-blocks/section-card-grid-block/section-card-grid-block.component.ts`
+- **SectionContactFormBlockComponent** [client] — props: block — `src/widgets/cms-blocks/section-contact-form-block/section-contact-form-block.component.ts`
+- **SectionFaqBlockComponent** [client] — props: block — `src/widgets/cms-blocks/section-faq-block/section-faq-block.component.ts`
+- **SectionImageCardBlockComponent** [client] — props: block — `src/widgets/cms-blocks/section-image-card-block/section-image-card-block.component.ts`
+- **SectionImageListComponent** [client] — props: block — `src/widgets/cms-blocks/section-image-list/section-image-list.component.ts`
+- **SectionMediaBlockComponent** [client] — props: block — `src/widgets/cms-blocks/section-media-block/section-media-block.component.ts`
+- **SectionOnboardingFormBlockComponent** [client] — props: block — `src/widgets/cms-blocks/section-onboarding-form-block/section-onboarding-form-block.component.ts`
+- **SectionTextImageBlockComponent** [client] — props: block — `src/widgets/cms-blocks/section-text-image-block/section-text-image-block.component.ts`
+- **SectionTimelineComponent** [client] — props: block — `src/widgets/cms-blocks/section-timeline/section-timeline.component.ts`
+- **SectionUserFeedbackBlockComponent** [client] — props: block — `src/widgets/cms-blocks/section-user-feedback-block/section-user-feedback-block.component.ts`
+- **TextImageBlockComponent** [client] — props: block — `src/widgets/cms-blocks/text-image-block/text-image-block.component.ts`
+- **TimelineCardComponent** [client] — props: block, lastItem, index — `src/widgets/cms-blocks/timeline-card/timeline-card.component.ts`
+- **UserFeedbackBlockComponent** [client] — props: block — `src/widgets/cms-blocks/user-feedback-block/user-feedback-block.component.ts`
+- **ConsentRequestDetailsComponent** [client] — props: consentRequestId — `src/widgets/consent-request-details/consent-request-details.component.ts`
+- **ConsentRequestEmptyStateComponent** [client] — `src/widgets/consent-request-empty-state/consent-request-empty-state.component.ts`
+- **ConsentRequestFilterComponent** [client] — props: requests — `src/widgets/consent-request-table/consent-request-filter/consent-request-filter.component.ts`
+- **ConsentRequestListComponent** [client] — props: consentRequests — `src/widgets/consent-request-table/consent-request-list/consent-request-list.component.ts`
+- **ConsentRequestTableComponent** [client] — props: consentRequestId, consentRequests — `src/widgets/consent-request-table/consent-request-table.component.ts`
+- **ConsentRequestsTourIntroComponent** [client] — `src/widgets/consent-requests-tour/consent-requests-tour-intro/consent-requests-tour-intro.component.ts`
+- **ConsentRequestsTourTriggerComponent** [client] — `src/widgets/consent-requests-tour/consent-requests-tour-trigger/consent-requests-tour-trigger.component.ts`
+- **ContactSupportInfoContentComponent** [client] — `src/widgets/contact-support-info/contact-support-info-content/contact-support-info-content.component.ts`
+- **ContactSupportInfoComponent** [client] — `src/widgets/contact-support-info/contact-support-info.component.ts`
+- **CookiebannerComponent** [client] — `src/widgets/cookiebanner/cookiebanner.component.ts`
+- **DataProductDetailFormComponent** [client] — props: dataProductId — `src/widgets/data-product-detail-form/data-product-detail-form.component.ts`
+- **DataProductDetailInfoComponent** [client] — props: form, isViewMode — `src/widgets/data-product-detail-form/data-product-detail-info/data-product-detail-info.component.ts`
+- **DataProductDetailDocumentsComponent** [client] — props: form, isViewMode — `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-documents/data-product-detail-documents.component.ts`
+- **DataProductDetailLinksDocumentsComponent** [client] — props: form, isViewMode — `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-links-documents.component.ts`
+- **DataProductDetailTechnicalComponent** [client] — props: form, isViewMode, preselectedProviderId — `src/widgets/data-product-detail-form/data-product-detail-technical/data-product-detail-technical.component.ts`
+- **DataProductLinksComponent** [client] — props: form, formDisabled — `src/widgets/data-product-links/data-product-links.component.ts`
+- **DataRequestCompletionSignatureComponent** [client] — props: signature, position — `src/widgets/data-request-completion/data-request-completion-signature/data-request-completion-signature.component.ts`
+- **DataRequestCompletionSigningStatusComponent** [client] — props: contract, dataRequestStateCode — `src/widgets/data-request-completion/data-request-completion-signing-status/data-request-completion-signing-status.component.ts`
+- **DataRequestCompletionComponent** [client] — props: dataRequest, hasReleasedToProvider — `src/widgets/data-request-completion/data-request-completion.component.ts`
+- **DataRequestContactComponent** [client] — props: phoneNumber, email, organisationName, lang — `src/widgets/data-request-contact/data-request-contact.component.ts`
+- **DataRequestContractPdfComponent** [client] — props: dataRequest, contractRevisionId — `src/widgets/data-request-contract-pdf/data-request-contract-pdf.component.ts`
+- **DataRequestContractSignaturePolicyComponent** [client] — props: dataRequest, contract, disabled — `src/widgets/data-request-contract-signature-policy/data-request-contract-signature-policy.component.ts`
+- **ContractSignatureInputComponent** [client] — props: contractId, existingSignature, slotId, showWaitingState — `src/widgets/data-request-contract-signing/contract-signature-input/contract-signature-input.component.ts`
+- **DataRequestContractSigningComponent** [client] — props: dataRequest — `src/widgets/data-request-contract-signing/data-request-contract-signing.component.ts`
+- **DataRequestDetailsRequestComponent** [client] — props: dataRequest, isRedirectUriRegexEditable — `src/widgets/data-request-details/data-request-details-request/data-request-details-request.component.ts`
+- **DataRequestDetailsComponent** [client] — props: autoOpenUnsealedContractTab, dataRequestId, isRedirectUriRegexEditable — `src/widgets/data-request-details/data-request-details.component.ts`
+- **DataRequestDetailsContractComponent** [client] — props: dataRequest — `src/widgets/data-request-details-contract/data-request-details-contract.component.ts`
+- **DataRequestDetailsWrapperComponent** [client] — props: dataRequestId — `src/widgets/data-request-details-wrapper/data-request-details-wrapper.component.ts`
+- **DataRequestFormConsumerComponent** [client] — props: form, formDisabled, dataRequestLogo — `src/widgets/data-request-form/data-request-form-consumer/data-request-form-consumer.component.ts`
+- **DataRequestFormContractComponent** [client] — props: dataRequest — `src/widgets/data-request-form/data-request-form-contract/data-request-form-contract.component.ts`
+- **DataRequestFormProducerComponent** [client] — props: form, formDisabled — `src/widgets/data-request-form/data-request-form-producer/data-request-form-producer.component.ts`
+- **DataRequestFormRequestAdvantagesComponent** [client] — props: form, formDisabled — `src/widgets/data-request-form/data-request-form-request/data-request-form-request-advantages/data-request-form-request-advantages.component.ts`
+- **DataRequestFormRequestDescriptionComponent** [client] — props: form, formDisabled — `src/widgets/data-request-form/data-request-form-request/data-request-form-request-description/data-request-form-request-description.component.ts`
+- **DataRequestFormRequestProductComponent** [client] — props: dataProviderId, form, formDisabled — `src/widgets/data-request-form/data-request-form-request/data-request-form-request-product/data-request-form-request-product.component.ts`
+- **DataRequestFormRequestComponent** [client] — props: dataProviderId, form, formDisabled — `src/widgets/data-request-form/data-request-form-request/data-request-form-request.component.ts`
+- **DataRequestPreviewComponent** [client] — props: dataRequest — `src/widgets/data-request-preview/data-request-preview.component.ts`
+- **DataRequestPrivacyInfosComponent** [client] — props: dataConsumerName, dataProvider, lang — `src/widgets/data-request-privacy-infos/data-request-privacy-infos.component.ts`
+- **DataRequestProviderTableComponent** [client] — props: dataRequests — `src/widgets/data-request-provider-table/data-request-provider-table.component.ts`
+- **DataRequestPurposeAccordionComponent** [client] — props: purpose, products, lang — `src/widgets/data-request-purpose-accordion/data-request-purpose-accordion.component.ts`
+- **DataRequestRedirectUriComponent** [client] — props: dataRequest, isValidRedirectUriRegexEditable — `src/widgets/data-request-redirect-uri/data-request-redirect-uri.component.ts`
+- **DataRequestTableComponent** [client] — props: dataRequests — `src/widgets/data-request-table/data-request-table.component.ts`
+- **DataRequestWizardConsumerComponent** [client] — `src/widgets/data-request-wizard/data-request-wizard-consumer/data-request-wizard-consumer.component.ts`
+- **DataRequestWizardProviderComponent** [client] — `src/widgets/data-request-wizard/data-request-wizard-provider/data-request-wizard-provider.component.ts`
+- **DataRequestWizardComponent** [client] — props: dataRequestId, initialDataRequest, isLoading — `src/widgets/data-request-wizard/data-request-wizard.component.ts`
+- **ErrorAlertComponent** [client] — props: error — `src/widgets/error-alert/error-alert.component.ts`
+- **FooterWidgetComponent** [client] — `src/widgets/footer-widget/ui/footer-widget.component.ts`
+- **HeaderWidgetComponent** [client] — `src/widgets/header-widget/header-widget.component.ts`
+- **MobileNavigationWidgetComponent** [client] — props: cmsPages — `src/widgets/navigation-widget/mobile-navigation-widget/mobile-navigation-widget.component.ts`
+- **NavigationWidgetComponent** [client] — props: cmsPages — `src/widgets/navigation-widget/navigation-widget.component.ts`
+- **NewYearBannerComponent** [client] — `src/widgets/new-year-banner/new-year-banner.component.ts`
+- **NotificationOverlayContentComponent** [client] — props: notifications — `src/widgets/notification-overlay/notification-overlay-content/notification-overlay-content.component.ts`
+- **NotificationOverlayComponent** [client] — `src/widgets/notification-overlay/notification-overlay.component.ts`
+- **ProviderDataRequestDetailsComponent** [client] — props: dataRequestId — `src/widgets/provider-data-request-details/provider-data-request-details.component.ts`
+- **SliderComponent** [client] — `src/widgets/slider/slider.component.ts`
+- **SupporterOverlayComponent** [client] — `src/widgets/supporter-overlay/supporter-overlay.component.ts`
+- **UidSwitchComponent** [client] — props: additionalClass, variant — `src/widgets/uid-switch/uid-switch.component.ts`

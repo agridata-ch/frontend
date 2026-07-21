@@ -2,7 +2,7 @@
   <app-agridata-button
     click-stop-propagation
     [variant]="ButtonVariants.IconOutline"
-    ariaLabel="actions"
+    [ariaLabel]="'table.ariaLabels.actions' | i18n"
     [dataTestId]="dataTestId()"
     (handleClick)="handleToggle()"
   >

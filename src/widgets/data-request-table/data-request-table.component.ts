@@ -25,13 +25,13 @@ import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { DataRequestDtoDirective, getBadgeVariant } from '@/shared/data-request';
 import { I18nService, I18nPipe, I18nDirective } from '@/shared/i18n';
 import { ToastService, ToastType } from '@/shared/toast';
-import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table/agridata-client-table.component';
+import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table';
 import { ClientTableMetadata } from '@/shared/ui/agridata-client-table/client-table-model';
 import { ActionDTO, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
-import { EmptyStateComponent } from '@/shared/ui/empty-state/empty-state.component';
-import { ModalComponent } from '@/shared/ui/modal/modal.component';
+import { EmptyStateComponent } from '@/shared/ui/empty-state';
+import { ModalComponent } from '@/shared/ui/modal';
 import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-wizard';
 
 /**

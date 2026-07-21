@@ -1,4 +1,4 @@
-import { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 import { DataRequestAdvantageDto } from '@/entities/openapi';
 
@@ -27,16 +27,4 @@ export const validateAdvantages: ValidatorFn = (control: AbstractControl) => {
     (a) => !a.de || !a.fr || !a.it || a.de.length < 5 || a.fr.length < 5 || a.it.length < 5,
   );
   return isInvalid ? { advantagesInvalid: true } : null;
-};
-
-/** Requires all three language fields when any one of them is filled. */
-export const crossLanguageValidator: ValidatorFn = (control: AbstractControl) => {
-  const parent = control.parent as FormGroup | null;
-  if (!parent) return null;
-  const de = parent.get('de')?.value as string;
-  const fr = parent.get('fr')?.value as string;
-  const it = parent.get('it')?.value as string;
-  const anyFilled = de || fr || it;
-  if (!anyFilled) return null;
-  return control.value ? null : { required: true };
 };

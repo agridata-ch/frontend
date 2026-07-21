@@ -8,6 +8,7 @@ export enum ButtonVariants {
   Tertiary = 'tertiary',
   Icon = 'icon',
   IconLink = 'icon-link',
+  IconLinkReject = 'icon-link-reject',
   IconOutline = 'icon-outline',
   Link = 'link',
   Filter = 'filter',

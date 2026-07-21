@@ -1,0 +1,67 @@
+@if (isViewMode()) {
+  <!--
+    Safe: the bound value is a plain string, so Angular's built-in DomSanitizer (SecurityContext.HTML)
+    runs automatically on [innerHTML], stripping <script>, on* handlers and javascript: URLs.
+    Never wrap this value in bypassSecurityTrustHtml. Note: this only protects our own rendering;
+    the authoritative sanitization boundary is server-side (the API can be written directly).
+  -->
+  @if (!control()?.value) {
+    <span class="text-agridata-primary-text">-</span>
+  } @else {
+    <div
+      class="rich-text-content text-agridata-primary-text whitespace-pre-line"
+      [innerHTML]="control()?.value"
+    ></div>
+  }
+} @else {
+  <div
+    *i18n="let t; prefix: 'wysiwyg'"
+    class="flex flex-col rounded-md border transition-colors relative"
+    [class.border-agridata-stroke]="!hasError()"
+    [class.border-red-500]="hasError()"
+    [class.bg-gray-100]="disabled()"
+  >
+    <ng-template #toolbarButton let-button let-t="t">
+      <button
+        type="button"
+        class="flex h-8 w-8 items-center justify-center rounded hover:bg-agridata-primary-text hover:text-white"
+        [class.bg-agridata-primary-text]="button.isActive()"
+        [class.text-white]="button.isActive()"
+        [attr.aria-label]="t(button.label)"
+        [appTooltip]="t(button.label)"
+        (click)="button.action()"
+      >
+        <fa-icon [icon]="button.icon" />
+      </button>
+    </ng-template>
+
+    <fieldset
+      [disabled]="disabled()"
+      class="flex flex-wrap gap-1 border-b rounded-t-md border-agridata-stroke bg-neutral-100 p-1 disabled:opacity-50 divide-x divide-agridata-stroke"
+    >
+      <div class="flex gap-1 pr-1">
+        @for (button of toolbarButtons; track button.label) {
+          <ng-container *ngTemplateOutlet="toolbarButton; context: { $implicit: button, t: t }" />
+        }
+      </div>
+      <button
+        type="button"
+        class="flex h-8 w-8 items-center justify-center rounded hover:bg-agridata-primary-text hover:text-white"
+        [attr.aria-label]="t('resetFormat')"
+        [appTooltip]="t('resetFormat')"
+        (click)="resetFormat()"
+      >
+        <fa-icon [icon]="faTextSlash" />
+      </button>
+    </fieldset>
+    <div [id]="id()" #editorHost class="max-h-80 overflow-y-auto"></div>
+    @if (maxCharacters()) {
+      <p
+        class="mt-1 text-right text-sm text-gray-500 self-end absolute -bottom-7.5"
+        [class.text-red-500]="hasError()"
+      >
+        {{ characterCount() }} / {{ maxCharacters() }}
+      </p>
+    }
+  </div>
+}

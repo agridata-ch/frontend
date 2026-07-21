@@ -1,0 +1,32 @@
+<button
+  type="button"
+  class="flex w-full flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed p-6 text-center transition-colors h-48"
+  [class.border-gray-300]="!isDragOver() && !disabled()"
+  [class.border-agridata-primary]="isDragOver()"
+  [class.bg-agridata-primary/5]="isDragOver()"
+  [class.cursor-pointer]="!disabled()"
+  [class.hover:border-gray-400]="!disabled()"
+  [class.cursor-not-allowed]="disabled()"
+  [class.opacity-50]="disabled()"
+  [disabled]="disabled()"
+  [attr.aria-describedby]="ariaDescribedBy()"
+  (click)="openFilePicker()"
+  (dragover)="handleDragOver($event)"
+  (dragleave)="handleDragLeave()"
+  (drop)="handleDrop($event)"
+>
+  <fa-icon [icon]="faUpload" size="2xl" class="text-agridata-secondary-text" />
+  <span class="text-agridata-primary-text">{{ label() }}</span>
+  <span class="text-sm text-agridata-tertiary-text">{{ hint() }}</span>
+</button>
+
+<input
+  #fileInput
+  id="dropzone-input"
+  type="file"
+  class="hidden"
+  [attr.aria-label]="label()"
+  [accept]="accept()"
+  [multiple]="multiple()"
+  (change)="handleFileInput($event)"
+/>

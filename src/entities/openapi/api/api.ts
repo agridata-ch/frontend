@@ -1,5 +1,5 @@
-export * from './bITSignatureTest.service';
-import { BITSignatureTestService } from './bITSignatureTest.service';
+export * from './agbRevision.service';
+import { AgbRevisionService } from './agbRevision.service';
 export * from './consentRequestAggregations.service';
 import { ConsentRequestAggregationsService } from './consentRequestAggregations.service';
 export * from './consentRequests.service';
@@ -26,4 +26,4 @@ export * from './uIDRegisterSearch.service';
 import { UIDRegisterSearchService } from './uIDRegisterSearch.service';
 export * from './users.service';
 import { UsersService } from './users.service';
-export const APIS = [BITSignatureTestService, ConsentRequestAggregationsService, ConsentRequestsService, ContractRevisionsService, DataProductsService, DataProvidersService, DataRequestsService, DataTransferService, DataTransferV2Service, InfoResourceService, NotificationsService, TestDataService, UIDRegisterSearchService, UsersService];
+export const APIS = [AgbRevisionService, ConsentRequestAggregationsService, ConsentRequestsService, ContractRevisionsService, DataProductsService, DataProvidersService, DataRequestsService, DataTransferService, DataTransferV2Service, InfoResourceService, NotificationsService, TestDataService, UIDRegisterSearchService, UsersService];

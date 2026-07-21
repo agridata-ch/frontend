@@ -1,3 +1,69 @@
+## [1.15.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.10...v1.15.0-rc.11) (2026-07-17)
+
+### Features
+
+- **data-product:** add confirmation modal ([56a43de](https://github.com/agridata-ch/frontend/commit/56a43dec455aad80aa6c7ea2a9cf97ddb7fb4ad7)), closes [DIGIB2-1451](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1451)
+
+## [1.15.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.9...v1.15.0-rc.10) (2026-07-16)
+
+### Features
+
+- **agb:** load agb from backend ([fd4a9b9](https://github.com/agridata-ch/frontend/commit/fd4a9b9d0fcba7d3a4429e311149689d43bb1f5a)), closes [DIGIB2-1526](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1526)
+
+## [1.15.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.8...v1.15.0-rc.9) (2026-07-16)
+
+### Features
+
+- **deps:** update actions/setup-node action to v7 ([0ba2d04](https://github.com/agridata-ch/frontend/commit/0ba2d045a65004266030f88fc42435bbd91b9249))
+
+## [1.15.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.7...v1.15.0-rc.8) (2026-07-16)
+
+### Bug Fixes
+
+- **seo:** fix favicon ([0680993](https://github.com/agridata-ch/frontend/commit/0680993ab33ed0c10d62a142137a2beadb1badd6)), closes [DIGIB2-1530](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1530)
+
+## [1.15.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.6...v1.15.0-rc.7) (2026-07-15)
+
+### Bug Fixes
+
+- **client-table:** fix page-size ([fc40b8c](https://github.com/agridata-ch/frontend/commit/fc40b8c24f35b1afca7379a7a7b7a3413749a047)), closes [DIGIB2-1540](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1540)
+
+## [1.15.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.5...v1.15.0-rc.6) (2026-07-14)
+
+### Features
+
+- **data-products:** change display of empty extended description and links, update translations ([a30f930](https://github.com/agridata-ch/frontend/commit/a30f9309b9ba0267cf77a0bbe3326e80ceaf9c4a)), closes [DIGIB2-1352](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1352)
+
+## [1.15.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.4...v1.15.0-rc.5) (2026-07-13)
+
+### Features
+
+- **data-product:** add pdf and links tab ([64654f8](https://github.com/agridata-ch/frontend/commit/64654f807eed0820bf900912fe0d1ac117de61a6)), closes [DIGIB2-1475](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1475)
+
+## [1.15.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.3...v1.15.0-rc.4) (2026-07-13)
+
+### Features
+
+- **wysiwyg:** add wysiwyg editor ([f9cd6b0](https://github.com/agridata-ch/frontend/commit/f9cd6b0e733e0c9088ba48b38bd990d6f1ca1e04)), closes [DIGIB2-1355](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1355)
+
+## [1.15.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.2...v1.15.0-rc.3) (2026-07-09)
+
+### Bug Fixes
+
+- **data-product:** show client name ([b339eb2](https://github.com/agridata-ch/frontend/commit/b339eb2c68e1a18b91be00872ae3677e1617486e)), closes [DIGIB2-1466](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1466)
+
+## [1.15.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.15.0-rc.1...v1.15.0-rc.2) (2026-07-09)
+
+### Features
+
+- **data-product:** add technical description and links ([d0819d3](https://github.com/agridata-ch/frontend/commit/d0819d3f93d7991fefbfa58af900391b43b64b93)), closes [DIGIB2-1352](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1352)
+
+## [1.15.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.14.0...v1.15.0-rc.1) (2026-07-08)
+
+### Features
+
+- **data-product:** refactor detail technical ([8e0bfbd](https://github.com/agridata-ch/frontend/commit/8e0bfbd79fa0b022e0b34b375611eed873a8a495)), closes [DIGIB2-1466](https://blw-ofag-ufag.atlassian.net/browse/DIGIB2-1466)
+
 ## [1.14.0](https://github.com/agridata-ch/frontend/compare/v1.13.0...v1.14.0) (2026-07-08)
 
 ### Features

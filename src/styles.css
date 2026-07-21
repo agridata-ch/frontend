@@ -88,3 +88,75 @@ textarea,
 select {
   outline-color: var(--color-gray-900);
 }
+
+/* Rich-text (WYSIWYG) content — shared by the TipTap editor and its read-only [innerHTML] rendering.
+   Restores the formatting Tailwind's preflight resets. */
+.rich-text-content {
+  strong {
+    font-weight: var(--font-weight-bold);
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  u {
+    text-decoration: underline;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 1.25rem;
+  }
+
+  ol {
+    list-style: decimal;
+    padding-left: 1.25rem;
+  }
+
+  li {
+    margin: 0.125rem 0;
+  }
+
+  ul > li > p:not(:last-child) {
+    margin-bottom: 0;
+  }
+
+  /* Unordered lists: centered custom bullet (mirrors data-request-advantages).
+     flex-wrap + full-width nested lists keep sublists stacking below, not in a row. */
+  ul > li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 0.5rem;
+  }
+  ul > li::before {
+    content: '•';
+    font-size: 1.5em;
+    line-height: 1;
+  }
+  ul > li > * {
+    min-width: 0; /* let the paragraph wrap instead of forcing overflow */
+  }
+  ul > li > ul,
+  ul > li > ol {
+    flex-basis: 100%; /* nested list drops to its own full-width row */
+  }
+
+  a {
+    text-decoration: underline;
+    color: var(--color-agridata-primary-600);
+  }
+
+  p:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+
+  p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    color: var(--color-gray-400);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
+}

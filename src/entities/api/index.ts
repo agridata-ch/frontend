@@ -1,5 +1,7 @@
 export * from './consent-request.service';
+export * from './data-product-document.service';
 export * from './data-request.service';
 export * from './uid-register.service';
 export * from './backend-info.service';
 export * from './contract-revision.service';
+export * from './agb.service';

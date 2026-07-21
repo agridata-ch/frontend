@@ -320,7 +320,7 @@ export class DataProvidersService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/products/v1/data-providers/${this.configuration.encodeParam({name: "providerId", value: providerId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/restClient`;
+        let localVarPath = `/api/products/v1/data-providers/${this.configuration.encodeParam({name: "providerId", value: providerId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/restClients`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<RestClientDto>>('get', `${basePath}${localVarPath}`,
             {

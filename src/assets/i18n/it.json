@@ -541,8 +541,8 @@
     }
   },
   "navigation": {
-    "open": "Apri la navigazione",
-    "close": "Chiudi la navigazione",
+    "open": "Espandi la navigazione",
+    "close": "Riduci la navigazione",
     "menuItems": {
       "helpAndSupport": "Aiuto e supporto",
       "notifications": "Notifiche",
@@ -829,7 +829,13 @@
     "detailPanel": {
       "titleCreateNew": "Crea un nuovo prodotto dati",
       "subTitle": "Un prodotto dati è una consegna di dati versionata e chiaramente delimitata, fornita tramite un sistema sorgente. Serve come ponte tra la comprensibilità specialistica e la capacità di integrazione tecnica.",
-      "titleUpdate": "Modifica prodotto dati"
+      "titleUpdate": "Modifica prodotto dati",
+      "publishConfirmation": {
+        "title": "Pubblicare il prodotto dati?",
+        "description": "Con la pubblicazione, questo prodotto dati sarà attivato su agridata.ch. \nSi prega di notare:\n\n<b>Catalogo pubblico:</b> Il prodotto è immediatamente visibile a tutti gli acquirenti di dati.\n<b>Richiesta di dati:</b> Gli acquirenti di dati possono presentare direttamente una richiesta digitale per questi dati.\n<b>Consenso dei produttori:</b> Nome e descrizione verranno mostrati esattamente agli agricoltori e agli allevatori quando daranno il loro consenso alla condivisione dei dati. Si prega di utilizzare un linguaggio semplice e comprensibile.",
+        "cancel": "Annulla",
+        "publish": "Sì, pubblica"
+      }
     },
     "detailForm": {
       "name": {
@@ -849,7 +855,6 @@
       "dataProduct": "Nome e descrizione prodotto dati",
       "infoTitle": "Linguaggio Semplice",
       "infoMessage": "Scegliete un linguaggio di facile comprensione per i nomi e la descrizione dei prodotti. I prodotti di dati, una volta salvati e pubblicati, verranno visualizzati direttamente su agridata.ch e dovranno essere scritti in modo comprensibile.",
-      "system": "Sistema",
       "technicalFields": "Informazioni tecniche",
       "description": {
         "de": {
@@ -902,9 +907,71 @@
       },
       "tab": {
         "technicalFields": "Informazioni tecniche",
-        "nameAndDescription": "Nome e descrizione"
+        "nameAndDescription": "Nome e descrizione",
+        "linksAndDocuments": "Link e documenti"
       },
-      "edit": "Modifica"
+      "edit": "Modifica",
+      "links": {
+        "heading": "Links",
+        "action": {
+          "add": "Aggiungere un link",
+          "remove": "Rimuovere"
+        },
+        "displayText": {
+          "label": "Etichetta",
+          "placeholder": "agridata.ch"
+        },
+        "url": {
+          "label": "URL",
+          "placeholder": "https://agridata.ch/",
+          "error": "Inserisca un URL completo, incluso http:// o https://."
+        },
+        "empty": "Nessun link disponibile."
+      },
+      "additionalInfo": "Ulteriori informazioni (facoltativo)",
+      "extendedDescription": {
+        "de": {
+          "label": "Descrizione estesa in tedesco",
+          "placeholder": "Konkret werden folgende Daten übermittelt:\n- Datum der Erfassung bzw. der letzten Änderung dieses Datensatzes im kantonalen System\n- KT_ID_B Kantonale Identifikationsnummer der Betriebsform auf der Stufe, auf der die nachfolgenden Daten erfasst wurden\n..."
+        },
+        "fr": {
+          "label": "Descrizione estesa in francese",
+          "placeholder": "Concrètement, les données suivantes sont transmises : \n- Date resp. la saisie ou la dernière modification du jeu de données dans le système cantonal\n- KT_ID_B Numéro cantonal de la forme d’exploitation au niveau de laquelle les données suivantes ont été saisies\n..."
+        },
+        "it": {
+          "label": "Descrizione estesa in italiano",
+          "placeholder": "Concretamente vengono trasmessi i dati seguenti:\n- Data di registrazione o dell’ultima modifica di questo set di dati nel sistema cantonale\n- KT_ID_B Numero d’identificazione cantonale della forma di azienda al livello a cui sono stati registrati i dati seguenti:\n..."
+        },
+        "heading": "Descrizione estesa"
+      },
+      "documents": {
+        "title": "Documenti",
+        "dropzone": {
+          "label": "Clicca o trascina il file qui",
+          "hint": "Formati consentiti: PDF, max. 10 MB, fino a 5 file"
+        },
+        "maxFilesReached": "Numero massimo di file raggiunto",
+        "status": {
+          "UPLOADING": "Caricamento in corso",
+          "PENDING_SCAN": "In verifica",
+          "AVAILABLE": "Disponibile",
+          "REJECTED": "Rifiutato",
+          "ERROR": "Errore",
+          "STAGED": "Pronto"
+        },
+        "remove": "Rimuovi {{ fileName }}",
+        "progress": "{{ fileName }} in caricamento",
+        "error": {
+          "fileType": "{{ fileName }} non è un file PDF",
+          "tooLarge": "{{ fileName }} supera la dimensione massima di {{ maxSize }}",
+          "maxFiles": "È possibile caricare un massimo di {{ max }} file"
+        },
+        "uploadDocuments": "Carica documenti",
+        "documentsToUpload": "File da caricare",
+        "uploadedDocuments": "Documenti disponibili",
+        "markedForRemoval": "Verrà rimosso",
+        "empty": "Nessun documento disponibile."
+      }
     },
     "saveAndPublish": {
       "success": {
@@ -1042,5 +1109,18 @@
       "DRAFT": "Bozza",
       "ACTIVE": "Pubblicato"
     }
+  },
+  "wysiwyg": {
+    "bold": "Grassetto",
+    "italic": "Corsivo",
+    "underline": "Sottolineato",
+    "bulletList": "Elenco puntato",
+    "orderedList": "Elenco numerato",
+    "resetFormat": "Ripristina formattazione"
+  },
+  "fileDownload": {
+    "download": "Scarica",
+    "remove": "Elimina",
+    "restore": "Annulla"
   }
 }

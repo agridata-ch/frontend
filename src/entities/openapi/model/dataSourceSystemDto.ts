@@ -13,8 +13,17 @@ import { TranslationDto } from './translationDto';
 
 export interface DataSourceSystemDto { 
     id: string;
+    /**
+     * Stable technical code of the source
+     */
     code?: string;
+    /**
+     * Display name of the data source
+     */
     name?: TranslationDto;
+    /**
+     * Reference to the data provider
+     */
     dataProvider: DataProviderDto;
 }
 
