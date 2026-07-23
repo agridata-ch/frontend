@@ -41,7 +41,7 @@ export class AlertComponent {
   readonly showCloseButton = input<boolean>(false);
   readonly dataTestId = input<string | undefined>();
   readonly title = input<string | undefined>();
-  readonly message = input.required<string>();
+  readonly message = input<string>();
   readonly additionalInfo = input<string | undefined>();
 
   readonly closeAlert = output<boolean>();

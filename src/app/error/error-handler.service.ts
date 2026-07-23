@@ -273,14 +273,12 @@ export class ErrorHandlerService implements OnDestroy {
     return obj !== null && typeof obj === 'object' && 'requestId' in obj;
   }
 
-  // todo DIGIB2-949 check if there is a better way to identify this error type with angular 21
   private isErrorWithCause(error: unknown): error is ErrorWithCause {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cause = (error as any)?.cause;
     return cause instanceof HttpErrorResponse;
   }
 
-  // todo DIGIB2-949 check if there is a better way to identify this error type with angular 21
   private isResourceValueError(error: unknown): error is ResourceValueError {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cause = (error as any)?.cause?.cause;

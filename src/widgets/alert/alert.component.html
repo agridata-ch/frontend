@@ -1,5 +1,9 @@
 <ng-template #messageContent>
-  <span>{{ message() }}</span>
+  @if (message()) {
+    <span>{{ message() }}</span>
+  } @else {
+    <ng-content></ng-content>
+  }
   @if (additionalInfo()) {
     <span class="text-sm">{{ additionalInfo() }}</span>
   }

@@ -859,6 +859,9 @@
         "it": {
           "label": "Name Italienisch",
           "placeholder": "p.es. Animali da reddito estivati"
+        },
+        "disabledInfo": {
+          "message": "Hinweis: Titel und Beschreibung können nach der Aktivierung nicht selbstständig bearbeitet werden. Gewünschte Änderungen können via [mailto:support@agridata.ch] beantragt werden."
         }
       },
       "dataProduct": "Name und Beschreibung Datenprodukt",
@@ -980,7 +983,13 @@
         "uploadedDocuments": "Vorhandene Dokumente",
         "markedForRemoval": "Wird entfernt",
         "empty": "Keine Dokumente vorhanden."
-      }
+      },
+      "dataSourceSystemId": {
+        "disabledInfo": {
+          "message": "Hinweis: Das System kann nach der Aktivierung nicht selbstständig bearbeitet werden. Gewünschte Änderungen können via [mailto:support@agridata.ch] beantragt werden."
+        }
+      },
+      "saveChanges": "Änderungen publizieren"
     },
     "saveAndPublish": {
       "success": {
@@ -1000,6 +1009,16 @@
       "error": {
         "title": "Speichern als Entwurf fehlgeschlagen.",
         "message": "Beim speichern als Entwurf ist etwas schief gelaufen. Bitte versuchen Sie es später noch einmal."
+      }
+    },
+    "saveChanges": {
+      "success": {
+        "title": "Änderungen erfolgreich publiziert",
+        "message": "Die Änderungen wurden erfolgreich publiziert"
+      },
+      "error": {
+        "title": "Speichern fehlgeschlagen",
+        "message": "Die Änderungen konnten nicht publiziert werden"
       }
     }
   },

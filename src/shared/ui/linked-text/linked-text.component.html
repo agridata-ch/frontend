@@ -1,0 +1,15 @@
+<span
+  >{{ parts().before }}
+  @if (resolvedHref(); as href) {
+    <a
+      [href]="href"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="underline hover:text-agridata-primary-600"
+      >{{ parts().linkText }}</a
+    >
+  } @else if (parts().linkText) {
+    {{ parts().linkText }}
+  }
+  {{ parts().after }}
+</span>

@@ -79,4 +79,18 @@ export class DataProductService {
       ),
     );
   };
+
+  patchDataProduct = (
+    id: string,
+    dto: Record<string, unknown>,
+    actingRole?: ActingRole,
+  ): Promise<DataProductDto> => {
+    return firstValueFrom(
+      this.apiService.patchDataProduct(
+        id,
+        dto as unknown as DataProductUpdateDto,
+        actingRole as DataProductActingRoles,
+      ),
+    );
+  };
 }

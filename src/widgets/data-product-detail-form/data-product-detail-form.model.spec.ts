@@ -7,10 +7,12 @@ import { buildReactiveForm, getFormControl, populateFormFromDto } from '@/shared
 import { createMockI18nService } from '@/shared/testing/mocks';
 
 import {
+  applyDisabledAfterPublish,
   buildDataProductPayload,
   dataProductFormsModel,
   FLOW_CODE_OPTIONS,
   FORM_TAB_IDS,
+  isFieldDisabledAfterPublish,
   METHOD_CODE_OPTIONS,
 } from './data-product-detail-form.model';
 
@@ -137,6 +139,100 @@ describe('data-product-detail-form.model', () => {
       const payload = buildDataProductPayload(form);
 
       expect(payload['links']).toEqual([{ displayText: 'Docs', url: 'https://example.com' }]);
+    });
+
+    it('should omit disabled controls from the payload', () => {
+      const form = buildForm();
+      const technical = form.get(FORM_TAB_IDS.TECHNICAL_FIELDS) as FormGroup;
+      getFormControl(technical, 'dataSourceSystemId').setValue('sys-1');
+      getFormControl(technical, 'restClientId').setValue('rc-1');
+      getFormControl(technical, 'dataSourceSystemId').disable();
+      getFormControl(technical, 'restClientId').disable();
+
+      const payload = buildDataProductPayload(form);
+
+      expect(payload).not.toHaveProperty('dataSourceSystemId');
+      expect(payload).not.toHaveProperty('restClientId');
+    });
+  });
+
+  describe('isFieldDisabledAfterPublish', () => {
+    it('should lock dataSourceSystemId for both roles', () => {
+      for (const isAdmin of [true, false]) {
+        expect(isFieldDisabledAfterPublish('dataSourceSystemId', isAdmin)).toBe(true);
+      }
+    });
+
+    it('should lock name and description for a provider but keep them editable for an admin', () => {
+      expect(isFieldDisabledAfterPublish('name', false)).toBe(true);
+      expect(isFieldDisabledAfterPublish('description', false)).toBe(true);
+      expect(isFieldDisabledAfterPublish('name', true)).toBe(false);
+      expect(isFieldDisabledAfterPublish('description', true)).toBe(false);
+    });
+
+    it('should keep unlisted fields editable for both roles', () => {
+      for (const isAdmin of [true, false]) {
+        expect(isFieldDisabledAfterPublish('restClientId', isAdmin)).toBe(false);
+        expect(isFieldDisabledAfterPublish('flowCode', isAdmin)).toBe(false);
+        expect(isFieldDisabledAfterPublish('restClientPathTemplate', isAdmin)).toBe(false);
+        expect(isFieldDisabledAfterPublish('links', isAdmin)).toBe(false);
+      }
+    });
+
+    it('should match dotted (nested translation) field names by their top-level key', () => {
+      expect(isFieldDisabledAfterPublish('name.fr', false)).toBe(true);
+      expect(isFieldDisabledAfterPublish('description.it', false)).toBe(true);
+      expect(isFieldDisabledAfterPublish('name.de', true)).toBe(false);
+    });
+  });
+
+  describe('applyDisabledAfterPublish', () => {
+    it('should keep name/description editable but lock dataSourceSystemId for an admin in edit mode', () => {
+      const form = buildForm();
+      const info = form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION) as FormGroup;
+      const technical = form.get(FORM_TAB_IDS.TECHNICAL_FIELDS) as FormGroup;
+
+      applyDisabledAfterPublish(info, true, true);
+      applyDisabledAfterPublish(technical, true, true);
+
+      expect(info.get('name')?.enabled).toBe(true);
+      expect(info.get('description')?.enabled).toBe(true);
+      expect(info.get('extendedDescription')?.enabled).toBe(true);
+      expect(technical.get('dataSourceSystemId')?.disabled).toBe(true);
+      expect(technical.get('restClientId')?.enabled).toBe(true);
+    });
+
+    it('should cascade a disabled group to its language children', () => {
+      const form = buildForm();
+      const info = form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION) as FormGroup;
+
+      applyDisabledAfterPublish(info, true, false);
+
+      expect(getFormControl(info.get('name') as FormGroup, 'de').disabled).toBe(true);
+      expect(getFormControl(info.get('name') as FormGroup, 'fr').disabled).toBe(true);
+    });
+
+    it('should disable the same fields for a provider', () => {
+      const form = buildForm();
+      const info = form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION) as FormGroup;
+      const technical = form.get(FORM_TAB_IDS.TECHNICAL_FIELDS) as FormGroup;
+
+      applyDisabledAfterPublish(info, true, false);
+      applyDisabledAfterPublish(technical, true, false);
+
+      expect(info.get('name')?.disabled).toBe(true);
+      expect(info.get('description')?.disabled).toBe(true);
+      expect(technical.get('dataSourceSystemId')?.disabled).toBe(true);
+    });
+
+    it('should re-enable everything when not in edit mode', () => {
+      const form = buildForm();
+      const technical = form.get(FORM_TAB_IDS.TECHNICAL_FIELDS) as FormGroup;
+      technical.get('dataSourceSystemId')?.disable();
+
+      applyDisabledAfterPublish(technical, false, true);
+
+      expect(technical.get('dataSourceSystemId')?.enabled).toBe(true);
     });
   });
 });

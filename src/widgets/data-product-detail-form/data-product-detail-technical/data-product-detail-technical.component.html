@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-4">
     <h3>{{ t('technicalFields') }}</h3>
     <div appViewSection [isViewMode]="isViewMode()">
-      @if (isAdmin() && !isViewMode()) {
+      @if (isAdmin() && !isViewMode() && !isEditMode()) {
         <div class="flex flex-col">
           <span
             class="mb-2 font-medium leading-[130%]"
@@ -26,6 +26,11 @@
             }
           </span>
         </div>
+      }
+      @if (dataSourceSystemDisabled()) {
+        <app-alert class="mb-4" [type]="AlertType.INFO">
+          <app-linked-text [parts]="dataSourceSystemDisabledMessageParts()" />
+        </app-alert>
       }
       <div
         class="flex flex-col lg:flex-row gap-6 transition-all duration-300 ease-in-out"

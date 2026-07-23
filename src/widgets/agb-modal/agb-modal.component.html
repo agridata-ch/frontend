@@ -7,36 +7,15 @@
 >
   <div class="flex flex-col gap-6" *i18n="let t; prefix: 'agb.modal'">
     @if (isBlocking()) {
-      <p>
-        <span>
-          {{ isBlockingParts().before }}
-          <a
-            href="{{ appBaseUrl }}"
-            target="_blank"
-            class="underline hover:text-agridata-primary-600"
-          >
-            {{ isBlockingParts().linkText }}
-          </a>
-          {{ isBlockingParts().after }}
-        </span>
-      </p>
+      <app-linked-text [parts]="isBlockingParts()" [href]="appBaseUrl" />
     } @else {
       <p>{{ t('info') }}</p>
     }
 
     <div class="flex items-center gap-3 p-2 bg-agridata-content-gray rounded-lg">
       <app-agridata-toggle [(checked)]="consentChecked" [ariaLabel]="consentLabel()" />
-      <div>
-        {{ agbParts().before }}
-        <a
-          href="{{ contractAgbUrl() }}"
-          target="_blank"
-          class="underline hover:text-agridata-primary-600"
-        >
-          {{ agbParts().linkText }}
-        </a>
-        {{ agbParts().after }}
-      </div>
+
+      <app-linked-text [parts]="agbParts()" [href]="contractAgbUrl()" />
     </div>
     <div class="flex justify-end gap-2">
       @if (!isBlocking()) {

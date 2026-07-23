@@ -1,4 +1,12 @@
-import { booleanAttribute, Component, effect, input, output, signal } from '@angular/core';
+import {
+  booleanAttribute,
+  Component,
+  computed,
+  effect,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 
 import { FormControlWithMessages, getErrorMessage } from '@/shared/lib/form.helper';
@@ -62,11 +70,18 @@ export class FormControlComponent {
   // Signals
   protected readonly hasError = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
+  protected readonly controlDisabled = signal(false);
+
+  // Computed Signals
+  // Treat a disabled bound control as disabled without requiring the caller to also pass [disabled]:
+  // control.disable() then greys and blocks every field type (incl. the custom select, which has no
+  // ControlValueAccessor). The [disabled] input still works for pure UI gates that don't disable the control.
+  protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
 
   // Effects
   // The control's touched/status state is not a signal, so in zoneless change detection a
   // markAllAsTouched() or blur would not re-render the error state. Feed the state signals from the
-  // control's events stream so hasError()/errorMessage() stay reactive.
+  // control's events stream so hasError()/errorMessage()/controlDisabled() stay reactive.
   private readonly syncErrorStateEffect = effect((onCleanup) => {
     const control = this.control();
     const update = () => {
@@ -77,6 +92,7 @@ export class FormControlComponent {
           ? getErrorMessage(control, Object.keys(control.errors)[0])
           : null,
       );
+      this.controlDisabled.set(control?.disabled ?? false);
     };
     update();
     const subscription = control?.events.subscribe(update);

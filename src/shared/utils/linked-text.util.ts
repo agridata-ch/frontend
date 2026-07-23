@@ -2,6 +2,7 @@ export interface LinkedTextParts {
   before: string;
   linkText: string | null;
   after: string;
+  urlSchema?: string;
 }
 
 /**
@@ -10,6 +11,7 @@ export interface LinkedTextParts {
  * the link text itself, and the text after. Uses the first `[...]` pair; when no
  * complete pair is present the whole string is returned as `before` and
  * `linkText` is `null`.
+ * it also supports mailto and tel links which will be sliced out and returned as urlSchema
  *
  * CommentLastReviewed: 2026-07-21
  *
@@ -20,9 +22,20 @@ export function parseLinkedText(translated: string): LinkedTextParts {
   const open = translated.indexOf('[');
   const close = translated.indexOf(']', open);
   if (open === -1 || close === -1) return { before: translated, linkText: null, after: '' };
+
+  let linkText = translated.slice(open + 1, close);
+  let urlSchema: string | undefined;
+
+  if (linkText.startsWith('mailto:') || linkText.startsWith('tel:')) {
+    const config = linkText.indexOf(':');
+    urlSchema = linkText.slice(0, config);
+    linkText = linkText.slice(config + 1);
+  }
+
   return {
     before: translated.slice(0, open),
-    linkText: translated.slice(open + 1, close),
+    linkText,
     after: translated.slice(close + 1),
+    urlSchema,
   };
 }

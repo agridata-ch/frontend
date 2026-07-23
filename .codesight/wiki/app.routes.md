@@ -16,9 +16,7 @@ The App.routes subsystem handles **3 routes** and touches: auth.
 ## Source Files
 
 Read these before implementing or modifying this subsystem:
-
 - `src/app/app.routes.ts`
 
 ---
-
 _Back to [overview.md](./overview.md)_

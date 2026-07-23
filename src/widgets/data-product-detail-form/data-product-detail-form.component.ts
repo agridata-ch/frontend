@@ -23,7 +23,7 @@ import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProductDto, DataProductDtoStateCode, DataProductStateEnum } from '@/entities/openapi';
 import { getBadgeVariant, getStatusTranslation } from '@/pages/data-products-page';
-import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ACTING_ROLES, ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { buildReactiveForm, populateFormFromDto } from '@/shared/lib/form.helper';
 import { ScrollFadeDirective } from '@/shared/scroll-fade';
@@ -36,11 +36,13 @@ import { ModalComponent } from '@/shared/ui/modal';
 import { DocumentUploadStore } from '@/widgets/data-product-detail-form/data-product-detail-links-documents';
 
 import {
+  applyDisabledAfterPublish,
   buildDataProductPayload,
   DATA_PRODUCT_NEW_ID,
   dataProductFormsModel,
   FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM,
   FORM_TAB_IDS,
+  SAVE_MODE,
 } from './data-product-detail-form.model';
 import { DataProductDetailInfoComponent } from './data-product-detail-info';
 import { DataProductDetailLinksDocumentsComponent } from './data-product-detail-links-documents';
@@ -98,8 +100,8 @@ export class DataProductDetailFormComponent {
   protected readonly isOpen = signal(false);
   protected readonly isSaving = signal(false);
   protected readonly showPublishModal = signal(false);
+  protected readonly isEditMode = signal(false);
   private readonly currentDataProductId = signal<string | null>(null);
-  private readonly isEditMode = signal(false);
   private readonly publishAttempted = signal(false);
   private readonly refreshListNeeded = signal(false);
 
@@ -145,10 +147,12 @@ export class DataProductDetailFormComponent {
       {
         id: FORM_TAB_IDS.LINKS_DOCUMENTS,
         label: this.i18nService.translate('data-products.detailForm.tab.linksAndDocuments'),
+        // Only flag the tab as errored for actual document failures (rejected / scan error);
+        // a pending scan is a transient, expected state and must not redden the tab.
         hasError:
           attempted &&
           ((this.form.get(FORM_TAB_IDS.LINKS_DOCUMENTS)?.invalid ?? false) ||
-            this.uploadStore.hasUnreadyDocuments()),
+            this.uploadStore.hasBlockingState()),
       },
     ];
   });
@@ -193,16 +197,7 @@ export class DataProductDetailFormComponent {
   private readonly patchFormEffect = effect(() => {
     const product = this.dataProductResource.value();
     if (!product) return;
-    untracked(() => {
-      populateFormFromDto(
-        this.form,
-        product as unknown as Record<string, unknown>,
-        dataProductFormsModel,
-      );
-      const technicalGroup = this.getTabForm(FORM_TAB_IDS.TECHNICAL_FIELDS);
-      technicalGroup.get('dataSourceSystemId')?.setValue(product.dataSourceSystem?.id ?? '');
-      technicalGroup.get('restClientId')?.setValue(product.restClient?.id ?? '');
-    });
+    untracked(() => this.populateForm(product));
   });
 
   private readonly syncRouteIdEffect = effect(() => {
@@ -220,12 +215,34 @@ export class DataProductDetailFormComponent {
     }
   });
 
+  // Locks the per-role fields while editing a published product. form-control reflects the control's
+  // disabled state automatically, so no per-field [disabled] bindings are needed in the tabs.
+  private readonly syncDisabledFieldsEffect = effect(() => {
+    const editMode = this.isEditMode();
+    const isAdmin = this.stateService.actingRole() === ACTING_ROLES.ADMIN;
+    untracked(() => {
+      applyDisabledAfterPublish(
+        this.getTabForm(FORM_TAB_IDS.NAME_AND_DESCRIPTION),
+        editMode,
+        isAdmin,
+      );
+      applyDisabledAfterPublish(this.getTabForm(FORM_TAB_IDS.TECHNICAL_FIELDS), editMode, isAdmin);
+    });
+  });
+
   protected getTabForm(tabId: string): FormGroup {
     return this.form.get(tabId) as FormGroup;
   }
 
   protected cancel(): void {
     if (this.isEditMode()) {
+      // Discard uncommitted edits: the component stays alive in edit mode, so restore the form and
+      // documents to the loaded product before leaving edit mode.
+      const product = this.dataProductResource.value();
+      if (product) this.populateForm(product);
+      const id = this.currentDataProductId();
+      if (id) void this.uploadStore.loadExisting(id).catch(() => undefined);
+      this.publishAttempted.set(false);
       this.isEditMode.set(false);
     } else {
       this.closeSidepanel();
@@ -236,10 +253,9 @@ export class DataProductDetailFormComponent {
     this.navigateToList(this.refreshListNeeded());
   }
 
-  // TODO: enable it with edit mode DIGIB2-1354
-  // protected enterEditMode(): void {
-  //   this.isEditMode.set(true);
-  // }
+  protected enterEditMode(): void {
+    this.isEditMode.set(true);
+  }
 
   protected navigateToList(refresh: boolean): void {
     this.router.navigate([ROUTE_PATHS.DATA_PRODUCTS_PATH], {
@@ -248,7 +264,7 @@ export class DataProductDetailFormComponent {
   }
 
   protected async saveDraft(): Promise<void> {
-    return this.save(false);
+    return this.save(SAVE_MODE.DRAFT);
   }
 
   protected saveAndPublish(): void {
@@ -267,11 +283,28 @@ export class DataProductDetailFormComponent {
 
   protected async confirmPublish(): Promise<void> {
     this.showPublishModal.set(false);
-    return this.save(true);
+    const saveKey = this.isEditMode() ? SAVE_MODE.EDIT : SAVE_MODE.PUBLISH;
+    return this.save(saveKey);
   }
 
-  private async save(publish: boolean): Promise<void> {
-    if (publish) {
+  protected async saveChanges(): Promise<void> {
+    this.showPublishModal.set(true);
+  }
+
+  private populateForm(product: DataProductDto): void {
+    populateFormFromDto(
+      this.form,
+      product as unknown as Record<string, unknown>,
+      dataProductFormsModel,
+    );
+    const technicalGroup = this.getTabForm(FORM_TAB_IDS.TECHNICAL_FIELDS);
+    technicalGroup.get('dataSourceSystemId')?.setValue(product.dataSourceSystem?.id ?? '');
+    technicalGroup.get('restClientId')?.setValue(product.restClient?.id ?? '');
+  }
+
+  private async save(mode: string): Promise<void> {
+    // Draft never gates on validity; publish and edit require a valid form.
+    if (mode !== SAVE_MODE.DRAFT) {
       this.publishAttempted.set(true);
       this.form.markAllAsTouched();
       if (!this.form.valid) {
@@ -280,63 +313,82 @@ export class DataProductDetailFormComponent {
       }
     }
 
+    const existingId = this.currentDataProductId();
+    if (mode === SAVE_MODE.EDIT && !existingId) return;
+
     this.isSaving.set(true);
     try {
-      const existingId = this.currentDataProductId();
       const payload = buildDataProductPayload(this.form as FormGroup);
-      const saved = await (existingId
-        ? this.dataProductService.updateDataProduct(
-            existingId,
-            payload,
-            this.stateService.actingRole(),
-          )
-        : this.dataProductService.createDataProduct(payload, this.stateService.actingRole()));
+      const savedId = await this.persistPayload(mode, existingId, payload);
 
-      this.currentDataProductId.set(saved.id);
-      this.location.replaceState(`${ROUTE_PATHS.DATA_PRODUCTS_PATH}/${saved.id}`);
-      this.refreshListNeeded.set(true);
+      // Upload newly staged documents (resolves once POSTed; the antivirus scan then runs in the
+      // background) and commit the staged removals.
+      await this.uploadStore.uploadAll(savedId);
+      await this.uploadStore.commitRemovals(savedId);
 
-      // Upload the newly staged documents; existing untouched documents are skipped. This resolves
-      // once the uploads are POSTed; the antivirus scan then runs in the background.
-      await this.uploadStore.uploadAll(saved.id);
-
-      // Commit the staged removals: documents the user marked for removal are deleted on save.
-      await this.uploadStore.commitRemovals(saved.id);
-
-      if (publish && this.uploadStore.hasUnreadyDocuments()) {
+      // Publishing or editing a published product must not finalize while documents are still
+      // scanning or have failed; surface them on the documents tab (publishAttempted is already
+      // set, so the tab shows its error state) instead of navigating away.
+      if (mode !== SAVE_MODE.DRAFT && this.uploadStore.hasUnreadyDocuments()) {
         this.activeTabId.set(FORM_TAB_IDS.LINKS_DOCUMENTS);
         return;
       }
 
-      if (publish) {
+      if (mode === SAVE_MODE.PUBLISH) {
         await this.dataProductService.setDataProductStatus(
-          saved.id,
+          savedId,
           JSON.stringify(DataProductDtoStateCode.Active),
           this.stateService.actingRole(),
         );
-        this.toastService.show(
-          this.i18nService.translate('data-products.saveAndPublish.success.title'),
-          this.i18nService.translate('data-products.saveAndPublish.success.message'),
-          ToastType.Success,
-        );
-        this.navigateToList(true);
-      } else {
-        this.toastService.show(
-          this.i18nService.translate('data-products.saveDraft.success.title'),
-          this.i18nService.translate('data-products.saveDraft.success.message'),
-          ToastType.Success,
-        );
       }
+
+      this.showSaveToast(mode, true);
+      // Draft stays on the form (the user may keep editing); publish/edit return to the list.
+      if (mode !== SAVE_MODE.DRAFT) this.navigateToList(true);
     } catch {
-      const key = publish ? 'saveAndPublish' : 'saveDraft';
-      this.toastService.show(
-        this.i18nService.translate(`data-products.${key}.error.title`),
-        this.i18nService.translate(`data-products.${key}.error.message`),
-        ToastType.Error,
-      );
+      this.showSaveToast(mode, false);
     } finally {
       this.isSaving.set(false);
     }
+  }
+
+  private async persistPayload(
+    mode: string,
+    existingId: string | null,
+    payload: Record<string, unknown>,
+  ): Promise<string> {
+    const actingRole = this.stateService.actingRole();
+
+    // Editing a published product PATCHes only the changed/unlocked fields and keeps the URL.
+    if (mode === SAVE_MODE.EDIT && existingId) {
+      await this.dataProductService.patchDataProduct(existingId, payload, actingRole);
+      return existingId;
+    }
+
+    const saved = await (existingId
+      ? this.dataProductService.updateDataProduct(existingId, payload, actingRole)
+      : this.dataProductService.createDataProduct(payload, actingRole));
+    this.currentDataProductId.set(saved.id);
+    this.location.replaceState(`${ROUTE_PATHS.DATA_PRODUCTS_PATH}/${saved.id}`);
+    this.refreshListNeeded.set(true);
+    return saved.id;
+  }
+
+  private showSaveToast(mode: string, success: boolean): void {
+    let key: string;
+    if (mode === SAVE_MODE.PUBLISH) {
+      key = 'saveAndPublish';
+    } else if (mode === SAVE_MODE.EDIT) {
+      key = 'saveChanges';
+    } else {
+      key = 'saveDraft';
+    }
+    const state = success ? 'success' : 'error';
+    this.toastService.show(
+      this.i18nService.translate(`data-products.${key}.${state}.title`),
+      this.i18nService.translate(`data-products.${key}.${state}.message`),
+      success ? ToastType.Success : ToastType.Error,
+    );
   }
 
   private scrollToFirstError(): void {

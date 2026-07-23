@@ -12,6 +12,7 @@ coverage/
 .husky/
 .angular/
 .git/
+.codesight/
 node_modules/
 tsconfig.spec.json
 tsconfig.doc.json
