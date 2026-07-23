@@ -2,7 +2,7 @@
 
 > **Navigation aid.** Component inventory and prop signatures extracted via AST. Read the source files before adding props or modifying component logic.
 
-**143 components** (angular)
+**145 components** (angular)
 
 ## Client Components
 
@@ -59,6 +59,7 @@
 - **EmptyStateComponent** — props: title, message, additionalInfo — `src/shared/ui/empty-state/empty-state.component.ts`
 - **AgridataFileDownloadComponent** — props: fileName, sizeBytes, isOpening, downloadable, isDownloading, downloadLabel, removable, markedForRemoval, badgeText, badgeVariant — `src/shared/ui/file-download/agridata-file-download.component.ts`
 - **FormControlComponent** — props: categories, control, controlType, disabled, helperText, id, inputPrefix, label, options, pattern — `src/shared/ui/form-control/form-control.component.ts`
+- **LinkedTextComponent** — props: parts, href — `src/shared/ui/linked-text/linked-text.component.ts`
 - **ModalComponent** — props: title, showCloseButton, dataTestId — `src/shared/ui/modal/modal.component.ts`
 - **PopoverComponent** — props: isOpen, class — `src/shared/ui/popover/popover.component.ts`
 - **ProgressBarComponent** — props: label, value — `src/shared/ui/progress-bar/progress-bar.component.ts`
@@ -68,6 +69,7 @@
 - **AccountOverlayComponent** — props: userInfo — `src/widgets/account-overlay/account-overlay.component.ts`
 - **AdminDataRequestDetailsComponent** — props: dataRequestId — `src/widgets/admin-data-request-details/admin-data-request-details.component.ts`
 - **AdminDataRequestTableComponent** — props: dataRequests — `src/widgets/admin-data-request-table/admin-data-request-table.component.ts`
+- **AgbModalComponent** — `src/widgets/agb-modal/agb-modal.component.ts`
 - **AgridataAccordionComponent** — props: header, isLarge — `src/widgets/agridata-accordion/agridata-accordion.component.ts`
 - **AgridataContactCardComponent** — props: name, secondaryName, imageUrl, size, skin — `src/widgets/agridata-contact-card/agridata-contact-card.component.ts`
 - **AgridataWizardStepperComponent** — props: steps, currentStep — `src/widgets/agridata-wizard/agridata-wizard-stepper/agridata-wizard-stepper.component.ts`
@@ -104,10 +106,10 @@
 - **ContactSupportInfoComponent** — `src/widgets/contact-support-info/contact-support-info.component.ts`
 - **CookiebannerComponent** — `src/widgets/cookiebanner/cookiebanner.component.ts`
 - **DataProductDetailFormComponent** — props: dataProductId — `src/widgets/data-product-detail-form/data-product-detail-form.component.ts`
-- **DataProductDetailInfoComponent** — props: form, isViewMode — `src/widgets/data-product-detail-form/data-product-detail-info/data-product-detail-info.component.ts`
+- **DataProductDetailInfoComponent** — props: form, isViewMode, stateCode — `src/widgets/data-product-detail-form/data-product-detail-info/data-product-detail-info.component.ts`
 - **DataProductDetailDocumentsComponent** — props: form, isViewMode — `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-documents/data-product-detail-documents.component.ts`
 - **DataProductDetailLinksDocumentsComponent** — props: form, isViewMode — `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-links-documents.component.ts`
-- **DataProductDetailTechnicalComponent** — props: form, isViewMode, preselectedProviderId — `src/widgets/data-product-detail-form/data-product-detail-technical/data-product-detail-technical.component.ts`
+- **DataProductDetailTechnicalComponent** — props: form, isEditMode, isViewMode, preselectedProviderId — `src/widgets/data-product-detail-form/data-product-detail-technical/data-product-detail-technical.component.ts`
 - **DataProductLinksComponent** — props: form, formDisabled — `src/widgets/data-product-links/data-product-links.component.ts`
 - **DataRequestCompletionSignatureComponent** — props: signature, position — `src/widgets/data-request-completion/data-request-completion-signature/data-request-completion-signature.component.ts`
 - **DataRequestCompletionSigningStatusComponent** — props: contract, dataRequestStateCode — `src/widgets/data-request-completion/data-request-completion-signing-status/data-request-completion-signing-status.component.ts`
@@ -151,5 +153,4 @@
 - **UidSwitchComponent** — props: additionalClass, variant — `src/widgets/uid-switch/uid-switch.component.ts`
 
 ---
-
 _Back to [overview.md](./overview.md)_

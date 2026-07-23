@@ -36,10 +36,12 @@
             [form]="getTabForm(FORM_TAB_IDS.NAME_AND_DESCRIPTION)"
             [isViewMode]="isViewMode()"
             [class.hidden]="activeTabId() !== FORM_TAB_IDS.NAME_AND_DESCRIPTION"
+            [stateCode]="stateCode()"
           />
           <app-data-product-detail-technical
             [form]="getTabForm(FORM_TAB_IDS.TECHNICAL_FIELDS)"
             [isViewMode]="isViewMode()"
+            [isEditMode]="isEditMode()"
             [preselectedProviderId]="preselectedProviderId()"
             [class.hidden]="activeTabId() !== FORM_TAB_IDS.TECHNICAL_FIELDS"
           />
@@ -52,10 +54,20 @@
 
         <div class="flex justify-between">
           @if (isViewMode()) {
-            <!-- TODO: enable edit with edit mode DIGIB2-1354 -->
-            <!-- <app-agridata-button (handleClick)="enterEditMode()">
+            <app-agridata-button (handleClick)="enterEditMode()">
               {{ t('edit') }}
-            </app-agridata-button> -->
+            </app-agridata-button>
+          } @else if (isEditMode()) {
+            <app-agridata-button
+              [variant]="ButtonVariants.Tertiary"
+              [disabled]="isSaving()"
+              (handleClick)="cancel()"
+            >
+              {{ t('cancel') }}
+            </app-agridata-button>
+            <app-agridata-button [loading]="isSaving()" (handleClick)="saveChanges()">
+              {{ t('saveChanges') }}
+            </app-agridata-button>
           } @else {
             <app-agridata-button
               [variant]="ButtonVariants.Tertiary"

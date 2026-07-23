@@ -22,7 +22,7 @@
       [maxCharacters]="getMaxCharacters()"
       [hasError]="hasError()"
       [inputPrefix]="inputPrefix()"
-      [disabled]="disabled()"
+      [disabled]="isDisabled()"
       [isViewMode]="isViewMode()"
     />
   }
@@ -32,7 +32,7 @@
       [options]="options()"
       [placeholder]="placeholder()"
       [hasError]="hasError()"
-      [disabled]="disabled()"
+      [disabled]="isDisabled()"
       [isViewMode]="isViewMode()"
     />
   }
@@ -40,7 +40,7 @@
     <app-agridata-multi-select
       [categories]="categories()"
       [control]="control()"
-      [disabled]="disabled()"
+      [disabled]="isDisabled()"
       [hasError]="hasError()"
       [options]="options()"
       [placeholder]="placeholder()"
@@ -58,7 +58,7 @@
           (handleBlur)="handleBlur.emit()"
           [maxCharacters]="getMaxCharacters()"
           [hasError]="hasError()"
-          [disabled]="disabled()"
+          [disabled]="isDisabled()"
           [isViewMode]="isViewMode()"
         />
       } @placeholder {
@@ -83,7 +83,7 @@
         (handleBlur)="handleBlur.emit()"
         [maxCharacters]="getMaxCharacters()"
         [hasError]="hasError()"
-        [disabled]="disabled()"
+        [disabled]="isDisabled()"
         [isViewMode]="isViewMode()"
       />
     }

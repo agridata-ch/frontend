@@ -2,9 +2,9 @@
 
 > **Stack:** angular | none | angular | typescript
 
-> 4 routes (4 inferred) | 0 models | 143 components | 218 lib files | 6 env vars | 18 middleware | 3 events | 25% test coverage
-> **Token savings:** this file is ~17,500 tokens. Without it, AI exploration would cost ~120,400 tokens. **Saves ~102,900 tokens per conversation.**
-> **Last scanned:** 2026-07-16 13:13 — re-run after significant changes
+> 4 routes (4 inferred) | 0 models | 145 components | 222 lib files | 6 env vars | 18 middleware | 3 events | 25% test coverage
+> **Token savings:** this file is ~17,500 tokens. Without it, AI exploration would cost ~122,100 tokens. **Saves ~104,500 tokens per conversation.**
+> **Last scanned:** 2026-07-23 12:26 — re-run after significant changes
 
 ---
 
@@ -72,6 +72,7 @@
 - **EmptyStateComponent** [client] — props: title, message, additionalInfo — `src/shared/ui/empty-state/empty-state.component.ts`
 - **AgridataFileDownloadComponent** [client] — props: fileName, sizeBytes, isOpening, downloadable, isDownloading, downloadLabel, removable, markedForRemoval, badgeText, badgeVariant — `src/shared/ui/file-download/agridata-file-download.component.ts`
 - **FormControlComponent** [client] — props: categories, control, controlType, disabled, helperText, id, inputPrefix, label, options, pattern — `src/shared/ui/form-control/form-control.component.ts`
+- **LinkedTextComponent** [client] — props: parts, href — `src/shared/ui/linked-text/linked-text.component.ts`
 - **ModalComponent** [client] — props: title, showCloseButton, dataTestId — `src/shared/ui/modal/modal.component.ts`
 - **PopoverComponent** [client] — props: isOpen, class — `src/shared/ui/popover/popover.component.ts`
 - **ProgressBarComponent** [client] — props: label, value — `src/shared/ui/progress-bar/progress-bar.component.ts`
@@ -81,6 +82,7 @@
 - **AccountOverlayComponent** [client] — props: userInfo — `src/widgets/account-overlay/account-overlay.component.ts`
 - **AdminDataRequestDetailsComponent** [client] — props: dataRequestId — `src/widgets/admin-data-request-details/admin-data-request-details.component.ts`
 - **AdminDataRequestTableComponent** [client] — props: dataRequests — `src/widgets/admin-data-request-table/admin-data-request-table.component.ts`
+- **AgbModalComponent** [client] — `src/widgets/agb-modal/agb-modal.component.ts`
 - **AgridataAccordionComponent** [client] — props: header, isLarge — `src/widgets/agridata-accordion/agridata-accordion.component.ts`
 - **AgridataContactCardComponent** [client] — props: name, secondaryName, imageUrl, size, skin — `src/widgets/agridata-contact-card/agridata-contact-card.component.ts`
 - **AgridataWizardStepperComponent** [client] — props: steps, currentStep — `src/widgets/agridata-wizard/agridata-wizard-stepper/agridata-wizard-stepper.component.ts`
@@ -117,10 +119,10 @@
 - **ContactSupportInfoComponent** [client] — `src/widgets/contact-support-info/contact-support-info.component.ts`
 - **CookiebannerComponent** [client] — `src/widgets/cookiebanner/cookiebanner.component.ts`
 - **DataProductDetailFormComponent** [client] — props: dataProductId — `src/widgets/data-product-detail-form/data-product-detail-form.component.ts`
-- **DataProductDetailInfoComponent** [client] — props: form, isViewMode — `src/widgets/data-product-detail-form/data-product-detail-info/data-product-detail-info.component.ts`
+- **DataProductDetailInfoComponent** [client] — props: form, isViewMode, stateCode — `src/widgets/data-product-detail-form/data-product-detail-info/data-product-detail-info.component.ts`
 - **DataProductDetailDocumentsComponent** [client] — props: form, isViewMode — `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-documents/data-product-detail-documents.component.ts`
 - **DataProductDetailLinksDocumentsComponent** [client] — props: form, isViewMode — `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-links-documents.component.ts`
-- **DataProductDetailTechnicalComponent** [client] — props: form, isViewMode, preselectedProviderId — `src/widgets/data-product-detail-form/data-product-detail-technical/data-product-detail-technical.component.ts`
+- **DataProductDetailTechnicalComponent** [client] — props: form, isEditMode, isViewMode, preselectedProviderId — `src/widgets/data-product-detail-form/data-product-detail-technical/data-product-detail-technical.component.ts`
 - **DataProductLinksComponent** [client] — props: form, formDisabled — `src/widgets/data-product-links/data-product-links.component.ts`
 - **DataRequestCompletionSignatureComponent** [client] — props: signature, position — `src/widgets/data-request-completion/data-request-completion-signature/data-request-completion-signature.component.ts`
 - **DataRequestCompletionSigningStatusComponent** [client] — props: contract, dataRequestStateCode — `src/widgets/data-request-completion/data-request-completion-signing-status/data-request-completion-signing-status.component.ts`
@@ -168,6 +170,7 @@
 # Libraries
 
 - `src/data-request-advantages/data-request-advantages.component.ts` — class DataRequestAdvantagesComponent
+- `src/entities/api/agb.service.ts` — class AgbService
 - `src/entities/api/agridata-state.service.ts` — class AgridataStateService, const DISMISSED_MIGRATIONS_KEY
 - `src/entities/api/backend-info.service.ts` — class BackendInfoService
 - `src/entities/api/consent-request.service.ts` — class ConsentRequestService
@@ -181,7 +184,7 @@
 - `src/entities/api/uid-register.service.ts` — class UidRegisterService
 - `src/entities/api/user.service.ts` — class UserService
 - `src/entities/cms/cms.service.ts` — class CmsService
-- `src/entities/openapi/api/bITSignatureTest.service.ts` — class BITSignatureTestService
+- `src/entities/openapi/api/agbRevision.service.ts` — class AgbRevisionService
 - `src/entities/openapi/api/consentRequestAggregations.service.ts` — class ConsentRequestAggregationsService
 - `src/entities/openapi/api/consentRequests.service.ts` — class ConsentRequestsService
 - `src/entities/openapi/api/contractRevisions.service.ts` — class ContractRevisionsService
@@ -199,6 +202,7 @@
 - `src/entities/openapi/api.module.ts` — class ApiModule
 - `src/entities/openapi/configuration.ts` — class Configuration, interface ConfigurationParameters
 - `src/entities/openapi/encoder.ts` — class CustomHttpParameterCodec
+- `src/features/agb-modal/agb-modal.service.ts` — class AgbModalService
 - `src/features/cms-blocks/cms-block-renderer.component.ts` — class BlockRendererComponent
 - `src/features/debug/debug-modal.component.ts` — class DebugModalComponent
 - `src/features/debug/debug.service.ts`
@@ -261,6 +265,10 @@
 - `src/shared/sidepanel/sidepanel.component.ts` — class SidepanelComponent
 - `src/shared/testing/mocks/dummy-components.ts` — class DummyComponent
 - `src/shared/testing/mocks/mock-activated-route.ts` — function createMockActivatedRoute: (queryParams, string>, params, string>) => MockActivatedRoute, interface MockActivatedRoute
+- `src/shared/testing/mocks/mock-agb-service.ts`
+  - function createMockAgbService: () => MockAgbService
+  - type MockAgbService
+  - const mockAgbRevision: AgbRevisionDto
 - `src/shared/testing/mocks/mock-agridata-state-service.ts`
   - function createMockAgridataStateService: () => MockAgridataStateService
   - type MockAgridataStateServiceTestSignals
@@ -351,6 +359,7 @@
 - `src/shared/ui/empty-state/empty-state.component.ts` — class EmptyStateComponent
 - `src/shared/ui/file-download/agridata-file-download.component.ts` — class AgridataFileDownloadComponent
 - `src/shared/ui/form-control/form-control.component.ts` — class FormControlComponent
+- `src/shared/ui/linked-text/linked-text.component.ts` — class LinkedTextComponent
 - `src/shared/ui/modal/modal.component.ts` — class ModalComponent
 - `src/shared/ui/popover/popover.component.ts` — class PopoverComponent
 - `src/shared/ui/progress-bar/progress-bar.component.ts` — class ProgressBarComponent
@@ -359,6 +368,7 @@
 - `src/shared/utils/download.util.ts` — function downloadBlob: (blob, fileName) => void, function openBlobInNewTab: (blob, mimeType?) => void
 - `src/shared/utils/file-icon.util.ts` — function getFileIcon: (fileName) => IconDefinition
 - `src/shared/utils/format.util.ts` — function formatBytes: (bytes) => string
+- `src/shared/utils/linked-text.util.ts` — function parseLinkedText: (translated) => LinkedTextParts, interface LinkedTextParts
 - `src/shared/utils/ui.util.ts`
   - function calculateVerticalPlacement: (triggerRect, contentHeight, viewportHeight) => VerticalPlacement
   - function copyToClipboard: (text) => Promise<void>
@@ -368,6 +378,7 @@
 - `src/widgets/account-overlay/account-overlay.component.ts` — class AccountOverlayComponent
 - `src/widgets/admin-data-request-details/admin-data-request-details.component.ts` — class AdminDataRequestDetailsComponent
 - `src/widgets/admin-data-request-table/admin-data-request-table.component.ts` — class AdminDataRequestTableComponent
+- `src/widgets/agb-modal/agb-modal.component.ts` — class AgbModalComponent
 - `src/widgets/agridata-accordion/agridata-accordion.component.ts` — class AgridataAccordionComponent
 - `src/widgets/agridata-contact-card/agridata-contact-card.component.ts` — class AgridataContactCardComponent
 - `src/widgets/agridata-wizard/agridata-wizard-stepper/agridata-wizard-stepper.component.ts` — class AgridataWizardStepperComponent
@@ -387,10 +398,6 @@
 - `src/widgets/cms-blocks/section-image-list/section-image-list.component.ts` — class SectionImageListComponent
 - `src/widgets/cms-blocks/section-media-block/section-media-block.component.ts` — class SectionMediaBlockComponent
 - `src/widgets/cms-blocks/section-onboarding-form-block/section-onboarding-form-block.component.ts` — class SectionOnboardingFormBlockComponent
-- `src/widgets/cms-blocks/section-onboarding-form-block/section-onboarding-form-block.model.ts`
-  - function parseSubheadingParts: (translated) => SubheadingParts
-  - interface SubheadingParts
-  - const AGATE_URLS: Record<string, string>
 - `src/widgets/cms-blocks/section-text-image-block/section-text-image-block.component.ts` — class SectionTextImageBlockComponent
 - `src/widgets/cms-blocks/section-timeline/section-timeline.component.ts` — class SectionTimelineComponent
 - `src/widgets/cms-blocks/section-user-feedback-block/section-user-feedback-block.component.ts` — class SectionUserFeedbackBlockComponent
@@ -410,13 +417,13 @@
 - `src/widgets/cookiebanner/cookiebanner.component.ts` — class CookiebannerComponent
 - `src/widgets/data-product-detail-form/data-product-detail-form.component.ts` — class DataProductDetailFormComponent
 - `src/widgets/data-product-detail-form/data-product-detail-form.model.ts`
+  - function isFieldDisabledAfterPublish: (field, isAdmin) => boolean
+  - function applyDisabledAfterPublish: (group, editMode, isAdmin) => void
   - function buildDataProductPayload: (form) => Record<string, unknown>
+  - type DisabledRole
   - const DATA_PRODUCT_NEW_ID
   - const FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM
-  - const FORM_TAB_IDS
-  - const FLOW_CODE_OPTIONS: MultiSelectOption[]
-  - const METHOD_CODE_OPTIONS: MultiSelectOption[]
-  - _...1 more_
+  - _...6 more_
 - `src/widgets/data-product-detail-form/data-product-detail-info/data-product-detail-info.component.ts` — class DataProductDetailInfoComponent
 - `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-documents/data-product-detail-documents.component.ts` — class DataProductDetailDocumentsComponent
 - `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-links-documents.component.ts` — class DataProductDetailLinksDocumentsComponent
@@ -447,10 +454,6 @@
 - `src/widgets/data-request-form/data-request-form-request/data-request-form-request-advantages/data-request-form-request-advantages.component.ts` — class DataRequestFormRequestAdvantagesComponent
 - `src/widgets/data-request-form/data-request-form-request/data-request-form-request-advantages/data-request-form-request-advantages.model.ts` — function validateAdvantages, const MAX_ADVANTAGES
 - `src/widgets/data-request-form/data-request-form-request/data-request-form-request-description/data-request-form-request-description.component.ts` — class DataRequestFormRequestDescriptionComponent
-- `src/widgets/data-request-form/data-request-form-request/data-request-form-request-description/data-request-form-request-description.model.ts`
-  - function parsePurposeSublabel: (translated) => PurposeSublabelParts
-  - interface PurposeSublabelParts
-  - const PURPOSE_PDF_FILENAMES: Record<string, string>
 - `src/widgets/data-request-form/data-request-form-request/data-request-form-request-product/data-request-form-request-product.component.ts` — class DataRequestFormRequestProductComponent
 - `src/widgets/data-request-form/data-request-form-request/data-request-form-request-product/data-request-form-request-product.model.ts`
   - function getDataSourceCode: (product) => string
@@ -506,12 +509,10 @@
 # Middleware
 
 ## error-handler
-
 - create-consent-request.guard.spec — `src/app/guards/create-consent-request.guard.spec.ts`
 - create-consent-request.guard — `src/app/guards/create-consent-request.guard.ts`
 
 ## auth
-
 - home-redirect.guard.spec — `src/app/guards/home-redirect.guard.spec.ts`
 - home-redirect.guard — `src/app/guards/home-redirect.guard.ts`
 - login.guard.spec — `src/app/guards/login.guard.spec.ts`
@@ -525,7 +526,6 @@
 - auth.service — `src/shared/lib/auth/auth.service.ts`
 
 ## custom
-
 - producer-uid.guard.spec — `src/app/guards/producer-uid.guard.spec.ts`
 - error-http-interceptor.spec — `src/app/interceptors/error-http-interceptor.spec.ts`
 - error-http-interceptor — `src/app/interceptors/error-http-interceptor.ts`
@@ -538,14 +538,14 @@
 
 ## Most Imported Files (change these carefully)
 
-- `src/shared/i18n/index.ts` — imported by **145** files
-- `src/entities/openapi/index.ts` — imported by **123** files
+- `src/shared/i18n/index.ts` — imported by **147** files
+- `src/entities/openapi/index.ts` — imported by **128** files
 - `src/entities/api/agridata-state.service.ts` — imported by **81** files
 - `src/shared/constants/constants.ts` — imported by **76** files
 - `src/app/error/error-handler.service.ts` — imported by **66** files
-- `src/shared/ui/button/index.ts` — imported by **64** files
-- `src/shared/lib/auth/index.ts` — imported by **62** files
-- `src/entities/api/index.ts` — imported by **51** files
+- `src/shared/ui/button/index.ts` — imported by **65** files
+- `src/shared/lib/auth/index.ts` — imported by **64** files
+- `src/entities/api/index.ts` — imported by **56** files
 - `src/shared/testing/mocks/index.ts` — imported by **48** files
 - `src/shared/testing/transloco-testing.module.ts` — imported by **41** files
 - `src/entities/cms/index.ts` — imported by **41** files
@@ -554,22 +554,22 @@
 - `src/entities/api/master-data.service.ts` — imported by **23** files
 - `src/shared/lib/api.helper.ts` — imported by **22** files
 - `src/shared/ui/badge/index.ts` — imported by **21** files
-- `src/environments/environment.ts` — imported by **19** files
+- `src/environments/environment.ts` — imported by **20** files
 - `src/entities/openapi/configuration.ts` — imported by **17** files
 - `src/shared/ui/agridata-avatar/index.ts` — imported by **16** files
 - `src/entities/openapi/encoder.ts` — imported by **15** files
 
 ## Import Map (who imports what)
 
-- `src/shared/i18n/index.ts` ← `src/app/layout/default-layout.component.ts`, `src/app/title.service.spec.ts`, `src/app/title.service.ts`, `src/data-request-advantages/data-request-advantages.component.ts`, `src/entities/api/master-data.service.ts` +140 more
-- `src/entities/openapi/index.ts` ← `src/app/app.config.ts`, `src/app/error/error-handler.service.spec.ts`, `src/app/error/error-handler.service.ts`, `src/app/guards/create-consent-request.guard.spec.ts`, `src/app/guards/create-consent-request.guard.ts` +118 more
+- `src/shared/i18n/index.ts` ← `src/app/layout/default-layout.component.ts`, `src/app/title.service.spec.ts`, `src/app/title.service.ts`, `src/data-request-advantages/data-request-advantages.component.ts`, `src/entities/api/master-data.service.ts` +142 more
+- `src/entities/openapi/index.ts` ← `src/app/app.config.ts`, `src/app/error/error-handler.service.spec.ts`, `src/app/error/error-handler.service.ts`, `src/app/guards/create-consent-request.guard.spec.ts`, `src/app/guards/create-consent-request.guard.ts` +123 more
 - `src/entities/api/agridata-state.service.ts` ← `src/app/analytics-service.spec.ts`, `src/app/app.component.spec.ts`, `src/app/guards/create-consent-request.guard.spec.ts`, `src/app/guards/create-consent-request.guard.ts`, `src/app/guards/home-redirect.guard.spec.ts` +76 more
 - `src/shared/constants/constants.ts` ← `src/app/app.routes.ts`, `src/app/guards/create-consent-request.guard.spec.ts`, `src/app/guards/create-consent-request.guard.ts`, `src/app/guards/home-redirect.guard.spec.ts`, `src/app/guards/home-redirect.guard.ts` +71 more
 - `src/app/error/error-handler.service.ts` ← `src/app/error/error-handler.service.spec.ts`, `src/app/error/global-error-handler.spec.ts`, `src/app/error/global-error-handler.ts`, `src/app/guards/create-consent-request.guard.spec.ts`, `src/app/guards/create-consent-request.guard.ts` +61 more
-- `src/shared/ui/button/index.ts` ← `src/pages/consent-request-producer/consent-request-producer.page.ts`, `src/pages/data-products-page/data-products-page.component.ts`, `src/pages/data-requests-consumer/data-requests-consumer.page.ts`, `src/pages/data-requests-provider/data-requests-provider.page.ts`, `src/pages/error-page/error-page.component.ts` +59 more
-- `src/shared/lib/auth/index.ts` ← `src/app/app.config.ts`, `src/app/app.routes.ts`, `src/app/guards/create-consent-request.guard.spec.ts`, `src/app/guards/create-consent-request.guard.ts`, `src/app/guards/home-redirect.guard.spec.ts` +57 more
-- `src/entities/api/index.ts` ← `src/app/guards/create-consent-request.guard.spec.ts`, `src/app/guards/create-consent-request.guard.ts`, `src/pages/admin-page/admin.page.spec.ts`, `src/pages/admin-page/admin.page.ts`, `src/pages/consent-request-producer/consent-request-producer.page.spec.ts` +46 more
-- `src/shared/testing/mocks/index.ts` ← `src/app/app.component.spec.ts`, `src/app/error/global-error-handler.spec.ts`, `src/app/guards/login.guard.spec.ts`, `src/app/title.service.spec.ts`, `src/pages/agb-page/agb-page.page.spec.ts` +43 more
+- `src/shared/ui/button/index.ts` ← `src/pages/consent-request-producer/consent-request-producer.page.ts`, `src/pages/data-products-page/data-products-page.component.ts`, `src/pages/data-requests-consumer/data-requests-consumer.page.ts`, `src/pages/data-requests-provider/data-requests-provider.page.ts`, `src/pages/error-page/error-page.component.ts` +60 more
+- `src/shared/lib/auth/index.ts` ← `src/app/app.config.ts`, `src/app/app.routes.ts`, `src/app/guards/create-consent-request.guard.spec.ts`, `src/app/guards/create-consent-request.guard.ts`, `src/app/guards/home-redirect.guard.spec.ts` +59 more
+- `src/entities/api/index.ts` ← `src/app/guards/create-consent-request.guard.spec.ts`, `src/app/guards/create-consent-request.guard.ts`, `src/features/agb-modal/agb-modal.service.spec.ts`, `src/features/agb-modal/agb-modal.service.ts`, `src/pages/admin-page/admin.page.spec.ts` +51 more
+- `src/shared/testing/mocks/index.ts` ← `src/app/app.component.spec.ts`, `src/app/error/global-error-handler.spec.ts`, `src/app/guards/login.guard.spec.ts`, `src/app/title.service.spec.ts`, `src/pages/cms-page/cms-page.page.spec.ts` +43 more
 - `src/shared/testing/transloco-testing.module.ts` ← `setup-jest.ts`, `src/app/analytics-service.spec.ts`, `src/app/layout/default-layout.component.spec.ts`, `src/data-request-advantages/data-request-advantages.component.spec.ts`, `src/pages/admin-page/admin.page.spec.ts` +36 more
 
 ---
@@ -585,7 +585,7 @@
 # Test Coverage
 
 > **25%** of routes and models are covered by tests
-> 183 test files found
+> 185 test files found
 
 ## Covered Routes
 
@@ -597,13 +597,13 @@
 
 ## GitHub Actions (14 workflows)
 
-| Workflow               | Triggers                        | Jobs | Deploy | Environments |
-| ---------------------- | ------------------------------- | ---- | ------ | ------------ |
-| CI/CD Pipeline develop | pull_request, push, merge_group | 8    | —      | —            |
-| CI/CD Pipeline main    | pull_request, push, merge_group | 9    | —      | —            |
-| Storybook Deploy       | push                            | 2    | s3     | —            |
-| Manual Deployment      | workflow_dispatch               | 3    | —      | —            |
-| Renovate Bot           | workflow_dispatch, schedule     | 1    | —      | —            |
+| Workflow | Triggers | Jobs | Deploy | Environments |
+|---|---|---|---|---|
+| CI/CD Pipeline develop | pull_request, push, merge_group | 8 | — | — |
+| CI/CD Pipeline main | pull_request, push, merge_group | 9 | — | — |
+| Storybook Deploy | push | 2 | s3 | — |
+| Manual Deployment | workflow_dispatch | 3 | — | — |
+| Renovate Bot | workflow_dispatch, schedule | 1 | — | — |
 
 ### CI/CD Pipeline develop
 
@@ -672,15 +672,15 @@
 
 ### Reusable Workflows
 
-- `.github/workflows/reusable__build_push_s3.yml` — reusable\_\_build_push_s3 (build-push-s3)
-- `.github/workflows/reusable__check_comments.yml` — reusable\_\_check_comments (check-comments)
-- `.github/workflows/reusable__check_single_commit.yml` — reusable\_\_check_single_commit (check-single-commit)
-- `.github/workflows/reusable__gitleaks.yml` — reusable\_\_gitleaks (git-leaks)
-- `.github/workflows/reusable__merge_main_develop.yml` — reusable\_\_merge_main_develop (merge-main-develop)
-- `.github/workflows/reusable__read_version.yml` — reusable\_\_read_version (read-version)
-- `.github/workflows/reusable__semantic_release.yml` — reusable\_\_semantic_release (semantic-release)
-- `.github/workflows/reusable__set_cloudfront_origin_path.yml` — reusable\_\_set_cloudfront_origin_path (set-cloudfront-origin-path)
-- `.github/workflows/reusable__unit_test_sonarqube.yml` — reusable\_\_unit_test_sonarqube (unit-test-sonarqube)
+- `.github/workflows/reusable__build_push_s3.yml` — reusable__build_push_s3 (build-push-s3)
+- `.github/workflows/reusable__check_comments.yml` — reusable__check_comments (check-comments)
+- `.github/workflows/reusable__check_single_commit.yml` — reusable__check_single_commit (check-single-commit)
+- `.github/workflows/reusable__gitleaks.yml` — reusable__gitleaks (git-leaks)
+- `.github/workflows/reusable__merge_main_develop.yml` — reusable__merge_main_develop (merge-main-develop)
+- `.github/workflows/reusable__read_version.yml` — reusable__read_version (read-version)
+- `.github/workflows/reusable__semantic_release.yml` — reusable__semantic_release (semantic-release)
+- `.github/workflows/reusable__set_cloudfront_origin_path.yml` — reusable__set_cloudfront_origin_path (set-cloudfront-origin-path)
+- `.github/workflows/reusable__unit_test_sonarqube.yml` — reusable__unit_test_sonarqube (unit-test-sonarqube)
 
 ### Secrets
 
@@ -693,8 +693,7 @@
 - `SONAR_TOKEN`
 
 ---
-
-_Source: .github/workflows/ci_cd_pipeline_develop.yml, .github/workflows/ci_cd_pipeline_main.yml, .github/workflows/ci_cd_pipeline_storybook.yml, .github/workflows/manual_deployment.yml, .github/workflows/renovate_bot.yml, .github/workflows/reusable**build_push_s3.yml, .github/workflows/reusable**check_comments.yml, .github/workflows/reusable**check_single_commit.yml, .github/workflows/reusable**gitleaks.yml, .github/workflows/reusable**merge_main_develop.yml, .github/workflows/reusable**read_version.yml, .github/workflows/reusable**semantic_release.yml, .github/workflows/reusable**set_cloudfront_origin_path.yml, .github/workflows/reusable\_\_unit_test_sonarqube.yml_
+_Source: .github/workflows/ci_cd_pipeline_develop.yml, .github/workflows/ci_cd_pipeline_main.yml, .github/workflows/ci_cd_pipeline_storybook.yml, .github/workflows/manual_deployment.yml, .github/workflows/renovate_bot.yml, .github/workflows/reusable__build_push_s3.yml, .github/workflows/reusable__check_comments.yml, .github/workflows/reusable__check_single_commit.yml, .github/workflows/reusable__gitleaks.yml, .github/workflows/reusable__merge_main_develop.yml, .github/workflows/reusable__read_version.yml, .github/workflows/reusable__semantic_release.yml, .github/workflows/reusable__set_cloudfront_origin_path.yml, .github/workflows/reusable__unit_test_sonarqube.yml_
 _Generated by codesight-cicd-plugin_
 
 ---

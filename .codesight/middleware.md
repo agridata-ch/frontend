@@ -1,12 +1,10 @@
 # Middleware
 
 ## error-handler
-
 - create-consent-request.guard.spec — `src/app/guards/create-consent-request.guard.spec.ts`
 - create-consent-request.guard — `src/app/guards/create-consent-request.guard.ts`
 
 ## auth
-
 - home-redirect.guard.spec — `src/app/guards/home-redirect.guard.spec.ts`
 - home-redirect.guard — `src/app/guards/home-redirect.guard.ts`
 - login.guard.spec — `src/app/guards/login.guard.spec.ts`
@@ -20,7 +18,6 @@
 - auth.service — `src/shared/lib/auth/auth.service.ts`
 
 ## custom
-
 - producer-uid.guard.spec — `src/app/guards/producer-uid.guard.spec.ts`
 - error-http-interceptor.spec — `src/app/interceptors/error-http-interceptor.spec.ts`
 - error-http-interceptor — `src/app/interceptors/error-http-interceptor.ts`

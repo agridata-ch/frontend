@@ -1,21 +1,27 @@
 <ng-container *i18n="let t; prefix: 'data-products.detailForm'">
   <div class="flex flex-col gap-4">
     <h3>{{ t('dataProduct') }}</h3>
-    <div
-      class="transition-all duration-300 ease-in-out"
-      [class.h-0]="isViewMode()"
-      [class.h-full]="!isViewMode()"
-      [class.opacity-0]="isViewMode()"
-      [class.opacity-100]="!isViewMode()"
-    >
-      <app-alert
-        [title]="t('infoTitle')"
-        [message]="t('infoMessage')"
-        [type]="AlertType.INFO"
-        [class.hidden]="isViewMode()"
-      />
-    </div>
-
+    @if (stateCode() !== DataProductDtoStateCode.Active) {
+      <div
+        class="transition-all duration-300 ease-in-out"
+        [class.h-0]="isViewMode()"
+        [class.h-full]="!isViewMode()"
+        [class.opacity-0]="isViewMode()"
+        [class.opacity-100]="!isViewMode()"
+      >
+        <app-alert
+          [title]="t('infoTitle')"
+          [message]="t('infoMessage')"
+          [type]="AlertType.INFO"
+          [class.hidden]="isViewMode()"
+        />
+      </div>
+    }
+    @if (nameDisabled()) {
+      <app-alert [type]="AlertType.INFO">
+        <app-linked-text [parts]="nameDisabledMessageParts()" />
+      </app-alert>
+    }
     @for (lang of availableLangs; track lang) {
       <div appViewSection [isViewMode]="isViewMode()">
         <app-form-control

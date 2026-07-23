@@ -947,6 +947,7 @@ components:
           items:
             $ref: "#/components/schemas/LinkDto"
           description: List of relevant product links
+          maxItems: 5
         extendedDescription:
           $ref: "#/components/schemas/DataProductExtendedDescriptionDto"
           description: Extended product details
@@ -4174,6 +4175,69 @@ paths:
         - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
+    patch:
+      description: "Partially updates an existing data product. Each provided field\
+        \ is validated against the data product's current state and the caller's role.\
+        \ If any field cannot be updated, the entire request is rejected and no changes\
+        \ are applied."
+      operationId: patchDataProduct
+      tags:
+      - Data Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DataProductUpdateDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProductDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Patch Data Product
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
     get:
       description: Retrieves a single data product. Acessible to users with the provider
         and admin role
@@ -5125,7 +5189,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.13.1-rc.1
+  version: 1.13.0-rc.16
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

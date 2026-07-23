@@ -6,6 +6,7 @@ import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
 import { contractAgbUrl } from '@/shared/lib/cms';
 import { AgridataToggleComponent } from '@/shared/ui/agridata-toggle';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { LinkedTextComponent } from '@/shared/ui/linked-text';
 import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { parseLinkedText } from '@/shared/utils';
 
@@ -20,7 +21,14 @@ import { parseLinkedText } from '@/shared/utils';
  */
 @Component({
   selector: 'app-agb-modal',
-  imports: [ModalComponent, ButtonComponent, I18nDirective, I18nPipe, AgridataToggleComponent],
+  imports: [
+    ModalComponent,
+    ButtonComponent,
+    I18nDirective,
+    I18nPipe,
+    AgridataToggleComponent,
+    LinkedTextComponent,
+  ],
   templateUrl: './agb-modal.component.html',
 })
 export class AgbModalComponent {
@@ -46,7 +54,7 @@ export class AgbModalComponent {
 
   protected readonly consentLabel = computed(() => {
     const parts = this.agbParts();
-    return `${parts.before} ${parts.linkText} ${parts.after}`.replace(/\s+/g, ' ').trim();
+    return `${parts.before} ${parts.linkText} ${parts.after}`.replaceAll(/\s+/g, ' ').trim();
   });
 
   protected readonly isBlockingParts = computed(() =>
@@ -58,7 +66,7 @@ export class AgbModalComponent {
   );
 
   protected accept(): void {
-    void this.agbModalService.accept();
+    this.agbModalService.accept();
   }
 
   protected dismiss(): void {

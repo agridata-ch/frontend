@@ -9,7 +9,10 @@ import { AuthService } from '@/shared/lib/auth';
 import { getErrorMessage, getFormControl } from '@/shared/lib/form.helper';
 import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
 import { ControlTypes, FormControlComponent } from '@/shared/ui/form-control';
+import { LinkedTextComponent } from '@/shared/ui/linked-text';
+import { parseLinkedText } from '@/shared/utils';
 import { ViewSectionDirective } from '@/shared/view-section';
+import { AlertComponent, AlertType } from '@/widgets/alert';
 
 import { FLOW_CODE_OPTIONS, METHOD_CODE_OPTIONS } from '../data-product-detail-form.model';
 
@@ -20,7 +23,14 @@ import { FLOW_CODE_OPTIONS, METHOD_CODE_OPTIONS } from '../data-product-detail-f
  */
 @Component({
   selector: 'app-data-product-detail-technical',
-  imports: [FormControlComponent, I18nDirective, AgridataSelectComponent, ViewSectionDirective],
+  imports: [
+    FormControlComponent,
+    I18nDirective,
+    AgridataSelectComponent,
+    LinkedTextComponent,
+    ViewSectionDirective,
+    AlertComponent,
+  ],
   templateUrl: './data-product-detail-technical.component.html',
   host: { class: 'contents' },
 })
@@ -34,17 +44,23 @@ export class DataProductDetailTechnicalComponent {
   private readonly stateService = inject(AgridataStateService);
 
   // Constants
+  protected readonly AlertType = AlertType;
   protected readonly ControlTypes = ControlTypes;
   protected readonly flowCodeOptions = FLOW_CODE_OPTIONS;
   protected readonly methodCodeOptions = METHOD_CODE_OPTIONS;
 
   // Input properties
   readonly form = input.required<FormGroup>();
+  readonly isEditMode = input<boolean>(false);
   readonly isViewMode = input<boolean>(false);
   readonly preselectedProviderId = input<string>('');
 
   // Signals
   protected readonly selectedProviderId = signal<string>('');
+  // control.disabled is a plain property, so reading it in the template is not reactive under
+  // zoneless change detection. The parent disables the control via control.disable() (which emits
+  // on control.events), so feed this signal from that stream to keep the locked-info alert in sync.
+  protected readonly dataSourceSystemDisabled = signal(false);
 
   // Computed Signals
   protected readonly isAdmin = computed(() => this.authService.isAdmin());
@@ -58,6 +74,13 @@ export class DataProductDetailTechnicalComponent {
     () =>
       (this.providerDataResource.isLoading() ? [] : this.providerDataResource.value()?.systems) ??
       [],
+  );
+  protected readonly dataSourceSystemDisabledMessageParts = computed(() =>
+    parseLinkedText(
+      this.i18nService.translate(
+        'data-products.detailForm.dataSourceSystemId.disabledInfo.message',
+      ),
+    ),
   );
   protected readonly providerOptions = computed(() =>
     this.masterDataService.dataProviders().map((provider) => ({
@@ -89,6 +112,14 @@ export class DataProductDetailTechnicalComponent {
   });
 
   // Effects
+  private readonly syncDataSourceDisabledEffect = effect((onCleanup) => {
+    const control = this.form().get('dataSourceSystemId');
+    const update = () => this.dataSourceSystemDisabled.set(control?.disabled ?? false);
+    update();
+    const subscription = control?.events.subscribe(update);
+    onCleanup(() => subscription?.unsubscribe());
+  });
+
   private readonly applyPreselectedProviderEffect = effect(() => {
     const preselected = this.preselectedProviderId();
     if (preselected && !this.selectedProviderId()) {

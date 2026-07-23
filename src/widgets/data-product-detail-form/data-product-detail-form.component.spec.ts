@@ -44,6 +44,11 @@ function fillValidForm(component: DataProductDetailFormComponent): void {
         fr: 'Description FR',
         it: 'Description IT',
       },
+      extendedDescription: {
+        de: 'Extended DE',
+        fr: 'Extended FR',
+        it: 'Extended IT',
+      },
     },
     [FORM_TAB_IDS.TECHNICAL_FIELDS]: {
       dataSourceSystemId: 'sys-1',
@@ -130,6 +135,22 @@ describe('DataProductDetailFormComponent', () => {
       const nameTab = component['tabs']().find((t) => t.id === FORM_TAB_IDS.NAME_AND_DESCRIPTION);
       expect(nameTab?.hasError).toBe(true);
     });
+
+    it('should not redden the documents tab while a scan is only pending', () => {
+      component['publishAttempted'].set(true);
+      jest.spyOn(component['uploadStore'], 'hasBlockingState').mockReturnValue(false);
+
+      const documentsTab = component['tabs']().find((t) => t.id === FORM_TAB_IDS.LINKS_DOCUMENTS);
+      expect(documentsTab?.hasError).toBe(false);
+    });
+
+    it('should redden the documents tab when a document has failed', () => {
+      component['publishAttempted'].set(true);
+      jest.spyOn(component['uploadStore'], 'hasBlockingState').mockReturnValue(true);
+
+      const documentsTab = component['tabs']().find((t) => t.id === FORM_TAB_IDS.LINKS_DOCUMENTS);
+      expect(documentsTab?.hasError).toBe(true);
+    });
   });
 
   describe('scrollToFirstError', () => {
@@ -200,6 +221,209 @@ describe('DataProductDetailFormComponent', () => {
       expect(navigateSpy).toHaveBeenCalledWith(['data-products'], {
         state: { [FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM]: true },
       });
+    });
+  });
+
+  describe('enterEditMode', () => {
+    it('should set isEditMode to true', () => {
+      component['enterEditMode']();
+      expect(component['isEditMode']()).toBe(true);
+    });
+
+    it('should exit edit mode on cancel without navigating', () => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+      component['enterEditMode']();
+
+      component['cancel']();
+
+      expect(component['isEditMode']()).toBe(false);
+      expect(navigateSpy).not.toHaveBeenCalled();
+    });
+
+    it('should reset publishAttempted when cancelling out of edit mode', () => {
+      component['publishAttempted'].set(true);
+      component['enterEditMode']();
+
+      component['cancel']();
+
+      expect(component['publishAttempted']()).toBe(false);
+    });
+  });
+
+  describe('syncDisabledFieldsEffect', () => {
+    it('should keep name/description editable but lock dataSourceSystemId in edit mode as admin', async () => {
+      stateService.__testSignals.actingRole.set('ADMIN');
+      component['enterEditMode']();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const info = component['getTabForm'](FORM_TAB_IDS.NAME_AND_DESCRIPTION);
+      const technical = component['getTabForm'](FORM_TAB_IDS.TECHNICAL_FIELDS);
+      expect(info.get('name')?.enabled).toBe(true);
+      expect(info.get('description')?.enabled).toBe(true);
+      expect(technical.get('dataSourceSystemId')?.disabled).toBe(true);
+      expect(technical.get('restClientId')?.enabled).toBe(true);
+    });
+
+    it('should disable the locked fields when entering edit mode as provider', async () => {
+      stateService.__testSignals.actingRole.set('PROVIDER');
+      component['enterEditMode']();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const info = component['getTabForm'](FORM_TAB_IDS.NAME_AND_DESCRIPTION);
+      const technical = component['getTabForm'](FORM_TAB_IDS.TECHNICAL_FIELDS);
+      expect(info.get('name')?.disabled).toBe(true);
+      expect(info.get('description')?.disabled).toBe(true);
+      expect(technical.get('dataSourceSystemId')?.disabled).toBe(true);
+    });
+
+    it('should render the nested name input disabled in edit mode as provider (full path)', async () => {
+      stateService.__testSignals.actingRole.set('PROVIDER');
+      component['enterEditMode']();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const nameInput = fixture.nativeElement.querySelector('#name-de') as HTMLInputElement | null;
+      expect(nameInput).toBeTruthy();
+      expect(nameInput?.disabled).toBe(true);
+      expect(nameInput?.classList.contains('bg-gray-100')).toBe(true);
+    });
+
+    it('should re-enable the locked fields when leaving edit mode', async () => {
+      stateService.__testSignals.actingRole.set('ADMIN');
+      component['enterEditMode']();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      component['cancel']();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const info = component['getTabForm'](FORM_TAB_IDS.NAME_AND_DESCRIPTION);
+      const technical = component['getTabForm'](FORM_TAB_IDS.TECHNICAL_FIELDS);
+      expect(info.get('name')?.enabled).toBe(true);
+      expect(technical.get('dataSourceSystemId')?.enabled).toBe(true);
+    });
+  });
+
+  describe('saveChanges', () => {
+    async function enterEditMode(): Promise<void> {
+      component['enterEditMode']();
+      fixture.detectChanges();
+      await fixture.whenStable();
+    }
+
+    it('should only open the confirmation modal without patching', async () => {
+      fillValidForm(component);
+      component['currentDataProductId'].set('ex-id');
+
+      await component['saveChanges']();
+
+      expect(component['showPublishModal']()).toBe(true);
+      expect(dataProductService.patchDataProduct).not.toHaveBeenCalled();
+    });
+
+    it('should not call patchDataProduct when the form is invalid', async () => {
+      await enterEditMode();
+      component['currentDataProductId'].set('ex-id');
+
+      await component['confirmPublish']();
+
+      expect(dataProductService.patchDataProduct).not.toHaveBeenCalled();
+    });
+
+    it('should not call patchDataProduct when there is no existing id', async () => {
+      await enterEditMode();
+      fillValidForm(component);
+
+      await component['confirmPublish']();
+
+      expect(dataProductService.patchDataProduct).not.toHaveBeenCalled();
+    });
+
+    it('should patch the existing product when the form is valid', async () => {
+      dataProductService.patchDataProduct.mockResolvedValue({ id: 'ex-id' } as DataProductDto);
+      await enterEditMode();
+      fillValidForm(component);
+      component['currentDataProductId'].set('ex-id');
+
+      await component['confirmPublish']();
+
+      expect(dataProductService.patchDataProduct).toHaveBeenCalledWith(
+        'ex-id',
+        expect.anything(),
+        undefined,
+      );
+    });
+
+    it('should navigate to list with refresh=true after a successful patch', async () => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+      dataProductService.patchDataProduct.mockResolvedValue({ id: 'ex-id' } as DataProductDto);
+      await enterEditMode();
+      fillValidForm(component);
+      component['currentDataProductId'].set('ex-id');
+
+      await component['confirmPublish']();
+
+      expect(navigateSpy).toHaveBeenCalledWith(['data-products'], {
+        state: { [FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM]: true },
+      });
+    });
+
+    it('should show a success toast after a successful patch', async () => {
+      dataProductService.patchDataProduct.mockResolvedValue({ id: 'ex-id' } as DataProductDto);
+      await enterEditMode();
+      fillValidForm(component);
+      component['currentDataProductId'].set('ex-id');
+
+      await component['confirmPublish']();
+
+      expect(toastService.show).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        ToastType.Success,
+      );
+    });
+
+    it('should show an error toast when the patch fails', async () => {
+      dataProductService.patchDataProduct.mockRejectedValue(new Error('API error'));
+      await enterEditMode();
+      fillValidForm(component);
+      component['currentDataProductId'].set('ex-id');
+
+      await component['confirmPublish']();
+
+      expect(toastService.show).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.anything(),
+        ToastType.Error,
+      );
+    });
+
+    it('should set isSaving=false after the patch completes', async () => {
+      dataProductService.patchDataProduct.mockResolvedValue({ id: 'ex-id' } as DataProductDto);
+      await enterEditMode();
+      fillValidForm(component);
+      component['currentDataProductId'].set('ex-id');
+
+      await component['confirmPublish']();
+
+      expect(component['isSaving']()).toBe(false);
+    });
+
+    it('should stay on the documents tab and not navigate when documents are unready', async () => {
+      const navigateSpy = jest.spyOn(router, 'navigate');
+      dataProductService.patchDataProduct.mockResolvedValue({ id: 'ex-id' } as DataProductDto);
+      jest.spyOn(component['uploadStore'], 'hasUnreadyDocuments').mockReturnValue(true);
+      await enterEditMode();
+      fillValidForm(component);
+      component['currentDataProductId'].set('ex-id');
+
+      await component['confirmPublish']();
+
+      expect(component['activeTabId']()).toBe(FORM_TAB_IDS.LINKS_DOCUMENTS);
+      expect(navigateSpy).not.toHaveBeenCalled();
     });
   });
 

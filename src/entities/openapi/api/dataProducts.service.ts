@@ -650,6 +650,83 @@ export class DataProductsService extends BaseService {
     }
 
     /**
+     * Patch Data Product
+     * Partially updates an existing data product. Each provided field is validated against the data product\&#39;s current state and the caller\&#39;s role. If any field cannot be updated, the entire request is rejected and no changes are applied.
+     * @param id 
+     * @param dataProductUpdateDto 
+     * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public patchDataProduct(id: string, dataProductUpdateDto: DataProductUpdateDto, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<DataProductDto>;
+    public patchDataProduct(id: string, dataProductUpdateDto: DataProductUpdateDto, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DataProductDto>>;
+    public patchDataProduct(id: string, dataProductUpdateDto: DataProductUpdateDto, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DataProductDto>>;
+    public patchDataProduct(id: string, dataProductUpdateDto: DataProductUpdateDto, actingRole?: 'PROVIDER' | 'ADMIN', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling patchDataProduct.');
+        }
+        if (dataProductUpdateDto === null || dataProductUpdateDto === undefined) {
+            throw new Error('Required parameter dataProductUpdateDto was null or undefined when calling patchDataProduct.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>actingRole, 'actingRole');
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (SecurityScheme) required
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/products/v2/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<DataProductDto>('patch', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: dataProductUpdateDto,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Set Data Product Status
      * Sets the status of a data product. Only accessible to the provider who owns the data product. Admins on the other hand can set the state to any data product. Only specific transitions are allowed.
      * @param id 

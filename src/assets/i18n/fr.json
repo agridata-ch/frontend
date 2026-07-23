@@ -859,6 +859,9 @@
         "it": {
           "label": "Nom Italien",
           "placeholder": "p.es. Animali da reddito estivati"
+        },
+        "disabledInfo": {
+          "message": "Remarque: Le titre et la description ne peuvent pas être modifiés de manière autonome après l'activation. Les modifications souhaitées peuvent être demandées via [mailto:support@agridata.ch]."
         }
       },
       "dataProduct": "Nom et description du produit de données",
@@ -980,7 +983,13 @@
         "uploadedDocuments": "Documents disponibles",
         "markedForRemoval": "Sera supprimé",
         "empty": "Aucun document disponible."
-      }
+      },
+      "dataSourceSystemId": {
+        "disabledInfo": {
+          "message": "Remarque: Le système ne peut pas être modifié de manière autonome après l'activation. Les modifications souhaitées peuvent être demandées via [mailto:support@agridata.ch]."
+        }
+      },
+      "saveChanges": "Publier les modifications"
     },
     "saveAndPublish": {
       "success": {
@@ -1000,6 +1009,16 @@
       "error": {
         "title": "Échec de l'enregistrement comme brouillon.",
         "message": "Un problème est survenu lors de l'enregistrement en tant que brouillon. Veuillez réessayer plus tard."
+      }
+    },
+    "saveChanges": {
+      "success": {
+        "title": "Modifications publiées avec succès",
+        "message": "Les modifications ont été publiées avec succès"
+      },
+      "error": {
+        "title": "Échec de l'enregistrement",
+        "message": "Les modifications n'ont pas pu être publiées"
       }
     }
   },

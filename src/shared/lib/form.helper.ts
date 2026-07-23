@@ -445,15 +445,19 @@ export function getErrorMessage(control: AbstractControl, errorKey: string) {
 export function flattenFormGroup<T = Record<string, unknown>>(
   formGroup: FormGroup,
   skipTopLevel = true,
+  skipDisabled = false,
 ): T {
   const result: Record<string, unknown> = {};
 
   Object.keys(formGroup.controls).forEach((key) => {
     const control = formGroup.get(key);
 
+    // When requested, omit disabled controls entirely (e.g. locked fields that the backend rejects).
+    if (skipDisabled && control?.disabled) return;
+
     if (control instanceof FormGroup) {
       // Recursively process nested FormGroups
-      const nestedResult = flattenFormGroup(control, false);
+      const nestedResult = flattenFormGroup(control, false, skipDisabled);
       if (skipTopLevel) {
         // Merge nested results directly into the parent if skipping top-level (neccessary for our custom formGroup creation in the form builder)
         Object.assign(result, nestedResult);
@@ -463,7 +467,7 @@ export function flattenFormGroup<T = Record<string, unknown>>(
     } else if (control instanceof FormArray) {
       // Array-of-object fields: flatten each item group into an array of plain objects
       result[key] = control.controls.map((item) =>
-        item instanceof FormGroup ? flattenFormGroup(item, false) : item.value,
+        item instanceof FormGroup ? flattenFormGroup(item, false, skipDisabled) : item.value,
       );
     } else if (control instanceof FormControl) {
       result[key] = control.value;

@@ -68,6 +68,40 @@ describe('FormControlComponent', () => {
     expect(component['hasError']()).toBe(true);
   });
 
+  describe('isDisabled()', () => {
+    it('should be true when the disabled input is set', () => {
+      componentRef.setInput('control', new FormControl('value'));
+      componentRef.setInput('disabled', true);
+      fixture.detectChanges();
+
+      expect(component['isDisabled']()).toBe(true);
+    });
+
+    it('should reflect the bound control being disabled without the disabled input', () => {
+      const ctrl = new FormControl('value');
+      componentRef.setInput('control', ctrl);
+      fixture.detectChanges(); // subscribes to control.events
+
+      expect(component['isDisabled']()).toBe(false);
+
+      ctrl.disable(); // emits a StatusChangeEvent -> subscription updates the signal
+
+      expect(component['isDisabled']()).toBe(true);
+    });
+
+    it('should update back to false when the control is re-enabled', () => {
+      const ctrl = new FormControl({ value: 'value', disabled: true });
+      componentRef.setInput('control', ctrl);
+      fixture.detectChanges();
+
+      expect(component['isDisabled']()).toBe(true);
+
+      ctrl.enable();
+
+      expect(component['isDisabled']()).toBe(false);
+    });
+  });
+
   describe('getErrorMessage()', () => {
     it('should return the error message if the control is touched and invalid', () => {
       const ctrl = new FormControl('');

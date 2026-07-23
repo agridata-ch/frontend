@@ -1,4 +1,4 @@
-import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 
 import type { I18nService } from '@/shared/i18n';
 import { FORM_GROUP_NAMES } from '@/widgets/data-request-wizard';
@@ -547,6 +547,33 @@ describe('Form Helper', () => {
       const flattened = flattenFormGroup<{ links: unknown[] }>(form);
 
       expect(flattened.links).toEqual([{ displayText: 'Docs', url: 'https://example.com' }]);
+    });
+
+    it('omits disabled controls inside a FormArray item when skipDisabled is true', () => {
+      const form = buildReactiveForm(arrayOfObjectSchema, arrayFieldMaps, i18n);
+      const array = getFormArray(form, 'links');
+      const item = array.buildItem?.() as FormGroup;
+      item.setValue({ displayText: 'Docs', url: 'https://example.com' });
+      item.get('url')?.disable();
+      array.push(item);
+
+      const flattened = flattenFormGroup<{ links: Record<string, unknown>[] }>(form, true, true);
+
+      expect(flattened.links).toEqual([{ displayText: 'Docs' }]);
+    });
+
+    it('omits disabled controls when skipDisabled is true', () => {
+      const form = new FormGroup({
+        enabledField: new FormControl('keep'),
+        disabledField: new FormControl('drop'),
+      });
+      form.get('disabledField')?.disable();
+
+      const withoutDisabled = flattenFormGroup(form, true, true);
+      const withDisabled = flattenFormGroup(form, true, false);
+
+      expect(withoutDisabled).toEqual({ enabledField: 'keep' });
+      expect(withDisabled).toEqual({ enabledField: 'keep', disabledField: 'drop' });
     });
 
     it('hydrates a FormArray from a DTO array via populateFormFromDto', () => {

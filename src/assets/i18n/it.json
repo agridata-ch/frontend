@@ -859,6 +859,9 @@
         "it": {
           "label": "Nome Italiano",
           "placeholder": "p.es. Animali da reddito estivati"
+        },
+        "disabledInfo": {
+          "message": "Nota: il titolo e la descrizione non possono essere modificati autonomamente dopo l'attivazione. Le modifiche desiderate possono essere richieste tramite [mailto:support@agridata.ch]."
         }
       },
       "dataProduct": "Nome e descrizione prodotto dati",
@@ -980,7 +983,13 @@
         "uploadedDocuments": "Documenti disponibili",
         "markedForRemoval": "Verrà rimosso",
         "empty": "Nessun documento disponibile."
-      }
+      },
+      "dataSourceSystemId": {
+        "disabledInfo": {
+          "message": "Nota: il sistema non può essere modificato autonomamente dopo l'attivazione. Le modifiche desiderate possono essere richieste tramite [mailto:support@agridata.ch]."
+        }
+      },
+      "saveChanges": "Pubblica modifiche"
     },
     "saveAndPublish": {
       "success": {
@@ -1000,6 +1009,16 @@
       "error": {
         "title": "Salvataggio come bozza fallito.",
         "message": "Qualcosa è andato storto durante il salvataggio come bozza. Si prega di riprovare più tardi."
+      }
+    },
+    "saveChanges": {
+      "success": {
+        "title": "Modifiche pubblicate con successo",
+        "message": "Le modifiche sono state pubblicate con successo"
+      },
+      "error": {
+        "title": "Salvataggio fallito",
+        "message": "Impossibile pubblicare le modifiche"
       }
     }
   },
