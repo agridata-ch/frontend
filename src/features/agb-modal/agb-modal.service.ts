@@ -62,9 +62,8 @@ export class AgbModalService {
     if (this.accepted()) {
       return false;
     }
-    // The modal only surfaces right after a fresh login, never on a plain refresh or silent token
-    // renew.
-    return this.authService.justLoggedIn();
+
+    return true;
   });
 
   // Effects

@@ -1,7 +1,7 @@
 <app-modal
   [open]="open()"
   [title]="'agb.modal.title' | i18n"
-  [showCloseButton]="!isBlocking()"
+  [showCloseButton]="isSkippable()"
   [dataTestId]="'agb-modal'"
   (closed)="dismiss()"
 >
@@ -18,7 +18,7 @@
       <app-linked-text [parts]="agbParts()" [href]="contractAgbUrl()" />
     </div>
     <div class="flex justify-end gap-2">
-      @if (!isBlocking()) {
+      @if (isSkippable()) {
         <app-agridata-button
           [variant]="ButtonVariants.Secondary"
           [additionalClass]="'mr-auto'"
