@@ -35,13 +35,12 @@ export class DataProductService {
 
   getAllDataProducts = (
     queryDto: ResourceQueryDto,
-    locale: string,
     actingRole?: ActingRole,
   ): Promise<PageResponseDto<DataProductDto>> => {
-    this.apiService.defaultHeaders = this.apiService.defaultHeaders.set('Accept-Language', locale);
     return firstValueFrom(
       this.apiService
         .getDataProductsPaginated(
+          queryDto.language,
           queryDto.page,
           queryDto.searchTerm,
           queryDto.size,

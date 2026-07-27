@@ -137,11 +137,10 @@ export class DataProductsPageComponent {
   readonly fetchDataProductsResource = resource({
     params: () => ({
       actingRole: this.stateService.actingRole(),
-      locale: this.i18nService.lang(),
       query: this.resourceQueryDto() ?? {},
     }),
     loader: ({ params }) =>
-      this.dataProductService.getAllDataProducts(params.query, params.locale, params.actingRole),
+      this.dataProductService.getAllDataProducts(params.query, params.actingRole),
     defaultValue: {} as PageResponseDto,
   });
 

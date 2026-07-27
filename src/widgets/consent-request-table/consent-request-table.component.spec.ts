@@ -1,4 +1,4 @@
-import { ResourceRef } from '@angular/core';
+import { ResourceRef, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -74,6 +74,7 @@ describe('ConsentRequestTableComponent', () => {
     mockI18nService = {
       translate: jest.fn(),
       useObjectTranslation: jest.fn(),
+      lang: signal('de'),
     } as unknown as jest.Mocked<I18nService>;
 
     consentRequestService = createMockConsentRequestService();

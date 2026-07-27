@@ -82,10 +82,10 @@ describe('DataProductsPageComponent - component behavior', () => {
       testFixture.detectChanges();
       await testFixture.whenStable();
 
-      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith({}, 'de', undefined);
+      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith({}, undefined);
     });
 
-    it('should pass locale from i18nService to getAllDataProducts', async () => {
+    it('should forward the language from the query dto to getAllDataProducts', async () => {
       dataProductService.getAllDataProducts.mockResolvedValueOnce({
         items: [],
         totalItems: 0,
@@ -95,12 +95,14 @@ describe('DataProductsPageComponent - component behavior', () => {
       } as PageResponseDto<DataProductDto>);
 
       const testFixture = TestBed.createComponent(DataProductsPageComponent);
+      const testComponent = testFixture.componentInstance;
+
+      testComponent['resourceQueryDto'].set({ language: 'de', page: 0 });
       testFixture.detectChanges();
       await testFixture.whenStable();
 
       expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith(
-        expect.any(Object),
-        'de',
+        { language: 'de', page: 0 },
         undefined,
       );
     });
@@ -128,11 +130,7 @@ describe('DataProductsPageComponent - component behavior', () => {
       testFixture.detectChanges();
       await testFixture.whenStable();
 
-      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith(
-        queryParams,
-        'de',
-        undefined,
-      );
+      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith(queryParams, undefined);
     });
   });
 

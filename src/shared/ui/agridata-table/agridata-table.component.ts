@@ -3,6 +3,7 @@ import {
   Component,
   computed,
   effect,
+  inject,
   input,
   model,
   ResourceRef,
@@ -16,7 +17,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ResourceQueryDto } from '@/entities/openapi';
 import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
-import { I18nDirective, I18nPipe } from '@/shared/i18n';
+import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
 import { PageResponseDto } from '@/shared/lib/api.helper';
 import { TableCellComponent } from '@/shared/ui/agridata-table/table-cell/table-cell.component';
 import { TableHeaderCellComponent } from '@/shared/ui/agridata-table/table-header-cell/table-header-cell.component';
@@ -68,6 +69,9 @@ import {
   templateUrl: './agridata-table.component.html',
 })
 export class AgridataTableComponent<T> {
+  // Injects
+  private readonly i18nService = inject(I18nService);
+
   // Constants
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly iconRowAction = faChevronRight;
@@ -113,6 +117,7 @@ export class AgridataTableComponent<T> {
       size: this.nextPageSize(),
       searchTerm: this.searchTerm(),
       sortParams: this.buildSortParameters(),
+      language: this.i18nService.lang(),
     });
   });
 
