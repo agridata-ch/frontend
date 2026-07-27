@@ -45,6 +45,7 @@ export class AgbModalComponent {
   protected readonly consentChecked = signal(false);
   protected readonly enforceConsentFrom = this.agbModalService.enforceConsentFrom;
   protected readonly isBlocking = signal(false);
+  protected readonly isSkippable = signal(false);
   protected readonly open = this.agbModalService.open;
 
   // Computed Signals

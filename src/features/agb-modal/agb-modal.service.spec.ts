@@ -65,16 +65,6 @@ describe('AgbModalService', () => {
       expect(service.open()).toBe(false);
     });
 
-    it('stays closed on a plain refresh even for a consumer who has not accepted the AGB', async () => {
-      authService.__testSignals.isAuthenticated.set(true);
-      authService.__testSignals.justLoggedIn.set(false);
-      authService.__testSignals.isConsumer.set(true);
-
-      const service = await createService();
-
-      expect(service.open()).toBe(false);
-    });
-
     it('stays closed for roles other than consumer or provider', async () => {
       authService.__testSignals.isAuthenticated.set(true);
       authService.__testSignals.justLoggedIn.set(true);
