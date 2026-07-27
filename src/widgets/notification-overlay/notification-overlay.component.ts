@@ -4,7 +4,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { NotificationService } from '@/entities/api/notification.service';
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
-import { I18nDirective } from '@/shared/i18n';
+import { I18nDirective, I18nService } from '@/shared/i18n';
 import { PopoverComponent } from '@/shared/ui/popover';
 
 import { NotificationOverlayContentComponent } from './notification-overlay-content/notification-overlay-content.component';
@@ -31,6 +31,7 @@ import { NotificationOverlayContentComponent } from './notification-overlay-cont
 export class NotificationOverlayComponent {
   // Injects
   private readonly notificationService = inject(NotificationService);
+  private readonly i18nService = inject(I18nService);
 
   // Constants
   protected readonly faBell = faBell;
@@ -48,7 +49,8 @@ export class NotificationOverlayComponent {
 
   // Resources
   readonly notificationResource = resource({
-    loader: () => this.notificationService.fetchHeaderNotifications(),
+    params: () => this.i18nService.lang(),
+    loader: ({ params }) => this.notificationService.fetchHeaderNotifications(params),
   });
 
   // Effects

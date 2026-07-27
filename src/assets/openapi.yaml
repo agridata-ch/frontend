@@ -1802,6 +1802,10 @@ components:
         searchTerm:
           type: string
           description: string to search for in the resource
+        language:
+          type: string
+          description: language code for multilingual fields. Must be supported by
+            application.
     RestClientDto:
       type: object
       properties:
@@ -3546,6 +3550,12 @@ paths:
       tags:
       - Notifications
       parameters:
+      - name: language
+        in: query
+        schema:
+          description: language code for multilingual fields. Must be supported by
+            application.
+          type: string
       - name: page
         in: query
         schema:
@@ -3981,6 +3991,12 @@ paths:
       tags:
       - Data Products
       parameters:
+      - name: language
+        in: query
+        schema:
+          description: language code for multilingual fields. Must be supported by
+            application.
+          type: string
       - name: page
         in: query
         schema:
@@ -4971,6 +4987,12 @@ paths:
       tags:
       - Users
       parameters:
+      - name: language
+        in: query
+        schema:
+          description: language code for multilingual fields. Must be supported by
+            application.
+          type: string
       - name: page
         in: query
         schema:
@@ -5189,7 +5211,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.13.0-rc.16
+  version: 1.14.0-rc.4
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

@@ -581,6 +581,7 @@ export class DataProductsService extends BaseService {
     /**
      * Get Data Products Paginated
      * Retrieves a paginated list of all available data products. Accessible to users with the producer, and admin. Supports pagination.
+     * @param language 
      * @param page 
      * @param searchTerm 
      * @param size 
@@ -589,12 +590,14 @@ export class DataProductsService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getDataProductsPaginated(page?: number, searchTerm?: string, size?: number, sortBy?: object, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageResponseDtoDataProductDto>;
-    public getDataProductsPaginated(page?: number, searchTerm?: string, size?: number, sortBy?: object, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageResponseDtoDataProductDto>>;
-    public getDataProductsPaginated(page?: number, searchTerm?: string, size?: number, sortBy?: object, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageResponseDtoDataProductDto>>;
-    public getDataProductsPaginated(page?: number, searchTerm?: string, size?: number, sortBy?: object, actingRole?: 'PROVIDER' | 'ADMIN', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getDataProductsPaginated(language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageResponseDtoDataProductDto>;
+    public getDataProductsPaginated(language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageResponseDtoDataProductDto>>;
+    public getDataProductsPaginated(language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageResponseDtoDataProductDto>>;
+    public getDataProductsPaginated(language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, actingRole?: 'PROVIDER' | 'ADMIN', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>language, 'language');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>page, 'page');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

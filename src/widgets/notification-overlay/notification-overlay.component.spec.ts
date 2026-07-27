@@ -2,9 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import { NotificationService } from '@/entities/api/notification.service';
+import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAuthService,
+  createMockI18nService,
   createMockNotificationService,
   MockNotificationService,
 } from '@/shared/testing/mocks';
@@ -24,6 +26,7 @@ describe('NotificationOverlayComponent', () => {
       providers: [
         provideRouter([]),
         { provide: AuthService, useValue: createMockAuthService() },
+        { provide: I18nService, useValue: createMockI18nService() },
         { provide: NotificationService, useValue: notificationService },
       ],
     }).compileComponents();
