@@ -14,6 +14,7 @@ export type MockAgridataStateServiceTestSignals = {
   activeUid: WritableSignal<string | undefined>;
   backendInfo: WritableSignal<{ [key: string]: string } | undefined>;
   uidMissing: WritableSignal<boolean>;
+  agbConsentEnforced: WritableSignal<boolean>;
   showCookiebanner: WritableSignal<boolean>;
 };
 
@@ -34,6 +35,7 @@ export function createMockAgridataStateService(): MockAgridataStateService {
   const activeUid = signal<string | undefined>(undefined);
   const backendInfo = signal({ version: BE_VERSION });
   const uidMissing = signal<boolean>(false);
+  const agbConsentEnforced = signal<boolean>(false);
   const showCookiebanner = signal(true);
   return {
     actingRole,
@@ -43,12 +45,14 @@ export function createMockAgridataStateService(): MockAgridataStateService {
     userPreferences,
     backendInfo,
     uidMissing,
+    agbConsentEnforced,
     getDefaultUid: jest.fn().mockReturnValue(undefined),
     isImpersonating: jest.fn().mockReturnValue(false),
     routeStart: signal<string | undefined>('/some-page'),
     setActiveUid: jest.fn(),
     setMainMenuOpened: jest.fn(),
     setUidMissing: jest.fn(),
+    setAgbConsentEnforced: jest.fn(),
     addConfirmedMigratedUids: jest.fn(),
     hideCookieBanner: jest.fn(),
     showCookiebanner,
@@ -60,6 +64,7 @@ export function createMockAgridataStateService(): MockAgridataStateService {
       currentRoute,
       backendInfo,
       uidMissing,
+      agbConsentEnforced,
       showCookiebanner,
     },
     saveTourIntroSeen: jest.fn(),

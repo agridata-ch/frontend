@@ -797,7 +797,9 @@
       "remindLater": "Später erinnern",
       "accept": "Bestätigen",
       "blockingInfo": "Die Übergangsfrist für die neuen AGB ist am {{enforceConsentFrom}} abgelaufen. Um [agridata.ch] weiterhin zu nutzen, ist deine Bestätigung notwendig.",
-      "info": "Wir haben unsere Allgemeinen Geschäftsbedingungen (AGB) aktualisiert. Bitte lies die neuen Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein. Die Zustimmung zu den aktualisierten Bedingungen kannst du über die untenstehende Auswahl erteilen."
+      "updatedInfo": "Wir haben unsere Allgemeinen Geschäftsbedingungen (AGB) aktualisiert. Bitte lies die neuen Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein. Die Zustimmung zu den aktualisierten Bedingungen kannst du über die untenstehende Auswahl erteilen.",
+      "generalInfo": "Um [agridata.ch] verwenden zu können, müssen die Allgemeinen Geschäftsbedingungen (AGB) gelesen und akzeptiert werden. Bitte lies die Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein. Die Zustimmung zu den Bedingungen kannst du über die untenstehende Auswahl erteilen.",
+      "deadlineInfo": "Wir haben unsere Allgemeinen Geschäftsbedingungen (AGB) aktualisiert. Bitte lies die neuen Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein und stimme diesen bis zum {{enforceConsentFrom}} zu. Die Zustimmung zu den aktualisierten Bedingungen kannst du über die untenstehende Auswahl erteilen."
     }
   },
   "notifications": {

@@ -797,7 +797,9 @@
       "remindLater": "Me le rappeler plus tard",
       "accept": "Confirmer",
       "blockingInfo": "La période de transition pour les nouvelles conditions générales a expiré le {{enforceConsentFrom}}. Pour continuer à utiliser [agridata.ch], ta confirmation est nécessaire.",
-      "info": "Nous avons mis à jour nos Conditions générales (CG). Lis attentivement les nouvelles conditions afin de prendre connaissance des modifications. Tu peux accepter les conditions mises à jour via la sélection ci-dessous."
+      "updatedInfo": "Nous avons mis à jour nos Conditions générales (CG). Lis attentivement les nouvelles conditions afin de prendre connaissance des modifications. Tu peux accepter les conditions mises à jour via la sélection ci-dessous.",
+      "generalInfo": "Pour pouvoir utiliser [agridata.ch], vous devez lire et accepter les Conditions générales (CG). Veuillez lire attentivement ces conditions afin de prendre connaissance des modifications apportées. Vous pouvez accepter ces conditions en cochant la case ci-dessous.",
+      "deadlineInfo": "Nous avons mis à jour nos Conditions générales (CG). Veuillez lire attentivement les nouvelles conditions afin de prendre connaissance des modifications apportées et de les accepter avant le {{enforceConsentFrom}}. Vous pouvez donner votre accord aux conditions mises à jour en sélectionnant l'une des options ci-dessous."
     }
   },
   "notifications": {
