@@ -6,7 +6,7 @@
 
 ## Scale
 
-4 API routes · 145 UI components · 222 library files · 18 middleware layers · 6 environment variables
+4 API routes · 145 UI components · 222 library files · 20 middleware layers · 6 environment variables
 
 ## Subsystems
 
@@ -23,7 +23,7 @@ Changes to these files have the widest blast radius across the codebase:
 
 - `src/shared/i18n/index.ts` — imported by **147** files
 - `src/entities/openapi/index.ts` — imported by **128** files
-- `src/entities/api/agridata-state.service.ts` — imported by **81** files
+- `src/entities/api/agridata-state.service.ts` — imported by **85** files
 - `src/shared/constants/constants.ts` — imported by **76** files
 - `src/app/error/error-handler.service.ts` — imported by **66** files
 - `src/shared/ui/button/index.ts` — imported by **65** files
@@ -33,4 +33,4 @@ Changes to these files have the widest blast radius across the codebase:
 - `CI` — `jest.config.ts`
 
 ---
-_Back to [index.md](./index.md) · Generated 2026-07-23_
+_Back to [index.md](./index.md) · Generated 2026-07-28_

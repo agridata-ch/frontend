@@ -45,11 +45,13 @@ export class AgridataStateService {
   private readonly _backendInfo = signal<{ [key: string]: string } | undefined>(undefined);
   private readonly _showCookiebanner = signal<boolean>(this.shouldShowCookieBanner());
   private readonly _uidMissing = signal<boolean>(false);
+  private readonly _agbConsentEnforced = signal<boolean>(false);
 
   readonly userPreferences = this._userPreferences.asReadonly();
   readonly backendInfo = this._backendInfo.asReadonly();
   readonly showCookiebanner = this._showCookiebanner.asReadonly();
   readonly uidMissing = this._uidMissing.asReadonly();
+  readonly agbConsentEnforced = this._agbConsentEnforced.asReadonly();
   readonly currentRoute = toSignal(
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
@@ -169,6 +171,10 @@ export class AgridataStateService {
 
   setUidMissing(pending: boolean): void {
     this._uidMissing.set(pending);
+  }
+
+  setAgbConsentEnforced(enforced: boolean): void {
+    this._agbConsentEnforced.set(enforced);
   }
 
   hideCookieBanner(): void {

@@ -19,6 +19,8 @@
 
 ## custom
 - producer-uid.guard.spec — `src/app/guards/producer-uid.guard.spec.ts`
+- agb-consent.interceptor.spec — `src/app/interceptors/agb-consent.interceptor.spec.ts`
+- agb-consent.interceptor — `src/app/interceptors/agb-consent.interceptor.ts`
 - error-http-interceptor.spec — `src/app/interceptors/error-http-interceptor.spec.ts`
 - error-http-interceptor — `src/app/interceptors/error-http-interceptor.ts`
 - impersonation-interceptor.spec — `src/app/interceptors/impersonation-interceptor.spec.ts`

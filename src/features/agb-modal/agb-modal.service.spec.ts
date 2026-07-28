@@ -2,13 +2,16 @@ import { ApplicationRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { AgbService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UserInfoDto } from '@/entities/openapi';
 import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAgbService,
+  createMockAgridataStateService,
   createMockAuthService,
   mockAgbRevision,
   MockAgbService,
+  MockAgridataStateService,
   MockAuthService,
 } from '@/shared/testing/mocks';
 
@@ -17,6 +20,7 @@ import { AgbModalService } from './agb-modal.service';
 describe('AgbModalService', () => {
   let agbService: MockAgbService;
   let authService: MockAuthService;
+  let stateService: MockAgridataStateService;
 
   const acceptedUserInfo: UserInfoDto = {
     lastAcceptedAgbRevisionId: mockAgbRevision.id,
@@ -27,6 +31,15 @@ describe('AgbModalService', () => {
     lastAcceptedAgbRevisionId: mockAgbRevision.id,
     lastAcceptedAgbDate: '2025-01-01T00:00:00Z',
   };
+
+  /** A returning user who accepted an older revision but not the current one. */
+  const previousRevisionUserInfo: UserInfoDto = {
+    lastAcceptedAgbRevisionId: 'some-old-id',
+    lastAcceptedAgbDate: '2026-06-01T00:00:00Z',
+  };
+
+  const FUTURE_ENFORCE_DATE = '2099-01-01T00:00:00Z';
+  const PAST_ENFORCE_DATE = '2020-01-01T00:00:00Z';
 
   /** Simulate a fresh login as a consumer who has not accepted the current AGB. */
   function signInAsConsumer(): void {
@@ -44,11 +57,13 @@ describe('AgbModalService', () => {
   beforeEach(() => {
     agbService = createMockAgbService();
     authService = createMockAuthService();
+    stateService = createMockAgridataStateService();
 
     TestBed.configureTestingModule({
       providers: [
         AgbModalService,
         { provide: AgbService, useValue: agbService },
+        { provide: AgridataStateService, useValue: stateService },
         { provide: AuthService, useValue: authService },
       ],
     });
@@ -141,14 +156,112 @@ describe('AgbModalService', () => {
 
   describe('dismiss', () => {
     it('closes the modal when it is dismissible', async () => {
+      agbService.fetchAgbs.mockResolvedValue({
+        ...mockAgbRevision,
+        enforceConsentFrom: FUTURE_ENFORCE_DATE,
+      });
       signInAsConsumer();
+      authService.__testSignals.userInfo.set(previousRevisionUserInfo);
 
       const service = await createService();
       expect(service.open()).toBe(true);
+      expect(service.isSkippable()).toBe(true);
 
       service.dismiss();
 
       expect(service.open()).toBe(false);
+    });
+  });
+
+  describe('skippability', () => {
+    it('is skippable when a returning user has a newer revision and the deadline is in the future', async () => {
+      agbService.fetchAgbs.mockResolvedValue({
+        ...mockAgbRevision,
+        enforceConsentFrom: FUTURE_ENFORCE_DATE,
+      });
+      signInAsConsumer();
+      authService.__testSignals.userInfo.set(previousRevisionUserInfo);
+
+      const service = await createService();
+
+      expect(service.open()).toBe(true);
+      expect(service.isSkippable()).toBe(true);
+      expect(service.isAgbConsentEnforced()).toBe(false);
+    });
+
+    it('is not skippable and blocks when the enforce deadline has passed', async () => {
+      agbService.fetchAgbs.mockResolvedValue({
+        ...mockAgbRevision,
+        enforceConsentFrom: PAST_ENFORCE_DATE,
+      });
+      signInAsConsumer();
+      authService.__testSignals.userInfo.set(previousRevisionUserInfo);
+
+      const service = await createService();
+
+      expect(service.open()).toBe(true);
+      expect(service.isSkippable()).toBe(false);
+      expect(service.isAgbConsentEnforced()).toBe(true);
+    });
+
+    it('is not skippable and blocks when the user has never accepted any AGB', async () => {
+      agbService.fetchAgbs.mockResolvedValue({
+        ...mockAgbRevision,
+        enforceConsentFrom: FUTURE_ENFORCE_DATE,
+      });
+      signInAsConsumer();
+
+      const service = await createService();
+
+      expect(service.open()).toBe(true);
+      expect(service.isSkippable()).toBe(false);
+      expect(service.isAgbConsentEnforced()).toBe(true);
+    });
+
+    it('neither shows, skips, nor blocks when the current revision is already accepted', async () => {
+      signInAsConsumer();
+      authService.__testSignals.userInfo.set(acceptedUserInfo);
+
+      const service = await createService();
+
+      expect(service.open()).toBe(false);
+      expect(service.isSkippable()).toBe(false);
+      expect(service.isAgbConsentEnforced()).toBe(false);
+    });
+  });
+
+  describe('app block', () => {
+    it('pushes the blocking state to AgridataStateService when consent is enforced', async () => {
+      agbService.fetchAgbs.mockResolvedValue({
+        ...mockAgbRevision,
+        enforceConsentFrom: PAST_ENFORCE_DATE,
+      });
+      signInAsConsumer();
+
+      await createService();
+
+      expect(stateService.setAgbConsentEnforced).toHaveBeenCalledWith(true);
+    });
+
+    it('leaves the app unblocked once the accepted current revision has resolved', async () => {
+      signInAsConsumer();
+      authService.__testSignals.userInfo.set(acceptedUserInfo);
+
+      await createService();
+
+      // May block transiently while the revision is still loading, but the settled state is unblocked.
+      expect(stateService.setAgbConsentEnforced).toHaveBeenLastCalledWith(false);
+    });
+
+    it('blocks the app while the AGB revision is still loading for an eligible user', () => {
+      signInAsConsumer();
+      // A fetch that never settles keeps the resource in its loading state.
+      agbService.fetchAgbs.mockReturnValue(new Promise<never>(() => {}));
+
+      const service = TestBed.inject(AgbModalService);
+      TestBed.inject(ApplicationRef).tick();
+
+      expect(service.isAgbConsentEnforced()).toBe(true);
     });
   });
 });
