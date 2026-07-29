@@ -13,7 +13,8 @@ import {
   StrapiSingleTypeResponseWithContent,
 } from '@/entities/cms';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { I18nService } from '@/shared/i18n';
+import { formatDate } from '@/shared/date';
+import { I18nService, I18nDirective } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
 import { MarkdownPipe } from '@/shared/markdown/markdown.pipe';
 import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
@@ -25,7 +26,7 @@ import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
  */
 @Component({
   selector: 'app-agb-page',
-  imports: [CmsFooterBlockComponent, MarkdownPipe, FaIconComponent],
+  imports: [CmsFooterBlockComponent, MarkdownPipe, FaIconComponent, I18nDirective],
   templateUrl: './agb-page.page.html',
 })
 export class AgbPage {
@@ -55,6 +56,20 @@ export class AgbPage {
 
     const lang = this.i18nService.lang() as keyof typeof response.agbText;
     return response?.agbText?.[lang] ?? '';
+  });
+
+  protected readonly version = computed(() => {
+    const response = this.agbPage()?.agbs;
+    if (!response) return '';
+
+    return this.i18nService.translate('agb.page.version', { version: response?.version });
+  });
+
+  protected readonly validFrom = computed(() => {
+    const response = this.agbPage()?.agbs;
+    if (!response) return '';
+
+    return formatDate(response?.validFrom);
   });
 
   protected readonly footerBlock = computed(() => {

@@ -801,6 +801,9 @@
       "updatedInfo": "Abbiamo aggiornato le nostre Condizioni generali (CG). Ti invitiamo a leggere attentamente le nuove condizioni per essere informato sulle modifiche. Puoi accettare le condizioni aggiornate tramite la selezione sottostante.",
       "generalInfo": "Per poter utilizzare [agridata.ch], è necessario leggere e accettare le Condizioni generali (CG). Ti preghiamo di leggere attentamente le condizioni per essere informato sulle eventuali modifiche. Puoi dare il tuo consenso alle condizioni selezionando l'opzione sottostante.",
       "deadlineInfo": "Abbiamo aggiornato le nostre Condizioni generali (CG). Ti preghiamo di leggere attentamente le nuove condizioni per essere informato sulle modifiche e di accettarle entro il {{enforceConsentFrom}}. Puoi dare il tuo consenso alle condizioni aggiornate selezionando l'opzione sottostante."
+    },
+    "page": {
+      "version": "Version {{ version }}"
     }
   },
   "notifications": {
