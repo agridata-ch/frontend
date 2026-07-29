@@ -547,7 +547,8 @@
       "notifications": "Notifications",
       "imprint": "Impressum",
       "privacyPolicy": "Conditions d'utilisation",
-      "home": "Page d'accueil"
+      "home": "Page d'accueil",
+      "agb": "CGV"
     }
   },
   "producer": {
