@@ -547,7 +547,8 @@
       "notifications": "Notifications",
       "imprint": "Impressum",
       "privacyPolicy": "Conditions d'utilisation",
-      "home": "Page d'accueil"
+      "home": "Page d'accueil",
+      "agb": "CGV"
     }
   },
   "producer": {
@@ -800,6 +801,9 @@
       "updatedInfo": "Nous avons mis à jour nos Conditions générales (CG). Lis attentivement les nouvelles conditions afin de prendre connaissance des modifications. Tu peux accepter les conditions mises à jour via la sélection ci-dessous.",
       "generalInfo": "Pour pouvoir utiliser [agridata.ch], vous devez lire et accepter les Conditions générales (CG). Veuillez lire attentivement ces conditions afin de prendre connaissance des modifications apportées. Vous pouvez accepter ces conditions en cochant la case ci-dessous.",
       "deadlineInfo": "Nous avons mis à jour nos Conditions générales (CG). Veuillez lire attentivement les nouvelles conditions afin de prendre connaissance des modifications apportées et de les accepter avant le {{enforceConsentFrom}}. Vous pouvez donner votre accord aux conditions mises à jour en sélectionnant l'une des options ci-dessous."
+    },
+    "page": {
+      "version": "Version {{ version }}"
     }
   },
   "notifications": {
