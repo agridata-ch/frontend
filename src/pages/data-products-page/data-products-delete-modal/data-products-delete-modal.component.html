@@ -1,0 +1,29 @@
+<app-modal
+  [open]="isOpen()"
+  [title]="t('title')"
+  [dataTestId]="'delete-product-modal'"
+  (closed)="cancelDelete()"
+  *i18n="let t; prefix: 'data-products.table.deleteProduct'"
+>
+  <div class="flex flex-col gap-6 text-center">
+    <span class="whitespace-pre-line">
+      {{ t('description', { productName: productName() }) }}
+    </span>
+    <div class="flex justify-between gap-2">
+      <app-agridata-button
+        [variant]="ButtonVariants.Secondary"
+        [disabled]="isDeleting()"
+        (handleClick)="cancelDelete()"
+      >
+        {{ t('cancel') }}
+      </app-agridata-button>
+      <app-agridata-button
+        [variant]="ButtonVariants.Primary"
+        [loading]="isDeleting()"
+        (handleClick)="deleteProduct()"
+      >
+        {{ t('delete') }}
+      </app-agridata-button>
+    </div>
+  </div>
+</app-modal>

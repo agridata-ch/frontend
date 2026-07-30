@@ -15,7 +15,7 @@ type DataProductActingRoles = 'PROVIDER' | 'ADMIN' | undefined;
 /**
  * Service for managing data products.
  *
- * CommentLastReviewed: 2026-06-08
+ * CommentLastReviewed: 2026-07-30
  */
 @Service()
 export class DataProductService {
@@ -30,6 +30,12 @@ export class DataProductService {
         dto as unknown as DataProductUpdateDto,
         actingRole as DataProductActingRoles,
       ),
+    );
+  };
+
+  deleteDataProduct = (id: string, actingRole?: ActingRole): Promise<void> => {
+    return firstValueFrom(
+      this.apiService.deleteDataProductDraft(id, actingRole as DataProductActingRoles),
     );
   };
 

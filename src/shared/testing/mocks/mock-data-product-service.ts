@@ -12,6 +12,7 @@ export type MockDataProductService = Mockify<DataProductService>;
 export function createMockDataProductService(): MockDataProductService {
   return {
     createDataProduct: jest.fn().mockResolvedValue({}),
+    deleteDataProduct: jest.fn().mockResolvedValue(undefined),
     getAllDataProducts: jest.fn().mockResolvedValue({
       items: [] as DataProductDto[],
       totalItems: 0,

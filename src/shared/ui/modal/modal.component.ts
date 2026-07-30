@@ -3,6 +3,7 @@ import { Component, DestroyRef, inject, input, model, output } from '@angular/co
 import { faClose } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
+import { I18nPipe } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 /**
@@ -14,7 +15,7 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
  */
 @Component({
   selector: 'app-modal',
-  imports: [FaIconComponent, ButtonComponent],
+  imports: [FaIconComponent, ButtonComponent, I18nPipe],
   templateUrl: './modal.component.html',
 })
 export class ModalComponent {
