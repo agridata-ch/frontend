@@ -836,9 +836,20 @@
       "name": "Prodotto di dati",
       "system": "Sistema",
       "actions": {
-        "viewDetails": "Visualizza"
+        "viewDetails": "Visualizza",
+        "delete": "Eliminare"
       },
-      "stateCode": "Stato"
+      "stateCode": "Stato",
+      "deleteProduct": {
+        "title": "Eliminare definitivamente la bozza?",
+        "description": "Si desidera davvero eliminare la bozza {{productName}}?\nQuesta azione non può essere annullata.",
+        "cancel": "Annullare",
+        "delete": "Eliminare definitivamente",
+        "success": {
+          "title": "Bozza eliminata",
+          "message": "La bozza è stata eliminata con successo."
+        }
+      }
     },
     "createNew": "Inserire un prodotto dati",
     "detailPanel": {

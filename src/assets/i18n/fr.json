@@ -836,9 +836,20 @@
       "name": "Produit de données",
       "system": "Système",
       "actions": {
-        "viewDetails": "Afficher"
+        "viewDetails": "Afficher",
+        "delete": "Supprimer"
       },
-      "stateCode": "Statut"
+      "stateCode": "Statut",
+      "deleteProduct": {
+        "title": "Supprimer définitivement le brouillon ?",
+        "description": "Voulez-vous vraiment supprimer le brouillon {{productName}} ?\nCette action est irréversible.",
+        "cancel": "Annuler",
+        "delete": "Supprimer définitivement",
+        "success": {
+          "title": "Brouillon supprimé",
+          "message": "Le brouillon a été supprimé avec succès."
+        }
+      }
     },
     "createNew": "Saisir un produit de données",
     "detailPanel": {

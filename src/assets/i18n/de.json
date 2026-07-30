@@ -836,9 +836,20 @@
       "name": "Datenprodukt",
       "system": "System",
       "actions": {
-        "viewDetails": "Anzeigen"
+        "viewDetails": "Anzeigen",
+        "delete": "Löschen"
       },
-      "stateCode": "Status"
+      "stateCode": "Status",
+      "deleteProduct": {
+        "title": "Entwurf unwiderruflich löschen?",
+        "description": "Möchten Sie den Entwurf {{productName}} wirklich löschen? \nDiese Aktion kann nicht rückgängig gemacht werden.",
+        "cancel": "Abbrechen",
+        "delete": "Unwiderruflich löschen",
+        "success": {
+          "title": "Entwurf gelöscht",
+          "message": "Der Entwurf wurde erfolgreich gelöscht."
+        }
+      }
     },
     "createNew": "Datenprodukt erfassen",
     "detailPanel": {
