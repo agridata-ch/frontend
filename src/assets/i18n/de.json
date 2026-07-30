@@ -52,7 +52,7 @@
         "OPENED": "Offen",
         "UNKNOWN": "Unbekannt"
       },
-      "footerInformation": "Entscheid jederzeit änderbar.",
+      "footerInformation": "Sie können Ihre Entscheidung später jederzeit hier ändern. Daten können nur übermittelt werden, wenn eine aktive Zustimmung vorliegt.",
       "requestDate": "Anfrage vom {{ date }}",
       "sidepanel": {
         "title": "Detailansicht"
@@ -277,23 +277,11 @@
     "preview": {
       "title": "Vorschau der Datenanfrage (Ansicht für Landwirte)"
     },
-    "privacy": {
-      "consent": {
-        "title": "Zustimmung",
-        "description": "Mit Ihrer Zustimmung kann {{ consumerName }} die oben aufgeführten Daten abrufen."
-      },
-      "dataProtection": {
-        "title": "Datenschutz",
-        "description": "Zwischen {{ systemName }} und {{ consumerName }} besteht ein Vertrag, der den oben beschriebenen Zweck und die Nutzung der Daten eindeutig regelt. {{ consumerName }} ist verpflichtet, die Bestimmungen des Datenschutzgesetzes einzuhalten."
-      },
-      "revocation": {
-        "title": "Änderungsmöglichkeit",
-        "description": "Sie haben jederzeit die Möglichkeit, Ihren Entscheid zu ändern."
-      }
-    },
     "purpose": {
-      "title": "Zweck der Datennutzung",
-      "description": "Folgende Daten werden übermittelt:",
+      "title": "Zweck der Datennutzung: Was macht {{ consumer }} mit meinen Daten?"
+    },
+    "products": {
+      "description": "Folgende Datenprodukte werden von {{ provider }} an {{ consumer }} übermittelt:",
       "moreInfos": "Weitere Details anzeigen"
     },
     "wizard": {
@@ -526,6 +514,10 @@
     },
     "advantages": {
       "heading": "Meine Vorteile"
+    },
+    "privacy": {
+      "title": "Datenschutz",
+      "description": "Zwischen {{ provider }} und {{ consumer }} besteht ein Vertrag für die Datenübermittlung. Dieser Vertrag **regelt die ausschliessliche Nutzung für den oben beschriebenen Zweck** und verpflichtet {{ consumer }} rechtlich zur Einhaltung des Schweizer Datenschutzgesetzes (DSG)."
     }
   },
   "forms": {
@@ -779,13 +771,17 @@
         "title": "Ihre Datenanfragen",
         "description": "Hier finden Sie alle Anfragen von Datenbezügern auf einen Blick.\n\nKlicken Sie einfach auf eine Anfrage, um alle Details dazu einzusehen."
       },
-      "dataRequestPurpose": {
-        "title": "Zweck der Datennutzung",
-        "description": "Erfahren Sie hier, warum Ihre Daten angefragt werden und welchen konkreten Mehrwert Sie davon haben.\n\nSie möchten genau wissen, welche Informationen übermittelt werden? Klicken Sie dazu einfach auf „Folgende Daten werden übermittelt:“."
+      "dataRequestProducts": {
+        "title": "Welche Daten werden übermittelt?",
+        "description": "Sie möchten genau wissen, welche Informationen übermittelt werden? Klicken Sie dazu einfach auf „Folgende Daten werden von ... übermittelt:“."
       },
       "consentRequestConsent": {
         "title": "Entscheidung treffen",
         "description": "Mit den Buttons wählen Sie: Grün zum Zustimmen, Rot zum Ablehnen. Sie behalten immer die volle Kontrolle und können Ihre Wahl später einfach wieder ändern."
+      },
+      "dataRequestPurpose": {
+        "title": "Zweck der Datennutzung",
+        "description": "Erfahren Sie hier, warum Ihre Daten angefragt werden und welchen konkreten Mehrwert Sie davon haben."
       }
     },
     "startTour": "Tour starten",
@@ -858,7 +854,7 @@
       "titleUpdate": "Datenprodukt bearbeiten",
       "publishConfirmation": {
         "title": "Datenprodukt publizieren?",
-        "description": "Mit dem Publizieren wird dieses Datenprodukt auf agridata.ch live geschaltet. \nBitte beachten Sie:\n\n<b>Öffentlicher Katalog:</b> Das Produkt ist ab sofort für alle Datenbezüger sichtbar.\n<b>Datenantrag:</b> Datenbezüger können direkt einen digitalen Antrag für diese Daten stellen.\n<b>Produzenten-Zustimmung:</b> Name und Beschreibung werden eins zu eins den Landwirten und Tierhaltern angezeigt, wenn sie ihre Zustimmung zur Datenfreigabe erteilen. Bitte achten Sie auf eine einfache, verständliche Sprache.",
+        "description": "Mit dem Publizieren wird dieses Datenprodukt auf agridata.ch live geschaltet. \nBitte beachten Sie:\n\n**Öffentlicher Katalog:** Das Produkt ist ab sofort für alle Datenbezüger sichtbar.\n**Datenantrag:** Datenbezüger können direkt einen digitalen Antrag für diese Daten stellen.\n**Produzenten-Zustimmung:** Name und Beschreibung werden eins zu eins den Landwirten und Tierhaltern angezeigt, wenn sie ihre Zustimmung zur Datenfreigabe erteilen. Bitte achten Sie auf eine einfache, verständliche Sprache.",
         "cancel": "Abbrechen",
         "publish": "Ja, publizieren"
       }
@@ -999,7 +995,11 @@
         "documentsToUpload": "Hochzuladene Dateien",
         "uploadedDocuments": "Vorhandene Dokumente",
         "markedForRemoval": "Wird entfernt",
-        "empty": "Keine Dokumente vorhanden."
+        "empty": "Keine Dokumente vorhanden.",
+        "notReady": {
+          "title": "Dokumente noch nicht bereit",
+          "message": "Ein Dokument wurde abgelehnt oder konnte nicht verarbeitet werden. Bitte entferne es und versuche es erneut."
+        }
       },
       "dataSourceSystemId": {
         "disabledInfo": {

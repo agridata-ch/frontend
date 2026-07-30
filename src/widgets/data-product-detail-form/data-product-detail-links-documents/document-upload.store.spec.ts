@@ -351,7 +351,7 @@ describe('DocumentUploadStore', () => {
       store.addFiles([pdf('a.pdf')]);
 
       await store.uploadAll('product-1');
-      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+      await store.awaitPendingScans();
 
       expect(documentService.uploadDocument).toHaveBeenCalledTimes(1);
       expect(store.hasUnreadyDocuments()).toBe(false);
@@ -369,7 +369,7 @@ describe('DocumentUploadStore', () => {
       store.addFiles([pdf('a.pdf')]);
 
       await store.uploadAll('product-1');
-      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+      await store.awaitPendingScans();
 
       expect(store.hasBlockingState()).toBe(true);
       expect(store.hasUnreadyDocuments()).toBe(true);
@@ -386,7 +386,7 @@ describe('DocumentUploadStore', () => {
       store.addFiles([pdf('a.pdf')]);
 
       await store.uploadAll('product-1');
-      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+      await store.awaitPendingScans();
 
       expect(store.hasBlockingState()).toBe(true);
     });
@@ -434,6 +434,92 @@ describe('DocumentUploadStore', () => {
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
 
       expect(documentService.uploadDocument).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('awaitPendingScans', () => {
+    it('resolves immediately when no scan is in flight', async () => {
+      await expect(store.awaitPendingScans()).resolves.toBeUndefined();
+    });
+
+    it('waits for the scan of a freshly uploaded document to reach its terminal state', async () => {
+      documentService.uploadDocument.mockResolvedValue({
+        id: 'doc-1',
+        fileName: 'a.pdf',
+        scanStatus: DocumentScanStatusEnum.PendingScan,
+        sizeBytes: 50,
+      });
+      documentService.awaitDocumentProcessed.mockReturnValue(
+        new Promise((resolve) => setTimeout(() => resolve(DocumentScanStatusEnum.Available), 5)),
+      );
+      store.addFiles([pdf('a.pdf')]);
+
+      await store.uploadAll('product-1');
+      expect(store.hasUnreadyDocuments()).toBe(true);
+
+      await store.awaitPendingScans();
+
+      expect(store.hasUnreadyDocuments()).toBe(false);
+      expect(store.items()[0].status).toBe(DocumentUploadStatus.Available);
+    });
+
+    it('resolves when an upload failed, leaving the document unready', async () => {
+      documentService.uploadDocument.mockRejectedValue(new Error('network'));
+      store.addFiles([pdf('a.pdf')]);
+
+      await store.uploadAll('product-1');
+      await store.awaitPendingScans();
+
+      expect(store.hasUnreadyDocuments()).toBe(true);
+      expect(documentService.awaitDocumentProcessed).not.toHaveBeenCalled();
+    });
+
+    it('keeps waiting for the newest scan when a document is reloaded', async () => {
+      documentService.listDocuments.mockResolvedValue([
+        {
+          id: 'doc-1',
+          fileName: 'a.pdf',
+          scanStatus: DocumentScanStatusEnum.PendingScan,
+          sizeBytes: 50,
+        },
+      ]);
+      // Both loads scan the same document (identical localId). The first scan settles while the
+      // second one is still running, and must not evict it - otherwise the save flow would stop
+      // waiting and read the intermediate status.
+      documentService.awaitDocumentProcessed.mockReturnValueOnce(
+        new Promise((resolve) => setTimeout(() => resolve(DocumentScanStatusEnum.Available), 5)),
+      );
+      documentService.awaitDocumentProcessed.mockReturnValue(
+        new Promise((resolve) => setTimeout(() => resolve(DocumentScanStatusEnum.Rejected), 40)),
+      );
+
+      await store.loadExisting('product-1');
+      await store.loadExisting('product-1');
+      await new Promise<void>((resolve) => setTimeout(resolve, 20));
+
+      await store.awaitPendingScans();
+
+      expect(store.items()[0].status).toBe(DocumentUploadStatus.Rejected);
+    });
+
+    it('waits for a scan resumed by loadExisting', async () => {
+      documentService.listDocuments.mockResolvedValueOnce([
+        {
+          id: 'doc-1',
+          fileName: 'a.pdf',
+          scanStatus: DocumentScanStatusEnum.PendingScan,
+          sizeBytes: 50,
+        },
+      ]);
+      documentService.awaitDocumentProcessed.mockReturnValue(
+        new Promise((resolve) => setTimeout(() => resolve(DocumentScanStatusEnum.Rejected), 5)),
+      );
+
+      await store.loadExisting('product-1');
+      await store.awaitPendingScans();
+
+      expect(store.items()[0].status).toBe(DocumentUploadStatus.Rejected);
+      expect(store.hasBlockingState()).toBe(true);
     });
   });
 

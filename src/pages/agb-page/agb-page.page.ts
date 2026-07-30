@@ -14,7 +14,7 @@ import {
 } from '@/entities/cms';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { formatDate } from '@/shared/date';
-import { I18nService, I18nDirective } from '@/shared/i18n';
+import { I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
 import { MarkdownPipe } from '@/shared/markdown/markdown.pipe';
 import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
@@ -26,7 +26,7 @@ import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
  */
 @Component({
   selector: 'app-agb-page',
-  imports: [CmsFooterBlockComponent, MarkdownPipe, FaIconComponent, I18nDirective],
+  imports: [CmsFooterBlockComponent, MarkdownPipe, FaIconComponent],
   templateUrl: './agb-page.page.html',
 })
 export class AgbPage {

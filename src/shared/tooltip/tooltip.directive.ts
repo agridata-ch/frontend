@@ -121,7 +121,7 @@ export class TooltipDirective {
     this.renderer.setAttribute(
       tooltip,
       'class',
-      'pointer-events-auto fixed z-50 whitespace-nowrap rounded bg-agridata-primary-text px-2 py-1 text-xs text-white shadow',
+      'pointer-events-auto fixed z-50 whitespace-pre-line rounded bg-agridata-primary-text px-2 py-1 text-xs text-white shadow',
     );
 
     // Keep the tooltip open while the pointer is over it (WCAG 1.4.13 "hoverable").

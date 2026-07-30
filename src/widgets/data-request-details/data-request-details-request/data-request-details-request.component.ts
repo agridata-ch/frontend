@@ -13,7 +13,8 @@ import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { copyToClipboard } from '@/shared/utils';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';
-import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
+import { DataRequestProductsAccordionComponent } from '@/widgets/data-request-products-accordion';
+import { DataRequestPurposeComponent } from '@/widgets/data-request-purpose';
 import { DataRequestRedirectUriComponent } from '@/widgets/data-request-redirect-uri';
 
 /**
@@ -27,11 +28,12 @@ import { DataRequestRedirectUriComponent } from '@/widgets/data-request-redirect
     AgridataBadgeComponent,
     AgridataContactCardComponent,
     DataRequestContactComponent,
-    DataRequestPurposeAccordionComponent,
+    DataRequestProductsAccordionComponent,
     FontAwesomeModule,
     I18nDirective,
     DataRequestRedirectUriComponent,
     DataRequestAdvantagesComponent,
+    DataRequestPurposeComponent,
   ],
   templateUrl: './data-request-details-request.component.html',
 })
@@ -70,6 +72,9 @@ export class DataRequestDetailsRequestComponent {
         ?.filter((product) => this.dataRequest().products?.includes(product.id)) || []
     );
   });
+  protected readonly providerName = computed(() =>
+    this.metaDataService.providerName(this.dataRequest()?.dataProviderId),
+  );
 
   protected getStatusTranslation(value?: string) {
     if (!value) return '';

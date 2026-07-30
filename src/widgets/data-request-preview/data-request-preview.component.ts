@@ -8,12 +8,13 @@ import { DataRequestDto } from '@/entities/openapi';
 import { getFieldFromLang } from '@/shared/data-request';
 import { I18nDirective } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
+import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';
 import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
-import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
+import { DataRequestProductsAccordionComponent } from '@/widgets/data-request-products-accordion';
+import { DataRequestPurposeComponent } from '@/widgets/data-request-purpose';
 
 import { availableLangs } from '../../../transloco.config';
-import { AgridataContactCardComponent } from '../agridata-contact-card';
 
 /**
  * Implements the preview logic. It integrates metadata services to fetch products, dynamically
@@ -27,12 +28,13 @@ import { AgridataContactCardComponent } from '../agridata-contact-card';
   selector: 'app-data-request-preview',
   imports: [
     I18nDirective,
-    DataRequestPurposeAccordionComponent,
+    DataRequestProductsAccordionComponent,
     DataRequestPrivacyInfosComponent,
     DataRequestContactComponent,
     AgridataContactCardComponent,
     FontAwesomeModule,
     DataRequestAdvantagesComponent,
+    DataRequestPurposeComponent,
   ],
   templateUrl: './data-request-preview.component.html',
 })
@@ -51,12 +53,6 @@ export class DataRequestPreviewComponent {
   protected readonly faSpinnerThird = faSpinnerThird;
 
   // Computed
-  protected readonly dataProvider = computed(() => {
-    return this.metaDataService
-      .dataProviders()
-      .find((provider) => provider.id === this.dataRequest().dataProviderId);
-  });
-
   readonly productsList = computed(() => {
     if (!this.dataRequest()?.dataProviderId) return [];
     return this.metaDataService

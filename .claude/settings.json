@@ -11,6 +11,7 @@
     "defaultMode": "plan"
   },
   "enabledPlugins": {
-    "ti8m-improvement-claude-md@ti8m-claude-code-marketplace": true
+    "ti8m-improvement-claude-md@ti8m-claude-code-marketplace": true,
+    "ponytail@ponytail": true
   }
 }

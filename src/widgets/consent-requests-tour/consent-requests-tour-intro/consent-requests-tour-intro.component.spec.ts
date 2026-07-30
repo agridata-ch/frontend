@@ -63,11 +63,11 @@ describe('ConsentRequestsTourIntroComponent', () => {
     expect(productTourService.start).toHaveBeenCalledWith(expect.any(Array));
   });
 
-  it('should pass 3 steps when starting the tour', () => {
+  it('should pass 4 steps when starting the tour', () => {
     component['startTour']();
 
     const steps = (productTourService.start as jest.Mock).mock.calls[0][0];
-    expect(steps).toHaveLength(3);
+    expect(steps).toHaveLength(4);
   });
 
   it('skip button should close the modal without starting the tour', () => {

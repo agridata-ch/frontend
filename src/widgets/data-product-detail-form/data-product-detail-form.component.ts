@@ -24,7 +24,7 @@ import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProductDto, DataProductDtoStateCode, DataProductStateEnum } from '@/entities/openapi';
 import { getBadgeVariant, getStatusTranslation } from '@/pages/data-products-page';
 import { ACTING_ROLES, ROUTE_PATHS } from '@/shared/constants/constants';
-import { I18nDirective, I18nService } from '@/shared/i18n';
+import { I18nDirective, I18nFormatDirective, I18nService } from '@/shared/i18n';
 import { buildReactiveForm, populateFormFromDto } from '@/shared/lib/form.helper';
 import { ScrollFadeDirective } from '@/shared/scroll-fade';
 import { SidepanelComponent } from '@/shared/sidepanel';
@@ -52,7 +52,7 @@ import { DataProductDetailTechnicalComponent } from './data-product-detail-techn
  * Side panel for creating and editing a data product.
  * Handles its own API calls and navigates back to the list when done.
  *
- * CommentLastReviewed: 2026-06-09
+ * CommentLastReviewed: 2026-08-03
  */
 @Component({
   selector: 'app-data-product-detail-form',
@@ -63,6 +63,7 @@ import { DataProductDetailTechnicalComponent } from './data-product-detail-techn
     DataProductDetailTechnicalComponent,
     FontAwesomeModule,
     I18nDirective,
+    I18nFormatDirective,
     ModalComponent,
     ScrollFadeDirective,
     SidepanelComponent,
@@ -291,6 +292,32 @@ export class DataProductDetailFormComponent {
     this.showPublishModal.set(true);
   }
 
+  /**
+   * Gates a save on form validity. Draft never gates; publish and edit require a valid form and
+   * scroll to the first error when it is not. Extracted from `save()` to keep its cognitive
+   * complexity under the Sonar limit.
+   */
+  private canSave(mode: string): boolean {
+    if (mode === SAVE_MODE.DRAFT) return true;
+
+    this.publishAttempted.set(true);
+    this.form.markAllAsTouched();
+    if (this.form.valid) return true;
+
+    this.scrollToFirstError();
+    return false;
+  }
+
+  /**
+   * Waits for every running antivirus scan to reach its terminal state and reports whether all
+   * documents ended up available. Only then is `hasUnreadyDocuments` meaningful: a document that was
+   * merely still being scanned would otherwise read as unready.
+   */
+  private async documentsReady(): Promise<boolean> {
+    await this.uploadStore.awaitPendingScans();
+    return !this.uploadStore.hasUnreadyDocuments();
+  }
+
   private populateForm(product: DataProductDto): void {
     populateFormFromDto(
       this.form,
@@ -303,36 +330,40 @@ export class DataProductDetailFormComponent {
   }
 
   private async save(mode: string): Promise<void> {
-    // Draft never gates on validity; publish and edit require a valid form.
-    if (mode !== SAVE_MODE.DRAFT) {
-      this.publishAttempted.set(true);
-      this.form.markAllAsTouched();
-      if (!this.form.valid) {
-        this.scrollToFirstError();
-        return;
-      }
-    }
+    if (!this.canSave(mode)) return;
 
     const existingId = this.currentDataProductId();
     if (mode === SAVE_MODE.EDIT && !existingId) return;
 
     this.isSaving.set(true);
     try {
+      // Editing a published product must not write while a document is unready, so the staged
+      // documents are uploaded and their scans awaited before the PATCH. A new product cannot do
+      // that: its id only exists after the POST, so there the documents follow the write and only
+      // the publish (status change) is gated - an unready document leaves it a draft.
+      if (mode === SAVE_MODE.EDIT && existingId) {
+        await this.uploadStore.uploadAll(existingId);
+        if (!(await this.documentsReady())) {
+          this.reportUnreadyDocuments();
+          return;
+        }
+      }
+
       const payload = buildDataProductPayload(this.form as FormGroup);
       const savedId = await this.persistPayload(mode, existingId, payload);
 
-      // Upload newly staged documents (resolves once POSTed; the antivirus scan then runs in the
-      // background) and commit the staged removals.
-      await this.uploadStore.uploadAll(savedId);
-      await this.uploadStore.commitRemovals(savedId);
-
-      // Publishing or editing a published product must not finalize while documents are still
-      // scanning or have failed; surface them on the documents tab (publishAttempted is already
-      // set, so the tab shows its error state) instead of navigating away.
-      if (mode !== SAVE_MODE.DRAFT && this.uploadStore.hasUnreadyDocuments()) {
-        this.activeTabId.set(FORM_TAB_IDS.LINKS_DOCUMENTS);
-        return;
+      if (mode !== SAVE_MODE.EDIT) {
+        await this.uploadStore.uploadAll(savedId);
+        // A draft may keep unready documents; publishing may not.
+        if (mode === SAVE_MODE.PUBLISH && !(await this.documentsReady())) {
+          this.reportUnreadyDocuments();
+          return;
+        }
       }
+
+      // The deletes run last so an aborted save never removes a document; they still run after the
+      // uploads, keeping the backend document count within the maximum.
+      await this.uploadStore.commitRemovals(savedId);
 
       if (mode === SAVE_MODE.PUBLISH) {
         await this.dataProductService.setDataProductStatus(
@@ -372,6 +403,20 @@ export class DataProductDetailFormComponent {
     this.location.replaceState(`${ROUTE_PATHS.DATA_PRODUCTS_PATH}/${saved.id}`);
     this.refreshListNeeded.set(true);
     return saved.id;
+  }
+
+  /**
+   * Surfaces an aborted save caused by documents that could not be made available. `publishAttempted`
+   * is already set and the remaining items are rejected or errored, so the documents tab shows its
+   * error state once activated.
+   */
+  private reportUnreadyDocuments(): void {
+    this.activeTabId.set(FORM_TAB_IDS.LINKS_DOCUMENTS);
+    this.toastService.show(
+      this.i18nService.translate('data-products.detailForm.documents.notReady.title'),
+      this.i18nService.translate('data-products.detailForm.documents.notReady.message'),
+      ToastType.Error,
+    );
   }
 
   private showSaveToast(mode: string, success: boolean): void {

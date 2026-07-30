@@ -2,11 +2,11 @@
   <app-sidepanel
     [isOpen]="isOpen()"
     [title]="sidepanelTitle()"
-    [maxWidth]="'1080px'"
+    [maxWidth]="'1024px'"
     [dataTestId]="'data-product-detail-sidepanel'"
     (closeSidepanel)="closeSidepanel()"
-    [subTitle]="t('subTitle')"
   >
+    <span subtitle>{{ t('subTitle') }}</span>
     <ng-container *i18n="let t; prefix: 'data-products.detailForm'">
       @if (dataProductResource.isLoading()) {
         <fa-icon
@@ -29,7 +29,7 @@
           [(activeTabId)]="activeTabId"
         />
         <div
-          class="flex flex-col flex-1 min-h-0 overflow-y-auto overflow-x-hidden gap-8 pb-4"
+          class="flex flex-col flex-1 min-h-0 overflow-y-auto overflow-x-hidden gap-8 py-4"
           appScrollFade
         >
           <app-data-product-detail-info
@@ -104,7 +104,7 @@
     <div class="flex flex-col gap-4">
       <span
         class="whitespace-pre-line text-center"
-        [innerHTML]="t('publishConfirmation.description')"
+        [i18nFormat]="t('publishConfirmation.description')"
       ></span>
       <div class="flex justify-between gap-2">
         <app-agridata-button [variant]="ButtonVariants.Secondary" (handleClick)="cancelPublish()">

@@ -1,28 +1,25 @@
 <div
-  class="flex flex-col bg-white w-full border border-agridata-stroke rounded-lg bg-opacity-50"
-  [class.hover:bg-agridata-primary-50]="!isExpanded()"
-  [class.hover:border-gray-400]="!isExpanded()"
+  class="flex flex-col bg-white w-full border border-agridata-stroke rounded-lg bg-opacity-50 hover:border-gray-400"
 >
   <button
-    class="flex justify-between items-center py-6 px-6"
+    type="button"
+    class="flex justify-between items-center py-6 px-6 hover:text-agridata-primary-700"
+    [class.text-agridata-primary-600]="skin() === ACCORDION_SKIN.DEFAULT"
+    [class.text-agridata-primary-text]="skin() === ACCORDION_SKIN.PUBLIC"
+    [class.font-semibold]="skin() === ACCORDION_SKIN.PUBLIC"
+    [attr.aria-expanded]="isExpanded()"
     (click)="toggleAccordion()"
-    (keydown.enter)="toggleAccordion()"
-    tabindex="0"
   >
-    <span
-      class="text-left text-md lg:text-lg line-clamp-3"
-      [class.font-semibold]="isLarge()"
-      [class.font-medium]="!isLarge()"
-      [class.leading-[140%]]="isLarge()"
-      [class.leading-[130%]]="!isLarge()"
-      >{{ header() }}</span
-    >
+    <span class="text-left text-md line-clamp-3" [appTooltip]="header()" [tooltipShowDelay]="1000">
+      {{ header() }}
+    </span>
     <fa-icon [icon]="expandIcon()"></fa-icon>
   </button>
   <div
     #contentWrapper
-    class="overflow-hidden transition-all ease-in-out duration-300"
+    class="overflow-hidden transition-all ease-in-out duration-300 font-normal"
     style="height: 0px"
+    [attr.inert]="isExpanded() ? null : ''"
   >
     <div #contentInner class="pb-4 px-6">
       <ng-content></ng-content>

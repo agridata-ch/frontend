@@ -1,15 +1,8 @@
-<div class="flex flex-col gap-6">
-  @for (privacySection of privacySections(); track privacySection.description) {
-    <div class="flex">
-      <fa-icon size="xl" [icon]="privacySection.icon" class="text-agridata-secondary-text mr-2" />
-      <div class="flex flex-col" *i18n="let t; lang: lang()">
-        <span class="text-agridata-secondary-text font-semibold">
-          {{ t(privacySection.title) }}
-        </span>
-        <span class="text-agridata-secondary-text text-sm">
-          {{ t(privacySection.description, privacySection.translationParams) }}
-        </span>
-      </div>
-    </div>
-  }
+<div class="flex flex-col gap-4" *i18n="let t; prefix: 'data-request.privacy'; lang: lang()">
+  <h4>{{ t('title') }}</h4>
+  <span
+    class="text-agridata-primary-text whitespace-pre-line"
+    [i18nFormat]="t('description', { consumer: consumerName(), provider: providerName() })"
+  >
+  </span>
 </div>

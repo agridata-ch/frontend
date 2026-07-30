@@ -52,7 +52,7 @@
         "OPENED": "Ouvert",
         "UNKNOWN": "Inconnu"
       },
-      "footerInformation": "Approbation modifiable à tout moment.",
+      "footerInformation": "Vous pouvez modifier votre choix à tout moment ici. Les données ne peuvent être transmises qu'en cas de consentement explicite.",
       "requestDate": "Demande du {{ date }}",
       "sidepanel": {
         "title": "Vue détaillée"
@@ -277,23 +277,11 @@
     "preview": {
       "title": "Aperçu de la demande de données (vue pour les agriculteurs)"
     },
-    "privacy": {
-      "consent": {
-        "title": "Approbation",
-        "description": "En donnant votre approuvement,  {{ consumerName }}  peut consulter les données mentionnées ci-dessus."
-      },
-      "dataProtection": {
-        "title": "Protection des données",
-        "description": "Il existe un contrat entre {{ systemName }} et {{ consumerName }} qui règle clairement l'objectif et l'utilisation des données décrits ci-dessus. {{ consumerName }} s'engage à respecter les dispositions de la loi sur la protection des données."
-      },
-      "revocation": {
-        "title": "Possibilité de révocation",
-        "description": "Vous avez à tout moment la possibilité de modifier votre décision."
-      }
-    },
     "purpose": {
-      "title": "But de l'utilisation des données",
-      "description": "Les données suivantes seront transmises",
+      "title": "But de l'utilisation des données: que fait {{ consumer }} de mes données?"
+    },
+    "products": {
+      "description": "Les produits de données suivants sont transmis par {{ provider }} à {{ consumer }}:",
       "moreInfos": "Afficher plus de détails"
     },
     "wizard": {
@@ -526,6 +514,10 @@
     },
     "advantages": {
       "heading": "Mes avantages"
+    },
+    "privacy": {
+      "title": "Protection des données",
+      "description": "Un contrat régissant le transfert de données a été conclu entre {{ provider }} et {{ consumer }}. Ce contrat **prévoit une utilisation exclusivement réservée à la finalité décrite ci-dessus** et impose à {{ consumer }} l'obligation légale de se conformer à la loi suisse sur la protection des données (LPD)."
     }
   },
   "forms": {
@@ -779,13 +771,17 @@
         "title": "Vos demandes",
         "description": "Vous trouverez ici toutes les demandes des destinataires de données en un coup d'œil.\n\nCliquez simplement sur une demande pour en voir tous les détails."
       },
-      "dataRequestPurpose": {
-        "title": "But de l'utilisation des données",
-        "description": "Découvrez ici pourquoi vos données sont demandées et quelle est la valeur ajoutée concrète pour vous.\n\nVous voulez savoir exactement quelles informations sont transmises ? Cliquez simplement sur « Données transmises : ».!"
+      "dataRequestProducts": {
+        "title": "Quelles sont les données transmises?",
+        "description": "Vous voulez savoir exactement quelles informations sont transmises ? Cliquez simplement sur « Données transmises par ...: »."
       },
       "consentRequestConsent": {
         "title": "prendre une décision",
         "description": "Utilisez les boutons pour choisir : Vert pour accepter, Rouge pour refuser. Vous gardez toujours le contrôle total et pouvez modifier votre choix ultérieurement."
+      },
+      "dataRequestPurpose": {
+        "title": "But de l'utilisation des données",
+        "description": "Découvrez ici pourquoi vos données sont demandées et quelle est la valeur ajoutée concrète pour vous."
       }
     },
     "startTour": "Commencer la visite",
@@ -858,7 +854,7 @@
       "titleUpdate": "Modifier le produit de données",
       "publishConfirmation": {
         "title": "Publier le produit de données?",
-        "description": "En publiant, ce produit de données sera mis en ligne sur agridata.ch. \nVeuillez noter:\n\n<b>Catalogue public:</b> Le produit est désormais visible par tous les utilisateurs de données.\n<b>Demande de données:</b> Les utilisateurs de données peuvent directement soumettre une demande numérique pour ces données.\n<b>Consentement du producteur:</b> Le nom et la description seront affichés tels quels aux agriculteurs et éleveurs lorsqu'ils donneront leur consentement pour le partage des données. Veuillez utiliser un langage simple et compréhensible.",
+        "description": "En publiant, ce produit de données sera mis en ligne sur agridata.ch. \nVeuillez noter:\n\n**Catalogue public:** Le produit est désormais visible par tous les utilisateurs de données.\n**Demande de données:** Les utilisateurs de données peuvent directement soumettre une demande numérique pour ces données.\n**Consentement du producteur:** Le nom et la description seront affichés tels quels aux agriculteurs et éleveurs lorsqu'ils donneront leur consentement pour le partage des données. Veuillez utiliser un langage simple et compréhensible.",
         "cancel": "Annuler",
         "publish": "Oui, publier"
       }
@@ -999,7 +995,11 @@
         "documentsToUpload": "Fichiers à télécharger",
         "uploadedDocuments": "Documents disponibles",
         "markedForRemoval": "Sera supprimé",
-        "empty": "Aucun document disponible."
+        "empty": "Aucun document disponible.",
+        "notReady": {
+          "title": "Les documents ne sont pas encore prêts",
+          "message": "Un document a été rejeté ou n'a pas pu être traité. Veuillez le supprimer et réessayer."
+        }
       },
       "dataSourceSystemId": {
         "disabledInfo": {

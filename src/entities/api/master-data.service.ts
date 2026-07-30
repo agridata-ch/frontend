@@ -83,6 +83,18 @@ export class MasterDataService {
     );
   }
 
+  /**
+   * Translated name of a data provider. Returns an empty string while the providers are still
+   * loading or when no provider matches.
+   *
+   * @param providerId - The provider ID to resolve the name for
+   * @param lang - Language to translate into; defaults to the active one
+   */
+  providerName(providerId: string | undefined, lang?: string): string {
+    const provider = this.dataProviders().find((candidate) => candidate.id === providerId);
+    return this.i18nService.useObjectTranslation(provider?.name, lang);
+  }
+
   private fetchDataProductsByProviderId(providerId: string): Promise<DataProductDto[]> {
     if (!providerId) {
       return Promise.resolve([]);

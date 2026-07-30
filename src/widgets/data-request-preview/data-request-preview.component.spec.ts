@@ -1,5 +1,6 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataProductDto, DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
@@ -9,6 +10,7 @@ import {
   createMockMasterDataService,
   MockMasterDataService,
 } from '@/shared/testing/mocks';
+import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
 
 import { DataRequestPreviewComponent } from './data-request-preview.component';
 
@@ -97,5 +99,24 @@ describe('DataRequestPreviewComponent', () => {
       const productsList = component.productsList();
       expect(productsList).toHaveLength(0);
     });
+  });
+
+  // The preview renders one panel per language, so every panel has to show the provider name in
+  // its own language instead of the active one.
+  it('should pass the provider name of each panel language to the privacy infos', () => {
+    masterDataService.__testSignals.dataProviders.set([
+      { id: 'provider-1', name: { de: 'Identitas AG', fr: 'Identitas SA', it: 'Identitas SpA' } },
+    ]);
+    fixture.detectChanges();
+
+    const privacyInfos = fixture.debugElement.queryAll(
+      By.directive(DataRequestPrivacyInfosComponent),
+    );
+
+    expect(privacyInfos.map((infos) => infos.componentInstance.providerName())).toEqual([
+      'Identitas AG',
+      'Identitas SA',
+      'Identitas SpA',
+    ]);
   });
 });
