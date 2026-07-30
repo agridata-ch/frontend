@@ -60,9 +60,14 @@
         {{ getFieldFromLang('description', locale(), dataRequest()) }}
       </span>
     </div>
-    <app-data-request-purpose-accordion
-      [purpose]="getFieldFromLang('purpose', locale(), dataRequest())"
+    <app-data-request-purpose
+      [purpose]="dataRequest().purpose"
+      [consumerName]="dataRequest().dataConsumerDisplayName"
+    />
+    <app-data-request-products-accordion
       [products]="productsList()"
+      [consumerName]="dataRequest().dataConsumerDisplayName"
+      [providerName]="providerName()"
     />
     @if (dataRequest().advantages.length) {
       <app-data-request-advantages [advantages]="dataRequest().advantages" [lang]="locale()" />

@@ -10,7 +10,11 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { ConsentRequestProducerViewDto, DataRequestStateEnum } from '@/entities/openapi';
+import {
+  ConsentRequestProducerViewDto,
+  DataProviderDto,
+  DataRequestStateEnum,
+} from '@/entities/openapi';
 import { REDIRECT_TIMEOUT } from '@/pages/consent-request-producer/consent-request-producer.page.model';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import {
@@ -25,6 +29,7 @@ import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
   createMockMasterDataService,
+  MockMasterDataService,
   createMockDocument,
   MockLocation,
 } from '@/shared/testing/mocks';
@@ -43,12 +48,14 @@ describe('ConsentRequestDetailsComponent', () => {
   let mockRouter: Router;
   let activeRoute: MockActivatedRoute;
   let mockLocation: MockLocation;
+  let masterDataService: MockMasterDataService;
   beforeEach(async () => {
     toastService = { show: jest.fn() };
     agridataStateService = createMockAgridataStateService();
     consentRequestService = createMockConsentRequestService();
     errorService = createMockErrorHandlerService();
     activeRoute = createMockActivatedRoute();
+    masterDataService = createMockMasterDataService();
     mockRouter = {
       navigate: jest.fn().mockResolvedValue(true),
     } as unknown as jest.Mocked<Router>;
@@ -71,7 +78,7 @@ describe('ConsentRequestDetailsComponent', () => {
         { provide: ConsentRequestService, useValue: consentRequestService },
         { provide: AgridataStateService, useValue: agridataStateService },
         { provide: AnalyticsService, useValue: createMockAnalyticsService() },
-        { provide: MasterDataService, useValue: createMockMasterDataService() },
+        { provide: MasterDataService, useValue: masterDataService },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: Router, useValue: mockRouter },
@@ -437,5 +444,40 @@ describe('ConsentRequestDetailsComponent', () => {
     await fixture.whenStable();
 
     expect(errorService.handleError).toHaveBeenCalledWith(testError);
+  });
+
+  describe('dataProviderName', () => {
+    const loadRequestForProvider = async (dataProviderId: string) => {
+      consentRequestService.fetchConsentRequest.mockResolvedValue({
+        ...mockConsentRequests[0],
+        dataRequest: {
+          ...mockConsentRequests[0].dataRequest,
+          dataProviderId,
+        },
+      } as ConsentRequestProducerViewDto);
+      componentRef.setInput('consentRequestId', '1');
+
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    beforeEach(() => {
+      masterDataService.__testSignals.dataProviders.set([
+        { id: 'provider-1', name: { de: 'Identitas AG' } } as DataProviderDto,
+        { id: 'provider-2', name: { de: 'Andere AG' } } as DataProviderDto,
+      ]);
+    });
+
+    it('should translate the name of the matching provider', async () => {
+      await loadRequestForProvider('provider-1');
+
+      expect(component['dataProviderName']()).toBe('Identitas AG');
+    });
+
+    it('should be empty when no provider matches', async () => {
+      await loadRequestForProvider('unknown-provider');
+
+      expect(component['dataProviderName']()).toBe('');
+    });
   });
 });

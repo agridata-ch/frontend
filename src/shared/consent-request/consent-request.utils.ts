@@ -62,7 +62,7 @@ export function buildConsentRequestTourSteps(
           const element = getTableOrListElement();
           element?.click();
           moveNextWhenReady(
-            '#data-request-purpose-accordion',
+            '#data-request-products-accordion',
             opts.driver.moveNext.bind(opts.driver),
             injector,
           );
@@ -70,7 +70,16 @@ export function buildConsentRequestTourSteps(
       },
     },
     {
-      element: '#data-request-purpose-accordion',
+      element: '#data-request-products-accordion',
+      popover: {
+        description: i18nService.translate(
+          'product-tour.consentRequestsTour.dataRequestProducts.description',
+        ),
+        title: i18nService.translate('product-tour.consentRequestsTour.dataRequestProducts.title'),
+      },
+    },
+    {
+      element: '#data-request-purpose',
       popover: {
         description: i18nService.translate(
           'product-tour.consentRequestsTour.dataRequestPurpose.description',

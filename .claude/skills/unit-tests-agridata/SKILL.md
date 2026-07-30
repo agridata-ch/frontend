@@ -468,6 +468,16 @@ it.each([
 });
 ```
 
+### Length Assertion Testing
+
+```typescript
+// ❌ Bad
+expect(span.querySelectorAll('strong').length).toBe(2);
+
+// ✅ Good
+expect(span.querySelectorAll('strong')).toHaveLength(2);
+```
+
 ---
 
 ## What NOT to Test

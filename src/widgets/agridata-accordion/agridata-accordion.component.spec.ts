@@ -1,6 +1,9 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { faChevronDown, faChevronUp } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+
+import { TooltipDirective } from '@/shared/tooltip';
 
 import { AgridataAccordionComponent } from './agridata-accordion.component';
 
@@ -40,6 +43,33 @@ describe('AgridataAccordionComponent', () => {
   it('should set header and content via setInput', () => {
     componentRef.setInput('header', 'Test Header');
     expect(openComponent.header()).toBe('Test Header');
+  });
+
+  it('should offer the header as a tooltip so truncated text stays readable', () => {
+    componentRef.setInput('header', 'A header long enough to be clamped');
+    fixture.detectChanges();
+
+    const tooltipHost = fixture.debugElement.query(By.directive(TooltipDirective));
+    expect(tooltipHost).toBeTruthy();
+    expect(tooltipHost.injector.get(TooltipDirective).appTooltip()).toBe(
+      'A header long enough to be clamped',
+    );
+  });
+
+  // Collapsed content keeps its DOM (only height 0), so without inert its links stay tabbable and
+  // its text stays readable for screen readers.
+  it('should keep the collapsed content out of the a11y tree and announce the toggle state', () => {
+    const button = fixture.debugElement.nativeElement.querySelector('button');
+    const wrapper = fixture.debugElement.nativeElement.querySelector('button + div');
+
+    expect(button.getAttribute('aria-expanded')).toBe('false');
+    expect(wrapper.hasAttribute('inert')).toBe(true);
+
+    openComponent.toggleAccordion();
+    fixture.detectChanges();
+
+    expect(button.getAttribute('aria-expanded')).toBe('true');
+    expect(wrapper.hasAttribute('inert')).toBe(false);
   });
 
   it('should call ngAfterViewInit and updateContentHeight on initialization', () => {

@@ -1,21 +1,14 @@
 <div
-  class="flex flex-col gap-2 px-4 py-4 rounded-lg bg-sky-100"
-  *i18n="let t; prefix: 'data-request.purpose'; lang: currentLanguage()"
-  id="data-request-purpose-accordion"
+  class="flex flex-col gap-2 rounded-lg"
+  *i18n="let t; prefix: 'data-request.products'; lang: currentLanguage()"
 >
-  <h4>
-    {{ t('title') }}
-  </h4>
-  <div class="flex flex-col">
-    <span class="text-agridata-primary-text font-normal whitespace-pre-line">
-      {{ purpose() }}
-    </span>
-  </div>
-  <app-agridata-accordion [header]="t('description')">
-    <div class="flex flex-col gap-3">
+  <app-agridata-accordion
+    [header]="t('description', { consumer: consumerName(), provider: providerName() })"
+  >
+    <div class="flex flex-col gap-6">
       @for (product of productsList(); track product.id) {
         <div class="flex flex-col gap-1">
-          <span class="text-agridata-tertiary-text font-medium">
+          <span class="text-agridata-secondary-text font-bold">
             {{ getFieldFromLang(product, 'name') }}
           </span>
           <span class="text-agridata-primary-text whitespace-pre-line">

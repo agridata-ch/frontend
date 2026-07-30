@@ -1,10 +1,11 @@
 import { DestroyRef, Directive, ElementRef, afterNextRender, inject } from '@angular/core';
 
 /**
- * Appends a gradient fade overlay at the bottom of the host scrollable element.
- * The overlay hides automatically when the user has scrolled to the bottom.
+ * Fades the content of the host scrollable element out at its top and bottom edge via a mask, so
+ * content dissolves instead of being cut off. Each edge fades only while there is content beyond it:
+ * the top fade appears once the user has scrolled down, the bottom fade hides at the bottom.
  *
- * CommentLastReviewed: 2026-06-15
+ * CommentLastReviewed: 2026-07-30
  */
 @Directive({
   selector: '[appScrollFade]',
@@ -19,10 +20,17 @@ export class ScrollFadeDirective {
     const checkScroll = () => {
       const isScrollable = host.scrollHeight > host.clientHeight;
       const distanceToBottom = host.scrollHeight - host.scrollTop - host.clientHeight;
-      const showFade = isScrollable && distanceToBottom > 2;
-      host.style.maskImage = showFade
-        ? 'linear-gradient(to bottom, black calc(100% - 5rem), transparent 100%)'
-        : '';
+      const showTopFade = isScrollable && host.scrollTop > 2;
+      const showBottomFade = isScrollable && distanceToBottom > 2;
+
+      if (!showTopFade && !showBottomFade) {
+        host.style.maskImage = '';
+        return;
+      }
+
+      const top = showTopFade ? 'transparent 0, black 2rem' : 'black 0';
+      const bottom = showBottomFade ? 'black calc(100% - 5rem), transparent 100%' : 'black 100%';
+      host.style.maskImage = `linear-gradient(to bottom, ${top}, ${bottom})`;
     };
 
     const resizeObserver = new ResizeObserver(checkScroll);

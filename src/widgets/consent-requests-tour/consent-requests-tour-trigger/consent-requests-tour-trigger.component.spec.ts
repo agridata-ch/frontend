@@ -66,10 +66,10 @@ describe('ConsentRequestsTourTriggerComponent', () => {
     expect(productTourService.start).toHaveBeenCalledTimes(1);
   });
 
-  it('should pass 3 steps to productTourService.start()', () => {
+  it('should pass 4 steps to productTourService.start()', () => {
     component['startTour']();
 
     const steps = (productTourService.start as jest.Mock).mock.calls[0][0];
-    expect(steps).toHaveLength(3);
+    expect(steps).toHaveLength(4);
   });
 });

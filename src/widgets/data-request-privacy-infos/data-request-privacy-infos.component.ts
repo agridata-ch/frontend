@@ -1,59 +1,20 @@
-import { Component, computed, inject, input } from '@angular/core';
-import {
-  faFileSignature,
-  faLockKeyhole,
-  faRotate,
-} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Component, input } from '@angular/core';
 
-import { DataProviderDto } from '@/entities/openapi';
-import { I18nDirective, I18nService } from '@/shared/i18n';
+import { I18nDirective, I18nFormatDirective } from '@/shared/i18n';
 
 /**
- * Implements the logic for displaying privacy sections. It defines consent, data protection,
- * and revocation as structured items, each with an icon, title, and description. It supports
- * localization and dynamically inserts the consumer’s name into descriptions.
+ * Displays the privacy information of a data-request. It renders a static title and a description
+ * in which the data consumer and the data provider are interpolated into the translated text.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2026-07-30
  */
 @Component({
   selector: 'app-data-request-privacy-infos',
-  imports: [FontAwesomeModule, I18nDirective],
+  imports: [I18nDirective, I18nFormatDirective],
   templateUrl: './data-request-privacy-infos.component.html',
 })
 export class DataRequestPrivacyInfosComponent {
-  readonly i18nService = inject(I18nService);
-
-  readonly dataConsumerName = input<string | null>();
-  readonly dataProvider = input<DataProviderDto>();
+  readonly consumerName = input<string>();
+  readonly providerName = input<string>();
   readonly lang = input<string>();
-
-  readonly editIcon = faFileSignature;
-  readonly lockIcon = faLockKeyhole;
-  readonly repeatIcon = faRotate;
-
-  readonly privacySections = computed(() => {
-    return [
-      {
-        icon: this.editIcon,
-        title: 'data-request.privacy.consent.title',
-        description: 'data-request.privacy.consent.description',
-        translationParams: { consumerName: this.dataConsumerName() },
-      },
-      {
-        icon: this.lockIcon,
-        title: 'data-request.privacy.dataProtection.title',
-        description: 'data-request.privacy.dataProtection.description',
-        translationParams: {
-          systemName: this.i18nService.useObjectTranslation(this.dataProvider()?.name, this.lang()),
-          consumerName: this.dataConsumerName(),
-        },
-      },
-      {
-        icon: this.repeatIcon,
-        title: 'data-request.privacy.revocation.title',
-        description: 'data-request.privacy.revocation.description',
-      },
-    ];
-  });
 }

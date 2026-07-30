@@ -103,7 +103,7 @@ describe('Toast Utilities', () => {
     it('should return exactly 3 steps', () => {
       const injector = TestBed.inject(EnvironmentInjector);
       const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
-      expect(steps).toHaveLength(3);
+      expect(steps).toHaveLength(4);
     });
 
     it('should target the correct element selectors', () => {
@@ -111,8 +111,9 @@ describe('Toast Utilities', () => {
       const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
 
       expect(typeof steps[0].element).toBe('function');
-      expect(steps[1].element).toBe('#data-request-purpose-accordion');
-      expect(steps[2].element).toBe('#consent-request-footer');
+      expect(steps[1].element).toBe('#data-request-products-accordion');
+      expect(steps[2].element).toBe('#data-request-purpose');
+      expect(steps[3].element).toBe('#consent-request-footer');
     });
 
     it('should translate all popover titles and descriptions', () => {
@@ -126,10 +127,10 @@ describe('Toast Utilities', () => {
         'product-tour.consentRequestsTour.consentRequests.description',
       );
       expect(i18nService.translate).toHaveBeenCalledWith(
-        'product-tour.consentRequestsTour.dataRequestPurpose.title',
+        'product-tour.consentRequestsTour.dataRequestProducts.title',
       );
       expect(i18nService.translate).toHaveBeenCalledWith(
-        'product-tour.consentRequestsTour.dataRequestPurpose.description',
+        'product-tour.consentRequestsTour.dataRequestProducts.description',
       );
       expect(i18nService.translate).toHaveBeenCalledWith(
         'product-tour.consentRequestsTour.consentRequestConsent.title',
@@ -231,7 +232,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
     appRef = TestBed.inject(ApplicationRef);
 
     accordion = document.createElement('div');
-    accordion.id = 'data-request-purpose-accordion';
+    accordion.id = 'data-request-products-accordion';
     document.body.appendChild(accordion);
   });
 

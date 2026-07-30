@@ -18,7 +18,7 @@ import { DataRequestAdvantagesComponent } from '@/data-request-advantages';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { ConsentRequestStateEnum, DataRequestPurposeDto } from '@/entities/openapi';
+import { ConsentRequestStateEnum } from '@/entities/openapi';
 import {
   FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM,
   REDIRECT_TIMEOUT,
@@ -37,6 +37,7 @@ import {
   createResourceErrorHandlerEffect,
   createResourceValueComputed,
 } from '@/shared/lib/api.helper';
+import { ScrollFadeDirective } from '@/shared/scroll-fade';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService } from '@/shared/toast';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
@@ -48,7 +49,8 @@ import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { AlertComponent, AlertType } from '@/widgets/alert';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';
 import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
-import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
+import { DataRequestProductsAccordionComponent } from '@/widgets/data-request-products-accordion';
+import { DataRequestPurposeComponent } from '@/widgets/data-request-purpose';
 
 /**
  * Implements the logic for displaying detailed consent request information. It renders metadata
@@ -68,7 +70,7 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
     ButtonComponent,
     DataRequestContactComponent,
     DataRequestPrivacyInfosComponent,
-    DataRequestPurposeAccordionComponent,
+    DataRequestProductsAccordionComponent,
     ErrorOutletComponent,
     FontAwesomeModule,
     I18nDirective,
@@ -76,6 +78,8 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
     ModalComponent,
     SidepanelComponent,
     DataRequestAdvantagesComponent,
+    ScrollFadeDirective,
+    DataRequestPurposeComponent,
   ],
   templateUrl: './consent-request-details.component.html',
 })
@@ -164,10 +168,9 @@ export class ConsentRequestDetailsComponent {
   protected readonly dataConsumerName = computed(
     () => this.request()?.dataRequest?.dataConsumerDisplayName,
   );
-  protected readonly dataProvider = computed(() => {
-    const providerId = this.request()?.dataRequest?.dataProviderId;
-    return this.metaDataService.dataProviders().find((provider) => provider.id === providerId);
-  });
+  protected readonly dataProviderName = computed(() =>
+    this.metaDataService.providerName(this.request()?.dataRequest?.dataProviderId),
+  );
   protected readonly formattedLastStateChangeDate = computed(() =>
     formatDate(this.request()?.lastStateChangeDate),
   );
@@ -185,12 +188,7 @@ export class ConsentRequestDetailsComponent {
       .getProductsForProvider(this.request()?.dataRequest?.dataProviderId ?? '')
       ?.filter((product) => this.request()?.dataRequest?.products?.includes(product.id));
   });
-  protected readonly requestPurpose = computed(() => {
-    const purpose = this.request()?.dataRequest?.purpose;
-    return (
-      (purpose as Record<string, string>)?.[this.currentLanguage()] ?? ('' as DataRequestPurposeDto)
-    );
-  });
+
   protected readonly requestStateCode: Signal<ConsentRequestStateEnum | undefined> = computed(
     () => this.request()?.stateCode,
   );

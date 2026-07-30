@@ -85,6 +85,12 @@ describe('I18nService', () => {
       expect(service.useObjectTranslation(dto)).toBe('Ciao');
     });
 
+    it('prefers an explicit lang over the active one', () => {
+      const dto: TranslationDto = { de: 'Hallo', fr: 'Salut' };
+      service.lang.set('de');
+      expect(service.useObjectTranslation(dto, 'fr')).toBe('Salut');
+    });
+
     it('returns empty for null/undefined or missing key', () => {
       expect(service.useObjectTranslation(null)).toBe('');
       expect(service.useObjectTranslation(undefined)).toBe('');

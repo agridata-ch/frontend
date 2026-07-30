@@ -13,7 +13,7 @@ import { DocumentUploadItem, DocumentUploadStatus } from './document-upload.mode
  * and orchestrating the upload + scan-status polling. Provided at the detail form so the tab and
  * the parent form share one instance.
  *
- * CommentLastReviewed: 2026-07-13
+ * CommentLastReviewed: 2026-08-03
  */
 @Service()
 export class DocumentUploadStore {
@@ -31,6 +31,9 @@ export class DocumentUploadStore {
   // Aborts every in-flight scan long-poll when the panel (and this component-scoped store) is
   // destroyed, so no polling continues in the background after the side panel is closed.
   private readonly abortController = new AbortController();
+
+  // In-flight scan long-polls per item, so the save flow can await them via `awaitPendingScans`.
+  private readonly pendingScans = new Map<string, Promise<void>>();
 
   // Signals
   private readonly _dataProductId = signal<string | null>(null);
@@ -58,8 +61,9 @@ export class DocumentUploadStore {
   );
 
   // True while any document is not yet AVAILABLE (staged, uploading, scanning or blocked). Used to
-  // gate publishing and to mark the tab invalid. Documents staged for removal are ignored since
-  // they are about to be deleted.
+  // gate publishing and to mark the tab invalid; evaluate it after `awaitPendingScans` so a document
+  // that is merely still being scanned does not read as unready. Documents staged for removal are
+  // ignored since they are about to be deleted.
   readonly hasUnreadyDocuments = computed(() =>
     this._items().some(
       (item) => !item.markedForRemoval && item.status !== DocumentUploadStatus.Available,
@@ -101,6 +105,17 @@ export class DocumentUploadStore {
 
     if (accepted.length > 0) {
       this._items.update((items) => [...items, ...accepted]);
+    }
+  }
+
+  /**
+   * Resolves once every in-flight antivirus scan has reached its terminal state, so the caller can
+   * evaluate `hasUnreadyDocuments` on settled statuses. Never rejects: a failed scan ends as `Error`
+   * on the item. Scans started while awaiting (a scan queued by `uploadAll`) are awaited as well.
+   */
+  async awaitPendingScans(): Promise<void> {
+    while (this.pendingScans.size > 0) {
+      await Promise.all(this.pendingScans.values());
     }
   }
 
@@ -152,7 +167,7 @@ export class DocumentUploadStore {
     // reopened while an antivirus scan was still running).
     this._items().forEach((item) => {
       if (item.status === DocumentUploadStatus.PendingScan && item.dto?.id) {
-        void this.awaitScan(item, item.dto.id, dataProductId);
+        this.trackScan(item, item.dto.id, dataProductId);
       }
     });
   }
@@ -176,11 +191,11 @@ export class DocumentUploadStore {
   }
 
   /**
-   * Uploads every staged file concurrently and resolves once all uploads (POSTs) are done — the
-   * scan long-poll for each document then runs in the background so the caller's save flow (and its
-   * buttons) is not blocked while documents are still being scanned. Uploading in parallel also
-   * means every file is persisted immediately, so closing the panel mid-scan no longer loses the
-   * not-yet-sent files. Use `hasUnreadyDocuments` to gate publishing.
+   * Uploads every staged file concurrently and resolves once all uploads (POSTs) are done; the scan
+   * long-poll for each document then runs in the background, so a caller that does not care about the
+   * scan result (saving a draft) is not blocked by it. Uploading in parallel also means every file is
+   * persisted immediately, so closing the panel mid-scan no longer loses the not-yet-sent files. Use
+   * `awaitPendingScans` + `hasUnreadyDocuments` to gate publishing.
    */
   async uploadAll(dataProductId: string): Promise<void> {
     this._dataProductId.set(dataProductId);
@@ -257,6 +272,19 @@ export class DocumentUploadStore {
     }
   }
 
+  /**
+   * Starts the scan long-poll and keeps it in `pendingScans` until it settles, so `awaitPendingScans`
+   * can await it without blocking the caller here. The entry is only dropped while it is still the
+   * item's current scan: `loadExisting` reuses the same localId, so a stale scan of a reloaded
+   * document must not evict the newer one.
+   */
+  private trackScan(item: DocumentUploadItem, documentId: string, dataProductId: string): void {
+    const scan = this.awaitScan(item, documentId, dataProductId).finally(() => {
+      if (this.pendingScans.get(item.localId) === scan) this.pendingScans.delete(item.localId);
+    });
+    this.pendingScans.set(item.localId, scan);
+  }
+
   private async uploadItem(item: DocumentUploadItem, dataProductId: string): Promise<void> {
     if (!item.file) return;
     this.patchItem(item.localId, { status: DocumentUploadStatus.Uploading, progress: 0 });
@@ -280,8 +308,8 @@ export class DocumentUploadStore {
       isExisting: true,
       dto,
     });
-    // Scan in the background so the save flow (and its buttons) is not blocked on the long-poll;
-    // the badge updates once the scan finishes.
-    void this.awaitScan(item, dto.id ?? '', dataProductId);
+    // Scan in the background so the upload itself is not blocked on the long-poll; the badge updates
+    // once the scan finishes and the save flow awaits it via `awaitPendingScans`.
+    this.trackScan(item, dto.id ?? '', dataProductId);
   }
 }
