@@ -10,11 +10,7 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import {
-  ConsentRequestProducerViewDto,
-  DataProviderDto,
-  DataRequestStateEnum,
-} from '@/entities/openapi';
+import { ConsentRequestProducerViewDto, DataRequestStateEnum } from '@/entities/openapi';
 import { REDIRECT_TIMEOUT } from '@/pages/consent-request-producer/consent-request-producer.page.model';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import {
@@ -36,6 +32,7 @@ import {
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ToastService } from '@/shared/toast';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
+import { DataRequestContentComponent } from '@/widgets/data-request-content';
 
 describe('ConsentRequestDetailsComponent', () => {
   let fixture: ComponentFixture<ConsentRequestDetailsComponent>;
@@ -446,38 +443,16 @@ describe('ConsentRequestDetailsComponent', () => {
     expect(errorService.handleError).toHaveBeenCalledWith(testError);
   });
 
-  describe('dataProviderName', () => {
-    const loadRequestForProvider = async (dataProviderId: string) => {
-      consentRequestService.fetchConsentRequest.mockResolvedValue({
-        ...mockConsentRequests[0],
-        dataRequest: {
-          ...mockConsentRequests[0].dataRequest,
-          dataProviderId,
-        },
-      } as ConsentRequestProducerViewDto);
-      componentRef.setInput('consentRequestId', '1');
+  it('should render the data request content of the loaded request', async () => {
+    consentRequestService.fetchConsentRequest.mockResolvedValue(
+      mockConsentRequests[0] as ConsentRequestProducerViewDto,
+    );
+    componentRef.setInput('consentRequestId', '1');
 
-      fixture.detectChanges();
-      await fixture.whenStable();
-    };
+    fixture.detectChanges();
+    await fixture.whenStable();
 
-    beforeEach(() => {
-      masterDataService.__testSignals.dataProviders.set([
-        { id: 'provider-1', name: { de: 'Identitas AG' } } as DataProviderDto,
-        { id: 'provider-2', name: { de: 'Andere AG' } } as DataProviderDto,
-      ]);
-    });
-
-    it('should translate the name of the matching provider', async () => {
-      await loadRequestForProvider('provider-1');
-
-      expect(component['dataProviderName']()).toBe('Identitas AG');
-    });
-
-    it('should be empty when no provider matches', async () => {
-      await loadRequestForProvider('unknown-provider');
-
-      expect(component['dataProviderName']()).toBe('');
-    });
+    const content = fixture.debugElement.query(By.directive(DataRequestContentComponent));
+    expect(content.componentInstance.dataRequest()).toEqual(mockConsentRequests[0].dataRequest);
   });
 });

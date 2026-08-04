@@ -1,9 +1,7 @@
-import { DOCUMENT } from '@angular/common';
 import {
   DestroyRef,
   Directive,
   ElementRef,
-  Renderer2,
   afterNextRender,
   computed,
   effect,
@@ -12,7 +10,7 @@ import {
   signal,
 } from '@angular/core';
 
-import { calculateVerticalPlacement, VerticalPlacement } from '@/shared/utils';
+import { TooltipBubble, TooltipBubbleService } from '@/shared/tooltip/tooltip-bubble.service';
 
 /**
  * Accessible tooltip following the WAI-ARIA tooltip pattern and WCAG 2.1 SC 1.4.13.
@@ -21,6 +19,9 @@ import { calculateVerticalPlacement, VerticalPlacement } from '@/shared/utils';
  * tooltip itself (hoverable), is dismissible with the Escape key, and is persistent (no auto-hide
  * timeout). Placement defaults to below the host and flips above when there is not enough room; the
  * horizontal position is centred on the host and clamped to the viewport.
+ *
+ * This directive is the behaviour half of the tooltip: it decides *when* a bubble is shown, from the
+ * host's pointer and focus events. `TooltipBubbleService` owns the bubble element itself.
  *
  * The host keeps its own accessible name (e.g. `aria-label`); the tooltip is `aria-hidden` visual
  * reinforcement, so screen readers announce the name only once. As a progressive-enhancement
@@ -31,19 +32,17 @@ import { calculateVerticalPlacement, VerticalPlacement } from '@/shared/utils';
  * the tooltip out of the way when a click triggers host movement or a label change (e.g. a toggle
  * button that animates into a new position).
  *
- * CommentLastReviewed: 2026-07-09
+ * CommentLastReviewed: 2026-08-04
  */
 @Directive({
   selector: '[appTooltip]',
 })
 export class TooltipDirective {
-  private readonly document = inject(DOCUMENT);
+  private readonly bubbleService = inject(TooltipBubbleService);
   private readonly elementRef = inject(ElementRef<HTMLElement>);
-  private readonly renderer = inject(Renderer2);
   private readonly destroyRef = inject(DestroyRef);
 
   // Constants
-  private readonly gap = 8;
   private readonly hideGraceMs = 100;
 
   // Input properties
@@ -57,15 +56,9 @@ export class TooltipDirective {
   // Computed Signals
   private readonly text = computed(() => this.appTooltip() || this.nativeTitle());
 
-  private tooltipElement?: HTMLElement;
+  private bubble?: TooltipBubble;
   private showTimer?: ReturnType<typeof setTimeout>;
   private hideTimer?: ReturnType<typeof setTimeout>;
-  private readonly reposition = () => this.position();
-  private readonly onKeydown = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') {
-      this.hideNow();
-    }
-  };
 
   // Effects
   private readonly renderEffect = effect(() => {
@@ -73,7 +66,7 @@ export class TooltipDirective {
     if (this.visible() && text) {
       this.showTooltip(text);
     } else {
-      this.destroyTooltip();
+      this.hideTooltip();
     }
   });
 
@@ -104,7 +97,7 @@ export class TooltipDirective {
       host.removeEventListener('focusout', hide);
       host.removeEventListener('click', dismiss);
       this.clearTimers();
-      this.destroyTooltip();
+      this.hideTooltip();
     });
   });
 
@@ -113,69 +106,14 @@ export class TooltipDirective {
     clearTimeout(this.hideTimer);
   }
 
-  private createTooltip(text: string): void {
-    const tooltip = this.renderer.createElement('span');
-    this.renderer.setAttribute(tooltip, 'role', 'tooltip');
-    this.renderer.setAttribute(tooltip, 'aria-hidden', 'true');
-    this.renderer.setProperty(tooltip, 'textContent', text);
-    this.renderer.setAttribute(
-      tooltip,
-      'class',
-      'pointer-events-auto fixed z-50 whitespace-pre-line rounded bg-agridata-primary-text px-2 py-1 text-xs text-white shadow',
-    );
-
-    // Keep the tooltip open while the pointer is over it (WCAG 1.4.13 "hoverable").
-    this.renderer.listen(tooltip, 'mouseenter', () => clearTimeout(this.hideTimer));
-    this.renderer.listen(tooltip, 'mouseleave', () => this.scheduleHide());
-
-    this.renderer.appendChild(this.document.body, tooltip);
-    this.tooltipElement = tooltip;
-
-    // Reposition while visible so the tooltip tracks the host during scroll/resize, and only listen
-    // for the Escape dismiss while a tooltip is actually shown (no always-on per-instance listener).
-    window.addEventListener('scroll', this.reposition, true);
-    window.addEventListener('resize', this.reposition);
-    this.document.addEventListener('keydown', this.onKeydown);
-  }
-
-  private destroyTooltip(): void {
-    if (!this.tooltipElement) {
-      return;
-    }
-    window.removeEventListener('scroll', this.reposition, true);
-    window.removeEventListener('resize', this.reposition);
-    this.document.removeEventListener('keydown', this.onKeydown);
-    this.renderer.removeChild(this.document.body, this.tooltipElement);
-    this.tooltipElement = undefined;
-  }
-
   private hideNow(): void {
     this.clearTimers();
     this.visible.set(false);
   }
 
-  private position(): void {
-    const tooltip = this.tooltipElement;
-    if (!tooltip) {
-      return;
-    }
-
-    const hostRect = this.elementRef.nativeElement.getBoundingClientRect();
-    const tooltipRect = tooltip.getBoundingClientRect();
-
-    const placement = calculateVerticalPlacement(hostRect, tooltipRect.height + this.gap);
-    const top =
-      placement === VerticalPlacement.BOTTOM
-        ? hostRect.bottom + this.gap
-        : hostRect.top - tooltipRect.height - this.gap;
-
-    // Centre horizontally on the host, then clamp within the viewport.
-    const rawLeft = hostRect.left + hostRect.width / 2 - tooltipRect.width / 2;
-    const maxLeft = window.innerWidth - tooltipRect.width - this.gap;
-    const left = Math.max(this.gap, Math.min(rawLeft, maxLeft));
-
-    this.renderer.setStyle(tooltip, 'top', `${top}px`);
-    this.renderer.setStyle(tooltip, 'left', `${left}px`);
+  private hideTooltip(): void {
+    this.bubble?.hide();
+    this.bubble = undefined;
   }
 
   private scheduleHide(): void {
@@ -191,11 +129,19 @@ export class TooltipDirective {
   }
 
   private showTooltip(text: string): void {
-    if (this.tooltipElement) {
-      this.renderer.setProperty(this.tooltipElement, 'textContent', text);
-    } else {
-      this.createTooltip(text);
+    // A stale handle means another owner took the bubble over, so show a fresh one instead.
+    if (this.bubble?.setText(text)) {
+      return;
     }
-    this.position();
+
+    this.bubble = this.bubbleService.show(
+      text,
+      () => this.elementRef.nativeElement.getBoundingClientRect(),
+      {
+        onDismiss: () => this.hideNow(),
+        onPointerEnter: () => clearTimeout(this.hideTimer),
+        onPointerLeave: () => this.scheduleHide(),
+      },
+    );
   }
 }

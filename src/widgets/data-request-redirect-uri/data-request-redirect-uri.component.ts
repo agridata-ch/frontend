@@ -12,8 +12,8 @@ import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestValidRedirectUriRegexUpdateDto } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createFormControl, getFormControl } from '@/shared/lib/form.helper';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
+import { ViewSectionDirective } from '@/shared/view-section';
 
 /**
  * Displays a form for editing and saving the valid redirect URI regex of a data request.
@@ -22,7 +22,7 @@ import { FormControlComponent } from '@/shared/ui/form-control';
  */
 @Component({
   selector: 'app-data-request-redirect-uri',
-  imports: [ButtonComponent, FormControlComponent, I18nDirective, ReactiveFormsModule],
+  imports: [FormControlComponent, I18nDirective, ReactiveFormsModule, ViewSectionDirective],
   templateUrl: './data-request-redirect-uri.component.html',
 })
 export class DataRequestRedirectUriComponent {
@@ -32,7 +32,6 @@ export class DataRequestRedirectUriComponent {
   private readonly i18nService = inject(I18nService);
 
   // Constants
-  protected readonly ButtonVariants = ButtonVariants;
   protected readonly createFormControl = createFormControl;
   protected readonly getFormControl = getFormControl;
   protected readonly regexValidator: ValidatorFn = (control: AbstractControl) => {
@@ -51,7 +50,12 @@ export class DataRequestRedirectUriComponent {
   readonly dataRequest = input.required<DataRequestDto>();
   readonly isValidRedirectUriRegexEditable = input(false);
 
+  // Value to restore when an edit is cancelled. Snapshotted when edit mode opens, because the
+  // dataRequest input is not refreshed after a save and would restore a stale value.
+  private editBaseline = '';
+
   // Signals
+  protected readonly isViewMode = signal(true);
   protected readonly isSavingValidRedirectUriRegex = signal(false);
   protected readonly redirectUriForm = new FormGroup({
     validRedirectUriRegex: this.createFormControl(
@@ -81,6 +85,12 @@ export class DataRequestRedirectUriComponent {
   });
 
   protected handleSubmit(): void {
+    // The form is submitted implicitly when pressing enter inside the input, so the view mode and
+    // editability have to be checked here and not only on the save button.
+    if (this.isViewMode() || !this.isValidRedirectUriRegexEditable()) {
+      return;
+    }
+
     this.redirectUriForm.markAllAsTouched(); // Mark all as touched to show validation errors
     if (!this.redirectUriForm.valid) {
       return;
@@ -92,7 +102,20 @@ export class DataRequestRedirectUriComponent {
         this.dataRequest().id,
         this.redirectUriForm.value as DataRequestValidRedirectUriRegexUpdateDto,
       )
+      // Only a successful save closes the editor - otherwise the field would show a value that
+      // was never persisted.
+      .then(() => this.isViewMode.set(true))
       .catch((error) => this.errorService.handleError(error))
       .finally(() => this.isSavingValidRedirectUriRegex.set(false));
+  }
+
+  protected toggleViewMode(): void {
+    if (this.isViewMode()) {
+      this.editBaseline = this.redirectUriForm.getRawValue().validRedirectUriRegex ?? '';
+    } else {
+      // Leaving edit mode is a cancel, so drop the pending edit instead of keeping it.
+      this.redirectUriForm.patchValue({ validRedirectUriRegex: this.editBaseline });
+    }
+    this.isViewMode.set(!this.isViewMode());
   }
 }

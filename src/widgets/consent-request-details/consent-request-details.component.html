@@ -22,58 +22,11 @@
     @if (request()?.showStateAsMigrated) {
       <app-alert [type]="AlertType.INFO" [message]="t('request.migrated')" />
     }
-    <div class="flex flex-col gap-4">
-      <app-agridata-contact-card
-        [name]="dataConsumerName()"
-        [imageUrl]="requestConsumerLogo()"
-        [secondaryName]="dataConsumerCity()"
-        [size]="AvatarSize.MEDIUM"
-        [skin]="AvatarSkin.LIGHT"
-      />
-      <h3 class="text-agridata-primary-text">
-        {{ requestTitle() }}
-      </h3>
-    </div>
-
-    <div class="flex flex-col gap-6 bg-agridata-content-gray p-6 rounded-lg">
-      <span class="text-agridata-primary-text text-lg">
-        {{ requestDescription() }}
-      </span>
-      <!-- The ids anchor the product tour steps and live here because this is the only place the
-      tour runs; the shared components are rendered once per language in the request preview. -->
-      <app-data-request-products-accordion
-        id="data-request-products-accordion"
-        [products]="requestProducts()"
-        [consumerName]="dataConsumerName()"
-        [providerName]="dataProviderName()"
-      />
-    </div>
-
-    @if (request()?.dataRequest?.advantages?.length) {
-      <app-data-request-advantages
-        [advantages]="request()?.dataRequest?.advantages"
-        [lang]="currentLanguage()"
-      />
+    @if (request()?.dataRequest; as dataRequest) {
+      <app-data-request-content [dataRequest]="dataRequest" />
     }
-
-    <app-data-request-purpose
-      id="data-request-purpose"
-      [purpose]="request()?.dataRequest?.purpose"
-      [consumerName]="dataConsumerName()"
-    />
-
-    <app-data-request-privacy-infos
-      [consumerName]="dataConsumerName()"
-      [providerName]="dataProviderName()"
-    />
-
-    <app-data-request-contact
-      [phoneNumber]="request()?.dataRequest?.contactPhoneNumber"
-      [email]="request()?.dataRequest?.contactEmailAddress"
-      [organisationName]="request()?.dataRequest?.dataConsumerDisplayName"
-    />
   </div>
-  <div class="-mt-6 justify-center flex flex-col gap-6 pt-6" id="consent-request-footer">
+  <div class="justify-center flex flex-col gap-6 pt-6" id="consent-request-footer">
     <div class="flex gap-2">
       <app-agridata-button
         [variant]="ButtonVariants.SecondaryReject"

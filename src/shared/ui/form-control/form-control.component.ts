@@ -8,7 +8,10 @@ import {
   signal,
 } from '@angular/core';
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { faEdit } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { I18nPipe } from '@/shared/i18n';
 import { FormControlWithMessages, getErrorMessage } from '@/shared/lib/form.helper';
 import { AgridataDigitInputComponent } from '@/shared/ui/agridata-digit-input';
 import { AgridataInputComponent } from '@/shared/ui/agridata-input';
@@ -20,6 +23,7 @@ import {
 import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
 import { AgridataTextareaComponent } from '@/shared/ui/agridata-textarea';
 import { AgridataWysiwygComponent } from '@/shared/ui/agridata-wysiwyg';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 import { ControlTypes } from './form-control.model';
 
@@ -42,6 +46,9 @@ import { ControlTypes } from './form-control.model';
     AgridataInputComponent,
     AgridataDigitInputComponent,
     AgridataWysiwygComponent,
+    ButtonComponent,
+    I18nPipe,
+    FontAwesomeModule,
   ],
   templateUrl: './form-control.component.html',
 })
@@ -60,12 +67,19 @@ export class FormControlComponent {
   readonly length = input<number>(1);
   readonly singleCategorySelection = input<boolean>(false);
   readonly type = input<'text' | 'number'>('text');
-  readonly isViewMode = input<boolean>(false);
+  readonly isViewMode = input(false, { transform: booleanAttribute });
   readonly isWysiwyg = input(false, { transform: booleanAttribute });
+  readonly loading = input(false, { transform: booleanAttribute });
+  readonly showEditButton = input(false, { transform: booleanAttribute });
 
   readonly handleBlur = output<void>();
+  readonly editAction = output<void>();
+  readonly saveAction = output<void>();
+  readonly cancelAction = output<void>();
 
   readonly ControlTypes = ControlTypes;
+  readonly ButtonVariants = ButtonVariants;
+  readonly editIcon = faEdit;
 
   // Signals
   protected readonly hasError = signal(false);

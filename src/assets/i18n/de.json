@@ -370,7 +370,8 @@
         "request": "Antrag",
         "producer": "Produzenten",
         "contract": "Vertrag",
-        "email": "E-Mail Vorlage"
+        "email": "E-Mail Vorlage",
+        "preview": "Anfrage an Produzent"
       },
       "sidePanelTitle": "Detailansicht",
       "redirectUriRegex": {
@@ -387,7 +388,11 @@
         }
       }
     },
-    "invitationLink": "Einladungslink",
+    "invitationLink": {
+      "label": "Einladungslink",
+      "copyToClipboard": "Link in die Zwischenablage kopieren",
+      "copied": "Link kopiert"
+    },
     "productsSystemCode": "System",
     "contractSigning": {
       "title": "Vertrag unterzeichnen",
@@ -1167,5 +1172,16 @@
     "download": "Herunterladen",
     "remove": "Löschen",
     "restore": "Rückgängig"
+  },
+  "form-control": {
+    "editAction": {
+      "label": "Ändern"
+    },
+    "saveAction": {
+      "label": "Speichern"
+    },
+    "cancelAction": {
+      "label": "Verwerfen"
+    }
   }
 }

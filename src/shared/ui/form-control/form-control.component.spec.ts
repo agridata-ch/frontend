@@ -1,8 +1,12 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 
+import { I18nService } from '@/shared/i18n';
 import { getErrorMessage } from '@/shared/lib/form.helper';
+import { createMockI18nService } from '@/shared/testing/mocks';
+import { ButtonComponent } from '@/shared/ui/button';
 
 import { FormControlComponent } from './form-control.component';
 
@@ -18,6 +22,7 @@ describe('FormControlComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
+      providers: [{ provide: I18nService, useValue: createMockI18nService() }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FormControlComponent);
@@ -99,6 +104,33 @@ describe('FormControlComponent', () => {
       ctrl.enable();
 
       expect(component['isDisabled']()).toBe(false);
+    });
+  });
+
+  describe('edit and save buttons', () => {
+    const buttons = () => fixture.debugElement.queryAll(By.directive(ButtonComponent));
+
+    beforeEach(() => {
+      componentRef.setInput('control', new FormControl('value'));
+      componentRef.setInput('showEditButton', true);
+    });
+
+    it('should put the save button into loading state while saving', () => {
+      componentRef.setInput('loading', true);
+      fixture.detectChanges();
+
+      const [save, cancel] = buttons();
+      expect(save.componentInstance.loading()).toBe(true);
+      expect(cancel.componentInstance.disabled()).toBe(true);
+    });
+
+    it('should not offer an edit button when only the bound control is disabled', () => {
+      const ctrl = new FormControl({ value: 'value', disabled: true });
+      componentRef.setInput('control', ctrl);
+      componentRef.setInput('isViewMode', true);
+      fixture.detectChanges();
+
+      expect(buttons()).toHaveLength(0);
     });
   });
 

@@ -370,7 +370,8 @@
         "request": "Richiesta",
         "producer": "Produttori di dati",
         "contract": "Contratto",
-        "email": "Modello di e-mail"
+        "email": "Modello di e-mail",
+        "preview": "Richiesta al produttore"
       },
       "sidePanelTitle": "Vista dettagliata",
       "redirectUriRegex": {
@@ -387,7 +388,11 @@
         }
       }
     },
-    "invitationLink": "Link di invito",
+    "invitationLink": {
+      "label": "Link di invito",
+      "copyToClipboard": "Copia il link negli appunti",
+      "copied": "Link copiato"
+    },
     "productsSystemCode": "Sistema",
     "contractSigning": {
       "title": "Firmare il contratto",
@@ -1167,5 +1172,16 @@
     "download": "Scarica",
     "remove": "Elimina",
     "restore": "Annulla"
+  },
+  "form-control": {
+    "editAction": {
+      "label": "Modifica"
+    },
+    "saveAction": {
+      "label": "Salva"
+    },
+    "cancelAction": {
+      "label": "Rifiuta"
+    }
   }
 }
