@@ -18,11 +18,13 @@ import { DataRequestStateEnum, SealAttemptStateEnum } from '@/entities/openapi';
 import { ACTING_ROLES } from '@/shared/constants/constants';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nService } from '@/shared/i18n';
+import { ScrollFadeDirective } from '@/shared/scroll-fade';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { AgridataTabsComponent, Tab } from '@/shared/ui/agridata-tabs';
 
 import { DataRequestDetailsRequestComponent } from './data-request-details-request';
 import { DETAILS_TABS_ID } from './data-request-details.model';
+import { DataRequestContentComponent } from '../data-request-content';
 import { DataRequestDetailsContractComponent } from '../data-request-details-contract/data-request-details-contract.component';
 
 /**
@@ -41,6 +43,8 @@ import { DataRequestDetailsContractComponent } from '../data-request-details-con
     FontAwesomeModule,
     DataRequestDetailsRequestComponent,
     DataRequestDetailsContractComponent,
+    DataRequestContentComponent,
+    ScrollFadeDirective,
   ],
   templateUrl: './data-request-details.component.html',
 })
@@ -76,6 +80,9 @@ export class DataRequestDetailsComponent {
   protected readonly contractTabLabel = this.i18nService.translateSignal(
     'data-request.details.tabs.contract',
   );
+  protected readonly previewTabLabel = this.i18nService.translateSignal(
+    'data-request.details.tabs.preview',
+  );
   protected readonly emailTabLabel = this.i18nService.translateSignal(
     'data-request.details.tabs.email',
   );
@@ -100,6 +107,7 @@ export class DataRequestDetailsComponent {
 
   protected readonly tabs = computed<Tab[]>(() => [
     { id: DETAILS_TABS_ID.REQUEST, label: this.requestTabLabel() },
+    { id: DETAILS_TABS_ID.PREVIEW, label: this.previewTabLabel() },
     // Other tabs will be added when the corresponding components are implemented.
     // { id: DETAILS_TABS_ID.PRODUCER, label: this.producerTabLabel() },
     ...(this.dataRequest()?.currentContractRevisionId

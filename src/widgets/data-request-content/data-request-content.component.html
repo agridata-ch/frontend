@@ -1,0 +1,54 @@
+<div class="flex flex-col gap-10">
+  <div class="flex flex-col gap-4">
+    <app-agridata-contact-card
+      [name]="dataRequest().dataConsumerDisplayName"
+      [imageUrl]="dataRequest().dataConsumerLogoBase64"
+      [secondaryName]="dataRequest().dataConsumerCity"
+      [size]="AvatarSize.MEDIUM"
+      [skin]="AvatarSkin.LIGHT"
+    />
+    <h3 class="text-agridata-primary-text">
+      {{ title() }}
+    </h3>
+  </div>
+
+  <div class="flex flex-col gap-6 bg-agridata-content-gray p-6 rounded-lg">
+    <span class="text-agridata-primary-text text-lg">
+      {{ description() }}
+    </span>
+    <!-- The ids anchor the product tour steps. They are only set without an explicit language,
+  because the tour runs on the single language view while the request preview renders this content
+  once per language. -->
+    <app-data-request-products-accordion
+      [attr.id]="lang() ? null : 'data-request-products-accordion'"
+      [products]="products()"
+      [consumerName]="dataRequest().dataConsumerDisplayName"
+      [providerName]="providerName()"
+      [lang]="lang()"
+    />
+  </div>
+
+  @if (dataRequest().advantages.length) {
+    <app-data-request-advantages [advantages]="dataRequest().advantages" [lang]="lang()" />
+  }
+
+  <app-data-request-purpose
+    [attr.id]="lang() ? null : 'data-request-purpose'"
+    [purpose]="dataRequest().purpose"
+    [consumerName]="dataRequest().dataConsumerDisplayName"
+    [lang]="lang()"
+  />
+
+  <app-data-request-privacy-infos
+    [consumerName]="dataRequest().dataConsumerDisplayName"
+    [providerName]="providerName()"
+    [lang]="lang()"
+  />
+
+  <app-data-request-contact
+    [phoneNumber]="dataRequest().contactPhoneNumber"
+    [email]="dataRequest().contactEmailAddress"
+    [organisationName]="dataRequest().dataConsumerDisplayName"
+    [lang]="lang()"
+  />
+</div>

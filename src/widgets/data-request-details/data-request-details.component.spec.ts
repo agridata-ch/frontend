@@ -33,6 +33,7 @@ import {
   MockMasterDataService,
 } from '@/shared/testing/mocks';
 import { AgridataWizardComponent } from '@/widgets/agridata-wizard';
+import { DataRequestContentComponent } from '@/widgets/data-request-content';
 
 import { DataRequestDetailsRequestComponent } from './data-request-details-request';
 import { DataRequestDetailsComponent } from './data-request-details.component';
@@ -244,6 +245,29 @@ describe('DataRequestDetailsComponent', () => {
       );
       expect(requestDetailsComp).toBeTruthy();
       expect(requestDetailsComp.componentInstance.isRedirectUriRegexEditable()).toBe(true);
+    });
+  });
+
+  describe('preview tab', () => {
+    it('should render the preview of the loaded data request', async () => {
+      const request: DataRequestDto = {
+        id: 'test-id',
+        dataProviderId: 'test-provider',
+        stateCode: DataRequestStateEnum.Draft,
+        advantages: [],
+      };
+      dataRequestService.fetchDataRequest.mockResolvedValue(request);
+
+      const newFixture = TestBed.createComponent(DataRequestDetailsComponent);
+      newFixture.componentRef.setInput('dataRequestId', 'test-id');
+      newFixture.detectChanges();
+      await newFixture.whenStable();
+
+      newFixture.componentInstance['activeTabId'].set(DETAILS_TABS_ID.PREVIEW);
+      newFixture.detectChanges();
+
+      const preview = newFixture.debugElement.query(By.directive(DataRequestContentComponent));
+      expect(preview.componentInstance.dataRequest()).toEqual(request);
     });
   });
 

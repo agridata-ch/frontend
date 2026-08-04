@@ -11,7 +11,7 @@
       aria-hidden="true"
       class="h-full py-3 pl-5 border border-gray-300 rounded-l-md border-r-0 text-base"
       [class.bg-white]="!disabled()"
-      [class.bg-gray-100]="disabled()"
+      [class.bg-gray-100]="disabled() && !isViewMode()"
       [class.cursor-not-allowed]="disabled()"
     >
       {{ `${inputPrefix()}-` }}
@@ -28,13 +28,15 @@
       [name]="id()"
       [formControl]="control()!"
       [type]="type()"
-      [placeholder]="placeholder()"
+      [placeholder]="!isViewMode() ? placeholder() : '-'"
+      [attr.tabindex]="isViewMode() ? -1 : null"
+      [readonly]="disabled() || isViewMode()"
       class="placeholder-gray-400 outline-none w-full rounded-md transition-all duration-300 ease-in-out"
       [class.py-3]="!isViewMode()"
       [class.pr-4]="!isViewMode()"
       [class.pl-5]="!isViewMode()"
       [class.bg-white]="!disabled()"
-      [class.bg-gray-100]="disabled()"
+      [class.bg-gray-100]="disabled() && !isViewMode()"
       [class.pl-15]="inputPrefix()"
       [class.cursor-not-allowed]="disabled() && !isViewMode()"
       [attr.maxlength]="maxCharacters()"
@@ -42,7 +44,6 @@
         inputPrefix() ? inputPrefix() + '-' + (placeholder() || '') : placeholder()
       "
       (blur)="handleBlur.emit()"
-      [class.pointer-events-none]="isViewMode()"
     />
   } @else {
     <input
@@ -50,6 +51,7 @@
       [type]="type()"
       [placeholder]="placeholder()"
       [disabled]="disabled()"
+      [attr.tabindex]="isViewMode() ? -1 : null"
       [(ngModel)]="value"
       [attr.maxlength]="maxCharacters()"
       [attr.aria-label]="
@@ -57,14 +59,14 @@
       "
       class="placeholder-gray-400 w-full outline-none rounded-md transition-all duration-400 ease-in-out"
       [class.bg-white]="!disabled()"
-      [class.bg-gray-100]="disabled()"
+      [class.bg-gray-100]="disabled() && !isViewMode()"
       [class.pl-5]="!inputPrefix()"
       [class.py-3]="!isViewMode()"
       [class.pr-4]="!isViewMode()"
       [class.rounded-md]="!inputPrefix()"
       [class.rounded-r-md]="inputPrefix()"
       [class.border-l-0]="inputPrefix()"
-      [class.cursor-not-allowed]="disabled()"
+      [class.cursor-not-allowed]="disabled() && !isViewMode()"
       (input)="handleInputChange($event)"
       (blur)="handleBlur.emit()"
     />

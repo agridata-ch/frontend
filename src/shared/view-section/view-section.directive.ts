@@ -9,7 +9,7 @@ import { Directive, input } from '@angular/core';
 @Directive({
   selector: '[appViewSection]',
   host: {
-    class: 'flex flex-col transition-all duration-50 ease-in rounded-md border divide-y',
+    class: 'flex flex-col transition-all duration-100 ease-in rounded-md border divide-y',
     '[class.border-transparent]': '!isViewMode()',
     '[class.divide-transparent]': '!isViewMode()',
     '[class.border-agridata-stroke]': 'isViewMode()',

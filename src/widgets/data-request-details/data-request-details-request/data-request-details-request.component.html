@@ -1,12 +1,19 @@
-<div class="flex flex-col gap-8" *i18n="let t; prefix: 'data-request'">
+<div class="flex flex-col gap-10" *i18n="let t; prefix: 'data-request'">
   <div class="flex flex-col gap-4 p-4 bg-agridata-content-gray rounded-lg">
     <h4>{{ t('details.title') }}</h4>
+    <app-agridata-contact-card
+      [name]="dataRequest().dataConsumerDisplayName"
+      [imageUrl]="dataRequest().dataConsumerLogoBase64"
+      [secondaryName]="dataRequest().dataConsumerCity"
+      [size]="AvatarSize.MEDIUM"
+      [skin]="AvatarSkin.LIGHT"
+    />
     <div class="flex justify-between">
       <div class="flex flex-col">
         <span class="text-agridata-tertiary-text text-sm">
           {{ t('submissionDate') }}
         </span>
-        <span class="font-bold">
+        <span class="font-medium">
           {{ formattedSubmissionDate() }}
         </span>
       </div>
@@ -14,7 +21,7 @@
         <span class="text-agridata-tertiary-text text-sm">
           {{ t('humanFriendlyId') }}
         </span>
-        <span class="font-bold">
+        <span class="font-medium">
           {{ dataRequest().humanFriendlyId }}
         </span>
       </div>
@@ -32,46 +39,32 @@
     @if (dataRequest().stateCode === DataRequestStateEnum.Active) {
       <div class="flex flex-col">
         <span class="text-agridata-tertiary-text text-sm">
-          {{ t('invitationLink') }}
+          {{ t('invitationLink.label') }}
         </span>
-        <span class="font-bold">
+        <button
+          #copyButton
+          type="button"
+          class="group cursor-pointer h-fit flex gap-1 text-left font-medium"
+          (click)="handleCopy($event, copyButton)"
+        >
           {{ invitationLink() }}
+          <span class="sr-only">{{ t('invitationLink.copyToClipboard') }}</span>
           <fa-icon
+            class="group-hover:text-agridata-primary-600 h-fit"
             [icon]="faCopy"
-            class="cursor-pointer hover:text-agridata-primary-600"
             [attr.data-testid]="'copy-invitation-link'"
-            (click)="copyToClipboard(invitationLink())"
-            (keydown.enter)="copyToClipboard(invitationLink())"
-          ></fa-icon>
-        </span>
+            [appTooltip]="t('invitationLink.copyToClipboard')"
+          />
+        </button>
       </div>
+      <output class="sr-only">
+        @if (copyFeedbackKey(); as key) {
+          {{ t(key) }}
+        }
+      </output>
     }
   </div>
-  <div class="flex flex-col gap-8 flex-1">
-    <div class="flex flex-col gap-4">
-      <app-agridata-contact-card
-        [imageUrl]="dataRequest().dataConsumerLogoBase64"
-        [name]="dataRequest().dataConsumerDisplayName"
-        [secondaryName]="dataRequest().dataConsumerCity"
-        [size]="AvatarSize.MEDIUM"
-        [skin]="AvatarSkin.LIGHT"
-      />
-      <span class="text-agridata-secondary-text">
-        {{ getFieldFromLang('description', locale(), dataRequest()) }}
-      </span>
-    </div>
-    <app-data-request-purpose
-      [purpose]="dataRequest().purpose"
-      [consumerName]="dataRequest().dataConsumerDisplayName"
-    />
-    <app-data-request-products-accordion
-      [products]="productsList()"
-      [consumerName]="dataRequest().dataConsumerDisplayName"
-      [providerName]="providerName()"
-    />
-    @if (dataRequest().advantages.length) {
-      <app-data-request-advantages [advantages]="dataRequest().advantages" [lang]="locale()" />
-    }
+  <div class="flex flex-col gap-10">
     <app-data-request-redirect-uri
       [dataRequest]="dataRequest()"
       [isValidRedirectUriRegexEditable]="isRedirectUriRegexEditable()"
