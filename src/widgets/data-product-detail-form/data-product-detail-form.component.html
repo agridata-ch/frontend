@@ -6,7 +6,16 @@
     [dataTestId]="'data-product-detail-sidepanel'"
     (closeSidepanel)="closeSidepanel()"
   >
-    <span subtitle>{{ t('subTitle') }}</span>
+    <span subtitle class="flex gap-2">
+      {{ t('subTitle') }}
+      @if (stateCode()) {
+        <app-agridata-badge
+          [text]="getStatusTranslation(stateCode() ?? '', i18nService)"
+          [variant]="getBadgeVariant(stateCode())"
+          [size]="BadgeSize.SM"
+        />
+      }
+    </span>
     <ng-container *i18n="let t; prefix: 'data-products.detailForm'">
       @if (dataProductResource.isLoading()) {
         <fa-icon
@@ -16,13 +25,6 @@
           class="absolute flex items-center justify-center inset-0"
         />
       } @else {
-        @if (stateCode()) {
-          <app-agridata-badge
-            [text]="getStatusTranslation(stateCode() ?? '', i18nService)"
-            [variant]="getBadgeVariant(stateCode())"
-            [size]="BadgeSize.SM"
-          />
-        }
         <app-agridata-tabs
           class="sticky top-0 z-10 bg-white"
           [tabs]="tabs()"

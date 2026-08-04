@@ -1,31 +1,31 @@
 <div class="flex flex-col gap-4" *i18n="let t; prefix: 'data-request.details.redirectUriRegex'">
-  <div class="flex flex-col">
-    <span class="text-lg font-semibold">{{ t('title') }}</span>
+  <h4>{{ t('title') }}</h4>
+  <div class="flex flex-col gap-2">
     <span class="text-agridata-secondary-text">
       {{ t('description') }}
     </span>
+    <form
+      [formGroup]="redirectUriForm"
+      (submit)="handleSubmit()"
+      class="flex flex-col gap-3 md:flex-row md:items-center"
+    >
+      <app-form-control
+        appViewSection
+        id="validRedirectUriRegex"
+        [control]="getFormControl(redirectUriForm, 'validRedirectUriRegex')"
+        [label]="t('label')"
+        [placeholder]="'^https:\\/\\/www\\.example\\.ch\\/.*$'"
+        [disabled]="!isValidRedirectUriRegexEditable()"
+        class="flex-1 transition-all duration-300 ease-in-out"
+        [class.py-3]="isViewMode()"
+        [class.px-4]="isViewMode()"
+        [isViewMode]="isViewMode()"
+        [loading]="isSavingValidRedirectUriRegex()"
+        showEditButton
+        (editAction)="toggleViewMode()"
+        (cancelAction)="toggleViewMode()"
+        (saveAction)="handleSubmit()"
+      />
+    </form>
   </div>
-  <form
-    [formGroup]="redirectUriForm"
-    (submit)="handleSubmit()"
-    class="flex flex-col gap-3 md:flex-row md:items-center"
-  >
-    <app-form-control
-      appViewSection
-      id="validRedirectUriRegex"
-      [control]="getFormControl(redirectUriForm, 'validRedirectUriRegex')"
-      [label]="t('label')"
-      [placeholder]="'^https:\\/\\/www\\.example\\.ch\\/.*$'"
-      [disabled]="!isValidRedirectUriRegexEditable()"
-      class="flex-1 transition-all duration-300 ease-in-out"
-      [class.py-3]="isViewMode()"
-      [class.px-4]="isViewMode()"
-      [isViewMode]="isViewMode()"
-      [loading]="isSavingValidRedirectUriRegex()"
-      showEditButton
-      (editAction)="toggleViewMode()"
-      (cancelAction)="toggleViewMode()"
-      (saveAction)="handleSubmit()"
-    />
-  </form>
 </div>

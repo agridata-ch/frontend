@@ -27,7 +27,8 @@ export function createMockI18nService(): MockI18nService {
           obj?.[(overrideLang ?? lang()) as keyof TranslationDto] ?? '',
       ),
     lang,
-    setActiveLang: jest.fn(),
+    // Mirrors the real service: setting the active lang updates the lang signal.
+    setActiveLang: jest.fn().mockImplementation((newLang: string) => lang.set(newLang)),
     selectTranslate: jest.fn(),
   } satisfies MockI18nService;
 }

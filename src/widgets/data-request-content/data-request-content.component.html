@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-10">
+<div class="flex flex-col gap-10 py-4">
   <div class="flex flex-col gap-4">
     <app-agridata-contact-card
       [name]="dataRequest().dataConsumerDisplayName"
@@ -10,15 +10,12 @@
     <h3 class="text-agridata-primary-text">
       {{ title() }}
     </h3>
-  </div>
-
-  <div class="flex flex-col gap-6 bg-agridata-content-gray p-6 rounded-lg">
-    <span class="text-agridata-primary-text text-lg">
+    <span class="text-agridata-primary-text">
       {{ description() }}
     </span>
     <!-- The ids anchor the product tour steps. They are only set without an explicit language,
-  because the tour runs on the single language view while the request preview renders this content
-  once per language. -->
+    because the tour runs on the single language view while the request preview renders this content
+    once per language. -->
     <app-data-request-products-accordion
       [attr.id]="lang() ? null : 'data-request-products-accordion'"
       [products]="products()"

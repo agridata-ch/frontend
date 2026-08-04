@@ -7,9 +7,9 @@
   maxWidth="768px"
   *i18n="let t; prefix: 'consent-request.details'"
 >
-  <div subtitle class="flex items-center gap-1">
+  <div subtitle class="flex justify-between gap-1">
     <span class="text-agridata-tertiary-text text-sm font-normal">
-      {{ t('requestDate', { date: formattedRequestDate() }) }} |
+      {{ t('requestDate', { date: formattedRequestDate() }) }}
     </span>
     <app-agridata-badge
       [text]="badgeText().key | i18n: badgeText().params"
@@ -18,7 +18,7 @@
     />
   </div>
   <app-error-outlet></app-error-outlet>
-  <div class="overflow-y-auto flex flex-col gap-10 grow pb-10" appScrollFade>
+  <div class="overflow-y-auto flex flex-col gap-6 grow pb-10" appScrollFade>
     @if (request()?.showStateAsMigrated) {
       <app-alert [type]="AlertType.INFO" [message]="t('request.migrated')" />
     }
@@ -53,7 +53,7 @@
         {{ t('actions.accept') }}
       </app-agridata-button>
     </div>
-    <span class="w-full flex justify-center text-agridata-tertiary-text text-xs">
+    <span class="w-full flex justify-center text-agridata-tertiary-text text-sm">
       {{ t('footerInformation') }}
     </span>
   </div>
