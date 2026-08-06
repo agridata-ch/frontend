@@ -3,39 +3,8 @@
     @for (lang of availableLangs; track lang) {
       <div class="flex flex-col gap-4" *i18n="let t; prefix: 'data-request.preview'; lang: lang">
         <h2>{{ `${t('title')} ${lang.toUpperCase()}` }}</h2>
-        <div class="flex flex-col gap-6 border border-agridata-stroke rounded-lg p-6">
-          <h3>{{ getFieldFromLang('title', lang, dataRequest()) }}</h3>
-          <div class="flex items-center gap-2">
-            <app-agridata-contact-card
-              [imageUrl]="request.dataConsumerLogoBase64"
-              [name]="request.dataConsumerDisplayName"
-              [secondaryName]="request.dataConsumerCity"
-              [size]="AvatarSize.MEDIUM"
-              [skin]="AvatarSkin.LIGHT"
-            />
-          </div>
-          <span class="text-agridata-secondary-text">
-            {{ getFieldFromLang('description', lang, request) }}
-          </span>
-          <app-data-request-purpose-accordion
-            [purpose]="getFieldFromLang('purpose', lang, request)"
-            [products]="productsList()"
-            [lang]="lang"
-          />
-          @if (request.advantages.length) {
-            <app-data-request-advantages [advantages]="request.advantages" [lang]="lang" />
-          }
-          <app-data-request-contact
-            [phoneNumber]="request.contactPhoneNumber"
-            [email]="request.contactEmailAddress"
-            [organisationName]="request.dataConsumerDisplayName"
-            [lang]="lang"
-          />
-          <app-data-request-privacy-infos
-            [dataConsumerName]="request.dataConsumerDisplayName"
-            [dataProvider]="dataProvider()"
-            [lang]="lang"
-          />
+        <div class="border border-agridata-stroke rounded-lg p-6">
+          <app-data-request-content [dataRequest]="request" [lang]="lang" />
         </div>
       </div>
     }

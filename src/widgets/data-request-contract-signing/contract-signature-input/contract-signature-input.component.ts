@@ -7,9 +7,9 @@ import { ContractRevisionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
   ContractRevisionDto,
+  ContractRevisionSignatureDto,
   ExceptionEnum,
   SignatureSlotCodeEnum,
-  ContractRevisionSignatureDto,
 } from '@/entities/openapi';
 import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
 import { I18nDirective, I18nService } from '@/shared/i18n';
@@ -17,7 +17,6 @@ import { AuthService } from '@/shared/lib/auth';
 import { contractAgbUrl } from '@/shared/lib/cms';
 import { createFormControl, getFormControl } from '@/shared/lib/form.helper';
 import { ToastService, ToastType } from '@/shared/toast';
-import { AgridataToggleComponent } from '@/shared/ui/agridata-toggle';
 import { AgridataBadgeComponent } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ControlTypes, FormControlComponent } from '@/shared/ui/form-control';
@@ -39,7 +38,6 @@ import {
   imports: [
     AgridataBadgeComponent,
     I18nDirective,
-    AgridataToggleComponent,
     ButtonComponent,
     AlertComponent,
     FormControlComponent,
@@ -102,21 +100,6 @@ export class ContractSignatureInputComponent {
       : 2;
   });
 
-  protected readonly agbParts = computed(() => {
-    const translated = this.i18nService.translate(
-      'data-request.contractSigning.signatureInput.agbText',
-    );
-
-    const open = translated.indexOf('[');
-    const close = translated.indexOf(']', open);
-    if (open === -1 || close === -1) return { before: translated, linkText: null, after: '' };
-    return {
-      before: translated.slice(0, open),
-      linkText: translated.slice(open + 1, close),
-      after: translated.slice(close + 1),
-    };
-  });
-
   // Constants
   protected readonly AlertType = AlertType;
   protected readonly ButtonVariants = ButtonVariants;
@@ -160,9 +143,10 @@ export class ContractSignatureInputComponent {
   });
 
   // Methods
-  protected handleStartSigning(): void {
-    this.startSigningInternal();
+  protected handleStartSigning(): Promise<void> {
+    const signing = this.startSigningInternal();
     this.startResendCountdown();
+    return signing;
   }
 
   protected handleVerifySigning($event: Event): void {
@@ -180,11 +164,11 @@ export class ContractSignatureInputComponent {
     this.otpForm.reset();
   }
 
-  private startSigningInternal(): void {
+  private startSigningInternal(): Promise<void> {
     const contractId = this.contractId();
-    if (!contractId) return;
+    if (!contractId) return Promise.resolve();
 
-    this.contractRevisionService
+    return this.contractRevisionService
       .startSigningProcess(contractId, this.slotId(), this.stateService.actingRole())
       .then((challenge) => {
         this.currentChallenge.set({ slotId: this.slotId(), challenge });

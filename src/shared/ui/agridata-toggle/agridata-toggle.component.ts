@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-agridata-toggle',
   imports: [FormsModule],
   templateUrl: './agridata-toggle.component.html',
+  host: { class: 'contents' },
 })
 export class AgridataToggleComponent {
   readonly ariaLabel = input<string>('');

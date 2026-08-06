@@ -26,16 +26,17 @@ export class NotificationService {
     this.mutationTrigger.update((n) => n + 1);
   }
 
-  fetchHeaderNotifications() {
+  fetchHeaderNotifications(locale: string) {
     const page = 0; // Fetch the first page of notifications
     const size = 5; // Limit to 5 notifications for the header
-    return firstValueFrom(this.apiService.getInbox(page, undefined, size));
+    return firstValueFrom(this.apiService.getInbox(locale, page, undefined, size));
   }
 
   fetchNotifications(queryDto?: ResourceQueryDto): Promise<PageResponseDto<InboxEntryDto>> {
     return firstValueFrom(
       this.apiService
         .getInbox(
+          queryDto?.language,
           queryDto?.page,
           queryDto?.searchTerm,
           queryDto?.size,

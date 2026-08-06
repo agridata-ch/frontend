@@ -16,6 +16,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { NotificationService } from '@/entities/api/notification.service';
 import { InboxEntryDto, ResourceQueryDto } from '@/entities/openapi';
+import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet';
 import { I18nDirective, I18nService } from '@/shared/i18n';
@@ -45,6 +46,7 @@ import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/butto
     ErrorOutletComponent,
     FontAwesomeModule,
     I18nDirective,
+    ClickStopPropagationDirective,
   ],
   templateUrl: './notification-center-page.component.html',
 })

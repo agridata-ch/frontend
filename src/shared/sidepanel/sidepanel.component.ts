@@ -10,19 +10,21 @@ import {
 import { faClose } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { ButtonComponent, ButtonVariants } from '../ui/button';
+import { I18nPipe } from '@/shared/i18n';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 /**
- * Implements the logic and structure for the sliding panel. It supports configurable title, width,
+ * Implements the logic and structure for the sliding panel. It supports a configurable title, width,
  * and background color, and manages open/close state with smooth transitions. It includes keyboard
  * accessibility, closing on Escape key press or via a close button. Content is projected into the
- * panel for flexibility.
+ * panel for flexibility: use the `[subtitle]` slot for the header subtitle and the default slot for
+ * the body.
  *
- * CommentLastReviewed: 2026-02-12
+ * CommentLastReviewed: 2026-07-30
  */
 @Component({
   selector: 'app-sidepanel',
-  imports: [FontAwesomeModule, ButtonComponent],
+  imports: [FontAwesomeModule, ButtonComponent, I18nPipe],
   templateUrl: './sidepanel.component.html',
 })
 export class SidepanelComponent {
@@ -32,7 +34,6 @@ export class SidepanelComponent {
   readonly maxWidth = input<string>('100%');
   readonly preventManualClose = input<boolean>(false);
   readonly title = input<string>('');
-  readonly subTitle = input<string>('');
 
   readonly closeSidepanel = output<void>();
 

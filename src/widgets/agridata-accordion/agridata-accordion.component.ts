@@ -10,6 +10,13 @@ import {
 import { faChevronDown, faChevronUp } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { TooltipDirective } from '@/shared/tooltip';
+
+export enum ACCORDION_SKIN {
+  DEFAULT = 'default',
+  PUBLIC = 'public',
+}
+
 /**
  * Implements the accordion logic and behavior. It manages expansion state, toggles open/closed on
  * click or keyboard input, and updates the displayed icon accordingly.
@@ -18,18 +25,23 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
  */
 @Component({
   selector: 'app-agridata-accordion',
-  imports: [FontAwesomeModule],
+  imports: [FontAwesomeModule, TooltipDirective],
   templateUrl: './agridata-accordion.component.html',
 })
 export class AgridataAccordionComponent implements AfterViewInit {
+  // ViewChilds
   @ViewChild('contentWrapper') contentWrapper?: ElementRef;
   @ViewChild('contentInner') contentInner?: ElementRef;
 
-  readonly header = input<string>('');
-  readonly isLarge = input<boolean>(false);
+  // Constants
+  protected readonly ACCORDION_SKIN = ACCORDION_SKIN;
 
+  // Inputs
+  readonly header = input<string>('');
+  readonly skin = input<ACCORDION_SKIN>(ACCORDION_SKIN.DEFAULT);
+
+  // Signals
   protected readonly isExpanded = signal<boolean>(false);
-  protected readonly contentHeight = signal('0px');
 
   protected readonly expandIcon = computed(() => (this.isExpanded() ? faChevronUp : faChevronDown));
 

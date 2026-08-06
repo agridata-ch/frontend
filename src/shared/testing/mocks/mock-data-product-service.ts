@@ -12,6 +12,7 @@ export type MockDataProductService = Mockify<DataProductService>;
 export function createMockDataProductService(): MockDataProductService {
   return {
     createDataProduct: jest.fn().mockResolvedValue({}),
+    deleteDataProduct: jest.fn().mockResolvedValue(undefined),
     getAllDataProducts: jest.fn().mockResolvedValue({
       items: [] as DataProductDto[],
       totalItems: 0,
@@ -20,6 +21,7 @@ export function createMockDataProductService(): MockDataProductService {
       pageSize: 10,
     }),
     getDataProductById: jest.fn().mockResolvedValue({}),
+    patchDataProduct: jest.fn().mockResolvedValue({}),
     setDataProductStatus: jest.fn().mockResolvedValue({}),
     updateDataProduct: jest.fn().mockResolvedValue({}),
   } satisfies MockDataProductService;

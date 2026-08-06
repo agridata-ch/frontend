@@ -8,18 +8,22 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/UUID"
-          description: Unique identifier of the data request
+          description: Unique identifier of the agb revision
           type: string
           examples:
           - 3fa85f64-5717-4562-b3fc-2c963f66afb7
         version:
           type: string
-          description: Version of the data request
+          description: Version of the agb revision
           examples:
           - "1.0"
         validFrom:
           $ref: "#/components/schemas/LocalDateTime"
           description: Date and time from which the agb revision is valid
+          type: string
+        enforceConsentFrom:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Date and time from which the agb revision enforces consent
           type: string
         agbText:
           $ref: "#/components/schemas/AgbTextDto"
@@ -943,6 +947,7 @@ components:
           items:
             $ref: "#/components/schemas/LinkDto"
           description: List of relevant product links
+          maxItems: 5
         extendedDescription:
           $ref: "#/components/schemas/DataProductExtendedDescriptionDto"
           description: Extended product details
@@ -1797,6 +1802,10 @@ components:
         searchTerm:
           type: string
           description: string to search for in the resource
+        language:
+          type: string
+          description: language code for multilingual fields. Must be supported by
+            application.
     RestClientDto:
       type: object
       properties:
@@ -1986,6 +1995,18 @@ components:
           items:
             type: string
           description: Roles of the user at the last login
+        lastAcceptedAgbDate:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Date and time when the user last accepted the AGB.
+          type: string
+          examples:
+          - 2026-07-20T14:35:00
+        lastAcceptedAgbRevisionId:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the AGB revision the user last accepted.
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
     UserPreferencesDto:
       type: object
       properties:
@@ -3529,6 +3550,12 @@ paths:
       tags:
       - Notifications
       parameters:
+      - name: language
+        in: query
+        schema:
+          description: language code for multilingual fields. Must be supported by
+            application.
+          type: string
       - name: page
         in: query
         schema:
@@ -3964,6 +3991,12 @@ paths:
       tags:
       - Data Products
       parameters:
+      - name: language
+        in: query
+        schema:
+          description: language code for multilingual fields. Must be supported by
+            application.
+          type: string
       - name: page
         in: query
         schema:
@@ -4158,6 +4191,69 @@ paths:
         - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
+    patch:
+      description: "Partially updates an existing data product. Each provided field\
+        \ is validated against the data product's current state and the caller's role.\
+        \ If any field cannot be updated, the entire request is rejected and no changes\
+        \ are applied."
+      operationId: patchDataProduct
+      tags:
+      - Data Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DataProductUpdateDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataProductDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Patch Data Product
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
     get:
       description: Retrieves a single data product. Acessible to users with the provider
         and admin role
@@ -4212,6 +4308,60 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Admin
         - agridata.ch.Agridata_Datenanbieter
+      x-api-subset: agridata.ch Web App
+    delete:
+      description: Deletes a draft data product. Accessible to the owning provider
+        and admins.
+      operationId: deleteDataProductDraft
+      tags:
+      - Data Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - PROVIDER
+          - ADMIN
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Delete Data Product Draft
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenanbieter
+        - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/products/v2/{id}/documents:
     get:
@@ -4732,6 +4882,46 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
+  /api/user/v1/agb-revisions/{agb-revision-id}/accept:
+    post:
+      description: Records acceptance of the current AGB revision for the currently
+        authenticated user.
+      operationId: acceptAgb
+      tags:
+      - Users
+      parameters:
+      - description: The id of the AGB revision the user is accepting.
+        example: 3fa85f64-5717-4562-b3fc-2c963f66afb7
+        name: agb-revision-id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "201":
+          description: Created
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Accept Agb
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+        - agridata.ch.Agridata_Datenanbieter
+      x-api-subset: agridata.ch Web App
   /api/user/v1/authorized-uids:
     get:
       description: Retrieves all UIDs authorized for the currently authenticated data
@@ -4851,6 +5041,12 @@ paths:
       tags:
       - Users
       parameters:
+      - name: language
+        in: query
+        schema:
+          description: language code for multilingual fields. Must be supported by
+            application.
+          type: string
       - name: page
         in: query
         schema:
@@ -5069,7 +5265,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.13.0-rc.11
+  version: 1.14.0-rc.5
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

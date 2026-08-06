@@ -18,6 +18,7 @@ export type MockAuthServiceTestSignals = {
   isImpersonating: WritableSignal<boolean>;
   isProducer: WritableSignal<boolean>;
   isSupporter: WritableSignal<boolean>;
+  justLoggedIn: WritableSignal<boolean>;
   userInfo: WritableSignal<UserInfoDto | undefined>;
   userRoles: WritableSignal<string[]>;
   userUids: WritableSignal<UidDto[]>;
@@ -38,6 +39,7 @@ export function createMockAuthService(): MockAuthService {
   const isImpersonating = signal(false);
   const isProducer = signal(false);
   const isSupporter = signal(false);
+  const justLoggedIn = signal(false);
   const userInfo = signal<UserInfoDto | undefined>(undefined);
   const userRoles = signal([]);
   const userUids = signal([]);
@@ -45,6 +47,7 @@ export function createMockAuthService(): MockAuthService {
   return {
     // Signals
     isAuthenticated,
+    justLoggedIn,
     userInfo,
     userRoles,
     userUids,
@@ -66,6 +69,7 @@ export function createMockAuthService(): MockAuthService {
     initializeAuthorizedUids: jest.fn(),
     login: jest.fn(),
     logout: jest.fn(),
+    refreshUserInfo: jest.fn().mockResolvedValue(undefined),
     // test-only writable signals
     __testSignals: {
       hasMobileNumber,
@@ -76,6 +80,7 @@ export function createMockAuthService(): MockAuthService {
       isImpersonating,
       isProducer,
       isSupporter,
+      justLoggedIn,
       userInfo,
       userRoles,
       userUids,

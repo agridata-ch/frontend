@@ -10,7 +10,7 @@
   </div>
   <div class="flex flex-col gap-4 w-full">
     @for (faq of cmsData().faqs; track faq.id) {
-      <app-agridata-accordion [header]="faq.question" [isLarge]="true">
+      <app-agridata-accordion [header]="faq.question" [skin]="ACCORDION_SKIN.PUBLIC">
         <div [innerHTML]="faq.answer | markdown"></div>
       </app-agridata-accordion>
     }

@@ -26,11 +26,17 @@ export class AuthService {
 
   // Signals
   private readonly _isAuthenticated = signal<boolean>(false);
+  // Whether this application load originated from an OIDC login callback (fresh login) rather than a
+  // page refresh or silent token renew. A construction-time snapshot of the callback query params —
+  // it must NOT be reset by `resetUserInfoEffect`, whose first run happens before `checkAuth()`
+  // resolves (while `_isAuthenticated` is still false) and would otherwise wipe a genuine fresh login.
+  private readonly _justLoggedIn = signal<boolean>(this.isLoginCallbackUrl());
   private readonly _userInfo = signal<UserInfoDto | undefined>(undefined);
   private readonly _userRoles = signal<string[]>([]);
   private readonly _userUids = signal<UidDto[]>([]);
 
   readonly isAuthenticated = this._isAuthenticated.asReadonly();
+  readonly justLoggedIn = this._justLoggedIn.asReadonly();
   readonly userInfo = this._userInfo.asReadonly();
   readonly userRoles = this._userRoles.asReadonly();
   readonly userUids = this._userUids.asReadonly();
@@ -159,6 +165,22 @@ export class AuthService {
   async logout(): Promise<void> {
     await lastValueFrom(this.oidcService.logoff());
     await this.router.navigate(['/']);
+  }
+
+  /**
+   * Re-fetches the current user info and updates the authoritative signals. Used after actions that
+   * change server-side user state (e.g. accepting the AGB) so reactive consumers observe the change.
+   */
+  async refreshUserInfo(): Promise<void> {
+    this.userInfoPromise = lastValueFrom(this.userService.getUserInfo());
+    const userInfo = await this.userInfoPromise;
+    this._userInfo.set(userInfo);
+    this._userRoles.set(userInfo?.rolesAtLastLogin ?? []);
+  }
+
+  private isLoginCallbackUrl(): boolean {
+    const params = new URLSearchParams(window.location.search);
+    return params.has('code') && params.has('state');
   }
 
   private resolveUidActingRole(): ActingRole {

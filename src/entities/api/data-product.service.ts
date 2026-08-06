@@ -15,7 +15,7 @@ type DataProductActingRoles = 'PROVIDER' | 'ADMIN' | undefined;
 /**
  * Service for managing data products.
  *
- * CommentLastReviewed: 2026-06-08
+ * CommentLastReviewed: 2026-07-30
  */
 @Service()
 export class DataProductService {
@@ -33,15 +33,20 @@ export class DataProductService {
     );
   };
 
+  deleteDataProduct = (id: string, actingRole?: ActingRole): Promise<void> => {
+    return firstValueFrom(
+      this.apiService.deleteDataProductDraft(id, actingRole as DataProductActingRoles),
+    );
+  };
+
   getAllDataProducts = (
     queryDto: ResourceQueryDto,
-    locale: string,
     actingRole?: ActingRole,
   ): Promise<PageResponseDto<DataProductDto>> => {
-    this.apiService.defaultHeaders = this.apiService.defaultHeaders.set('Accept-Language', locale);
     return firstValueFrom(
       this.apiService
         .getDataProductsPaginated(
+          queryDto.language,
           queryDto.page,
           queryDto.searchTerm,
           queryDto.size,
@@ -73,6 +78,20 @@ export class DataProductService {
   ): Promise<DataProductDto> => {
     return firstValueFrom(
       this.apiService.updateDataProductDraft(
+        id,
+        dto as unknown as DataProductUpdateDto,
+        actingRole as DataProductActingRoles,
+      ),
+    );
+  };
+
+  patchDataProduct = (
+    id: string,
+    dto: Record<string, unknown>,
+    actingRole?: ActingRole,
+  ): Promise<DataProductDto> => {
+    return firstValueFrom(
+      this.apiService.patchDataProduct(
         id,
         dto as unknown as DataProductUpdateDto,
         actingRole as DataProductActingRoles,

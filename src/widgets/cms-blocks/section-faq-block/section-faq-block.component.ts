@@ -2,7 +2,7 @@ import { Component, computed, input } from '@angular/core';
 
 import { Block, SectionFaqBlock } from '@/entities/cms';
 import { MarkdownPipe } from '@/shared/markdown';
-import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
+import { ACCORDION_SKIN, AgridataAccordionComponent } from '@/widgets/agridata-accordion';
 
 /**
  * Component for rendering a FAQ section block.
@@ -15,8 +15,13 @@ import { AgridataAccordionComponent } from '@/widgets/agridata-accordion';
   templateUrl: './section-faq-block.component.html',
 })
 export class SectionFaqBlockComponent {
+  // Constants
+  protected readonly ACCORDION_SKIN = ACCORDION_SKIN;
+
+  // Inputs
   readonly block = input.required<Block>();
 
+  // Computed
   protected readonly cmsData = computed(() => {
     return this.block() as SectionFaqBlock;
   });

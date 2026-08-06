@@ -1,0 +1,6 @@
+<div class="flex flex-col gap-4" *i18n="let t; prefix: 'data-request.purpose'; lang: lang()">
+  <h4>{{ t('title', { consumer: consumerName() }) }}</h4>
+  <span class="text-agridata-primary-text whitespace-pre-line">
+    {{ translatedPurpose() }}
+  </span>
+</div>

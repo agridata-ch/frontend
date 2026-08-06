@@ -72,18 +72,13 @@ describe('DataProductService', () => {
   });
 
   describe('getAllDataProducts', () => {
-    it('sets the Accept-Language header to the provided locale', async () => {
-      await service.getAllDataProducts({}, 'fr');
-      expect(mockApiService.defaultHeaders.get('Accept-Language')).toBe('fr');
-    });
-
-    it('calls getDataProductsPaginated with page, searchTerm, size, actingRole', async () => {
+    it('calls getDataProductsPaginated with language, page, searchTerm, size, actingRole', async () => {
       await service.getAllDataProducts(
-        { page: 2, searchTerm: 'crop', size: 5, sortParams: [] },
-        'de',
+        { language: 'de', page: 2, searchTerm: 'crop', size: 5, sortParams: [] },
         'ADMIN',
       );
       expect(mockApiService.getDataProductsPaginated).toHaveBeenCalledWith(
+        'de',
         2,
         'crop',
         5,
@@ -93,7 +88,7 @@ describe('DataProductService', () => {
     });
 
     it('returns a PageResponseDto with the items from the API response', async () => {
-      const result: PageResponseDto<DataProductDto> = await service.getAllDataProducts({}, 'de');
+      const result: PageResponseDto<DataProductDto> = await service.getAllDataProducts({});
       expect(result.items).toEqual([mockProduct]);
       expect(result.totalItems).toBe(1);
     });

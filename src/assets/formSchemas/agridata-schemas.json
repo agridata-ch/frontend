@@ -221,23 +221,6 @@
           "it"
         ]
       },
-      "extendedDescription": {
-        "type": "object",
-        "properties": {
-          "de": {
-            "type": "string",
-            "maxLength": 1000
-          },
-          "fr": {
-            "type": "string",
-            "maxLength": 1000
-          },
-          "it": {
-            "type": "string",
-            "maxLength": 1000
-          }
-        }
-      },
       "dataSourceSystemId": {
         "type": "string"
       },
@@ -281,20 +264,41 @@
         "items": {
           "type": "object",
           "properties": {
-            "displayText": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 255
-            },
             "url": {
               "type": "string",
-              "minLength": 1,
-              "maxLength": 2048
+              "minLength": 0,
+              "maxLength": 2048,
+              "pattern": "^https?://.*$"
+            },
+            "displayText": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 255
             }
           }
         },
         "minItems": 0,
         "maxItems": 5
+      },
+      "extendedDescription": {
+        "type": "object",
+        "properties": {
+          "de": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 1000
+          },
+          "fr": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 1000
+          },
+          "it": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 1000
+          }
+        }
       }
     },
     "required": [

@@ -1,6 +1,17 @@
-import { booleanAttribute, Component, effect, input, output, signal } from '@angular/core';
+import {
+  booleanAttribute,
+  Component,
+  computed,
+  effect,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { faEdit } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { I18nPipe } from '@/shared/i18n';
 import { FormControlWithMessages, getErrorMessage } from '@/shared/lib/form.helper';
 import { AgridataDigitInputComponent } from '@/shared/ui/agridata-digit-input';
 import { AgridataInputComponent } from '@/shared/ui/agridata-input';
@@ -12,6 +23,7 @@ import {
 import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
 import { AgridataTextareaComponent } from '@/shared/ui/agridata-textarea';
 import { AgridataWysiwygComponent } from '@/shared/ui/agridata-wysiwyg';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 import { ControlTypes } from './form-control.model';
 
@@ -34,6 +46,9 @@ import { ControlTypes } from './form-control.model';
     AgridataInputComponent,
     AgridataDigitInputComponent,
     AgridataWysiwygComponent,
+    ButtonComponent,
+    I18nPipe,
+    FontAwesomeModule,
   ],
   templateUrl: './form-control.component.html',
 })
@@ -52,21 +67,35 @@ export class FormControlComponent {
   readonly length = input<number>(1);
   readonly singleCategorySelection = input<boolean>(false);
   readonly type = input<'text' | 'number'>('text');
-  readonly isViewMode = input<boolean>(false);
+  readonly isViewMode = input(false, { transform: booleanAttribute });
   readonly isWysiwyg = input(false, { transform: booleanAttribute });
+  readonly loading = input(false, { transform: booleanAttribute });
+  readonly showEditButton = input(false, { transform: booleanAttribute });
 
   readonly handleBlur = output<void>();
+  readonly editAction = output<void>();
+  readonly saveAction = output<void>();
+  readonly cancelAction = output<void>();
 
   readonly ControlTypes = ControlTypes;
+  readonly ButtonVariants = ButtonVariants;
+  readonly editIcon = faEdit;
 
   // Signals
   protected readonly hasError = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
+  protected readonly controlDisabled = signal(false);
+
+  // Computed Signals
+  // Treat a disabled bound control as disabled without requiring the caller to also pass [disabled]:
+  // control.disable() then greys and blocks every field type (incl. the custom select, which has no
+  // ControlValueAccessor). The [disabled] input still works for pure UI gates that don't disable the control.
+  protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
 
   // Effects
   // The control's touched/status state is not a signal, so in zoneless change detection a
   // markAllAsTouched() or blur would not re-render the error state. Feed the state signals from the
-  // control's events stream so hasError()/errorMessage() stay reactive.
+  // control's events stream so hasError()/errorMessage()/controlDisabled() stay reactive.
   private readonly syncErrorStateEffect = effect((onCleanup) => {
     const control = this.control();
     const update = () => {
@@ -77,6 +106,7 @@ export class FormControlComponent {
           ? getErrorMessage(control, Object.keys(control.errors)[0])
           : null,
       );
+      this.controlDisabled.set(control?.disabled ?? false);
     };
     update();
     const subscription = control?.events.subscribe(update);

@@ -4,64 +4,29 @@
   [preventManualClose]="shouldRedirect()"
   [title]="t('sidepanel.title')"
   [dataTestId]="'consent-request-details-sidepanel'"
-  maxWidth="650px"
+  maxWidth="768px"
   *i18n="let t; prefix: 'consent-request.details'"
 >
+  <div subtitle class="flex justify-between gap-1">
+    <span class="text-agridata-tertiary-text text-sm font-normal">
+      {{ t('requestDate', { date: formattedRequestDate() }) }}
+    </span>
+    <app-agridata-badge
+      [text]="badgeText().key | i18n: badgeText().params"
+      [size]="badgeSize.MD"
+      [variant]="badgeVariant()"
+    />
+  </div>
   <app-error-outlet></app-error-outlet>
-  <div class="overflow-y-auto flex flex-col gap-6 grow pb-6">
-    <div>
-      <span class="text-agridata-tertiary-text text-sm font-normal">
-        {{ t('requestDate', { date: formattedRequestDate() }) }} |
-      </span>
-      <app-agridata-badge
-        [text]="badgeText().key | i18n: badgeText().params"
-        [size]="badgeSize.MD"
-        [variant]="badgeVariant()"
-      />
-    </div>
+  <div class="overflow-y-auto flex flex-col gap-6 grow pb-10" appScrollFade>
     @if (request()?.showStateAsMigrated) {
       <app-alert [type]="AlertType.INFO" [message]="t('request.migrated')" />
     }
-    <h3 class="text-agridata-primary-text">
-      {{ requestTitle() }}
-    </h3>
-    <div class="flex items-center gap-2">
-      <app-agridata-contact-card
-        [name]="dataConsumerName()"
-        [imageUrl]="requestConsumerLogo()"
-        [secondaryName]="dataConsumerCity()"
-        [size]="AvatarSize.MEDIUM"
-        [skin]="AvatarSkin.LIGHT"
-      />
-    </div>
-
-    <span class="text-agridata-primary-text font-normal">
-      {{ requestDescription() }}
-    </span>
-    <app-data-request-purpose-accordion
-      [purpose]="requestPurpose()"
-      [products]="requestProducts()"
-    />
-    @if (request()?.dataRequest?.advantages?.length) {
-      <app-data-request-advantages
-        [advantages]="request()?.dataRequest?.advantages"
-        [lang]="currentLanguage()"
-      />
+    @if (request()?.dataRequest; as dataRequest) {
+      <app-data-request-content [dataRequest]="dataRequest" />
     }
-    <app-data-request-contact
-      [phoneNumber]="request()?.dataRequest?.contactPhoneNumber"
-      [email]="request()?.dataRequest?.contactEmailAddress"
-      [organisationName]="request()?.dataRequest?.dataConsumerDisplayName"
-    />
-    <app-data-request-privacy-infos
-      [dataConsumerName]="dataConsumerName()"
-      [dataProvider]="dataProvider()"
-    />
   </div>
-  <div
-    class="-mt-6 justify-center flex flex-col gap-1.5 pt-6 bg-linear-to-t from-white via-white via-80%"
-    id="consent-request-footer"
-  >
+  <div class="justify-center flex flex-col gap-6 pt-6" id="consent-request-footer">
     <div class="flex gap-2">
       <app-agridata-button
         [variant]="ButtonVariants.SecondaryReject"
@@ -88,7 +53,7 @@
         {{ t('actions.accept') }}
       </app-agridata-button>
     </div>
-    <span class="w-full flex justify-center text-agridata-tertiary-text text-xs">
+    <span class="w-full flex justify-center text-agridata-tertiary-text text-sm">
       {{ t('footerInformation') }}
     </span>
   </div>

@@ -3,7 +3,7 @@
     [title]="t('sidePanelTitle')"
     [isOpen]="!dataRequestResource.isLoading()"
     (closeSidepanel)="handleSidepanelClose()"
-    [maxWidth]="'1000px'"
+    [maxWidth]="'768px'"
     [dataTestId]="'data-request-details-sidepanel'"
   >
     <app-error-outlet />
@@ -15,18 +15,16 @@
         class="absolute flex items-center justify-center inset-0"
       ></fa-icon>
     } @else if (dataRequest(); as request) {
-      <div class="flex-1 overflow-y-auto min-h-0 flex flex-col">
-        <app-agridata-tabs
-          class="sticky top-0 z-10 bg-white"
-          [tabs]="tabs()"
-          [(activeTabId)]="activeTabId"
-        />
+      <app-agridata-tabs class="bg-white" [tabs]="tabs()" [(activeTabId)]="activeTabId" />
+      <div class="flex-1 overflow-y-auto min-h-0 flex flex-col" appScrollFade>
         @if (activeTabId() === DETAILS_TABS_ID.REQUEST) {
           <app-data-request-details-request
             [dataRequest]="request"
             [isRedirectUriRegexEditable]="isRedirectUriRegexEditable()"
-            class="py-6"
           />
+        }
+        @if (activeTabId() === DETAILS_TABS_ID.PREVIEW) {
+          <app-data-request-content [dataRequest]="request" />
         }
         @if (activeTabId() === DETAILS_TABS_ID.PRODUCER) {
           <div class="flex flex-col gap-4 pt-4">

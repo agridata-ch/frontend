@@ -293,3 +293,54 @@ describe('AuthService User Properties', () => {
     expect(authService.hasMobileNumber()).toBe(false);
   });
 });
+
+describe('AuthService justLoggedIn', () => {
+  let mockOidc: {
+    checkAuth: jest.Mock;
+    authorize: jest.Mock<void, []>;
+    logoff: jest.Mock;
+  };
+  let mockRouter: { navigate: jest.Mock<Promise<boolean>, [unknown[]]> };
+  let userService: MockUserService;
+  const originalUrl = `${window.location.pathname}${window.location.search}`;
+
+  beforeEach(() => {
+    userService = createMockUserService();
+    userService.getUserInfo.mockReturnValue(of(mockUserInfo));
+    userService.getAuthorizedUids.mockReturnValue(of([{ uid } as UidDto]));
+    mockRouter = { navigate: jest.fn() };
+    mockOidc = { checkAuth: jest.fn(), authorize: jest.fn(), logoff: jest.fn() };
+  });
+
+  afterEach(() => {
+    window.history.replaceState({}, '', originalUrl);
+  });
+
+  function createServiceAtUrl(url: string): AuthService {
+    window.history.replaceState({}, '', url);
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: UsersService, useValue: userService },
+        { provide: OidcSecurityService, useValue: mockOidc },
+        { provide: Router, useValue: mockRouter },
+      ],
+    });
+    return TestBed.inject(AuthService);
+  }
+
+  it('is true after a fresh OIDC login callback and is not wiped by the reset effect', () => {
+    const service = createServiceAtUrl('/auth-response?code=abc&state=xyz');
+    // Flush the reset effect's first run — it fires while unauthenticated and must not clobber the flag.
+    TestBed.tick();
+
+    expect(service.justLoggedIn()).toBe(true);
+  });
+
+  it('is false on a plain page refresh without callback params', () => {
+    const service = createServiceAtUrl('/data-requests');
+    TestBed.tick();
+
+    expect(service.justLoggedIn()).toBe(false);
+  });
+});

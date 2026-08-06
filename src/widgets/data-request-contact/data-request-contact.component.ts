@@ -16,11 +16,13 @@ import { I18nDirective } from '@/shared/i18n';
   templateUrl: './data-request-contact.component.html',
 })
 export class DataRequestContactComponent {
+  // Constants
+  readonly iconPhone = faPhone;
+  readonly iconEmail = faEnvelope;
+
+  // Inputs
   readonly phoneNumber = input<string>();
   readonly email = input<string>();
   readonly organisationName = input<string>();
   readonly lang = input<string>();
-
-  readonly iconPhone = faPhone;
-  readonly iconEmail = faEnvelope;
 }

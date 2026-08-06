@@ -13,6 +13,8 @@
     [name]="id()!"
     [formControl]="control()!"
     [placeholder]="placeholder()"
+    [readonly]="disabled() || isViewMode()"
+    [attr.tabindex]="isViewMode() ? -1 : null"
     (blur)="handleBlur.emit()"
     class="border rounded-md border-gray-300 transition-all duration-300 ease-in-out"
     [class.h-0]="isViewMode()"

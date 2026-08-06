@@ -211,3 +211,23 @@ npx codesight --native-ast                 # Opt-in: AST plugins for more langua
 npx codesight --mode knowledge             # Map knowledge base (.md notes → KNOWLEDGE.md)
 npx codesight --mode knowledge ~/vault     # Map Obsidian vault, ADRs, meeting notes, retros
 ```
+
+### Ponytail
+
+We use the plugin Ponytail for measured claude sessions, which allows us to track the usage of Claude and optimize the cost. You can find more information about it on its [GitHub repository](https://github.com/DietrichGebert/ponytail).
+
+install in claude via:
+
+```bash
+/plugin marketplace add DietrichGebert/ponytail
+
+/plugin install ponytail@ponytail
+```
+
+#### Main Commands (see more in the [Ponytail documentation](https://github.com/DietrichGebert/ponytail#commands))
+
+| Command                              | What it does                                                              |   
+|--------------------------------------|---------------------------------------------------------------------------|
+| /ponytail [lite, full , ultra , off] | Set the intensity, or turn it off. No argument reports the current level. |
+| /ponytail-review                     | Review the current diff for over-engineering, hands back a delete-list.   |
+| /ponytail-audit                      | Audit the whole repo for over-engineering, not just the diff.             |

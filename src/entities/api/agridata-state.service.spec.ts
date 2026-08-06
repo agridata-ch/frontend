@@ -97,6 +97,16 @@ describe('AgridataStateService', () => {
     expect(service.isImpersonating()).toBe(false);
   });
 
+  it('agbConsentEnforced defaults to false and reflects setAgbConsentEnforced', () => {
+    expect(service.agbConsentEnforced()).toBe(false);
+
+    service.setAgbConsentEnforced(true);
+    expect(service.agbConsentEnforced()).toBe(true);
+
+    service.setAgbConsentEnforced(false);
+    expect(service.agbConsentEnforced()).toBe(false);
+  });
+
   it('addConfirmedMiratedUids appends ids and calls updateUserPreferences', async () => {
     userService.updateUserPreferences = jest.fn().mockReturnValue(Promise.resolve());
 

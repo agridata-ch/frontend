@@ -1,6 +1,7 @@
 # Libraries
 
 - `src/data-request-advantages/data-request-advantages.component.ts` — class DataRequestAdvantagesComponent
+- `src/entities/api/agb.service.ts` — class AgbService
 - `src/entities/api/agridata-state.service.ts` — class AgridataStateService, const DISMISSED_MIGRATIONS_KEY
 - `src/entities/api/backend-info.service.ts` — class BackendInfoService
 - `src/entities/api/consent-request.service.ts` — class ConsentRequestService
@@ -14,7 +15,7 @@
 - `src/entities/api/uid-register.service.ts` — class UidRegisterService
 - `src/entities/api/user.service.ts` — class UserService
 - `src/entities/cms/cms.service.ts` — class CmsService
-- `src/entities/openapi/api/bITSignatureTest.service.ts` — class BITSignatureTestService
+- `src/entities/openapi/api/agbRevision.service.ts` — class AgbRevisionService
 - `src/entities/openapi/api/consentRequestAggregations.service.ts` — class ConsentRequestAggregationsService
 - `src/entities/openapi/api/consentRequests.service.ts` — class ConsentRequestsService
 - `src/entities/openapi/api/contractRevisions.service.ts` — class ContractRevisionsService
@@ -32,6 +33,7 @@
 - `src/entities/openapi/api.module.ts` — class ApiModule
 - `src/entities/openapi/configuration.ts` — class Configuration, interface ConfigurationParameters
 - `src/entities/openapi/encoder.ts` — class CustomHttpParameterCodec
+- `src/features/agb-modal/agb-modal.service.ts` — class AgbModalService
 - `src/features/cms-blocks/cms-block-renderer.component.ts` — class BlockRendererComponent
 - `src/features/debug/debug-modal.component.ts` — class DebugModalComponent
 - `src/features/debug/debug.service.ts`
@@ -94,6 +96,10 @@
 - `src/shared/sidepanel/sidepanel.component.ts` — class SidepanelComponent
 - `src/shared/testing/mocks/dummy-components.ts` — class DummyComponent
 - `src/shared/testing/mocks/mock-activated-route.ts` — function createMockActivatedRoute: (queryParams, string>, params, string>) => MockActivatedRoute, interface MockActivatedRoute
+- `src/shared/testing/mocks/mock-agb-service.ts`
+  - function createMockAgbService: () => MockAgbService
+  - type MockAgbService
+  - const mockAgbRevision: AgbRevisionDto
 - `src/shared/testing/mocks/mock-agridata-state-service.ts`
   - function createMockAgridataStateService: () => MockAgridataStateService
   - type MockAgridataStateServiceTestSignals
@@ -184,6 +190,7 @@
 - `src/shared/ui/empty-state/empty-state.component.ts` — class EmptyStateComponent
 - `src/shared/ui/file-download/agridata-file-download.component.ts` — class AgridataFileDownloadComponent
 - `src/shared/ui/form-control/form-control.component.ts` — class FormControlComponent
+- `src/shared/ui/linked-text/linked-text.component.ts` — class LinkedTextComponent
 - `src/shared/ui/modal/modal.component.ts` — class ModalComponent
 - `src/shared/ui/popover/popover.component.ts` — class PopoverComponent
 - `src/shared/ui/progress-bar/progress-bar.component.ts` — class ProgressBarComponent
@@ -192,6 +199,7 @@
 - `src/shared/utils/download.util.ts` — function downloadBlob: (blob, fileName) => void, function openBlobInNewTab: (blob, mimeType?) => void
 - `src/shared/utils/file-icon.util.ts` — function getFileIcon: (fileName) => IconDefinition
 - `src/shared/utils/format.util.ts` — function formatBytes: (bytes) => string
+- `src/shared/utils/linked-text.util.ts` — function parseLinkedText: (translated) => LinkedTextParts, interface LinkedTextParts
 - `src/shared/utils/ui.util.ts`
   - function calculateVerticalPlacement: (triggerRect, contentHeight, viewportHeight) => VerticalPlacement
   - function copyToClipboard: (text) => Promise<void>
@@ -201,6 +209,7 @@
 - `src/widgets/account-overlay/account-overlay.component.ts` — class AccountOverlayComponent
 - `src/widgets/admin-data-request-details/admin-data-request-details.component.ts` — class AdminDataRequestDetailsComponent
 - `src/widgets/admin-data-request-table/admin-data-request-table.component.ts` — class AdminDataRequestTableComponent
+- `src/widgets/agb-modal/agb-modal.component.ts` — class AgbModalComponent
 - `src/widgets/agridata-accordion/agridata-accordion.component.ts` — class AgridataAccordionComponent
 - `src/widgets/agridata-contact-card/agridata-contact-card.component.ts` — class AgridataContactCardComponent
 - `src/widgets/agridata-wizard/agridata-wizard-stepper/agridata-wizard-stepper.component.ts` — class AgridataWizardStepperComponent
@@ -220,10 +229,6 @@
 - `src/widgets/cms-blocks/section-image-list/section-image-list.component.ts` — class SectionImageListComponent
 - `src/widgets/cms-blocks/section-media-block/section-media-block.component.ts` — class SectionMediaBlockComponent
 - `src/widgets/cms-blocks/section-onboarding-form-block/section-onboarding-form-block.component.ts` — class SectionOnboardingFormBlockComponent
-- `src/widgets/cms-blocks/section-onboarding-form-block/section-onboarding-form-block.model.ts`
-  - function parseSubheadingParts: (translated) => SubheadingParts
-  - interface SubheadingParts
-  - const AGATE_URLS: Record<string, string>
 - `src/widgets/cms-blocks/section-text-image-block/section-text-image-block.component.ts` — class SectionTextImageBlockComponent
 - `src/widgets/cms-blocks/section-timeline/section-timeline.component.ts` — class SectionTimelineComponent
 - `src/widgets/cms-blocks/section-user-feedback-block/section-user-feedback-block.component.ts` — class SectionUserFeedbackBlockComponent
@@ -243,13 +248,13 @@
 - `src/widgets/cookiebanner/cookiebanner.component.ts` — class CookiebannerComponent
 - `src/widgets/data-product-detail-form/data-product-detail-form.component.ts` — class DataProductDetailFormComponent
 - `src/widgets/data-product-detail-form/data-product-detail-form.model.ts`
+  - function isFieldDisabledAfterPublish: (field, isAdmin) => boolean
+  - function applyDisabledAfterPublish: (group, editMode, isAdmin) => void
   - function buildDataProductPayload: (form) => Record<string, unknown>
+  - type DisabledRole
   - const DATA_PRODUCT_NEW_ID
   - const FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM
-  - const FORM_TAB_IDS
-  - const FLOW_CODE_OPTIONS: MultiSelectOption[]
-  - const METHOD_CODE_OPTIONS: MultiSelectOption[]
-  - _...1 more_
+  - _...6 more_
 - `src/widgets/data-product-detail-form/data-product-detail-info/data-product-detail-info.component.ts` — class DataProductDetailInfoComponent
 - `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-documents/data-product-detail-documents.component.ts` — class DataProductDetailDocumentsComponent
 - `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-links-documents.component.ts` — class DataProductDetailLinksDocumentsComponent
@@ -280,10 +285,6 @@
 - `src/widgets/data-request-form/data-request-form-request/data-request-form-request-advantages/data-request-form-request-advantages.component.ts` — class DataRequestFormRequestAdvantagesComponent
 - `src/widgets/data-request-form/data-request-form-request/data-request-form-request-advantages/data-request-form-request-advantages.model.ts` — function validateAdvantages, const MAX_ADVANTAGES
 - `src/widgets/data-request-form/data-request-form-request/data-request-form-request-description/data-request-form-request-description.component.ts` — class DataRequestFormRequestDescriptionComponent
-- `src/widgets/data-request-form/data-request-form-request/data-request-form-request-description/data-request-form-request-description.model.ts`
-  - function parsePurposeSublabel: (translated) => PurposeSublabelParts
-  - interface PurposeSublabelParts
-  - const PURPOSE_PDF_FILENAMES: Record<string, string>
 - `src/widgets/data-request-form/data-request-form-request/data-request-form-request-product/data-request-form-request-product.component.ts` — class DataRequestFormRequestProductComponent
 - `src/widgets/data-request-form/data-request-form-request/data-request-form-request-product/data-request-form-request-product.model.ts`
   - function getDataSourceCode: (product) => string

@@ -52,6 +52,25 @@ Never test CSS or visual layout:
 
 ---
 
+## Test Quality Principles
+
+**Verify actual behavior, not just calls:**
+
+```
+// ❌ Weak
+expect(spy).toHaveBeenCalled();
+
+// ✅ Strong
+expect(spy).toHaveBeenCalledWith(expectedArgs);
+expect(result).toEqual(expectedOutput);
+```
+
+**Cover edge cases:** null, undefined, empty arrays/strings, boundary values, invalid input.
+
+**Use project constants/enums** instead of magic strings or literals wherever they exist.
+
+**Skip useless tests:** empty methods, trivial getters, pure framework behavior.
+
 ## Test Setup Pattern
 
 Every test file starts with this structure:
@@ -447,6 +466,16 @@ it.each([
   const result = component['validateInput'](input);
   expect(result).toBe(expected);
 });
+```
+
+### Length Assertion Testing
+
+```typescript
+// ❌ Bad
+expect(span.querySelectorAll('strong').length).toBe(2);
+
+// ✅ Good
+expect(span.querySelectorAll('strong')).toHaveLength(2);
 ```
 
 ---

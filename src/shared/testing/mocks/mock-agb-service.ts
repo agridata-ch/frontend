@@ -25,6 +25,7 @@ export type MockAgbService = Mockify<AgbService>;
  */
 export function createMockAgbService(): MockAgbService {
   return {
+    acceptAgbs: jest.fn().mockResolvedValue(undefined),
     fetchAgbs: jest.fn().mockResolvedValue(mockAgbRevision),
   } satisfies MockAgbService;
 }

@@ -1,7 +1,12 @@
 import { signal, WritableSignal } from '@angular/core';
 
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { DataProductDto, DataProviderDto, UserPreferencesDto } from '@/entities/openapi';
+import {
+  DataProductDto,
+  DataProviderDto,
+  TranslationDto,
+  UserPreferencesDto,
+} from '@/entities/openapi';
 import { MockifyWithWritableSignals } from '@/shared/testing/mocks';
 import { MultiSelectCategory } from '@/shared/ui/agridata-multi-select';
 
@@ -38,10 +43,16 @@ export function createMockMasterDataService(): MockMasterDataService {
     return dataProducts();
   });
 
+  const providerName = jest.fn((providerId: string | undefined, lang?: string) => {
+    const provider = dataProviders().find((candidate) => candidate.id === providerId);
+    return provider?.name?.[(lang ?? 'de') as keyof TranslationDto] ?? '';
+  });
+
   return {
     dataProviders,
     fetchProductsByProvider: jest.fn(),
     getProductsForProvider,
+    providerName,
     providersLoading,
     __testSignals: {
       dataProducts,

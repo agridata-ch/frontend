@@ -2,11 +2,20 @@
   <app-sidepanel
     [isOpen]="isOpen()"
     [title]="sidepanelTitle()"
-    [maxWidth]="'1080px'"
+    [maxWidth]="'1024px'"
     [dataTestId]="'data-product-detail-sidepanel'"
     (closeSidepanel)="closeSidepanel()"
-    [subTitle]="t('subTitle')"
   >
+    <span subtitle class="flex gap-2">
+      {{ t('subTitle') }}
+      @if (stateCode()) {
+        <app-agridata-badge
+          [text]="getStatusTranslation(stateCode() ?? '', i18nService)"
+          [variant]="getBadgeVariant(stateCode())"
+          [size]="BadgeSize.SM"
+        />
+      }
+    </span>
     <ng-container *i18n="let t; prefix: 'data-products.detailForm'">
       @if (dataProductResource.isLoading()) {
         <fa-icon
@@ -16,30 +25,25 @@
           class="absolute flex items-center justify-center inset-0"
         />
       } @else {
-        @if (stateCode()) {
-          <app-agridata-badge
-            [text]="getStatusTranslation(stateCode() ?? '', i18nService)"
-            [variant]="getBadgeVariant(stateCode())"
-            [size]="BadgeSize.SM"
-          />
-        }
         <app-agridata-tabs
           class="sticky top-0 z-10 bg-white"
           [tabs]="tabs()"
           [(activeTabId)]="activeTabId"
         />
         <div
-          class="flex flex-col flex-1 min-h-0 overflow-y-auto overflow-x-hidden gap-8 pb-4"
+          class="flex flex-col flex-1 min-h-0 overflow-y-auto overflow-x-hidden gap-8 py-4"
           appScrollFade
         >
           <app-data-product-detail-info
             [form]="getTabForm(FORM_TAB_IDS.NAME_AND_DESCRIPTION)"
             [isViewMode]="isViewMode()"
             [class.hidden]="activeTabId() !== FORM_TAB_IDS.NAME_AND_DESCRIPTION"
+            [stateCode]="stateCode()"
           />
           <app-data-product-detail-technical
             [form]="getTabForm(FORM_TAB_IDS.TECHNICAL_FIELDS)"
             [isViewMode]="isViewMode()"
+            [isEditMode]="isEditMode()"
             [preselectedProviderId]="preselectedProviderId()"
             [class.hidden]="activeTabId() !== FORM_TAB_IDS.TECHNICAL_FIELDS"
           />
@@ -52,10 +56,20 @@
 
         <div class="flex justify-between">
           @if (isViewMode()) {
-            <!-- TODO: enable edit with edit mode DIGIB2-1354 -->
-            <!-- <app-agridata-button (handleClick)="enterEditMode()">
+            <app-agridata-button (handleClick)="enterEditMode()">
               {{ t('edit') }}
-            </app-agridata-button> -->
+            </app-agridata-button>
+          } @else if (isEditMode()) {
+            <app-agridata-button
+              [variant]="ButtonVariants.Tertiary"
+              [disabled]="isSaving()"
+              (handleClick)="cancel()"
+            >
+              {{ t('cancel') }}
+            </app-agridata-button>
+            <app-agridata-button [loading]="isSaving()" (handleClick)="saveChanges()">
+              {{ t('saveChanges') }}
+            </app-agridata-button>
           } @else {
             <app-agridata-button
               [variant]="ButtonVariants.Tertiary"
@@ -92,7 +106,7 @@
     <div class="flex flex-col gap-4">
       <span
         class="whitespace-pre-line text-center"
-        [innerHTML]="t('publishConfirmation.description')"
+        [i18nFormat]="t('publishConfirmation.description')"
       ></span>
       <div class="flex justify-between gap-2">
         <app-agridata-button [variant]="ButtonVariants.Secondary" (handleClick)="cancelPublish()">

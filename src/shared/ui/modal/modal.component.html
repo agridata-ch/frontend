@@ -5,10 +5,11 @@
       class="bg-white border border-gray-300 rounded-lg shadow-lg p-6 m-4 max-h-screen overflow-auto max-w-3xl"
     >
       <!-- Header with title and close button -->
-      <div class="flex justify-between items-center mb-4">
+      <div class="flex gap-4 justify-between items-center mb-4">
         <h3 class="flex-1 text-center">{{ title() }}</h3>
         @if (showCloseButton()) {
           <app-agridata-button
+            [ariaLabel]="'common.ariaLabel.close' | i18n"
             [variant]="ButtonVariants.Icon"
             [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
             (handleClick)="close()"

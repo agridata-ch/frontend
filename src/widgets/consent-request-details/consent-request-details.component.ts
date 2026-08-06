@@ -10,15 +10,12 @@ import {
   signal,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { DataRequestAdvantagesComponent } from '@/data-request-advantages';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { MasterDataService } from '@/entities/api/master-data.service';
-import { ConsentRequestStateEnum, DataRequestPurposeDto } from '@/entities/openapi';
+import { ConsentRequestStateEnum } from '@/entities/openapi';
 import {
   FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM,
   REDIRECT_TIMEOUT,
@@ -37,18 +34,15 @@ import {
   createResourceErrorHandlerEffect,
   createResourceValueComputed,
 } from '@/shared/lib/api.helper';
+import { ScrollFadeDirective } from '@/shared/scroll-fade';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService } from '@/shared/toast';
-import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal';
 import { startCountdown } from '@/shared/utils/ui.util';
-import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { AlertComponent, AlertType } from '@/widgets/alert';
-import { DataRequestContactComponent } from '@/widgets/data-request-contact';
-import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
-import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-purpose-accordion';
+import { DataRequestContentComponent } from '@/widgets/data-request-content';
 
 /**
  * Implements the logic for displaying detailed consent request information. It renders metadata
@@ -57,25 +51,21 @@ import { DataRequestPurposeAccordionComponent } from '@/widgets/data-request-pur
  * contextual toast notifications. When a valid redirect URI is provided, the component shows
  * a modal with a countdown timer before automatically redirecting the user to the specified URL.
  *
- * CommentLastReviewed: 2025-11-17
+ * CommentLastReviewed: 2026-08-04
  */
 @Component({
   selector: 'app-consent-request-details',
   imports: [
     AgridataBadgeComponent,
-    AgridataContactCardComponent,
     AlertComponent,
     ButtonComponent,
-    DataRequestContactComponent,
-    DataRequestPrivacyInfosComponent,
-    DataRequestPurposeAccordionComponent,
+    DataRequestContentComponent,
     ErrorOutletComponent,
-    FontAwesomeModule,
     I18nDirective,
     I18nPipe,
     ModalComponent,
+    ScrollFadeDirective,
     SidepanelComponent,
-    DataRequestAdvantagesComponent,
   ],
   templateUrl: './consent-request-details.component.html',
 })
@@ -92,7 +82,6 @@ export class ConsentRequestDetailsComponent {
   private readonly document = inject(DOCUMENT);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
-  private readonly metaDataService = inject(MasterDataService);
   private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
 
@@ -101,8 +90,6 @@ export class ConsentRequestDetailsComponent {
 
   // Constants
   protected readonly AlertType = AlertType;
-  protected readonly AvatarSize = AvatarSize;
-  protected readonly AvatarSkin = AvatarSkin;
   protected readonly badgeSize = BadgeSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly consentRequestStateEnum = ConsentRequestStateEnum;
@@ -157,40 +144,12 @@ export class ConsentRequestDetailsComponent {
       return this.consentRequestService.fetchConsentRequest(params.id);
     },
   });
-  protected readonly currentLanguage = computed(() => this.i18nService.lang());
-  protected readonly dataConsumerCity = computed(
-    () => this.request()?.dataRequest?.dataConsumerCity,
-  );
-  protected readonly dataConsumerName = computed(
-    () => this.request()?.dataRequest?.dataConsumerDisplayName,
-  );
-  protected readonly dataProvider = computed(() => {
-    const providerId = this.request()?.dataRequest?.dataProviderId;
-    return this.metaDataService.dataProviders().find((provider) => provider.id === providerId);
-  });
   protected readonly formattedLastStateChangeDate = computed(() =>
     formatDate(this.request()?.lastStateChangeDate),
   );
   protected readonly formattedRequestDate = computed(() => formatDate(this.request()?.requestDate));
   protected readonly request = createResourceValueComputed(this.consentRequestResource);
-  protected readonly requestConsumerLogo = computed(
-    () => this.request()?.dataRequest?.dataConsumerLogoBase64,
-  );
-  protected readonly requestDescription = computed(() =>
-    this.i18nService.useObjectTranslation(this.request()?.dataRequest?.description),
-  );
   protected readonly requestId = computed(() => this.request()?.id);
-  protected readonly requestProducts = computed(() => {
-    return this.metaDataService
-      .getProductsForProvider(this.request()?.dataRequest?.dataProviderId ?? '')
-      ?.filter((product) => this.request()?.dataRequest?.products?.includes(product.id));
-  });
-  protected readonly requestPurpose = computed(() => {
-    const purpose = this.request()?.dataRequest?.purpose;
-    return (
-      (purpose as Record<string, string>)?.[this.currentLanguage()] ?? ('' as DataRequestPurposeDto)
-    );
-  });
   protected readonly requestStateCode: Signal<ConsentRequestStateEnum | undefined> = computed(
     () => this.request()?.stateCode,
   );

@@ -52,6 +52,18 @@ describe('DataProductDetailInfoComponent', () => {
     });
   });
 
+  describe('nested translation field disabling', () => {
+    it('should render the name input disabled AND greyed when the name group is disabled', async () => {
+      component['form']().get('name')?.disable();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const input = fixture.nativeElement.querySelector('#name-de') as HTMLInputElement;
+      expect(input.disabled).toBe(true);
+      expect(input.classList.contains('bg-gray-100')).toBe(true);
+    });
+  });
+
   describe('language rendering', () => {
     it('should render name, description and extendedDescription controls for each available language', () => {
       for (const lang of availableLangs) {

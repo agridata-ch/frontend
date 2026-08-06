@@ -6,8 +6,9 @@
   class="absolute flex items-center justify-center inset-0"
 ></fa-icon>
 } @else {
-<div class="container mx-auto px-10 pb-10 pt-20 flex flex-col items-center">
+<div class="container mx-auto px-10 pb-10 pt-20 flex flex-col items-center gap-6">
   <div [innerHTML]="content() | markdown"></div>
+  <span class="w-full font-bold">{{ `${version()}, ${validFrom()}` }}</span>
 </div>
 @if (footerBlock()) {
 <app-cms-footer-block [block]="footerBlock()" />

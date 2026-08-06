@@ -53,6 +53,7 @@
 - **EmptyStateComponent** [client] — props: title, message, additionalInfo — `src/shared/ui/empty-state/empty-state.component.ts`
 - **AgridataFileDownloadComponent** [client] — props: fileName, sizeBytes, isOpening, downloadable, isDownloading, downloadLabel, removable, markedForRemoval, badgeText, badgeVariant — `src/shared/ui/file-download/agridata-file-download.component.ts`
 - **FormControlComponent** [client] — props: categories, control, controlType, disabled, helperText, id, inputPrefix, label, options, pattern — `src/shared/ui/form-control/form-control.component.ts`
+- **LinkedTextComponent** [client] — props: parts, href — `src/shared/ui/linked-text/linked-text.component.ts`
 - **ModalComponent** [client] — props: title, showCloseButton, dataTestId — `src/shared/ui/modal/modal.component.ts`
 - **PopoverComponent** [client] — props: isOpen, class — `src/shared/ui/popover/popover.component.ts`
 - **ProgressBarComponent** [client] — props: label, value — `src/shared/ui/progress-bar/progress-bar.component.ts`
@@ -62,6 +63,7 @@
 - **AccountOverlayComponent** [client] — props: userInfo — `src/widgets/account-overlay/account-overlay.component.ts`
 - **AdminDataRequestDetailsComponent** [client] — props: dataRequestId — `src/widgets/admin-data-request-details/admin-data-request-details.component.ts`
 - **AdminDataRequestTableComponent** [client] — props: dataRequests — `src/widgets/admin-data-request-table/admin-data-request-table.component.ts`
+- **AgbModalComponent** [client] — `src/widgets/agb-modal/agb-modal.component.ts`
 - **AgridataAccordionComponent** [client] — props: header, isLarge — `src/widgets/agridata-accordion/agridata-accordion.component.ts`
 - **AgridataContactCardComponent** [client] — props: name, secondaryName, imageUrl, size, skin — `src/widgets/agridata-contact-card/agridata-contact-card.component.ts`
 - **AgridataWizardStepperComponent** [client] — props: steps, currentStep — `src/widgets/agridata-wizard/agridata-wizard-stepper/agridata-wizard-stepper.component.ts`
@@ -98,10 +100,10 @@
 - **ContactSupportInfoComponent** [client] — `src/widgets/contact-support-info/contact-support-info.component.ts`
 - **CookiebannerComponent** [client] — `src/widgets/cookiebanner/cookiebanner.component.ts`
 - **DataProductDetailFormComponent** [client] — props: dataProductId — `src/widgets/data-product-detail-form/data-product-detail-form.component.ts`
-- **DataProductDetailInfoComponent** [client] — props: form, isViewMode — `src/widgets/data-product-detail-form/data-product-detail-info/data-product-detail-info.component.ts`
+- **DataProductDetailInfoComponent** [client] — props: form, isViewMode, stateCode — `src/widgets/data-product-detail-form/data-product-detail-info/data-product-detail-info.component.ts`
 - **DataProductDetailDocumentsComponent** [client] — props: form, isViewMode — `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-documents/data-product-detail-documents.component.ts`
 - **DataProductDetailLinksDocumentsComponent** [client] — props: form, isViewMode — `src/widgets/data-product-detail-form/data-product-detail-links-documents/data-product-detail-links-documents.component.ts`
-- **DataProductDetailTechnicalComponent** [client] — props: form, isViewMode, preselectedProviderId — `src/widgets/data-product-detail-form/data-product-detail-technical/data-product-detail-technical.component.ts`
+- **DataProductDetailTechnicalComponent** [client] — props: form, isEditMode, isViewMode, preselectedProviderId — `src/widgets/data-product-detail-form/data-product-detail-technical/data-product-detail-technical.component.ts`
 - **DataProductLinksComponent** [client] — props: form, formDisabled — `src/widgets/data-product-links/data-product-links.component.ts`
 - **DataRequestCompletionSignatureComponent** [client] — props: signature, position — `src/widgets/data-request-completion/data-request-completion-signature/data-request-completion-signature.component.ts`
 - **DataRequestCompletionSigningStatusComponent** [client] — props: contract, dataRequestStateCode — `src/widgets/data-request-completion/data-request-completion-signing-status/data-request-completion-signing-status.component.ts`

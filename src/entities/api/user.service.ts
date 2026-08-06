@@ -40,6 +40,7 @@ export class UserService {
     return firstValueFrom(
       this.apiService
         .getProducers(
+          queryDto.language,
           queryDto.page,
           queryDto.searchTerm,
           queryDto.size,

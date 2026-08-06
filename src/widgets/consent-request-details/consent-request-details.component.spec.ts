@@ -25,12 +25,14 @@ import {
   createMockErrorHandlerService,
   MockErrorHandlerService,
   createMockMasterDataService,
+  MockMasterDataService,
   createMockDocument,
   MockLocation,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ToastService } from '@/shared/toast';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
+import { DataRequestContentComponent } from '@/widgets/data-request-content';
 
 describe('ConsentRequestDetailsComponent', () => {
   let fixture: ComponentFixture<ConsentRequestDetailsComponent>;
@@ -43,12 +45,14 @@ describe('ConsentRequestDetailsComponent', () => {
   let mockRouter: Router;
   let activeRoute: MockActivatedRoute;
   let mockLocation: MockLocation;
+  let masterDataService: MockMasterDataService;
   beforeEach(async () => {
     toastService = { show: jest.fn() };
     agridataStateService = createMockAgridataStateService();
     consentRequestService = createMockConsentRequestService();
     errorService = createMockErrorHandlerService();
     activeRoute = createMockActivatedRoute();
+    masterDataService = createMockMasterDataService();
     mockRouter = {
       navigate: jest.fn().mockResolvedValue(true),
     } as unknown as jest.Mocked<Router>;
@@ -71,7 +75,7 @@ describe('ConsentRequestDetailsComponent', () => {
         { provide: ConsentRequestService, useValue: consentRequestService },
         { provide: AgridataStateService, useValue: agridataStateService },
         { provide: AnalyticsService, useValue: createMockAnalyticsService() },
-        { provide: MasterDataService, useValue: createMockMasterDataService() },
+        { provide: MasterDataService, useValue: masterDataService },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: Router, useValue: mockRouter },
@@ -437,5 +441,18 @@ describe('ConsentRequestDetailsComponent', () => {
     await fixture.whenStable();
 
     expect(errorService.handleError).toHaveBeenCalledWith(testError);
+  });
+
+  it('should render the data request content of the loaded request', async () => {
+    consentRequestService.fetchConsentRequest.mockResolvedValue(
+      mockConsentRequests[0] as ConsentRequestProducerViewDto,
+    );
+    componentRef.setInput('consentRequestId', '1');
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const content = fixture.debugElement.query(By.directive(DataRequestContentComponent));
+    expect(content.componentInstance.dataRequest()).toEqual(mockConsentRequests[0].dataRequest);
   });
 });

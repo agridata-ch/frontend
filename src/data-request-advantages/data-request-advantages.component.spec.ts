@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { DataRequestAdvantageDto } from '@/entities/openapi';
+import { I18nService } from '@/shared/i18n';
+import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { DataRequestAdvantagesComponent } from './data-request-advantages.component';
@@ -13,6 +15,16 @@ const mockAdvantages: DataRequestAdvantageDto[] = [
 ];
 
 describe('DataRequestAdvantagesComponent', () => {
+  let i18nService: MockI18nService;
+
+  beforeEach(() => {
+    i18nService = createMockI18nService();
+
+    TestBed.configureTestingModule({
+      providers: [{ provide: I18nService, useValue: i18nService }],
+    });
+  });
+
   describe('getAdvantageText', () => {
     let component: DataRequestAdvantagesComponent;
     let fixture: ComponentFixture<DataRequestAdvantagesComponent>;
@@ -29,8 +41,16 @@ describe('DataRequestAdvantagesComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should return empty string when lang is undefined', () => {
-      expect(component['getAdvantageText'](mockAdvantages[0], undefined)).toBe('');
+    it('should fall back to the active i18n lang when lang is undefined (DE)', () => {
+      i18nService.setActiveLang('de');
+
+      expect(component['getAdvantageText'](mockAdvantages[0])).toBe('Vorteil Deutsch');
+    });
+
+    it('should fall back to the active i18n lang when lang is undefined (FR)', () => {
+      i18nService.setActiveLang('fr');
+
+      expect(component['getAdvantageText'](mockAdvantages[0])).toBe('Avantage Français');
     });
 
     it('should return the German text for lang "de"', () => {

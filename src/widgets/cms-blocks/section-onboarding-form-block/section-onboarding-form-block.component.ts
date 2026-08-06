@@ -15,12 +15,9 @@ import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
 import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
+import { LinkedTextParts, parseLinkedText } from '@/shared/utils';
 
-import {
-  AGATE_URLS,
-  SubheadingParts,
-  parseSubheadingParts,
-} from './section-onboarding-form-block.model';
+import { AGATE_URLS } from './section-onboarding-form-block.model';
 
 /**
  * Renders an onboarding form with company details and a dynamic list of persons.
@@ -52,10 +49,8 @@ export class SectionOnboardingFormBlockComponent {
     () => AGATE_URLS[this.i18nService.lang()] ?? AGATE_URLS['de'],
   );
   protected readonly cmsData = computed(() => this.block() as SectionOnboardingFormBlock);
-  protected readonly personSubheadingParts = computed<SubheadingParts>(() =>
-    parseSubheadingParts(
-      this.i18nService.translate('onboardingForm.data-request-person.subheading'),
-    ),
+  protected readonly personSubheadingParts = computed<LinkedTextParts>(() =>
+    parseLinkedText(this.i18nService.translate('onboardingForm.data-request-person.subheading')),
   );
 
   protected readonly onboardingForm = new FormGroup({

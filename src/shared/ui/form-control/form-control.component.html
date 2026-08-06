@@ -1,107 +1,139 @@
-<div
-  class="flex flex-col transition-all duration-300 ease-in-out"
-  [class.gap-2]="!isViewMode()"
-  [class.gap-1]="isViewMode()"
->
-  <label
-    [for]="id()"
-    class="font-medium leading-[130%] transition-all duration-300 ease-in-out"
-    [class.text-red-500]="hasError()"
-    [class.text-agridata-secondary-text]="isViewMode()"
-    [class.text-xs]="isViewMode()"
+<div class="flex transition-all duration-300 ease-in-out grow items-center gap-2">
+  <div
+    class="flex flex-col transition-all duration-300 ease-in-out grow"
+    [class.gap-2]="!isViewMode()"
+    [class.gap-1]="isViewMode()"
   >
-    {{ label() }}
-  </label>
-  @if (controlType() === ControlTypes.INPUT) {
-    <app-agridata-input
-      [control]="control()"
-      [id]="id()!"
-      [type]="type()"
-      [placeholder]="placeholder()"
-      (handleBlur)="handleBlur.emit()"
-      [maxCharacters]="getMaxCharacters()"
-      [hasError]="hasError()"
-      [inputPrefix]="inputPrefix()"
-      [disabled]="disabled()"
-      [isViewMode]="isViewMode()"
-    />
-  }
-  @if (controlType() === ControlTypes.SELECT) {
-    <app-agridata-select
-      [control]="control()"
-      [options]="options()"
-      [placeholder]="placeholder()"
-      [hasError]="hasError()"
-      [disabled]="disabled()"
-      [isViewMode]="isViewMode()"
-    />
-  }
-  @if (controlType() === ControlTypes.MULTI_SELECT) {
-    <app-agridata-multi-select
-      [categories]="categories()"
-      [control]="control()"
-      [disabled]="disabled()"
-      [hasError]="hasError()"
-      [options]="options()"
-      [placeholder]="placeholder()"
-      [singleCategorySelection]="singleCategorySelection()"
-      [isViewMode]="isViewMode()"
-    />
-  }
-  @if (controlType() === ControlTypes.TEXT_AREA) {
-    @if (isWysiwyg()) {
-      @defer (on immediate) {
-        <app-agridata-wysiwyg
+    <label
+      [for]="id()"
+      class="font-medium leading-[130%] transition-all duration-300 ease-in-out"
+      [class.text-red-500]="hasError()"
+      [class.text-agridata-secondary-text]="isViewMode()"
+      [class.text-xs]="isViewMode()"
+    >
+      {{ label() }}
+    </label>
+    @if (controlType() === ControlTypes.INPUT) {
+      <app-agridata-input
+        class="grow"
+        [control]="control()"
+        [id]="id()!"
+        [type]="type()"
+        [placeholder]="placeholder()"
+        (handleBlur)="handleBlur.emit()"
+        [maxCharacters]="getMaxCharacters()"
+        [hasError]="hasError()"
+        [inputPrefix]="inputPrefix()"
+        [disabled]="isDisabled()"
+        [isViewMode]="isViewMode()"
+      />
+    }
+    @if (controlType() === ControlTypes.SELECT) {
+      <app-agridata-select
+        [control]="control()"
+        [options]="options()"
+        [placeholder]="placeholder()"
+        [hasError]="hasError()"
+        [disabled]="isDisabled()"
+        [isViewMode]="isViewMode()"
+      />
+    }
+    @if (controlType() === ControlTypes.MULTI_SELECT) {
+      <app-agridata-multi-select
+        [categories]="categories()"
+        [control]="control()"
+        [disabled]="isDisabled()"
+        [hasError]="hasError()"
+        [options]="options()"
+        [placeholder]="placeholder()"
+        [singleCategorySelection]="singleCategorySelection()"
+        [isViewMode]="isViewMode()"
+      />
+    }
+    @if (controlType() === ControlTypes.TEXT_AREA) {
+      @if (isWysiwyg()) {
+        @defer (on immediate) {
+          <app-agridata-wysiwyg
+            [control]="control()"
+            [id]="id()!"
+            [placeholder]="placeholder()"
+            (handleBlur)="handleBlur.emit()"
+            [maxCharacters]="getMaxCharacters()"
+            [hasError]="hasError()"
+            [disabled]="isDisabled()"
+            [isViewMode]="isViewMode()"
+          />
+        } @placeholder {
+          <div class="h-40 rounded-md border border-gray-300 bg-gray-50"></div>
+        } @error {
+          <!--
+          The editor chunk failed to load. Falling back to an editable textarea would show the raw
+          HTML markup as literal text and write the corrupted value back on save, so render the
+          stored content read-only instead. Safe: the bound value is a plain string, so Angular's
+          DomSanitizer runs automatically on [innerHTML].
+        -->
+          <div
+            class="rich-text-content text-agridata-primary-text whitespace-pre-line"
+            [innerHTML]="control()?.value"
+          ></div>
+        }
+      } @else {
+        <app-agridata-textarea
           [control]="control()"
           [id]="id()!"
           [placeholder]="placeholder()"
           (handleBlur)="handleBlur.emit()"
           [maxCharacters]="getMaxCharacters()"
           [hasError]="hasError()"
-          [disabled]="disabled()"
+          [disabled]="isDisabled()"
           [isViewMode]="isViewMode()"
         />
-      } @placeholder {
-        <div class="h-40 rounded-md border border-gray-300 bg-gray-50"></div>
-      } @error {
-        <!--
-          The editor chunk failed to load. Falling back to an editable textarea would show the raw
-          HTML markup as literal text and write the corrupted value back on save, so render the
-          stored content read-only instead. Safe: the bound value is a plain string, so Angular's
-          DomSanitizer runs automatically on [innerHTML].
-        -->
-        <div
-          class="rich-text-content text-agridata-primary-text whitespace-pre-line"
-          [innerHTML]="control()?.value"
-        ></div>
       }
-    } @else {
-      <app-agridata-textarea
-        [control]="control()"
-        [id]="id()!"
-        [placeholder]="placeholder()"
-        (handleBlur)="handleBlur.emit()"
-        [maxCharacters]="getMaxCharacters()"
-        [hasError]="hasError()"
-        [disabled]="disabled()"
+    }
+    @if (controlType() === ControlTypes.DIGIT_INPUT) {
+      <app-agridata-digit-input
+        [control]="control()!"
+        [length]="length()"
         [isViewMode]="isViewMode()"
       />
     }
-  }
-  @if (controlType() === ControlTypes.DIGIT_INPUT) {
-    <app-agridata-digit-input
-      [control]="control()!"
-      [length]="length()"
-      [isViewMode]="isViewMode()"
-    />
-  }
-  @if (!isViewMode()) {
-    <span class="min-h-[1.5em] block text-gray-700" [class.text-red-500]="hasError()">
-      @if (hasError()) {
-        <span class="text-sm">{{ errorMessage() }}</span>
-      } @else if (helperText()) {
-        <span class="text-sm">{{ helperText() }}</span>
-      }
-    </span>
+    @if (!isViewMode()) {
+      <span class="min-h-[1.5em] block text-gray-700" [class.text-red-500]="hasError()">
+        @if (hasError()) {
+          <span class="text-sm">{{ errorMessage() }}</span>
+        } @else if (helperText()) {
+          <span class="text-sm">{{ helperText() }}</span>
+        }
+      </span>
+    }
+  </div>
+  @if (!isDisabled() && showEditButton()) {
+    @if (isViewMode()) {
+      <app-agridata-button
+        [variant]="ButtonVariants.IconLink"
+        (handleClick)="editAction.emit()"
+        additionalClass="h-fit"
+      >
+        <fa-icon [icon]="editIcon" />
+        <span>{{ 'form-control.editAction.label' | i18n }}</span>
+      </app-agridata-button>
+    } @else {
+      <app-agridata-button
+        [variant]="ButtonVariants.Primary"
+        [loading]="loading()"
+        (handleClick)="saveAction.emit()"
+        additionalClass="h-fit mb-1"
+      >
+        <span>{{ 'form-control.saveAction.label' | i18n }}</span>
+      </app-agridata-button>
+      <app-agridata-button
+        [variant]="ButtonVariants.Tertiary"
+        [disabled]="loading()"
+        (handleClick)="cancelAction.emit()"
+        additionalClass="h-fit mb-1"
+      >
+        <span>{{ 'form-control.cancelAction.label' | i18n }}</span>
+      </app-agridata-button>
+    }
   }
 </div>

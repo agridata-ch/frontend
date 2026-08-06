@@ -7,10 +7,7 @@ import { I18nService } from '@/shared/i18n';
 import { MockI18nService, createMockI18nService } from '@/shared/testing/mocks';
 
 import { DataRequestFormRequestDescriptionComponent } from './data-request-form-request-description.component';
-import {
-  PURPOSE_PDF_FILENAMES,
-  parsePurposeSublabel,
-} from './data-request-form-request-description.model';
+import { PURPOSE_PDF_FILENAMES } from './data-request-form-request-description.model';
 
 const createMockForm = () =>
   new FormGroup({
@@ -38,23 +35,6 @@ let fixture: ComponentFixture<DataRequestFormRequestDescriptionComponent>;
 let component: DataRequestFormRequestDescriptionComponent;
 let componentRef: ComponentRef<DataRequestFormRequestDescriptionComponent>;
 let mockI18nService: MockI18nService;
-
-describe('parsePurposeSublabel', () => {
-  it('splits text into before, linkText and after when brackets are present', () => {
-    const result = parsePurposeSublabel('Read the [guide] for details.');
-    expect(result).toEqual({ before: 'Read the ', linkText: 'guide', after: ' for details.' });
-  });
-
-  it('returns full string as before and null linkText when no brackets present', () => {
-    const result = parsePurposeSublabel('No link here.');
-    expect(result).toEqual({ before: 'No link here.', linkText: null, after: '' });
-  });
-
-  it('returns empty after when the bracket is at the end', () => {
-    const result = parsePurposeSublabel('See [here]');
-    expect(result).toEqual({ before: 'See ', linkText: 'here', after: '' });
-  });
-});
 
 describe('DataRequestDescriptionComponent', () => {
   beforeEach(async () => {

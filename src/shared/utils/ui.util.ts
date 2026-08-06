@@ -13,13 +13,14 @@ export enum VerticalPlacement {
  *
  * CommentLastReviewed: 2026-07-10
  *
- * @param triggerRect Bounding rect of the element the floating content anchors to.
+ * @param triggerRect Vertical bounds of what the floating content anchors to. Accepts a full
+ * `DOMRect` as well as a zero-height point, e.g. a mouse cursor position.
  * @param contentHeight Rendered height of the floating content, in pixels.
  * @param viewportHeight Viewport height to measure against; defaults to `window.innerHeight`.
  * @returns BOTTOM when the content fits below the trigger or there is no more room above, otherwise TOP.
  */
 export function calculateVerticalPlacement(
-  triggerRect: DOMRect,
+  triggerRect: Pick<DOMRect, 'bottom' | 'top'>,
   contentHeight: number,
   viewportHeight: number = window.innerHeight,
 ): VerticalPlacement {

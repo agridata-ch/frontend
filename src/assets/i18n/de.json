@@ -52,7 +52,7 @@
         "OPENED": "Offen",
         "UNKNOWN": "Unbekannt"
       },
-      "footerInformation": "Entscheid jederzeit änderbar.",
+      "footerInformation": "Sie können Ihre Entscheidung später jederzeit hier ändern. Daten können nur übermittelt werden, wenn eine aktive Zustimmung vorliegt.",
       "requestDate": "Anfrage vom {{ date }}",
       "sidepanel": {
         "title": "Detailansicht"
@@ -277,23 +277,11 @@
     "preview": {
       "title": "Vorschau der Datenanfrage (Ansicht für Landwirte)"
     },
-    "privacy": {
-      "consent": {
-        "title": "Zustimmung",
-        "description": "Mit Ihrer Zustimmung kann {{ consumerName }} die oben aufgeführten Daten abrufen."
-      },
-      "dataProtection": {
-        "title": "Datenschutz",
-        "description": "Zwischen {{ systemName }} und {{ consumerName }} besteht ein Vertrag, der den oben beschriebenen Zweck und die Nutzung der Daten eindeutig regelt. {{ consumerName }} ist verpflichtet, die Bestimmungen des Datenschutzgesetzes einzuhalten."
-      },
-      "revocation": {
-        "title": "Änderungsmöglichkeit",
-        "description": "Sie haben jederzeit die Möglichkeit, Ihren Entscheid zu ändern."
-      }
-    },
     "purpose": {
-      "title": "Zweck der Datennutzung",
-      "description": "Folgende Daten werden übermittelt:",
+      "title": "Zweck der Datennutzung: Was macht {{ consumer }} mit meinen Daten?"
+    },
+    "products": {
+      "description": "Folgende Datenprodukte werden von {{ provider }} an {{ consumer }} übermittelt:",
       "moreInfos": "Weitere Details anzeigen"
     },
     "wizard": {
@@ -382,7 +370,8 @@
         "request": "Antrag",
         "producer": "Produzenten",
         "contract": "Vertrag",
-        "email": "E-Mail Vorlage"
+        "email": "E-Mail Vorlage",
+        "preview": "Anfrage an Produzent"
       },
       "sidePanelTitle": "Detailansicht",
       "redirectUriRegex": {
@@ -399,7 +388,11 @@
         }
       }
     },
-    "invitationLink": "Einladungslink",
+    "invitationLink": {
+      "label": "Einladungslink",
+      "copyToClipboard": "Link in die Zwischenablage kopieren",
+      "copied": "Link kopiert"
+    },
     "productsSystemCode": "System",
     "contractSigning": {
       "title": "Vertrag unterzeichnen",
@@ -416,7 +409,6 @@
           "dataProvider": "Unterzeichnung Datenanbieter"
         },
         "badgeText": "Person {{ position }}",
-        "agbText": "Mit meiner Unterzeichnung bestätige ich die [Allgemeinen Geschäftsbedingungen] gelesen zu haben.",
         "inReviewBox": {
           "description": "Unterzeichnung noch ausstehend...",
           "iconAltText": "Bild mit einer Sanduhr und einer Uhr im Hintergrund"
@@ -527,6 +519,10 @@
     },
     "advantages": {
       "heading": "Meine Vorteile"
+    },
+    "privacy": {
+      "title": "Datenschutz",
+      "description": "Zwischen {{ provider }} und {{ consumer }} besteht ein Vertrag für die Datenübermittlung. Dieser Vertrag **regelt die ausschliessliche Nutzung für den oben beschriebenen Zweck** und verpflichtet {{ consumer }} rechtlich zur Einhaltung des Schweizer Datenschutzgesetzes (DSG)."
     }
   },
   "forms": {
@@ -548,7 +544,8 @@
       "notifications": "Benachrichtigungen",
       "imprint": "Impressum",
       "privacyPolicy": "Datenschutz",
-      "home": "Startseite"
+      "home": "Startseite",
+      "agb": "AGB"
     }
   },
   "producer": {
@@ -779,17 +776,36 @@
         "title": "Ihre Datenanfragen",
         "description": "Hier finden Sie alle Anfragen von Datenbezügern auf einen Blick.\n\nKlicken Sie einfach auf eine Anfrage, um alle Details dazu einzusehen."
       },
-      "dataRequestPurpose": {
-        "title": "Zweck der Datennutzung",
-        "description": "Erfahren Sie hier, warum Ihre Daten angefragt werden und welchen konkreten Mehrwert Sie davon haben.\n\nSie möchten genau wissen, welche Informationen übermittelt werden? Klicken Sie dazu einfach auf „Folgende Daten werden übermittelt:“."
+      "dataRequestProducts": {
+        "title": "Welche Daten werden übermittelt?",
+        "description": "Sie möchten genau wissen, welche Informationen übermittelt werden? Klicken Sie dazu einfach auf „Folgende Daten werden von ... übermittelt:“."
       },
       "consentRequestConsent": {
         "title": "Entscheidung treffen",
         "description": "Mit den Buttons wählen Sie: Grün zum Zustimmen, Rot zum Ablehnen. Sie behalten immer die volle Kontrolle und können Ihre Wahl später einfach wieder ändern."
+      },
+      "dataRequestPurpose": {
+        "title": "Zweck der Datennutzung",
+        "description": "Erfahren Sie hier, warum Ihre Daten angefragt werden und welchen konkreten Mehrwert Sie davon haben."
       }
     },
     "startTour": "Tour starten",
     "title": "Anleitung"
+  },
+  "agb": {
+    "modal": {
+      "toggleText": "Hiermit bestätige ich die [Allgemeinen Geschäftsbedingungen] gelesen zu haben.",
+      "title": "AGBs bestätigen",
+      "remindLater": "Später erinnern",
+      "accept": "Bestätigen",
+      "blockingInfo": "Die Übergangsfrist für die neuen AGB ist am {{enforceConsentFrom}} abgelaufen. Um [agridata.ch] weiterhin zu nutzen, ist deine Bestätigung notwendig.",
+      "updatedInfo": "Wir haben unsere Allgemeinen Geschäftsbedingungen (AGB) aktualisiert. Bitte lies die neuen Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein. Die Zustimmung zu den aktualisierten Bedingungen kannst du über die untenstehende Auswahl erteilen.",
+      "generalInfo": "Um [agridata.ch] verwenden zu können, müssen die Allgemeinen Geschäftsbedingungen (AGB) gelesen und akzeptiert werden. Bitte lies die Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein. Die Zustimmung zu den Bedingungen kannst du über die untenstehende Auswahl erteilen.",
+      "deadlineInfo": "Wir haben unsere Allgemeinen Geschäftsbedingungen (AGB) aktualisiert. Bitte lies die neuen Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein und stimme diesen bis zum {{enforceConsentFrom}} zu. Die Zustimmung zu den aktualisierten Bedingungen kannst du über die untenstehende Auswahl erteilen."
+    },
+    "page": {
+      "version": "Version {{ version }}"
+    }
   },
   "notifications": {
     "markAsRead": {
@@ -821,9 +837,20 @@
       "name": "Datenprodukt",
       "system": "System",
       "actions": {
-        "viewDetails": "Anzeigen"
+        "viewDetails": "Anzeigen",
+        "delete": "Löschen"
       },
-      "stateCode": "Status"
+      "stateCode": "Status",
+      "deleteProduct": {
+        "title": "Entwurf unwiderruflich löschen?",
+        "description": "Möchten Sie den Entwurf {{productName}} wirklich löschen? \nDiese Aktion kann nicht rückgängig gemacht werden.",
+        "cancel": "Abbrechen",
+        "delete": "Unwiderruflich löschen",
+        "success": {
+          "title": "Entwurf gelöscht",
+          "message": "Der Entwurf wurde erfolgreich gelöscht."
+        }
+      }
     },
     "createNew": "Datenprodukt erfassen",
     "detailPanel": {
@@ -832,7 +859,7 @@
       "titleUpdate": "Datenprodukt bearbeiten",
       "publishConfirmation": {
         "title": "Datenprodukt publizieren?",
-        "description": "Mit dem Publizieren wird dieses Datenprodukt auf agridata.ch live geschaltet. \nBitte beachten Sie:\n\n<b>Öffentlicher Katalog:</b> Das Produkt ist ab sofort für alle Datenbezüger sichtbar.\n<b>Datenantrag:</b> Datenbezüger können direkt einen digitalen Antrag für diese Daten stellen.\n<b>Produzenten-Zustimmung:</b> Name und Beschreibung werden eins zu eins den Landwirten und Tierhaltern angezeigt, wenn sie ihre Zustimmung zur Datenfreigabe erteilen. Bitte achten Sie auf eine einfache, verständliche Sprache.",
+        "description": "Mit dem Publizieren wird dieses Datenprodukt auf agridata.ch live geschaltet. \nBitte beachten Sie:\n\n**Öffentlicher Katalog:** Das Produkt ist ab sofort für alle Datenbezüger sichtbar.\n**Datenantrag:** Datenbezüger können direkt einen digitalen Antrag für diese Daten stellen.\n**Produzenten-Zustimmung:** Name und Beschreibung werden eins zu eins den Landwirten und Tierhaltern angezeigt, wenn sie ihre Zustimmung zur Datenfreigabe erteilen. Bitte achten Sie auf eine einfache, verständliche Sprache.",
         "cancel": "Abbrechen",
         "publish": "Ja, publizieren"
       }
@@ -850,6 +877,9 @@
         "it": {
           "label": "Name Italienisch",
           "placeholder": "p.es. Animali da reddito estivati"
+        },
+        "disabledInfo": {
+          "message": "Hinweis: Titel und Beschreibung können nach der Aktivierung nicht selbstständig bearbeitet werden. Gewünschte Änderungen können via [mailto:support@agridata.ch] beantragt werden."
         }
       },
       "dataProduct": "Name und Beschreibung Datenprodukt",
@@ -970,8 +1000,18 @@
         "documentsToUpload": "Hochzuladene Dateien",
         "uploadedDocuments": "Vorhandene Dokumente",
         "markedForRemoval": "Wird entfernt",
-        "empty": "Keine Dokumente vorhanden."
-      }
+        "empty": "Keine Dokumente vorhanden.",
+        "notReady": {
+          "title": "Dokumente noch nicht bereit",
+          "message": "Ein Dokument wurde abgelehnt oder konnte nicht verarbeitet werden. Bitte entferne es und versuche es erneut."
+        }
+      },
+      "dataSourceSystemId": {
+        "disabledInfo": {
+          "message": "Hinweis: Das System kann nach der Aktivierung nicht selbstständig bearbeitet werden. Gewünschte Änderungen können via [mailto:support@agridata.ch] beantragt werden."
+        }
+      },
+      "saveChanges": "Änderungen publizieren"
     },
     "saveAndPublish": {
       "success": {
@@ -991,6 +1031,16 @@
       "error": {
         "title": "Speichern als Entwurf fehlgeschlagen.",
         "message": "Beim speichern als Entwurf ist etwas schief gelaufen. Bitte versuchen Sie es später noch einmal."
+      }
+    },
+    "saveChanges": {
+      "success": {
+        "title": "Änderungen erfolgreich publiziert",
+        "message": "Die Änderungen wurden erfolgreich publiziert"
+      },
+      "error": {
+        "title": "Speichern fehlgeschlagen",
+        "message": "Die Änderungen konnten nicht publiziert werden"
       }
     }
   },
@@ -1122,5 +1172,16 @@
     "download": "Herunterladen",
     "remove": "Löschen",
     "restore": "Rückgängig"
+  },
+  "form-control": {
+    "editAction": {
+      "label": "Ändern"
+    },
+    "saveAction": {
+      "label": "Speichern"
+    },
+    "cancelAction": {
+      "label": "Verwerfen"
+    }
   }
 }

@@ -8,6 +8,7 @@ import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { TooltipDirective } from '@/shared/tooltip';
 import { ToastComponent } from '@/shared/ui/toast';
+import { AgbModalComponent } from '@/widgets/agb-modal';
 import { CookiebannerComponent } from '@/widgets/cookiebanner';
 import { FooterWidgetComponent } from '@/widgets/footer-widget';
 import { HeaderWidgetComponent } from '@/widgets/header-widget';
@@ -26,6 +27,7 @@ import { SupporterOverlayComponent } from '@/widgets/supporter-overlay/supporter
   imports: [
     FontAwesomeModule,
     RouterModule,
+    AgbModalComponent,
     CookiebannerComponent,
     FooterWidgetComponent,
     HeaderWidgetComponent,

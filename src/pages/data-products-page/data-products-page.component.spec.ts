@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
-import { DataProductDto, ResourceQueryDto } from '@/entities/openapi';
+import { DataProductDto, DataProductDtoStateCode, ResourceQueryDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { PageResponseDto } from '@/shared/lib/api.helper';
 import {
@@ -12,11 +12,12 @@ import {
   createMockDataProductService,
   createMockErrorHandlerService,
   createMockI18nService,
+  createMockToastService,
   MockDataProductService,
-  MockErrorHandlerService,
   MockI18nService,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
+import { ToastService } from '@/shared/toast';
 import { CellRendererTypes } from '@/shared/ui/agridata-table';
 
 import { DataProductsPageComponent } from './data-products-page.component';
@@ -25,12 +26,21 @@ describe('DataProductsPageComponent - component behavior', () => {
   let fixture: ComponentFixture<DataProductsPageComponent>;
   let component: DataProductsPageComponent;
   let dataProductService: MockDataProductService;
-  let errorService: MockErrorHandlerService;
   let i18nService: MockI18nService;
+
+  const createProduct = (stateCode: DataProductDtoStateCode): DataProductDto => ({
+    id: 'product-1',
+    stateCode,
+    name: { de: 'Test Product' },
+    dataSourceSystem: {
+      id: 'system-1',
+      dataProvider: { id: 'provider-1' },
+      name: { de: 'System A' },
+    },
+  });
 
   beforeEach(async () => {
     dataProductService = createMockDataProductService();
-    errorService = createMockErrorHandlerService();
     i18nService = createMockI18nService();
 
     await TestBed.configureTestingModule({
@@ -38,8 +48,9 @@ describe('DataProductsPageComponent - component behavior', () => {
       providers: [
         { provide: AgridataStateService, useValue: createMockAgridataStateService() },
         { provide: DataProductService, useValue: dataProductService },
-        { provide: ErrorHandlerService, useValue: errorService },
+        { provide: ErrorHandlerService, useValue: createMockErrorHandlerService() },
         { provide: I18nService, useValue: i18nService },
+        { provide: ToastService, useValue: createMockToastService() },
         provideRouter([]),
       ],
     }).compileComponents();
@@ -82,10 +93,10 @@ describe('DataProductsPageComponent - component behavior', () => {
       testFixture.detectChanges();
       await testFixture.whenStable();
 
-      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith({}, 'de', undefined);
+      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith({}, undefined);
     });
 
-    it('should pass locale from i18nService to getAllDataProducts', async () => {
+    it('should forward the language from the query dto to getAllDataProducts', async () => {
       dataProductService.getAllDataProducts.mockResolvedValueOnce({
         items: [],
         totalItems: 0,
@@ -95,12 +106,14 @@ describe('DataProductsPageComponent - component behavior', () => {
       } as PageResponseDto<DataProductDto>);
 
       const testFixture = TestBed.createComponent(DataProductsPageComponent);
+      const testComponent = testFixture.componentInstance;
+
+      testComponent['resourceQueryDto'].set({ language: 'de', page: 0 });
       testFixture.detectChanges();
       await testFixture.whenStable();
 
       expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith(
-        expect.any(Object),
-        'de',
+        { language: 'de', page: 0 },
         undefined,
       );
     });
@@ -128,11 +141,7 @@ describe('DataProductsPageComponent - component behavior', () => {
       testFixture.detectChanges();
       await testFixture.whenStable();
 
-      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith(
-        queryParams,
-        'de',
-        undefined,
-      );
+      expect(dataProductService.getAllDataProducts).toHaveBeenCalledWith(queryParams, undefined);
     });
   });
 
@@ -184,13 +193,40 @@ describe('DataProductsPageComponent - component behavior', () => {
       }
     });
 
-    it('should configure row menu actions with one viewDetails action', () => {
+    it('should use getRowMenuActions as the row menu action factory', () => {
       const metadata = component['dataProductsTableMetaData']();
-      const actions = metadata.rowMenuActions?.();
 
-      expect(actions).toBeDefined();
-      expect(actions?.length).toBe(1);
-      expect(actions?.[0].label).toBe('data-products.table.actions.viewDetails');
+      expect(metadata.rowMenuActions).toBe(component.getRowMenuActions);
+    });
+  });
+
+  describe('row menu actions', () => {
+    it('should return no actions when no row is given', () => {
+      expect(component.getRowMenuActions()).toEqual([]);
+    });
+
+    it('should return only the viewDetails action for an active product', () => {
+      const actions = component.getRowMenuActions(createProduct(DataProductDtoStateCode.Active));
+
+      expect(actions).toHaveLength(1);
+      expect(actions[0].label).toBe('data-products.table.actions.viewDetails');
+    });
+
+    it('should return the viewDetails and delete actions for a draft product', () => {
+      const actions = component.getRowMenuActions(createProduct(DataProductDtoStateCode.Draft));
+
+      expect(actions).toHaveLength(2);
+      expect(actions[0].label).toBe('data-products.table.actions.viewDetails');
+      expect(actions[1].label).toBe('data-products.table.actions.delete');
+    });
+
+    it('should hand the product to the delete modal when the delete action is invoked', async () => {
+      const product = createProduct(DataProductDtoStateCode.Draft);
+      const actions = component.getRowMenuActions(product);
+
+      await actions[1].callback();
+
+      expect(component['productToDelete']()).toBe(product);
     });
   });
 });

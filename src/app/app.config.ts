@@ -16,6 +16,7 @@ import { provideTransloco, TRANSLOCO_TRANSPILER } from '@jsverse/transloco';
 import { authInterceptor, provideAuth } from 'angular-auth-oidc-client';
 
 import { GlobalErrorHandler } from '@/app/error/global-error-handler';
+import { agbConsentInterceptor } from '@/app/interceptors/agb-consent.interceptor';
 import { errorHttpInterceptor } from '@/app/interceptors/error-http-interceptor';
 import { impersonationInterceptor } from '@/app/interceptors/impersonation-interceptor';
 import { AgridataTitleStrategy } from '@/app/title.strategy';
@@ -46,7 +47,12 @@ export const appConfig: ApplicationConfig = {
       }),
     ),
     provideHttpClient(
-      withInterceptors([errorHttpInterceptor, authInterceptor(), impersonationInterceptor]),
+      withInterceptors([
+        agbConsentInterceptor,
+        errorHttpInterceptor,
+        authInterceptor(),
+        impersonationInterceptor,
+      ]),
     ),
     {
       provide: Configuration,

@@ -34,6 +34,7 @@ describe('DataRequestTableComponent', () => {
     mockI18nService = {
       translate: jest.fn(),
       useObjectTranslation: jest.fn(),
+      lang: signal('de'),
     } as unknown as jest.Mocked<I18nService>;
     dataRequestService = createMockDataRequestService();
     toastService = createMockToastService();

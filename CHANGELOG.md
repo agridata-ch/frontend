@@ -1,3 +1,29 @@
+## [1.16.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.16.0-rc.12...v1.16.0-rc.13) (2026-08-06)
+
+## [1.16.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.16.0-rc.11...v1.16.0-rc.12) (2026-08-05)
+
+## [1.16.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.16.0-rc.10...v1.16.0-rc.11) (2026-08-04)
+
+## [1.16.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.16.0-rc.9...v1.16.0-rc.10) (2026-08-03)
+
+## [1.16.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.16.0-rc.8...v1.16.0-rc.9) (2026-07-30)
+
+## [1.16.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.16.0-rc.7...v1.16.0-rc.8) (2026-07-29)
+
+## [1.16.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.16.0-rc.6...v1.16.0-rc.7) (2026-07-29)
+
+## [1.16.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.16.0-rc.5...v1.16.0-rc.6) (2026-07-29)
+
+## [1.16.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.16.0-rc.4...v1.16.0-rc.5) (2026-07-28)
+
+## [1.16.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.16.0-rc.3...v1.16.0-rc.4) (2026-07-27)
+
+## [1.16.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.16.0-rc.2...v1.16.0-rc.3) (2026-07-24)
+
+## [1.16.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.16.0-rc.1...v1.16.0-rc.2) (2026-07-23)
+
+## [1.16.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.15.0...v1.16.0-rc.1) (2026-07-22)
+
 ## [1.15.0](https://github.com/agridata-ch/frontend/compare/v1.14.0...v1.15.0) (2026-07-21)
 
 ### Features

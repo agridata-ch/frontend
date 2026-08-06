@@ -38,4 +38,8 @@
       />
     </ng-template>
   </app-agridata-table>
+  <app-data-products-delete-modal
+    [(product)]="productToDelete"
+    (handleDeleted)="fetchDataProductsResource.reload()"
+  />
 </ng-container>

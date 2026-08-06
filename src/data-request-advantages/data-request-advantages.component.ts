@@ -1,7 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 
 import { DataRequestAdvantageDto } from '@/entities/openapi';
-import { I18nDirective } from '@/shared/i18n';
+import { I18nDirective, I18nService } from '@/shared/i18n';
 
 /**
  * Implements the advantages preview logic
@@ -15,11 +15,14 @@ import { I18nDirective } from '@/shared/i18n';
   templateUrl: './data-request-advantages.component.html',
 })
 export class DataRequestAdvantagesComponent {
+  // Injects
+  private readonly i18nService = inject(I18nService);
+
+  // Inputs
   readonly advantages = input<DataRequestAdvantageDto[]>();
   readonly lang = input<string>();
 
   protected getAdvantageText(advantage: DataRequestAdvantageDto, lang?: string): string {
-    if (!lang) return '';
-    return (advantage as Record<string, string>)[lang] ?? '';
+    return (advantage as Record<string, string>)[lang ?? this.i18nService.lang()] ?? '';
   }
 }

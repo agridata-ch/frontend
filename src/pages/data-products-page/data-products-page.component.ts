@@ -9,13 +9,23 @@ import {
   viewChild,
 } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { faEye, faLayerGroup, faPlus } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import {
+  faEye,
+  faLayerGroup,
+  faPlus,
+  faTrashCan,
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
-import { DataProductDto, PageResponseDto, ResourceQueryDto } from '@/entities/openapi';
+import {
+  DataProductDto,
+  DataProductDtoStateCode,
+  PageResponseDto,
+  ResourceQueryDto,
+} from '@/entities/openapi';
 import { getStatusTranslation } from '@/pages/data-products-page';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { DataProductDtoDirective } from '@/shared/data-product';
@@ -23,6 +33,7 @@ import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.c
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import {
+  ActionDTO,
   AgridataTableComponent,
   CellRendererTypes,
   SortDirections,
@@ -35,24 +46,27 @@ import {
   FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM,
 } from '@/widgets/data-product-detail-form';
 
+import { DataProductsDeleteModalComponent } from './data-products-delete-modal';
+
 import { getBadgeVariant } from '.';
 
 /**
  * Shows a table with all available data products.
  *
- * CommentLastReviewed: 2026-05-13
+ * CommentLastReviewed: 2026-07-30
  */
 @Component({
   selector: 'app-data-products-page',
   imports: [
+    AgridataBadgeComponent,
     AgridataTableComponent,
     ButtonComponent,
     DataProductDtoDirective,
+    DataProductsDeleteModalComponent,
     ErrorOutletComponent,
     FaIconComponent,
     I18nDirective,
     RouterOutlet,
-    AgridataBadgeComponent,
   ],
   templateUrl: './data-products-page.component.html',
 })
@@ -72,6 +86,7 @@ export class DataProductsPageComponent {
   protected readonly BadgeSize = BadgeSize;
   protected readonly faEye = faEye;
   protected readonly faLayerGroup = faLayerGroup;
+  protected readonly faTrashCan = faTrashCan;
   protected readonly getBadgeVariant = getBadgeVariant;
   protected readonly getStatusTranslation = getStatusTranslation;
 
@@ -81,6 +96,7 @@ export class DataProductsPageComponent {
     viewChild<TemplateRef<{ $implicit: DataProductDto }>>('stateCodeTemplate');
 
   readonly resourceQueryDto = signal<ResourceQueryDto | undefined>(undefined);
+  protected readonly productToDelete = signal<DataProductDto | null>(null);
 
   protected readonly dataProductsTableMetaData = computed<TableMetadata<DataProductDto>>(() => {
     return {
@@ -118,16 +134,7 @@ export class DataProductsPageComponent {
             item ? this.getStatusTranslation(item?.stateCode, this.i18nService) : '',
         },
       ],
-      rowMenuActions: (row) => [
-        {
-          label: 'data-products.table.actions.viewDetails',
-          icon: faEye,
-          callback: async () => {
-            if (!row?.id) return;
-            this.router.navigate([ROUTE_PATHS.DATA_PRODUCTS_PATH, row.id]);
-          },
-        },
-      ],
+      rowMenuActions: this.getRowMenuActions,
       rowAction: (row) => {
         this.router.navigate([ROUTE_PATHS.DATA_PRODUCTS_PATH, row.id]);
       },
@@ -137,11 +144,10 @@ export class DataProductsPageComponent {
   readonly fetchDataProductsResource = resource({
     params: () => ({
       actingRole: this.stateService.actingRole(),
-      locale: this.i18nService.lang(),
       query: this.resourceQueryDto() ?? {},
     }),
     loader: ({ params }) =>
-      this.dataProductService.getAllDataProducts(params.query, params.locale, params.actingRole),
+      this.dataProductService.getAllDataProducts(params.query, params.actingRole),
     defaultValue: {} as PageResponseDto,
   });
 
@@ -149,6 +155,32 @@ export class DataProductsPageComponent {
     this.fetchDataProductsResource,
     this.errorService,
   );
+
+  readonly getRowMenuActions = (row?: DataProductDto): ActionDTO[] => {
+    if (!row) return [];
+
+    const viewDetails: ActionDTO = {
+      label: 'data-products.table.actions.viewDetails',
+      icon: this.faEye,
+      callback: async () => {
+        if (!row.id) return;
+        this.router.navigate([ROUTE_PATHS.DATA_PRODUCTS_PATH, row.id]);
+      },
+    };
+    const deleteAction: ActionDTO = {
+      label: 'data-products.table.actions.delete',
+      icon: this.faTrashCan,
+      callback: async () => {
+        this.productToDelete.set(row);
+      },
+    };
+
+    if (row.stateCode === DataProductDtoStateCode.Draft) {
+      return [viewDetails, deleteAction];
+    }
+
+    return [viewDetails];
+  };
 
   protected newProduct(): void {
     this.router.navigate([ROUTE_PATHS.DATA_PRODUCTS_PATH, DATA_PRODUCT_NEW_ID]);
