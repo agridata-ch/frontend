@@ -1,4 +1,4 @@
-import { ResourceRef, signal } from '@angular/core';
+import { DebugElement, ResourceRef, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -7,9 +7,9 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
-  ConsentRequestProducerViewDto,
+  ConsentRequestAggregationProducerView,
+  ConsentRequestAggregationStateEnum,
   ConsentRequestStateEnum,
-  DataRequestStateEnum,
 } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import {
@@ -18,6 +18,7 @@ import {
   MockAgridataStateService,
   createMockAnalyticsService,
   createMockConsentRequestService,
+  mockConsentRequestAggregations,
   MockConsentRequestService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
@@ -36,35 +37,7 @@ describe('ConsentRequestTableComponent', () => {
   let errorService: MockErrorHandlerService;
   let consentRequestService: MockConsentRequestService;
   let stateService: MockAgridataStateService;
-  let mockResourceRef: ResourceRef<ConsentRequestProducerViewDto[]>;
-  const mockConsentRequests: ConsentRequestProducerViewDto[] = [
-    {
-      id: '1',
-      stateCode: ConsentRequestStateEnum.Opened,
-      requestDate: '2024-03-20',
-      dataRequest: {
-        id: 'dr1',
-        title: { de: 'Testanfrage 1' },
-        dataConsumerDisplayName: 'Test AG',
-        stateCode: DataRequestStateEnum.Active,
-        dataProviderId: 'dp1',
-        advantages: [],
-      },
-    },
-    {
-      id: '2',
-      stateCode: ConsentRequestStateEnum.Granted,
-      requestDate: '2024-03-19',
-      dataRequest: {
-        id: 'dr2',
-        title: { de: 'Testanfrage 2' },
-        dataConsumerDisplayName: 'Demo GmbH',
-        stateCode: DataRequestStateEnum.Active,
-        dataProviderId: 'dp2',
-        advantages: [],
-      },
-    },
-  ];
+  let mockResourceRef: ResourceRef<ConsentRequestAggregationProducerView[]>;
 
   beforeEach(async () => {
     mockToastService = {
@@ -80,7 +53,7 @@ describe('ConsentRequestTableComponent', () => {
     consentRequestService = createMockConsentRequestService();
     errorService = createMockErrorHandlerService();
     stateService = createMockAgridataStateService();
-    mockResourceRef = MockResources.createMockResourceRef(mockConsentRequests);
+    mockResourceRef = MockResources.createMockResourceRef(mockConsentRequestAggregations);
     await TestBed.configureTestingModule({
       imports: [
         ConsentRequestTableComponent,
@@ -103,9 +76,9 @@ describe('ConsentRequestTableComponent', () => {
     fixture = TestBed.createComponent(ConsentRequestTableComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('consentRequestId', undefined);
-    fixture.componentRef.setInput('consentRequests', mockConsentRequests);
-    // Set the consentRequestsResource input to the fetchConsentRequests ResourceRef
-    fixture.componentRef.setInput('consentRequestsResource', mockResourceRef);
+    fixture.componentRef.setInput('consentRequestAggregations', mockConsentRequestAggregations);
+    // Set the consentRequestAggregationsResource input to the fetchConsentRequests ResourceRef
+    fixture.componentRef.setInput('consentRequestAggregationsResource', mockResourceRef);
     fixture.detectChanges();
   });
 
@@ -113,34 +86,105 @@ describe('ConsentRequestTableComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should filter consent requests by state', () => {
-    component.setStateCodeFilter(ConsentRequestStateEnum.Opened);
+  it('should include partially opened requests in the combined opened filter', () => {
+    component.setStateCodeFilter(ConsentRequestAggregationStateEnum.Opened);
 
-    expect(component.filteredConsentRequests().length).toBe(1);
-    expect(component.filteredConsentRequests()[0].id).toBe('1');
+    // dr-4 is PARTIALLY_OPENED
+    expect(component.filteredConsentRequestAggregations().map((request) => request.id)).toEqual([
+      'dr-1',
+      'dr-3',
+      'dr-4',
+    ]);
+  });
+
+  it('should filter consent requests by state', () => {
+    component.setStateCodeFilter(ConsentRequestAggregationStateEnum.Granted);
+
+    expect(component.filteredConsentRequestAggregations().map((request) => request.id)).toEqual([
+      'dr-2',
+    ]);
+
+    component.setStateCodeFilter(null);
+
+    expect(component.filteredConsentRequestAggregations()).toHaveLength(
+      mockConsentRequestAggregations.length,
+    );
   });
 
   it('should get correct badge variant for different states', () => {
-    expect(component.getBadgeVariant(ConsentRequestStateEnum.Opened)).toBe('info');
-    expect(component.getBadgeVariant(ConsentRequestStateEnum.Granted)).toBe('success');
-    expect(component.getBadgeVariant(ConsentRequestStateEnum.Declined)).toBe('error');
+    expect(component.getBadgeVariant(ConsentRequestAggregationStateEnum.Opened)).toBe('info');
+    expect(component.getBadgeVariant(ConsentRequestAggregationStateEnum.Granted)).toBe('success');
+    expect(component.getBadgeVariant(ConsentRequestAggregationStateEnum.Declined)).toBe('error');
+    expect(component.getBadgeVariant(ConsentRequestAggregationStateEnum.PartiallyOpened)).toBe(
+      'warning',
+    );
+    expect(component.getBadgeVariant(ConsentRequestAggregationStateEnum.PartiallyGranted)).toBe(
+      'warning',
+    );
   });
 
   it('should emit action when opening details', () => {
     const emitSpy = jest.spyOn(component.tableRowAction, 'emit');
-    component.openDetails(mockConsentRequests[0]);
+    component.openDetails(mockConsentRequestAggregations[0]);
 
-    expect(emitSpy).toHaveBeenCalledWith(mockConsentRequests[0]);
+    expect(emitSpy).toHaveBeenCalledWith(mockConsentRequestAggregations[0]);
   });
 
   it('should update consent request state', async () => {
-    await component.updateConsentRequestState('1', ConsentRequestStateEnum.Granted, 'Test Request');
+    await component.updateConsentRequestState(
+      mockConsentRequestAggregations[0],
+      ConsentRequestStateEnum.Granted,
+      'Test Request',
+    );
 
-    expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith(
-      '1',
+    expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+      ['1'],
       ConsentRequestStateEnum.Granted,
     );
     expect(mockToastService.show).toHaveBeenCalled();
+  });
+
+  it('should update every consent request of an opened aggregation', async () => {
+    await component.updateConsentRequestState(
+      mockConsentRequestAggregations[2],
+      ConsentRequestStateEnum.Granted,
+      'Test Request',
+    );
+
+    expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+      ['4', '5'],
+      ConsentRequestStateEnum.Granted,
+    );
+  });
+
+  it('should only update the undecided consent requests of a partially opened aggregation', async () => {
+    await component.updateConsentRequestState(
+      mockConsentRequestAggregations[3],
+      ConsentRequestStateEnum.Granted,
+      'Test Request',
+    );
+
+    expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+      ['8'],
+      ConsentRequestStateEnum.Granted,
+    );
+  });
+
+  it('should only undo the consent requests it decided in a partially opened aggregation', async () => {
+    await component.updateConsentRequestState(
+      mockConsentRequestAggregations[3],
+      ConsentRequestStateEnum.Granted,
+      'Test Request',
+    );
+
+    const undoAction = mockToastService.show.mock.calls[0][3];
+    undoAction?.callback();
+
+    // '6' and '7' were already decided before, only '8' goes back to OPENED
+    expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenLastCalledWith(
+      ['8'],
+      ConsentRequestStateEnum.Opened,
+    );
   });
 
   it('should only show consent action for open requests', async () => {
@@ -149,29 +193,31 @@ describe('ConsentRequestTableComponent', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     const rows = fixture.debugElement.queryAll(By.css('tr'));
-
-    // check accept button on open request
-    const openedRow = rows.filter((row) =>
-      row.nativeElement.textContent?.includes('consent-request.dataRequest.stateCode.OPENED'),
-    );
-    expect(openedRow.length).toBe(1);
-    const acceptButtons = openedRow[0]
-      .queryAll(By.directive(ButtonComponent))
-      .filter((button) =>
-        button.nativeElement.textContent.includes('consent-request.table.tableActions.consent'),
+    const rowsWithState = (stateCode: ConsentRequestAggregationStateEnum) =>
+      rows.filter((row) =>
+        row.nativeElement.textContent?.includes(
+          `consent-request.dataRequest.stateCode.${stateCode}`,
+        ),
       );
-    expect(acceptButtons.length).toBe(1);
+    const countAcceptButtons = (row: DebugElement) =>
+      row
+        .queryAll(By.directive(ButtonComponent))
+        .filter((button) =>
+          button.nativeElement.textContent.includes('consent-request.table.tableActions.consent'),
+        ).length;
+
+    // opened and partially opened rows are actionable
+    const openedRows = rowsWithState(ConsentRequestAggregationStateEnum.Opened);
+    expect(openedRows).toHaveLength(2);
+    expect(openedRows.map(countAcceptButtons)).toEqual([1, 1]);
+
+    const partiallyOpenedRows = rowsWithState(ConsentRequestAggregationStateEnum.PartiallyOpened);
+    expect(partiallyOpenedRows).toHaveLength(1);
+    expect(countAcceptButtons(partiallyOpenedRows[0])).toBe(1);
 
     // check no accept button on granted request
-    const grantedRows = rows.filter((row) =>
-      row.nativeElement.textContent?.includes('consent-request.dataRequest.stateCode.GRANTED'),
-    );
-    const grantedAcceptButtons = grantedRows[0]
-      .queryAll(By.directive(ButtonComponent))
-      .filter((button) =>
-        button.nativeElement.textContent.includes('consent-request.table.tableActions.consent'),
-      );
-    expect(grantedAcceptButtons.length).toBe(0);
+    const grantedRows = rowsWithState(ConsentRequestAggregationStateEnum.Granted);
+    expect(countAcceptButtons(grantedRows[0])).toBe(0);
   });
 
   it('should translate object correctly', () => {
@@ -188,11 +234,11 @@ describe('ConsentRequestTableComponent', () => {
   });
 
   it('should prepare undo action correctly', async () => {
-    const undoAction = component.prepareUndoAction('1');
+    const undoAction = component.prepareUndoAction(['2', '3']);
 
     expect(undoAction).toBeDefined();
 
-    // Call the callback and make sure it calls updateConsentRequestStatus
+    // Call the callback and make sure it restores the previous states
     undoAction?.callback();
 
     // Wait for the promise chain to complete
@@ -200,8 +246,8 @@ describe('ConsentRequestTableComponent', () => {
     await Promise.resolve();
 
     // Check the expected method calls
-    expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith(
-      '1',
+    expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+      ['2', '3'],
       ConsentRequestStateEnum.Opened,
     );
     expect(mockResourceRef.reload).toHaveBeenCalled();
@@ -214,10 +260,14 @@ describe('ConsentRequestTableComponent', () => {
         requestId: '123',
       },
     };
-    consentRequestService.updateConsentRequestStatus = jest.fn().mockRejectedValue(error);
+    consentRequestService.updateConsentRequestStatuses = jest.fn().mockRejectedValue(error);
     mockI18nService.translate.mockReturnValue('Translated error message');
 
-    await component.updateConsentRequestState('1', ConsentRequestStateEnum.Granted, 'Test Request');
+    await component.updateConsentRequestState(
+      mockConsentRequestAggregations[0],
+      ConsentRequestStateEnum.Granted,
+      'Test Request',
+    );
     fixture.detectChanges();
     await Promise.resolve();
 
@@ -227,61 +277,57 @@ describe('ConsentRequestTableComponent', () => {
   it('should get translated state value', () => {
     const i18nServiceSpy = jest.spyOn(mockI18nService, 'translate');
 
-    component.getTranslatedStateValue(ConsentRequestStateEnum.Opened);
+    component.getTranslatedStateValue(ConsentRequestAggregationStateEnum.Opened);
 
     expect(i18nServiceSpy).toHaveBeenCalledWith('consent-request.dataRequest.stateCode.OPENED');
   });
 
   it('should handle undefined state value', () => {
-    const stateCode = undefined as unknown as ConsentRequestStateEnum;
-    expect(component.getTranslatedStateValue(stateCode)).toBe('');
+    expect(component.getTranslatedStateValue(undefined)).toBe('');
   });
 
   it('should execute action callback correctly', () => {
-    const spy = jest.spyOn(consentRequestService, 'updateConsentRequestStatus');
     component.updateConsentRequestState(
-      mockConsentRequests[0].id,
+      mockConsentRequestAggregations[0],
       ConsentRequestStateEnum.Declined,
       'Test Request',
     );
 
-    expect(spy).toHaveBeenCalledWith(mockConsentRequests[0].id, ConsentRequestStateEnum.Declined);
+    expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+      ['1'],
+      ConsentRequestStateEnum.Declined,
+    );
   });
 
   describe('highlightClickedRowFn', () => {
     const getHighlightClickedRowFn = () =>
-      (
-        component as unknown as {
-          consentRequestsTableMetaData: () => {
-            highlightClickedRowFn?: (item: ConsentRequestProducerViewDto) => boolean;
-          };
-        }
-      ).consentRequestsTableMetaData().highlightClickedRowFn;
+      component['consentRequestsTableMetaData']().highlightClickedRowFn;
 
     it('should not highlight any row when consentRequestId is undefined', () => {
-      expect(getHighlightClickedRowFn()?.(mockConsentRequests[0])).toBe(false);
-      expect(getHighlightClickedRowFn()?.(mockConsentRequests[1])).toBe(false);
+      expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[0])).toBe(false);
+      expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[1])).toBe(false);
     });
 
-    it('should update highlighted row when consentRequestId changes', () => {
+    it('should highlight the aggregation the routed consent request belongs to', () => {
       fixture.componentRef.setInput('consentRequestId', '1');
       fixture.detectChanges();
-      expect(getHighlightClickedRowFn()?.(mockConsentRequests[0])).toBe(true);
+      expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[0])).toBe(true);
 
-      fixture.componentRef.setInput('consentRequestId', '2');
+      // '3' is the BUR based consent request of the second aggregation
+      fixture.componentRef.setInput('consentRequestId', '3');
       fixture.detectChanges();
-      expect(getHighlightClickedRowFn()?.(mockConsentRequests[0])).toBe(false);
-      expect(getHighlightClickedRowFn()?.(mockConsentRequests[1])).toBe(true);
+      expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[0])).toBe(false);
+      expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[1])).toBe(true);
     });
 
     it('should clear highlighted row when consentRequestId is set to undefined', () => {
       fixture.componentRef.setInput('consentRequestId', '1');
       fixture.detectChanges();
-      expect(getHighlightClickedRowFn()?.(mockConsentRequests[0])).toBe(true);
+      expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[0])).toBe(true);
 
       fixture.componentRef.setInput('consentRequestId', undefined);
       fixture.detectChanges();
-      expect(getHighlightClickedRowFn()?.(mockConsentRequests[0])).toBe(false);
+      expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[0])).toBe(false);
     });
   });
 });

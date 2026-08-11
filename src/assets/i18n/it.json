@@ -39,7 +39,8 @@
       "ALL": "Tutti",
       "OPENED": "Aperto",
       "DECLINED": "Rifiutato",
-      "GRANTED": "Acconsentito"
+      "GRANTED": "Acconsentito",
+      "PARTIALLY_GRANTED": "Parzialmente approvato"
     },
     "details": {
       "actions": {
@@ -82,7 +83,9 @@
       "stateCode": {
         "OPENED": "Aperto",
         "GRANTED": "Acconsentito",
-        "DECLINED": "Rifiutato"
+        "DECLINED": "Rifiutato",
+        "PARTIALLY_OPENED": "Parzialmente aperto",
+        "PARTIALLY_GRANTED": "Parzialmente approvato"
       }
     },
     "emptyState": {
@@ -391,7 +394,8 @@
     "invitationLink": {
       "label": "Link di invito",
       "copyToClipboard": "Copia il link negli appunti",
-      "copied": "Link copiato"
+      "copied": "Link copiato",
+      "copyFailed": "Copia non riuscita"
     },
     "productsSystemCode": "Sistema",
     "contractSigning": {

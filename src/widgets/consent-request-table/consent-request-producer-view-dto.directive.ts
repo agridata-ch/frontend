@@ -1,10 +1,10 @@
 import { Directive } from '@angular/core';
 
-import { ConsentRequestProducerViewDto } from '@/entities/openapi';
+import { ConsentRequestAggregationProducerView } from '@/entities/openapi';
 
 /**
- * directive to ensure template variable is of type ConsentRequestProducerViewDto
- * CommentLastReviewed: 2025-09-23
+ * directive to ensure template variable is of type ConsentRequestAggregationProducerView
+ * CommentLastReviewed: 2026-08-07
  */
 @Directive({
   selector: '[appConsentRequestProducerViewDtoGuard]',
@@ -14,7 +14,7 @@ export class ConsentRequestProducerViewDtoDirective {
   static ngTemplateContextGuard(
     _dir: ConsentRequestProducerViewDtoDirective,
     _ctx: unknown,
-  ): _ctx is { $implicit: ConsentRequestProducerViewDto } {
+  ): _ctx is { $implicit: ConsentRequestAggregationProducerView } {
     return true;
   }
 }

@@ -26,9 +26,9 @@
 <app-error-outlet></app-error-outlet>
 }
 <app-consent-request-table
-  [consentRequests]="consentRequests()"
+  [consentRequestAggregations]="consentRequests()"
   (tableRowAction)="navigateToRequest($event)"
-  [consentRequestsResource]="consentRequestResource"
+  [consentRequestAggregationsResource]="consentRequestResource"
   [consentRequestId]="consentRequestId()"
 />
 <router-outlet></router-outlet>

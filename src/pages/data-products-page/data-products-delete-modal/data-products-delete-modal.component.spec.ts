@@ -35,6 +35,7 @@ describe('DataProductsDeleteModalComponent', () => {
       id: 'system-1',
       dataProvider: { id: 'provider-1' },
       name: { de: 'System A' },
+      legalBasis: { de: 'Rechtsgrundlage' },
     },
   });
 

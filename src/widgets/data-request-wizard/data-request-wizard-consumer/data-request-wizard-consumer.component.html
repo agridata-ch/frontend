@@ -56,7 +56,7 @@
           (wizard.currentStepId() !== FORM_GROUP_NAMES.CONTRACT &&
             wizard.currentStepId() !== FORM_GROUP_NAMES.COMPLETION &&
             dataRequest()?.stateCode === DataRequestStateEnum.Draft) ||
-          dataRequest()?.stateCode === null
+          !dataRequest()?.stateCode
         ) {
           <app-agridata-button
             [variant]="ButtonVariants.Tertiary"

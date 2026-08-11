@@ -20,6 +20,10 @@ export interface ConsentRequestProducerViewDto {
      * UID of the data producer
      */
     dataProducerUid?: string;
+    /**
+     * BUR of the data producer; null for UID-based consent requests
+     */
+    dataProducerBur?: string;
     stateCode?: ConsentRequestStateEnum;
     /**
      * If the state should be shown as migrated

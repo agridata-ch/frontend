@@ -1,11 +1,11 @@
 <app-consent-request-filter
   (handleFilterChange)="setStateCodeFilter($event)"
-  [requests]="consentRequests()"
+  [requests]="consentRequestAggregations()"
 />
 <app-agridata-client-table
-  [rawData]="filteredConsentRequests()"
+  [rawData]="filteredConsentRequestAggregations()"
   [tableMetadata]="consentRequestsTableMetaData()"
-  [loading]="consentRequestsResource()?.isLoading()"
+  [loading]="consentRequestAggregationsResource()?.isLoading()"
   [emptyStateTemplate]="emptyStateTemplate"
   class="hidden lg:block"
 >
@@ -36,7 +36,7 @@
     />
   </ng-template>
   <ng-template #consentRequestAction [appConsentRequestProducerViewDtoGuard] let-item>
-    @if (item.stateCode === ConsentRequestStateEnum.Opened) {
+    @if (isOpenAggregationState(item.stateCode)) {
       <app-agridata-button
         click-stop-propagation
         [variant]="ButtonVariants.PrimaryAccept"
@@ -44,7 +44,7 @@
         [loading]="getElementLoadingSignal(item.id)()"
         (handleClick)="
           updateConsentRequestState(
-            item.id,
+            item,
             ConsentRequestStateEnum.Granted,
             getTranslation(item.dataRequest?.title)
           )
@@ -60,7 +60,9 @@
 </app-agridata-client-table>
 <app-consent-request-list
   class="lg:hidden"
-  [consentRequests]="filteredConsentRequests()"
+  [consentRequests]="filteredConsentRequestAggregations()"
   (openDetails)="openDetails($event)"
-  (updateConsentRequestStatus)="updateConsentRequestState($event.id, $event.newState, $event.title)"
+  (updateConsentRequestStatus)="
+    updateConsentRequestState($event.aggregation, $event.newState, $event.title)
+  "
 />
