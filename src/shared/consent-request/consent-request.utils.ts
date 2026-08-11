@@ -1,10 +1,50 @@
 import { afterEveryRender, EnvironmentInjector } from '@angular/core';
 import { DriveStep } from 'driver.js';
 
-import { ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestAggregationStateEnum, ConsentRequestStateEnum } from '@/entities/openapi';
 import { ToastType } from '@/shared/toast';
+import { BadgeVariant } from '@/shared/ui/badge';
 
 import { I18nService } from '../i18n';
+
+/** Exhaustive by type, a new aggregation state fails to compile until it gets a variant. */
+const AGGREGATION_BADGE_VARIANTS: Record<ConsentRequestAggregationStateEnum, BadgeVariant> = {
+  [ConsentRequestAggregationStateEnum.Opened]: BadgeVariant.INFO,
+  [ConsentRequestAggregationStateEnum.Granted]: BadgeVariant.SUCCESS,
+  [ConsentRequestAggregationStateEnum.Declined]: BadgeVariant.ERROR,
+  [ConsentRequestAggregationStateEnum.PartiallyOpened]: BadgeVariant.WARNING,
+  [ConsentRequestAggregationStateEnum.PartiallyGranted]: BadgeVariant.WARNING,
+};
+
+export function getAggregationBadgeVariant(stateCode?: ConsentRequestAggregationStateEnum) {
+  return stateCode ? AGGREGATION_BADGE_VARIANTS[stateCode] : BadgeVariant.DEFAULT;
+}
+
+/**
+ * OPENED and PARTIALLY_OPENED are both actionable: at least one consent request of the aggregation
+ * is still awaiting a decision.
+ */
+export function isOpenAggregationState(stateCode?: ConsentRequestAggregationStateEnum | null) {
+  return (
+    stateCode === ConsentRequestAggregationStateEnum.Opened ||
+    stateCode === ConsentRequestAggregationStateEnum.PartiallyOpened
+  );
+}
+
+/**
+ * Predicate behind the state filter buttons. OPENED is a combined filter: it also matches
+ * PARTIALLY_OPENED, since both mean the aggregation still awaits a decision. An empty filter
+ * matches everything.
+ */
+export function matchesAggregationStateFilter(
+  stateCode: ConsentRequestAggregationStateEnum | undefined,
+  filter: string | null,
+) {
+  if (!filter) return true;
+  return filter === ConsentRequestAggregationStateEnum.Opened
+    ? isOpenAggregationState(stateCode)
+    : stateCode === filter;
+}
 
 export function getToastTitle(stateCode: string) {
   switch (stateCode) {

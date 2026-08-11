@@ -9,7 +9,7 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { ConsentRequestProducerViewDto } from '@/entities/openapi';
+import { ConsentRequestAggregationProducerView } from '@/entities/openapi';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
@@ -20,7 +20,7 @@ import {
   createMockI18nService,
   MockActivatedRoute,
   MockAuthService,
-  mockConsentRequests,
+  mockConsentRequestAggregations,
   MockDataRequestService,
   MockI18nService,
   createMockAgridataStateService,
@@ -92,13 +92,23 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     fixture.detectChanges();
   });
 
-  it('route to consent request details on selecting request', () => {
+  it('route to the first consent request of the aggregation on selecting request', () => {
     const navSpy = jest.spyOn(mockRouter, 'navigate');
-    const req = mockConsentRequests[0];
+    const req = mockConsentRequestAggregations[0];
 
     component['navigateToRequest'](req);
 
-    expect(navSpy).toHaveBeenCalledWith([req.id], { relativeTo: activeRoute });
+    expect(navSpy).toHaveBeenCalledWith([req.consentRequests?.[0].id], {
+      relativeTo: activeRoute,
+    });
+  });
+
+  it('does not route when the aggregation has no consent requests', () => {
+    const navSpy = jest.spyOn(mockRouter, 'navigate');
+
+    component['navigateToRequest']({ ...mockConsentRequestAggregations[0], consentRequests: [] });
+
+    expect(navSpy).not.toHaveBeenCalled();
   });
 
   it('should handle errors from consentRequestResource and send them to errorService', async () => {
@@ -123,18 +133,22 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   describe('migration info handling', () => {
     it('should show migration alerts for migrated requests', () => {
       jest.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(false);
-      jest.spyOn(component.consentRequestResource, 'value').mockReturnValue(mockConsentRequests);
+      jest
+        .spyOn(component.consentRequestResource, 'value')
+        .mockReturnValue(mockConsentRequestAggregations);
 
       fixture.detectChanges();
 
       expect(component.visibleMigratedRequests()).toHaveLength(2);
-      expect(component.visibleMigratedRequests()[0]).toBe(mockConsentRequests[0]);
-      expect(component.visibleMigratedRequests()[1]).toBe(mockConsentRequests[2]);
+      expect(component.visibleMigratedRequests()[0]).toBe(mockConsentRequestAggregations[0]);
+      expect(component.visibleMigratedRequests()[1]).toBe(mockConsentRequestAggregations[2]);
     });
 
     it('should add confirmed migration when closing mgiration info', () => {
       jest.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(false);
-      jest.spyOn(component.consentRequestResource, 'value').mockReturnValue(mockConsentRequests);
+      jest
+        .spyOn(component.consentRequestResource, 'value')
+        .mockReturnValue(mockConsentRequestAggregations);
       const addConfirmedMiratedUidsSpy = jest.spyOn(
         agridataStateService,
         'addConfirmedMigratedUids',
@@ -151,7 +165,9 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     });
 
     it('should return empty array when no migrated requests exist', () => {
-      const nonMigratedRequests = mockConsentRequests.filter((req) => !req.showStateAsMigrated);
+      const nonMigratedRequests = mockConsentRequestAggregations.filter(
+        (req) => !req.showStateAsMigrated,
+      );
       jest.spyOn(component.consentRequestResource, 'value').mockReturnValue(nonMigratedRequests);
       fixture.detectChanges();
 
@@ -160,15 +176,15 @@ describe('ConsentRequestProducerPage - component behavior', () => {
 
     it('should return migrated request title with data request name if available', () => {
       const migratedRequest = {
-        ...mockConsentRequests[0],
+        ...mockConsentRequestAggregations[0],
         dataRequest: {
-          ...mockConsentRequests[0].dataRequest,
+          ...mockConsentRequestAggregations[0].dataRequest,
         },
-      } as ConsentRequestProducerViewDto;
+      } as ConsentRequestAggregationProducerView;
 
       const title = component['getMigratedRequestTitle'](migratedRequest);
 
-      expect(title).toBe(mockConsentRequests[0].dataRequest?.title?.de);
+      expect(title).toBe(mockConsentRequestAggregations[0].dataRequest?.title?.de);
     });
   });
 

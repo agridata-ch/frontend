@@ -62,6 +62,7 @@ const mockDataProducts: DataProductDto[] = [
         id: 'provider-1',
         name: { de: 'Anbieter 1', fr: 'Fournisseur 1', it: 'Fornitore 1' },
       },
+      legalBasis: { de: 'Rechtsgrundlage' },
     },
   },
   {
@@ -77,6 +78,7 @@ const mockDataProducts: DataProductDto[] = [
         id: 'provider-1',
         name: { de: 'Anbieter 1', fr: 'Fournisseur 1', it: 'Fornitore 1' },
       },
+      legalBasis: { de: 'Rechtsgrundlage' },
     },
   },
   {
@@ -92,6 +94,7 @@ const mockDataProducts: DataProductDto[] = [
         id: 'provider-2',
         name: { de: 'Anbieter 2', fr: 'Fournisseur 2', it: 'Fornitore 2' },
       },
+      legalBasis: { de: 'Rechtsgrundlage' },
     },
   },
 ];

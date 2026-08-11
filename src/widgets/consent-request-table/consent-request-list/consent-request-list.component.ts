@@ -2,11 +2,12 @@ import { Component, inject, input, output } from '@angular/core';
 import { faChevronRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { ConsentRequestProducerViewDto, ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestAggregationProducerView, ConsentRequestStateEnum } from '@/entities/openapi';
+import { getAggregationBadgeVariant, isOpenAggregationState } from '@/shared/consent-request';
 import { formatDate } from '@/shared/date';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
-import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
+import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { ConsentRequestEmptyStateComponent } from '@/widgets/consent-request-empty-state/consent-request-empty-state.component';
@@ -30,46 +31,42 @@ import { ConsentRequestEmptyStateComponent } from '@/widgets/consent-request-emp
 })
 export class ConsentRequestListComponent {
   protected readonly i18nService = inject(I18nService);
-  readonly consentRequests = input<ConsentRequestProducerViewDto[]>();
-  readonly openDetails = output<ConsentRequestProducerViewDto>();
+  readonly consentRequests = input<ConsentRequestAggregationProducerView[]>();
+  readonly openDetails = output<ConsentRequestAggregationProducerView>();
   readonly updateConsentRequestStatus = output<{
-    id: string;
+    aggregation: ConsentRequestAggregationProducerView;
     newState: ConsentRequestStateEnum;
     title?: string;
   }>();
 
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
-  protected readonly ConsentRequestStateEnum = ConsentRequestStateEnum;
   protected readonly faChevronRight = faChevronRight;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly BadgeSize = BadgeSize;
+  protected readonly isOpenAggregationState = isOpenAggregationState;
 
-  handleClick(request: ConsentRequestProducerViewDto) {
+  handleClick(request: ConsentRequestAggregationProducerView) {
     this.openDetails.emit(request);
   }
 
-  getTranslatedTitle(request: ConsentRequestProducerViewDto) {
+  getTranslatedTitle(request: ConsentRequestAggregationProducerView) {
     return this.i18nService.useObjectTranslation(request.dataRequest?.title);
   }
 
-  formatRequestDate(request: ConsentRequestProducerViewDto) {
+  formatRequestDate(request: ConsentRequestAggregationProducerView) {
     return formatDate(request?.requestDate);
   }
 
-  getBadgeVariant(request: ConsentRequestProducerViewDto) {
-    const stateCode = request?.stateCode;
-    if (stateCode === ConsentRequestStateEnum.Opened) return BadgeVariant.INFO;
-    if (stateCode === ConsentRequestStateEnum.Granted) return BadgeVariant.SUCCESS;
-    if (stateCode === ConsentRequestStateEnum.Declined) return BadgeVariant.ERROR;
-    return BadgeVariant.DEFAULT;
+  getBadgeVariant(request: ConsentRequestAggregationProducerView) {
+    return getAggregationBadgeVariant(request?.stateCode);
   }
 
-  acceptRequest(event: Event, request: ConsentRequestProducerViewDto) {
+  acceptRequest(event: Event, request: ConsentRequestAggregationProducerView) {
     event.stopPropagation();
     const requestTitle = this.i18nService.useObjectTranslation(request.dataRequest?.title);
     this.updateConsentRequestStatus.emit({
-      id: request.id,
+      aggregation: request,
       newState: ConsentRequestStateEnum.Granted,
       title: requestTitle,
     });

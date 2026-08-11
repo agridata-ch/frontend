@@ -1,6 +1,10 @@
 import { Component, computed, input, output, signal } from '@angular/core';
 
-import { ConsentRequestProducerViewDto, ConsentRequestStateEnum } from '@/entities/openapi';
+import {
+  ConsentRequestAggregationProducerView,
+  ConsentRequestAggregationStateEnum,
+} from '@/entities/openapi';
+import { isOpenAggregationState } from '@/shared/consent-request';
 import { I18nPipe } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
@@ -16,34 +20,38 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
   templateUrl: './consent-request-filter.component.html',
 })
 export class ConsentRequestFilterComponent {
-  readonly requests = input.required<ConsentRequestProducerViewDto[]>();
+  readonly requests = input.required<ConsentRequestAggregationProducerView[]>();
   handleFilterChange = output<string | null>();
 
-  readonly requestsSignal = signal<ConsentRequestProducerViewDto[]>([]);
   readonly ButtonVariants = ButtonVariants;
 
-  readonly consentRequestStateEnum = ConsentRequestStateEnum;
   readonly filterOptions = [
     { label: 'consent-request.filter.ALL', value: null },
     {
+      // combined filter, the table matches PARTIALLY_OPENED on this value as well
       label: 'consent-request.filter.OPENED',
-      value: this.consentRequestStateEnum.Opened,
+      value: ConsentRequestAggregationStateEnum.Opened,
     },
     {
       label: 'consent-request.filter.DECLINED',
-      value: this.consentRequestStateEnum.Declined,
+      value: ConsentRequestAggregationStateEnum.Declined,
     },
     {
       label: 'consent-request.filter.GRANTED',
-      value: this.consentRequestStateEnum.Granted,
+      value: ConsentRequestAggregationStateEnum.Granted,
+    },
+    {
+      label: 'consent-request.filter.PARTIALLY_GRANTED',
+      value: ConsentRequestAggregationStateEnum.PartiallyGranted,
     },
   ];
   readonly selectedValue = signal<string | null>(null);
-  readonly totalOpenRequests = computed(() => {
-    return this.requests().filter(
-      (request) => request.stateCode === this.consentRequestStateEnum.Opened,
-    ).length;
-  });
+  readonly isOpenAggregationState = isOpenAggregationState;
+
+  /** Counter shown on the OPENED filter button, the only one that carries a count. */
+  readonly totalOpenRequests = computed(
+    () => this.requests().filter((request) => isOpenAggregationState(request.stateCode)).length,
+  );
 
   handleClick(value: string | null) {
     if (this.selectedValue() === value) {

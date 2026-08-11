@@ -16,17 +16,21 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
-  ConsentRequestProducerViewDto,
+  ConsentRequestAggregationProducerView,
+  ConsentRequestAggregationStateEnum,
   ConsentRequestStateEnum,
   TranslationDto,
 } from '@/entities/openapi';
 import { environment } from '@/environments/environment';
 import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import {
+  getAggregationBadgeVariant,
   getToastMessage,
   getToastTitle,
   getToastType,
   getUndoAction,
+  isOpenAggregationState,
+  matchesAggregationStateFilter,
 } from '@/shared/consent-request';
 import { I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
@@ -37,7 +41,7 @@ import {
   ClientTableMetadata,
 } from '@/shared/ui/agridata-client-table';
 import { CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
-import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
+import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { ConsentRequestEmptyStateComponent } from '@/widgets/consent-request-empty-state';
@@ -77,21 +81,30 @@ export class ConsentRequestTableComponent {
   private readonly agridataStateService = inject(AgridataStateService);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly analyticsService = inject(AnalyticsService);
-  // binds to the route parameter :consentRequestId
+  // binds to the route parameter :consentRequestId, which is a consent request of an aggregation
   readonly consentRequestId = input<string>();
-  readonly consentRequests = input.required<ConsentRequestProducerViewDto[]>();
+  readonly consentRequestAggregations = input.required<ConsentRequestAggregationProducerView[]>();
 
-  readonly tableRowAction = output<ConsentRequestProducerViewDto>();
-  readonly consentRequestsResource = input<ResourceRef<ConsentRequestProducerViewDto[]>>();
+  readonly tableRowAction = output<ConsentRequestAggregationProducerView>();
+  readonly consentRequestAggregationsResource =
+    input<ResourceRef<ConsentRequestAggregationProducerView[]>>();
 
   private readonly dataRequestConsumerTemplate =
-    viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('dataRequestConsumer');
+    viewChild<TemplateRef<{ $implicit: ConsentRequestAggregationProducerView }>>(
+      'dataRequestConsumer',
+    );
   private readonly dataRequestTitleTemplate =
-    viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('dataRequestTitle');
+    viewChild<TemplateRef<{ $implicit: ConsentRequestAggregationProducerView }>>(
+      'dataRequestTitle',
+    );
   private readonly consentRequestStateTemplate =
-    viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('consentRequestState');
+    viewChild<TemplateRef<{ $implicit: ConsentRequestAggregationProducerView }>>(
+      'consentRequestState',
+    );
   private readonly consentRequestActionTemplate =
-    viewChild<TemplateRef<{ $implicit: ConsentRequestProducerViewDto }>>('consentRequestAction');
+    viewChild<TemplateRef<{ $implicit: ConsentRequestAggregationProducerView }>>(
+      'consentRequestAction',
+    );
   protected readonly emptyStateTemplate = viewChild<TemplateRef<unknown>>('emptyStateTemplate');
 
   protected readonly BadgeSize = BadgeSize;
@@ -111,19 +124,19 @@ export class ConsentRequestTableComponent {
   protected readonly acceptConsentActionDisabled = computed(() =>
     this.agridataStateService.isImpersonating(),
   );
-  readonly filteredConsentRequests = computed(() => {
-    return this.consentRequests().filter(
-      (request) => !this.stateCodeFilter() || request.stateCode === this.stateCodeFilter(),
+  readonly filteredConsentRequestAggregations = computed(() => {
+    return this.consentRequestAggregations().filter((request) =>
+      matchesAggregationStateFilter(request.stateCode, this.stateCodeFilter()),
     );
   });
 
-  openDetails = (request?: ConsentRequestProducerViewDto | null) => {
+  openDetails = (request?: ConsentRequestAggregationProducerView | null) => {
     if (!request) return;
     this.tableRowAction.emit(request);
   };
 
   protected readonly consentRequestsTableMetaData = computed<
-    ClientTableMetadata<ConsentRequestProducerViewDto>
+    ClientTableMetadata<ConsentRequestAggregationProducerView>
   >(() => {
     return {
       tableId: 'consent-requests-table',
@@ -136,7 +149,7 @@ export class ConsentRequestTableComponent {
             template: this.dataRequestConsumerTemplate(),
           },
           sortable: true,
-          sortValueFn: (item: ConsentRequestProducerViewDto) =>
+          sortValueFn: (item: ConsentRequestAggregationProducerView) =>
             item.dataRequest?.dataConsumerDisplayName ?? '',
         },
         {
@@ -146,7 +159,7 @@ export class ConsentRequestTableComponent {
             template: this.dataRequestTitleTemplate(),
           },
           sortable: true,
-          sortValueFn: (item: ConsentRequestProducerViewDto) =>
+          sortValueFn: (item: ConsentRequestAggregationProducerView) =>
             item.dataRequest?.title ? this.getTranslation(item.dataRequest.title) : '',
         },
         {
@@ -165,7 +178,7 @@ export class ConsentRequestTableComponent {
             template: this.consentRequestStateTemplate(),
           },
           sortable: true,
-          sortValueFn: (item: ConsentRequestProducerViewDto) =>
+          sortValueFn: (item: ConsentRequestAggregationProducerView) =>
             this.getTranslatedStateValue(item.stateCode),
         },
         {
@@ -181,14 +194,15 @@ export class ConsentRequestTableComponent {
       ],
       rowAction: this.openDetails,
       showRowActionButton: true,
-      highlightFn: (item) => item.stateCode === ConsentRequestStateEnum.Opened,
-      highlightClickedRowFn: (item) => item.id === this.consentRequestId(),
+      highlightFn: (item) => isOpenAggregationState(item.stateCode),
+      highlightClickedRowFn: (item) =>
+        !!item.consentRequests?.some((request) => request.id === this.consentRequestId()),
       searchFn: (data, searchTerm) =>
         data.filter((item) => this.getTranslation(item.dataRequest?.title).includes(searchTerm)),
     };
   });
 
-  getTranslatedStateValue(stateCode?: ConsentRequestStateEnum | undefined) {
+  getTranslatedStateValue(stateCode?: ConsentRequestAggregationStateEnum) {
     if (!stateCode) {
       return '';
     }
@@ -200,18 +214,24 @@ export class ConsentRequestTableComponent {
   }
 
   updateConsentRequestState = async (
-    id: string,
+    aggregation: ConsentRequestAggregationProducerView,
     stateCode: ConsentRequestStateEnum,
     requestName?: string,
   ) => {
+    // capture the children before the reload replaces the input array, the undo needs their ids.
+    // PARTIALLY_OPENED aggregations still hold children that already carry a decision, only the
+    // undecided ones may be decided here. For OPENED every child is open, so all are kept.
+    const openConsentRequestIds = (aggregation.consentRequests ?? [])
+      .filter((request) => request.stateCode === ConsentRequestStateEnum.Opened)
+      .map((request) => request.id);
     this.analyticsService.logEvent('consent_request_state_changed', {
-      id: id,
+      id: aggregation.id,
       state: stateCode,
       component: 'table',
     });
-    this.getElementLoadingSignal(id).set(true);
+    this.getElementLoadingSignal(aggregation.id).set(true);
     await this.consentRequestService
-      .updateConsentRequestStatus(id, stateCode)
+      .updateConsentRequestStatuses(openConsentRequestIds, stateCode)
       .then(() => {
         const toastTitle = this.i18nService.translate(getToastTitle(stateCode), {
           name: requestName,
@@ -220,34 +240,32 @@ export class ConsentRequestTableComponent {
           name: requestName,
         });
         const toastType = getToastType(stateCode);
-        const undoAction = this.prepareUndoAction(id);
+        const undoAction = this.prepareUndoAction(openConsentRequestIds);
         this.toastService.show(toastTitle, toastMessage, toastType, undoAction);
-        this.consentRequestsResource()?.reload();
+        this.consentRequestAggregationsResource()?.reload();
       })
       .catch((error) => {
         this.errorService.handleError(error, { i18n: 'consent-request.table.error' });
+        // a rejected Promise.all can still have updated some of the children, so pull the
+        // authoritative states instead of leaving those rows stale
+        this.consentRequestAggregationsResource()?.reload();
       });
-    this.getElementLoadingSignal(id).set(false);
+    this.getElementLoadingSignal(aggregation.id).set(false);
   };
 
-  prepareUndoAction(id: string) {
-    const previousStateCode = this.consentRequests().find(
-      (request) => request.id === id,
-    )?.stateCode;
+  /** Undo only reverts the children this component decided, and those were all OPENED before. */
+  prepareUndoAction(consentRequestIds: string[]) {
     return getUndoAction(() => {
       this.toastService.show(this.i18nService.translate(getToastTitle('')), '');
-      this.consentRequestService.updateConsentRequestStatus(id, previousStateCode!).then(() => {
-        this.consentRequestsResource()?.reload();
-      });
+      this.consentRequestService
+        .updateConsentRequestStatuses(consentRequestIds, ConsentRequestStateEnum.Opened)
+        .then(() => {
+          this.consentRequestAggregationsResource()?.reload();
+        });
     });
   }
 
-  getBadgeVariant = (stateCode: ConsentRequestStateEnum | undefined) => {
-    if (stateCode === ConsentRequestStateEnum.Opened) return BadgeVariant.INFO;
-    if (stateCode === ConsentRequestStateEnum.Granted) return BadgeVariant.SUCCESS;
-    if (stateCode === ConsentRequestStateEnum.Declined) return BadgeVariant.ERROR;
-    return BadgeVariant.DEFAULT;
-  };
+  getBadgeVariant = getAggregationBadgeVariant;
 
   getTranslation(key: TranslationDto | undefined) {
     if (!key) return '';
@@ -270,4 +288,5 @@ export class ConsentRequestTableComponent {
 
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly ConsentRequestStateEnum = ConsentRequestStateEnum;
+  protected readonly isOpenAggregationState = isOpenAggregationState;
 }

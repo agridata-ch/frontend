@@ -9,39 +9,17 @@
  */
 import { DataSourceSystemDto } from './dataSourceSystemDto';
 import { FlowCodeEnum } from './flowCodeEnum';
-import { RestClientMethodCodeEnum } from './restClientMethodCodeEnum';
 import { LinkDto } from './linkDto';
-import { RestClientDto } from './restClientDto';
 import { DataProductDtoStateCode } from './dataProductDtoStateCode';
 import { TranslationDto } from './translationDto';
 
 
-export interface DataProductDto { 
+export interface PublicDataProductDto { 
     id: string;
-    /**
-     * Code of data source system from which this product originates
-     */
-    dataSourceSystemCode?: string;
     /**
      * Data source system from which this product originates
      */
     dataSourceSystem?: DataSourceSystemDto;
-    /**
-     * Rest client used to fetch the data product
-     */
-    restClient?: RestClientDto;
-    /**
-     * Template for the path where the data product is fetched from
-     */
-    restClientPathTemplate?: string;
-    /**
-     * Template of the request body for fetching the data product
-     */
-    restClientRequestTemplate?: string;
-    /**
-     * Http-Method used to fetch the data product
-     */
-    restClientMethodCode?: RestClientMethodCodeEnum;
     /**
      * Code of the flow used to fetch the data product
      */
@@ -64,12 +42,8 @@ export interface DataProductDto {
     extendedDescription?: TranslationDto;
     deprecatedSince?: string;
     stateCode: DataProductDtoStateCode;
-    /**
-     * Template for the path for retrieving updates to the data product
-     */
-    restClientChangeDetectionPathTemplate?: string;
 }
-export namespace DataProductDto {
+export namespace PublicDataProductDto {
 }
 
 

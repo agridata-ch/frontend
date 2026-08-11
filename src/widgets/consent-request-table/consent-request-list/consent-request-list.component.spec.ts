@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {
-  ConsentRequestProducerViewDto,
+  ConsentRequestAggregationProducerView,
+  ConsentRequestAggregationStateEnum,
   ConsentRequestStateEnum,
   DataRequestStateEnum,
 } from '@/entities/openapi';
@@ -50,9 +51,9 @@ describe('ConsentRequestListComponent', () => {
   });
 
   it('should emit updateConsentRequestStatus event with correct data when acceptRequest is called', () => {
-    const mockRequest: ConsentRequestProducerViewDto = {
-      id: 'request-123',
-      stateCode: ConsentRequestStateEnum.Opened,
+    const mockRequest: ConsentRequestAggregationProducerView = {
+      id: 'data-request-123',
+      stateCode: ConsentRequestAggregationStateEnum.Opened,
       dataRequest: {
         title: { de: 'Test Title' },
         stateCode: DataRequestStateEnum.Active,
@@ -60,6 +61,7 @@ describe('ConsentRequestListComponent', () => {
         id: 'data-request-123',
         advantages: [],
       },
+      consentRequests: [{ id: 'request-123', stateCode: ConsentRequestStateEnum.Opened }],
     };
 
     const mockEvent = new Event('click');
@@ -70,7 +72,7 @@ describe('ConsentRequestListComponent', () => {
 
     expect(mockEvent.stopPropagation).toHaveBeenCalled();
     expect(updateSpy).toHaveBeenCalledWith({
-      id: 'request-123',
+      aggregation: mockRequest,
       newState: ConsentRequestStateEnum.Granted,
       title: 'Test Title',
     });

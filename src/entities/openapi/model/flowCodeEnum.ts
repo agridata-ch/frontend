@@ -14,7 +14,8 @@ export const FlowCodeEnum = {
     UidBasedPostValidation: 'UID_BASED_POST_VALIDATION',
     BurBasedPreValidation: 'BUR_BASED_PRE_VALIDATION',
     BurBasedPostValidation: 'BUR_BASED_POST_VALIDATION',
-    UnboundPostValidation: 'UNBOUND_POST_VALIDATION'
+    UnboundUidBasedPostValidation: 'UNBOUND_UID_BASED_POST_VALIDATION',
+    UnboundBurBasedPostValidation: 'UNBOUND_BUR_BASED_POST_VALIDATION'
 } as const;
 export type FlowCodeEnum = typeof FlowCodeEnum[keyof typeof FlowCodeEnum];
 

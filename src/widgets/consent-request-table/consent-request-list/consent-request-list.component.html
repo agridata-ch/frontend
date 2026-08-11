@@ -12,8 +12,8 @@
       (click)="handleClick(request)"
       (keydown.enter)="handleClick(request)"
       class="flex flex-col gap-4 p-4 pl-6 hover:bg-agridata-primary-50 cursor-pointer group"
-      [class.bg-white]="request.stateCode !== ConsentRequestStateEnum.Opened"
-      [class.bg-sky-50]="request.stateCode === ConsentRequestStateEnum.Opened"
+      [class.bg-white]="!isOpenAggregationState(request.stateCode)"
+      [class.bg-sky-50]="isOpenAggregationState(request.stateCode)"
     >
       <div class="flex justify-between">
         <span class="text-agridata-primary-text font-normal">
@@ -45,7 +45,7 @@
       <span class="text-agridata-primary-600">
         {{ getTranslatedTitle(request) }}
       </span>
-      @if (request.stateCode === ConsentRequestStateEnum.Opened) {
+      @if (isOpenAggregationState(request.stateCode)) {
         <app-agridata-button
           click-stop-propagation
           [variant]="ButtonVariants.PrimaryAccept"
