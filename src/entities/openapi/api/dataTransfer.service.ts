@@ -17,9 +17,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { DataTransferResponse } from '../model/dataTransferResponse';
-// @ts-ignore
 import { ExceptionDto } from '../model/exceptionDto';
+// @ts-ignore
+import { ProducerIdentifier } from '../model/producerIdentifier';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -39,36 +39,30 @@ export class DataTransferService extends BaseService {
 
     /**
      * Data Transfer
-     * Retrieves data defined by productId. The needed query parameters are depending on the requested productId. Please consult documentation to find the necessary parameters
+     * Retrieves data defined by productId. The needed query parameters are depending on the requested productId. Please consult documentation to find the necessary parameters. This endpoint simply forwards the payload from the source system to the consumer.Before any data is transferred, the producer must have accepted an active data request that includes the requested product.
      * @param productId productId for which the data is requested
-     * @param bur Optional filter to retrieve data of a producer identified by a id of a local bur unit
-     * @param uid Optional filter to retrieve data of a producer identified by the uid
-     * @param year year for which the data is requested
+     * @param queryParams Additional query parameters. The needed query parameters are depending on the requested productId. Please consult documentation to find the necessary parameters.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
-     * @deprecated
      */
-    public dataTransfer(productId: string, bur?: string, uid?: string, year?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<DataTransferResponse>;
-    public dataTransfer(productId: string, bur?: string, uid?: string, year?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DataTransferResponse>>;
-    public dataTransfer(productId: string, bur?: string, uid?: string, year?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DataTransferResponse>>;
-    public dataTransfer(productId: string, bur?: string, uid?: string, year?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public dataTransferV2(productId: string, queryParams?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public dataTransferV2(productId: string, queryParams?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public dataTransferV2(productId: string, queryParams?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public dataTransferV2(productId: string, queryParams?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (productId === null || productId === undefined) {
-            throw new Error('Required parameter productId was null or undefined when calling dataTransfer.');
+            throw new Error('Required parameter productId was null or undefined when calling dataTransferV2.');
         }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>bur, 'bur');
-        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>uid, 'uid');
-        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>year, 'year');
+          <any>queryParams, 'queryParams');
 
         let localVarHeaders = this.defaultHeaders;
 
         // authentication (SecurityScheme) required
 
         const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            '*/*',
             'application/json'
         ]);
         if (localVarHttpHeaderAcceptSelected !== undefined) {
@@ -91,9 +85,9 @@ export class DataTransferService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/data-transfer/v1/product/${this.configuration.encodeParam({name: "productId", value: productId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/data`;
+        let localVarPath = `/api/data-transfer/v2/product/${this.configuration.encodeParam({name: "productId", value: productId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/data`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<DataTransferResponse>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<any>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -108,22 +102,22 @@ export class DataTransferService extends BaseService {
     }
 
     /**
-     * Get Delta Ids
-     * Returns a list of delta IDs (Producer UIDs) for the specified product, considering both data updates and newly granted consents since the given timestamp. This enables consumers to identify only those IDs for which a detail query is relevant
-     * @param productId productId for which the delta ids are requested
-     * @param since Only delta IDs with changes or newly granted consents after this timestamp are returned.
+     * Get Modified Producers
+     * Returns producer IDs for which either a new consent was granted or data has changed at the upstream provider since the given timestamp. Only producer IDs with a currently valid consent are included. This endpoint requires the product to have change detection configured.
+     * @param productId productId for which the change detection is requested
+     * @param since Only changes and new consents after this date are returned.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getDeltaIds(productId: string, since: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<string>>;
-    public getDeltaIds(productId: string, since: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<string>>>;
-    public getDeltaIds(productId: string, since: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<string>>>;
-    public getDeltaIds(productId: string, since: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getModifiedProducers(productId: string, since: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ProducerIdentifier>>;
+    public getModifiedProducers(productId: string, since: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ProducerIdentifier>>>;
+    public getModifiedProducers(productId: string, since: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ProducerIdentifier>>>;
+    public getModifiedProducers(productId: string, since: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (productId === null || productId === undefined) {
-            throw new Error('Required parameter productId was null or undefined when calling getDeltaIds.');
+            throw new Error('Required parameter productId was null or undefined when calling getModifiedProducers.');
         }
         if (since === null || since === undefined) {
-            throw new Error('Required parameter since was null or undefined when calling getDeltaIds.');
+            throw new Error('Required parameter since was null or undefined when calling getModifiedProducers.');
         }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -157,9 +151,9 @@ export class DataTransferService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/data-transfer/v1/product/${this.configuration.encodeParam({name: "productId", value: productId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/delta`;
+        let localVarPath = `/api/data-transfer/v2/product/${this.configuration.encodeParam({name: "productId", value: productId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/modified-producers`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<string>>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<Array<ProducerIdentifier>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

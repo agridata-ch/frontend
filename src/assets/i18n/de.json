@@ -1039,7 +1039,7 @@
       },
       "saveChanges": "Änderungen publizieren",
       "consentRequired": {
-        "label": "Öffentlich-rechtliches Datenprodukt",
+        "label": "Braucht es eine Zustimmung durch den Produzenten?",
         "true": {
           "title": "Ja, der Produzent muss seine Zustimmung geben",
           "subtitle": "Es handelt sich um ein privates Produkt"
@@ -1048,7 +1048,8 @@
           "title": "Nein, es handelt sich um ein Öffentlich-Rechtliches Datenprodukt",
           "subtitle": "Es handelt sich um ein Öffentlich-Rechtliches Datenprodukt"
         },
-        "disabledInfo": "Ändern nach dem Publizieren nicht mehr möglich"
+        "disabledInfo": "Ändern nach dem Publizieren nicht mehr möglich",
+        "notEditable": "Die Zustimmungspflicht kann nicht mehr geändert werden"
       },
       "consentRequiredInfo": {
         "title": "Zustimmungspflicht",

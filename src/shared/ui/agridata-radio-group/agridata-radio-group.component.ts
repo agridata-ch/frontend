@@ -1,4 +1,4 @@
-import { Component, effect, input, model } from '@angular/core';
+import { Component, computed, effect, input, model } from '@angular/core';
 
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
 
@@ -19,22 +19,35 @@ export class AgridataRadioGroupComponent {
   readonly ariaLabel = input<string>('');
   readonly control = input<FormControlWithMessages>();
   readonly disabled = input<boolean>(false);
+  readonly isViewMode = input<boolean>(false);
   readonly name = input<string>('agridata-radio-group');
   readonly options = input<readonly AgridataRadioGroupOption[]>([]);
 
   // Model properties
   readonly value = model<AgridataRadioGroupValue>();
 
+  // Computed Signals
+  protected readonly isDisabled = computed(() => this.disabled() || this.isViewMode());
+
   // Effects
-  private readonly controlSyncEffect = effect(() => {
-    const controlValue = this.control()?.value;
-    if (this.isRadioGroupValue(controlValue)) {
-      this.value.set(controlValue);
-    }
+  // control.value is not a signal, so under zoneless CD an external setValue() (e.g. populateForm)
+  // would not re-render the selection. Sync from the control's events stream so a late-arriving
+  // value still checks the right radio.
+  private readonly controlSyncEffect = effect((onCleanup) => {
+    const control = this.control();
+    const update = () => {
+      const controlValue = control?.value;
+      if (this.isRadioGroupValue(controlValue)) {
+        this.value.set(controlValue);
+      }
+    };
+    update();
+    const subscription = control?.events.subscribe(update);
+    onCleanup(() => subscription?.unsubscribe());
   });
 
   protected selectOption(value: AgridataRadioGroupValue) {
-    if (this.disabled()) {
+    if (this.isDisabled()) {
       return;
     }
 
@@ -43,6 +56,6 @@ export class AgridataRadioGroupComponent {
   }
 
   private isRadioGroupValue(value: unknown): value is AgridataRadioGroupValue {
-    return typeof value === 'number' || typeof value === 'string';
+    return typeof value === 'number' || typeof value === 'string' || typeof value === 'boolean';
   }
 }

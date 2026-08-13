@@ -50,6 +50,38 @@ describe('DataProductDetailInfoComponent', () => {
     it('should return the extendedDescription.de control', () => {
       expect(component['getFormControl']('extendedDescription.de')).toBeTruthy();
     });
+
+    it('should return the consentRequired control', () => {
+      expect(component['getFormControl']('consentRequired')).toBeTruthy();
+    });
+  });
+
+  describe('consent required radio group', () => {
+    const radioInputs = () =>
+      Array.from(
+        fixture.nativeElement.querySelectorAll('input[type="radio"]'),
+      ) as HTMLInputElement[];
+
+    it('should render one radio per option and write the user choice into the control', async () => {
+      const radios = radioInputs();
+      expect(radios).toHaveLength(2);
+
+      // first option carries value=true
+      radios[0].click();
+      await fixture.whenStable();
+
+      expect(component['form']().get('consentRequired')?.value).toBe(true);
+    });
+
+    it('should reflect the control value as the checked radio', async () => {
+      component['getFormControl']('consentRequired').setValue(true);
+      await fixture.whenStable();
+      expect(radioInputs()[0].checked).toBe(true);
+
+      component['getFormControl']('consentRequired').setValue(false);
+      await fixture.whenStable();
+      expect(radioInputs()[1].checked).toBe(true);
+    });
   });
 
   describe('nested translation field disabling', () => {

@@ -45,7 +45,10 @@
     "details": {
       "actions": {
         "accept": "Approuver",
-        "reject": "Refuser"
+        "reject": "Refuser",
+        "cancelEditMode": "Annuler",
+        "saveAndAccept": "Enregistrer et Consentir",
+        "saveDisabledInfo": "Au moins un consentement est requis"
       },
       "stateCode": {
         "GRANTED": "Accepté le {{ date }}",
@@ -62,7 +65,24 @@
       },
       "request": {
         "migrated": "Repris de Mon partage de données agricoles - MAF"
-      }
+      },
+      "decisions": {
+        "title": "Aperçu des entreprises",
+        "description": "Cette demande concerne votre entreprise (UID) et les sites associés (BUR). Le consentement s'applique toujours à l'entreprise. En principe, vous consentez aux sites demandés; via «Modifier les sites», vous pouvez exclure des sites individuels de la demande.",
+        "uidGroupTitle": "Mon entreprise demandée",
+        "uid": "Numéro d'identification de l'entreprise (UID) : {{ uid }}",
+        "bur": {
+          "title": "Numéro d'établissement (BUR) : {{ bur }}",
+          "enabled": "Sélectionné",
+          "disabled": "Exclu"
+        },
+        "edit": "Modifier les sites",
+        "cancel": "Annuler",
+        "burGroupTitle": "Mes sites demandés",
+        "nonProducerInfo": "Ici, les producteurs de données voient leurs sites demandés.",
+        "missingBurInfo": "Un site manque ? Contactez directement {{ consumer }} afin qu'ils puissent demander le site et que vous puissiez donner votre consentement."
+      },
+      "footerInformationNoBur": "Vous avez désactivé tous les sites. Si vous souhaitez refuser complètement cette demande, veuillez cliquer sur Annuler, puis sur le bouton Refuser."
     },
     "toast": {
       "title": {
@@ -1019,7 +1039,21 @@
       },
       "saveChanges": "Publier les modifications",
       "consentRequired": {
-        "label": "Produit de données relevant du droit public"
+        "label": "Faut-il obtenir l'accord du producteur ?",
+        "true": {
+          "title": "Oui, le producteur doit donner son consentement",
+          "subtitle": "Il s'agit d'un produit privé"
+        },
+        "false": {
+          "title": "Non, il s'agit d'un produit de données de droit public",
+          "subtitle": "Il s'agit d'un produit de données de droit public"
+        },
+        "disabledInfo": "Modification impossible après publication",
+        "notEditable": "L'obligation d'autorisation ne peut plus être modifiée"
+      },
+      "consentRequiredInfo": {
+        "title": "Obligation de consentement",
+        "subtitle": "Les demandes concernant des produits de données de droit public sont affichées aux producteurs définis par le bénéficiaire des données et servent à l'autodétermination numérique. Le producteur ne peut ni approuver ni refuser la demande."
       }
     },
     "saveAndPublish": {

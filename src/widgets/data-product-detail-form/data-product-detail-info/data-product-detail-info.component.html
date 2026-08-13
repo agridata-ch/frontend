@@ -1,5 +1,28 @@
 <ng-container *i18n="let t; prefix: 'data-products.detailForm'">
   <div class="flex flex-col gap-4">
+    <h3>{{ t('consentRequiredInfo.title') }}</h3>
+    <span class="text-agridata-secondary-text">{{ t('consentRequiredInfo.subtitle') }}</span>
+    @if (stateCode() === DataProductDtoStateCode.Active) {
+      <app-alert
+        [title]="t('consentRequired.notEditable')"
+        [message]="readonlyValue()"
+        [type]="AlertType.NEUTRAL"
+      />
+    } @else {
+      <app-form-control
+        [control]="getFormControl('consentRequired')"
+        [controlType]="ControlTypes.RADIO_GROUP"
+        [radioOptions]="radioOptions()"
+        [disabledInfo]="t('consentRequired.disabledInfo')"
+        [isViewMode]="isViewMode()"
+        [id]="'consentRequired'"
+        [label]="t('consentRequired.label')"
+        [class.px-3]="isViewMode()"
+        [class.py-4]="isViewMode()"
+      />
+    }
+  </div>
+  <div class="flex flex-col gap-4">
     <h3>{{ t('dataProduct') }}</h3>
     @if (stateCode() !== DataProductDtoStateCode.Active) {
       <div

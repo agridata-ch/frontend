@@ -314,7 +314,13 @@ function createControl(
     return createArrayControl(schemaNode, parentRequiredList, lastSegment, i18nService, isRichText);
   }
 
-  const defaultValue = schemaNode.type === 'array' ? [] : '';
+  // Booleans start as false (not ''), so a toggle field reaches the payload as a real boolean.
+  let defaultValue: unknown = '';
+  if (schemaNode.type === 'array') {
+    defaultValue = [];
+  } else if (schemaNode.type === 'boolean') {
+    defaultValue = false;
+  }
   const validators = buildValidatorFunctions(
     schemaNode,
     parentRequiredList,

@@ -4,6 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { DataProductDtoStateCode } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { getFormControl } from '@/shared/lib/form.helper';
+import { AgridataRadioGroupOption } from '@/shared/ui/agridata-radio-group';
 import { ControlTypes, FormControlComponent } from '@/shared/ui/form-control';
 import { LinkedTextComponent } from '@/shared/ui/linked-text';
 import { parseLinkedText } from '@/shared/utils';
@@ -54,6 +55,29 @@ export class DataProductDetailInfoComponent {
       this.i18nService.translate('data-products.detailForm.name.disabledInfo.message'),
     ),
   );
+
+  protected readonly readonlyValue = computed(() => {
+    return this.radioOptions().find(
+      (v) => v.value === this.getFormControl('consentRequired')?.value,
+    )?.subtitle;
+  });
+
+  protected readonly radioOptions = computed<readonly AgridataRadioGroupOption[]>(() => [
+    {
+      subtitle: this.i18nService.translate(
+        'data-products.detailForm.consentRequired.true.subtitle',
+      ),
+      title: this.i18nService.translate('data-products.detailForm.consentRequired.true.title'),
+      value: true,
+    },
+    {
+      subtitle: this.i18nService.translate(
+        'data-products.detailForm.consentRequired.false.subtitle',
+      ),
+      title: this.i18nService.translate('data-products.detailForm.consentRequired.false.title'),
+      value: false,
+    },
+  ]);
 
   // Effects
   private readonly syncNameDisabledEffect = effect((onCleanup) => {
