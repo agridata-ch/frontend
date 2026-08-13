@@ -45,7 +45,10 @@
     "details": {
       "actions": {
         "accept": "Acconsenti",
-        "reject": "Rifiuta"
+        "reject": "Rifiuta",
+        "cancelEditMode": "Annulla",
+        "saveAndAccept": "Salva e acconsenti",
+        "saveDisabledInfo": "È richiesto almeno un consenso"
       },
       "stateCode": {
         "GRANTED": "Acconsentito il {{ date }}",
@@ -62,7 +65,24 @@
       },
       "request": {
         "migrated": "Ripreso da «Mia condivisione dei dati agricoli – MAF»"
-      }
+      },
+      "decisions": {
+        "title": "Panoramica delle aziende",
+        "description": "Questa richiesta riguarda la vostra azienda (UID) e le relative sedi (BUR). Il consenso si applica sempre all'azienda. Fondamentalmente, acconsentite alle sedi richieste; tramite “Modifica sedi” potete escludere singole sedi dalla richiesta.",
+        "uidGroupTitle": "La mia azienda richiesta",
+        "uid": "Identificazione dell'azienda (UID): {{ uid }}",
+        "bur": {
+          "title": "Numero di stabile (BUR): {{ bur }}",
+          "enabled": "Selezionato",
+          "disabled": "Escluso"
+        },
+        "edit": "Modifica sedi",
+        "cancel": "Annulla",
+        "burGroupTitle": "Le mie sedi richieste",
+        "nonProducerInfo": "Qui i produttori di dati vedono le loro sedi richieste.",
+        "missingBurInfo": "Manca una sede? Contattate direttamente {{ consumer }} affinché possa richiederla e voi possiate dare il consenso."
+      },
+      "footerInformationNoBur": "Avete disattivato tutte le sedi. Se desiderate rifiutare completamente questa richiesta, cliccate su Annulla e poi sul pulsante Rifiuta."
     },
     "toast": {
       "title": {
@@ -1019,7 +1039,21 @@
       },
       "saveChanges": "Pubblica modifiche",
       "consentRequired": {
-        "label": "Prodotto informativo di diritto pubblico"
+        "label": "È necessaria l'autorizzazione del produttore?",
+        "true": {
+          "title": "Sì, il produttore deve dare il suo consenso",
+          "subtitle": "Si tratta di un prodotto privato"
+        },
+        "false": {
+          "title": "No, si tratta di un prodotto di dati di diritto pubblico",
+          "subtitle": "Si tratta di un prodotto di dati di diritto pubblico"
+        },
+        "disabledInfo": "Impossibile modificare dopo la pubblicazione",
+        "notEditable": "L'obbligo di autorizzazione non può più essere modificato"
+      },
+      "consentRequiredInfo": {
+        "title": "Obbligo di consenso",
+        "subtitle": "Le richieste con prodotti di dati di diritto pubblico vengono mostrate ai produttori definiti dal ricevitore dei dati e servono per l'autodeterminazione digitale. Il produttore non può né approvare né rifiutare la richiesta."
       }
     },
     "saveAndPublish": {

@@ -141,6 +141,27 @@ describe('data-product-detail-form.model', () => {
       expect(payload['links']).toEqual([{ displayText: 'Docs', url: 'https://example.com' }]);
     });
 
+    it('should send the consentRequired toggle value in the payload', () => {
+      const form = buildForm();
+      const info = form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION) as FormGroup;
+
+      getFormControl(info, 'consentRequired').setValue(true);
+      expect(buildDataProductPayload(form)['consentRequired']).toBe(true);
+
+      getFormControl(info, 'consentRequired').setValue(false);
+      expect(buildDataProductPayload(form)['consentRequired']).toBe(false);
+    });
+
+    it('should omit consentRequired entirely when the public sector toggle is locked', () => {
+      const form = buildForm();
+      const info = form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION) as FormGroup;
+      getFormControl(info, 'consentRequired').disable();
+
+      const payload = buildDataProductPayload(form);
+
+      expect(payload).not.toHaveProperty('consentRequired');
+    });
+
     it('should omit disabled controls from the payload', () => {
       const form = buildForm();
       const technical = form.get(FORM_TAB_IDS.TECHNICAL_FIELDS) as FormGroup;

@@ -17,8 +17,6 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { ConsentRequestConsumerViewDto } from '../model/consentRequestConsumerViewDto';
-// @ts-ignore
 import { ConsentRequestConsumerViewV2Dto } from '../model/consentRequestConsumerViewV2Dto';
 // @ts-ignore
 import { DataRequestDto } from '../model/dataRequestDto';
@@ -234,68 +232,6 @@ export class DataRequestsService extends BaseService {
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
-                responseType: <any>responseType_,
-                ...(withCredentials ? { withCredentials } : {}),
-                headers: localVarHeaders,
-                observe: observe,
-                transferCache: localVarTransferCache,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Get Consent Requests Of Data Request And Kt Id P
-     * &lt;strong&gt;This endpoint is deprecated, because it does not return the name of the UIDs. Please use [/v2/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests](#/Data%20Requests/getConsentRequestsOfDataRequestAndKtIdPv2) instead.&lt;/strong&gt;&lt;br&gt;&lt;br&gt;Retrieves all consent requests associated with a specific data request and kt-id-p. Accessible to the consumer who owns the data request.
-     * @param id The UUID of the data request
-     * @param ktIdP The kt-id-p identifier of the producer
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     * @deprecated
-     */
-    public getConsentRequestsOfDataRequestAndKtIdP(id: string, ktIdP: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ConsentRequestConsumerViewDto>>;
-    public getConsentRequestsOfDataRequestAndKtIdP(id: string, ktIdP: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ConsentRequestConsumerViewDto>>>;
-    public getConsentRequestsOfDataRequestAndKtIdP(id: string, ktIdP: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ConsentRequestConsumerViewDto>>>;
-    public getConsentRequestsOfDataRequestAndKtIdP(id: string, ktIdP: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getConsentRequestsOfDataRequestAndKtIdP.');
-        }
-        if (ktIdP === null || ktIdP === undefined) {
-            throw new Error('Required parameter ktIdP was null or undefined when calling getConsentRequestsOfDataRequestAndKtIdP.');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        // authentication (SecurityScheme) required
-
-        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            'application/json'
-        ]);
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
-
-        const localVarTransferCache: boolean = options?.transferCache ?? true;
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/agreement/v1/data-requests/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/kt-id-p/${this.configuration.encodeParam({name: "ktIdP", value: ktIdP, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/consent-requests`;
-        const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<ConsentRequestConsumerViewDto>>('get', `${basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

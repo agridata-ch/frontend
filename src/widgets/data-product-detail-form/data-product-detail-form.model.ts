@@ -38,8 +38,8 @@ export type DisabledRole = 'ADMIN' | 'PROVIDER';
  * payload (the backend rejects them).
  */
 export const DISABLED_FIELDS_AFTER_PUBLISH: Record<DisabledRole, ReadonlySet<string>> = {
-  ADMIN: new Set(['dataSourceSystemId']),
-  PROVIDER: new Set(['name', 'description', 'dataSourceSystemId']),
+  ADMIN: new Set(['dataSourceSystemId', 'consentRequired']),
+  PROVIDER: new Set(['name', 'description', 'dataSourceSystemId', 'consentRequired']),
 };
 
 export function isFieldDisabledAfterPublish(field: string, isAdmin: boolean): boolean {
@@ -75,6 +75,7 @@ export function buildDataProductPayload(form: FormGroup): Record<string, unknown
   // because these are ENUM values and the backend will reject an empty string, but will accept null
   if (payload['restClientMethodCode'] === '') payload['restClientMethodCode'] = null;
   if (payload['flowCode'] === '') payload['flowCode'] = null;
+
   // Links are optional and empty rows are UI-only scaffolding; drop them before save.
   if (Array.isArray(payload['links'])) {
     payload['links'] = filterFilledLinks(payload['links'] as LinkDto[]);
@@ -87,6 +88,7 @@ export const dataProductFormsModel: FormModel[] = [
     completionStrategy: FORM_COMPLETION_STRATEGIES.FORM_VALIDATION,
     formGroupName: FORM_TAB_IDS.NAME_AND_DESCRIPTION,
     fields: [
+      { name: 'consentRequired' },
       { name: 'name.de' },
       { name: 'name.fr' },
       { name: 'name.it' },

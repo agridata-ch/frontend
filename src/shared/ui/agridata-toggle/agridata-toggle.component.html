@@ -11,13 +11,13 @@
     [attr.aria-label]="ariaLabel() || label() || null"
   />
   <div
-    class="relative w-12.5 h-6.5 rounded-full transition-colors group-has-focus-visible:outline-2"
+    class="relative w-12.5 h-6.5 rounded-full transition-colors duration-300 ease-in-out group-has-focus-visible:outline-2"
     [class.bg-agridata-primary-600]="checked()"
     [class.bg-gray-300]="!checked()"
     [class.opacity-50]="disabled()"
   >
     <span
-      class="absolute top-1 left-1 w-4.5 h-4.5 bg-white rounded-full shadow-sm transition-transform"
+      class="absolute top-1 left-1 w-4.5 h-4.5 bg-white rounded-full shadow-sm transition-transform duration-300 ease-in-out"
       [class.translate-x-[24px]]="checked()"
     ></span>
   </div>

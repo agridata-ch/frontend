@@ -158,26 +158,6 @@ components:
           items:
             $ref: "#/components/schemas/ConsentRequestStateDto"
           description: List of consent requests included in this aggregation
-    ConsentRequestConsumerViewDto:
-      description: Data transfer object representing a consent request
-      deprecated: true
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          $ref: "#/components/schemas/UUID"
-          description: Unique identifier of the consent request
-          type: string
-          examples:
-          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
-        dataProducerUid:
-          type: string
-          description: UID of the data producer
-          examples:
-          - CHE123456789
-        stateCode:
-          $ref: "#/components/schemas/ConsentRequestStateEnum"
     ConsentRequestConsumerViewV2Dto:
       description: Data transfer object representing a consent request
       type: object
@@ -1413,20 +1393,6 @@ components:
           type: object
       required:
       - dataProvider
-    DataTransferResponse:
-      description: Response containing the requested product data and metadata about
-        the request.
-      type: object
-      properties:
-        data:
-          description: Contains the requested product data.
-        dataTransferRequestId:
-          type: string
-          description: Unique identifier for the data transfer request (uuid)
-        consentRequestId:
-          $ref: "#/components/schemas/UUID"
-          description: Identifier of the corresponding consent request
-          type: string
     DocumentScanStatusEnum:
       type: string
       enum:
@@ -2217,11 +2183,6 @@ tags:
     \ can create, update, submit, and retrieve their own data requests, while admins\
     \ have full access to all data requests and their associated consent requests."
 - name: Data Transfer
-  description: "Relays data products that belong to a producer, identified by a specific\
-    \ UID or local BUR local unit Id. Before any data is transferred, the producer\
-    \ must have accepted an active data request that includes the requested product.\
-    \ This endpoint simply forwards the payload from the source system to the consumer."
-- name: Data Transfer V2
 - name: Health
   description: Health status of agridata.ch and its connected data providers
 - name: Notifications
@@ -3174,62 +3135,6 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenanbieter
       x-api-subset: Data Provider
-  /api/agreement/v1/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests:
-    get:
-      description: "<strong>This endpoint is deprecated, because it does not return\
-        \ the name of the UIDs. Please use [/v2/data-requests/{id}/kt-id-p/{kt-id-p}/consent-requests](#/Data%20Requests/getConsentRequestsOfDataRequestAndKtIdPv2)\
-        \ instead.</strong><br><br>Retrieves all consent requests associated with\
-        \ a specific data request and kt-id-p. Accessible to the consumer who owns\
-        \ the data request."
-      operationId: getConsentRequestsOfDataRequestAndKtIdP
-      deprecated: true
-      tags:
-      - Data Requests
-      parameters:
-      - description: The UUID of the data request
-        example: 3da3a459-d3c2-48af-b8d0-02bc95146468
-        name: id
-        in: path
-        required: true
-        schema:
-          $ref: "#/components/schemas/UUID"
-      - description: The kt-id-p identifier of the producer
-        example: FLXXA0001
-        name: kt-id-p
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ConsentRequestConsumerViewDto"
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-        "500":
-          description: "Internal server error: unexpected error"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-        "404":
-          description: The resource or element was not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-      summary: Get Consent Requests Of Data Request And Kt Id P
-      security:
-      - SecurityScheme:
-        - agridata.ch.Agridata_Datenbezueger
-      x-api-subset: Data Consumer
   /api/agreement/v1/data-requests/{id}/logo:
     put:
       description: Updates the logo of a specific data request. Only accessible to
@@ -3520,126 +3425,6 @@ paths:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
       x-api-subset: Data Consumer
-  /api/data-transfer/v1/product/{productId}/data:
-    get:
-      description: Retrieves data defined by productId. The needed query parameters
-        are depending on the requested productId. Please consult documentation to
-        find the necessary parameters
-      operationId: dataTransfer
-      deprecated: true
-      tags:
-      - Data Transfer
-      parameters:
-      - description: productId for which the data is requested
-        example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
-        name: productId
-        in: path
-        required: true
-        schema:
-          $ref: "#/components/schemas/UUID"
-      - description: Optional filter to retrieve data of a producer identified by
-          a id of a local bur unit
-        name: bur
-        in: query
-        schema:
-          type: string
-      - description: Optional filter to retrieve data of a producer identified by
-          the uid
-        example: CHE101000001
-        name: uid
-        in: query
-        schema:
-          type: string
-      - description: year for which the data is requested
-        example: 2024
-        name: year
-        in: query
-        schema:
-          type: integer
-          format: int32
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DataTransferResponse"
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-        "500":
-          description: "Internal server error: unexpected error"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-        "404":
-          description: The resource or element was not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-      summary: Data Transfer
-      security:
-      - SecurityScheme:
-        - agridata.ch.Agridata_Datenbezueger
-      x-api-subset: Data Consumer
-  /api/data-transfer/v1/product/{productId}/delta:
-    get:
-      description: "Returns a list of delta IDs (Producer UIDs) for the specified\
-        \ product, considering both data updates and newly granted consents since\
-        \ the given timestamp. This enables consumers to identify only those IDs for\
-        \ which a detail query is relevant"
-      operationId: getDeltaIds
-      tags:
-      - Data Transfer
-      parameters:
-      - description: productId for which the delta ids are requested
-        example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
-        name: productId
-        in: path
-        required: true
-        schema:
-          $ref: "#/components/schemas/UUID"
-      - description: Only delta IDs with changes or newly granted consents after this
-          timestamp are returned.
-        example: 2025-01-01T09:00:00
-        name: since
-        in: query
-        schema:
-          $ref: "#/components/schemas/LocalDateTime"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-        "500":
-          description: "Internal server error: unexpected error"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-        "404":
-          description: The resource or element was not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-      summary: Get Delta Ids
-      security:
-      - SecurityScheme:
-        - agridata.ch.Agridata_Datenbezueger
-      x-api-subset: Data Consumer
   /api/data-transfer/v2/product/{productId}/data:
     get:
       description: "Retrieves data defined by productId. The needed query parameters\
@@ -3650,7 +3435,7 @@ paths:
         \ product."
       operationId: dataTransferV2
       tags:
-      - Data Transfer V2
+      - Data Transfer
       parameters:
       - description: productId for which the data is requested
         example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
@@ -3703,7 +3488,7 @@ paths:
         the product to have change detection configured.
       operationId: getModifiedProducers
       tags:
-      - Data Transfer V2
+      - Data Transfer
       parameters:
       - description: productId for which the change detection is requested
         example: 085e4b72-964d-4bd5-a3c9-224d8c5585af
@@ -4379,7 +4164,7 @@ paths:
       x-api-subset: agridata.ch Web App
   /api/products/v2/{id}:
     put:
-      description: Updates the details of an existing data product.
+      description: Updates the details of an existing DRAFT data product.
       operationId: updateDataProductDraft
       tags:
       - Data Products
@@ -4441,10 +4226,10 @@ paths:
         - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
     patch:
-      description: "Partially updates an existing data product. Each provided field\
-        \ is validated against the data product's current state and the caller's role.\
-        \ If any field cannot be updated, the entire request is rejected and no changes\
-        \ are applied."
+      description: "Partially updates an existing ACTIVE data product. Each provided\
+        \ field is validated against the data product's current state and the caller's\
+        \ role. If any field cannot be updated, the entire request is rejected and\
+        \ no changes are applied."
       operationId: patchDataProduct
       tags:
       - Data Products
@@ -5672,7 +5457,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.15.0-rc.13
+  version: 1.15.1-rc.1
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

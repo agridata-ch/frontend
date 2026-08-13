@@ -106,11 +106,16 @@ export class DataProductDetailFormComponent {
   private readonly publishAttempted = signal(false);
   private readonly refreshListNeeded = signal(false);
 
-  protected readonly form = buildReactiveForm(
-    DataProductUpdateDtoSchema,
-    dataProductFormsModel,
-    this.i18nService,
-  );
+  protected readonly form = (() => {
+    const form = buildReactiveForm(
+      DataProductUpdateDtoSchema,
+      dataProductFormsModel,
+      this.i18nService,
+    );
+    // New products default to consent-required; populateForm() overwrites this for existing products.
+    form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION)?.get('consentRequired')?.setValue(true);
+    return form;
+  })();
 
   // Computed Signals
   protected readonly canSaveDraft = computed(
