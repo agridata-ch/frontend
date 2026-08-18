@@ -6,7 +6,6 @@ import {
   inject,
   input,
   resource,
-  Signal,
   signal,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,12 +14,13 @@ import { AnalyticsService } from '@/app/analytics.service';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestAggregationStateEnum, ConsentRequestStateEnum } from '@/entities/openapi';
 import {
   FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM,
   REDIRECT_TIMEOUT,
 } from '@/pages/consent-request-producer';
 import {
+  getAggregationBadgeVariant,
   getToastMessage,
   getToastTitle,
   getToastType,
@@ -37,7 +37,7 @@ import {
 import { ScrollFadeDirective } from '@/shared/scroll-fade';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService } from '@/shared/toast';
-import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
+import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal';
 import { startCountdown } from '@/shared/utils/ui.util';
@@ -86,13 +86,12 @@ export class ConsentRequestDetailsComponent {
   private readonly toastService = inject(ToastService);
 
   // Input properties
-  readonly consentRequestId = input<string | undefined>();
+  readonly aggregationId = input<string | undefined>();
 
   // Constants
   protected readonly AlertType = AlertType;
   protected readonly badgeSize = BadgeSize;
   protected readonly ButtonVariants = ButtonVariants;
-  protected readonly consentRequestStateEnum = ConsentRequestStateEnum;
 
   // Timers
   private countdownTimer?: ReturnType<typeof setInterval>;
@@ -113,35 +112,35 @@ export class ConsentRequestDetailsComponent {
   // Computed Signals
   protected readonly badgeText = computed(() => {
     const stateCode = this.request()?.stateCode;
-    if (stateCode === ConsentRequestStateEnum.Opened)
-      return { key: 'consent-request.details.stateCode.OPENED' };
-    if (stateCode === ConsentRequestStateEnum.Granted)
-      return {
-        key: 'consent-request.details.stateCode.GRANTED',
-        params: { date: this.formattedLastStateChangeDate() },
-      };
-    if (stateCode === ConsentRequestStateEnum.Declined)
-      return {
-        key: 'consent-request.details.stateCode.DECLINED',
-        params: { date: this.formattedLastStateChangeDate() },
-      };
-
-    return { key: 'consent-request.details.stateCode.UNKNOWN' };
+    const params = { date: this.formattedLastStateChangeDate() };
+    switch (stateCode) {
+      case ConsentRequestAggregationStateEnum.Opened:
+        return { key: 'consent-request.details.stateCode.OPENED' };
+      case ConsentRequestAggregationStateEnum.PartiallyOpened:
+        return { key: 'consent-request.details.stateCode.PARTIALLY_OPENED' };
+      case ConsentRequestAggregationStateEnum.Granted:
+        return { key: 'consent-request.details.stateCode.GRANTED', params };
+      case ConsentRequestAggregationStateEnum.PartiallyGranted:
+        return { key: 'consent-request.details.stateCode.PARTIALLY_GRANTED', params };
+      case ConsentRequestAggregationStateEnum.Declined:
+        return { key: 'consent-request.details.stateCode.DECLINED', params };
+      default:
+        return { key: 'consent-request.details.stateCode.UNKNOWN' };
+    }
   });
-  protected readonly badgeVariant = computed(() => {
-    const stateCode = this.request()?.stateCode;
-    if (stateCode === ConsentRequestStateEnum.Opened) return BadgeVariant.INFO;
-    if (stateCode === ConsentRequestStateEnum.Granted) return BadgeVariant.SUCCESS;
-    if (stateCode === ConsentRequestStateEnum.Declined) return BadgeVariant.ERROR;
-    return BadgeVariant.DEFAULT;
-  });
+  protected readonly badgeVariant = computed(() =>
+    getAggregationBadgeVariant(this.request()?.stateCode),
+  );
   protected readonly consentRequestResource = resource({
-    params: () => ({ id: this.consentRequestId() }),
+    params: () => ({
+      id: this.aggregationId(),
+      uid: this.agridataStateService.activeUid(),
+    }),
     loader: ({ params }) => {
-      if (!params?.id) {
+      if (!params?.id || !params.uid) {
         return Promise.resolve(undefined);
       }
-      return this.consentRequestService.fetchConsentRequest(params.id);
+      return this.consentRequestService.fetchConsentRequestAggregation(params.id, params.uid);
     },
   });
   protected readonly formattedLastStateChangeDate = computed(() =>
@@ -149,13 +148,32 @@ export class ConsentRequestDetailsComponent {
   );
   protected readonly formattedRequestDate = computed(() => formatDate(this.request()?.requestDate));
   protected readonly request = createResourceValueComputed(this.consentRequestResource);
-  protected readonly requestId = computed(() => this.request()?.id);
-  protected readonly requestStateCode: Signal<ConsentRequestStateEnum | undefined> = computed(
-    () => this.request()?.stateCode,
+  // Disabled by the current decision state; impersonation is OR-ed in the template.
+  protected readonly acceptDisabled = computed(
+    () => this.governingStateCode() === ConsentRequestStateEnum.Granted,
+  );
+  protected readonly rejectDisabled = computed(
+    () => this.governingStateCode() === ConsentRequestStateEnum.Declined,
   );
   protected readonly requestTitle = computed(() =>
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.title),
   );
+  // Every consent request still awaiting a decision, affected together like the table does.
+  private readonly openConsentRequestIds = computed(() =>
+    (this.request()?.consentRequests ?? [])
+      .filter((cr) => cr.stateCode === ConsentRequestStateEnum.Opened)
+      .map((cr) => cr.id),
+  );
+  // PARTIALLY_GRANTED (all children decided, mixed) follows its first child until proper multi-child
+  // handling lands; every other aggregation state governs the buttons directly.
+  // acceptDisabled/rejectDisabled compare this against ConsentRequestStateEnum members; that only
+  // works because both generated enums share the GRANTED/OPENED/DECLINED literal values.
+  private readonly governingStateCode = computed<string | undefined>(() => {
+    const aggregationState = this.request()?.stateCode;
+    return aggregationState === ConsentRequestAggregationStateEnum.PartiallyGranted
+      ? this.request()?.consentRequests?.[0]?.stateCode
+      : aggregationState;
+  });
 
   // Effects
   private readonly checkResourceLoadedEffect = effect(() => {
@@ -261,27 +279,36 @@ export class ConsentRequestDetailsComponent {
     this.showRejectedLoading.set(false);
   }
 
+  // Affects every consent request still awaiting a decision (like the table). If none are open the
+  // aggregation is already decided, so the first child is flipped instead. Undo restores the previous
+  // state: OPENED for the open children, or the first child's decided state for a flip.
   private async changeConsentRequestState(newState: ConsentRequestStateEnum): Promise<void> {
-    const id = this.requestId();
-    const currentState = this.requestStateCode();
-    if (!currentState) {
-      throw new Error(
-        `unable to ${newState === ConsentRequestStateEnum.Granted ? 'accept' : 'reject'} consent request: missing current state`,
-      );
-    }
-    if (!id) {
-      throw new Error(
-        `unable to ${newState === ConsentRequestStateEnum.Granted ? 'accept' : 'reject'} consent request: missing id`,
-      );
+    const consentRequests = this.request()?.consentRequests ?? [];
+    const openIds = this.openConsentRequestIds();
+
+    let ids: string[];
+    let undoState: ConsentRequestStateEnum | undefined;
+    if (openIds.length > 0) {
+      ids = openIds;
+      undoState = ConsentRequestStateEnum.Opened;
+    } else {
+      const first = consentRequests[0];
+      if (!first?.id) {
+        return;
+      }
+      ids = [first.id];
+      undoState = first.stateCode;
     }
 
+    const updated = await this.updateAndReloadConsentRequestState(ids, newState);
+    if (!updated) {
+      return;
+    }
     this.analyticsService.logEvent('consent_request_state_changed', {
-      id: id,
+      id: this.request()?.id,
       state: newState,
       component: 'details',
     });
-    this.refreshListNeeded.set(true);
-    await this.updateAndReloadConsentRequestState(id, newState);
     this.showRedirect.set(this.shouldRedirect());
     if (!this.shouldRedirect()) {
       this.toastService.show(
@@ -290,27 +317,38 @@ export class ConsentRequestDetailsComponent {
           name: this.requestTitle(),
         }),
         getToastType(newState),
-        this.prepareUndoAction(id, currentState),
+        undoState ? this.prepareUndoAction(ids, undoState) : undefined,
       );
     }
   }
 
-  private prepareUndoAction(id: string, stateCode: ConsentRequestStateEnum) {
+  private prepareUndoAction(ids: string[], stateCode: ConsentRequestStateEnum) {
     return getUndoAction(() => {
       this.toastService.show(this.i18nService.translate(getToastTitle('')), '');
       this.onSameNavigationReload.set(true);
-      this.updateAndReloadConsentRequestState(id, stateCode);
+      this.updateAndReloadConsentRequestState(ids, stateCode);
     });
   }
 
-  private async updateAndReloadConsentRequestState(
-    id: string,
+  private updateAndReloadConsentRequestState(
+    ids: string[],
     stateCode: ConsentRequestStateEnum,
-  ): Promise<void> {
-    await this.consentRequestService.updateConsentRequestStatus(id, stateCode);
-    this.consentRequestResource?.reload();
-    this.refreshListNeeded.set(true);
-    this.handleCloseDetails();
+  ): Promise<boolean> {
+    return this.consentRequestService
+      .updateConsentRequestStatuses(ids, stateCode)
+      .then(() => {
+        this.consentRequestResource?.reload();
+        this.refreshListNeeded.set(true);
+        this.handleCloseDetails();
+        return true;
+      })
+      .catch((error) => {
+        // a rejected Promise.all can still have updated some of the children, so pull the
+        // authoritative states instead of leaving the panel stale
+        this.errorService.handleError(error);
+        this.consentRequestResource?.reload();
+        return false;
+      });
   }
 
   private clearAllTimers(): void {

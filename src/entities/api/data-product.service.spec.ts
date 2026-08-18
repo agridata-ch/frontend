@@ -11,6 +11,7 @@ import { DataProductService } from './data-product.service';
 const mockProduct: DataProductDto = {
   id: 'dp-1',
   stateCode: 'DRAFT',
+  consentRequired: false,
 };
 
 const mockPageApiResponse: PageResponseDtoDataProductDto = {

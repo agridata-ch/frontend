@@ -116,6 +116,7 @@ export class ConsentRequestsService extends BaseService {
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
+     * @deprecated
      */
     public getConsentRequest(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ConsentRequestProducerViewDto>;
     public getConsentRequest(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ConsentRequestProducerViewDto>>;
@@ -173,6 +174,7 @@ export class ConsentRequestsService extends BaseService {
      * @param dataProducerUid Optional filter to retrieve consent requests for a specific producer UID. If not provided, all requests for the currently authenticated producer are returned.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
+     * @deprecated
      */
     public getConsentRequests(dataProducerUid?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ConsentRequestProducerViewDto>>;
     public getConsentRequests(dataProducerUid?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ConsentRequestProducerViewDto>>>;

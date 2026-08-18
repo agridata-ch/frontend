@@ -142,7 +142,7 @@ export const routes: Routes = [
         canActivate: [ProducerUidGuard],
         children: [
           {
-            path: `:consentRequestId`,
+            path: `:aggregationId`,
             component: ConsentRequestDetailsComponent,
             title: 'consent-request.details.sidepanel.title',
           },

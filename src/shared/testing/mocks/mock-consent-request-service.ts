@@ -1,17 +1,22 @@
 import { ConsentRequestService } from '@/entities/api';
 import {
-  ConsentRequestAggregationProducerView,
+  ConsentRequestAggregationDto,
   ConsentRequestAggregationStateEnum,
-  ConsentRequestProducerViewDto,
   ConsentRequestStateEnum,
   DataRequestStateEnum,
 } from '@/entities/openapi';
 import { Mockify } from '@/shared/testing/mocks';
 
-export const mockConsentRequests: ConsentRequestProducerViewDto[] = [
+/**
+ * Full consent-request aggregations, one per data request, covering every aggregation state the UI
+ * distinguishes. Consent-request ids are unique across the whole set so a spec can assert on a
+ * single child by id. Typed as the full ConsentRequestAggregationDto; structurally assignable
+ * wherever a ConsentRequestAggregationSummaryDto is expected (list / table).
+ */
+export const mockConsentRequestAggregations: ConsentRequestAggregationDto[] = [
   {
-    id: '1',
-    stateCode: ConsentRequestStateEnum.Opened,
+    id: 'dr-1',
+    stateCode: ConsentRequestAggregationStateEnum.Opened,
     requestDate: '2025-05-01',
     dataRequest: {
       id: 'dr-1',
@@ -21,10 +26,11 @@ export const mockConsentRequests: ConsentRequestProducerViewDto[] = [
       advantages: [],
     },
     showStateAsMigrated: true,
+    consentRequests: [{ id: '1', stateCode: ConsentRequestStateEnum.Opened }],
   },
   {
-    id: '2',
-    stateCode: ConsentRequestStateEnum.Granted,
+    id: 'dr-2',
+    stateCode: ConsentRequestAggregationStateEnum.Granted,
     requestDate: '2025-05-02',
     dataRequest: {
       id: 'dr-2',
@@ -33,42 +39,6 @@ export const mockConsentRequests: ConsentRequestProducerViewDto[] = [
       stateCode: DataRequestStateEnum.Draft,
       advantages: [],
     },
-    showStateAsMigrated: false,
-  },
-  {
-    id: '3',
-    stateCode: ConsentRequestStateEnum.Declined,
-    requestDate: '2025-05-03',
-    dataRequest: {
-      id: 'dr-3',
-      title: { de: 'Antrag C' },
-      dataConsumerDisplayName: 'Open AG',
-      stateCode: DataRequestStateEnum.Draft,
-      advantages: [],
-    },
-    showStateAsMigrated: true,
-  },
-];
-
-/**
- * Producer view aggregations, one per data request, covering every aggregation state the UI
- * distinguishes. Consent request ids are unique across the whole set so a spec can route to a
- * single child by id.
- */
-export const mockConsentRequestAggregations: ConsentRequestAggregationProducerView[] = [
-  {
-    id: 'dr-1',
-    stateCode: ConsentRequestAggregationStateEnum.Opened,
-    requestDate: '2025-05-01',
-    dataRequest: mockConsentRequests[0].dataRequest,
-    showStateAsMigrated: true,
-    consentRequests: [{ id: '1', stateCode: ConsentRequestStateEnum.Opened }],
-  },
-  {
-    id: 'dr-2',
-    stateCode: ConsentRequestAggregationStateEnum.Granted,
-    requestDate: '2025-05-02',
-    dataRequest: mockConsentRequests[1].dataRequest,
     showStateAsMigrated: false,
     // two consent requests, one UID based and one BUR based
     consentRequests: [
@@ -80,7 +50,13 @@ export const mockConsentRequestAggregations: ConsentRequestAggregationProducerVi
     id: 'dr-3',
     stateCode: ConsentRequestAggregationStateEnum.Opened,
     requestDate: '2025-05-03',
-    dataRequest: mockConsentRequests[2].dataRequest,
+    dataRequest: {
+      id: 'dr-3',
+      title: { de: 'Antrag C' },
+      dataConsumerDisplayName: 'Open AG',
+      stateCode: DataRequestStateEnum.Draft,
+      advantages: [],
+    },
     showStateAsMigrated: true,
     // every consent request of an OPENED aggregation is still awaiting a decision
     consentRequests: [
@@ -116,12 +92,12 @@ export type MockConsentRequestService = Mockify<ConsentRequestService>;
  * Methods are jest mocks and default to resolving with `mockConsentRequestAggregations` where
  * appropriate.
  *
- * CommentLastReviewed: 2026-08-07
+ * CommentLastReviewed: 2026-08-17
  */
 export function createMockConsentRequestService(): MockConsentRequestService {
   return {
     fetchConsentRequests: jest.fn().mockResolvedValue(mockConsentRequestAggregations),
-    fetchConsentRequest: jest.fn().mockResolvedValue(mockConsentRequests[0]),
+    fetchConsentRequestAggregation: jest.fn().mockResolvedValue(mockConsentRequestAggregations[0]),
     updateConsentRequestStatus: jest.fn().mockResolvedValue(undefined),
     updateConsentRequestStatuses: jest.fn().mockResolvedValue([]),
     createConsentRequests: jest.fn().mockResolvedValue(undefined),

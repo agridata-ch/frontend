@@ -22,7 +22,7 @@ import { DataRequestContractPdfComponent } from './data-request-contract-pdf.com
 const CONTRACT_REVISION_ID = '123456-7895648-654987';
 const mockDataRequest: DataRequestDto = {
   id: 'dr-1',
-  stateCode: 'draft',
+  stateCode: 'DRAFT',
   currentContractRevisionId: CONTRACT_REVISION_ID,
   advantages: [],
 };

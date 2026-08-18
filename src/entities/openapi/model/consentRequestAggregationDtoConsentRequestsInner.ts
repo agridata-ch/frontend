@@ -7,14 +7,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ConsentRequestProducerViewDtoDataRequest } from './consentRequestProducerViewDtoDataRequest';
 import { ConsentRequestStateEnum } from './consentRequestStateEnum';
 
 
-/**
- * Data transfer object representing a consent request
- */
-export interface ConsentRequestProducerViewDto { 
+export interface ConsentRequestAggregationDtoConsentRequestsInner { 
     id: string;
     /**
      * UID of the data producer
@@ -37,9 +33,8 @@ export interface ConsentRequestProducerViewDto {
      */
     lastStateChangeDate?: string;
     requestDate?: string;
-    dataRequest?: ConsentRequestProducerViewDtoDataRequest;
 }
-export namespace ConsentRequestProducerViewDto {
+export namespace ConsentRequestAggregationDtoConsentRequestsInner {
 }
 
 

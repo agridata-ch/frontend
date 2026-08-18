@@ -11,12 +11,14 @@ const mockProducts: DataProductDto[] = [
   {
     id: '123',
     stateCode: 'DRAFT',
+    consentRequired: false,
     name: { de: 'Produkt 1', fr: 'Produit 1', it: 'Prodotto 1' },
     description: { de: 'Beschreibung 1', fr: 'Description 1', it: 'Descrizione 1' },
   },
   {
     id: '456',
     stateCode: 'DRAFT',
+    consentRequired: false,
     name: { de: 'Produkt 2', fr: 'Produit 2', it: 'Prodotto 2' },
   },
 ];
@@ -100,6 +102,7 @@ describe('DataRequestProductsAccordionComponent', () => {
       const partialProduct: DataProductDto = {
         id: '789',
         stateCode: 'DRAFT',
+        consentRequired: false,
         name: { de: 'Nur Deutsch' },
       };
       componentRef.setInput('lang', 'fr');

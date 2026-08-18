@@ -53,6 +53,7 @@ const mockDataProducts: DataProductDto[] = [
     id: 'product-1',
     name: { de: 'Produkt 1', fr: 'Produit 1', it: 'Prodotto 1' },
     stateCode: 'DRAFT',
+    consentRequired: false,
     dataSourceSystemCode: 'AGIS',
     dataSourceSystem: {
       id: 'agis-system',
@@ -69,6 +70,7 @@ const mockDataProducts: DataProductDto[] = [
     id: 'product-2',
     name: { de: 'Produkt 2', fr: 'Produit 2', it: 'Prodotto 2' },
     stateCode: 'DRAFT',
+    consentRequired: false,
     dataSourceSystemCode: 'AGIS',
     dataSourceSystem: {
       id: 'agis-system',
@@ -85,6 +87,7 @@ const mockDataProducts: DataProductDto[] = [
     id: 'product-3',
     name: { de: 'Produkt 3', fr: 'Produit 3', it: 'Prodotto 3' },
     stateCode: 'DRAFT',
+    consentRequired: false,
     dataSourceSystemCode: 'TVD',
     dataSourceSystem: {
       id: 'tvd-system',

@@ -251,7 +251,8 @@
           "UID_BASED_POST_VALIDATION",
           "BUR_BASED_PRE_VALIDATION",
           "BUR_BASED_POST_VALIDATION",
-          "UNBOUND_POST_VALIDATION"
+          "UNBOUND_UID_BASED_POST_VALIDATION",
+          "UNBOUND_BUR_BASED_POST_VALIDATION"
         ]
       },
       "restClientChangeDetectionPathTemplate": {
@@ -299,6 +300,9 @@
             "maxLength": 1000
           }
         }
+      },
+      "consentRequired": {
+        "type": "boolean"
       }
     },
     "required": [
@@ -309,7 +313,8 @@
       "restClientPathTemplate",
       "restClientRequestTemplate",
       "restClientMethodCode",
-      "flowCode"
+      "flowCode",
+      "consentRequired"
     ]
   }
 }

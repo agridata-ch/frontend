@@ -14,8 +14,10 @@ import { FarmTypeEnum } from './farmTypeEnum';
  * Data transfer object representing a bur
  */
 export interface BurDto { 
+    uid?: string;
     bur?: string;
     farmTypeCode?: FarmTypeEnum;
+    relationSince?: string;
 }
 export namespace BurDto {
 }

@@ -30,7 +30,7 @@ const mockContract: ContractRevisionDto = {
 
 const mockDataRequest: DataRequestDto = {
   id: 'dr-1',
-  stateCode: '',
+  stateCode: 'DRAFT',
   advantages: [],
 };
 

@@ -68,6 +68,10 @@ export interface DataProductDto {
      * Template for the path for retrieving updates to the data product
      */
     restClientChangeDetectionPathTemplate?: string;
+    /**
+     * If a consent is required for this data product
+     */
+    consentRequired: boolean;
 }
 export namespace DataProductDto {
 }

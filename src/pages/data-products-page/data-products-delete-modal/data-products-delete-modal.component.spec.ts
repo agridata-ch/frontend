@@ -30,6 +30,7 @@ describe('DataProductsDeleteModalComponent', () => {
   const createProduct = (stateCode: DataProductDtoStateCode): DataProductDto => ({
     id: 'product-1',
     stateCode,
+    consentRequired: false,
     name: { de: 'Test Product' },
     dataSourceSystem: {
       id: 'system-1',

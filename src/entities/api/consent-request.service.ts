@@ -24,8 +24,10 @@ export class ConsentRequestService {
     return this.apiService.createConsentRequests(createConsentRequestDto);
   }
 
-  fetchConsentRequest(id: string) {
-    return firstValueFrom(this.apiService.getConsentRequest(id));
+  fetchConsentRequestAggregation(id: string, uid: string) {
+    return firstValueFrom(
+      this.consentRequestAggregationService.getConsentRequestAggregation(id, uid),
+    );
   }
 
   /** Returns the consent requests of the producer, grouped by their data request. */
