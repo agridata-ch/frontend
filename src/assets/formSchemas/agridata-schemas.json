@@ -300,6 +300,9 @@
             "maxLength": 1000
           }
         }
+      },
+      "consentRequired": {
+        "type": "boolean"
       }
     },
     "required": [
@@ -309,7 +312,8 @@
       "restClientId",
       "restClientPathTemplate",
       "restClientMethodCode",
-      "flowCode"
+      "flowCode",
+      "consentRequired"
     ]
   }
 }

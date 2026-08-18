@@ -25,7 +25,7 @@ import { DataRequestCompletionComponent } from './data-request-completion.compon
 
 const mockDataRequest: DataRequestDto = {
   id: 'dr-1',
-  stateCode: 'ToBeSigned',
+  stateCode: 'TO_BE_SIGNED_BY_CONSUMER',
   humanFriendlyId: 'DR-001',
   submissionDate: '2026-03-01T10:00:00Z',
   dataProviderId: 'provider-1',
@@ -38,6 +38,7 @@ const mockDataProduct: DataProductDto = {
   id: 'product-1',
   name: { de: 'Produkt A', fr: 'Produit A', it: 'Prodotto A' },
   stateCode: 'DRAFT',
+  consentRequired: false,
 };
 
 describe('DataRequestCompletionComponent', () => {
@@ -123,6 +124,7 @@ describe('DataRequestCompletionComponent', () => {
         id: 'product-99',
         name: { de: 'Other' },
         stateCode: 'DRAFT',
+        consentRequired: false,
       };
       masterDataService.__testSignals.productsByProvider.set(
         new Map([['provider-1', [mockDataProduct, otherProduct]]]),

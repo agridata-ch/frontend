@@ -10,6 +10,7 @@
 import { DataSourceSystemReferenceDto } from './dataSourceSystemReferenceDto';
 import { DataRequestPurposeDto } from './dataRequestPurposeDto';
 import { DataRequestAdvantageDto } from './dataRequestAdvantageDto';
+import { ConsentRequestProducerViewDtoDataRequestStateCode } from './consentRequestProducerViewDtoDataRequestStateCode';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
 import { SignatureTypeEnum } from './signatureTypeEnum';
@@ -18,7 +19,7 @@ import { SignatureTypeEnum } from './signatureTypeEnum';
 /**
  * Details of the underlying data request
  */
-export interface ConsentRequestAggregationProducerViewDataRequest { 
+export interface ConsentRequestProducerViewDtoDataRequest { 
     id: string;
     dataProviderId?: string;
     dataSourceSystemId?: string;
@@ -47,7 +48,7 @@ export interface ConsentRequestAggregationProducerViewDataRequest {
      * List of data products requested
      */
     products?: Array<string>;
-    stateCode: string;
+    stateCode: ConsentRequestProducerViewDtoDataRequestStateCode;
     /**
      * LegalName of the data consumer taken from the uid register
      */
@@ -107,7 +108,7 @@ export interface ConsentRequestAggregationProducerViewDataRequest {
      */
     advantages: Array<DataRequestAdvantageDto>;
 }
-export namespace ConsentRequestAggregationProducerViewDataRequest {
+export namespace ConsentRequestProducerViewDtoDataRequest {
 }
 
 

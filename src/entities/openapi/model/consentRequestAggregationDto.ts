@@ -7,34 +7,36 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ConsentRequestAggregationProducerViewDataRequest } from './consentRequestAggregationProducerViewDataRequest';
+import { DataRequestDto } from './dataRequestDto';
 import { ConsentRequestAggregationStateEnum } from './consentRequestAggregationStateEnum';
-import { ConsentRequestProducerViewDto } from './consentRequestProducerViewDto';
+import { ConsentRequestProducerViewV2Dto } from './consentRequestProducerViewV2Dto';
 
 
 /**
  * Data transfer object representing an aggregation of consent requests
  */
-export interface ConsentRequestAggregationProducerView { 
+export interface ConsentRequestAggregationDto { 
     id: string;
-    /**
-     * UID of the data producer
-     */
-    dataProducerUid?: string;
     /**
      * Aggregated state derived from the states of the underlying consent requests
      */
     stateCode?: ConsentRequestAggregationStateEnum;
+    requestDate?: string;
     /**
      * Indicates whether the aggregated state originates from migrated consent requests
      */
     showStateAsMigrated?: boolean;
     lastStateChangeDate?: string;
-    requestDate?: string;
-    dataRequest?: ConsentRequestAggregationProducerViewDataRequest;
-    consentRequests?: Array<ConsentRequestProducerViewDto>;
+    /**
+     * Details of the underlying data request
+     */
+    dataRequest?: DataRequestDto;
+    /**
+     * List of consent requests included in this aggregation
+     */
+    consentRequests?: Array<ConsentRequestProducerViewV2Dto>;
 }
-export namespace ConsentRequestAggregationProducerView {
+export namespace ConsentRequestAggregationDto {
 }
 
 

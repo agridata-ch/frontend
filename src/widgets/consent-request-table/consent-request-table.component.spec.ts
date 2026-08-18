@@ -7,7 +7,7 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
-  ConsentRequestAggregationProducerView,
+  ConsentRequestAggregationSummaryDto,
   ConsentRequestAggregationStateEnum,
   ConsentRequestStateEnum,
 } from '@/entities/openapi';
@@ -37,7 +37,7 @@ describe('ConsentRequestTableComponent', () => {
   let errorService: MockErrorHandlerService;
   let consentRequestService: MockConsentRequestService;
   let stateService: MockAgridataStateService;
-  let mockResourceRef: ResourceRef<ConsentRequestAggregationProducerView[]>;
+  let mockResourceRef: ResourceRef<ConsentRequestAggregationSummaryDto[]>;
 
   beforeEach(async () => {
     mockToastService = {
@@ -75,7 +75,7 @@ describe('ConsentRequestTableComponent', () => {
 
     fixture = TestBed.createComponent(ConsentRequestTableComponent);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('consentRequestId', undefined);
+    fixture.componentRef.setInput('aggregationId', undefined);
     fixture.componentRef.setInput('consentRequestAggregations', mockConsentRequestAggregations);
     // Set the consentRequestAggregationsResource input to the fetchConsentRequests ResourceRef
     fixture.componentRef.setInput('consentRequestAggregationsResource', mockResourceRef);
@@ -303,29 +303,28 @@ describe('ConsentRequestTableComponent', () => {
     const getHighlightClickedRowFn = () =>
       component['consentRequestsTableMetaData']().highlightClickedRowFn;
 
-    it('should not highlight any row when consentRequestId is undefined', () => {
+    it('should not highlight any row when aggregationId is undefined', () => {
       expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[0])).toBe(false);
       expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[1])).toBe(false);
     });
 
-    it('should highlight the aggregation the routed consent request belongs to', () => {
-      fixture.componentRef.setInput('consentRequestId', '1');
+    it('should highlight the aggregation matching the routed aggregation id', () => {
+      fixture.componentRef.setInput('aggregationId', 'dr-1');
       fixture.detectChanges();
       expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[0])).toBe(true);
 
-      // '3' is the BUR based consent request of the second aggregation
-      fixture.componentRef.setInput('consentRequestId', '3');
+      fixture.componentRef.setInput('aggregationId', 'dr-2');
       fixture.detectChanges();
       expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[0])).toBe(false);
       expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[1])).toBe(true);
     });
 
-    it('should clear highlighted row when consentRequestId is set to undefined', () => {
-      fixture.componentRef.setInput('consentRequestId', '1');
+    it('should clear highlighted row when aggregationId is set to undefined', () => {
+      fixture.componentRef.setInput('aggregationId', 'dr-1');
       fixture.detectChanges();
       expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[0])).toBe(true);
 
-      fixture.componentRef.setInput('consentRequestId', undefined);
+      fixture.componentRef.setInput('aggregationId', undefined);
       fixture.detectChanges();
       expect(getHighlightClickedRowFn()?.(mockConsentRequestAggregations[0])).toBe(false);
     });

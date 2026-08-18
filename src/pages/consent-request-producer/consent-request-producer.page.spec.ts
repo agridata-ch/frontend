@@ -9,7 +9,7 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { ConsentRequestAggregationProducerView } from '@/entities/openapi';
+import { ConsentRequestAggregationSummaryDto } from '@/entities/openapi';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
@@ -92,21 +92,21 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     fixture.detectChanges();
   });
 
-  it('route to the first consent request of the aggregation on selecting request', () => {
+  it('routes to the aggregation on selecting a request', () => {
     const navSpy = jest.spyOn(mockRouter, 'navigate');
     const req = mockConsentRequestAggregations[0];
 
     component['navigateToRequest'](req);
 
-    expect(navSpy).toHaveBeenCalledWith([req.consentRequests?.[0].id], {
+    expect(navSpy).toHaveBeenCalledWith([req.id], {
       relativeTo: activeRoute,
     });
   });
 
-  it('does not route when the aggregation has no consent requests', () => {
+  it('does not route when the aggregation has no id', () => {
     const navSpy = jest.spyOn(mockRouter, 'navigate');
 
-    component['navigateToRequest']({ ...mockConsentRequestAggregations[0], consentRequests: [] });
+    component['navigateToRequest'](null);
 
     expect(navSpy).not.toHaveBeenCalled();
   });
@@ -180,7 +180,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
         dataRequest: {
           ...mockConsentRequestAggregations[0].dataRequest,
         },
-      } as ConsentRequestAggregationProducerView;
+      } as ConsentRequestAggregationSummaryDto;
 
       const title = component['getMigratedRequestTitle'](migratedRequest);
 

@@ -57,6 +57,10 @@ export interface DataProductUpdateDto {
      * Extended product details
      */
     extendedDescription?: DataProductExtendedDescriptionDto;
+    /**
+     * If a consent is required for this data product
+     */
+    consentRequired?: boolean;
 }
 export namespace DataProductUpdateDto {
 }

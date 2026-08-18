@@ -51,7 +51,9 @@
         "GRANTED": "Accepté le {{ date }}",
         "DECLINED": "Refusé le {{ date }}",
         "OPENED": "Ouvert",
-        "UNKNOWN": "Inconnu"
+        "UNKNOWN": "Inconnu",
+        "PARTIALLY_GRANTED": "Partiellement approuvé",
+        "PARTIALLY_OPENED": "Partiellement ouvert"
       },
       "footerInformation": "Vous pouvez modifier votre choix à tout moment ici. Les données ne peuvent être transmises qu'en cas de consentement explicite.",
       "requestDate": "Demande du {{ date }}",
@@ -1015,7 +1017,10 @@
           "message": "Remarque: Le système ne peut pas être modifié de manière autonome après l'activation. Les modifications souhaitées peuvent être demandées via [mailto:support@agridata.ch]."
         }
       },
-      "saveChanges": "Publier les modifications"
+      "saveChanges": "Publier les modifications",
+      "consentRequired": {
+        "label": "Produit de données relevant du droit public"
+      }
     },
     "saveAndPublish": {
       "success": {

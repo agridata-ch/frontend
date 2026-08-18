@@ -2,7 +2,7 @@ import { Component, inject, input, output } from '@angular/core';
 import { faChevronRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { ConsentRequestAggregationProducerView, ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestAggregationSummaryDto, ConsentRequestStateEnum } from '@/entities/openapi';
 import { getAggregationBadgeVariant, isOpenAggregationState } from '@/shared/consent-request';
 import { formatDate } from '@/shared/date';
 import { I18nDirective, I18nService } from '@/shared/i18n';
@@ -31,10 +31,10 @@ import { ConsentRequestEmptyStateComponent } from '@/widgets/consent-request-emp
 })
 export class ConsentRequestListComponent {
   protected readonly i18nService = inject(I18nService);
-  readonly consentRequests = input<ConsentRequestAggregationProducerView[]>();
-  readonly openDetails = output<ConsentRequestAggregationProducerView>();
+  readonly consentRequests = input<ConsentRequestAggregationSummaryDto[]>();
+  readonly openDetails = output<ConsentRequestAggregationSummaryDto>();
   readonly updateConsentRequestStatus = output<{
-    aggregation: ConsentRequestAggregationProducerView;
+    aggregation: ConsentRequestAggregationSummaryDto;
     newState: ConsentRequestStateEnum;
     title?: string;
   }>();
@@ -46,23 +46,23 @@ export class ConsentRequestListComponent {
   protected readonly BadgeSize = BadgeSize;
   protected readonly isOpenAggregationState = isOpenAggregationState;
 
-  handleClick(request: ConsentRequestAggregationProducerView) {
+  handleClick(request: ConsentRequestAggregationSummaryDto) {
     this.openDetails.emit(request);
   }
 
-  getTranslatedTitle(request: ConsentRequestAggregationProducerView) {
+  getTranslatedTitle(request: ConsentRequestAggregationSummaryDto) {
     return this.i18nService.useObjectTranslation(request.dataRequest?.title);
   }
 
-  formatRequestDate(request: ConsentRequestAggregationProducerView) {
+  formatRequestDate(request: ConsentRequestAggregationSummaryDto) {
     return formatDate(request?.requestDate);
   }
 
-  getBadgeVariant(request: ConsentRequestAggregationProducerView) {
+  getBadgeVariant(request: ConsentRequestAggregationSummaryDto) {
     return getAggregationBadgeVariant(request?.stateCode);
   }
 
-  acceptRequest(event: Event, request: ConsentRequestAggregationProducerView) {
+  acceptRequest(event: Event, request: ConsentRequestAggregationSummaryDto) {
     event.stopPropagation();
     const requestTitle = this.i18nService.useObjectTranslation(request.dataRequest?.title);
     this.updateConsentRequestStatus.emit({

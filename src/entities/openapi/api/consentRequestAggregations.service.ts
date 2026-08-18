@@ -17,7 +17,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { ConsentRequestAggregationProducerView } from '../model/consentRequestAggregationProducerView';
+import { ConsentRequestAggregationDto } from '../model/consentRequestAggregationDto';
+// @ts-ignore
+import { ConsentRequestAggregationSummaryDto } from '../model/consentRequestAggregationSummaryDto';
 // @ts-ignore
 import { ExceptionDto } from '../model/exceptionDto';
 
@@ -38,15 +40,81 @@ export class ConsentRequestAggregationsService extends BaseService {
     }
 
     /**
+     * Get Consent Request Aggregation
+     * Retrieves the full details of a single consent request aggregation for the current data producer.
+     * @param id 
+     * @param dataProducerUid Filter to retrieve the consent request aggregation for a specific producer UID.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getConsentRequestAggregation(id: string, dataProducerUid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ConsentRequestAggregationDto>;
+    public getConsentRequestAggregation(id: string, dataProducerUid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ConsentRequestAggregationDto>>;
+    public getConsentRequestAggregation(id: string, dataProducerUid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ConsentRequestAggregationDto>>;
+    public getConsentRequestAggregation(id: string, dataProducerUid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getConsentRequestAggregation.');
+        }
+        if (dataProducerUid === null || dataProducerUid === undefined) {
+            throw new Error('Required parameter dataProducerUid was null or undefined when calling getConsentRequestAggregation.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>dataProducerUid, 'dataProducerUid');
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (SecurityScheme) required
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/agreement/v1/consent-request-aggregations/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<ConsentRequestAggregationDto>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get Consent Request Aggregations
-     * Retrieves aggregated consent requests for the current data producer, grouped by data request.
+     * Retrieves summary aggregated consent requests for the current data producer, grouped by data request.
      * @param dataProducerUid Filter to retrieve consent requests for a specific producer UID.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getConsentRequestAggregations(dataProducerUid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ConsentRequestAggregationProducerView>>;
-    public getConsentRequestAggregations(dataProducerUid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ConsentRequestAggregationProducerView>>>;
-    public getConsentRequestAggregations(dataProducerUid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ConsentRequestAggregationProducerView>>>;
+    public getConsentRequestAggregations(dataProducerUid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ConsentRequestAggregationSummaryDto>>;
+    public getConsentRequestAggregations(dataProducerUid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ConsentRequestAggregationSummaryDto>>>;
+    public getConsentRequestAggregations(dataProducerUid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ConsentRequestAggregationSummaryDto>>>;
     public getConsentRequestAggregations(dataProducerUid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (dataProducerUid === null || dataProducerUid === undefined) {
             throw new Error('Required parameter dataProducerUid was null or undefined when calling getConsentRequestAggregations.');
@@ -85,7 +153,7 @@ export class ConsentRequestAggregationsService extends BaseService {
 
         let localVarPath = `/api/agreement/v1/consent-request-aggregations`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<ConsentRequestAggregationProducerView>>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<Array<ConsentRequestAggregationSummaryDto>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

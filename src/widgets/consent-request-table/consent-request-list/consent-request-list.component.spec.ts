@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {
-  ConsentRequestAggregationProducerView,
+  ConsentRequestAggregationSummaryDto,
   ConsentRequestAggregationStateEnum,
   ConsentRequestStateEnum,
-  DataRequestStateEnum,
 } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
@@ -51,15 +50,12 @@ describe('ConsentRequestListComponent', () => {
   });
 
   it('should emit updateConsentRequestStatus event with correct data when acceptRequest is called', () => {
-    const mockRequest: ConsentRequestAggregationProducerView = {
+    const mockRequest: ConsentRequestAggregationSummaryDto = {
       id: 'data-request-123',
       stateCode: ConsentRequestAggregationStateEnum.Opened,
       dataRequest: {
         title: { de: 'Test Title' },
-        stateCode: DataRequestStateEnum.Active,
-        dataProviderId: 'provider-123',
         id: 'data-request-123',
-        advantages: [],
       },
       consentRequests: [{ id: 'request-123', stateCode: ConsentRequestStateEnum.Opened }],
     };

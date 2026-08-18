@@ -1,7 +1,7 @@
 import { Component, computed, input, output, signal } from '@angular/core';
 
 import {
-  ConsentRequestAggregationProducerView,
+  ConsentRequestAggregationSummaryDto,
   ConsentRequestAggregationStateEnum,
 } from '@/entities/openapi';
 import { isOpenAggregationState } from '@/shared/consent-request';
@@ -20,7 +20,7 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
   templateUrl: './consent-request-filter.component.html',
 })
 export class ConsentRequestFilterComponent {
-  readonly requests = input.required<ConsentRequestAggregationProducerView[]>();
+  readonly requests = input.required<ConsentRequestAggregationSummaryDto[]>();
   handleFilterChange = output<string | null>();
 
   readonly ButtonVariants = ButtonVariants;
