@@ -14,6 +14,9 @@ api/dataTransfer.service.ts
 api/dataTransferV2.service.ts
 api/infoResource.service.ts
 api/notifications.service.ts
+api/publicDataProducts.service.ts
+api/publicDataProviders.service.ts
+api/publicDataSourceSystems.service.ts
 api/testData.service.ts
 api/uIDRegisterSearch.service.ts
 api/users.service.ts
@@ -75,8 +78,10 @@ model/pageResponseDto.ts
 model/pageResponseDtoConsentRequestFundamentalViewDto.ts
 model/pageResponseDtoDataProductDto.ts
 model/pageResponseDtoInboxEntryDto.ts
+model/pageResponseDtoPublicDataProductDto.ts
 model/pageResponseDtoUserInfoDto.ts
 model/producerIdentifier.ts
+model/publicDataProductDto.ts
 model/resourceQueryDto.ts
 model/restClientDto.ts
 model/restClientMethodCodeEnum.ts

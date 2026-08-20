@@ -36,6 +36,7 @@ describe('DataProductsPageComponent - component behavior', () => {
       id: 'system-1',
       dataProvider: { id: 'provider-1' },
       name: { de: 'System A' },
+      legalBasis: { de: 'Rechtsgrundlage' },
     },
   });
 
@@ -77,6 +78,7 @@ describe('DataProductsPageComponent - component behavior', () => {
           id: 'system-1',
           dataProvider: { id: 'provider-1' },
           name: { de: 'System A' },
+          legalBasis: { de: 'Rechtsgrundlage' },
         },
       };
       const mockResponse: PageResponseDto<DataProductDto> = {
@@ -182,6 +184,7 @@ describe('DataProductsPageComponent - component behavior', () => {
           id: 'system-1',
           dataProvider: { id: 'provider-1' },
           name: { de: 'System A', fr: 'Système A' },
+          legalBasis: { de: 'Rechtsgrundlage' },
         },
       };
 

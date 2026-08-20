@@ -39,7 +39,8 @@
       "ALL": "Tous",
       "OPENED": "Ouvert",
       "DECLINED": "Refusé",
-      "GRANTED": "Accordé"
+      "GRANTED": "Accordé",
+      "PARTIALLY_GRANTED": "Partiellement approuvé"
     },
     "details": {
       "actions": {
@@ -82,7 +83,9 @@
       "stateCode": {
         "OPENED": "Ouvert",
         "GRANTED": "Accordé",
-        "DECLINED": "Refusé"
+        "DECLINED": "Refusé",
+        "PARTIALLY_OPENED": "Partiellement ouvert",
+        "PARTIALLY_GRANTED": "Partiellement approuvé"
       }
     },
     "emptyState": {
@@ -391,7 +394,8 @@
     "invitationLink": {
       "label": "Lien d'invitation",
       "copyToClipboard": "Copier le lien dans le presse-papiers",
-      "copied": "Lien copié"
+      "copied": "Lien copié",
+      "copyFailed": "Échec de la copie"
     },
     "productsSystemCode": "Système",
     "contractSigning": {
@@ -794,7 +798,7 @@
   },
   "agb": {
     "modal": {
-      "toggleText": "Je confirme par la présente avoir lu les [conditions générales].",
+      "toggleText": "Je confirme par la présente avoir lu et accepté les [conditions générales].",
       "title": "Confirmer les conditions générales",
       "remindLater": "Me le rappeler plus tard",
       "accept": "Confirmer",

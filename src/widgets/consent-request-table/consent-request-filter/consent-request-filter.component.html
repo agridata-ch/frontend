@@ -8,7 +8,7 @@
     >
       <span>
         {{ filter.label | i18n }}
-        @if (filter.value === consentRequestStateEnum.Opened) {
+        @if (isOpenAggregationState(filter.value)) {
           <span
             class="text-agridata-secondary-text bg-agridata-content-gray size-3 rounded-full px-2"
           >

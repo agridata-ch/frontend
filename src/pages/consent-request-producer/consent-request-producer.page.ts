@@ -17,7 +17,7 @@ import { filter, map, startWith } from 'rxjs';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { ConsentRequestProducerViewDto } from '@/entities/openapi';
+import { ConsentRequestAggregationProducerView } from '@/entities/openapi';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
 import {
@@ -176,9 +176,12 @@ export class ConsentRequestProducerPage {
     this.agridataStateService.saveTourIntroSeen(true);
   }
 
-  protected navigateToRequest = (request?: ConsentRequestProducerViewDto | null) => {
-    if (request?.id) {
-      this.router.navigate([request.id], { relativeTo: this.activeRoute }).then();
+  // opens the first consent request of the aggregation. The detail panel is
+  // per-consent-request until the per-BUR accept/decline feature lands, then this becomes a picker. DIGIB2-531
+  protected navigateToRequest = (request?: ConsentRequestAggregationProducerView | null) => {
+    const consentRequestId = request?.consentRequests?.[0]?.id;
+    if (consentRequestId) {
+      this.router.navigate([consentRequestId], { relativeTo: this.activeRoute }).then();
     }
   };
 
@@ -186,7 +189,7 @@ export class ConsentRequestProducerPage {
     this.agridataStateService.addConfirmedMigratedUids([requestId]);
   }
 
-  protected getMigratedRequestTitle(request: ConsentRequestProducerViewDto): string {
+  protected getMigratedRequestTitle(request: ConsentRequestAggregationProducerView): string {
     return this.i18nService.useObjectTranslation(request?.dataRequest?.title);
   }
 

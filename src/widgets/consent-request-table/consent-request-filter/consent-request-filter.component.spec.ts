@@ -1,8 +1,8 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConsentRequestProducerViewDto } from '@/entities/openapi';
-import { ConsentRequestStateEnum } from '@/entities/openapi/model/consentRequestStateEnum';
+import { ConsentRequestAggregationProducerView } from '@/entities/openapi';
+import { ConsentRequestAggregationStateEnum } from '@/entities/openapi/model/consentRequestAggregationStateEnum';
 
 import { ConsentRequestFilterComponent } from './consent-request-filter.component';
 
@@ -11,11 +11,13 @@ describe('ConsentRequestFilterComponent', () => {
   let component: ConsentRequestFilterComponent;
   let componentRef: ComponentRef<ConsentRequestFilterComponent>;
 
-  const sampleRequests: ConsentRequestProducerViewDto[] = [
-    { id: '1', stateCode: ConsentRequestStateEnum.Opened },
-    { id: '2', stateCode: ConsentRequestStateEnum.Granted },
-    { id: '3', stateCode: ConsentRequestStateEnum.Opened },
-    { id: '4', stateCode: ConsentRequestStateEnum.Declined },
+  const sampleRequests: ConsentRequestAggregationProducerView[] = [
+    { id: '1', stateCode: ConsentRequestAggregationStateEnum.Opened },
+    { id: '2', stateCode: ConsentRequestAggregationStateEnum.Granted },
+    { id: '3', stateCode: ConsentRequestAggregationStateEnum.Opened },
+    { id: '4', stateCode: ConsentRequestAggregationStateEnum.Declined },
+    { id: '5', stateCode: ConsentRequestAggregationStateEnum.PartiallyOpened },
+    { id: '6', stateCode: ConsentRequestAggregationStateEnum.PartiallyGranted },
   ];
 
   beforeEach(async () => {
@@ -28,13 +30,13 @@ describe('ConsentRequestFilterComponent', () => {
     componentRef = fixture.componentRef;
   });
 
-  it('computes totalOpenRequests correctly based on requests input', () => {
+  it('counts opened and partially opened requests on the combined opened filter', () => {
     component = fixture.componentInstance;
     componentRef.setInput('requests', sampleRequests);
     fixture.detectChanges();
 
-    // There are two with stateCode = Opened
-    expect(component.totalOpenRequests()).toBe(2);
+    // two OPENED plus one PARTIALLY_OPENED
+    expect(component.totalOpenRequests()).toBe(3);
   });
 
   it('onButtonClick toggles selectedValue and emits the correct value', async () => {
@@ -43,52 +45,56 @@ describe('ConsentRequestFilterComponent', () => {
 
     expect(component.isSelected(null)).toBe(true);
 
-    component.handleClick(ConsentRequestStateEnum.Opened);
-    expect(component.selectedValue()).toBe(ConsentRequestStateEnum.Opened);
-    expect(emittedValues).toEqual([ConsentRequestStateEnum.Opened]);
-    expect(component.isSelected(ConsentRequestStateEnum.Opened)).toBe(true);
+    component.handleClick(ConsentRequestAggregationStateEnum.Opened);
+    expect(component.selectedValue()).toBe(ConsentRequestAggregationStateEnum.Opened);
+    expect(emittedValues).toEqual([ConsentRequestAggregationStateEnum.Opened]);
+    expect(component.isSelected(ConsentRequestAggregationStateEnum.Opened)).toBe(true);
 
-    component.handleClick(ConsentRequestStateEnum.Opened);
+    component.handleClick(ConsentRequestAggregationStateEnum.Opened);
     expect(component.selectedValue()).toBeNull();
-    expect(emittedValues).toEqual([ConsentRequestStateEnum.Opened, null]);
-    expect(component.isSelected(ConsentRequestStateEnum.Opened)).toBe(false);
+    expect(emittedValues).toEqual([ConsentRequestAggregationStateEnum.Opened, null]);
+    expect(component.isSelected(ConsentRequestAggregationStateEnum.Opened)).toBe(false);
     expect(component.isSelected(null)).toBe(true);
 
-    component.handleClick(ConsentRequestStateEnum.Declined);
-    expect(component.selectedValue()).toBe(ConsentRequestStateEnum.Declined);
+    component.handleClick(ConsentRequestAggregationStateEnum.Declined);
+    expect(component.selectedValue()).toBe(ConsentRequestAggregationStateEnum.Declined);
     expect(emittedValues).toEqual([
-      ConsentRequestStateEnum.Opened,
+      ConsentRequestAggregationStateEnum.Opened,
       null,
-      ConsentRequestStateEnum.Declined,
+      ConsentRequestAggregationStateEnum.Declined,
     ]);
-    expect(component.isSelected(ConsentRequestStateEnum.Declined)).toBe(true);
+    expect(component.isSelected(ConsentRequestAggregationStateEnum.Declined)).toBe(true);
   });
 
   it('isSelected returns false for values not currently selected', async () => {
-    expect(component.isSelected(ConsentRequestStateEnum.Opened)).toBe(false);
+    expect(component.isSelected(ConsentRequestAggregationStateEnum.Opened)).toBe(false);
 
-    component.handleClick(ConsentRequestStateEnum.Granted);
-    expect(component.selectedValue()).toBe(ConsentRequestStateEnum.Granted);
-    expect(component.isSelected(ConsentRequestStateEnum.Opened)).toBe(false);
-    expect(component.isSelected(ConsentRequestStateEnum.Granted)).toBe(true);
+    component.handleClick(ConsentRequestAggregationStateEnum.Granted);
+    expect(component.selectedValue()).toBe(ConsentRequestAggregationStateEnum.Granted);
+    expect(component.isSelected(ConsentRequestAggregationStateEnum.Opened)).toBe(false);
+    expect(component.isSelected(ConsentRequestAggregationStateEnum.Granted)).toBe(true);
   });
 
   it('filterOptions contains all expected label/value pairs', () => {
-    const opts = component.filterOptions;
-    expect(opts.length).toBe(4);
-
-    expect(opts[0]).toEqual({ label: 'consent-request.filter.ALL', value: null });
-    expect(opts[1]).toEqual({
-      label: 'consent-request.filter.OPENED',
-      value: ConsentRequestStateEnum.Opened,
-    });
-    expect(opts[2]).toEqual({
-      label: 'consent-request.filter.DECLINED',
-      value: ConsentRequestStateEnum.Declined,
-    });
-    expect(opts[3]).toEqual({
-      label: 'consent-request.filter.GRANTED',
-      value: ConsentRequestStateEnum.Granted,
-    });
+    expect(component.filterOptions).toEqual([
+      { label: 'consent-request.filter.ALL', value: null },
+      // OPENED is the combined filter for OPENED and PARTIALLY_OPENED, so there is no own option
+      {
+        label: 'consent-request.filter.OPENED',
+        value: ConsentRequestAggregationStateEnum.Opened,
+      },
+      {
+        label: 'consent-request.filter.DECLINED',
+        value: ConsentRequestAggregationStateEnum.Declined,
+      },
+      {
+        label: 'consent-request.filter.GRANTED',
+        value: ConsentRequestAggregationStateEnum.Granted,
+      },
+      {
+        label: 'consent-request.filter.PARTIALLY_GRANTED',
+        value: ConsentRequestAggregationStateEnum.PartiallyGranted,
+      },
+    ]);
   });
 });

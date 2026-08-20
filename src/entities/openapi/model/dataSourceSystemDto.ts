@@ -25,5 +25,9 @@ export interface DataSourceSystemDto {
      * Reference to the data provider
      */
     dataProvider: DataProviderDto;
+    /**
+     * Legal basis for the data source system
+     */
+    legalBasis: TranslationDto;
 }
 

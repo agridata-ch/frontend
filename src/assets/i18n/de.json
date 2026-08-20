@@ -39,7 +39,8 @@
       "ALL": "Alle",
       "OPENED": "Offen",
       "DECLINED": "Abgelehnt",
-      "GRANTED": "Zugestimmt"
+      "GRANTED": "Zugestimmt",
+      "PARTIALLY_GRANTED": "Teilweise Zugestimmt"
     },
     "details": {
       "actions": {
@@ -82,7 +83,9 @@
       "stateCode": {
         "OPENED": "Offen",
         "GRANTED": "Zugestimmt",
-        "DECLINED": "Abgelehnt"
+        "DECLINED": "Abgelehnt",
+        "PARTIALLY_OPENED": "Teilweise Offen",
+        "PARTIALLY_GRANTED": "Teilweise Zugestimmt"
       }
     },
     "emptyState": {
@@ -391,7 +394,8 @@
     "invitationLink": {
       "label": "Einladungslink",
       "copyToClipboard": "Link in die Zwischenablage kopieren",
-      "copied": "Link kopiert"
+      "copied": "Link kopiert",
+      "copyFailed": "Kopieren fehlgeschlagen"
     },
     "productsSystemCode": "System",
     "contractSigning": {
@@ -794,7 +798,7 @@
   },
   "agb": {
     "modal": {
-      "toggleText": "Hiermit bestätige ich die [Allgemeinen Geschäftsbedingungen] gelesen zu haben.",
+      "toggleText": "Hiermit bestätige ich, die [Allgemeinen Geschäftsbedingungen] gelesen zu haben und akzeptiere diese.",
       "title": "AGBs bestätigen",
       "remindLater": "Später erinnern",
       "accept": "Bestätigen",

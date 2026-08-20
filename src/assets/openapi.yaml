@@ -400,6 +400,11 @@ components:
           description: UID of the data producer
           examples:
           - CHE123456789
+        dataProducerBur:
+          type: string
+          description: BUR of the data producer; null for UID-based consent requests
+          examples:
+          - "99910003"
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
         showStateAsMigrated:
@@ -797,10 +802,8 @@ components:
           type: string
         name:
           $ref: "#/components/schemas/TranslationDto"
-          description: How this product is categorized
+          description: Localized name of the product
           type: object
-          examples:
-          - R01
         description:
           $ref: "#/components/schemas/TranslationDto"
           description: Description of the product
@@ -1345,6 +1348,7 @@ components:
       required:
       - id
       - dataProvider
+      - legalBasis
       properties:
         id:
           $ref: "#/components/schemas/UUID"
@@ -1362,6 +1366,10 @@ components:
         dataProvider:
           $ref: "#/components/schemas/DataProviderDto"
           description: Reference to the data provider
+          type: object
+        legalBasis:
+          $ref: "#/components/schemas/TranslationDto"
+          description: Legal basis for the data source system
           type: object
     DataSourceSystemReferenceDto:
       type: object
@@ -1473,7 +1481,8 @@ components:
       - UID_BASED_POST_VALIDATION
       - BUR_BASED_PRE_VALIDATION
       - BUR_BASED_POST_VALIDATION
-      - UNBOUND_POST_VALIDATION
+      - UNBOUND_UID_BASED_POST_VALIDATION
+      - UNBOUND_BUR_BASED_POST_VALIDATION
     InboxEntryDto:
       type: object
       properties:
@@ -1724,6 +1733,45 @@ components:
           description: Number of items per page.
           examples:
           - 10
+    PageResponseDtoPublicDataProductDto:
+      description: Generic paginated response wrapper.
+      type: object
+      required:
+      - items
+      - totalItems
+      - totalPages
+      - currentPage
+      - pageSize
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PublicDataProductDto"
+          description: List of items on the current page.
+        totalItems:
+          type: integer
+          format: int64
+          description: Total number of items across all pages.
+          examples:
+          - 42
+        totalPages:
+          type: integer
+          format: int32
+          description: Total number of pages available.
+          examples:
+          - 5
+        currentPage:
+          type: integer
+          format: int32
+          description: Current page number (0-based ).
+          examples:
+          - 1
+        pageSize:
+          type: integer
+          format: int32
+          description: Number of items per page.
+          examples:
+          - 10
     PageResponseDtoUserInfoDto:
       description: Generic paginated response wrapper.
       type: object
@@ -1779,6 +1827,59 @@ components:
             \ be identified by BUR."
           examples:
           - A12345678
+    PublicDataProductDto:
+      type: object
+      required:
+      - id
+      - stateCode
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the product
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+        dataSourceSystem:
+          $ref: "#/components/schemas/DataSourceSystemDto"
+          description: Data source system from which this product originates
+          type: object
+        flowCode:
+          $ref: "#/components/schemas/FlowCodeEnum"
+          description: Code of the flow used to fetch the data product
+          type: string
+        name:
+          $ref: "#/components/schemas/TranslationDto"
+          description: Localized name of the product
+          type: object
+        description:
+          $ref: "#/components/schemas/TranslationDto"
+          description: Description of the product
+          type: object
+        links:
+          type: array
+          items:
+            $ref: "#/components/schemas/LinkDto"
+          description: List of relevant product links
+        extendedDescription:
+          $ref: "#/components/schemas/TranslationDto"
+          description: Extended product details
+          type: object
+        deprecatedSince:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Timestamp indicating when the product was marked as deprecated.
+          type: string
+          examples:
+          - 2026-03-06T00:00:00
+        stateCode:
+          type:
+          - string
+          - object
+          enum:
+          - DRAFT
+          - ACTIVE
+          description: State of the data product
+          examples:
+          - ACTIVE
     ResourceQueryDto:
       type: object
       properties:
@@ -2081,6 +2182,12 @@ tags:
 - name: Notifications
   description: "Provides access to user notifications including inbox listing, marking\
     \ as read, and queuing notifications."
+- name: Public Data Products
+  description: Endpoints for public data products
+- name: Public Data Providers
+  description: Endpoints for public data providers
+- name: Public Data Source Systems
+  description: Endpoints for public data source systems
 - name: Test Data
 - name: UID Register Search
   description: Provides access to organisation details retrieved from the official
@@ -5184,6 +5291,164 @@ paths:
         - agridata.ch.Agridata_Support
         - agridata.ch.Agridata_Datenanbieter
       x-api-subset: agridata.ch Web App
+  /public/api/products/v2:
+    get:
+      description: Retrieves a paginated list of all publicly available data products.
+        Publicly accessible.
+      operationId: getPublicDataProductsPaginated
+      tags:
+      - Public Data Products
+      parameters:
+      - name: language
+        in: query
+        schema:
+          description: language code for multilingual fields. Must be supported by
+            application.
+          type: string
+      - name: page
+        in: query
+        schema:
+          description: page number
+          format: int32
+          type: integer
+          minimum: 0
+          default: 0
+      - name: searchTerm
+        in: query
+        schema:
+          description: string to search for in the resource
+          type: string
+      - name: size
+        in: query
+        schema:
+          description: page size
+          format: int32
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+      - name: sortBy
+        in: query
+        schema:
+          description: List of field names to sort by. Default is ascending prefix
+            with - for descending
+          type: object
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageResponseDtoPublicDataProductDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Public Data Products Paginated
+      x-api-subset: agridata.ch Web App
+  /public/api/products/v2/data-providers:
+    get:
+      description: Retrieves the list of all available data providers. Publicly accessible.
+      operationId: getPublicDataProviders
+      tags:
+      - Public Data Providers
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataProviderDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Public Data Providers
+      x-api-subset: agridata.ch Web App
+  /public/api/products/v2/data-source-systems:
+    get:
+      description: Retrieves the list of all available data source systems. Publicly
+        accessible.
+      operationId: getPublicDataSourceSystems
+      tags:
+      - Public Data Source Systems
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataSourceSystemDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Public Data Source Systems
+      x-api-subset: agridata.ch Web App
+  /public/api/products/v2/{id}/documents:
+    get:
+      description: Retrieves metadata for all successfully virus-scanned documents
+        of a publicly available data product. Publicly accessible.
+      operationId: getPublicDataProductDocumentsMetadata
+      tags:
+      - Public Data Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DataProductDocumentMetadataDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Public Data Product Documents Metadata
+      x-api-subset: agridata.ch Web App
   /public/api/user/v1/current-agb-revision:
     get:
       description: Returns the current Agb revision.
@@ -5265,7 +5530,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.14.0-rc.5
+  version: 1.15.0-rc.2
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 
