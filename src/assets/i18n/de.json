@@ -45,7 +45,10 @@
     "details": {
       "actions": {
         "accept": "Zustimmen",
-        "reject": "Ablehnen"
+        "reject": "Ablehnen",
+        "cancelEditMode": "Abbrechen",
+        "saveAndAccept": "Speichern und Zustimmen",
+        "saveDisabledInfo": "Mindestens eine Zustimmung erforderlich"
       },
       "stateCode": {
         "GRANTED": "Zugestimmt am {{ date }}",
@@ -62,7 +65,24 @@
       },
       "request": {
         "migrated": "Übernommen aus Meine Agrardatenfreigabe - MAF"
-      }
+      },
+      "decisions": {
+        "title": "Übersicht der Betriebe",
+        "description": "Diese Anfrage betrifft Ihr Unternehmen (UID) und die dazugehörigen Standorte (BUR). Die Zustimmung gilt immer für das Unternehmen. Grundsätzlich stimmen Sie den angefragten Standorten zu, über „Standorte bearbeiten“ können Sie einzelne Standorte von der Anfrage ausschliessen.",
+        "uidGroupTitle": "Mein angefragter Betrieb",
+        "uid": "Unternehmens-Identifikation (UID): {{ uid }}",
+        "bur": {
+          "title": "Betriebsstättennummer (BUR): {{ bur }}",
+          "enabled": "Ausgewählt",
+          "disabled": "Ausgeschlossen"
+        },
+        "edit": "Standorte bearbeiten",
+        "cancel": "Abbrechen",
+        "burGroupTitle": "Meine angefragten Standorte",
+        "nonProducerInfo": "Hier sehen die Datenproduzenten ihre anfragten Standorte.",
+        "missingBurInfo": "Fehlt ein Standort? Melden Sie sich direkt bei {{ consumer }}, damit diese den Standort anfragen und Sie die Zustimmung geben können."
+      },
+      "footerInformationNoBur": "Sie haben alle Standorte deaktiviert. Wenn Sie diese Anfrage komplett ablehnen möchten, klicken Sie bitte auf Abbrechen und danach auf den Ablehnen-Button."
     },
     "toast": {
       "title": {

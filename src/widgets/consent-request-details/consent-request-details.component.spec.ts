@@ -139,7 +139,7 @@ describe('ConsentRequestDetailsComponent', () => {
       ['1'],
       'GRANTED',
     );
-    expect(resourceSpy).toHaveBeenCalled();
+    expect(resourceSpy).not.toHaveBeenCalled();
     expect(navSpy).toHaveBeenCalled();
   });
 
@@ -157,12 +157,12 @@ describe('ConsentRequestDetailsComponent', () => {
       ['1'],
       'DECLINED',
     );
-    expect(resourceSpy).toHaveBeenCalled();
+    expect(resourceSpy).not.toHaveBeenCalled();
     expect(navSpy).toHaveBeenCalled();
   });
 
-  it('affects every OPENED consent request of the aggregation', async () => {
-    // dr-3 is OPENED: children '4' and '5' are both open
+  it('updates the BUR child and ignores the UID child when BUR children exist', async () => {
+    // dr-3: UID child '4' (opened) + BUR child '5' (opened)
     consentRequestService.fetchConsentRequestAggregation.mockResolvedValue(
       mockConsentRequestAggregations[2],
     );
@@ -171,14 +171,15 @@ describe('ConsentRequestDetailsComponent', () => {
 
     await component['acceptRequest']();
 
+    // only the BUR child is sent; the UID child ('4') is left to the backend
     expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
-      ['4', '5'],
+      ['5'],
       'GRANTED',
     );
   });
 
-  it('acts only on the OPENED consent request of a PARTIALLY_OPENED aggregation', async () => {
-    // dr-4 is PARTIALLY_OPENED: children granted '6', declined '7', opened '8'
+  it('updates every differing BUR child on accept, ignoring the UID child', async () => {
+    // dr-4: UID granted '6', BUR declined '7', BUR opened '8'
     consentRequestService.fetchConsentRequestAggregation.mockResolvedValue(
       mockConsentRequestAggregations[3],
     );
@@ -187,14 +188,15 @@ describe('ConsentRequestDetailsComponent', () => {
 
     await component['acceptRequest']();
 
+    // both BUR children differ from GRANTED; the already-granted UID child is skipped
     expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
-      ['8'],
+      ['7', '8'],
       'GRANTED',
     );
   });
 
-  it('can decline an already granted consent request', async () => {
-    // dr-2 is GRANTED; with no open children the first child (id '2') is flipped
+  it('declines the BUR child of a granted aggregation, ignoring the UID child', async () => {
+    // dr-2: UID granted '2', BUR granted '3'
     consentRequestService.fetchConsentRequestAggregation.mockResolvedValue(
       mockConsentRequestAggregations[1],
     );
@@ -204,7 +206,7 @@ describe('ConsentRequestDetailsComponent', () => {
     await component['rejectRequest']();
 
     expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
-      ['2'],
+      ['3'],
       'DECLINED',
     );
   });
@@ -226,8 +228,8 @@ describe('ConsentRequestDetailsComponent', () => {
     );
   });
 
-  describe('PARTIALLY_GRANTED follows the first child', () => {
-    it('offers only reject and flips the first child when it is granted', async () => {
+  describe('disables the action that would not change anything', () => {
+    it('offers only reject when the acted-on child is already granted', async () => {
       consentRequestService.fetchConsentRequestAggregation.mockResolvedValue({
         id: 'dr-pg',
         stateCode: ConsentRequestAggregationStateEnum.PartiallyGranted,
@@ -250,7 +252,7 @@ describe('ConsentRequestDetailsComponent', () => {
       );
     });
 
-    it('offers only accept and flips the first child when it is declined', async () => {
+    it('offers only accept when the acted-on child is already declined', async () => {
       consentRequestService.fetchConsentRequestAggregation.mockResolvedValue({
         id: 'dr-pg',
         stateCode: ConsentRequestAggregationStateEnum.PartiallyGranted,
@@ -578,5 +580,98 @@ describe('ConsentRequestDetailsComponent', () => {
     expect(content.componentInstance.dataRequest()).toEqual(
       mockConsentRequestAggregations[0].dataRequest,
     );
+  });
+
+  describe('per-BUR decisions (edit mode)', () => {
+    beforeEach(async () => {
+      // dr-4 has a granted+declined+opened mix, one global child (id '6') and two BUR children.
+      consentRequestService.fetchConsentRequestAggregation.mockResolvedValue(
+        mockConsentRequestAggregations[3] as ConsentRequestAggregationDto,
+      );
+      componentRef.setInput('aggregationId', 'dr-4');
+      await fixture.whenStable();
+    });
+
+    it('feeds the aggregation children into the decision store', () => {
+      expect(component['decisionStore'].consentRequests().map((request) => request.id)).toEqual([
+        '6',
+        '7',
+        '8',
+      ]);
+    });
+
+    it('submits only changed BUR children and never touches the UID child', async () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'uid', dataProducerUid: 'u', stateCode: ConsentRequestStateEnum.Opened },
+        { id: 'bur-granted', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Granted },
+        { id: 'bur-open', dataProducerBur: '2', stateCode: ConsentRequestStateEnum.Opened },
+      ]);
+      // bur-open (OPENED) seeds on -> becomes granted (a change); bur-granted stays on (no change)
+      component['decisionStore'].startEdit();
+
+      await component['saveBurDecisions']();
+
+      // only the changed bur-open is sent; bur-granted is a no-op and the UID child is left alone
+      expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledTimes(1);
+      expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+        ['bur-open'],
+        ConsentRequestStateEnum.Granted,
+      );
+      expect(component['decisionStore'].editMode()).toBe(false);
+    });
+
+    it('declines a BUR child toggled off, leaving the other BUR and the UID untouched', async () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'uid', dataProducerUid: 'u', stateCode: ConsentRequestStateEnum.Granted },
+        { id: 'bur-1', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Granted },
+        { id: 'bur-2', dataProducerBur: '2', stateCode: ConsentRequestStateEnum.Granted },
+      ]);
+      component['decisionStore'].startEdit();
+      component['decisionStore'].setDecision('bur-1', false);
+
+      await component['saveBurDecisions']();
+
+      // only the flipped bur-1 is declined; bur-2 (unchanged) and the UID child are not sent
+      expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledTimes(1);
+      expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+        ['bur-1'],
+        ConsentRequestStateEnum.Declined,
+      );
+    });
+
+    it('makes no service call when nothing changed and leaves edit mode', async () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'uid', dataProducerUid: 'u', stateCode: ConsentRequestStateEnum.Granted },
+        { id: 'bur', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Declined },
+      ]);
+      component['decisionStore'].startEdit();
+
+      await component['saveBurDecisions']();
+
+      expect(consentRequestService.updateConsentRequestStatuses).not.toHaveBeenCalled();
+      expect(component['decisionStore'].editMode()).toBe(false);
+    });
+
+    it('keeps edit mode and staged decisions when the save fails', async () => {
+      consentRequestService.updateConsentRequestStatuses.mockRejectedValueOnce(
+        new Error('save failed'),
+      );
+      component['decisionStore'].startEdit();
+
+      await component['saveBurDecisions']();
+
+      expect(errorService.handleError).toHaveBeenCalled();
+      expect(component['decisionStore'].editMode()).toBe(true);
+    });
+
+    it('cancelEdit discards staged decisions without calling the service', () => {
+      component['decisionStore'].startEdit();
+      component['decisionStore'].setDecision('8', true);
+
+      component['cancelEdit']();
+
+      expect(component['decisionStore'].editMode()).toBe(false);
+      expect(component['decisionStore'].decisions()).toEqual({});
+    });
   });
 });
