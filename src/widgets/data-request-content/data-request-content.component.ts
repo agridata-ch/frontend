@@ -6,6 +6,7 @@ import { DataRequestDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
+import { DataRequestConsentRequestDecisionsComponent } from '@/widgets/data-request-consent-request-decisions';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';
 import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
 import { DataRequestProductsAccordionComponent } from '@/widgets/data-request-products-accordion';
@@ -23,6 +24,7 @@ import { DataRequestPurposeComponent } from '@/widgets/data-request-purpose';
   imports: [
     AgridataContactCardComponent,
     DataRequestAdvantagesComponent,
+    DataRequestConsentRequestDecisionsComponent,
     DataRequestContactComponent,
     DataRequestPrivacyInfosComponent,
     DataRequestProductsAccordionComponent,

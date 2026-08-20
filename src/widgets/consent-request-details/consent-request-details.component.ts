@@ -20,6 +20,7 @@ import {
   REDIRECT_TIMEOUT,
 } from '@/pages/consent-request-producer';
 import {
+  ConsentRequestDecisionStore,
   getAggregationBadgeVariant,
   getToastMessage,
   getToastTitle,
@@ -44,6 +45,8 @@ import { startCountdown } from '@/shared/utils/ui.util';
 import { AlertComponent, AlertType } from '@/widgets/alert';
 import { DataRequestContentComponent } from '@/widgets/data-request-content';
 
+type DecisionTarget = { id: string; previousState?: ConsentRequestStateEnum };
+
 /**
  * Implements the logic for displaying detailed consent request information. It renders metadata
  * such as dates, state, consumer identity, description, purpose, and related products. The
@@ -67,11 +70,13 @@ import { DataRequestContentComponent } from '@/widgets/data-request-content';
     ScrollFadeDirective,
     SidepanelComponent,
   ],
+  providers: [ConsentRequestDecisionStore],
   templateUrl: './consent-request-details.component.html',
 })
 export class ConsentRequestDetailsComponent {
   // Injects
   protected readonly agridataStateService = inject(AgridataStateService);
+  protected readonly decisionStore = inject(ConsentRequestDecisionStore);
   private readonly activeRoute = inject(ActivatedRoute);
   private readonly analyticsService = inject(AnalyticsService);
   private readonly consentRequestService = inject(ConsentRequestService);
@@ -104,6 +109,7 @@ export class ConsentRequestDetailsComponent {
   protected readonly showRedirect = signal<boolean>(false);
   protected readonly showAcceptedLoading = signal(false);
   protected readonly showRejectedLoading = signal(false);
+  protected readonly showSaveLoading = signal(false);
 
   private readonly onSameNavigationReload = signal(false);
   private readonly refreshListNeeded = signal(false);
@@ -148,38 +154,32 @@ export class ConsentRequestDetailsComponent {
   );
   protected readonly formattedRequestDate = computed(() => formatDate(this.request()?.requestDate));
   protected readonly request = createResourceValueComputed(this.consentRequestResource);
-  // Disabled by the current decision state; impersonation is OR-ed in the template.
+  // Disabled when nothing would change to that state (every relevant child already has it);
+  // impersonation is OR-ed in the template.
   protected readonly acceptDisabled = computed(
-    () => this.governingStateCode() === ConsentRequestStateEnum.Granted,
+    () => this.decisionTargets(ConsentRequestStateEnum.Granted).length === 0,
   );
   protected readonly rejectDisabled = computed(
-    () => this.governingStateCode() === ConsentRequestStateEnum.Declined,
+    () => this.decisionTargets(ConsentRequestStateEnum.Declined).length === 0,
+  );
+  // At least one BUR must stay accepted; scoped to edit mode since grantedCount is 0 outside it too
+  // and the footer text renders in both modes.
+  protected readonly noBurGranted = computed(
+    () => this.decisionStore.editMode() && this.decisionStore.grantedCount() === 0,
   );
   protected readonly requestTitle = computed(() =>
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.title),
   );
-  // Every consent request still awaiting a decision, affected together like the table does.
-  private readonly openConsentRequestIds = computed(() =>
-    (this.request()?.consentRequests ?? [])
-      .filter((cr) => cr.stateCode === ConsentRequestStateEnum.Opened)
-      .map((cr) => cr.id),
-  );
-  // PARTIALLY_GRANTED (all children decided, mixed) follows its first child until proper multi-child
-  // handling lands; every other aggregation state governs the buttons directly.
-  // acceptDisabled/rejectDisabled compare this against ConsentRequestStateEnum members; that only
-  // works because both generated enums share the GRANTED/OPENED/DECLINED literal values.
-  private readonly governingStateCode = computed<string | undefined>(() => {
-    const aggregationState = this.request()?.stateCode;
-    return aggregationState === ConsentRequestAggregationStateEnum.PartiallyGranted
-      ? this.request()?.consentRequests?.[0]?.stateCode
-      : aggregationState;
-  });
 
   // Effects
   private readonly checkResourceLoadedEffect = effect(() => {
     if (!this.consentRequestResource.isLoading()) {
       this.detailsOpened.set(true);
     }
+  });
+  // Feeds the per-BUR decisions list rendered inside the data-request-content body.
+  private readonly syncDecisionStoreEffect = effect(() => {
+    this.decisionStore.consentRequests.set(this.request()?.consentRequests ?? []);
   });
   private readonly checkForRedirectEffect = effect(() => {
     const request = this.request();
@@ -252,6 +252,10 @@ export class ConsentRequestDetailsComponent {
     this.showAcceptedLoading.set(false);
   }
 
+  protected cancelEdit(): void {
+    this.decisionStore.cancelEdit();
+  }
+
   protected handleCloseDetails(): void {
     if (!this.shouldRedirect()) {
       this.router
@@ -279,28 +283,58 @@ export class ConsentRequestDetailsComponent {
     this.showRejectedLoading.set(false);
   }
 
-  // Affects every consent request still awaiting a decision (like the table). If none are open the
-  // aggregation is already decided, so the first child is flipped instead. Undo restores the previous
-  // state: OPENED for the open children, or the first child's decided state for a flip.
-  private async changeConsentRequestState(newState: ConsentRequestStateEnum): Promise<void> {
-    const consentRequests = this.request()?.consentRequests ?? [];
-    const openIds = this.openConsentRequestIds();
+  // Submits the edit-mode decisions: each BUR child by its toggle (on = granted, off = declined).
+  // The UID child is left untouched - the backend derives it from the BUR children. Only children
+  // whose state actually changes are sent (the backend rejects no-op transitions like GRANTED ->
+  // GRANTED).
+  protected async saveBurDecisions(): Promise<void> {
+    const decisions = this.decisionStore.decisions();
+    const grantIds: string[] = [];
+    const declineIds: string[] = [];
 
-    let ids: string[];
-    let undoState: ConsentRequestStateEnum | undefined;
-    if (openIds.length > 0) {
-      ids = openIds;
-      undoState = ConsentRequestStateEnum.Opened;
-    } else {
-      const first = consentRequests[0];
-      if (!first?.id) {
-        return;
+    for (const request of this.decisionStore.burRequests()) {
+      const desired = decisions[request.id]
+        ? ConsentRequestStateEnum.Granted
+        : ConsentRequestStateEnum.Declined;
+      if (request.stateCode !== desired) {
+        (decisions[request.id] ? grantIds : declineIds).push(request.id);
       }
-      ids = [first.id];
-      undoState = first.stateCode;
     }
 
-    const updated = await this.updateAndReloadConsentRequestState(ids, newState);
+    if (grantIds.length === 0 && declineIds.length === 0) {
+      this.decisionStore.cancelEdit();
+      return;
+    }
+
+    this.showSaveLoading.set(true);
+    const updated = await this.applyStateChanges(
+      new Map([
+        [ConsentRequestStateEnum.Granted, grantIds],
+        [ConsentRequestStateEnum.Declined, declineIds],
+      ]),
+    );
+    if (updated) {
+      this.analyticsService.logEvent('consent_request_state_changed', {
+        id: this.request()?.id,
+        state: 'per-bur',
+        component: 'details',
+      });
+      this.decisionStore.cancelEdit();
+    }
+    this.showSaveLoading.set(false);
+  }
+
+  // Applies newState to every BUR child that differs from it; the UID child is only touched when
+  // there is no BUR child (otherwise the backend derives it). Undo restores each child's exact
+  // prior state.
+  private async changeConsentRequestState(newState: ConsentRequestStateEnum): Promise<void> {
+    const targets = this.decisionTargets(newState);
+    if (targets.length === 0) {
+      return;
+    }
+    const ids = targets.map((target) => target.id);
+
+    const updated = await this.applyStateChanges(new Map([[newState, ids]]));
     if (!updated) {
       return;
     }
@@ -317,34 +351,64 @@ export class ConsentRequestDetailsComponent {
           name: this.requestTitle(),
         }),
         getToastType(newState),
-        undoState ? this.prepareUndoAction(ids, undoState) : undefined,
+        this.prepareRestoreUndoAction(targets),
       );
     }
   }
 
-  private prepareUndoAction(ids: string[], stateCode: ConsentRequestStateEnum) {
+  // Children that would actually change to newState: every BUR child that differs; the single UID
+  // child only when there is no BUR child (the backend derives the UID decision otherwise).
+  private decisionTargets(newState: ConsentRequestStateEnum): DecisionTarget[] {
+    const consentRequests = this.request()?.consentRequests ?? [];
+    const burRequests = consentRequests.filter((request) => request.dataProducerBur);
+    const targets = burRequests
+      .filter((request) => request.stateCode !== newState)
+      .map((request) => ({ id: request.id, previousState: request.stateCode }));
+
+    if (burRequests.length === 0) {
+      const uidRequest = consentRequests.find((request) => !request.dataProducerBur);
+      if (uidRequest && uidRequest.stateCode !== newState) {
+        targets.push({ id: uidRequest.id, previousState: uidRequest.stateCode });
+      }
+    }
+    return targets;
+  }
+
+  private prepareRestoreUndoAction(targets: DecisionTarget[]) {
+    const idsByState = new Map<ConsentRequestStateEnum, string[]>();
+    for (const target of targets) {
+      if (!target.previousState) {
+        continue;
+      }
+      const ids = idsByState.get(target.previousState) ?? [];
+      ids.push(target.id);
+      idsByState.set(target.previousState, ids);
+    }
+
     return getUndoAction(() => {
       this.toastService.show(this.i18nService.translate(getToastTitle('')), '');
       this.onSameNavigationReload.set(true);
-      this.updateAndReloadConsentRequestState(ids, stateCode);
+      this.applyStateChanges(idsByState);
     });
   }
 
-  private updateAndReloadConsentRequestState(
-    ids: string[],
-    stateCode: ConsentRequestStateEnum,
-  ): Promise<boolean> {
-    return this.consentRequestService
-      .updateConsentRequestStatuses(ids, stateCode)
+  // Runs one updateConsentRequestStatuses call per non-empty state group. On success the panel
+  // closes, so we skip reloading the (about-to-be-destroyed) detail resource and let the list
+  // refresh via refreshListNeeded; on failure a rejected Promise.all may have updated some children,
+  // so pull authoritative state instead of leaving the panel stale.
+  private applyStateChanges(byState: Map<ConsentRequestStateEnum, string[]>): Promise<boolean> {
+    const calls = [...byState.entries()]
+      .filter(([, ids]) => ids.length > 0)
+      .map(([stateCode, ids]) =>
+        this.consentRequestService.updateConsentRequestStatuses(ids, stateCode),
+      );
+    return Promise.all(calls)
       .then(() => {
-        this.consentRequestResource?.reload();
         this.refreshListNeeded.set(true);
         this.handleCloseDetails();
         return true;
       })
       .catch((error) => {
-        // a rejected Promise.all can still have updated some of the children, so pull the
-        // authoritative states instead of leaving the panel stale
         this.errorService.handleError(error);
         this.consentRequestResource?.reload();
         return false;

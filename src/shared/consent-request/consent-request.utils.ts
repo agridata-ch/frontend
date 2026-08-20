@@ -20,6 +20,18 @@ export function getAggregationBadgeVariant(stateCode?: ConsentRequestAggregation
   return stateCode ? AGGREGATION_BADGE_VARIANTS[stateCode] : BadgeVariant.DEFAULT;
 }
 
+/** Exhaustive by type, a new consent-request state fails to compile until it gets a variant. */
+const CONSENT_REQUEST_BADGE_VARIANTS: Record<ConsentRequestStateEnum, BadgeVariant> = {
+  [ConsentRequestStateEnum.Opened]: BadgeVariant.INFO,
+  [ConsentRequestStateEnum.Granted]: BadgeVariant.SUCCESS,
+  [ConsentRequestStateEnum.Declined]: BadgeVariant.ERROR,
+  [ConsentRequestStateEnum.NotCreated]: BadgeVariant.DEFAULT,
+};
+
+export function getConsentRequestBadgeVariant(stateCode?: ConsentRequestStateEnum) {
+  return stateCode ? CONSENT_REQUEST_BADGE_VARIANTS[stateCode] : BadgeVariant.DEFAULT;
+}
+
 /**
  * OPENED and PARTIALLY_OPENED are both actionable: at least one consent request of the aggregation
  * is still awaiting a decision.
