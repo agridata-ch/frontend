@@ -1,3 +1,5 @@
+## [1.17.1-rc.1](https://github.com/agridata-ch/frontend/compare/v1.17.0...v1.17.1-rc.1) (2026-08-20)
+
 ## [1.17.0](https://github.com/agridata-ch/frontend/compare/v1.16.0...v1.17.0) (2026-08-20)
 
 ## [1.17.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.17.0-rc.1...v1.17.0-rc.2) (2026-08-19)
