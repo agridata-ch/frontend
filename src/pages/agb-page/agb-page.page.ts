@@ -16,17 +16,17 @@ import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { formatDate } from '@/shared/date';
 import { I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
-import { MarkdownPipe } from '@/shared/markdown/markdown.pipe';
 import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
 
 /**
- * Fetches the AGB (for contracts) page from the CMS and renders the content using the Markdown pipe.
+ * Fetches the AGB (for contracts) page from the CMS and renders the content.
+ * replace list styles similar to the MarkdownPipe
  *
- * CommentLastReviewed: 2026-04-02
+ * CommentLastReviewed: 2026-08-20
  */
 @Component({
   selector: 'app-agb-page',
-  imports: [CmsFooterBlockComponent, MarkdownPipe, FaIconComponent],
+  imports: [CmsFooterBlockComponent, FaIconComponent],
   templateUrl: './agb-page.page.html',
 })
 export class AgbPage {
@@ -55,7 +55,12 @@ export class AgbPage {
     if (!response) return '';
 
     const lang = this.i18nService.lang() as keyof typeof response.agbText;
-    return response?.agbText?.[lang] ?? '';
+    const html = response?.agbText?.[lang] ?? '';
+
+    // replace ul and ol to add our custom classes to the HTML like we did in the "MarkdownPipe"
+    return html
+      .replaceAll('<ul>', '<ul class="list-disc pl-5">')
+      .replaceAll('<ol>', '<ol class="list-decimal pl-5">');
   });
 
   protected readonly version = computed(() => {
