@@ -83,6 +83,7 @@
     "commitizen": "4.3.2",
     "commitlint": "21.2.1",
     "conventional-changelog-conventionalcommits": "10.4.0",
+    "conventional-changelog-writer": "9.2.1",
     "cz-conventional-changelog": "3.3.0",
     "date-fns": "4.4.0",
     "dotenv": "17.4.2",
