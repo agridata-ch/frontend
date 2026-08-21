@@ -1,3 +1,9 @@
+## [1.18.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.2...v1.18.0-rc.3) (2026-08-21)
+
+### Features
+
+- **consent-request:** add BUR decision ([b96202d](https://github.com/agridata-ch/frontend/commit/b96202db02d25c9a7e0364b56f01bf2598746aae)), references [DIGIB2-531](https://github.com/agridata-ch/frontend/issues/-531)
+
 ## [1.18.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.1...v1.18.0-rc.2) (2026-08-21)
 
 ### Features
