@@ -1,3 +1,9 @@
+## [1.18.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.1...v1.18.0-rc.2) (2026-08-21)
+
+### Features
+
+- **agb:** add custom styling to list ([50f55e7](https://github.com/agridata-ch/frontend/commit/50f55e724f2d9c10935a3aec5f2b1fad88f142e5)), references [DIGIB2-1590](https://github.com/agridata-ch/frontend/issues/-1590)
+
 ## [1.18.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.17.1...v1.18.0-rc.1) (2026-08-21)
 
 ### Features
