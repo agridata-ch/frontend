@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { marked, Tokens } from 'marked';
+import { marked } from 'marked';
 
 /**
  * Defines a custom Angular pipe for converting Markdown text into sanitized HTML. It leverages
@@ -27,19 +27,6 @@ export class MarkdownPipe implements PipeTransform {
       return `<a href="${href}" title="${title || ''}" class="underline hover:text-agridata-primary-600">${text}</a>`;
     };
 
-    // Store the original list renderer
-    const originalListRenderer = renderer.list.bind(renderer);
-
-    // Override the list renderer to add our custom classes
-    renderer.list = function (token: Tokens.List): string {
-      const html = originalListRenderer(token);
-
-      // Add our custom classes to the generated HTML
-      return token.ordered
-        ? html.replaceAll('<ol>', '<ol class="list-decimal pl-5">')
-        : html.replaceAll('<ul>', '<ul class="list-disc pl-5">');
-    };
-
     // Disable HTML in markdown
     marked.setOptions({
       renderer: renderer,
@@ -54,6 +41,10 @@ export class MarkdownPipe implements PipeTransform {
 
     // Let Angular sanitize the HTML (this removes scripts and other dangerous content)
     // while still allowing safe HTML elements
-    return this.sanitizer.sanitize(1, html) as string;
+    const sanitized = this.sanitizer.sanitize(1, html) as string;
+
+    // Render into the markdown scope so list markers Tailwind's preflight resets are
+    // restored and vary per nesting depth.
+    return `<div class="markdown-content">${sanitized}</div>`;
   }
 }

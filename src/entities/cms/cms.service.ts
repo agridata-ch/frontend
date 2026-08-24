@@ -34,6 +34,13 @@ export class CmsService {
       ),
     );
 
+  readonly fetchSlaPage = (locale: string) =>
+    firstValueFrom(
+      this.http.get(
+        `${this.apiUrl}/api/sla?locale=${locale}${this.isDevMode ? '&status=draft' : ''}`,
+      ),
+    );
+
   readonly fetchPrivacyPolicyPage = (locale: string) =>
     firstValueFrom(
       this.http.get(

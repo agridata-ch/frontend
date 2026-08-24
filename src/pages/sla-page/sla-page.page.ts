@@ -6,83 +6,62 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { TitleService } from '@/app/title.service';
-import { AgbService } from '@/entities/api';
 import {
   CmsService,
   StrapiSingleTypeResponse,
   StrapiSingleTypeResponseWithContent,
 } from '@/entities/cms';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { formatDate } from '@/shared/date';
 import { I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
+import { MarkdownPipe } from '@/shared/markdown/markdown.pipe';
+import { SeoService } from '@/shared/seo/seo.service';
 import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
 
 /**
- * Fetches the AGB (for contracts) page from the CMS and renders the raw HTML
- * content into the `.markdown-content` scope.
+ * Fetches sla page from the CMS and renders the content using the Markdown pipe.
  *
  * CommentLastReviewed: 2026-08-24
  */
 @Component({
-  selector: 'app-agb-page',
-  imports: [CmsFooterBlockComponent, FaIconComponent],
-  templateUrl: './agb-page.page.html',
+  selector: 'app-sla-page',
+  imports: [CmsFooterBlockComponent, MarkdownPipe, FaIconComponent],
+  templateUrl: './sla-page.page.html',
 })
-export class AgbPage {
-  private readonly agbService = inject(AgbService);
+export class SlaPage {
   private readonly strapiService = inject(CmsService);
   private readonly i18nService = inject(I18nService);
   private readonly router = inject(Router);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly titleService = inject(TitleService);
+  private readonly seoService = inject(SeoService);
 
-  protected readonly agbPageResource = resource({
+  protected readonly slaPageResource = resource({
     params: () => ({ locale: this.i18nService.lang() }),
-    loader: async ({ params }) => {
-      const [cmsPage, agbs] = await Promise.all([
-        this.strapiService.fetchAgbPage(params.locale),
-        this.agbService.fetchAgbs(),
-      ]);
-      return { cmsPage, agbs };
+    loader: ({ params }) => {
+      return this.strapiService.fetchSlaPage(params.locale);
     },
   });
 
-  protected readonly agbPage = createResourceValueComputed(this.agbPageResource);
+  protected readonly slaPage = createResourceValueComputed(this.slaPageResource);
 
   protected readonly content = computed(() => {
-    const response = this.agbPage()?.agbs;
-    if (!response) return '';
-
-    const lang = this.i18nService.lang() as keyof typeof response.agbText;
-    const html = response?.agbText?.[lang] ?? '';
-
-    // The CMS returns raw HTML; render it into the markdown scope so list markers
-    // (reset by Tailwind's preflight) are restored and vary per nesting depth.
-    return `<div class="markdown-content">${html}</div>`;
-  });
-
-  protected readonly version = computed(() => {
-    const response = this.agbPage()?.agbs;
-    if (!response) return '';
-
-    return this.i18nService.translate('agb.page.version', { version: response?.version });
-  });
-
-  protected readonly validFrom = computed(() => {
-    const response = this.agbPage()?.agbs;
-    if (!response) return '';
-
-    return formatDate(response?.validFrom);
+    const response = this.slaPage() as StrapiSingleTypeResponseWithContent;
+    return response.data.content;
   });
 
   protected readonly footerBlock = computed(() => {
-    const response = this.agbPage()?.cmsPage as StrapiSingleTypeResponseWithContent;
+    const response = this.slaPage() as StrapiSingleTypeResponseWithContent;
     return response.data.footer;
   });
 
+  protected readonly seoBlock = computed(() => {
+    const response = this.slaPage() as StrapiSingleTypeResponse;
+    return response.data.seo;
+  });
+
   protected readonly errorEffect = effect(() => {
-    const error = this.agbPageResource.error();
+    const error = this.slaPageResource.error();
     if (error) {
       if (error?.cause instanceof HttpErrorResponse && error?.cause.status === 404) {
         this.router.navigate([ROUTE_PATHS.NOT_FOUND], { state: { error: error.message } });
@@ -94,9 +73,14 @@ export class AgbPage {
   });
 
   private readonly updatePageHtmlTitle = effect(() => {
-    const response = this.agbPageResource.value()?.cmsPage as StrapiSingleTypeResponse;
+    const response = this.slaPageResource.value() as StrapiSingleTypeResponse;
     this.titleService.setTranslatedTitle(response?.data?.title);
   });
 
+  private readonly updateSeoEffect = effect(() => {
+    if (this.slaPageResource.isLoading()) return;
+    const seo = this.seoBlock();
+    this.seoService.updateSeo(seo);
+  });
   protected readonly faSpinnerThird = faSpinnerThird;
 }

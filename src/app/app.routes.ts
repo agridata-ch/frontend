@@ -22,6 +22,7 @@ import { NotFoundPage } from '@/pages/not-found';
 import { NotificationCenterPageComponent } from '@/pages/notification-center-page';
 import { OnboardingPage } from '@/pages/onboarding-page';
 import { PrivacyPolicyPage } from '@/pages/privacy-policy-page';
+import { SlaPage } from '@/pages/sla-page';
 import { SupporterPageComponent } from '@/pages/supporter-page/';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
@@ -95,6 +96,17 @@ export const routes: Routes = [
       {
         path: '',
         component: OnboardingPage,
+      },
+    ],
+  },
+  {
+    path: ROUTE_PATHS.SLA_PATH,
+    component: FullWidthLayoutComponent,
+    canActivate: [AuthorizationGuard],
+    children: [
+      {
+        path: '',
+        component: SlaPage,
       },
     ],
   },
