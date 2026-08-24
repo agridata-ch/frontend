@@ -1,3 +1,9 @@
+## [1.18.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.4...v1.18.0-rc.5) (2026-08-24)
+
+### Features
+
+- **sla:** add sla page ([ce85306](https://github.com/agridata-ch/frontend/commit/ce85306b615a49b1b56a99fb1f6dc995ec3d26cc)), references [DIGIB2-1611](https://github.com/agridata-ch/frontend/issues/-1611)
+
 ## [1.18.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.3...v1.18.0-rc.4) (2026-08-24)
 
 ### Features
