@@ -1,3 +1,9 @@
+## [1.18.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.3...v1.18.0-rc.4) (2026-08-24)
+
+### Features
+
+- **data-product:** add public-sector data-product ([ec8548f](https://github.com/agridata-ch/frontend/commit/ec8548f0588497ffab72b9054adc1452e1f7a66d)), references [DIGIB2-1553](https://github.com/agridata-ch/frontend/issues/-1553)
+
 ## [1.18.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.2...v1.18.0-rc.3) (2026-08-21)
 
 ### Features
