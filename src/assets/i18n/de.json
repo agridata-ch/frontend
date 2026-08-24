@@ -571,7 +571,8 @@
       "imprint": "Impressum",
       "privacyPolicy": "Datenschutz",
       "home": "Startseite",
-      "agb": "AGB"
+      "agb": "AGB",
+      "sla": "SLA"
     }
   },
   "producer": {
@@ -1041,19 +1042,19 @@
       "consentRequired": {
         "label": "Braucht es eine Zustimmung durch den Produzenten?",
         "true": {
-          "title": "Ja, der Produzent muss seine Zustimmung geben",
-          "subtitle": "Es handelt sich um ein privates Produkt"
+          "title": "Ja, der Produzent muss zustimmen",
+          "subtitle": "Zustimmungspflichtiges Datenprodukt"
         },
         "false": {
-          "title": "Nein, es handelt sich um ein Öffentlich-Rechtliches Datenprodukt",
-          "subtitle": "Es handelt sich um ein Öffentlich-Rechtliches Datenprodukt"
+          "title": "Nein, keine Zustimmung erforderlich",
+          "subtitle": "Öffentlich-rechtliches Datenprodukt (Gesetzliche Grundlage)"
         },
         "disabledInfo": "Ändern nach dem Publizieren nicht mehr möglich",
         "notEditable": "Die Zustimmungspflicht kann nicht mehr geändert werden"
       },
       "consentRequiredInfo": {
         "title": "Zustimmungspflicht",
-        "subtitle": "Anträge mit Öffentlich-Rechtliche Datenprodukte werden den vom Datenbezüger definierten Produzenten angezeigt und dient der digitalen Selbstbestimmung. Der Produzenten kann dem Antrag weder Zustimmen noch Ablehnen."
+        "subtitle": "Legen Sie fest, ob Produzenten (z. B. Landwirte, Tierhalter) einer Datenübermittlung explizit zustimmen müssen oder ob die Datenprodukte lediglich zu Informationszwecken angezeigt werden.\n\nGrundsätzlich erfordert jeder Datenbezug die aktive Zustimmung des Produzenten. Eine Ausnahme bilden öffentlich-rechtliche Datenprodukte, für welche eine gesetzliche Grundlage besteht und daher keine Zustimmung notwendig ist."
       }
     },
     "saveAndPublish": {

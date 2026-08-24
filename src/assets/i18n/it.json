@@ -571,7 +571,8 @@
       "imprint": "Colophon",
       "privacyPolicy": "Basi legali",
       "home": "Pagina iniziale",
-      "agb": "CGC"
+      "agb": "CGC",
+      "sla": "SLA"
     }
   },
   "producer": {
@@ -1041,19 +1042,19 @@
       "consentRequired": {
         "label": "È necessaria l'autorizzazione del produttore?",
         "true": {
-          "title": "Sì, il produttore deve dare il suo consenso",
-          "subtitle": "Si tratta di un prodotto privato"
+          "title": "Sì, il produttore deve dare il proprio consenso",
+          "subtitle": "Prodotto di dati soggetto ad autorizzazione"
         },
         "false": {
-          "title": "No, si tratta di un prodotto di dati di diritto pubblico",
-          "subtitle": "Si tratta di un prodotto di dati di diritto pubblico"
+          "title": "No, non è necessaria alcuna approvazione",
+          "subtitle": "Prodotto informativo di diritto pubblico (base giuridica)"
         },
         "disabledInfo": "Impossibile modificare dopo la pubblicazione",
         "notEditable": "L'obbligo di autorizzazione non può più essere modificato"
       },
       "consentRequiredInfo": {
         "title": "Obbligo di consenso",
-        "subtitle": "Le richieste con prodotti di dati di diritto pubblico vengono mostrate ai produttori definiti dal ricevitore dei dati e servono per l'autodeterminazione digitale. Il produttore non può né approvare né rifiutare la richiesta."
+        "subtitle": "Stabilite se i produttori (ad es. agricoltori, allevatori) debbano acconsentire esplicitamente alla trasmissione dei dati o se i prodotti di dati vengano visualizzati esclusivamente a scopo informativo.\n\nIn linea di principio, ogni acquisizione di dati richiede il consenso attivo del produttore. Fanno eccezione i prodotti di dati di diritto pubblico, per i quali esiste una base giuridica e per i quali non è quindi necessario alcun consenso."
       }
     },
     "saveAndPublish": {

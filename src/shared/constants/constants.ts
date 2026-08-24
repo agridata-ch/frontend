@@ -12,6 +12,7 @@ export const ROUTE_PATHS = {
   AGB_PATH: 'cms/agb',
   PRIVACY_POLICY_PATH: 'cms/privacy-policy',
   ONBOARDING_PATH: 'cms/onboarding',
+  SLA_PATH: 'cms/sla',
   FORBIDDEN: 'forbidden',
   ERROR: 'error',
   EXTERNAL_SERVICE_ERROR: 'external-service-error',

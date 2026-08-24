@@ -571,7 +571,8 @@
       "imprint": "Impressum",
       "privacyPolicy": "Conditions d'utilisation",
       "home": "Page d'accueil",
-      "agb": "CGV"
+      "agb": "CGV",
+      "sla": "SLA"
     }
   },
   "producer": {
@@ -1041,19 +1042,19 @@
       "consentRequired": {
         "label": "Faut-il obtenir l'accord du producteur ?",
         "true": {
-          "title": "Oui, le producteur doit donner son consentement",
-          "subtitle": "Il s'agit d'un produit privé"
+          "title": "Oui, le producteur doit donner son accord",
+          "subtitle": "Produit de données soumis à autorisation"
         },
         "false": {
-          "title": "Non, il s'agit d'un produit de données de droit public",
-          "subtitle": "Il s'agit d'un produit de données de droit public"
+          "title": "Non, aucune autorisation n'est requise",
+          "subtitle": "Produit de données relevant du droit public (base juridique)"
         },
         "disabledInfo": "Modification impossible après publication",
         "notEditable": "L'obligation d'autorisation ne peut plus être modifiée"
       },
       "consentRequiredInfo": {
         "title": "Obligation de consentement",
-        "subtitle": "Les demandes concernant des produits de données de droit public sont affichées aux producteurs définis par le bénéficiaire des données et servent à l'autodétermination numérique. Le producteur ne peut ni approuver ni refuser la demande."
+        "subtitle": "Précisez si les producteurs (par exemple, les agriculteurs, les éleveurs) doivent donner leur consentement explicite à la transmission des données ou si les produits de données sont affichés uniquement à titre informatif.\n\nEn principe, tout accès aux données nécessite le consentement actif du producteur. Les produits de données relevant du droit public, pour lesquels il existe une base légale et qui ne nécessitent donc pas de consentement, constituent une exception."
       }
     },
     "saveAndPublish": {
