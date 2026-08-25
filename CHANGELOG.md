@@ -1,3 +1,9 @@
+## [1.18.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.6...v1.18.0-rc.7) (2026-08-25)
+
+### Features
+
+- **data-request:** add public-sector product selection ([038581c](https://github.com/agridata-ch/frontend/commit/038581c55c7eee6fd37ddf1b927d63ae5997c2bf)), references [DIGIB2-1554](https://github.com/agridata-ch/frontend/issues/-1554)
+
 ## [1.18.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.5...v1.18.0-rc.6) (2026-08-25)
 
 ### Bug Fixes
