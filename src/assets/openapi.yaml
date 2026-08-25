@@ -5457,7 +5457,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.15.1-rc.1
+  version: 1.16.0-rc.3
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

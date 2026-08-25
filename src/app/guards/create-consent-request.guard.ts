@@ -14,13 +14,12 @@ import { AuthService } from '@/shared/lib/auth';
 /**
  * Guard to create consent requests for a given data request and handle navigation based on the
  * created consent requests and the active user UID.
- * It checks for the presence of a dataRequestUid in the route parameters and optionally a uid
+ * It checks for the presence of a dataRequestId in the route parameters and optionally a uid
  * in the query parameters. If a uid is provided, it verifies that the uid is in the list of
  * authorized uids for the current user. It then creates consent requests for the specified
- * data request and navigates to the appropriate consent request detail page based on the active
- * uid or redirects to the consent request producer overview if no matching consent request is found.
+ * data request and navigates to the consent request detail page for the active uid.
  *
- * CommentLastReviewed: 2025-06-03
+ * CommentLastReviewed: 2026-08-25
  */
 @Service()
 export class CreateConsentRequestGuard implements CanActivate {
@@ -32,10 +31,10 @@ export class CreateConsentRequestGuard implements CanActivate {
   private readonly router = inject(Router);
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<UrlTree | boolean> {
-    const { dataRequestUid, redirectUrl, uid } = this.extractRouteParameters(route);
+    const { dataRequestId, redirectUrl, uid } = this.extractRouteParameters(route);
 
-    if (!dataRequestUid) {
-      return this.fail(new Error('No dataRequestUid provided in route parameters.'));
+    if (!dataRequestId) {
+      return this.fail(new Error('No dataRequestId provided in route parameters.'));
     }
 
     try {
@@ -52,18 +51,18 @@ export class CreateConsentRequestGuard implements CanActivate {
         this.agridataStateService.setActiveUid(uid);
       }
 
-      const createConsentRequestDtos = this.buildConsentRequestDtos(dataRequestUid, uidDtos, uid);
+      const createConsentRequestDtos = this.buildConsentRequestDtos(dataRequestId, uidDtos, uid);
       const consentRequests = await lastValueFrom(
         this.consentRequestService.createConsentRequests(createConsentRequestDtos),
       );
 
       if (!consentRequests || consentRequests.length === 0) {
         return this.fail(
-          new Error(`No consent requests created for dataRequestUid: ${dataRequestUid}`),
+          new Error(`No consent requests created for dataRequestId: ${dataRequestId}`),
         );
       }
 
-      return this.navigateToConsentRequest(consentRequests, redirectUrl);
+      return this.navigateToConsentRequest(consentRequests, dataRequestId, redirectUrl);
     } catch (error) {
       if (error instanceof ExternalServiceHttpError) {
         return this.router.createUrlTree([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR]);
@@ -108,16 +107,16 @@ export class CreateConsentRequestGuard implements CanActivate {
   }
 
   private extractRouteParameters(route: ActivatedRouteSnapshot): {
-    dataRequestUid?: string;
+    dataRequestId?: string;
     redirectUrl?: string;
     uid?: string;
   } {
-    const dataRequestUid = route.paramMap.get('dataRequestUid') ?? '';
+    const dataRequestId = route.paramMap.get('dataRequestId') ?? '';
     const uid = route.queryParamMap.get('uid');
     const redirectUrl = route.queryParamMap.get('redirect_uri');
 
     return {
-      dataRequestUid,
+      dataRequestId,
       redirectUrl: redirectUrl ?? undefined,
       uid: uid ?? undefined,
     };
@@ -142,6 +141,7 @@ export class CreateConsentRequestGuard implements CanActivate {
 
   private navigateToConsentRequest(
     consentRequests: ConsentRequestCreatedDto[],
+    dataRequestId: string,
     redirectUrl?: string,
   ): UrlTree {
     let activeUid = this.agridataStateService.activeUid();
@@ -151,18 +151,10 @@ export class CreateConsentRequestGuard implements CanActivate {
       this.agridataStateService.setActiveUid(activeUid);
     }
 
-    const consentRequestToOpen = [...consentRequests].find(
-      (cr) => cr.dataProducerUid === activeUid,
+    const queryParams = redirectUrl ? { redirect_uri: redirectUrl } : {};
+    return this.router.createUrlTree(
+      [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, activeUid, dataRequestId],
+      { queryParams },
     );
-
-    if (consentRequestToOpen) {
-      const queryParams = redirectUrl ? { redirect_uri: redirectUrl } : {};
-      return this.router.createUrlTree(
-        [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, activeUid, consentRequestToOpen.id],
-        { queryParams },
-      );
-    }
-
-    return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);
   }
 }

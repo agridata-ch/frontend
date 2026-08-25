@@ -144,7 +144,7 @@ export const routes: Routes = [
         canActivate: [ProducerUidGuard],
       },
       {
-        path: `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_CREATE_SUBPATH}/:dataRequestUid`,
+        path: `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_CREATE_SUBPATH}/:dataRequestId`,
         children: [],
         canActivate: [CreateConsentRequestGuard],
       },
