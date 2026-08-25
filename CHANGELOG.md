@@ -1,3 +1,9 @@
+## [1.18.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.5...v1.18.0-rc.6) (2026-08-25)
+
+### Bug Fixes
+
+- **consent-request:** fix create consent-request ([8e706f1](https://github.com/agridata-ch/frontend/commit/8e706f13c6fb601ea92da481083b5729a5c9867e)), references [DIGIB2-1600](https://github.com/agridata-ch/frontend/issues/-1600)
+
 ## [1.18.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.4...v1.18.0-rc.5) (2026-08-24)
 
 ### Features
