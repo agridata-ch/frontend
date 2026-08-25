@@ -516,3 +516,49 @@ describe('AgridataMultiSelectComponent', () => {
     });
   });
 });
+
+describe('AgridataMultiSelectComponent DOM selection', () => {
+  let fixture: ComponentFixture<AgridataMultiSelectComponent>;
+  let component: AgridataMultiSelectComponent;
+  let componentRef: ComponentRef<AgridataMultiSelectComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [AgridataMultiSelectComponent],
+      providers: [{ provide: I18nService, useValue: createMockI18nService() }],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(AgridataMultiSelectComponent);
+    component = fixture.componentInstance;
+    componentRef = fixture.componentRef;
+  });
+
+  const category: MultiSelectCategory = {
+    categoryLabel: 'System A',
+    options: [
+      { value: 'a1', label: 'Option A1' },
+      { value: 'a2', label: 'Option A2' },
+    ],
+  };
+
+  it('checks every option checkbox in the DOM after select-all', () => {
+    const control = new FormControl<string[]>([]);
+    componentRef.setInput('categories', [category]);
+    componentRef.setInput('control', control);
+    component.isDropdownOpen.set(true);
+    fixture.detectChanges();
+
+    const checkboxes: NodeListOf<HTMLInputElement> =
+      fixture.nativeElement.querySelectorAll('input[type=checkbox]');
+    const selectAll = checkboxes[0];
+    selectAll.checked = true;
+    selectAll.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+
+    const updated: NodeListOf<HTMLInputElement> =
+      fixture.nativeElement.querySelectorAll('input[type=checkbox]');
+    // select-all + both option checkboxes are checked
+    expect(Array.from(updated).map((c) => c.checked)).toEqual([true, true, true]);
+    expect(control.value).toEqual(['a1', 'a2']);
+  });
+});

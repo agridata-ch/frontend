@@ -251,7 +251,7 @@
         },
         "contact": {
           "label": "Vos coordonnées",
-          "sublabel": "Téléphone ou e-mail pour toute question concernant votre demande."
+          "sublabel": "Téléphone et e-mail pour des questions concernant votre demande."
         },
         "contactPhoneNumber": {
           "label": "Numéro de téléphone",
@@ -296,7 +296,8 @@
         }
       },
       "products": {
-        "allSystems": "Tous les systèmes"
+        "allSystems": "Tous les systèmes",
+        "publicSectorProductSuffix": "de droit public"
       }
     },
     "preview": {
@@ -894,15 +895,15 @@
     "detailForm": {
       "name": {
         "de": {
-          "label": "Nom en allemand",
+          "label": "Nom en allemand (Auf Deutsch)",
           "placeholder": "z.B. Nutztiere in Sömmerung"
         },
         "fr": {
-          "label": "Nom Français",
+          "label": "Nom en français",
           "placeholder": "p.ex. Animaux de rente en estivage"
         },
         "it": {
-          "label": "Nom Italien",
+          "label": "Nom en Italien (in italiano)",
           "placeholder": "p.es. Animali da reddito estivati"
         },
         "disabledInfo": {
@@ -915,15 +916,15 @@
       "technicalFields": "Informations techniques",
       "description": {
         "de": {
-          "label": "Description Allemand",
+          "label": "Description en allemand (Auf Deutsch)",
           "placeholder": "z.B. Dieses Datenprodukt enthält die Art und Anzahl Nutztiere pro Betrieb, die im Inland gesömmert wurden."
         },
         "fr": {
-          "label": "Description Français",
+          "label": "Description en français",
           "placeholder": "Par exemple, ce produit de données contient le type et le nombre d'animaux d'élevage par exploitation qui ont été gardés localement pendant l'été."
         },
         "it": {
-          "label": "Description Italien",
+          "label": "Description en italien (in italiano)",
           "placeholder": "Ad esempio, questo prodotto di dati contiene il tipo e il numero di animali da allevamento per azienda agricola che sono stati ospitati in loco durante l'estate."
         }
       },
@@ -988,7 +989,7 @@
       "additionalInfo": "Informations complémentaires (facultatif)",
       "extendedDescription": {
         "de": {
-          "label": "Description détaillée en allemand",
+          "label": "Description détaillée en allemand (Auf Deutsch)",
           "placeholder": "Konkret werden folgende Daten übermittelt:\n- Datum der Erfassung bzw. der letzten Änderung dieses Datensatzes im kantonalen System\n- KT_ID_B Kantonale Identifikationsnummer der Betriebsform auf der Stufe, auf der die nachfolgenden Daten erfasst wurden\n..."
         },
         "fr": {
@@ -996,7 +997,7 @@
           "placeholder": "Concrètement, les données suivantes sont transmises : \n- Date resp. la saisie ou la dernière modification du jeu de données dans le système cantonal\n- KT_ID_B Numéro cantonal de la forme d’exploitation au niveau de laquelle les données suivantes ont été saisies\n..."
         },
         "it": {
-          "label": "Description détaillée en italien",
+          "label": "Description détaillée en italien (in italiano)",
           "placeholder": "Concretamente vengono trasmessi i dati seguenti:\n- Data di registrazione o dell’ultima modifica di questo set di dati nel sistema cantonale\n- KT_ID_B Numero d’identificazione cantonale della forma di azienda al livello a cui sono stati registrati i dati seguenti:\n..."
         },
         "heading": "Description détaillée"
