@@ -16,7 +16,7 @@ import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
 
 import {
   buildCategoriesMap,
-  getDataSourceCode,
+  getCategoryKey,
   mapProductToOption,
 } from './data-request-form-request-product.model';
 
@@ -72,7 +72,11 @@ export class DataRequestFormRequestProductComponent {
   });
 
   private readonly categoriesMap = computed(() =>
-    buildCategoriesMap(this.dataProducts(), this.i18nService.lang()),
+    buildCategoriesMap(
+      this.dataProducts(),
+      this.i18nService.lang(),
+      `(${this.i18nService.translate('data-request.form.products.publicSectorProductSuffix')})`,
+    ),
   );
 
   protected readonly dataProductsCategories = computed(() => {
@@ -106,7 +110,7 @@ export class DataRequestFormRequestProductComponent {
     return entries.map(([code, name]) => ({
       categoryLabel: name,
       options: allProducts
-        .filter((p) => getDataSourceCode(p) === code)
+        .filter((p) => getCategoryKey(p) === code)
         .map((p) => mapProductToOption(p, lang)),
     }));
   });
@@ -133,7 +137,7 @@ export class DataRequestFormRequestProductComponent {
     const allProducts = this.dataProducts();
 
     const validProducts = currentProducts.filter((id) =>
-      allProducts.some((p) => p.id === id && p.dataSourceSystemCode === category),
+      allProducts.some((p) => p.id === id && getCategoryKey(p) === category),
     );
 
     if (validProducts.length !== currentProducts.length) {

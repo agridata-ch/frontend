@@ -130,7 +130,7 @@
     "state": "Status",
     "contact": {
       "title": "Kontaktdaten",
-      "description": "Bei Fragen oder Unklarheiten zum Datenantrag, kontaktieren Sie bitte direkt die Organisation:"
+      "description": "Bei Fragen oder Unklarheiten zur Datenanfrage, kontaktieren Sie bitte direkt die Organisation:"
     },
     "form": {
       "request": {
@@ -251,7 +251,7 @@
         },
         "contact": {
           "label": "Ihre Kontaktangaben",
-          "sublabel": "Telefon oder E-Mail für Rückfragen zu Ihrem Antrag."
+          "sublabel": "Telefon und E-Mail für Rückfragen zu Ihrem Antrag ausfüllen."
         },
         "contactPhoneNumber": {
           "label": "Telefon Nr.",
@@ -296,7 +296,8 @@
         }
       },
       "products": {
-        "allSystems": "Alle Systeme"
+        "allSystems": "Alle Systeme",
+        "publicSectorProductSuffix": "öffentlich-rechlich"
       }
     },
     "preview": {
