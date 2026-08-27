@@ -1,3 +1,9 @@
+## [1.18.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.7...v1.18.0-rc.8) (2026-08-27)
+
+### Features
+
+- **wysiwyg:** add htmlLengthLimit plugin ([8f354a1](https://github.com/agridata-ch/frontend/commit/8f354a146e8f2c61604eb68a5d791e1e91e61dbc)), references [DIGIB2-1644](https://github.com/agridata-ch/frontend/issues/-1644)
+
 ## [1.18.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.6...v1.18.0-rc.7) (2026-08-25)
 
 ### Features
