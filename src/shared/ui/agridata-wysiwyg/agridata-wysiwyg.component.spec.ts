@@ -132,6 +132,39 @@ describe('AgridataWysiwygComponent', () => {
     });
   });
 
+  describe('raw HTML length limit', () => {
+    it('blocks formatting that pushes the raw HTML over the limit', () => {
+      componentRef.setInput('maxCharacters', 40);
+      fixture.detectChanges();
+      const editor = component['editor'];
+
+      // '<p>' + 30 chars + '</p>' = 37 chars, under the limit.
+      editor?.commands.setContent(`<p>${'a'.repeat(30)}</p>`);
+      editor?.commands.selectAll();
+
+      // Wrapping in <strong></strong> adds 17 chars (54 total), so the transaction is rejected.
+      component['toggleBold']();
+
+      expect(editor?.getHTML()).not.toContain('<strong>');
+    });
+
+    it('loads existing over-limit content and allows editing it down', () => {
+      const overLimit = TestBed.createComponent(AgridataWysiwygComponent);
+      overLimit.componentRef.setInput('control', new FormControl(`<p>${'a'.repeat(100)}</p>`));
+      overLimit.componentRef.setInput('maxCharacters', 40);
+      overLimit.detectChanges();
+      const editor = overLimit.componentInstance['editor'];
+
+      // Content set via the `content:` option is not a transaction, so it loads intact.
+      expect(editor?.getHTML()).toContain('a'.repeat(100));
+
+      // A shrinking transaction is always allowed, even while still over the limit.
+      editor?.commands.clearContent();
+
+      expect(overLimit.componentInstance.control()?.value).toBe('');
+    });
+  });
+
   describe('unsupported formatting', () => {
     it.each([
       ['<h1>Heading</h1>', 'Heading'],

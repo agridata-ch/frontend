@@ -95,9 +95,9 @@ export const dataProductFormsModel: FormModel[] = [
       { name: 'description.de' },
       { name: 'description.fr' },
       { name: 'description.it' },
-      { name: 'extendedDescription.de', isRichText: true },
-      { name: 'extendedDescription.fr', isRichText: true },
-      { name: 'extendedDescription.it', isRichText: true },
+      { name: 'extendedDescription.de' },
+      { name: 'extendedDescription.fr' },
+      { name: 'extendedDescription.it' },
     ],
   },
   {
