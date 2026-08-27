@@ -8,6 +8,7 @@ import {
   SectionTextImageBlockComponent,
   SectionUserFeedbackBlockComponent,
 } from '@/widgets/cms-blocks';
+import { DataCatalogBlockComponent } from '@/widgets/cms-blocks/data-catalog';
 import { ImageGridBlockComponent } from '@/widgets/cms-blocks/image-grid-block/image-grid-block.component';
 import { SectionContactFormBlockComponent } from '@/widgets/cms-blocks/section-contact-form-block/section-contact-form-block.component';
 import { SectionFaqBlockComponent } from '@/widgets/cms-blocks/section-faq-block/section-faq-block.component';
@@ -36,6 +37,7 @@ import { SectionTimelineComponent } from '@/widgets/cms-blocks/section-timeline/
     SectionImageCardBlockComponent,
     SectionImageListComponent,
     SectionTimelineComponent,
+    DataCatalogBlockComponent,
   ],
   templateUrl: './cms-block-renderer.component.html',
 })

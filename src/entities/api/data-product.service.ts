@@ -5,6 +5,8 @@ import {
   DataProductDto,
   DataProductsService,
   DataProductUpdateDto,
+  PageResponseDtoPublicDataProductDto,
+  PublicDataProductsService,
   ResourceQueryDto,
 } from '@/entities/openapi';
 import { ActingRole } from '@/shared/constants/constants';
@@ -20,6 +22,7 @@ type DataProductActingRoles = 'PROVIDER' | 'ADMIN' | undefined;
 @Service()
 export class DataProductService {
   private readonly apiService = inject(DataProductsService);
+  private readonly publicApiService = inject(PublicDataProductsService);
 
   createDataProduct = (
     dto: Record<string, unknown>,
@@ -96,6 +99,22 @@ export class DataProductService {
         dto as unknown as DataProductUpdateDto,
         actingRole as DataProductActingRoles,
       ),
+    );
+  };
+
+  getPublicProducts = (
+    queryDto: ResourceQueryDto,
+  ): Promise<PageResponseDtoPublicDataProductDto> => {
+    return firstValueFrom(
+      this.publicApiService
+        .getPublicDataProductsPaginated(
+          queryDto.language,
+          queryDto.page,
+          queryDto.searchTerm,
+          queryDto.size,
+          arrayToObjectSortParams(queryDto.sortParams, 'sortBy'),
+        )
+        .pipe(map((response) => asPageResponse(response))),
     );
   };
 }

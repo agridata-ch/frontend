@@ -1,0 +1,25 @@
+<output
+  class="w-full flex justify-center items-center min-h-8"
+  aria-live="polite"
+  aria-atomic="true"
+>
+  @if (loading()) {
+    <fa-icon
+      animation="spin"
+      [icon]="faSpinnerThird"
+      size="2x"
+      class="flex items-center justify-center"
+    />
+    <span class="sr-only">{{ loadingLabel() }}</span>
+  } @else if (hasItems()) {
+    @if (hasMore()) {
+      <fa-icon
+        [icon]="faArrowDown"
+        size="2x"
+        class="scroll-hint flex items-center justify-center text-agridata-tertiary-text"
+      />
+    } @else {
+      <ng-content />
+    }
+  }
+</output>

@@ -38,12 +38,15 @@
     >
       @for (option of options(); track option.value) {
         <div
-          class="flex items-center px-5 py-3 hover:bg-gray-100 cursor-pointer"
+          class="flex items-center gap-2 px-5 py-3 hover:bg-gray-100 cursor-pointer"
           [class.bg-gray-100]="isSelected(option.value)"
           (click)="handleOptionSelect(option.value, $event)"
           (keydown.enter)="handleOptionSelect(option.value, $event)"
         >
           <span>{{ option.label }}</span>
+          @if (isSelected(option.value)) {
+            <fa-icon [icon]="checkIcon" class="text-agridata-secondary-text" />
+          }
         </div>
       }
     </div>

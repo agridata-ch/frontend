@@ -1,0 +1,25 @@
+<app-card [title]="name()" [description]="description()" *i18n="let t; prefix: 'dataCatalog'">
+  <div cardTags class="flex gap-2">
+    @if (providerName()) {
+      <app-agridata-badge
+        [text]="providerName()"
+        [variant]="BadgeVariant.DARK"
+        [size]="BadgeSize.SM"
+      />
+    }
+    @if (sourceSystemName()) {
+      <app-agridata-badge
+        [text]="sourceSystemName()"
+        [variant]="BadgeVariant.DARK"
+        [size]="BadgeSize.SM"
+      />
+    }
+    @if (product().deprecatedSince) {
+      <app-agridata-badge
+        [text]="t('product.deprecated')"
+        [variant]="BadgeVariant.ERROR"
+        [size]="BadgeSize.SM"
+      />
+    }
+  </div>
+</app-card>

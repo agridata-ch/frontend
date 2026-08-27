@@ -86,6 +86,7 @@ describe('AgridataSelectComponent', () => {
 
     it('isSelected should return true for selected value', () => {
       componentRef.setInput('control', { value: 'abc' });
+      fixture.detectChanges();
       expect(component.isSelected('abc')).toBe(true);
       expect(component.isSelected('def')).toBe(false);
     });

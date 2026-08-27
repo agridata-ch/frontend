@@ -10,6 +10,7 @@ import { TitleService } from '@/app/title.service';
 import { CmsService, StrapiSingleTypeResponse } from '@/entities/cms';
 import { BlockRendererComponent } from '@/features/cms-blocks';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nPipe, I18nService } from '@/shared/i18n';
 import { SeoService } from '@/shared/seo/seo.service';
 import { HeroBlockComponent } from '@/widgets/cms-blocks';
@@ -28,6 +29,7 @@ import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
     BlockRendererComponent,
     HeroBlockComponent,
     CmsFooterBlockComponent,
+    ErrorOutletComponent,
     I18nPipe,
     FontAwesomeModule,
   ],
