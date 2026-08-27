@@ -3,7 +3,6 @@ import {
   FormArray,
   FormControl,
   FormGroup,
-  ValidationErrors,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
@@ -22,8 +21,6 @@ export type FormField = {
   // Opt-in: build this array-of-object field as a real FormArray<FormGroup> (schema-driven per-item
   // controls) instead of a single flat control. Only fields that explicitly set this are affected.
   readonly asFormArray?: boolean;
-  // Value holds HTML (WYSIWYG). Length validation counts visible text, not markup.
-  readonly isRichText?: boolean;
 };
 
 export interface FormModel<T extends string = string> {
@@ -107,58 +104,6 @@ function maxItems(max: number): ValidatorFn {
   };
 }
 
-// Cache the last parsed (value -> length) so the min and max validators, which run back-to-back on
-// the same control value, parse the HTML document only once per keystroke instead of twice.
-let lastHtmlValue: string | undefined;
-let lastHtmlLength = 0;
-
-/**
- * Length of the visible text inside an HTML string (markup stripped), consistent with the
- * WYSIWYG editor's character counter. Non-string values count as 0.
- */
-function htmlTextLength(value: unknown): number {
-  if (typeof value !== 'string' || value === '') {
-    return 0;
-  }
-  if (value === lastHtmlValue) {
-    return lastHtmlLength;
-  }
-  lastHtmlLength =
-    new DOMParser().parseFromString(value, 'text/html').body.textContent?.length ?? 0;
-  lastHtmlValue = value;
-  return lastHtmlLength;
-}
-
-/**
- * Length validators for rich-text (HTML) fields. They measure visible text instead of raw markup
- * and return Angular's standard error shapes so messages and character-count probes keep working.
- */
-function richTextMinLength(min: number): ValidatorFn {
-  return (control: AbstractControl) => {
-    const length = htmlTextLength(control.value);
-    // Mirror Validators.minLength: empty values are left to the required validator.
-    return length === 0 || length >= min
-      ? null
-      : { minlength: { requiredLength: min, actualLength: length } };
-  };
-}
-
-function richTextMaxLength(max: number): ValidatorFn {
-  return (control: AbstractControl) => {
-    const length = htmlTextLength(control.value);
-    return length <= max ? null : { maxlength: { requiredLength: max, actualLength: length } };
-  };
-}
-
-/**
- * Required validator for rich-text (HTML) fields. Validators.required treats markup-only values
- * like '<p></p>' as non-empty; measure visible text instead so a field with no visible content
- * fails required regardless of surrounding markup.
- */
-function richTextRequired(control: AbstractControl): ValidationErrors | null {
-  return htmlTextLength(control.value) === 0 ? { required: true } : null;
-}
-
 /**
  * Build an array of Angular ValidatorFns based on the JsonSchema rules.
  */
@@ -166,28 +111,19 @@ function buildValidatorFunctions(
   schemaNode: JsonSchema,
   parentRequiredList: string[],
   fieldName: string,
-  isRichText: boolean,
 ) {
   const validators: ValidatorFn[] = [];
 
   if (parentRequiredList.includes(fieldName)) {
-    validators.push(isRichText ? richTextRequired : Validators.required);
+    validators.push(Validators.required);
   }
 
   if (schemaNode.type === 'string') {
     if (schemaNode.minLength != null) {
-      validators.push(
-        isRichText
-          ? richTextMinLength(schemaNode.minLength)
-          : Validators.minLength(schemaNode.minLength),
-      );
+      validators.push(Validators.minLength(schemaNode.minLength));
     }
     if (schemaNode.maxLength != null) {
-      validators.push(
-        isRichText
-          ? richTextMaxLength(schemaNode.maxLength)
-          : Validators.maxLength(schemaNode.maxLength),
-      );
+      validators.push(Validators.maxLength(schemaNode.maxLength));
     }
   }
 
@@ -279,7 +215,6 @@ function addFieldToGroup(
     parentRequiredList,
     lastSegment,
     i18nService,
-    fieldPath.isRichText ?? false,
     fieldPath.asFormArray ?? false,
   );
 
@@ -305,13 +240,12 @@ function createControl(
   parentRequiredList: string[],
   lastSegment: string,
   i18nService: I18nService,
-  isRichText: boolean,
   asFormArray = false,
 ): AbstractControl {
   // Opt-in array of objects → real FormArray of item groups, so each row's fields become
   // schema-driven controls (with their own validators) instead of a single opaque control.
   if (asFormArray && schemaNode.type === 'array' && schemaNode.items?.type === 'object') {
-    return createArrayControl(schemaNode, parentRequiredList, lastSegment, i18nService, isRichText);
+    return createArrayControl(schemaNode, parentRequiredList, lastSegment, i18nService);
   }
 
   // Booleans start as false (not ''), so a toggle field reaches the payload as a real boolean.
@@ -321,12 +255,7 @@ function createControl(
   } else if (schemaNode.type === 'boolean') {
     defaultValue = false;
   }
-  const validators = buildValidatorFunctions(
-    schemaNode,
-    parentRequiredList,
-    lastSegment,
-    isRichText,
-  );
+  const validators = buildValidatorFunctions(schemaNode, parentRequiredList, lastSegment);
 
   // Create FormControl with messages
   const control = new FormControl(defaultValue, validators) as FormControlWithMessages;
@@ -351,15 +280,9 @@ function createArrayControl(
   parentRequiredList: string[],
   lastSegment: string,
   i18nService: I18nService,
-  isRichText: boolean,
 ): FormArrayWithMessages {
   const itemSchema = schemaNode.items;
-  const validators = buildValidatorFunctions(
-    schemaNode,
-    parentRequiredList,
-    lastSegment,
-    isRichText,
-  );
+  const validators = buildValidatorFunctions(schemaNode, parentRequiredList, lastSegment);
 
   const array = new FormArray<FormGroup>([], validators) as FormArrayWithMessages;
   array.errorMessages = buildErrorMessages(
@@ -371,7 +294,7 @@ function createArrayControl(
   array.minItems = schemaNode.minItems;
   array.maxItems = schemaNode.maxItems;
   array.buildItem = () =>
-    itemSchema ? buildItemGroup(itemSchema, i18nService, isRichText) : new FormGroup({});
+    itemSchema ? buildItemGroup(itemSchema, i18nService) : new FormGroup({});
 
   return array;
 }
@@ -380,11 +303,7 @@ function createArrayControl(
  * Build a single FormGroup for one item of an array-of-object schema field, wiring up
  * schema-derived validators and translated error messages per property.
  */
-export function buildItemGroup(
-  itemSchema: JsonSchema,
-  i18nService: I18nService,
-  isRichText: boolean,
-): FormGroup {
+export function buildItemGroup(itemSchema: JsonSchema, i18nService: I18nService): FormGroup {
   const group = new FormGroup({});
   const properties = itemSchema.properties ?? {};
   const requiredList = itemSchema.required ?? [];
@@ -395,7 +314,6 @@ export function buildItemGroup(
       requiredList,
       propertyName,
       i18nService,
-      isRichText,
     );
     group.addControl(propertyName, control);
   }
