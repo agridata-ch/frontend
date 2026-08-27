@@ -21,6 +21,13 @@ export function createMockDataProductService(): MockDataProductService {
       pageSize: 10,
     }),
     getDataProductById: jest.fn().mockResolvedValue({}),
+    getPublicProducts: jest.fn().mockResolvedValue({
+      items: [],
+      totalItems: 0,
+      totalPages: 0,
+      currentPage: 0,
+      pageSize: 12,
+    }),
     patchDataProduct: jest.fn().mockResolvedValue({}),
     setDataProductStatus: jest.fn().mockResolvedValue({}),
     updateDataProduct: jest.fn().mockResolvedValue({}),

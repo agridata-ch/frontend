@@ -56,7 +56,8 @@
         "OPENED": "Aperto",
         "UNKNOWN": "Sconosciuto",
         "PARTIALLY_GRANTED": "Parzialmente approvato",
-        "PARTIALLY_OPENED": "Parzialmente aperto"
+        "PARTIALLY_OPENED": "Parzialmente aperto",
+        "LEGALLY_PERMITTED": "Regolamentato legalmente"
       },
       "footerInformation": "Potrà modificare la sua scelta in qualsiasi momento qui. I dati possono essere trasmessi solo in presenza di un consenso attivo.",
       "requestDate": "Richiesta del {{ date }}",
@@ -82,7 +83,8 @@
         "nonProducerInfo": "Qui i produttori di dati vedono le loro sedi richieste.",
         "missingBurInfo": "Manca una sede? Contattate direttamente {{ consumer }} affinché possa richiederla e voi possiate dare il consenso."
       },
-      "footerInformationNoBur": "Avete disattivato tutte le sedi. Se desiderate rifiutare completamente questa richiesta, cliccate su Annulla e poi sul pulsante Rifiuta."
+      "footerInformationNoBur": "Avete disattivato tutte le sedi. Se desiderate rifiutare completamente questa richiesta, cliccate su Annulla e poi sul pulsante Rifiuta.",
+      "noConsentRequired": "Nessuna azione richiesta Questo riferimento ai dati si basa su una base legale. Non è richiesto il Suo consenso o rifiuto. Questa visualizzazione serve per la Sua informazione e trasparenza."
     },
     "toast": {
       "title": {
@@ -107,7 +109,8 @@
         "GRANTED": "Acconsentito",
         "DECLINED": "Rifiutato",
         "PARTIALLY_OPENED": "Parzialmente aperto",
-        "PARTIALLY_GRANTED": "Parzialmente approvato"
+        "PARTIALLY_GRANTED": "Parzialmente approvato",
+        "LEGALLY_PERMITTED": "Regolamentato legalmente"
       }
     },
     "emptyState": {
@@ -1248,6 +1251,12 @@
     },
     "product": {
       "deprecated": "obsoleto/inattivo"
+    },
+    "list": {
+      "allLoaded": "Tutti i prodotti dati caricati"
     }
+  },
+  "infinite-scroll": {
+    "loading": "Voci in caricamento"
   }
 }

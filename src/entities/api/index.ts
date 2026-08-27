@@ -5,3 +5,5 @@ export * from './uid-register.service';
 export * from './backend-info.service';
 export * from './contract-revision.service';
 export * from './agb.service';
+export * from './data-product.service';
+export * from './data-providers.service';

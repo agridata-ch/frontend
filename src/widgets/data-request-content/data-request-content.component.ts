@@ -1,11 +1,11 @@
 import { Component, computed, inject, input } from '@angular/core';
 
-import { DataRequestAdvantagesComponent } from '@/data-request-advantages';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
+import { DataRequestAdvantagesComponent } from '@/widgets/data-request-advantages';
 import { DataRequestConsentRequestDecisionsComponent } from '@/widgets/data-request-consent-request-decisions';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';
 import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';

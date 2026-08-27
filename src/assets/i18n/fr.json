@@ -56,7 +56,8 @@
         "OPENED": "Ouvert",
         "UNKNOWN": "Inconnu",
         "PARTIALLY_GRANTED": "Partiellement approuvé",
-        "PARTIALLY_OPENED": "Partiellement ouvert"
+        "PARTIALLY_OPENED": "Partiellement ouvert",
+        "LEGALLY_PERMITTED": "Réglementé par la loi"
       },
       "footerInformation": "Vous pouvez modifier votre choix à tout moment ici. Les données ne peuvent être transmises qu'en cas de consentement explicite.",
       "requestDate": "Demande du {{ date }}",
@@ -82,7 +83,8 @@
         "nonProducerInfo": "Ici, les producteurs de données voient leurs sites demandés.",
         "missingBurInfo": "Un site manque ? Contactez directement {{ consumer }} afin qu'ils puissent demander le site et que vous puissiez donner votre consentement."
       },
-      "footerInformationNoBur": "Vous avez désactivé tous les sites. Si vous souhaitez refuser complètement cette demande, veuillez cliquer sur Annuler, puis sur le bouton Refuser."
+      "footerInformationNoBur": "Vous avez désactivé tous les sites. Si vous souhaitez refuser complètement cette demande, veuillez cliquer sur Annuler, puis sur le bouton Refuser.",
+      "noConsentRequired": "Aucune action requise. Cette référence de données est basée sur une base légale. Votre consentement ou votre refus n'est pas nécessaire. Cette vue sert à votre information et à votre transparence."
     },
     "toast": {
       "title": {
@@ -107,7 +109,8 @@
         "GRANTED": "Accordé",
         "DECLINED": "Refusé",
         "PARTIALLY_OPENED": "Partiellement ouvert",
-        "PARTIALLY_GRANTED": "Partiellement approuvé"
+        "PARTIALLY_GRANTED": "Partiellement approuvé",
+        "LEGALLY_PERMITTED": "Réglementé par la loi"
       }
     },
     "emptyState": {
@@ -1248,6 +1251,12 @@
     },
     "product": {
       "deprecated": "obsolète/inactif"
+    },
+    "list": {
+      "allLoaded": "Tous les produits de données chargés"
     }
+  },
+  "infinite-scroll": {
+    "loading": "Chargement des entrées"
   }
 }

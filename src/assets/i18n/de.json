@@ -1251,6 +1251,12 @@
     },
     "product": {
       "deprecated": "veraltet/inaktiv"
+    },
+    "list": {
+      "allLoaded": "Alle Datenprodukte geladen"
     }
+  },
+  "infinite-scroll": {
+    "loading": "Einträge werden geladen"
   }
 }

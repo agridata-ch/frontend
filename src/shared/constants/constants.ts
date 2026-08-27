@@ -49,6 +49,7 @@ export const CMS_BLOCKS = {
   IMAGE_GRID: 'blocks.image-grid',
   SECTION_IMAGE_CARD: 'layout.section-image-card',
   SECTION_TIMELINE: 'layout.section-timeline',
+  DATA_CATALOG: 'blocks.data-catalog',
 };
 
 export const VIDEO_FORMATS = ['.mp4', '.webm', '.wmv', '.avi', '.mov', '.mkv', '.flv'];
