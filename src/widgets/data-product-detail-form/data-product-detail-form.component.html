@@ -8,10 +8,10 @@
   >
     <span subtitle class="flex gap-2">
       {{ t('subTitle') }}
-      @if (stateCode()) {
+      @if (dataProductState()) {
         <app-agridata-badge
-          [text]="getStatusTranslation(stateCode() ?? '', i18nService)"
-          [variant]="getBadgeVariant(stateCode())"
+          [text]="getStatusTranslation(dataProductState() ?? '', i18nService)"
+          [variant]="getBadgeVariant(dataProductState())"
           [size]="BadgeSize.SM"
         />
       }

@@ -1202,7 +1202,8 @@
   "data-product": {
     "stateCode": {
       "DRAFT": "Brouillon",
-      "ACTIVE": "Publié"
+      "ACTIVE": "Publié",
+      "DEPRECATED": "Deprecated"
     }
   },
   "wysiwyg": {

@@ -22,7 +22,11 @@ import { DataProductUpdateDto as DataProductUpdateDtoSchema } from '@/assets/for
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProductDto, DataProductDtoStateCode, DataProductStateEnum } from '@/entities/openapi';
-import { getBadgeVariant, getStatusTranslation } from '@/pages/data-products-page';
+import {
+  getBadgeVariant,
+  getDataProductState,
+  getStatusTranslation,
+} from '@/pages/data-products-page';
 import { ACTING_ROLES, ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nDirective, I18nFormatDirective, I18nService } from '@/shared/i18n';
 import { buildReactiveForm, populateFormFromDto } from '@/shared/lib/form.helper';
@@ -120,6 +124,10 @@ export class DataProductDetailFormComponent {
   // Computed Signals
   protected readonly canSaveDraft = computed(
     () => this.stateCode() !== DataProductStateEnum.Active,
+  );
+
+  protected readonly dataProductState = computed(() =>
+    getDataProductState(this.dataProductResource.value()),
   );
 
   protected readonly dataProductTitle = computed(() =>

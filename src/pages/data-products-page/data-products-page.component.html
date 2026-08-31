@@ -32,8 +32,8 @@
     </ng-template>
     <ng-template #stateCodeTemplate [appDataProductDtoGuard] let-item>
       <app-agridata-badge
-        [text]="getStatusTranslation(item?.stateCode, i18nService)"
-        [variant]="getBadgeVariant(item?.stateCode)"
+        [text]="getStatusTranslation(getDataProductState(item), i18nService)"
+        [variant]="getBadgeVariant(getDataProductState(item))"
         [size]="BadgeSize.SM"
       />
     </ng-template>

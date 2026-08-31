@@ -1205,7 +1205,8 @@
   "data-product": {
     "stateCode": {
       "DRAFT": "Entwurf",
-      "ACTIVE": "Publiziert"
+      "ACTIVE": "Publiziert",
+      "DEPRECATED": "Deprecated"
     }
   },
   "wysiwyg": {
