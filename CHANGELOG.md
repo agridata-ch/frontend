@@ -1,3 +1,9 @@
+## [1.18.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.8...v1.18.0-rc.9) (2026-08-31)
+
+### Features
+
+- **consent-request:** add LEGALLY_PERMITTED info ([b49bdf7](https://github.com/agridata-ch/frontend/commit/b49bdf7e7d1956f23c87bb965157dac423712b97)), references [DIGIB2-1557](https://github.com/agridata-ch/frontend/issues/-1557)
+
 ## [1.18.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.7...v1.18.0-rc.8) (2026-08-27)
 
 ### Features
