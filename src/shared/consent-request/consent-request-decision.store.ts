@@ -1,6 +1,10 @@
 import { computed, Injectable, signal } from '@angular/core';
 
-import { ConsentRequestProducerViewV2Dto, ConsentRequestStateEnum } from '@/entities/openapi';
+import {
+  ConsentRequestAggregationStateEnum,
+  ConsentRequestProducerViewV2Dto,
+  ConsentRequestStateEnum,
+} from '@/entities/openapi';
 
 /**
  * Panel-scoped state for editing per-BUR consent-request decisions. Bridges the presentational
@@ -14,6 +18,7 @@ export class ConsentRequestDecisionStore {
   // Signals
   readonly consentRequests = signal<ConsentRequestProducerViewV2Dto[]>([]);
   readonly editMode = signal(false);
+  readonly dataRequestStateCode = signal<ConsentRequestAggregationStateEnum | undefined>(undefined);
   // BUR consent-request id -> staged decision (true = grant, false = decline).
   readonly decisions = signal<Record<string, boolean>>({});
 
@@ -27,6 +32,9 @@ export class ConsentRequestDecisionStore {
     this.consentRequests().find((request) => !request.dataProducerBur),
   );
   readonly grantedCount = computed(() => Object.values(this.decisions()).filter(Boolean).length);
+  readonly canEdit = computed(
+    () => this.dataRequestStateCode() !== ConsentRequestAggregationStateEnum.LegallyPermitted,
+  );
 
   cancelEdit(): void {
     this.editMode.set(false);

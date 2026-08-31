@@ -14,6 +14,7 @@ const AGGREGATION_BADGE_VARIANTS: Record<ConsentRequestAggregationStateEnum, Bad
   [ConsentRequestAggregationStateEnum.Declined]: BadgeVariant.ERROR,
   [ConsentRequestAggregationStateEnum.PartiallyOpened]: BadgeVariant.WARNING,
   [ConsentRequestAggregationStateEnum.PartiallyGranted]: BadgeVariant.WARNING,
+  [ConsentRequestAggregationStateEnum.LegallyPermitted]: BadgeVariant.SUCCESS,
 };
 
 export function getAggregationBadgeVariant(stateCode?: ConsentRequestAggregationStateEnum) {
@@ -26,6 +27,7 @@ const CONSENT_REQUEST_BADGE_VARIANTS: Record<ConsentRequestStateEnum, BadgeVaria
   [ConsentRequestStateEnum.Granted]: BadgeVariant.SUCCESS,
   [ConsentRequestStateEnum.Declined]: BadgeVariant.ERROR,
   [ConsentRequestStateEnum.NotCreated]: BadgeVariant.DEFAULT,
+  [ConsentRequestStateEnum.LegallyPermitted]: BadgeVariant.SUCCESS,
 };
 
 export function getConsentRequestBadgeVariant(stateCode?: ConsentRequestStateEnum) {

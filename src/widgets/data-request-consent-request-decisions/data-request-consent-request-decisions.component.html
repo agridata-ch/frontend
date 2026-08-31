@@ -58,8 +58,8 @@
             }
           </div>
         </div>
-        <div class="flex flex-col gap-2 items-center">
-          <div class="flex grow w-full justify-end">
+        @if (store.canEdit()) {
+          <div class="flex grow w-full justify-end flex-col gap-2 items-end">
             @if (!store.editMode()) {
               <app-agridata-button
                 [variant]="ButtonVariants.IconLink"
@@ -79,7 +79,7 @@
               </app-agridata-button>
             }
           </div>
-        </div>
+        }
       }
     </div>
   } @else {

@@ -27,50 +27,56 @@
     }
   </div>
   <div class="justify-center flex flex-col gap-6 pt-6" id="consent-request-footer">
-    <div class="flex gap-2">
-      @if (decisionStore.editMode()) {
-        <app-agridata-button
-          [variant]="ButtonVariants.Secondary"
-          [disabled]="showSaveLoading()"
-          (handleClick)="cancelEdit()"
-          [additionalClass]="'w-full'"
-        >
-          {{ t('actions.cancelEditMode') }}
-        </app-agridata-button>
-        <app-agridata-button
-          [variant]="ButtonVariants.PrimaryAccept"
-          [disabled]="noBurGranted() || agridataStateService.isImpersonating()"
-          [disabledInfo]="t('actions.saveDisabledInfo')"
-          [loading]="showSaveLoading()"
-          (handleClick)="saveBurDecisions()"
-          [additionalClass]="'w-full'"
-        >
-          {{ t('actions.saveAndAccept') }}
-        </app-agridata-button>
-      } @else {
-        <app-agridata-button
-          [variant]="ButtonVariants.SecondaryReject"
-          [disabled]="rejectDisabled() || agridataStateService.isImpersonating()"
-          [loading]="showRejectedLoading()"
-          (handleClick)="rejectRequest()"
-          [additionalClass]="'w-full'"
-        >
-          {{ t('actions.reject') }}
-        </app-agridata-button>
-        <app-agridata-button
-          [variant]="ButtonVariants.PrimaryAccept"
-          [disabled]="acceptDisabled() || agridataStateService.isImpersonating()"
-          [loading]="showAcceptedLoading()"
-          (handleClick)="acceptRequest()"
-          [additionalClass]="'w-full'"
-        >
-          {{ t('actions.accept') }}
-        </app-agridata-button>
-      }
-    </div>
-    <span class="w-full flex justify-center text-agridata-tertiary-text text-sm">
-      {{ noBurGranted() ? t('footerInformationNoBur') : t('footerInformation') }}
-    </span>
+    @if (noConsentRequired()) {
+      <span class="w-full flex justify-center text-agridata-tertiary-text text-sm">
+        {{ t('noConsentRequired') }}
+      </span>
+    } @else {
+      <div class="flex gap-2">
+        @if (decisionStore.editMode()) {
+          <app-agridata-button
+            [variant]="ButtonVariants.Secondary"
+            [disabled]="showSaveLoading()"
+            (handleClick)="cancelEdit()"
+            [additionalClass]="'w-full'"
+          >
+            {{ t('actions.cancelEditMode') }}
+          </app-agridata-button>
+          <app-agridata-button
+            [variant]="ButtonVariants.PrimaryAccept"
+            [disabled]="noBurGranted() || agridataStateService.isImpersonating()"
+            [disabledInfo]="t('actions.saveDisabledInfo')"
+            [loading]="showSaveLoading()"
+            (handleClick)="saveBurDecisions()"
+            [additionalClass]="'w-full'"
+          >
+            {{ t('actions.saveAndAccept') }}
+          </app-agridata-button>
+        } @else {
+          <app-agridata-button
+            [variant]="ButtonVariants.SecondaryReject"
+            [disabled]="rejectDisabled() || agridataStateService.isImpersonating()"
+            [loading]="showRejectedLoading()"
+            (handleClick)="rejectRequest()"
+            [additionalClass]="'w-full'"
+          >
+            {{ t('actions.reject') }}
+          </app-agridata-button>
+          <app-agridata-button
+            [variant]="ButtonVariants.PrimaryAccept"
+            [disabled]="acceptDisabled() || agridataStateService.isImpersonating()"
+            [loading]="showAcceptedLoading()"
+            (handleClick)="acceptRequest()"
+            [additionalClass]="'w-full'"
+          >
+            {{ t('actions.accept') }}
+          </app-agridata-button>
+        }
+      </div>
+      <span class="w-full flex justify-center text-agridata-tertiary-text text-sm">
+        {{ noBurGranted() ? t('footerInformationNoBur') : t('footerInformation') }}
+      </span>
+    }
   </div>
 </app-sidepanel>
 @if (showRedirect()) {

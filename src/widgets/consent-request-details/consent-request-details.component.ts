@@ -130,12 +130,17 @@ export class ConsentRequestDetailsComponent {
         return { key: 'consent-request.details.stateCode.PARTIALLY_GRANTED', params };
       case ConsentRequestAggregationStateEnum.Declined:
         return { key: 'consent-request.details.stateCode.DECLINED', params };
+      case ConsentRequestAggregationStateEnum.LegallyPermitted:
+        return { key: 'consent-request.details.stateCode.LEGALLY_PERMITTED', params };
       default:
         return { key: 'consent-request.details.stateCode.UNKNOWN' };
     }
   });
   protected readonly badgeVariant = computed(() =>
     getAggregationBadgeVariant(this.request()?.stateCode),
+  );
+  protected readonly noConsentRequired = computed(
+    () => this.request()?.stateCode === ConsentRequestAggregationStateEnum.LegallyPermitted,
   );
   protected readonly consentRequestResource = resource({
     params: () => ({
@@ -180,6 +185,7 @@ export class ConsentRequestDetailsComponent {
   // Feeds the per-BUR decisions list rendered inside the data-request-content body.
   private readonly syncDecisionStoreEffect = effect(() => {
     this.decisionStore.consentRequests.set(this.request()?.consentRequests ?? []);
+    this.decisionStore.dataRequestStateCode.set(this.request()?.stateCode);
   });
   private readonly checkForRedirectEffect = effect(() => {
     const request = this.request();
