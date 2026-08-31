@@ -110,6 +110,7 @@ components:
       - GRANTED
       - OPENED
       - DECLINED
+      - LEGALLY_PERMITTED
       - PARTIALLY_GRANTED
       - PARTIALLY_OPENED
     ConsentRequestAggregationSummaryDto:
@@ -201,6 +202,11 @@ components:
           description: UID of the data producer
           examples:
           - CHE123456789
+        dataProducerBur:
+          type: string
+          description: BUR of the data producer
+          examples:
+          - A12345678
         isCreated:
           type: boolean
     ConsentRequestFundamentalViewDto:
@@ -533,6 +539,7 @@ components:
       - GRANTED
       - OPENED
       - DECLINED
+      - LEGALLY_PERMITTED
       - NOT_CREATED
     ContractRevisionDto:
       type: object
@@ -796,7 +803,7 @@ components:
             Konkret werden folgende Daten übermittelt:
             - Datum der Erfassung bzw. der letzten Änderung dieses Datensatzes im kantonalen System
             - KT_ID_B Kantonale Identifikationsnummer der Betriebsform auf der Stufe, auf der die nachfolgenden Daten...
-          maxLength: 1000
+          maxLength: 10000
         fr:
           type: string
           description: French extended description of the data product
@@ -805,7 +812,7 @@ components:
             Concrètement, les données suivantes sont transmises :
             - Date resp. la saisie ou la dernière modification du jeu de données dans le système cantonal
             - KT_ID_B Numéro cantonal de la forme d’exploitation au niveau de laquelle les données suivantes ont été saisies...
-          maxLength: 1000
+          maxLength: 10000
         it:
           type: string
           description: Italian extended description of the data product
@@ -814,7 +821,7 @@ components:
             Concretamente vengono trasmessi i dati seguenti:
             - Data di registrazione o dell’ultima modifica di questo set di dati nel sistema cantonale
             - KT_ID_B Numero d’identificazione cantonale della forma di azienda al livello a cui sono stati registrati i dati...
-          maxLength: 1000
+          maxLength: 10000
     DataProductNameDto:
       type: object
       properties:
@@ -5457,7 +5464,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.16.0-rc.3
+  version: 1.16.0-rc.7
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

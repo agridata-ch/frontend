@@ -13,6 +13,7 @@ export const ConsentRequestAggregationStateEnum = {
     Granted: 'GRANTED',
     Opened: 'OPENED',
     Declined: 'DECLINED',
+    LegallyPermitted: 'LEGALLY_PERMITTED',
     PartiallyGranted: 'PARTIALLY_GRANTED',
     PartiallyOpened: 'PARTIALLY_OPENED'
 } as const;

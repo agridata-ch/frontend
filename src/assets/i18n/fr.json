@@ -949,11 +949,11 @@
         "placeholder": "par ex. /api/v1/bur/{{bur}}/animaux_d_elevage"
       },
       "restClientRequestTemplate": {
-        "label": "Modèle de corps de requête (JSON/XML)",
+        "label": "Template du Request-Body (JSON/XML) (facultatif)",
         "placeholder": "par ex. { \"statut\": \"actif\" }"
       },
       "restClientChangeDetectionPathTemplate": {
-        "label": "Chemin pour la détection des modifications",
+        "label": "Chemin pour la détection de changements (Change Detection) (facultatif)",
         "placeholder": "par ex. /api/v1/animaux_d_elevage/modifications"
       },
       "cancel": "Annuler",
@@ -1227,6 +1227,26 @@
     },
     "cancelAction": {
       "label": "Rejeter"
+    }
+  },
+  "dataCatalog": {
+    "products": {
+      "count": "{{ count }} produit(s) de données"
+    },
+    "sort": {
+      "nameAsc": "Nom ascendant",
+      "nameDesc": "Nom descendant",
+      "systemAsc": "Système ascendant",
+      "systemDesc": "Système descendant",
+      "providerAsc": "Fournisseur de données ascendant",
+      "providerDesc": "Fournisseur de données descendant"
+    },
+    "empty": {
+      "title": "Aucune entrée disponible",
+      "message": "Aucune entrée trouvée"
+    },
+    "product": {
+      "deprecated": "obsolète/inactif"
     }
   }
 }

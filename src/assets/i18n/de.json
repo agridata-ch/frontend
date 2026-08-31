@@ -56,7 +56,8 @@
         "OPENED": "Offen",
         "UNKNOWN": "Unbekannt",
         "PARTIALLY_GRANTED": "Teilweise Zugestimmt",
-        "PARTIALLY_OPENED": "Teilweise Offen"
+        "PARTIALLY_OPENED": "Teilweise Offen",
+        "LEGALLY_PERMITTED": "Gesetzlich geregelt"
       },
       "footerInformation": "Sie können Ihre Entscheidung später jederzeit hier ändern. Daten können nur übermittelt werden, wenn eine aktive Zustimmung vorliegt.",
       "requestDate": "Anfrage vom {{ date }}",
@@ -82,7 +83,8 @@
         "nonProducerInfo": "Hier sehen die Datenproduzenten ihre anfragten Standorte.",
         "missingBurInfo": "Fehlt ein Standort? Melden Sie sich direkt bei {{ consumer }}, damit diese den Standort anfragen und Sie die Zustimmung geben können."
       },
-      "footerInformationNoBur": "Sie haben alle Standorte deaktiviert. Wenn Sie diese Anfrage komplett ablehnen möchten, klicken Sie bitte auf Abbrechen und danach auf den Ablehnen-Button."
+      "footerInformationNoBur": "Sie haben alle Standorte deaktiviert. Wenn Sie diese Anfrage komplett ablehnen möchten, klicken Sie bitte auf Abbrechen und danach auf den Ablehnen-Button.",
+      "noConsentRequired": "Keine Aktion erforderlich Dieser Datenbezug basiert auf einer gesetzlichen Grundlage. Eine Zustimmung oder Ablehnung Ihrerseits ist nicht erforderlich. Diese Ansicht dient Ihrer Information und Transparenz."
     },
     "toast": {
       "title": {
@@ -107,7 +109,8 @@
         "GRANTED": "Zugestimmt",
         "DECLINED": "Abgelehnt",
         "PARTIALLY_OPENED": "Teilweise Offen",
-        "PARTIALLY_GRANTED": "Teilweise Zugestimmt"
+        "PARTIALLY_GRANTED": "Teilweise Zugestimmt",
+        "LEGALLY_PERMITTED": "Gesetzlich geregelt"
       }
     },
     "emptyState": {
@@ -949,11 +952,11 @@
         "placeholder": "z.B. /api/v1/bur/{{bur}}/nutztiere"
       },
       "restClientRequestTemplate": {
-        "label": "Request-Body Template (JSON/XML)",
+        "label": "Request-Body Template (JSON/XML) (Optional)",
         "placeholder": "z.B. { \"status\": \"active\" }"
       },
       "restClientChangeDetectionPathTemplate": {
-        "label": "Pfad für Änderungserkennung (Change Detection)",
+        "label": "Pfad für Änderungserkennung (Change Detection) (Optional)",
         "placeholder": "z.B. /api/v1/nutztiere/changes"
       },
       "cancel": "Abbrechen",
@@ -1227,6 +1230,26 @@
     },
     "cancelAction": {
       "label": "Verwerfen"
+    }
+  },
+  "dataCatalog": {
+    "products": {
+      "count": "{{ count }} Datenprodukt(e)"
+    },
+    "sort": {
+      "nameAsc": "Name aufsteigend",
+      "nameDesc": "Name absteigend",
+      "systemAsc": "System aufsteigend",
+      "systemDesc": "System absteigend",
+      "providerAsc": "Datenanbieter aufsteigend",
+      "providerDesc": "Datenanbieter absteigend"
+    },
+    "empty": {
+      "title": "Keine Einträge vorhanden",
+      "message": "Es wurden keine Einträge gefunden"
+    },
+    "product": {
+      "deprecated": "veraltet/inaktiv"
     }
   }
 }

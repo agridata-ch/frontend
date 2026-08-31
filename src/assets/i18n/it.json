@@ -949,11 +949,11 @@
         "placeholder": "es. /api/v1/bur/{{bur}}/nutztiere"
       },
       "restClientRequestTemplate": {
-        "label": "Template corpo della richiesta (JSON/XML)",
+        "label": "Template del Request-Body (JSON/XML) (opzionale)",
         "placeholder": "es. { \"status\": \"active\" }"
       },
       "restClientChangeDetectionPathTemplate": {
-        "label": "Percorso per il rilevamento delle modifiche (Change Detection)",
+        "label": "Percorso per il rilevamento delle modifiche (Change Detection) (opzionale)",
         "placeholder": "es. /api/v1/nutztiere/changes"
       },
       "cancel": "Annulla",
@@ -1227,6 +1227,26 @@
     },
     "cancelAction": {
       "label": "Rifiuta"
+    }
+  },
+  "dataCatalog": {
+    "products": {
+      "count": "{{ count }} prodotto/i di dati"
+    },
+    "sort": {
+      "nameAsc": "Nome crescente",
+      "nameDesc": "Nome decrescente",
+      "systemAsc": "Sistema crescente",
+      "systemDesc": "Sistema decrescente",
+      "providerAsc": "Fornitore di dati crescente",
+      "providerDesc": "Fornitore di dati decrescente"
+    },
+    "empty": {
+      "title": "Nessuna voce disponibile",
+      "message": "Nessuna voce trovata"
+    },
+    "product": {
+      "deprecated": "obsoleto/inattivo"
     }
   }
 }
