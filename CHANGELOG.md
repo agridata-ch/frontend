@@ -1,3 +1,9 @@
+## [1.18.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.9...v1.18.0-rc.10) (2026-09-01)
+
+### Features
+
+- **data-products:** show deprecation state in data product table and sidepanel ([89066fb](https://github.com/agridata-ch/frontend/commit/89066fb75cf86a03a174693e66b8ed52cb05ad2d)), references [DIGIB2-1672](https://github.com/agridata-ch/frontend/issues/-1672)
+
 ## [1.18.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.8...v1.18.0-rc.9) (2026-08-31)
 
 ### Features
