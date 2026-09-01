@@ -1,3 +1,9 @@
+## [1.18.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.10...v1.18.0-rc.11) (2026-09-01)
+
+### Features
+
+- **data-catalog:** add public data-catalog ([d5fbab1](https://github.com/agridata-ch/frontend/commit/d5fbab1029d12bad3d9277d4228c5231a886a67f)), references [DIGIB2-1442](https://github.com/agridata-ch/frontend/issues/-1442)
+
 ## [1.18.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.9...v1.18.0-rc.10) (2026-09-01)
 
 ### Features
