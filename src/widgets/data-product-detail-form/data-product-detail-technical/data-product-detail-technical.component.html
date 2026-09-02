@@ -2,31 +2,6 @@
   <div class="flex flex-col gap-4">
     <h3>{{ t('technicalFields') }}</h3>
     <div appViewSection [isViewMode]="isViewMode()">
-      @if (isAdmin() && !isViewMode() && !isEditMode()) {
-        <div class="flex flex-col">
-          <span
-            class="mb-2 font-medium leading-[130%]"
-            [class.text-red-500]="providerSelectHasError"
-          >
-            {{ t('provider.label') }}
-          </span>
-          <app-agridata-select
-            [options]="providerOptions()"
-            [selectedOption]="selectedProviderId()"
-            [placeholder]="t('provider.placeholder')"
-            [hasError]="providerSelectHasError"
-            (selectedOptionChange)="onProviderChange($event)"
-          />
-          <span
-            class="min-h-[1.5em] block text-gray-700"
-            [class.text-red-500]="providerSelectHasError"
-          >
-            @if (providerSelectHasError) {
-              <span class="text-sm">{{ providerSelectErrorMessage }}</span>
-            }
-          </span>
-        </div>
-      }
       @if (dataSourceSystemDisabled()) {
         <app-alert class="mb-4" [type]="AlertType.INFO">
           <app-linked-text [parts]="dataSourceSystemDisabledMessageParts()" />
@@ -37,6 +12,20 @@
         [class.py-3]="isViewMode()"
         [class.px-4]="isViewMode()"
       >
+        @if (isAdmin()) {
+          <app-form-control
+            [control]="providerControl()"
+            [controlType]="ControlTypes.SELECT"
+            [options]="providerOptions()"
+            [label]="t('provider.label')"
+            [placeholder]="t('provider.placeholder')"
+            [disabled]="isEditMode()"
+            [isViewMode]="isViewMode()"
+            class="lg:flex-1"
+            id="providerId"
+          />
+        }
+
         <app-form-control
           [control]="getFormControl('dataSourceSystemId')"
           [controlType]="ControlTypes.SELECT"
@@ -45,9 +34,16 @@
           [placeholder]="t('dataSourceSystem.placeholder')"
           [disabled]="!selectedProviderId()"
           [isViewMode]="isViewMode()"
-          class="lg:w-1/2"
+          [class]="isAdmin() ? 'lg:flex-1' : 'lg:w-full'"
           id="dataSourceSystemId"
         />
+      </div>
+
+      <div
+        class="flex flex-col lg:flex-row gap-6 transition-all duration-300 ease-in-out"
+        [class.py-3]="isViewMode()"
+        [class.px-4]="isViewMode()"
+      >
         <app-form-control
           [control]="getFormControl('restClientId')"
           [controlType]="ControlTypes.SELECT"
@@ -59,19 +55,18 @@
           class="lg:w-1/2"
           id="restClientId"
         />
-      </div>
 
-      <app-form-control
-        [class.py-3]="isViewMode()"
-        [class.px-4]="isViewMode()"
-        [control]="getFormControl('restClientMethodCode')"
-        [controlType]="ControlTypes.SELECT"
-        [options]="methodCodeOptions"
-        [label]="t('restClientMethod.label')"
-        [placeholder]="t('restClientMethod.placeholder')"
-        [isViewMode]="isViewMode()"
-        id="restClientMethodCode"
-      />
+        <app-form-control
+          [control]="getFormControl('restClientMethodCode')"
+          [controlType]="ControlTypes.SELECT"
+          [options]="methodCodeOptions"
+          [label]="t('restClientMethod.label')"
+          [placeholder]="t('restClientMethod.placeholder')"
+          [isViewMode]="isViewMode()"
+          id="restClientMethodCode"
+          class="lg:w-1/2"
+        />
+      </div>
     </div>
     <div appViewSection [isViewMode]="isViewMode()">
       <app-form-control

@@ -1,13 +1,16 @@
 import { Component, computed, effect, inject, input, resource, signal } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProvidersService } from '@/entities/api/data-providers.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
-import { getErrorMessage, getFormControl } from '@/shared/lib/form.helper';
-import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
+import {
+  createFormControl,
+  FormControlWithMessages,
+  getFormControl,
+} from '@/shared/lib/form.helper';
 import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { ControlTypes, FormControlComponent } from '@/shared/ui/form-control';
 import { LinkedTextComponent } from '@/shared/ui/linked-text';
@@ -19,14 +22,13 @@ import { FLOW_CODE_OPTIONS, METHOD_CODE_OPTIONS } from '../data-product-detail-f
 /**
  * Tab component for the technical configuration fields of a data product.
  *
- * CommentLastReviewed: 2026-06-09
+ * CommentLastReviewed: 2026-09-07
  */
 @Component({
   selector: 'app-data-product-detail-technical',
   imports: [
     FormControlComponent,
     I18nDirective,
-    AgridataSelectComponent,
     LinkedTextComponent,
     ViewSectionDirective,
     AlertComponent,
@@ -61,6 +63,9 @@ export class DataProductDetailTechnicalComponent {
   // zoneless change detection. The parent disables the control via control.disable() (which emits
   // on control.events), so feed this signal from that stream to keep the locked-info alert in sync.
   protected readonly dataSourceSystemDisabled = signal(false);
+  // 'provider' is UI-only and added to the form dynamically
+  // keep the control in a signal so the teemplate reacts to it being added
+  protected readonly providerControl = signal<FormControlWithMessages | undefined>(undefined);
 
   // Computed Signals
   protected readonly isAdmin = computed(() => this.authService.isAdmin());
@@ -111,7 +116,43 @@ export class DataProductDetailTechnicalComponent {
     },
   });
 
+  // Prevents syncSelectedProviderIdEffect from reacting to programmatic
+  // changes made by syncProviderControlEffect.
+  private isSyncingProviderControl = false;
+
   // Effects
+  private readonly initProviderControlEffect = effect(() => {
+    const form = this.form();
+    if (form.get('provider')) return;
+
+    const control = createFormControl('', [Validators.required], {
+      required: () => this.i18nService.translate('forms.error.required'),
+    });
+    form.addControl('provider', control);
+    this.providerControl.set(control);
+  });
+
+  private readonly syncProviderControlEffect = effect(() => {
+    const control = this.providerControl();
+    const providerId = this.selectedProviderId();
+    if (!control || control.value === providerId) return;
+
+    this.isSyncingProviderControl = true;
+    control.setValue(providerId);
+    this.isSyncingProviderControl = false;
+  });
+
+  private readonly syncSelectedProviderIdEffect = effect((onCleanup) => {
+    const control = this.providerControl();
+    if (!control) return;
+
+    const subscription = control.valueChanges.subscribe((value) => {
+      if (this.isSyncingProviderControl) return;
+      this.onProviderChange(value);
+    });
+    onCleanup(() => subscription.unsubscribe());
+  });
+
   private readonly syncDataSourceDisabledEffect = effect((onCleanup) => {
     const control = this.form().get('dataSourceSystemId');
     const update = () => this.dataSourceSystemDisabled.set(control?.disabled ?? false);
@@ -149,21 +190,5 @@ export class DataProductDetailTechnicalComponent {
     this.selectedProviderId.set(value?.toString() ?? '');
     this.getFormControl('dataSourceSystemId').setValue('');
     this.getFormControl('restClientId').setValue('');
-  }
-
-  protected get providerSelectErrorMessage(): string {
-    const dss = this.getFormControl('dataSourceSystemId');
-    const rc = this.getFormControl('restClientId');
-    const ctrl = dss.invalid && dss.touched ? dss : rc;
-    const firstKey = Object.keys(ctrl.errors ?? {})[0];
-    if (!firstKey) return '';
-    return getErrorMessage(ctrl, firstKey) ?? '';
-  }
-
-  protected get providerSelectHasError(): boolean {
-    if (this.selectedProviderId()) return false;
-    const dss = this.getFormControl('dataSourceSystemId');
-    const rc = this.getFormControl('restClientId');
-    return (dss.invalid && dss.touched) || (rc.invalid && rc.touched);
   }
 }

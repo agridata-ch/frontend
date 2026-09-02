@@ -36,10 +36,12 @@ import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
+import { AuthService } from '@/shared/lib/auth';
 import {
   ActionDTO,
   AgridataTableComponent,
   CellRendererTypes,
+  ColumnDefinition,
   SortDirections,
   TableMetadata,
 } from '@/shared/ui/agridata-table';
@@ -55,7 +57,7 @@ import { DataProductsDeleteModalComponent } from './data-products-delete-modal';
 /**
  * Shows a table with all available data products.
  *
- * CommentLastReviewed: 2026-07-30
+ * CommentLastReviewed: 2026-09-01
  */
 @Component({
   selector: 'app-data-products-page',
@@ -73,6 +75,7 @@ import { DataProductsDeleteModalComponent } from './data-products-delete-modal';
   templateUrl: './data-products-page.component.html',
 })
 export class DataProductsPageComponent {
+  private readonly authService = inject(AuthService);
   private readonly dataProductService = inject(DataProductService);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly router = inject(Router);
@@ -81,6 +84,7 @@ export class DataProductsPageComponent {
 
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly NAME_HEADER = 'data-products.table.name';
+  protected readonly PROVIDER_HEADER = 'data-products.table.provider';
   protected readonly SYSTEM_HEADER = 'data-products.table.system';
   protected readonly STATE_CODE_HEADER = 'data-products.table.stateCode';
   protected readonly buttonIcon = faPlus;
@@ -101,6 +105,8 @@ export class DataProductsPageComponent {
   readonly resourceQueryDto = signal<ResourceQueryDto | undefined>(undefined);
   protected readonly productToDelete = signal<DataProductDto | null>(null);
 
+  protected readonly isAdmin = computed(() => this.authService.isAdmin());
+
   protected readonly dataProductsTableMetaData = computed<TableMetadata<DataProductDto>>(() => {
     return {
       idColumn: 'id',
@@ -115,6 +121,20 @@ export class DataProductsPageComponent {
             template: this.nameTemplate(),
           },
         },
+        ...(this.isAdmin()
+          ? [
+              {
+                name: this.PROVIDER_HEADER,
+                sortable: true,
+                sortField: 'providerName' as keyof DataProductDto,
+                renderer: {
+                  type: CellRendererTypes.FUNCTION,
+                  cellRenderFn: (row) =>
+                    this.i18nService.useObjectTranslation(row.dataSourceSystem?.dataProvider.name),
+                },
+              } satisfies ColumnDefinition<DataProductDto>,
+            ]
+          : []),
         {
           name: this.SYSTEM_HEADER,
           sortable: true,
