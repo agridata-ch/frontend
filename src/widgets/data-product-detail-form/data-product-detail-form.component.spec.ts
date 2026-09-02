@@ -51,6 +51,7 @@ function fillValidForm(component: DataProductDetailFormComponent): void {
       },
     },
     [FORM_TAB_IDS.TECHNICAL_FIELDS]: {
+      provider: 'provider1',
       dataSourceSystemId: 'sys-1',
       restClientId: 'rc-1',
       restClientMethodCode: 'GET',

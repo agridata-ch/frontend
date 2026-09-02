@@ -266,36 +266,130 @@ describe('DataProductDetailTechnicalComponent', () => {
     });
   });
 
-  describe('providerSelectHasError', () => {
-    it('should return false when a provider is selected', () => {
+  describe('providerControl', () => {
+    it('should register a required control on the form', () => {
+      expect(component['getFormControl']('provider')).toBe(component['providerControl']());
+      expect(component['providerControl']()?.hasError('required')).toBe(true);
+    });
+
+    it('should become valid once selectedProviderId is set', async () => {
       component['selectedProviderId'].set('p1');
-      expect(component['providerSelectHasError']).toBe(false);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(component['providerControl']()?.value).toBe('p1');
+      expect(component['providerControl']()?.valid).toBe(true);
     });
 
-    it('should return false when no controls are touched', () => {
-      expect(component['providerSelectHasError']).toBe(false);
+    it('should update selectedProviderId and reset dependent fields when the user picks a value', () => {
+      component['getFormControl']('dataSourceSystemId').setValue('sys-1');
+      component['getFormControl']('restClientId').setValue('rc-1');
+
+      component['providerControl']()?.setValue('p1');
+
+      expect(component['selectedProviderId']()).toBe('p1');
+      expect(component['getFormControl']('dataSourceSystemId').value).toBe('');
+      expect(component['getFormControl']('restClientId').value).toBe('');
     });
 
-    it('should return true when dataSourceSystemId is invalid and touched', () => {
-      component['selectedProviderId'].set('');
-      const ctrl = component['getFormControl']('dataSourceSystemId');
-      ctrl.markAsTouched();
-      ctrl.setErrors({ required: true });
-      expect(component['providerSelectHasError']).toBe(true);
+    it('should not reset dependent fields when selectedProviderId is synced programmatically', async () => {
+      component['getFormControl']('dataSourceSystemId').setValue('sys-1');
+
+      component['selectedProviderId'].set('p1');
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(component['getFormControl']('dataSourceSystemId').value).toBe('sys-1');
     });
   });
 
-  describe('providerSelectErrorMessage', () => {
-    it('should return empty string when controls are valid', () => {
-      component['getFormControl']('dataSourceSystemId').setValue('sys-1');
-      component['getFormControl']('restClientId').setValue('rc-1');
-      expect(component['providerSelectErrorMessage']).toBe('');
+  describe('provider field rendering - required error', () => {
+    const providerFormControlHost = (
+      testFixture: ComponentFixture<DataProductDetailTechnicalComponent>,
+    ): Element | null | undefined =>
+      (
+        Array.from(testFixture.nativeElement.querySelectorAll('app-agridata-select button')).find(
+          (button) => (button as HTMLButtonElement).textContent?.toLowerCase().includes('provider'),
+        ) as HTMLButtonElement | undefined
+      )?.closest('app-form-control');
+
+    it('should show the has-error state once the provider control is touched and empty', async () => {
+      authService.__testSignals.isAdmin.set(true);
+      const testFixture = createFixture();
+      testFixture.detectChanges();
+      await testFixture.whenStable();
+
+      testFixture.componentInstance['providerControl']()?.markAsTouched();
+      testFixture.detectChanges();
+      await testFixture.whenStable();
+
+      expect(providerFormControlHost(testFixture)?.classList.contains('has-error')).toBe(true);
     });
 
-    it('should return error message when restClientId has errors', () => {
-      // restClientId is required; with empty value it will have a required error
-      const message = component['providerSelectErrorMessage'];
-      expect(message).not.toBe('');
+    it('should clear the has-error state once a provider is selected', async () => {
+      authService.__testSignals.isAdmin.set(true);
+      const testFixture = createFixture();
+      testFixture.detectChanges();
+      await testFixture.whenStable();
+
+      testFixture.componentInstance['providerControl']()?.markAsTouched();
+      testFixture.componentInstance['selectedProviderId'].set('p1');
+      testFixture.detectChanges();
+      await testFixture.whenStable();
+
+      expect(providerFormControlHost(testFixture)?.classList.contains('has-error')).toBe(false);
+    });
+  });
+
+  describe('provider field rendering', () => {
+    const providerSelectButton = (
+      testFixture: ComponentFixture<DataProductDetailTechnicalComponent>,
+    ) =>
+      Array.from(testFixture.nativeElement.querySelectorAll('app-agridata-select button')).find(
+        (button) => (button as HTMLButtonElement).textContent?.toLowerCase().includes('provider'),
+      ) as HTMLButtonElement | undefined;
+
+    it('should not render the provider field for a non-admin', () => {
+      authService.__testSignals.isAdmin.set(false);
+      fixture.detectChanges();
+
+      expect(providerSelectButton(fixture)).toBeFalsy();
+    });
+
+    it('should render an enabled provider select in create mode', () => {
+      authService.__testSignals.isAdmin.set(true);
+      fixture.detectChanges();
+
+      const button = providerSelectButton(fixture);
+      expect(button).toBeTruthy();
+      expect(button?.disabled).toBe(false);
+    });
+
+    it('should render the selected provider name as plain text in view mode', async () => {
+      authService.__testSignals.isAdmin.set(true);
+      masterDataService.__testSignals.dataProviders.set([mockProvider1]);
+      const testFixture = createFixture();
+      testFixture.componentRef.setInput('isViewMode', true);
+      testFixture.componentRef.setInput('preselectedProviderId', 'p1');
+      testFixture.detectChanges();
+      await testFixture.whenStable();
+
+      const button = providerSelectButton(testFixture);
+      expect(button?.textContent).toContain('Provider 1');
+      expect(button?.disabled).toBe(false);
+    });
+
+    it('should render a disabled provider select in edit mode', async () => {
+      authService.__testSignals.isAdmin.set(true);
+      masterDataService.__testSignals.dataProviders.set([mockProvider1]);
+      const testFixture = createFixture();
+      testFixture.componentRef.setInput('isEditMode', true);
+      testFixture.componentRef.setInput('preselectedProviderId', 'p1');
+      testFixture.detectChanges();
+      await testFixture.whenStable();
+
+      const button = providerSelectButton(testFixture);
+      expect(button?.disabled).toBe(true);
     });
   });
 

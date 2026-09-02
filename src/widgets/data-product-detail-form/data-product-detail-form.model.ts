@@ -76,6 +76,10 @@ export function buildDataProductPayload(form: FormGroup): Record<string, unknown
   if (payload['restClientMethodCode'] === '') payload['restClientMethodCode'] = null;
   if (payload['flowCode'] === '') payload['flowCode'] = null;
 
+  // 'provider' is a UI-only filter control added imperatively by the technical tab; it must
+  // never reach the backend.
+  delete payload['provider'];
+
   // Links are optional and empty rows are UI-only scaffolding; drop them before save.
   if (Array.isArray(payload['links'])) {
     payload['links'] = filterFilledLinks(payload['links'] as LinkDto[]);

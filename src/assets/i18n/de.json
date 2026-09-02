@@ -1211,7 +1211,7 @@
     "stateCode": {
       "DRAFT": "Entwurf",
       "ACTIVE": "Publiziert",
-      "DEPRECATED": "Deprecated"
+      "DEPRECATED": "veraltet/inaktiv"
     }
   },
   "wysiwyg": {
