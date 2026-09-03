@@ -44,7 +44,7 @@
     "@angular/router": "22.0.6",
     "@awesome.me/kit-0b6d1ed528": "1.0.37",
     "@jsverse/transloco": "8.4.0",
-    "@tiptap/core": "3.27.3",
+    "@tiptap/core": "3.30.4",
     "@tiptap/extensions": "3.27.3",
     "@tiptap/pm": "3.27.3",
     "@tiptap/starter-kit": "3.27.3",
