@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { GlobalErrorHandler } from '@/app/error/global-error-handler';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { createMockErrorHandlerService, MockErrorHandlerService } from '@/shared/testing/mocks';
 
 describe('GlobalErrorHandler', () => {
@@ -18,7 +18,7 @@ describe('GlobalErrorHandler', () => {
       ],
     });
     errorHandler = TestBed.inject(GlobalErrorHandler);
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should delegate frontend errors to ErrorHandlerService', () => {

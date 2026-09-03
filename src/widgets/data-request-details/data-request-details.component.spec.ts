@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService, DataRequestService, UidRegisterService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
@@ -14,6 +13,7 @@ import {
   SealAttemptStateEnum,
 } from '@/entities/openapi';
 import { ACTING_ROLES } from '@/shared/constants/constants';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { SidepanelComponent } from '@/shared/sidepanel';
@@ -190,7 +190,7 @@ describe('DataRequestDetailsComponent', () => {
 
   describe('handleSidepanelClose', () => {
     it('should emit closeSidepanel output', () => {
-      const emitSpy = jest.spyOn(component.closeSidepanel, 'emit');
+      const emitSpy = vi.spyOn(component.closeSidepanel, 'emit');
 
       component['handleSidepanelClose']();
 
@@ -213,7 +213,7 @@ describe('DataRequestDetailsComponent', () => {
       newFixture.detectChanges();
       await newFixture.whenStable();
 
-      const emitSpy = jest.spyOn(newFixture.componentInstance.closeSidepanel, 'emit');
+      const emitSpy = vi.spyOn(newFixture.componentInstance.closeSidepanel, 'emit');
       const sidepanel = newFixture.debugElement.query(By.directive(SidepanelComponent));
 
       sidepanel.componentInstance.closeSidepanel.emit();

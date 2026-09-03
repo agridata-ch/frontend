@@ -1,8 +1,10 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DebugLogSource, DebugLogStatus } from '@/features/debug/debug.model';
+import { ErrorDto } from '@/shared/error/error-dto';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
@@ -320,6 +322,40 @@ describe('DebugService', () => {
     });
   });
 
+  describe('error logs', () => {
+    it('maps errors from the error service into log entries', () => {
+      const errorDto: ErrorDto = {
+        id: '1',
+        i18nTitle: { i18n: 'Boom' },
+        i18nReason: { i18n: 'reason' },
+        originalError: new Error('bad thing'),
+        timestamp: new Date(),
+        isHandled: false,
+      };
+      mockErrorService.getAllErrors.mockReturnValue(signal([errorDto]));
+
+      const errorLog = service.debugLogs().find((log) => log.source === DebugLogSource.ERROR);
+
+      expect(errorLog).toBeDefined();
+      expect(errorLog?.status).toBe(DebugLogStatus.ERROR);
+      expect(errorLog?.message).toContain('Boom');
+      expect(errorLog?.message).toContain('bad thing');
+    });
+  });
+
+  describe('route tracking', () => {
+    it('records route navigations emitted by the state service', () => {
+      agridataStateService.currentRoute.set('/new-route');
+      TestBed.tick();
+
+      const routeLog = service.debugLogs().find((log) => log.source === DebugLogSource.ROUTE_END);
+
+      expect(routeLog).toBeDefined();
+      expect(routeLog?.status).toBe(DebugLogStatus.INFO);
+      expect(routeLog?.message).toContain('/new-route');
+    });
+  });
+
   describe('error handling', () => {
     it('should handle errors gracefully when adding invalid data', () => {
       // Service should not throw even with invalid inputs
@@ -333,7 +369,7 @@ describe('DebugService', () => {
     });
 
     it('should return empty logs if error service fails', () => {
-      mockErrorService.getAllErrors = jest.fn().mockImplementation(() => {
+      mockErrorService.getAllErrors = vi.fn().mockImplementation(() => {
         throw new Error('Service error');
       });
 

@@ -8,11 +8,11 @@ import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { getErrorMessage, getFormControl } from '@/shared/lib/form.helper';
 import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
+import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { ControlTypes, FormControlComponent } from '@/shared/ui/form-control';
 import { LinkedTextComponent } from '@/shared/ui/linked-text';
 import { parseLinkedText } from '@/shared/utils';
 import { ViewSectionDirective } from '@/shared/view-section';
-import { AlertComponent, AlertType } from '@/widgets/alert';
 
 import { FLOW_CODE_OPTIONS, METHOD_CODE_OPTIONS } from '../data-product-detail-form.model';
 

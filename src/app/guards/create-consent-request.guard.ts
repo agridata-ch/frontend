@@ -3,12 +3,12 @@ import { inject, Service } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ConsentRequestCreatedDto, CreateConsentRequestDto, UidDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
+import { ExternalServiceHttpError } from '@/shared/error/external-service-http-error';
 import { AuthService } from '@/shared/lib/auth';
 
 /**

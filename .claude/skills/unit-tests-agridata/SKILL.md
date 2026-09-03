@@ -1,12 +1,23 @@
 ---
 name: unit-tests-agridata
 description: Create and maintain unit tests for agridata Angular components and services. Use this skill whenever the user wants to write new tests, improve existing test coverage, refactor tests to follow patterns, or needs guidance on testing Angular signals, mocks, resources, or component behavior. Works for both generating test files from scratch and enhancing existing .spec.ts files. Also use when the user shows you failing tests or asks "how should I test this?".
-compatibility: Jest, Angular 20+, TypeScript
+compatibility: Vitest, Angular 22+, TypeScript
 ---
 
 # Unit Tests for Agridata
 
-This skill helps you write and maintain unit tests for the agridata project. It guides you through Jest setup, component testing with signals, mocking services, and testing async resources—all aligned with the project's testing patterns.
+This skill helps you write and maintain unit tests for the agridata project. It guides you through Vitest setup, component testing with signals, mocking services, and testing async resources—all aligned with the project's testing patterns.
+
+## Vitest specifics (migrated from Jest)
+
+Tests run on **Vitest** (config: `vitest.config.ts`, setup: `src/test-setup.ts`, jsdom, zoneless via `@analogjs/vitest-angular`). Key differences from Jest:
+
+- Use `vi`, not `jest`: `vi.fn()`, `vi.spyOn()`, `vi.useFakeTimers()`, `vi.clearAllMocks()`. `vi` is a global (config `globals: true`).
+- Mock/spy method APIs are identical: `.mockReturnValue()`, `.mockResolvedValue()`, `.mockImplementation(fn)`. Note `mockImplementation` **requires** an argument in Vitest — use `.mockImplementation(() => {})` for a no-op.
+- Mock types come from `vitest`, not a global namespace: `import type { Mock, Mocked } from 'vitest';`. `jest.Mock<R, A>` becomes `Mock<(...args: A) => R>`.
+- Module mocks: `vi.mock('pkg', factory)` is **hoisted** above imports. Shared spies referenced inside the factory must be created in `vi.hoisted(() => {...})`.
+- **No `done` callback** — Vitest types the test arg as a context object. Write async tests with `async () => {}` returning a Promise (resolve on success; a thrown `expect` inside a synchronous flush rejects it).
+- `window.close()` is stubbed to a no-op in `src/test-setup.ts` (real jsdom close destroys the window); `vi.spyOn(window, 'close')` still works to assert calls.
 
 ## When to Use This Skill
 
@@ -145,7 +156,7 @@ Effects run on signal changes. Use `fixture.whenStable()` to wait for them:
 
 ```typescript
 it('should log when count changes', async () => {
-  const logSpy = jest.spyOn(console, 'log');
+  const logSpy = vi.spyOn(console, 'log');
   componentRef.setInput('count', 5);
   fixture.detectChanges();
   await fixture.whenStable();
@@ -282,7 +293,7 @@ describe('MyComponent', () => {
 
 ### Overriding Mock Methods
 
-Mock methods are Jest spies. Override them per-test:
+Mock methods are Vitest spies (`vi.fn()`). Override them per-test:
 
 ```typescript
 it('should display user name', () => {
@@ -392,13 +403,19 @@ npm run test:unit -- test.spec.ts
 Run tests matching a pattern:
 
 ```bash
-npm run test:unit -- --testNamePattern="should display"
+npm run test:unit -- -t "should display"
 ```
 
 Run in watch mode:
 
 ```bash
-npm run test:unit -- --watch
+npm run test:watch
+```
+
+Architecture tests (ArchUnitTS, FSD layering) run separately:
+
+```bash
+npm run test:arch
 ```
 
 ---
@@ -486,7 +503,7 @@ expect(span.querySelectorAll('strong')).toHaveLength(2);
 - **CSS/Styling**: Don't assert on computed styles or class names
 - **Child Components**: Don't test that child components render—they handle their own tests
 - **Framework Internals**: Don't test Angular's ChangeDetectionStrategy, OnInit lifecycle, etc.
-- **Third-Party Libraries**: Don't test that Angular or Jest work—assume they do
+- **Third-Party Libraries**: Don't test that Angular or Vitest work—assume they do
 
 ---
 

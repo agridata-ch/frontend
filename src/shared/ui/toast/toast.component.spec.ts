@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import type { Mock } from 'vitest';
 
 import { Toast, ToastService, ToastState, ToastType } from '@/shared/toast';
 import { ToastComponent } from '@/shared/ui/toast';
@@ -8,7 +9,7 @@ import { ToastComponent } from '@/shared/ui/toast';
 describe('ToastComponent', () => {
   let component: ToastComponent;
   let fixture: ComponentFixture<ToastComponent>;
-  let toastService: { toasts: jest.Mock; dismiss: jest.Mock };
+  let toastService: { toasts: Mock; dismiss: Mock };
 
   const mockToasts: Toast[] = [
     {
@@ -37,8 +38,8 @@ describe('ToastComponent', () => {
 
   beforeEach(async () => {
     toastService = {
-      toasts: jest.fn(() => mockToasts),
-      dismiss: jest.fn(),
+      toasts: vi.fn(() => mockToasts),
+      dismiss: vi.fn(),
     };
 
     await TestBed.configureTestingModule({
@@ -73,19 +74,19 @@ describe('ToastComponent', () => {
   });
 
   it('should auto-dismiss the newest toast after 7 seconds', () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     // Re-create component to trigger effect
     fixture = TestBed.createComponent(ToastComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    jest.advanceTimersByTime(7000);
+    vi.advanceTimersByTime(7000);
     expect(toastService.dismiss).toHaveBeenCalledWith(mockToasts[0].id);
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   it('should call undoAction callback when handleUndoAction is called', () => {
-    const mockCallback = jest.fn();
+    const mockCallback = vi.fn();
     const toastWithUndo: Toast = {
       id: 5,
       title: 'Undo Test',

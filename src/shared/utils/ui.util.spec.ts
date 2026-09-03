@@ -1,3 +1,5 @@
+import type { Mock } from 'vitest';
+
 import { calculateVerticalPlacement, copyToClipboard, VerticalPlacement } from './ui.util';
 
 function rect(top: number, bottom: number): DOMRect {
@@ -30,10 +32,10 @@ describe('UI Utils', () => {
   });
 
   describe('copyToClipboard', () => {
-    let writeTextMock: jest.Mock;
+    let writeTextMock: Mock;
 
     beforeEach(() => {
-      writeTextMock = jest.fn().mockResolvedValue(undefined);
+      writeTextMock = vi.fn().mockResolvedValue(undefined);
       Object.assign(navigator, {
         clipboard: {
           writeText: writeTextMock,

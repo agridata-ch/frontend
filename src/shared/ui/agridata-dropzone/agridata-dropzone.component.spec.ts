@@ -77,4 +77,32 @@ describe('AgridataDropzoneComponent', () => {
 
     expect(emitted).toHaveLength(0);
   });
+
+  it('tracks drag-over state on dragover and dragleave', () => {
+    const button = fixture.nativeElement.querySelector('button');
+
+    button.dispatchEvent(new Event('dragover'));
+    expect(component['isDragOver']()).toBe(true);
+
+    button.dispatchEvent(new Event('dragleave'));
+    expect(component['isDragOver']()).toBe(false);
+  });
+
+  it('ignores dragover while disabled', () => {
+    fixture.componentRef.setInput('disabled', true);
+    fixture.detectChanges();
+
+    fixture.nativeElement.querySelector('button').dispatchEvent(new Event('dragover'));
+
+    expect(component['isDragOver']()).toBe(false);
+  });
+
+  it('opens the native file picker on click', () => {
+    const inputEl = fixture.nativeElement.querySelector('input[type=file]') as HTMLInputElement;
+    const clickSpy = vi.spyOn(inputEl, 'click').mockImplementation(() => {});
+
+    fixture.nativeElement.querySelector('button').dispatchEvent(new Event('click'));
+
+    expect(clickSpy).toHaveBeenCalledTimes(1);
+  });
 });

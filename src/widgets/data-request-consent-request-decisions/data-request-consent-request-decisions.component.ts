@@ -10,9 +10,9 @@ import {
 import { I18nDirective, I18nPipe } from '@/shared/i18n';
 import { TooltipDirective } from '@/shared/tooltip';
 import { AgridataToggleComponent } from '@/shared/ui/agridata-toggle';
+import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
-import { AlertComponent, AlertType } from '@/widgets/alert';
 
 /**
  * Lists a consent-request aggregation's children split into a BUR-based group and a UID-based group.

@@ -11,8 +11,8 @@ export type MockDataProvidersService = Mockify<DataProvidersService>;
  */
 export function createMockDataProvidersService(): MockDataProvidersService {
   return {
-    getDataProviders: jest.fn().mockResolvedValue([]),
-    getDataSourceSystems: jest.fn().mockResolvedValue([] as DataSourceSystemDto[]),
-    getRestClients: jest.fn().mockResolvedValue([] as RestClientDto[]),
+    getDataProviders: vi.fn().mockResolvedValue([]),
+    getDataSourceSystems: vi.fn().mockResolvedValue([] as DataSourceSystemDto[]),
+    getRestClients: vi.fn().mockResolvedValue([] as RestClientDto[]),
   } satisfies MockDataProvidersService;
 }

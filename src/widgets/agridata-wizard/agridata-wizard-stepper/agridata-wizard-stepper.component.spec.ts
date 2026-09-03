@@ -35,7 +35,7 @@ describe('AgridataWizardStepperComponent', () => {
   });
 
   it('should emit handleClickStep when a step is clicked', () => {
-    jest.spyOn(component, 'handleClickStep');
+    vi.spyOn(component, 'handleClickStep');
     const stepButtons = fixture.debugElement.queryAll(By.css('.step-bubble'));
     stepButtons[2].nativeElement.click();
     expect(component.handleClickStep).toHaveBeenCalledWith(2);

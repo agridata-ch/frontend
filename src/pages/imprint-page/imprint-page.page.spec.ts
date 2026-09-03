@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import type { Mocked } from 'vitest';
 
 import { CmsService } from '@/entities/cms';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
@@ -11,12 +12,12 @@ import { ImprintPage } from './imprint-page.page';
 describe('ImprintPage', () => {
   let component: ImprintPage;
   let fixture: ComponentFixture<ImprintPage>;
-  let mockRouter: jest.Mocked<Router>;
+  let mockRouter: Mocked<Router>;
 
   beforeEach(async () => {
     mockRouter = {
-      navigate: jest.fn(),
-    } as unknown as jest.Mocked<Router>;
+      navigate: vi.fn(),
+    } as unknown as Mocked<Router>;
 
     await TestBed.configureTestingModule({
       providers: [
@@ -54,7 +55,7 @@ describe('ImprintPage', () => {
       const httpErrorResponse = new HttpErrorResponse({ status: 404 });
       const mockError = new Error('Not found', { cause: httpErrorResponse });
 
-      jest.spyOn(component['imprintPageResource'], 'error').mockReturnValue(mockError);
+      vi.spyOn(component['imprintPageResource'], 'error').mockReturnValue(mockError);
 
       fixture.detectChanges();
 
@@ -67,7 +68,7 @@ describe('ImprintPage', () => {
       const httpErrorResponse = new HttpErrorResponse({ status: 400 });
       const mockError = new Error('Error', { cause: httpErrorResponse });
 
-      jest.spyOn(component['imprintPageResource'], 'error').mockReturnValue(mockError);
+      vi.spyOn(component['imprintPageResource'], 'error').mockReturnValue(mockError);
 
       fixture.detectChanges();
 

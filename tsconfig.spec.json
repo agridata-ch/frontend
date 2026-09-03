@@ -5,7 +5,7 @@
   "compilerOptions": {
     "module": "es2020",
     "types": [
-      "jest",
+      "vitest/globals",
       "node"
     ],
   },

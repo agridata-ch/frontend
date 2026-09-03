@@ -264,7 +264,7 @@ describe('SeoService', () => {
     });
 
     it('should remove JSON-LD script when structuredData is invalid', () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
       const seoWithInvalidJson = { ...mockSeo, structuredData: 'invalid json' as unknown as JSON };
       service.updateSeo(seoWithInvalidJson);
 

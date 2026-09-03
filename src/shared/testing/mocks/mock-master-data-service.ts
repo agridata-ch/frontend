@@ -34,7 +34,7 @@ export function createMockMasterDataService(): MockMasterDataService {
   const providersLoading = signal<boolean>(false);
   const userPreferences = signal(undefined);
 
-  const getProductsForProvider = jest.fn((providerId: string) => {
+  const getProductsForProvider = vi.fn((providerId: string) => {
     // First try the new productsByProvider map
     if (providerId && productsByProvider().has(providerId)) {
       return productsByProvider().get(providerId) ?? [];
@@ -43,14 +43,14 @@ export function createMockMasterDataService(): MockMasterDataService {
     return dataProducts();
   });
 
-  const providerName = jest.fn((providerId: string | undefined, lang?: string) => {
+  const providerName = vi.fn((providerId: string | undefined, lang?: string) => {
     const provider = dataProviders().find((candidate) => candidate.id === providerId);
     return provider?.name?.[(lang ?? 'de') as keyof TranslationDto] ?? '';
   });
 
   return {
     dataProviders,
-    fetchProductsByProvider: jest.fn(),
+    fetchProductsByProvider: vi.fn(),
     getProductsForProvider,
     providerName,
     providersLoading,

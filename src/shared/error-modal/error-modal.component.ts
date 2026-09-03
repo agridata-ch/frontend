@@ -1,9 +1,9 @@
 import { Component, computed, inject } from '@angular/core';
 import { faClose } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ErrorAlertList } from '@/shared/error-alert-list/error-alert-list.component';
 import { I18nPipe } from '@/shared/i18n';
 import { ButtonVariants } from '@/shared/ui/button';

@@ -2,9 +2,9 @@ import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ErrorDto } from '@/app/error/error-dto';
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { ErrorDto } from '@/shared/error/error-dto';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
@@ -31,7 +31,7 @@ describe('ErrorModal', () => {
   let stateService: MockAgridataStateService;
   beforeEach(async () => {
     errorService = createMockErrorHandlerService();
-    errorService.getGlobalErrors = jest.fn().mockReturnValue(signal([testError]));
+    errorService.getGlobalErrors = vi.fn().mockReturnValue(signal([testError]));
     stateService = createMockAgridataStateService();
     await TestBed.configureTestingModule({
       imports: [ErrorModal, ModalComponent],

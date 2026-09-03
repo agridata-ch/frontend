@@ -3,9 +3,9 @@ import { TranslocoService } from '@jsverse/transloco';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { debounceTime } from 'rxjs';
 
-import { GA_MEASUREMENT_ID, GA_SCRIPT_URL } from '@/app/analytics.config';
-import { TitleService } from '@/app/title.service';
 import { environment } from '@/environments/environment';
+import { GA_MEASUREMENT_ID, GA_SCRIPT_URL } from '@/shared/lib/analytics.config';
+import { TitleService } from '@/shared/lib/title.service';
 
 declare let gtag: (
   command: 'config' | 'event' | 'set' | 'js',

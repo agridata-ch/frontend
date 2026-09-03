@@ -1,5 +1,3 @@
-/// <reference types="jest" />
-
 import { signal, WritableSignal } from '@angular/core';
 
 import { AgbModalService } from '@/features/agb-modal';
@@ -38,8 +36,8 @@ export function createMockAgbModalService(): MockAgbModalService {
     hasAcceptedPreviousAgb,
     isSkippable,
     isAgbConsentEnforced,
-    accept: jest.fn().mockResolvedValue(undefined),
-    dismiss: jest.fn(),
+    accept: vi.fn().mockResolvedValue(undefined),
+    dismiss: vi.fn(),
     __testSignals: {
       open,
       enforceConsentFrom,

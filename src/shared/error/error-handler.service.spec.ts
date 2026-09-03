@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 
-import { enhanceHttpErrorWithMethod } from '@/app/interceptors/error-http-interceptor';
 import { ExceptionDto, ExceptionEnum } from '@/entities/openapi';
+import { enhanceHttpErrorWithMethod } from '@/shared/error/http-error-method';
 
 import { TranslationItem } from './error-dto';
 import { ErrorHandlerService, ErrorWithCause, ResourceValueError } from './error-handler.service';
@@ -13,13 +13,13 @@ describe('ErrorHandlerService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(ErrorHandlerService);
-    jest.clearAllMocks();
-    jest.clearAllTimers();
-    jest.useFakeTimers();
+    vi.clearAllMocks();
+    vi.clearAllTimers();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   it('should be created', () => {
@@ -45,7 +45,7 @@ describe('ErrorHandlerService', () => {
         'GET',
       );
 
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
       const errorDto = service.handleError(httpError);
 
@@ -257,7 +257,7 @@ describe('ErrorHandlerService', () => {
         service.handleError(new Error(`Error ${i}`));
       }
 
-      jest.advanceTimersByTime(60000);
+      vi.advanceTimersByTime(60000);
 
       const allErrors = service.getAllErrors();
       expect(allErrors()).toHaveLength(5);
@@ -299,8 +299,8 @@ describe('ErrorHandlerService', () => {
     methodTests.forEach(({ method, expected }) => {
       it(`should map method ${method || 'undefined'} to ${expected}`, () => {
         // Mock getErrorMethod to return our test method
-        const mockGetErrorMethod = jest.fn().mockReturnValue(method);
-        jest.doMock('@/app/interceptors/error-http-interceptor', () => ({
+        const mockGetErrorMethod = vi.fn().mockReturnValue(method);
+        vi.doMock('@/shared/error/http-error-method', () => ({
           getErrorMethod: mockGetErrorMethod,
         }));
 

@@ -50,10 +50,10 @@ describe('CmsPage', () => {
       const httpErrorResponse = new HttpErrorResponse({ status: 404 });
       const mockError = new Error('Not found', { cause: httpErrorResponse });
 
-      jest.spyOn(component['cmsPageResource'], 'error').mockReturnValue(mockError);
+      vi.spyOn(component['cmsPageResource'], 'error').mockReturnValue(mockError);
 
       const router = TestBed.inject(Router);
-      const navSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true as any);
+      const navSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true as any);
 
       fixture.detectChanges();
 
@@ -66,10 +66,10 @@ describe('CmsPage', () => {
       const httpErrorResponse = new HttpErrorResponse({ status: 400 });
       const mockError = new Error('Error', { cause: httpErrorResponse });
 
-      jest.spyOn(component['cmsPageResource'], 'error').mockReturnValue(mockError);
+      vi.spyOn(component['cmsPageResource'], 'error').mockReturnValue(mockError);
 
       const router = TestBed.inject(Router);
-      const navSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true as any);
+      const navSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true as any);
 
       fixture.detectChanges();
 

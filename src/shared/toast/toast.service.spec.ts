@@ -4,13 +4,13 @@ describe('ToastService', () => {
   let service: ToastService;
 
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     service = new ToastService();
   });
 
   afterEach(() => {
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
   });
 
   it('should start with an empty toast list', () => {

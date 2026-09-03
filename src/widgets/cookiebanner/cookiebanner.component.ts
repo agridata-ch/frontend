@@ -3,10 +3,10 @@ import { RouterLink } from '@angular/router';
 import { faClose } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { AnalyticsService } from '@/app/analytics.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nDirective } from '@/shared/i18n';
+import { AnalyticsService } from '@/shared/lib/analytics.service';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 /**

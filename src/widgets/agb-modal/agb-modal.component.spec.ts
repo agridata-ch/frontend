@@ -47,7 +47,7 @@ describe('AgbModalComponent', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should create', () => {

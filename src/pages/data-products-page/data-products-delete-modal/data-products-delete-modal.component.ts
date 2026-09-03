@@ -1,9 +1,9 @@
 import { Component, computed, inject, model, output, signal } from '@angular/core';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProductDto, DataProductDtoStateCode } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';

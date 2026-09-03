@@ -1,6 +1,7 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import type { Mock } from 'vitest';
 
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataProductDto, DataProviderDto } from '@/entities/openapi';
@@ -169,7 +170,7 @@ describe('DataRequestProductComponent', () => {
     });
 
     it('should return products for selected provider', () => {
-      (masterDataService.getProductsForProvider as jest.Mock).mockReturnValue(mockDataProducts);
+      (masterDataService.getProductsForProvider as Mock).mockReturnValue(mockDataProducts);
 
       component['selectedProviderId'].set('provider-1');
       component['productsLoading'].set(false);
@@ -183,7 +184,7 @@ describe('DataRequestProductComponent', () => {
 
   describe('dataProductsCategories', () => {
     it('should return unique categories from products', () => {
-      (masterDataService.getProductsForProvider as jest.Mock).mockReturnValue(mockDataProducts);
+      (masterDataService.getProductsForProvider as Mock).mockReturnValue(mockDataProducts);
       component['selectedProviderId'].set('provider-1');
       component['productsLoading'].set(false);
 
@@ -199,9 +200,7 @@ describe('DataRequestProductComponent', () => {
       const singleCategoryProducts = mockDataProducts.filter(
         (p) => p.dataSourceSystemCode === 'AGIS',
       );
-      (masterDataService.getProductsForProvider as jest.Mock).mockReturnValue(
-        singleCategoryProducts,
-      );
+      (masterDataService.getProductsForProvider as Mock).mockReturnValue(singleCategoryProducts);
       component['selectedProviderId'].set('provider-1');
       component['productsLoading'].set(false);
 
@@ -219,7 +218,7 @@ describe('DataRequestProductComponent', () => {
 
   describe('productsGrouped', () => {
     it('should group products by category when no category is selected', () => {
-      (masterDataService.getProductsForProvider as jest.Mock).mockReturnValue(mockDataProducts);
+      (masterDataService.getProductsForProvider as Mock).mockReturnValue(mockDataProducts);
       component['selectedProviderId'].set('provider-1');
       component['productsLoading'].set(false);
 
@@ -233,7 +232,7 @@ describe('DataRequestProductComponent', () => {
     });
 
     it('should filter products by selected category', () => {
-      (masterDataService.getProductsForProvider as jest.Mock).mockReturnValue(mockDataProducts);
+      (masterDataService.getProductsForProvider as Mock).mockReturnValue(mockDataProducts);
       component['selectedProviderId'].set('provider-1');
       component['productsLoading'].set(false);
       component['selectedCategory'].set('AGIS');
@@ -246,7 +245,7 @@ describe('DataRequestProductComponent', () => {
     });
 
     it('should use current language for product labels', () => {
-      (masterDataService.getProductsForProvider as jest.Mock).mockReturnValue(mockDataProducts);
+      (masterDataService.getProductsForProvider as Mock).mockReturnValue(mockDataProducts);
       component['selectedProviderId'].set('provider-1');
       component['productsLoading'].set(false);
 
@@ -272,14 +271,12 @@ describe('DataRequestProductComponent', () => {
     const productsWithNoConsent = [...mockDataProducts, noConsentProduct];
 
     beforeEach(() => {
-      (i18nService.translate as jest.Mock).mockImplementation((key: string) =>
+      (i18nService.translate as Mock).mockImplementation((key: string) =>
         key === 'data-request.form.products.publicSectorProductSuffix'
           ? 'public sector product'
           : key,
       );
-      (masterDataService.getProductsForProvider as jest.Mock).mockReturnValue(
-        productsWithNoConsent,
-      );
+      (masterDataService.getProductsForProvider as Mock).mockReturnValue(productsWithNoConsent);
       component['selectedProviderId'].set('provider-1');
       component['productsLoading'].set(false);
     });

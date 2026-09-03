@@ -1,7 +1,8 @@
+import { setupTestBed } from '@analogjs/vitest-angular/setup-testbed';
 import { TestBed } from '@angular/core/testing';
-import { setupZonelessTestEnv } from 'jest-preset-angular/setup-env/zoneless';
+import { beforeEach, vi } from 'vitest';
 
-import { createTranslocoTestingModule } from './src/shared/testing/transloco-testing.module';
+import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 beforeEach(() => {
   TestBed.configureTestingModule({
@@ -28,7 +29,7 @@ Object.defineProperty(globalThis, 'crypto', {
  * This allows tests to run without errors in environments where ResizeObserver
  * is not available (like JSDOM).
  *
- * CommentLastReviewed: 2026-05-12
+ * CommentLastReviewed: 2026-09-03
  */
 class ResizeObserverMock {
   constructor(private readonly callback: ResizeObserverCallback) {}
@@ -50,6 +51,13 @@ Object.defineProperty(globalThis, 'ResizeObserver', {
   value: ResizeObserverMock,
 });
 
-HTMLElement.prototype.scrollIntoView = jest.fn();
+HTMLElement.prototype.scrollIntoView = vi.fn();
 
-setupZonelessTestEnv();
+// jsdom's real window.close() destroys the window and breaks localStorage for every
+// later test in the worker. Stub it (jest-environment-jsdom treated it as a no-op).
+// Tests can still vi.spyOn(window, 'close') to assert it was called.
+window.close = () => {};
+
+// Initialises the zoneless Angular TestBed environment (replaces
+// jest-preset-angular's setupZonelessTestEnv). Defaults to zoneless: true.
+setupTestBed();

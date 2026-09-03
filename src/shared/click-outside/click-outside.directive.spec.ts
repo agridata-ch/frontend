@@ -13,7 +13,7 @@ import { ClickOutsideDirective } from './click-outside.directive';
   `,
 })
 class TestHostComponent {
-  onClickOutside = jest.fn();
+  onClickOutside = vi.fn();
 }
 
 describe('ClickOutsideDirective (standalone)', () => {

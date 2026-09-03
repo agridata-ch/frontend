@@ -10,27 +10,25 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { AnalyticsService } from '@/app/analytics.service';
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ConsentRequestAggregationStateEnum, ConsentRequestStateEnum } from '@/entities/openapi';
 import {
-  FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM,
-  REDIRECT_TIMEOUT,
-} from '@/pages/consent-request-producer';
-import {
   ConsentRequestDecisionStore,
+  FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM,
   getAggregationBadgeVariant,
   getToastMessage,
   getToastTitle,
   getToastType,
   getUndoAction,
+  REDIRECT_TIMEOUT,
 } from '@/shared/consent-request';
 import { formatDate } from '@/shared/date';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
+import { AnalyticsService } from '@/shared/lib/analytics.service';
 import {
   createResourceErrorHandlerEffect,
   createResourceValueComputed,
@@ -38,11 +36,11 @@ import {
 import { ScrollFadeDirective } from '@/shared/scroll-fade';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService } from '@/shared/toast';
+import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal';
 import { startCountdown } from '@/shared/utils/ui.util';
-import { AlertComponent, AlertType } from '@/widgets/alert';
 import { DataRequestContentComponent } from '@/widgets/data-request-content';
 
 type DecisionTarget = { id: string; previousState?: ConsentRequestStateEnum };

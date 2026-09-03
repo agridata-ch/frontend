@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProductDto, DataProductDtoStateCode } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import {
   createMockAgridataStateService,
@@ -95,7 +95,7 @@ describe('DataProductsDeleteModalComponent', () => {
 
   describe('deleting', () => {
     it('should delete the draft product, show a toast and emit handleDeleted', async () => {
-      const deleted = jest.fn();
+      const deleted = vi.fn();
       component.handleDeleted.subscribe(deleted);
       fixture.componentRef.setInput('product', createProduct(DataProductDtoStateCode.Draft));
 
@@ -122,7 +122,7 @@ describe('DataProductsDeleteModalComponent', () => {
 
     it('should report the error and not emit handleDeleted when the deletion fails', async () => {
       const error = new Error('deletion failed');
-      const deleted = jest.fn();
+      const deleted = vi.fn();
       component.handleDeleted.subscribe(deleted);
       dataProductService.deleteDataProduct.mockRejectedValueOnce(error);
       fixture.componentRef.setInput('product', createProduct(DataProductDtoStateCode.Draft));

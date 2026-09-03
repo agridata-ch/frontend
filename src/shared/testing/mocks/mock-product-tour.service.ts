@@ -1,5 +1,3 @@
-/// <reference types="jest" />
-
 import { signal } from '@angular/core';
 
 import { ProductTourService } from '@/shared/product-tour/product-tour.service';
@@ -15,7 +13,7 @@ export type MockProductTourService = Omit<Mockify<ProductTourService>, 'i18nServ
 export function createMockProductTourService(): MockProductTourService {
   return {
     isActive: signal<boolean>(false),
-    start: jest.fn(),
-    stop: jest.fn(),
+    start: vi.fn(),
+    stop: vi.fn(),
   };
 }

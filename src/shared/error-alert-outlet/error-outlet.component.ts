@@ -1,8 +1,8 @@
 import { Component, effect, inject, signal, Signal } from '@angular/core';
 import { faClose } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 
-import { ErrorDto } from '@/app/error/error-dto';
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { ErrorDto } from '@/shared/error/error-dto';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ErrorAlertList } from '@/shared/error-alert-list/error-alert-list.component';
 import { ButtonVariants } from '@/shared/ui/button';
 

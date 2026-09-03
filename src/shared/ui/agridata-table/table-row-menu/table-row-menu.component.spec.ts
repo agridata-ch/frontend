@@ -55,7 +55,7 @@ describe('TableActionsComponent', () => {
 
   it('should call action callback and manage loading state when action button is clicked', async () => {
     // Create an action that resolves after a macrotask so we can assert loading state while pending
-    const actionCallback = jest
+    const actionCallback = vi
       .fn()
       .mockImplementation(() => new Promise<void>((res) => setTimeout(res, 0)));
 

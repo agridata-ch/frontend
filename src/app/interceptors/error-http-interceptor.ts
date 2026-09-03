@@ -1,5 +1,4 @@
 import {
-  HttpContextToken,
   HttpErrorResponse,
   HttpEvent,
   HttpInterceptorFn,
@@ -10,24 +9,16 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, of, tap, throwError } from 'rxjs';
 
-import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ExceptionDto, ExceptionEnum } from '@/entities/openapi';
 import { DebugService } from '@/features/debug/debug.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ExternalServiceHttpError } from '@/shared/error/external-service-http-error';
+import {
+  AUTHORIZED_UIDS_ERROR_HANDLING,
+  enhanceHttpErrorWithMethod,
+} from '@/shared/error/http-error-method';
 import { AuthService } from '@/shared/lib/auth';
-
-// Symbol to mark enhanced errors
-export const METHOD_ENHANCED = Symbol('methodEnhanced');
-
-// Context token to enable special 502/504 handling for the authorized UIDs endpoint
-export const AUTHORIZED_UIDS_ERROR_HANDLING = new HttpContextToken<boolean>(() => false);
-
-// Type for the enhanced error
-export type HttpErrorWithMethod = HttpErrorResponse & {
-  method: string;
-  [METHOD_ENHANCED]: boolean;
-};
 
 const MAINTENANCE_MODE_WHITELIST = new Set([
   '/',
@@ -148,38 +139,6 @@ function navigateToMaintenanceAndComplete(
 ): Observable<HttpEvent<unknown>> {
   void router.navigate([ROUTE_PATHS.MAINTENANCE]);
   return throwError(() => error);
-}
-
-export function enhanceHttpErrorWithMethod(
-  error: HttpErrorResponse,
-  method: string,
-): HttpErrorWithMethod {
-  if (hasMethod(error)) {
-    return error;
-  }
-
-  Object.defineProperties(error, {
-    method: {
-      value: method,
-      writable: false,
-      enumerable: true,
-    },
-    [METHOD_ENHANCED]: {
-      value: true,
-      writable: false,
-      enumerable: false,
-    },
-  });
-
-  return error as HttpErrorWithMethod;
-}
-
-export function getErrorMethod(error: HttpErrorResponse): string | undefined {
-  return hasMethod(error) ? error.method : undefined;
-}
-
-export function hasMethod(error: unknown): error is HttpErrorWithMethod {
-  return error instanceof HttpErrorResponse && METHOD_ENHANCED in error;
 }
 
 function isExceptionDto(obj: unknown): obj is ExceptionDto {

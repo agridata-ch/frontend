@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { AuthService } from '@/shared/lib/auth';
+import { createMockAuthService } from '@/shared/testing/mocks';
+
 import { ContactSupportInfoComponent } from './contact-support-info.component';
 
 describe('ContactSupportInfoComponent', () => {
@@ -10,6 +13,7 @@ describe('ContactSupportInfoComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ContactSupportInfoComponent],
+      providers: [{ provide: AuthService, useValue: createMockAuthService() }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ContactSupportInfoComponent);

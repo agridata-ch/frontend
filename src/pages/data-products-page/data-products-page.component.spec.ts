@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProductDto, DataProductDtoStateCode, ResourceQueryDto } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { PageResponseDto } from '@/shared/lib/api.helper';
 import {

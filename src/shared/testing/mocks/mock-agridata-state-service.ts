@@ -46,15 +46,15 @@ export function createMockAgridataStateService(): MockAgridataStateService {
     backendInfo,
     uidMissing,
     agbConsentEnforced,
-    getDefaultUid: jest.fn().mockReturnValue(undefined),
-    isImpersonating: jest.fn().mockReturnValue(false),
+    getDefaultUid: vi.fn().mockReturnValue(undefined),
+    isImpersonating: vi.fn().mockReturnValue(false),
     routeStart: signal<string | undefined>('/some-page'),
-    setActiveUid: jest.fn(),
-    setMainMenuOpened: jest.fn(),
-    setUidMissing: jest.fn(),
-    setAgbConsentEnforced: jest.fn(),
-    addConfirmedMigratedUids: jest.fn(),
-    hideCookieBanner: jest.fn(),
+    setActiveUid: vi.fn(),
+    setMainMenuOpened: vi.fn(),
+    setUidMissing: vi.fn(),
+    setAgbConsentEnforced: vi.fn(),
+    addConfirmedMigratedUids: vi.fn(),
+    hideCookieBanner: vi.fn(),
     showCookiebanner,
     __testSignals: {
       actingRole,
@@ -67,7 +67,7 @@ export function createMockAgridataStateService(): MockAgridataStateService {
       agbConsentEnforced,
       showCookiebanner,
     },
-    saveTourIntroSeen: jest.fn(),
+    saveTourIntroSeen: vi.fn(),
   } satisfies MockAgridataStateService;
 }
 

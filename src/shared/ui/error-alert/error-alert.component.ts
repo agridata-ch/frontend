@@ -1,9 +1,9 @@
 import { Component, computed, inject, input, output } from '@angular/core';
 
-import { ErrorDto } from '@/app/error/error-dto';
 import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
+import { ErrorDto } from '@/shared/error/error-dto';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { AlertComponent, AlertType } from '@/widgets/alert';
+import { AlertComponent, AlertType } from '@/shared/ui/alert';
 
 /**
  * Displays a banner of an error, emits closeError once close button is clicked

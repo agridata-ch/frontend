@@ -247,22 +247,23 @@ describe('AgridataTableComponent', () => {
       expect(component['nextPageIndex']()).toBe(0);
     });
 
-    it('should emit query param change with search term', (done) => {
-      fixture.componentRef.setInput('enableSearch', true);
-      fixture.detectChanges();
+    it('should emit query param change with search term', () =>
+      new Promise<void>((done) => {
+        fixture.componentRef.setInput('enableSearch', true);
+        fixture.detectChanges();
 
-      const subscription = component.queryParameters.subscribe(
-        (params: ResourceQueryDto | undefined) => {
-          if (params?.searchTerm === 'john') {
-            expect(params.searchTerm).toBe('john');
-            subscription.unsubscribe();
-            done();
-          }
-        },
-      );
+        const subscription = component.queryParameters.subscribe(
+          (params: ResourceQueryDto | undefined) => {
+            if (params?.searchTerm === 'john') {
+              expect(params.searchTerm).toBe('john');
+              subscription.unsubscribe();
+              done();
+            }
+          },
+        );
 
-      component['handleSearchInput']('john');
-    });
+        component['handleSearchInput']('john');
+      }));
   });
 
   describe('Sorting Functionality', () => {
@@ -384,33 +385,35 @@ describe('AgridataTableComponent', () => {
       expect(component['shouldShowPagination']()).toBe(false);
     });
 
-    it('should update page index when nextPageIndex changes', (done) => {
-      const subscription = component.queryParameters.subscribe(
-        (params: ResourceQueryDto | undefined) => {
-          if (params?.page === 2) {
-            expect(params.page).toBe(2);
-            subscription.unsubscribe();
-            done();
-          }
-        },
-      );
+    it('should update page index when nextPageIndex changes', () =>
+      new Promise<void>((done) => {
+        const subscription = component.queryParameters.subscribe(
+          (params: ResourceQueryDto | undefined) => {
+            if (params?.page === 2) {
+              expect(params.page).toBe(2);
+              subscription.unsubscribe();
+              done();
+            }
+          },
+        );
 
-      component['nextPageIndex'].set(2);
-    });
+        component['nextPageIndex'].set(2);
+      }));
 
-    it('should update page size when nextPageSize changes', (done) => {
-      const subscription = component.queryParameters.subscribe(
-        (params: ResourceQueryDto | undefined) => {
-          if (params?.size === PAGE_SIZES[1]) {
-            expect(params.size).toBe(PAGE_SIZES[1]);
-            subscription.unsubscribe();
-            done();
-          }
-        },
-      );
+    it('should update page size when nextPageSize changes', () =>
+      new Promise<void>((done) => {
+        const subscription = component.queryParameters.subscribe(
+          (params: ResourceQueryDto | undefined) => {
+            if (params?.size === PAGE_SIZES[1]) {
+              expect(params.size).toBe(PAGE_SIZES[1]);
+              subscription.unsubscribe();
+              done();
+            }
+          },
+        );
 
-      component['nextPageSize'].set(PAGE_SIZES[1]);
-    });
+        component['nextPageSize'].set(PAGE_SIZES[1]);
+      }));
   });
 
   describe('Row Interactions', () => {
@@ -419,7 +422,7 @@ describe('AgridataTableComponent', () => {
     });
 
     it('should call rowAction when row is handleClick', () => {
-      const rowActionSpy = jest.fn();
+      const rowActionSpy = vi.fn();
       const metadataWithAction = {
         ...mockTableMetadata,
         rowAction: rowActionSpy,
@@ -435,7 +438,7 @@ describe('AgridataTableComponent', () => {
     });
 
     it('should call rowAction on Enter key press', () => {
-      const rowActionSpy = jest.fn();
+      const rowActionSpy = vi.fn();
       const metadataWithAction = {
         ...mockTableMetadata,
         rowAction: rowActionSpy,
@@ -501,40 +504,42 @@ describe('AgridataTableComponent', () => {
   });
 
   describe('Query Parameter Changes', () => {
-    it('should emit query params on component initialization', (done) => {
-      const subscription = component.queryParameters.subscribe(
-        (params: ResourceQueryDto | undefined) => {
-          if (params) {
-            expect(params.page).toBe(0);
-            expect(params.size).toBe(PAGE_SIZES[0]);
-            expect(params.searchTerm).toBe('');
-            expect(params.sortParams).toEqual([]);
-            subscription.unsubscribe();
-            done();
-          }
-        },
-      );
+    it('should emit query params on component initialization', () =>
+      new Promise<void>((done) => {
+        const subscription = component.queryParameters.subscribe(
+          (params: ResourceQueryDto | undefined) => {
+            if (params) {
+              expect(params.page).toBe(0);
+              expect(params.size).toBe(PAGE_SIZES[0]);
+              expect(params.searchTerm).toBe('');
+              expect(params.sortParams).toEqual([]);
+              subscription.unsubscribe();
+              done();
+            }
+          },
+        );
 
-      fixture.detectChanges();
-    });
+        fixture.detectChanges();
+      }));
 
-    it('should reset page to 0 and emit updated search term', (done) => {
-      fixture.detectChanges();
-      component['nextPageIndex'].set(1);
+    it('should reset page to 0 and emit updated search term', () =>
+      new Promise<void>((done) => {
+        fixture.detectChanges();
+        component['nextPageIndex'].set(1);
 
-      const subscription = component.queryParameters.subscribe(
-        (params: ResourceQueryDto | undefined) => {
-          if (params?.page === 0 && params?.searchTerm === 'test') {
-            expect(params.page).toBe(0);
-            expect(params.searchTerm).toBe('test');
-            subscription.unsubscribe();
-            done();
-          }
-        },
-      );
+        const subscription = component.queryParameters.subscribe(
+          (params: ResourceQueryDto | undefined) => {
+            if (params?.page === 0 && params?.searchTerm === 'test') {
+              expect(params.page).toBe(0);
+              expect(params.searchTerm).toBe('test');
+              subscription.unsubscribe();
+              done();
+            }
+          },
+        );
 
-      component['handleSearchInput']('test');
-    });
+        component['handleSearchInput']('test');
+      }));
   });
 
   describe('Accessibility', () => {

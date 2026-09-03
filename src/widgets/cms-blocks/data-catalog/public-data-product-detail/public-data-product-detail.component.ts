@@ -12,8 +12,8 @@ import { faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataProductService } from '@/entities/api';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';

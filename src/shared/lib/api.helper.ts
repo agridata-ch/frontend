@@ -1,6 +1,6 @@
 import { ResourceRef, Signal, computed, effect } from '@angular/core';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 
 export interface PageResponseDto<T> {
   items: Array<T>;

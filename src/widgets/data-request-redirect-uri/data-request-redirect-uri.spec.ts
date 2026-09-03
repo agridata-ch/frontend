@@ -2,9 +2,9 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import {
   createMockI18nService,

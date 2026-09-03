@@ -11,11 +11,11 @@ export type MockDataProductDocumentService = Mockify<DataProductDocumentService>
  */
 export function createMockDataProductDocumentService(): MockDataProductDocumentService {
   return {
-    awaitDocumentProcessed: jest.fn().mockResolvedValue(DocumentScanStatusEnum.Available),
-    deleteDocument: jest.fn().mockResolvedValue(undefined),
-    downloadDocument: jest.fn().mockResolvedValue(new Blob()),
-    getDocument: jest.fn().mockResolvedValue({}),
-    listDocuments: jest.fn().mockResolvedValue([]),
-    uploadDocument: jest.fn().mockResolvedValue({}),
+    awaitDocumentProcessed: vi.fn().mockResolvedValue(DocumentScanStatusEnum.Available),
+    deleteDocument: vi.fn().mockResolvedValue(undefined),
+    downloadDocument: vi.fn().mockResolvedValue(new Blob()),
+    getDocument: vi.fn().mockResolvedValue({}),
+    listDocuments: vi.fn().mockResolvedValue([]),
+    uploadDocument: vi.fn().mockResolvedValue({}),
   } satisfies MockDataProductDocumentService;
 }

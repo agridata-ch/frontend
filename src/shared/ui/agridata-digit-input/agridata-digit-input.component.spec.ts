@@ -86,7 +86,7 @@ describe('AgridataDigitInputComponent', () => {
       const inputs: NodeListOf<HTMLInputElement> = fixture.nativeElement.querySelectorAll('input');
       inputs[0].value = '3';
 
-      const focusSpy = jest.spyOn(inputs[1], 'focus');
+      const focusSpy = vi.spyOn(inputs[1], 'focus');
       component['onDigitInput'](0, { target: inputs[0] } as unknown as Event);
 
       expect(focusSpy).toHaveBeenCalled();
@@ -122,7 +122,7 @@ describe('AgridataDigitInputComponent', () => {
       const inputs: NodeListOf<HTMLInputElement> = fixture.nativeElement.querySelectorAll('input');
       inputs[1].value = '';
 
-      const focusSpy = jest.spyOn(inputs[0], 'focus');
+      const focusSpy = vi.spyOn(inputs[0], 'focus');
       const event = new KeyboardEvent('keydown', { key: 'Backspace' });
       Object.defineProperty(event, 'target', { value: inputs[1] });
 
@@ -144,10 +144,8 @@ describe('AgridataDigitInputComponent', () => {
     it('should submit the closest form on Enter', () => {
       const inputs: NodeListOf<HTMLInputElement> = fixture.nativeElement.querySelectorAll('input');
       const form = document.createElement('form');
-      const requestSubmitSpy = jest.spyOn(form, 'requestSubmit').mockImplementation(() => {});
-      const closestSpy = jest
-        .spyOn(inputs[0], 'closest')
-        .mockReturnValue(form as unknown as Element);
+      const requestSubmitSpy = vi.spyOn(form, 'requestSubmit').mockImplementation(() => {});
+      const closestSpy = vi.spyOn(inputs[0], 'closest').mockReturnValue(form as unknown as Element);
 
       const event = new KeyboardEvent('keydown', { key: 'Enter' });
       Object.defineProperty(event, 'target', { value: inputs[0] });
@@ -162,7 +160,7 @@ describe('AgridataDigitInputComponent', () => {
   describe('onDigitPaste', () => {
     const makeClipboardEvent = (text: string): ClipboardEvent => {
       const event = {
-        preventDefault: jest.fn(),
+        preventDefault: vi.fn(),
         clipboardData: { getData: () => text },
       } as unknown as ClipboardEvent;
       return event;

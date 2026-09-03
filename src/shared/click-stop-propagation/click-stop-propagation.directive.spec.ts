@@ -12,7 +12,7 @@ describe('ClickStopPropagationDirective', () => {
   });
 
   it('should stop propagation and prevent default on click', () => {
-    const event = { stopPropagation: jest.fn(), preventDefault: jest.fn() } as unknown as Event;
+    const event = { stopPropagation: vi.fn(), preventDefault: vi.fn() } as unknown as Event;
     directive.onClick(event);
     expect(event.stopPropagation).toHaveBeenCalled();
     expect(event.preventDefault).toHaveBeenCalled();

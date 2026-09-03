@@ -1,3 +1,4 @@
+export * from './cms-block-renderer.component';
 export * from './hero-block/hero-block.component';
 export * from './section-media-block/section-media-block.component';
 export * from './section-text-image-block/section-text-image-block.component';

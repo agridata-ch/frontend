@@ -1,9 +1,9 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AgridataFileDownloadComponent } from '@/shared/ui/file-download';
 import { downloadBlob, openBlobInNewTab } from '@/shared/utils';

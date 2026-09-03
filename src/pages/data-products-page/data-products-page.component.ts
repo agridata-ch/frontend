@@ -17,7 +17,6 @@ import {
 } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import {
@@ -26,9 +25,14 @@ import {
   PageResponseDto,
   ResourceQueryDto,
 } from '@/entities/openapi';
-import { getDataProductState, getStatusTranslation } from '@/pages/data-products-page';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { DataProductDtoDirective } from '@/shared/data-product';
+import {
+  DataProductDtoDirective,
+  getBadgeVariant,
+  getDataProductState,
+  getStatusTranslation,
+} from '@/shared/data-product';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
@@ -47,8 +51,6 @@ import {
 } from '@/widgets/data-product-detail-form';
 
 import { DataProductsDeleteModalComponent } from './data-products-delete-modal';
-
-import { getBadgeVariant } from '.';
 
 /**
  * Shows a table with all available data products.

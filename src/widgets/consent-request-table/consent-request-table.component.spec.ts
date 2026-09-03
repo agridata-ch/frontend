@@ -1,9 +1,8 @@
 import { DebugElement, ResourceRef, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import type { Mocked } from 'vitest';
 
-import { AnalyticsService } from '@/app/analytics.service';
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
@@ -11,7 +10,9 @@ import {
   ConsentRequestAggregationStateEnum,
   ConsentRequestStateEnum,
 } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
+import { AnalyticsService } from '@/shared/lib/analytics.service';
 import {
   MockResources,
   createMockAgridataStateService,
@@ -32,8 +33,8 @@ import { ConsentRequestTableComponent } from './consent-request-table.component'
 describe('ConsentRequestTableComponent', () => {
   let component: ConsentRequestTableComponent;
   let fixture: ComponentFixture<ConsentRequestTableComponent>;
-  let mockToastService: jest.Mocked<ToastService>;
-  let mockI18nService: jest.Mocked<I18nService>;
+  let mockToastService: Mocked<ToastService>;
+  let mockI18nService: Mocked<I18nService>;
   let errorService: MockErrorHandlerService;
   let consentRequestService: MockConsentRequestService;
   let stateService: MockAgridataStateService;
@@ -41,14 +42,14 @@ describe('ConsentRequestTableComponent', () => {
 
   beforeEach(async () => {
     mockToastService = {
-      show: jest.fn(),
-    } as unknown as jest.Mocked<ToastService>;
+      show: vi.fn(),
+    } as unknown as Mocked<ToastService>;
 
     mockI18nService = {
-      translate: jest.fn(),
-      useObjectTranslation: jest.fn(),
+      translate: vi.fn(),
+      useObjectTranslation: vi.fn(),
       lang: signal('de'),
-    } as unknown as jest.Mocked<I18nService>;
+    } as unknown as Mocked<I18nService>;
 
     consentRequestService = createMockConsentRequestService();
     errorService = createMockErrorHandlerService();
@@ -124,7 +125,7 @@ describe('ConsentRequestTableComponent', () => {
   });
 
   it('should emit action when opening details', () => {
-    const emitSpy = jest.spyOn(component.tableRowAction, 'emit');
+    const emitSpy = vi.spyOn(component.tableRowAction, 'emit');
     component.openDetails(mockConsentRequestAggregations[0]);
 
     expect(emitSpy).toHaveBeenCalledWith(mockConsentRequestAggregations[0]);
@@ -188,7 +189,7 @@ describe('ConsentRequestTableComponent', () => {
   });
 
   it('should only show consent action for open requests', async () => {
-    jest.spyOn(mockI18nService, 'translate').mockImplementation((key: string) => key);
+    vi.spyOn(mockI18nService, 'translate').mockImplementation((key: string) => key);
 
     fixture.detectChanges();
     await fixture.whenStable();
@@ -222,7 +223,7 @@ describe('ConsentRequestTableComponent', () => {
 
   it('should translate object correctly', () => {
     const translationDto = { de: 'Test', en: 'Test' };
-    const i18nServiceSpy = jest.spyOn(mockI18nService, 'useObjectTranslation');
+    const i18nServiceSpy = vi.spyOn(mockI18nService, 'useObjectTranslation');
 
     component.getTranslation(translationDto);
 
@@ -260,7 +261,7 @@ describe('ConsentRequestTableComponent', () => {
         requestId: '123',
       },
     };
-    consentRequestService.updateConsentRequestStatuses = jest.fn().mockRejectedValue(error);
+    consentRequestService.updateConsentRequestStatuses = vi.fn().mockRejectedValue(error);
     mockI18nService.translate.mockReturnValue('Translated error message');
 
     await component.updateConsentRequestState(
@@ -275,7 +276,7 @@ describe('ConsentRequestTableComponent', () => {
   });
 
   it('should get translated state value', () => {
-    const i18nServiceSpy = jest.spyOn(mockI18nService, 'translate');
+    const i18nServiceSpy = vi.spyOn(mockI18nService, 'translate');
 
     component.getTranslatedStateValue(ConsentRequestAggregationStateEnum.Opened);
 

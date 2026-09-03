@@ -1,3 +1,5 @@
+import type { Mock } from 'vitest';
+
 import { DataProductDto, DataProductDtoStateCode } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
@@ -8,9 +10,9 @@ import {
   getBadgeVariant,
   getDataProductState,
   getStatusTranslation,
-} from './data-products-page.model';
+} from './data-product-state.model';
 
-describe('data-products-page.model', () => {
+describe('data-product-state.model', () => {
   const createProduct = (
     stateCode: DataProductDtoStateCode,
     deprecatedSince?: string,
@@ -79,7 +81,7 @@ describe('data-products-page.model', () => {
     });
 
     it('returns the translated value', () => {
-      (i18nService.translate as jest.Mock).mockReturnValue('Entwurf');
+      (i18nService.translate as Mock).mockReturnValue('Entwurf');
       const result = getStatusTranslation('DRAFT', i18nService as unknown as I18nService);
       expect(result).toBe('Entwurf');
     });

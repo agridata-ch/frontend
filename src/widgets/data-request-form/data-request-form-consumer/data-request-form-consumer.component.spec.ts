@@ -1,10 +1,11 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import type { Mock } from 'vitest';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { UidRegisterService } from '@/entities/api/uid-register.service';
 import { COUNTRIES } from '@/shared/constants/constants';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
@@ -84,8 +85,8 @@ describe('DataRequestFormConsumerComponent', () => {
     const testError = new Error('Test error from fetchUidInfosOfCurrentUser');
 
     // Reset and configure the mock to reject before creating the new fixture
-    (uidService.fetchUidInfosOfCurrentUser as jest.Mock).mockReset();
-    (uidService.fetchUidInfosOfCurrentUser as jest.Mock).mockRejectedValueOnce(testError);
+    (uidService.fetchUidInfosOfCurrentUser as Mock).mockReset();
+    (uidService.fetchUidInfosOfCurrentUser as Mock).mockRejectedValueOnce(testError);
 
     // Create a new fixture with the mocked error
     const errorFixture = TestBed.createComponent(DataRequestFormConsumerComponent);

@@ -1,20 +1,22 @@
+import type { Mock } from 'vitest';
+
 import { downloadBlob, openBlobInNewTab } from './download.util';
 
 describe('download.util', () => {
   const mockUrl = 'blob:http://localhost/mock';
 
   beforeEach(() => {
-    URL.createObjectURL = jest.fn().mockReturnValue(mockUrl);
-    URL.revokeObjectURL = jest.fn();
+    URL.createObjectURL = vi.fn().mockReturnValue(mockUrl);
+    URL.revokeObjectURL = vi.fn();
   });
 
   describe('downloadBlob', () => {
     it('creates an anchor, triggers the download and revokes the url', () => {
-      const anchor = { href: '', download: '', click: jest.fn(), remove: jest.fn() };
-      const createElementSpy = jest
+      const anchor = { href: '', download: '', click: vi.fn(), remove: vi.fn() };
+      const createElementSpy = vi
         .spyOn(document, 'createElement')
         .mockReturnValue(anchor as unknown as HTMLElement);
-      const appendChildSpy = jest
+      const appendChildSpy = vi
         .spyOn(document.body, 'appendChild')
         .mockImplementation((node) => node);
 
@@ -33,11 +35,11 @@ describe('download.util', () => {
   });
 
   describe('openBlobInNewTab', () => {
-    beforeEach(() => jest.useFakeTimers());
-    afterEach(() => jest.useRealTimers());
+    beforeEach(() => vi.useFakeTimers());
+    afterEach(() => vi.useRealTimers());
 
     it('opens the blob url in a new tab and revokes it after a delay', () => {
-      const openSpy = jest.spyOn(globalThis, 'open').mockImplementation(() => null);
+      const openSpy = vi.spyOn(globalThis, 'open').mockImplementation(() => null);
 
       openBlobInNewTab(new Blob(['pdf']));
 
@@ -46,18 +48,18 @@ describe('download.util', () => {
       // Revoke is deferred so the new tab can start loading the blob first.
       expect(URL.revokeObjectURL).not.toHaveBeenCalled();
 
-      jest.runOnlyPendingTimers();
+      vi.runOnlyPendingTimers();
       expect(URL.revokeObjectURL).toHaveBeenCalledWith(mockUrl);
 
       openSpy.mockRestore();
     });
 
     it('re-tags the blob with the given mime type before opening', () => {
-      const openSpy = jest.spyOn(globalThis, 'open').mockImplementation(() => null);
+      const openSpy = vi.spyOn(globalThis, 'open').mockImplementation(() => null);
 
       openBlobInNewTab(new Blob(['pdf'], { type: 'application/octet-stream' }), 'application/pdf');
 
-      const openedBlob = (URL.createObjectURL as jest.Mock).mock.calls[0][0] as Blob;
+      const openedBlob = (URL.createObjectURL as Mock).mock.calls[0][0] as Blob;
       expect(openedBlob.type).toBe('application/pdf');
       expect(openSpy).toHaveBeenCalledWith(mockUrl, '_blank', 'noopener');
 

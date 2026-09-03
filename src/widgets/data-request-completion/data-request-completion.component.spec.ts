@@ -85,7 +85,7 @@ describe('DataRequestCompletionComponent', () => {
     });
 
     it('should not call fetchContract when currentContractRevisionId is not set', async () => {
-      contractRevisionService.fetchContract = jest.fn();
+      contractRevisionService.fetchContract = vi.fn();
       const localFixture = TestBed.createComponent(DataRequestCompletionComponent);
       localFixture.componentRef.setInput('dataRequest', {
         ...mockDataRequest,

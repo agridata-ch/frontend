@@ -22,7 +22,7 @@ describe('TooltipDirective', () => {
   let host: HTMLButtonElement;
 
   beforeEach(async () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     await TestBed.configureTestingModule({
       imports: [TestHostComponent],
     }).compileComponents();
@@ -35,8 +35,8 @@ describe('TooltipDirective', () => {
 
   afterEach(() => {
     fixture.destroy();
-    jest.clearAllTimers();
-    jest.useRealTimers();
+    vi.clearAllTimers();
+    vi.useRealTimers();
   });
 
   it('should strip the native title attribute so the browser tooltip never fires', () => {
@@ -45,7 +45,7 @@ describe('TooltipDirective', () => {
 
   it('should show a tooltip on mouseenter', () => {
     host.dispatchEvent(new MouseEvent('mouseenter'));
-    jest.runOnlyPendingTimers();
+    vi.runOnlyPendingTimers();
     fixture.detectChanges();
 
     const el = tooltip();
@@ -56,7 +56,7 @@ describe('TooltipDirective', () => {
 
   it('should show a tooltip on keyboard focus', () => {
     host.dispatchEvent(new FocusEvent('focusin'));
-    jest.runOnlyPendingTimers();
+    vi.runOnlyPendingTimers();
     fixture.detectChanges();
 
     expect(tooltip()).not.toBeNull();
@@ -64,7 +64,7 @@ describe('TooltipDirective', () => {
 
   it('should hide the tooltip on Escape', () => {
     host.dispatchEvent(new MouseEvent('mouseenter'));
-    jest.runOnlyPendingTimers();
+    vi.runOnlyPendingTimers();
     fixture.detectChanges();
     expect(tooltip()).not.toBeNull();
 
@@ -76,12 +76,12 @@ describe('TooltipDirective', () => {
 
   it('should hide the tooltip on mouseleave', () => {
     host.dispatchEvent(new MouseEvent('mouseenter'));
-    jest.runOnlyPendingTimers();
+    vi.runOnlyPendingTimers();
     fixture.detectChanges();
     expect(tooltip()).not.toBeNull();
 
     host.dispatchEvent(new MouseEvent('mouseleave'));
-    jest.runOnlyPendingTimers();
+    vi.runOnlyPendingTimers();
     fixture.detectChanges();
 
     expect(tooltip()).toBeNull();
@@ -89,7 +89,7 @@ describe('TooltipDirective', () => {
 
   it('should hide the tooltip on click', () => {
     host.dispatchEvent(new MouseEvent('mouseenter'));
-    jest.runOnlyPendingTimers();
+    vi.runOnlyPendingTimers();
     fixture.detectChanges();
     expect(tooltip()).not.toBeNull();
 
@@ -101,7 +101,7 @@ describe('TooltipDirective', () => {
 
   it('should remove the tooltip element on destroy', () => {
     host.dispatchEvent(new MouseEvent('mouseenter'));
-    jest.runOnlyPendingTimers();
+    vi.runOnlyPendingTimers();
     fixture.detectChanges();
     expect(tooltip()).not.toBeNull();
 

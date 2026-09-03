@@ -13,8 +13,8 @@ export type MockToastService = Mockify<ToastService>;
 export function createMockToastService(): MockToastService {
   return {
     toasts: signal<Toast[]>([]),
-    clear: jest.fn(),
-    dismiss: jest.fn(),
-    show: jest.fn().mockReturnValue(1),
+    clear: vi.fn(),
+    dismiss: vi.fn(),
+    show: vi.fn().mockReturnValue(1),
   } satisfies MockToastService;
 }

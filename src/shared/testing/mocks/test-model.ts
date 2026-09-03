@@ -1,9 +1,10 @@
 import { Signal } from '@angular/core';
+import type { Mock } from 'vitest';
 
 /**
  * Require-all-properties mock type: every property of T is required.
  * - Signal properties keep their original Signal type
- * - Function properties (non-signals) are converted to jest.Mock with the original args/return
+ * - Function properties (non-signals) are converted to Mock with the original args/return
  * - Non-function properties keep their original types
  */
 export type Mockify<T> = {
@@ -11,7 +12,7 @@ export type Mockify<T> = {
   [K in keyof T]: T[K] extends Signal<infer _U>
     ? T[K]
     : T[K] extends (...args: infer A) => infer R
-      ? jest.Mock<R, A>
+      ? Mock<(...args: A) => R>
       : T[K];
 };
 

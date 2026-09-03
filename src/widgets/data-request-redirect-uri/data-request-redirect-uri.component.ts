@@ -7,9 +7,9 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestValidRedirectUriRegexUpdateDto } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createFormControl, getFormControl } from '@/shared/lib/form.helper';
 import { FormControlComponent } from '@/shared/ui/form-control';

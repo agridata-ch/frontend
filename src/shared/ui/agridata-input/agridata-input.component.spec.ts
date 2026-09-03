@@ -29,7 +29,7 @@ describe('AgridataInputComponent', () => {
   });
 
   it('should emit the input value on handleInputChange', () => {
-    const mockEmit = jest.fn();
+    const mockEmit = vi.fn();
     Object.defineProperty(component, 'handleInput', {
       value: { emit: mockEmit },
       writable: false,
