@@ -73,7 +73,7 @@ describe('NavigationWidgetComponent', () => {
 
       const items = component.navigationItems();
       expect(Array.isArray(items)).toBe(true);
-      expect(items.length).toBe(0);
+      expect(items).toHaveLength(0);
     });
 
     it('returns the navigation object when userRoles includes "agridata.ch.Agridata_Einwilliger"', () => {
@@ -85,7 +85,7 @@ describe('NavigationWidgetComponent', () => {
 
       const items = component.navigationItems();
       expect(Array.isArray(items)).toBe(true);
-      expect(items.length).toBe(1);
+      expect(items).toHaveLength(1);
 
       const navItem = items[0] as {
         label: string;

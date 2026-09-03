@@ -30,14 +30,14 @@ describe('AgridataDigitInputComponent', () => {
     fixture.detectChanges();
     const inputs = fixture.nativeElement.querySelectorAll('input');
 
-    expect(inputs.length).toBe(6);
+    expect(inputs).toHaveLength(6);
   });
 
   it('should render the correct number of inputs when length is set', () => {
     fixture.componentRef.setInput('length', 4);
     fixture.detectChanges();
     const inputs = fixture.nativeElement.querySelectorAll('input');
-    expect(inputs.length).toBe(4);
+    expect(inputs).toHaveLength(4);
   });
 
   describe('hasError', () => {

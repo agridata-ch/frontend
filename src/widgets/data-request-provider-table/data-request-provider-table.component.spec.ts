@@ -57,7 +57,7 @@ describe('DataRequestProviderTableComponent', () => {
 
   it('getFilteredActions returns only details action for most states', () => {
     const actions = component.getFilteredActions(mockDataRequests[0]);
-    expect(actions.length).toBe(1);
+    expect(actions).toHaveLength(1);
     expect(actions[0].label).toBe('data-request.table.tableActions.details');
   });
 
@@ -105,7 +105,7 @@ describe('DataRequestProviderTableComponent', () => {
     const metadata = component['dataRequestsTableMetaData']();
 
     expect(metadata.idColumn).toBe('id');
-    expect(metadata.columns.length).toBe(6);
+    expect(metadata.columns).toHaveLength(6);
     expect(metadata.columns[0].name).toBe(component['dataRequestHumanFriendlyIdHeader']);
     expect(metadata.columns[0].sortable).toBe(true);
     expect(metadata.columns[0].renderer.type).toBe('template');

@@ -132,7 +132,7 @@ describe('AuthService', () => {
     expect(result).toBeFalsy();
     expect(authService.isAuthenticated()).toBe(false);
     expect(authService.userInfo()).toBeFalsy();
-    expect(authService.userRoles().length).toBe(0);
+    expect(authService.userRoles()).toHaveLength(0);
   });
 
   it('login() calls oidc.authorize()', () => {
@@ -196,7 +196,7 @@ describe('AuthService', () => {
     const result = await authService.initializeAuthorizedUids();
 
     expect(result).toBeTruthy();
-    expect(result.length).toBe(1);
+    expect(result).toHaveLength(1);
     expect(result[0].uid).toBe(uid);
   });
 });

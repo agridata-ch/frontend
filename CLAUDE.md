@@ -116,7 +116,16 @@ Add JSDoc to all classes except test classes:
 
 ## Testing
 
-For comprehensive testing guidance, use the **unit-tests-agridata** skill. It covers:
+Before creating or editing ANY `*.spec.ts` file you MUST invoke the
+**unit-tests-agridata** skill first and follow it. This is mandatory, not optional.
+
+Hard rules (always apply, even without loading the full skill):
+
+- Length: `expect(x).toHaveLength(n)`, never `expect(x.length).toBe(n)`.
+- Use the `component` alias, not `fixture.componentInstance`.
+- Set inputs via `componentRef.setInput()`, not direct assignment.
+
+The skill is the full reference. It covers:
 
 - Signal and input testing patterns
 - Service mocking with the agridata mock conventions

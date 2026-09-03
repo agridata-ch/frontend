@@ -1,6 +1,6 @@
 <div
   class="container mx-auto px-6 lg:px-10 py-10 lg:py-20 flex flex-col gap-10"
-  *i18n="let t; prefix: 'dataCatalog'"
+  *i18n="let t; prefix: 'data-catalog'"
 >
   @if (loaded() && !error()) {
     <app-search-input
@@ -37,7 +37,7 @@
       >
         @for (product of products(); track product.id) {
           <li class="h-full">
-            <app-data-product-card [product]="product" />
+            <app-data-product-card [product]="product" (handleShowDetails)="openDetail($event)" />
           </li>
         }
         @if (loading()) {
@@ -59,6 +59,13 @@
     [hasItems]="products().length > 0"
     (loadMore)="loadNext()"
   >
-    {{ t('list.allLoaded') }}
+    @if (totalPages() > 1) {
+      {{ t('list.allLoaded') }}
+    }
   </app-infinite-scroll>
+
+  <app-public-data-product-detail
+    [productId]="selectedProductId()"
+    (handleClose)="handleCloseDetail()"
+  />
 </div>

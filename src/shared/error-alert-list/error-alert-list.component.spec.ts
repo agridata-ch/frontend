@@ -38,7 +38,7 @@ describe('ErrorAlertList', () => {
     componentRef.setInput('errors', mockErrors);
     fixture.detectChanges();
     const alerts = fixture.debugElement.queryAll(By.directive(ErrorAlertComponent));
-    expect(alerts.length).toBe(mockErrors.length);
+    expect(alerts).toHaveLength(mockErrors.length);
   });
 
   it('should emit closeErrors when an error alert is closed', () => {
@@ -54,6 +54,6 @@ describe('ErrorAlertList', () => {
     componentRef.setInput('errors', []);
     fixture.detectChanges();
     const alerts = fixture.debugElement.queryAll(By.directive(ErrorAlertComponent));
-    expect(alerts.length).toBe(0);
+    expect(alerts).toHaveLength(0);
   });
 });

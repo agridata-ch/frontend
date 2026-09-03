@@ -124,7 +124,7 @@ describe('SeoService', () => {
       service.updateSeo(mockSeo);
 
       const canonicalLinks = doc.head.querySelectorAll<HTMLLinkElement>('link[rel="canonical"]');
-      expect(canonicalLinks.length).toBe(1);
+      expect(canonicalLinks).toHaveLength(1);
     });
   });
 
@@ -291,7 +291,7 @@ describe('SeoService', () => {
       const jsonLdScripts = doc.head.querySelectorAll<HTMLScriptElement>(
         'script[type="application/ld+json"][data-structured-data="page"]',
       );
-      expect(jsonLdScripts.length).toBe(1);
+      expect(jsonLdScripts).toHaveLength(1);
 
       const parsedData = JSON.parse(jsonLdScripts[0].text);
       expect(parsedData).toEqual({ '@type': 'Article', headline: 'Updated' });

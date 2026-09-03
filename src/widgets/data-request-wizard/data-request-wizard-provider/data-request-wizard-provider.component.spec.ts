@@ -94,7 +94,7 @@ describe('DataRequestWizardProviderComponent', () => {
   describe('formsModel', () => {
     it('should use provider forms model with 3 steps', () => {
       const steps = component['formControlSteps']();
-      expect(steps.length).toBe(3);
+      expect(steps).toHaveLength(3);
       expect(steps.map((s) => s.id)).toEqual(['preview', 'contract', 'completion']);
     });
   });

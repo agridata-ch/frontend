@@ -118,6 +118,7 @@ export const routes: Routes = [
       {
         path: '',
         component: CmsPage,
+        children: [{ path: ':productId', children: [] }],
       },
     ],
   },

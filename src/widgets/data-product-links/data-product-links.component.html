@@ -52,19 +52,7 @@
     @let links = viewLinks();
 
     @if (links.length) {
-      <div appViewSection [isViewMode]="isViewMode">
-        @for (link of links; track $index) {
-          <a
-            class="flex items-center gap-2 px-4 py-3 text-agridata-primary-600 hover:underline"
-            [href]="link.url"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <fa-icon [icon]="faLink" />
-            <span>{{ link.displayText }}</span>
-          </a>
-        }
-      </div>
+      <app-agridata-links-list [links]="links" />
     } @else {
       <span class="italic">{{ t('links.empty') }}</span>
     }

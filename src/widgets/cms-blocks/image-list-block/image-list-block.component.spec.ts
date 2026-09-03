@@ -40,7 +40,7 @@ describe('ImageListComponent', () => {
     expect(heading.textContent).toContain('Test Heading');
 
     const images = fixture.debugElement.queryAll(By.css('img'));
-    expect(images.length).toBe(2);
+    expect(images).toHaveLength(2);
     expect(images[0].attributes['alt']).toBe('Image 1');
     expect(images[1].attributes['alt']).toBe('Image 2');
   });

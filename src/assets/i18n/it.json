@@ -84,7 +84,7 @@
         "missingBurInfo": "Manca una sede? Contattate direttamente {{ consumer }} affinché possa richiederla e voi possiate dare il consenso."
       },
       "footerInformationNoBur": "Avete disattivato tutte le sedi. Se desiderate rifiutare completamente questa richiesta, cliccate su Annulla e poi sul pulsante Rifiuta.",
-      "noConsentRequired": "Nessuna azione richiesta Questo riferimento ai dati si basa su una base legale. Non è richiesto il Suo consenso o rifiuto. Questa visualizzazione serve per la Sua informazione e trasparenza."
+      "noConsentRequired": "Nessuna azione richiesta. Questo riferimento ai dati si basa su una base legale. Non è richiesto il Suo consenso o rifiuto. Questa visualizzazione serve per la Sua informazione e trasparenza."
     },
     "toast": {
       "title": {
@@ -881,7 +881,8 @@
           "title": "Bozza eliminata",
           "message": "La bozza è stata eliminata con successo."
         }
-      }
+      },
+      "provider": "Fornitore di dati"
     },
     "createNew": "Inserire un prodotto dati",
     "detailPanel": {
@@ -1059,6 +1060,10 @@
       "consentRequiredInfo": {
         "title": "Obbligo di consenso",
         "subtitle": "Stabilite se i produttori (ad es. agricoltori, allevatori) debbano acconsentire esplicitamente alla trasmissione dei dati o se i prodotti di dati vengano visualizzati esclusivamente a scopo informativo.\n\nIn linea di principio, ogni acquisizione di dati richiede il consenso attivo del produttore. Fanno eccezione i prodotti di dati di diritto pubblico, per i quali esiste una base giuridica e per i quali non è quindi necessario alcun consenso."
+      },
+      "costs": {
+        "title": "Costi",
+        "subtitle": "Stabilite se l’utilizzo di questo prodotto di dati è soggetto a costi. agridata.ch funge esclusivamente da piattaforma informativa e informa gli utenti dei dati che l’utilizzo è a pagamento. La definizione delle condizioni, la fatturazione e la gestione dei pagamenti sono di esclusiva responsabilità del fornitore dei dati."
       }
     },
     "saveAndPublish": {
@@ -1233,7 +1238,7 @@
       "label": "Rifiuta"
     }
   },
-  "dataCatalog": {
+  "data-catalog": {
     "products": {
       "count": "{{ count }} prodotto/i di dati"
     },
@@ -1250,7 +1255,12 @@
       "message": "Nessuna voce trovata"
     },
     "product": {
-      "deprecated": "obsoleto/inattivo"
+      "deprecated": "obsoleto/inattivo",
+      "showDetails": "Visualizza i dettagli",
+      "publicSector": "Di diritto pubblico",
+      "description": "Descrizione",
+      "links": "Links",
+      "extendedDescription": "Ulteriori informazioni"
     },
     "list": {
       "allLoaded": "Tutti i prodotti dati caricati"

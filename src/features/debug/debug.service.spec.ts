@@ -41,7 +41,7 @@ describe('DebugService', () => {
       service.addRequest('/api/users', 'GET');
 
       const requests = service.getRequests();
-      expect(requests.length).toBe(1);
+      expect(requests).toHaveLength(1);
       expect(requests[0].url).toBe('/api/users');
       expect(requests[0].method).toBe('GET');
       expect(requests[0].timestamp).toBeInstanceOf(Date);
@@ -52,7 +52,7 @@ describe('DebugService', () => {
       service.addRequest('/api/products', 'POST');
 
       const requests = service.getRequests();
-      expect(requests.length).toBe(2);
+      expect(requests).toHaveLength(2);
       expect(requests[0].url).toBe('/api/users');
       expect(requests[1].url).toBe('/api/products');
     });
@@ -61,14 +61,14 @@ describe('DebugService', () => {
       service.addRequest('', 'GET');
 
       const requests = service.getRequests();
-      expect(requests.length).toBe(0);
+      expect(requests).toHaveLength(0);
     });
 
     it('should not add request with empty method', () => {
       service.addRequest('/api/users', '');
 
       const requests = service.getRequests();
-      expect(requests.length).toBe(0);
+      expect(requests).toHaveLength(0);
     });
   });
 
@@ -77,7 +77,7 @@ describe('DebugService', () => {
       service.addResponse('/api/users', 'GET', 200, 'OK', false);
 
       const responses = service.getResponses();
-      expect(responses.length).toBe(1);
+      expect(responses).toHaveLength(1);
       expect(responses[0].url).toBe('/api/users');
       expect(responses[0].method).toBe('GET');
       expect(responses[0].status).toBe(200);
@@ -90,7 +90,7 @@ describe('DebugService', () => {
       service.addResponse('/api/users', 'GET', 404, 'Not Found', true);
 
       const responses = service.getResponses();
-      expect(responses.length).toBe(1);
+      expect(responses).toHaveLength(1);
       expect(responses[0].status).toBe(404);
       expect(responses[0].statusText).toBe('Not Found');
       expect(responses[0].isError).toBe(true);
@@ -100,7 +100,7 @@ describe('DebugService', () => {
       service.addResponse('/api/users', 'GET', 500, 'Internal Server Error', true, 'req-123');
 
       const responses = service.getResponses();
-      expect(responses.length).toBe(1);
+      expect(responses).toHaveLength(1);
       expect(responses[0].requestId).toBe('req-123');
     });
 
@@ -109,21 +109,21 @@ describe('DebugService', () => {
       service.addResponse('/api/products', 'POST', 201, 'Created', false);
 
       const responses = service.getResponses();
-      expect(responses.length).toBe(2);
+      expect(responses).toHaveLength(2);
     });
 
     it('should not add response with empty url', () => {
       service.addResponse('', 'GET', 200, 'OK', false);
 
       const responses = service.getResponses();
-      expect(responses.length).toBe(0);
+      expect(responses).toHaveLength(0);
     });
 
     it('should not add response with empty method', () => {
       service.addResponse('/api/users', '', 200, 'OK', false);
 
       const responses = service.getResponses();
-      expect(responses.length).toBe(0);
+      expect(responses).toHaveLength(0);
     });
   });
 
@@ -167,7 +167,7 @@ describe('DebugService', () => {
       service.addResponse('/api/users', 'GET', 200, 'OK', false);
 
       const logs = service.debugLogs();
-      expect(logs.length).toBe(2);
+      expect(logs).toHaveLength(2);
     });
 
     it('should sort logs by timestamp descending', () => {
@@ -243,12 +243,12 @@ describe('DebugService', () => {
         service.addRequest(`/api/request-${i}`, 'GET');
       }
 
-      expect(service.getRequests().length).toBe(15);
+      expect(service.getRequests()).toHaveLength(15);
 
       service['removeOldEntries']();
 
       const requests = service.getRequests();
-      expect(requests.length).toBe(10);
+      expect(requests).toHaveLength(10);
     });
 
     it('should keep only last 10 responses', () => {
@@ -257,12 +257,12 @@ describe('DebugService', () => {
         service.addResponse(`/api/response-${i}`, 'GET', 200, 'OK', false);
       }
 
-      expect(service.getResponses().length).toBe(15);
+      expect(service.getResponses()).toHaveLength(15);
 
       service['removeOldEntries']();
 
       const responses = service.getResponses();
-      expect(responses.length).toBe(10);
+      expect(responses).toHaveLength(10);
     });
 
     it('should keep newest requests and remove oldest', () => {
@@ -277,7 +277,7 @@ describe('DebugService', () => {
       service['removeOldEntries']();
 
       const requests = service.getRequests();
-      expect(requests.length).toBe(10);
+      expect(requests).toHaveLength(10);
       // Should keep requests 5-14 (newest 10)
       expect(requests[0].url).toContain('request-14');
       expect(requests[9].url).toContain('request-5');
@@ -295,7 +295,7 @@ describe('DebugService', () => {
       service['removeOldEntries']();
 
       const responses = service.getResponses();
-      expect(responses.length).toBe(10);
+      expect(responses).toHaveLength(10);
       // Should keep responses 5-14 (newest 10)
       expect(responses[0].url).toContain('response-14');
       expect(responses[9].url).toContain('response-5');
@@ -309,7 +309,7 @@ describe('DebugService', () => {
 
       service['removeOldEntries']();
 
-      expect(service.getRequests().length).toBe(10);
+      expect(service.getRequests()).toHaveLength(10);
     });
 
     it('should handle empty arrays', () => {

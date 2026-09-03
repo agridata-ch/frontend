@@ -881,7 +881,8 @@
           "title": "Brouillon supprimé",
           "message": "Le brouillon a été supprimé avec succès."
         }
-      }
+      },
+      "provider": "Fournisseur de données"
     },
     "createNew": "Saisir un produit de données",
     "detailPanel": {
@@ -1059,6 +1060,10 @@
       "consentRequiredInfo": {
         "title": "Obligation de consentement",
         "subtitle": "Précisez si les producteurs (par exemple, les agriculteurs, les éleveurs) doivent donner leur consentement explicite à la transmission des données ou si les produits de données sont affichés uniquement à titre informatif.\n\nEn principe, tout accès aux données nécessite le consentement actif du producteur. Les produits de données relevant du droit public, pour lesquels il existe une base légale et qui ne nécessitent donc pas de consentement, constituent une exception."
+      },
+      "costs": {
+        "title": "Coûts",
+        "subtitle": "Déterminez si l’utilisation de ce produit de données est payante. agridata.ch sert uniquement de plateforme d’information et informe les utilisateurs de données que l’utilisation est soumise à des frais. La définition des conditions, la facturation ainsi que le traitement des paiements relèvent de la seule responsabilité du fournisseur de données."
       }
     },
     "saveAndPublish": {
@@ -1233,7 +1238,7 @@
       "label": "Rejeter"
     }
   },
-  "dataCatalog": {
+  "data-catalog": {
     "products": {
       "count": "{{ count }} produit(s) de données"
     },
@@ -1250,7 +1255,12 @@
       "message": "Aucune entrée trouvée"
     },
     "product": {
-      "deprecated": "obsolète/inactif"
+      "deprecated": "obsolète/inactif",
+      "showDetails": "Voir les détails",
+      "publicSector": "De droit public",
+      "description": "Description",
+      "links": "Liens",
+      "extendedDescription": "Informations complémentaires"
     },
     "list": {
       "allLoaded": "Tous les produits de données chargés"

@@ -67,10 +67,10 @@ describe('SliderComponent', () => {
   it('should calculate total pages correctly', () => {
     component['slideCount'].set(4);
     component['slidesPerPage'].set(2);
-    expect(component['totalPages']().length).toBe(2);
+    expect(component['totalPages']()).toHaveLength(2);
 
     component['slidesPerPage'].set(1);
-    expect(component['totalPages']().length).toBe(4);
+    expect(component['totalPages']()).toHaveLength(4);
   });
 
   it('should not go to previous slide when at first slide', () => {

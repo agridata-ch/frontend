@@ -152,7 +152,7 @@ describe('DataProductsPageComponent - component behavior', () => {
   describe('table metadata computed signal', () => {
     it('should include two columns in table metadata', () => {
       const metadata = component['dataProductsTableMetaData']();
-      expect(metadata.columns.length).toBe(3);
+      expect(metadata.columns).toHaveLength(3);
     });
 
     it('should configure the name column with template renderer', () => {

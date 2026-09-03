@@ -70,7 +70,7 @@ describe('DataRequestTableComponent', () => {
       (r) => r.stateCode === DataRequestStateEnum.ToBeSignedByConsumer,
     )!;
     const actions = component.getFilteredActions(toBeSignedRequest);
-    expect(actions.length).toBe(1);
+    expect(actions).toHaveLength(1);
     expect(actions[0].label).toBe('data-request.table.tableActions.details');
   });
 
@@ -78,7 +78,7 @@ describe('DataRequestTableComponent', () => {
     const actions = component.getFilteredActions(
       mockDataRequests.find((r) => r.stateCode === DataRequestStateEnum.InReview),
     );
-    expect(actions.length).toBe(2);
+    expect(actions).toHaveLength(2);
     expect(actions[0].label).toBe('data-request.table.tableActions.details');
     expect(actions[1].label).toBe('data-request.table.tableActions.retreat');
   });
@@ -141,7 +141,7 @@ describe('DataRequestTableComponent', () => {
     const metadata = component['dataRequestsTableMetaData']();
 
     expect(metadata.idColumn).toBe('id');
-    expect(metadata.columns.length).toBe(5);
+    expect(metadata.columns).toHaveLength(5);
     expect(metadata.columns[0].name).toBe(component['dataRequestHumanFriendlyIdHeader']);
     expect(metadata.columns[0].sortable).toBe(true);
     expect(metadata.columns[0].renderer.type).toBe('template');
@@ -230,7 +230,7 @@ describe('DataRequestTableComponent', () => {
     const draftRequest = mockDataRequests.find((r) => r.stateCode === DataRequestStateEnum.Draft)!;
     const actions = component.getFilteredActions(draftRequest);
 
-    expect(actions.length).toBe(2);
+    expect(actions).toHaveLength(2);
     expect(actions[0].label).toBe('data-request.table.tableActions.details');
     expect(actions[1].label).toBe('data-request.table.tableActions.delete');
   });

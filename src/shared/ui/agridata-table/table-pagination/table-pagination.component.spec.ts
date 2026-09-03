@@ -101,7 +101,7 @@ describe('TablePaginationComponent', () => {
 
   describe('page size selection', () => {
     it('should initialize with default page sizes', () => {
-      expect(component.SELECTABLE_PAGE_SIZES.length).toBe(PAGE_SIZES.length);
+      expect(component.SELECTABLE_PAGE_SIZES).toHaveLength(PAGE_SIZES.length);
       expect(component.SELECTABLE_PAGE_SIZES[0].value).toBe(PAGE_SIZES[0]);
     });
 
