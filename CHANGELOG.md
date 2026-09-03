@@ -1,3 +1,9 @@
+## [1.19.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.1...v1.19.0-rc.2) (2026-09-03)
+
+### Features
+
+- **data-catalog:** add product-detail ([100cc1b](https://github.com/agridata-ch/frontend/commit/100cc1b6d85c20397a44af7f9aa236bd56ced21f)), references [DIGIB2-1443](https://github.com/agridata-ch/frontend/issues/-1443)
+
 ## [1.19.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.18.0...v1.19.0-rc.1) (2026-09-03)
 
 ### Features
