@@ -1,3 +1,9 @@
+## [1.19.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.2...v1.19.0-rc.3) (2026-09-03)
+
+### Features
+
+- **deps:** deps update ([624ca19](https://github.com/agridata-ch/frontend/commit/624ca1956c62fb0d1a12a725faae9608fb8f0296)), references [DIGIB2-1608](https://github.com/agridata-ch/frontend/issues/-1608)
+
 ## [1.19.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.1...v1.19.0-rc.2) (2026-09-03)
 
 ### Features
