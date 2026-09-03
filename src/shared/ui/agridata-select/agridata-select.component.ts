@@ -9,7 +9,11 @@ import {
   viewChild,
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { faChevronDown, faChevronUp } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import {
+  faCheck,
+  faChevronDown,
+  faChevronUp,
+} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
@@ -46,6 +50,7 @@ export class AgridataSelectComponent {
 
   readonly selectedOption = model<number | string | null>(null);
 
+  protected readonly checkIcon = faCheck;
   protected readonly chevronDown = faChevronDown;
   protected readonly chevronUp = faChevronUp;
 
@@ -80,7 +85,7 @@ export class AgridataSelectComponent {
   }
 
   isSelected(id: string | number | null) {
-    return this.control()?.value === id;
+    return this.selectedOption() === id;
   }
 
   getSelectedOptionLabel() {

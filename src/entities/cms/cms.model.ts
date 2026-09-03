@@ -259,6 +259,11 @@ export interface SectionTimelineBlock {
   anchorId: string;
 }
 
+export interface DataCatalogBlock {
+  __component: string;
+  id: number;
+}
+
 export type Block =
   | SectionMediaBlock
   | SectionTextImageBlock
@@ -274,7 +279,8 @@ export type Block =
   | SectionImageListBlock
   | ImageListBlock
   | SectionTimelineBlock
-  | TimelineCardBlock;
+  | TimelineCardBlock
+  | DataCatalogBlock;
 
 export interface PageData {
   id: number;

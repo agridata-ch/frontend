@@ -22,6 +22,7 @@ import { NotFoundPage } from '@/pages/not-found';
 import { NotificationCenterPageComponent } from '@/pages/notification-center-page';
 import { OnboardingPage } from '@/pages/onboarding-page';
 import { PrivacyPolicyPage } from '@/pages/privacy-policy-page';
+import { SlaPage } from '@/pages/sla-page';
 import { SupporterPageComponent } from '@/pages/supporter-page/';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
@@ -99,6 +100,17 @@ export const routes: Routes = [
     ],
   },
   {
+    path: ROUTE_PATHS.SLA_PATH,
+    component: FullWidthLayoutComponent,
+    canActivate: [AuthorizationGuard],
+    children: [
+      {
+        path: '',
+        component: SlaPage,
+      },
+    ],
+  },
+  {
     path: `${ROUTE_PATHS.CMS_PATH}/:slug`,
     component: FullWidthLayoutComponent,
     canActivate: [AuthorizationGuard, HomeRedirectGuard],
@@ -132,7 +144,7 @@ export const routes: Routes = [
         canActivate: [ProducerUidGuard],
       },
       {
-        path: `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_CREATE_SUBPATH}/:dataRequestUid`,
+        path: `${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_CREATE_SUBPATH}/:dataRequestId`,
         children: [],
         canActivate: [CreateConsentRequestGuard],
       },
@@ -142,7 +154,7 @@ export const routes: Routes = [
         canActivate: [ProducerUidGuard],
         children: [
           {
-            path: `:consentRequestId`,
+            path: `:aggregationId`,
             component: ConsentRequestDetailsComponent,
             title: 'consent-request.details.sidepanel.title',
           },

@@ -205,6 +205,26 @@ describe('DataProductDetailFormComponent', () => {
     });
   });
 
+  describe('populateForm', () => {
+    const consentRequiredControl = (): AbstractControl | null =>
+      component['getTabForm'](FORM_TAB_IDS.NAME_AND_DESCRIPTION).get('consentRequired');
+
+    const product = (consentRequired: boolean): DataProductDto => ({
+      id: 'p-1',
+      stateCode: 'DRAFT',
+      consentRequired,
+    });
+
+    it('should default consentRequired to true for a new product', () => {
+      expect(consentRequiredControl()?.value).toBe(true);
+    });
+
+    it('should overwrite the consentRequired default with the loaded product value', () => {
+      component['populateForm'](product(false));
+      expect(consentRequiredControl()?.value).toBe(false);
+    });
+  });
+
   describe('cancel', () => {
     it('should navigate to data-products list with refresh=false by default', () => {
       const navigateSpy = jest.spyOn(router, 'navigate');

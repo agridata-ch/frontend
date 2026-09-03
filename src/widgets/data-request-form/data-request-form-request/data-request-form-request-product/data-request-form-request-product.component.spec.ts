@@ -53,6 +53,7 @@ const mockDataProducts: DataProductDto[] = [
     id: 'product-1',
     name: { de: 'Produkt 1', fr: 'Produit 1', it: 'Prodotto 1' },
     stateCode: 'DRAFT',
+    consentRequired: true,
     dataSourceSystemCode: 'AGIS',
     dataSourceSystem: {
       id: 'agis-system',
@@ -69,6 +70,7 @@ const mockDataProducts: DataProductDto[] = [
     id: 'product-2',
     name: { de: 'Produkt 2', fr: 'Produit 2', it: 'Prodotto 2' },
     stateCode: 'DRAFT',
+    consentRequired: true,
     dataSourceSystemCode: 'AGIS',
     dataSourceSystem: {
       id: 'agis-system',
@@ -85,6 +87,7 @@ const mockDataProducts: DataProductDto[] = [
     id: 'product-3',
     name: { de: 'Produkt 3', fr: 'Produit 3', it: 'Prodotto 3' },
     stateCode: 'DRAFT',
+    consentRequired: true,
     dataSourceSystemCode: 'TVD',
     dataSourceSystem: {
       id: 'tvd-system',
@@ -255,6 +258,64 @@ describe('DataRequestProductComponent', () => {
       component['productsLoading'].set(true);
 
       expect(component['productsGrouped']()).toEqual([]);
+    });
+  });
+
+  describe('public sector product category (products without consent requirement)', () => {
+    // mockDataProducts are consentRequired: true (plain category). This one is the labeled group.
+    const noConsentProduct: DataProductDto = {
+      ...mockDataProducts[0],
+      id: 'product-no-consent',
+      name: { de: 'Produkt', fr: 'Produit', it: 'Prodotto' },
+      consentRequired: false,
+    };
+    const productsWithNoConsent = [...mockDataProducts, noConsentProduct];
+
+    beforeEach(() => {
+      (i18nService.translate as jest.Mock).mockImplementation((key: string) =>
+        key === 'data-request.form.products.publicSectorProductSuffix'
+          ? 'public sector product'
+          : key,
+      );
+      (masterDataService.getProductsForProvider as jest.Mock).mockReturnValue(
+        productsWithNoConsent,
+      );
+      component['selectedProviderId'].set('provider-1');
+      component['productsLoading'].set(false);
+    });
+
+    it('should expose non-consent products as a separate labeled category', () => {
+      const categories = component['dataProductsCategories']();
+      const values = categories.map((c) => c.value);
+
+      expect(values).toContain('AGIS');
+      expect(values).toContain('AGIS::consent');
+      expect(categories.find((c) => c.value === 'AGIS::consent')?.label).toBe(
+        'AGIS System (public sector product)',
+      );
+    });
+
+    it('should group non-consent products separately from the same system', () => {
+      const grouped = component['productsGrouped']();
+      const agis = grouped.find((g) => g.categoryLabel === 'AGIS System');
+      const agisNoConsent = grouped.find(
+        (g) => g.categoryLabel === 'AGIS System (public sector product)',
+      );
+
+      expect(agis?.options.map((o) => o.value)).toEqual(['product-1', 'product-2']);
+      expect(agisNoConsent?.options.map((o) => o.value)).toEqual(['product-no-consent']);
+    });
+
+    it('should purge other-category products when a category is selected', async () => {
+      await fixture.whenStable(); // let the provider-change effect settle loading state
+
+      const productsControl = component.form()!.get('request.products');
+      productsControl?.setValue(['product-1', 'product-no-consent']);
+
+      component['selectedCategory'].set('AGIS::consent');
+      await fixture.whenStable();
+
+      expect(productsControl?.value).toEqual(['product-no-consent']);
     });
   });
 

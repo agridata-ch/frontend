@@ -1,0 +1,92 @@
+<div class="flex flex-col gap-4" *i18n="let t; prefix: 'consent-request.details.decisions'">
+  <h4>{{ t('title') }}</h4>
+  <span>{{ t('description') }}</span>
+
+  @if (store && store.consentRequests().length > 0) {
+    <div class="flex flex-col gap-6">
+      @if (store.uidRequest(); as uidRequest) {
+        <div class="flex flex-col gap-3">
+          <h5 class="text-agridata-primary-text">{{ t('uidGroupTitle') }}</h5>
+          <div
+            class="border border-agridata-stroke rounded-md divide-y divide-agridata-stroke overflow-hidden"
+          >
+            <div class="flex items-center justify-between gap-4 p-4">
+              <span class="text-sm text-agridata-secondary-text">{{
+                t('uid', { uid: uidRequest.dataProducerUid })
+              }}</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (store.burRequests().length > 0) {
+        <div class="flex flex-col gap-3">
+          <div class="flex gap-1 items-center">
+            <h5 class="text-agridata-primary-text">{{ t('burGroupTitle') }}</h5>
+            <fa-icon
+              [icon]="infoIcon"
+              [appTooltip]="t('missingBurInfo', { consumer: consumerName() })"
+              class="flex cursor-help"
+            />
+          </div>
+          <div
+            class="border border-agridata-stroke rounded-md divide-y divide-agridata-stroke overflow-hidden"
+          >
+            @for (request of store.burRequests(); track request.id) {
+              <div
+                class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-4"
+              >
+                <span class="text-sm text-agridata-secondary-text">{{
+                  t('bur.title', { bur: request.dataProducerBur })
+                }}</span>
+                @if (store.editMode()) {
+                  <app-agridata-toggle
+                    class="sm:flex-row-reverse"
+                    [checked]="!!store.decisions()[request.id]"
+                    [ariaLabel]="t('toggleAria', { bur: request.dataProducerBur })"
+                    (checkedChange)="store.setDecision(request.id, $event)"
+                    [label]="store.decisions()[request.id] ? t('bur.enabled') : t('bur.disabled')"
+                  />
+                } @else {
+                  <app-agridata-badge
+                    [text]="stateLabelKey(request.stateCode) | i18n"
+                    [size]="BadgeSize.MD"
+                    [variant]="getConsentRequestBadgeVariant(request.stateCode)"
+                  />
+                }
+              </div>
+            }
+          </div>
+        </div>
+        @if (store.canEdit()) {
+          <div class="flex grow w-full justify-end flex-col gap-2 items-end">
+            @if (!store.editMode()) {
+              <app-agridata-button
+                [variant]="ButtonVariants.IconLink"
+                [icon]="editIcon"
+                [dataTestId]="'consent-request-decisions-edit'"
+                (handleClick)="store.startEdit()"
+              >
+                {{ t('edit') }}
+              </app-agridata-button>
+            } @else {
+              <app-agridata-button
+                [variant]="ButtonVariants.Link"
+                [dataTestId]="'consent-request-decisions-cancel-edit'"
+                (handleClick)="store.cancelEdit()"
+              >
+                {{ t('cancel') }}
+              </app-agridata-button>
+            }
+          </div>
+        }
+      }
+    </div>
+  } @else {
+    <app-alert
+      [type]="AlertType.INFO"
+      [dataTestId]="'consent-request-decisions-non-producer-info'"
+      [message]="t('nonProducerInfo')"
+    />
+  }
+</div>

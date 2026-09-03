@@ -160,3 +160,32 @@ select {
     pointer-events: none;
   }
 }
+
+/* Markdown pipe output + CMS raw HTML — restores the native list markers Tailwind's
+   preflight resets, with a distinct marker per nesting depth. Separate from the
+   WYSIWYG .rich-text-content scope by design. */
+.markdown-content {
+  ul {
+    list-style-type: disc;
+    padding-left: 1.25rem;
+  }
+  ul ul {
+    list-style-type: circle;
+  }
+  ul ul ul {
+    list-style-type: square;
+  }
+  ol {
+    list-style-type: decimal;
+    padding-left: 1.25rem;
+  }
+  ol ol {
+    list-style-type: lower-alpha;
+  }
+  ol ol ol {
+    list-style-type: lower-roman;
+  }
+  li {
+    margin: 0.125rem 0;
+  }
+}

@@ -21,8 +21,9 @@ import {
   faUnderline,
 } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { Editor } from '@tiptap/core';
-import { CharacterCount, Placeholder } from '@tiptap/extensions';
+import { Editor, Extension, getHTMLFromFragment } from '@tiptap/core';
+import { Placeholder } from '@tiptap/extensions';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { StarterKit } from '@tiptap/starter-kit';
 
 import { I18nDirective } from '@/shared/i18n';
@@ -35,6 +36,35 @@ interface ToolbarButton {
   readonly label: string;
   readonly isActive?: Signal<boolean>;
   readonly action: () => void;
+}
+
+/**
+ * Blocks input that would push the serialised HTML past `limit`, matching the backend's raw-HTML
+ * maxLength. Deletions are always allowed so content already over the limit (e.g. loaded from the
+ * API) can be edited down.
+ */
+function htmlLengthLimit(limit: number | null): Extension {
+  return Extension.create({
+    name: 'htmlLengthLimit',
+    addProseMirrorPlugins() {
+      const schema = this.editor.schema;
+      return [
+        new Plugin({
+          key: new PluginKey('htmlLengthLimit'),
+          filterTransaction: (tr, state) => {
+            if (limit == null || !tr.docChanged) {
+              return true;
+            }
+            const next = getHTMLFromFragment(tr.doc.content, schema).length;
+            if (next <= limit) {
+              return true;
+            }
+            return next <= getHTMLFromFragment(state.doc.content, schema).length;
+          },
+        }),
+      ];
+    },
+  });
 }
 
 /**
@@ -53,7 +83,7 @@ interface ToolbarButton {
  * only; server-side sanitization remains the authoritative boundary since the API can be written
  * directly, bypassing the editor.
  *
- * CommentLastReviewed: 2026-07-09
+ * CommentLastReviewed: 2026-08-27
  */
 @Component({
   selector: 'app-agridata-wysiwyg',
@@ -100,11 +130,6 @@ export class AgridataWysiwygComponent {
   protected readonly isUnderline = computed(() => this.isActive('underline'));
   protected readonly isBulletList = computed(() => this.isActive('bulletList'));
   protected readonly isOrderedList = computed(() => this.isActive('orderedList'));
-  protected readonly characterCount = computed(() => {
-    // Re-read on every editor transaction so the counter stays reactive under zoneless CD.
-    this.editorState();
-    return this.editor?.storage.characterCount.characters() ?? 0;
-  });
 
   protected readonly toolbarButtons: readonly ToolbarButton[] = [
     { icon: faBold, label: 'bold', isActive: this.isBold, action: () => this.toggleBold() },
@@ -207,7 +232,7 @@ export class AgridataWysiwygComponent {
           link: false,
           strike: false,
         }),
-        CharacterCount.configure({ limit: this.maxCharacters() }),
+        htmlLengthLimit(this.maxCharacters()),
         Placeholder.configure({ placeholder: this.placeholder() }),
       ],
       content: typeof control?.value === 'string' ? control.value : '',

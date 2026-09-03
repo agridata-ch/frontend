@@ -1,0 +1,64 @@
+<div
+  class="container mx-auto px-6 lg:px-10 py-10 lg:py-20 flex flex-col gap-10"
+  *i18n="let t; prefix: 'dataCatalog'"
+>
+  @if (loaded() && !error()) {
+    <app-search-input
+      class="w-full sm:max-w-md"
+      [isLoading]="searching()"
+      (handleInput)="handleSearchChange($event)"
+    />
+  }
+  <div class="flex flex-col gap-3">
+    @if (showListHeader()) {
+      <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+        <span>{{ t('products.count', { count: totalItems() }) }}</span>
+        <div class="grid sm:w-fit">
+          <!-- Invisible sizer: stacks every sort label so the grid column, and thus the
+               select, always keeps the width of the longest label instead of resizing
+               when the selection changes. pr-14 reserves room for the chevron. -->
+          <div aria-hidden="true" class="col-start-1 row-start-1 h-0 overflow-hidden invisible">
+            @for (option of sortOptions(); track option.value) {
+              <div class="pl-5 pr-14 whitespace-nowrap">{{ option.label }}</div>
+            }
+          </div>
+          <app-agridata-select
+            class="col-start-1 row-start-1"
+            [options]="sortOptions()"
+            [selectedOption]="sortBy()"
+            (selectedOptionChange)="handleSortChange($event)"
+          />
+        </div>
+      </div>
+    }
+    @if (products().length > 0 || loading()) {
+      <ul
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 auto-rows-fr gap-6 w-full"
+      >
+        @for (product of products(); track product.id) {
+          <li class="h-full">
+            <app-data-product-card [product]="product" />
+          </li>
+        }
+        @if (loading()) {
+          @for (s of skeletons(); track $index) {
+            <li class="h-full">
+              <app-card [loading]="true" />
+            </li>
+          }
+        }
+      </ul>
+    } @else if (loaded() && !loading() && !error()) {
+      <app-empty-state [title]="t('empty.title')" [message]="t('empty.message')" />
+    }
+  </div>
+
+  <app-infinite-scroll
+    [loading]="loading()"
+    [hasMore]="hasMore()"
+    [hasItems]="products().length > 0"
+    (loadMore)="loadNext()"
+  >
+    {{ t('list.allLoaded') }}
+  </app-infinite-scroll>
+</div>

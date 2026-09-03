@@ -49,7 +49,9 @@ describe('AgbPage', () => {
       fixture.detectChanges();
       await fixture.whenStable();
 
-      expect(component['content']()).toBe(mockAgbRevision.agbText!.de);
+      expect(component['content']()).toBe(
+        `<div class="markdown-content">${mockAgbRevision.agbText!.de}</div>`,
+      );
     });
 
     it('footerBlock returns footer from the CMS page data', async () => {

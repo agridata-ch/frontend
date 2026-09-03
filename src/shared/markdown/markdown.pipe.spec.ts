@@ -27,6 +27,11 @@ describe('MarkdownPipe', () => {
     expect(pipe.transform('')).toBe('');
   });
 
+  it('should wrap output in the markdown scope', () => {
+    const result = pipe.transform('Hello');
+    expect(result).toContain('<div class="markdown-content">');
+  });
+
   it('should handle links with titles', () => {
     const markdown = '[Example](https://example.com "Example Title")';
     const result = pipe.transform(markdown);

@@ -7,6 +7,7 @@ export enum BadgeVariant {
   ERROR = 'error',
   INFO = 'info',
   LIGHT = 'light',
+  DARK = 'dark',
 }
 
 export enum BadgeSize {
@@ -39,6 +40,7 @@ export class AgridataBadgeComponent {
     info: 'bg-sky-100 text-sky-700',
     warning: 'bg-orange-100 text-orange-700',
     light: 'bg-gray-100 text-gray-600',
+    dark: 'bg-agridata-primary-text text-white',
   };
 
   readonly sizeClasses: Record<BadgeSize, string> = {

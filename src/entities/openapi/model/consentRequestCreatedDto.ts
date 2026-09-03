@@ -18,6 +18,10 @@ export interface ConsentRequestCreatedDto {
      * UID of the data producer
      */
     dataProducerUid: string;
+    /**
+     * BUR of the data producer
+     */
+    dataProducerBur?: string;
     isCreated?: boolean;
 }
 

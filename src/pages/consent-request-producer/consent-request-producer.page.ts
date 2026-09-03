@@ -17,7 +17,7 @@ import { filter, map, startWith } from 'rxjs';
 import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { ConsentRequestAggregationProducerView } from '@/entities/openapi';
+import { ConsentRequestAggregationSummaryDto } from '@/entities/openapi';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
 import {
@@ -70,15 +70,13 @@ export class ConsentRequestProducerPage {
   private readonly i18nService = inject(I18nService);
   private readonly activeRoute = inject(ActivatedRoute);
 
-  // :consentRequestId is a child route param (ConsentRequestDetailsComponent), not this
+  // :aggregationId is a child route param (ConsentRequestDetailsComponent), not this
   // component's own route param, so input() never gets bound — read it from the child route because we use it to show the product-tour or not
-  protected readonly consentRequestId = toSignal(
+  protected readonly aggregationId = toSignal(
     this.router.events.pipe(
       filter((e): e is NavigationEnd => e instanceof NavigationEnd),
       startWith(null),
-      map(
-        () => this.activeRoute.firstChild?.snapshot.paramMap.get('consentRequestId') ?? undefined,
-      ),
+      map(() => this.activeRoute.firstChild?.snapshot.paramMap.get('aggregationId') ?? undefined),
     ),
   );
 
@@ -159,7 +157,7 @@ export class ConsentRequestProducerPage {
     // don't show the tour intro if there is a consent request id in the route (so we don't interrupt the user when they are navigating directly to a specific request)
     // or if the user has already seen the tour intro or if there are no consent requests
     return (
-      !this.consentRequestId() &&
+      !this.aggregationId() &&
       !userPreferences.hasSeenConsentRequestTourIntro &&
       this.consentRequestResource.value().length > 0 &&
       !this.agridataStateService.uidMissing()
@@ -176,12 +174,12 @@ export class ConsentRequestProducerPage {
     this.agridataStateService.saveTourIntroSeen(true);
   }
 
-  // opens the first consent request of the aggregation. The detail panel is
-  // per-consent-request until the per-BUR accept/decline feature lands, then this becomes a picker. DIGIB2-531
-  protected navigateToRequest = (request?: ConsentRequestAggregationProducerView | null) => {
-    const consentRequestId = request?.consentRequests?.[0]?.id;
-    if (consentRequestId) {
-      this.router.navigate([consentRequestId], { relativeTo: this.activeRoute }).then();
+  // opens the detail panel for the whole aggregation. The aggregation id equals the underlying
+  // data-request id and is what getConsentRequestAggregation expects.
+  protected navigateToRequest = (request?: ConsentRequestAggregationSummaryDto | null) => {
+    const aggregationId = request?.id;
+    if (aggregationId) {
+      this.router.navigate([aggregationId], { relativeTo: this.activeRoute }).then();
     }
   };
 
@@ -189,7 +187,7 @@ export class ConsentRequestProducerPage {
     this.agridataStateService.addConfirmedMigratedUids([requestId]);
   }
 
-  protected getMigratedRequestTitle(request: ConsentRequestAggregationProducerView): string {
+  protected getMigratedRequestTitle(request: ConsentRequestAggregationSummaryDto): string {
     return this.i18nService.useObjectTranslation(request?.dataRequest?.title);
   }
 

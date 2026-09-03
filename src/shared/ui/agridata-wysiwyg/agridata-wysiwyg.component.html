@@ -55,13 +55,5 @@
       </button>
     </fieldset>
     <div [id]="id()" #editorHost class="max-h-80 overflow-y-auto"></div>
-    @if (maxCharacters()) {
-      <p
-        class="mt-1 text-right text-sm text-gray-500 self-end absolute -bottom-7.5"
-        [class.text-red-500]="hasError()"
-      >
-        {{ characterCount() }} / {{ maxCharacters() }}
-      </p>
-    }
   </div>
 }

@@ -1,11 +1,26 @@
-import { DataProductDtoStateCode } from '@/entities/openapi';
+import { DataProductDto, DataProductDtoStateCode } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
 import { BadgeVariant } from '@/shared/ui/badge';
 
-import { getBadgeVariant, getStatusTranslation } from './data-products-page.model';
+import {
+  DATA_PRODUCT_DEPRECATED_STATE,
+  getBadgeVariant,
+  getDataProductState,
+  getStatusTranslation,
+} from './data-products-page.model';
 
 describe('data-products-page.model', () => {
+  const createProduct = (
+    stateCode: DataProductDtoStateCode,
+    deprecatedSince?: string,
+  ): DataProductDto => ({
+    consentRequired: false,
+    deprecatedSince,
+    id: 'product-id',
+    stateCode,
+  });
+
   describe('getBadgeVariant', () => {
     it('returns INFO for Draft state', () => {
       expect(getBadgeVariant(DataProductDtoStateCode.Draft)).toBe(BadgeVariant.INFO);
@@ -21,6 +36,22 @@ describe('data-products-page.model', () => {
 
     it('returns DEFAULT for undefined', () => {
       expect(getBadgeVariant(undefined)).toBe(BadgeVariant.DEFAULT);
+    });
+
+    it('returns WARNING for the deprecated state', () => {
+      expect(getBadgeVariant(DATA_PRODUCT_DEPRECATED_STATE)).toBe(BadgeVariant.ERROR);
+    });
+  });
+
+  describe('getDataProductState', () => {
+    it('returns the deprecated state when deprecatedSince is set no matter the state code', () => {
+      const product = createProduct(DataProductDtoStateCode.Active, '2026-03-06T00:00:00');
+      expect(getDataProductState(product)).toBe(DATA_PRODUCT_DEPRECATED_STATE);
+    });
+
+    it('returns Active for a published product without a deprecatedSince value', () => {
+      const product = createProduct(DataProductDtoStateCode.Active);
+      expect(getDataProductState(product)).toBe(DataProductDtoStateCode.Active);
     });
   });
 
@@ -40,6 +71,11 @@ describe('data-products-page.model', () => {
     it('calls translate with the correct key for a given state code', () => {
       getStatusTranslation('DRAFT', i18nService as unknown as I18nService);
       expect(i18nService.translate).toHaveBeenCalledWith('data-product.stateCode.DRAFT');
+    });
+
+    it('calls translate with the deprecated key for the deprecated state', () => {
+      getStatusTranslation(DATA_PRODUCT_DEPRECATED_STATE, i18nService as unknown as I18nService);
+      expect(i18nService.translate).toHaveBeenCalledWith('data-product.stateCode.DEPRECATED');
     });
 
     it('returns the translated value', () => {

@@ -22,7 +22,11 @@ import { DataProductUpdateDto as DataProductUpdateDtoSchema } from '@/assets/for
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProductDto, DataProductDtoStateCode, DataProductStateEnum } from '@/entities/openapi';
-import { getBadgeVariant, getStatusTranslation } from '@/pages/data-products-page';
+import {
+  getBadgeVariant,
+  getDataProductState,
+  getStatusTranslation,
+} from '@/pages/data-products-page';
 import { ACTING_ROLES, ROUTE_PATHS } from '@/shared/constants/constants';
 import { I18nDirective, I18nFormatDirective, I18nService } from '@/shared/i18n';
 import { buildReactiveForm, populateFormFromDto } from '@/shared/lib/form.helper';
@@ -106,15 +110,24 @@ export class DataProductDetailFormComponent {
   private readonly publishAttempted = signal(false);
   private readonly refreshListNeeded = signal(false);
 
-  protected readonly form = buildReactiveForm(
-    DataProductUpdateDtoSchema,
-    dataProductFormsModel,
-    this.i18nService,
-  );
+  protected readonly form = (() => {
+    const form = buildReactiveForm(
+      DataProductUpdateDtoSchema,
+      dataProductFormsModel,
+      this.i18nService,
+    );
+    // New products default to consent-required; populateForm() overwrites this for existing products.
+    form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION)?.get('consentRequired')?.setValue(true);
+    return form;
+  })();
 
   // Computed Signals
   protected readonly canSaveDraft = computed(
     () => this.stateCode() !== DataProductStateEnum.Active,
+  );
+
+  protected readonly dataProductState = computed(() =>
+    getDataProductState(this.dataProductResource.value()),
   );
 
   protected readonly dataProductTitle = computed(() =>

@@ -32,7 +32,8 @@ export type TooltipBubble = {
   setText(text: string): boolean;
 };
 
-const BUBBLE_CLASSES = 'rounded bg-agridata-primary-text px-2 py-1 text-xs text-white shadow';
+const BUBBLE_CLASSES =
+  'rounded bg-agridata-primary-text px-2 py-1 text-xs text-white shadow max-w-4/5 sm:max-w-1/3';
 const GAP = 8;
 
 /**

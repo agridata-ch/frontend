@@ -13,6 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { I18nPipe } from '@/shared/i18n';
 import { FormControlWithMessages, getErrorMessage } from '@/shared/lib/form.helper';
+import { TooltipDirective } from '@/shared/tooltip';
 import { AgridataDigitInputComponent } from '@/shared/ui/agridata-digit-input';
 import { AgridataInputComponent } from '@/shared/ui/agridata-input';
 import {
@@ -20,6 +21,10 @@ import {
   MultiSelectCategory,
   MultiSelectOption,
 } from '@/shared/ui/agridata-multi-select';
+import {
+  AgridataRadioGroupComponent,
+  AgridataRadioGroupOption,
+} from '@/shared/ui/agridata-radio-group';
 import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
 import { AgridataTextareaComponent } from '@/shared/ui/agridata-textarea';
 import { AgridataWysiwygComponent } from '@/shared/ui/agridata-wysiwyg';
@@ -41,6 +46,7 @@ import { ControlTypes } from './form-control.model';
   imports: [
     ReactiveFormsModule,
     AgridataMultiSelectComponent,
+    AgridataRadioGroupComponent,
     AgridataTextareaComponent,
     AgridataSelectComponent,
     AgridataInputComponent,
@@ -49,6 +55,7 @@ import { ControlTypes } from './form-control.model';
     ButtonComponent,
     I18nPipe,
     FontAwesomeModule,
+    TooltipDirective,
   ],
   templateUrl: './form-control.component.html',
 })
@@ -57,6 +64,7 @@ export class FormControlComponent {
   readonly control = input<FormControlWithMessages>();
   readonly controlType = input<ControlTypes>(ControlTypes.INPUT);
   readonly disabled = input<boolean>(false);
+  readonly disabledInfo = input<string>('');
   readonly helperText = input<string>('');
   readonly id = input<string>();
   readonly inputPrefix = input<string>('');
@@ -64,6 +72,7 @@ export class FormControlComponent {
   readonly options = input<MultiSelectOption[]>([]);
   readonly pattern = input<string | RegExp>('');
   readonly placeholder = input<string>('');
+  readonly radioOptions = input<readonly AgridataRadioGroupOption[]>([]);
   readonly length = input<number>(1);
   readonly singleCategorySelection = input<boolean>(false);
   readonly type = input<'text' | 'number'>('text');
@@ -91,6 +100,12 @@ export class FormControlComponent {
   // control.disable() then greys and blocks every field type (incl. the custom select, which has no
   // ControlValueAccessor). The [disabled] input still works for pure UI gates that don't disable the control.
   protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
+
+  // Surface the reason a field is locked, like app-agridata-button's disabledInfo. View mode is not a
+  // lock, so it deliberately does not trigger this.
+  protected readonly disabledTooltip = computed(
+    () => (this.isDisabled() && this.disabledInfo()) || '',
+  );
 
   // Effects
   // The control's touched/status state is not a signal, so in zoneless change detection a

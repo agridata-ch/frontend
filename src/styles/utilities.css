@@ -78,3 +78,27 @@
   white-space: normal;
   overflow-wrap: anywhere;
 }
+
+@keyframes agridata-scroll-hint {
+  0%,
+  55%,
+  100% {
+    transform: translateY(0);
+  }
+  72% {
+    transform: translateY(7px);
+  }
+  86% {
+    transform: translateY(0);
+  }
+}
+
+.scroll-hint {
+  animation: agridata-scroll-hint 2.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint {
+    animation: none;
+  }
+}

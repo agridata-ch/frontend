@@ -36,6 +36,10 @@
     [lang]="lang()"
   />
 
+  <app-data-request-consent-request-decisions
+    [consumerName]="dataRequest().dataConsumerDisplayName"
+  />
+
   <app-data-request-privacy-infos
     [consumerName]="dataRequest().dataConsumerDisplayName"
     [providerName]="providerName()"

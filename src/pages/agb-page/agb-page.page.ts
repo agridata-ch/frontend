@@ -16,17 +16,17 @@ import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { formatDate } from '@/shared/date';
 import { I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
-import { MarkdownPipe } from '@/shared/markdown/markdown.pipe';
 import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
 
 /**
- * Fetches the AGB (for contracts) page from the CMS and renders the content using the Markdown pipe.
+ * Fetches the AGB (for contracts) page from the CMS and renders the raw HTML
+ * content into the `.markdown-content` scope.
  *
- * CommentLastReviewed: 2026-04-02
+ * CommentLastReviewed: 2026-08-24
  */
 @Component({
   selector: 'app-agb-page',
-  imports: [CmsFooterBlockComponent, MarkdownPipe, FaIconComponent],
+  imports: [CmsFooterBlockComponent, FaIconComponent],
   templateUrl: './agb-page.page.html',
 })
 export class AgbPage {
@@ -55,7 +55,11 @@ export class AgbPage {
     if (!response) return '';
 
     const lang = this.i18nService.lang() as keyof typeof response.agbText;
-    return response?.agbText?.[lang] ?? '';
+    const html = response?.agbText?.[lang] ?? '';
+
+    // The CMS returns raw HTML; render it into the markdown scope so list markers
+    // (reset by Tailwind's preflight) are restored and vary per nesting depth.
+    return `<div class="markdown-content">${html}</div>`;
   });
 
   protected readonly version = computed(() => {

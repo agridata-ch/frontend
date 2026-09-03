@@ -10,7 +10,11 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { ConsentRequestProducerViewDto, DataRequestStateEnum } from '@/entities/openapi';
+import {
+  ConsentRequestAggregationDto,
+  ConsentRequestAggregationStateEnum,
+  ConsentRequestStateEnum,
+} from '@/entities/openapi';
 import { REDIRECT_TIMEOUT } from '@/pages/consent-request-producer/consent-request-producer.page.model';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import {
@@ -20,7 +24,7 @@ import {
   MockAgridataStateService,
   createMockAnalyticsService,
   createMockConsentRequestService,
-  mockConsentRequests,
+  mockConsentRequestAggregations,
   MockConsentRequestService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
@@ -49,6 +53,8 @@ describe('ConsentRequestDetailsComponent', () => {
   beforeEach(async () => {
     toastService = { show: jest.fn() };
     agridataStateService = createMockAgridataStateService();
+    // the aggregation resource only fetches once a producer uid is active
+    agridataStateService.__testSignals.activeUid.set('uid-1');
     consentRequestService = createMockConsentRequestService();
     errorService = createMockErrorHandlerService();
     activeRoute = createMockActivatedRoute();
@@ -119,7 +125,7 @@ describe('ConsentRequestDetailsComponent', () => {
   });
 
   it('should should show toast after acceptRequest', async () => {
-    componentRef.setInput('consentRequestId', '1');
+    componentRef.setInput('aggregationId', 'dr-1');
 
     const navSpy = jest.spyOn(mockRouter, 'navigate');
     const resourceSpy = jest.spyOn(component['consentRequestResource'], 'reload');
@@ -128,13 +134,17 @@ describe('ConsentRequestDetailsComponent', () => {
     await component['acceptRequest']();
 
     expect(toastService.show).toHaveBeenCalled();
-    expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith('1', 'GRANTED');
-    expect(resourceSpy).toHaveBeenCalled();
+    // dr-1's only open consent request is id '1'
+    expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+      ['1'],
+      'GRANTED',
+    );
+    expect(resourceSpy).not.toHaveBeenCalled();
     expect(navSpy).toHaveBeenCalled();
   });
 
   it('should should show toast after rejectRequest', async () => {
-    componentRef.setInput('consentRequestId', '1');
+    componentRef.setInput('aggregationId', 'dr-1');
 
     const navSpy = jest.spyOn(mockRouter, 'navigate');
     const resourceSpy = jest.spyOn(component['consentRequestResource'], 'reload');
@@ -143,9 +153,127 @@ describe('ConsentRequestDetailsComponent', () => {
     await component['rejectRequest']();
 
     expect(toastService.show).toHaveBeenCalled();
-    expect(consentRequestService.updateConsentRequestStatus).toHaveBeenCalledWith('1', 'DECLINED');
-    expect(resourceSpy).toHaveBeenCalled();
+    expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+      ['1'],
+      'DECLINED',
+    );
+    expect(resourceSpy).not.toHaveBeenCalled();
     expect(navSpy).toHaveBeenCalled();
+  });
+
+  it('updates the BUR child and ignores the UID child when BUR children exist', async () => {
+    // dr-3: UID child '4' (opened) + BUR child '5' (opened)
+    consentRequestService.fetchConsentRequestAggregation.mockResolvedValue(
+      mockConsentRequestAggregations[2],
+    );
+    componentRef.setInput('aggregationId', 'dr-3');
+    await fixture.whenStable();
+
+    await component['acceptRequest']();
+
+    // only the BUR child is sent; the UID child ('4') is left to the backend
+    expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+      ['5'],
+      'GRANTED',
+    );
+  });
+
+  it('updates every differing BUR child on accept, ignoring the UID child', async () => {
+    // dr-4: UID granted '6', BUR declined '7', BUR opened '8'
+    consentRequestService.fetchConsentRequestAggregation.mockResolvedValue(
+      mockConsentRequestAggregations[3],
+    );
+    componentRef.setInput('aggregationId', 'dr-4');
+    await fixture.whenStable();
+
+    await component['acceptRequest']();
+
+    // both BUR children differ from GRANTED; the already-granted UID child is skipped
+    expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+      ['7', '8'],
+      'GRANTED',
+    );
+  });
+
+  it('declines the BUR child of a granted aggregation, ignoring the UID child', async () => {
+    // dr-2: UID granted '2', BUR granted '3'
+    consentRequestService.fetchConsentRequestAggregation.mockResolvedValue(
+      mockConsentRequestAggregations[1],
+    );
+    componentRef.setInput('aggregationId', 'dr-2');
+    await fixture.whenStable();
+
+    await component['rejectRequest']();
+
+    expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+      ['3'],
+      'DECLINED',
+    );
+  });
+
+  it('can accept an already declined consent request', async () => {
+    consentRequestService.fetchConsentRequestAggregation.mockResolvedValue({
+      id: 'dr-9',
+      stateCode: ConsentRequestAggregationStateEnum.Declined,
+      consentRequests: [{ id: '9', stateCode: ConsentRequestStateEnum.Declined }],
+    });
+    componentRef.setInput('aggregationId', 'dr-9');
+    await fixture.whenStable();
+
+    await component['acceptRequest']();
+
+    expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+      ['9'],
+      'GRANTED',
+    );
+  });
+
+  describe('disables the action that would not change anything', () => {
+    it('offers only reject when the acted-on child is already granted', async () => {
+      consentRequestService.fetchConsentRequestAggregation.mockResolvedValue({
+        id: 'dr-pg',
+        stateCode: ConsentRequestAggregationStateEnum.PartiallyGranted,
+        consentRequests: [
+          { id: '10', stateCode: ConsentRequestStateEnum.Granted },
+          { id: '11', stateCode: ConsentRequestStateEnum.Declined },
+        ],
+      });
+      componentRef.setInput('aggregationId', 'dr-pg');
+      await fixture.whenStable();
+
+      expect(component['acceptDisabled']()).toBe(true);
+      expect(component['rejectDisabled']()).toBe(false);
+
+      await component['rejectRequest']();
+
+      expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+        ['10'],
+        'DECLINED',
+      );
+    });
+
+    it('offers only accept when the acted-on child is already declined', async () => {
+      consentRequestService.fetchConsentRequestAggregation.mockResolvedValue({
+        id: 'dr-pg',
+        stateCode: ConsentRequestAggregationStateEnum.PartiallyGranted,
+        consentRequests: [
+          { id: '12', stateCode: ConsentRequestStateEnum.Declined },
+          { id: '13', stateCode: ConsentRequestStateEnum.Granted },
+        ],
+      });
+      componentRef.setInput('aggregationId', 'dr-pg');
+      await fixture.whenStable();
+
+      expect(component['rejectDisabled']()).toBe(true);
+      expect(component['acceptDisabled']()).toBe(false);
+
+      await component['acceptRequest']();
+
+      expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+        ['12'],
+        'GRANTED',
+      );
+    });
   });
 
   it('should disable buttons when impersonating', () => {
@@ -174,16 +302,15 @@ describe('ConsentRequestDetailsComponent', () => {
       fixture.detectChanges();
 
       const mockRequest = {
-        ...mockConsentRequests[0],
+        ...mockConsentRequestAggregations[0],
         dataRequest: {
-          ...mockConsentRequests[0].dataRequest,
+          ...mockConsentRequestAggregations[0].dataRequest,
           validRedirectUriRegex: '^https://valid-external-redirect\\.com$',
-          stateCode: DataRequestStateEnum.Draft,
         },
-      } as ConsentRequestProducerViewDto;
-      consentRequestService.fetchConsentRequest.mockResolvedValue(mockRequest);
+      } as ConsentRequestAggregationDto;
+      consentRequestService.fetchConsentRequestAggregation.mockResolvedValue(mockRequest);
 
-      componentRef.setInput('consentRequestId', '1');
+      componentRef.setInput('aggregationId', '1');
 
       fixture.detectChanges();
       await fixture.whenStable();
@@ -199,14 +326,13 @@ describe('ConsentRequestDetailsComponent', () => {
       component['shouldRedirect'].set(true);
 
       const mockRequest = {
-        ...mockConsentRequests[0],
+        ...mockConsentRequestAggregations[0],
         dataRequest: {
-          ...mockConsentRequests[0].dataRequest,
-          stateCode: DataRequestStateEnum.Draft,
+          ...mockConsentRequestAggregations[0].dataRequest,
         },
-      } as ConsentRequestProducerViewDto;
-      consentRequestService.fetchConsentRequest.mockResolvedValue(mockRequest);
-      componentRef.setInput('consentRequestId', '1');
+      } as ConsentRequestAggregationDto;
+      consentRequestService.fetchConsentRequestAggregation.mockResolvedValue(mockRequest);
+      componentRef.setInput('aggregationId', '1');
 
       fixture.detectChanges();
       await fixture.whenStable();
@@ -223,15 +349,14 @@ describe('ConsentRequestDetailsComponent', () => {
       component['shouldRedirect'].set(true);
 
       const mockRequest = {
-        ...mockConsentRequests[0],
+        ...mockConsentRequestAggregations[0],
         dataRequest: {
-          ...mockConsentRequests[0].dataRequest,
+          ...mockConsentRequestAggregations[0].dataRequest,
           validRedirectUriRegex: '^https://valid-external-redirect\\.com$',
-          stateCode: DataRequestStateEnum.Draft,
         },
-      } as ConsentRequestProducerViewDto;
-      consentRequestService.fetchConsentRequest.mockResolvedValue(mockRequest);
-      componentRef.setInput('consentRequestId', '1');
+      } as ConsentRequestAggregationDto;
+      consentRequestService.fetchConsentRequestAggregation.mockResolvedValue(mockRequest);
+      componentRef.setInput('aggregationId', '1');
 
       fixture.detectChanges();
       await fixture.whenStable();
@@ -249,15 +374,14 @@ describe('ConsentRequestDetailsComponent', () => {
 
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
       const mockRequest = {
-        ...mockConsentRequests[0],
+        ...mockConsentRequestAggregations[0],
         dataRequest: {
-          ...mockConsentRequests[0].dataRequest,
+          ...mockConsentRequestAggregations[0].dataRequest,
           validRedirectUriRegex: '([incomplete-regex',
-          stateCode: DataRequestStateEnum.Draft,
         },
-      } as ConsentRequestProducerViewDto;
-      consentRequestService.fetchConsentRequest.mockResolvedValue(mockRequest);
-      componentRef.setInput('consentRequestId', '1');
+      } as ConsentRequestAggregationDto;
+      consentRequestService.fetchConsentRequestAggregation.mockResolvedValue(mockRequest);
+      componentRef.setInput('aggregationId', '1');
 
       fixture.detectChanges();
       await fixture.whenStable();
@@ -434,8 +558,8 @@ describe('ConsentRequestDetailsComponent', () => {
 
   it('should handle errors from consentRequestsResource and send them to errorService', async () => {
     const testError = new Error('Test error from fetchDataRequests');
-    consentRequestService.fetchConsentRequest.mockRejectedValueOnce(testError);
-    componentRef.setInput('consentRequestId', 'test-id');
+    consentRequestService.fetchConsentRequestAggregation.mockRejectedValueOnce(testError);
+    componentRef.setInput('aggregationId', 'test-id');
 
     fixture.detectChanges();
     await fixture.whenStable();
@@ -444,15 +568,110 @@ describe('ConsentRequestDetailsComponent', () => {
   });
 
   it('should render the data request content of the loaded request', async () => {
-    consentRequestService.fetchConsentRequest.mockResolvedValue(
-      mockConsentRequests[0] as ConsentRequestProducerViewDto,
+    consentRequestService.fetchConsentRequestAggregation.mockResolvedValue(
+      mockConsentRequestAggregations[0] as ConsentRequestAggregationDto,
     );
-    componentRef.setInput('consentRequestId', '1');
+    componentRef.setInput('aggregationId', '1');
 
     fixture.detectChanges();
     await fixture.whenStable();
 
     const content = fixture.debugElement.query(By.directive(DataRequestContentComponent));
-    expect(content.componentInstance.dataRequest()).toEqual(mockConsentRequests[0].dataRequest);
+    expect(content.componentInstance.dataRequest()).toEqual(
+      mockConsentRequestAggregations[0].dataRequest,
+    );
+  });
+
+  describe('per-BUR decisions (edit mode)', () => {
+    beforeEach(async () => {
+      // dr-4 has a granted+declined+opened mix, one global child (id '6') and two BUR children.
+      consentRequestService.fetchConsentRequestAggregation.mockResolvedValue(
+        mockConsentRequestAggregations[3] as ConsentRequestAggregationDto,
+      );
+      componentRef.setInput('aggregationId', 'dr-4');
+      await fixture.whenStable();
+    });
+
+    it('feeds the aggregation children into the decision store', () => {
+      expect(component['decisionStore'].consentRequests().map((request) => request.id)).toEqual([
+        '6',
+        '7',
+        '8',
+      ]);
+    });
+
+    it('submits only changed BUR children and never touches the UID child', async () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'uid', dataProducerUid: 'u', stateCode: ConsentRequestStateEnum.Opened },
+        { id: 'bur-granted', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Granted },
+        { id: 'bur-open', dataProducerBur: '2', stateCode: ConsentRequestStateEnum.Opened },
+      ]);
+      // bur-open (OPENED) seeds on -> becomes granted (a change); bur-granted stays on (no change)
+      component['decisionStore'].startEdit();
+
+      await component['saveBurDecisions']();
+
+      // only the changed bur-open is sent; bur-granted is a no-op and the UID child is left alone
+      expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledTimes(1);
+      expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+        ['bur-open'],
+        ConsentRequestStateEnum.Granted,
+      );
+      expect(component['decisionStore'].editMode()).toBe(false);
+    });
+
+    it('declines a BUR child toggled off, leaving the other BUR and the UID untouched', async () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'uid', dataProducerUid: 'u', stateCode: ConsentRequestStateEnum.Granted },
+        { id: 'bur-1', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Granted },
+        { id: 'bur-2', dataProducerBur: '2', stateCode: ConsentRequestStateEnum.Granted },
+      ]);
+      component['decisionStore'].startEdit();
+      component['decisionStore'].setDecision('bur-1', false);
+
+      await component['saveBurDecisions']();
+
+      // only the flipped bur-1 is declined; bur-2 (unchanged) and the UID child are not sent
+      expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledTimes(1);
+      expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
+        ['bur-1'],
+        ConsentRequestStateEnum.Declined,
+      );
+    });
+
+    it('makes no service call when nothing changed and leaves edit mode', async () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'uid', dataProducerUid: 'u', stateCode: ConsentRequestStateEnum.Granted },
+        { id: 'bur', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Declined },
+      ]);
+      component['decisionStore'].startEdit();
+
+      await component['saveBurDecisions']();
+
+      expect(consentRequestService.updateConsentRequestStatuses).not.toHaveBeenCalled();
+      expect(component['decisionStore'].editMode()).toBe(false);
+    });
+
+    it('keeps edit mode and staged decisions when the save fails', async () => {
+      consentRequestService.updateConsentRequestStatuses.mockRejectedValueOnce(
+        new Error('save failed'),
+      );
+      component['decisionStore'].startEdit();
+
+      await component['saveBurDecisions']();
+
+      expect(errorService.handleError).toHaveBeenCalled();
+      expect(component['decisionStore'].editMode()).toBe(true);
+    });
+
+    it('cancelEdit discards staged decisions without calling the service', () => {
+      component['decisionStore'].startEdit();
+      component['decisionStore'].setDecision('8', true);
+
+      component['cancelEdit']();
+
+      expect(component['decisionStore'].editMode()).toBe(false);
+      expect(component['decisionStore'].decisions()).toEqual({});
+    });
   });
 });

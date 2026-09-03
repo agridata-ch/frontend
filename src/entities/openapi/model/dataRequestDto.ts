@@ -10,13 +10,14 @@
 import { DataSourceSystemReferenceDto } from './dataSourceSystemReferenceDto';
 import { DataRequestPurposeDto } from './dataRequestPurposeDto';
 import { DataRequestAdvantageDto } from './dataRequestAdvantageDto';
+import { ConsentRequestProducerViewDtoDataRequestStateCode } from './consentRequestProducerViewDtoDataRequestStateCode';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
 import { SignatureTypeEnum } from './signatureTypeEnum';
 
 
 /**
- * Details of the underlying data request
+ * Data transfer object representing a data request
  */
 export interface DataRequestDto { 
     id: string;
@@ -47,7 +48,7 @@ export interface DataRequestDto {
      * List of data products requested
      */
     products?: Array<string>;
-    stateCode: string;
+    stateCode: ConsentRequestProducerViewDtoDataRequestStateCode;
     /**
      * LegalName of the data consumer taken from the uid register
      */

@@ -16,7 +16,7 @@ import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
-  ConsentRequestAggregationProducerView,
+  ConsentRequestAggregationSummaryDto,
   ConsentRequestAggregationStateEnum,
   ConsentRequestStateEnum,
   TranslationDto,
@@ -81,28 +81,26 @@ export class ConsentRequestTableComponent {
   private readonly agridataStateService = inject(AgridataStateService);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly analyticsService = inject(AnalyticsService);
-  // binds to the route parameter :consentRequestId, which is a consent request of an aggregation
-  readonly consentRequestId = input<string>();
-  readonly consentRequestAggregations = input.required<ConsentRequestAggregationProducerView[]>();
+  // binds to the route parameter :aggregationId (equals the underlying data-request id)
+  readonly aggregationId = input<string>();
+  readonly consentRequestAggregations = input.required<ConsentRequestAggregationSummaryDto[]>();
 
-  readonly tableRowAction = output<ConsentRequestAggregationProducerView>();
+  readonly tableRowAction = output<ConsentRequestAggregationSummaryDto>();
   readonly consentRequestAggregationsResource =
-    input<ResourceRef<ConsentRequestAggregationProducerView[]>>();
+    input<ResourceRef<ConsentRequestAggregationSummaryDto[]>>();
 
   private readonly dataRequestConsumerTemplate =
-    viewChild<TemplateRef<{ $implicit: ConsentRequestAggregationProducerView }>>(
+    viewChild<TemplateRef<{ $implicit: ConsentRequestAggregationSummaryDto }>>(
       'dataRequestConsumer',
     );
   private readonly dataRequestTitleTemplate =
-    viewChild<TemplateRef<{ $implicit: ConsentRequestAggregationProducerView }>>(
-      'dataRequestTitle',
-    );
+    viewChild<TemplateRef<{ $implicit: ConsentRequestAggregationSummaryDto }>>('dataRequestTitle');
   private readonly consentRequestStateTemplate =
-    viewChild<TemplateRef<{ $implicit: ConsentRequestAggregationProducerView }>>(
+    viewChild<TemplateRef<{ $implicit: ConsentRequestAggregationSummaryDto }>>(
       'consentRequestState',
     );
   private readonly consentRequestActionTemplate =
-    viewChild<TemplateRef<{ $implicit: ConsentRequestAggregationProducerView }>>(
+    viewChild<TemplateRef<{ $implicit: ConsentRequestAggregationSummaryDto }>>(
       'consentRequestAction',
     );
   protected readonly emptyStateTemplate = viewChild<TemplateRef<unknown>>('emptyStateTemplate');
@@ -130,13 +128,13 @@ export class ConsentRequestTableComponent {
     );
   });
 
-  openDetails = (request?: ConsentRequestAggregationProducerView | null) => {
+  openDetails = (request?: ConsentRequestAggregationSummaryDto | null) => {
     if (!request) return;
     this.tableRowAction.emit(request);
   };
 
   protected readonly consentRequestsTableMetaData = computed<
-    ClientTableMetadata<ConsentRequestAggregationProducerView>
+    ClientTableMetadata<ConsentRequestAggregationSummaryDto>
   >(() => {
     return {
       tableId: 'consent-requests-table',
@@ -149,7 +147,7 @@ export class ConsentRequestTableComponent {
             template: this.dataRequestConsumerTemplate(),
           },
           sortable: true,
-          sortValueFn: (item: ConsentRequestAggregationProducerView) =>
+          sortValueFn: (item: ConsentRequestAggregationSummaryDto) =>
             item.dataRequest?.dataConsumerDisplayName ?? '',
         },
         {
@@ -159,7 +157,7 @@ export class ConsentRequestTableComponent {
             template: this.dataRequestTitleTemplate(),
           },
           sortable: true,
-          sortValueFn: (item: ConsentRequestAggregationProducerView) =>
+          sortValueFn: (item: ConsentRequestAggregationSummaryDto) =>
             item.dataRequest?.title ? this.getTranslation(item.dataRequest.title) : '',
         },
         {
@@ -178,7 +176,7 @@ export class ConsentRequestTableComponent {
             template: this.consentRequestStateTemplate(),
           },
           sortable: true,
-          sortValueFn: (item: ConsentRequestAggregationProducerView) =>
+          sortValueFn: (item: ConsentRequestAggregationSummaryDto) =>
             this.getTranslatedStateValue(item.stateCode),
         },
         {
@@ -195,8 +193,7 @@ export class ConsentRequestTableComponent {
       rowAction: this.openDetails,
       showRowActionButton: true,
       highlightFn: (item) => isOpenAggregationState(item.stateCode),
-      highlightClickedRowFn: (item) =>
-        !!item.consentRequests?.some((request) => request.id === this.consentRequestId()),
+      highlightClickedRowFn: (item) => item.id === this.aggregationId(),
       searchFn: (data, searchTerm) =>
         data.filter((item) => this.getTranslation(item.dataRequest?.title).includes(searchTerm)),
     };
@@ -214,7 +211,7 @@ export class ConsentRequestTableComponent {
   }
 
   updateConsentRequestState = async (
-    aggregation: ConsentRequestAggregationProducerView,
+    aggregation: ConsentRequestAggregationSummaryDto,
     stateCode: ConsentRequestStateEnum,
     requestName?: string,
   ) => {

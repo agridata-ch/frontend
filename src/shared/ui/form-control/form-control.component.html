@@ -6,7 +6,7 @@
   >
     <label
       [for]="id()"
-      class="font-medium leading-[130%] transition-all duration-300 ease-in-out"
+      class="font-medium leading-[130%] transition-all duration-300 ease-in-out w-fit"
       [class.text-red-500]="hasError()"
       [class.text-agridata-secondary-text]="isViewMode()"
       [class.text-xs]="isViewMode()"
@@ -89,6 +89,16 @@
           [isViewMode]="isViewMode()"
         />
       }
+    }
+    @if (controlType() === ControlTypes.RADIO_GROUP) {
+      <app-agridata-radio-group
+        [appTooltip]="disabledTooltip()"
+        [ariaLabel]="label() ?? ''"
+        [control]="control()"
+        [disabled]="isDisabled()"
+        [isViewMode]="isViewMode()"
+        [options]="radioOptions()"
+      />
     }
     @if (controlType() === ControlTypes.DIGIT_INPUT) {
       <app-agridata-digit-input

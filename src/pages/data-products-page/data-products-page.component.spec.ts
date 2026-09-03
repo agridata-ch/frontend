@@ -31,6 +31,7 @@ describe('DataProductsPageComponent - component behavior', () => {
   const createProduct = (stateCode: DataProductDtoStateCode): DataProductDto => ({
     id: 'product-1',
     stateCode,
+    consentRequired: false,
     name: { de: 'Test Product' },
     dataSourceSystem: {
       id: 'system-1',
@@ -72,6 +73,7 @@ describe('DataProductsPageComponent - component behavior', () => {
       const mockProduct: DataProductDto = {
         id: 'product-1',
         stateCode: 'DRAFT',
+        consentRequired: false,
         name: { de: 'Test Product', fr: 'Produit Test' },
         description: { de: 'A test product' },
         dataSourceSystem: {
@@ -180,6 +182,7 @@ describe('DataProductsPageComponent - component behavior', () => {
       const mockProduct: DataProductDto = {
         id: 'product-1',
         stateCode: 'DRAFT',
+        consentRequired: false,
         dataSourceSystem: {
           id: 'system-1',
           dataProvider: { id: 'provider-1' },

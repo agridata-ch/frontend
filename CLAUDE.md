@@ -2,6 +2,12 @@
 
 Open-source zoneless Angular 22 (TypeScript 6.0) application using signals and resources for API data retrieval.
 
+## Git: never commit or push
+
+Never run `git commit` or `git push`. Make the file changes, run verification, then stop and
+let the user commit and push themselves. This holds even if an approved plan or a checklist
+says to commit. Suggesting the user commit is fine; doing it yourself is not.
+
 ## Development Commands
 
 | Command                 | Description                                |

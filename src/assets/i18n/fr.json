@@ -45,13 +45,19 @@
     "details": {
       "actions": {
         "accept": "Approuver",
-        "reject": "Refuser"
+        "reject": "Refuser",
+        "cancelEditMode": "Annuler",
+        "saveAndAccept": "Enregistrer et Consentir",
+        "saveDisabledInfo": "Au moins un consentement est requis"
       },
       "stateCode": {
         "GRANTED": "Accepté le {{ date }}",
         "DECLINED": "Refusé le {{ date }}",
         "OPENED": "Ouvert",
-        "UNKNOWN": "Inconnu"
+        "UNKNOWN": "Inconnu",
+        "PARTIALLY_GRANTED": "Partiellement approuvé",
+        "PARTIALLY_OPENED": "Partiellement ouvert",
+        "LEGALLY_PERMITTED": "Réglementé par la loi"
       },
       "footerInformation": "Vous pouvez modifier votre choix à tout moment ici. Les données ne peuvent être transmises qu'en cas de consentement explicite.",
       "requestDate": "Demande du {{ date }}",
@@ -60,7 +66,25 @@
       },
       "request": {
         "migrated": "Repris de Mon partage de données agricoles - MAF"
-      }
+      },
+      "decisions": {
+        "title": "Aperçu des entreprises",
+        "description": "Cette demande concerne votre entreprise (UID) et les sites associés (BUR). Le consentement s'applique toujours à l'entreprise. En principe, vous consentez aux sites demandés; via «Modifier les sites», vous pouvez exclure des sites individuels de la demande.",
+        "uidGroupTitle": "Mon entreprise demandée",
+        "uid": "Numéro d'identification de l'entreprise (UID) : {{ uid }}",
+        "bur": {
+          "title": "Numéro d'établissement (BUR) : {{ bur }}",
+          "enabled": "Sélectionné",
+          "disabled": "Exclu"
+        },
+        "edit": "Modifier les sites",
+        "cancel": "Annuler",
+        "burGroupTitle": "Mes sites demandés",
+        "nonProducerInfo": "Ici, les producteurs de données voient leurs sites demandés.",
+        "missingBurInfo": "Un site manque ? Contactez directement {{ consumer }} afin qu'ils puissent demander le site et que vous puissiez donner votre consentement."
+      },
+      "footerInformationNoBur": "Vous avez désactivé tous les sites. Si vous souhaitez refuser complètement cette demande, veuillez cliquer sur Annuler, puis sur le bouton Refuser.",
+      "noConsentRequired": "Aucune action requise. Cette référence de données est basée sur une base légale. Votre consentement ou votre refus n'est pas nécessaire. Cette vue sert à votre information et à votre transparence."
     },
     "toast": {
       "title": {
@@ -85,7 +109,8 @@
         "GRANTED": "Accordé",
         "DECLINED": "Refusé",
         "PARTIALLY_OPENED": "Partiellement ouvert",
-        "PARTIALLY_GRANTED": "Partiellement approuvé"
+        "PARTIALLY_GRANTED": "Partiellement approuvé",
+        "LEGALLY_PERMITTED": "Réglementé par la loi"
       }
     },
     "emptyState": {
@@ -229,7 +254,7 @@
         },
         "contact": {
           "label": "Vos coordonnées",
-          "sublabel": "Téléphone ou e-mail pour toute question concernant votre demande."
+          "sublabel": "Téléphone et e-mail pour des questions concernant votre demande."
         },
         "contactPhoneNumber": {
           "label": "Numéro de téléphone",
@@ -274,7 +299,8 @@
         }
       },
       "products": {
-        "allSystems": "Tous les systèmes"
+        "allSystems": "Tous les systèmes",
+        "publicSectorProductSuffix": "de droit public"
       }
     },
     "preview": {
@@ -549,7 +575,8 @@
       "imprint": "Impressum",
       "privacyPolicy": "Conditions d'utilisation",
       "home": "Page d'accueil",
-      "agb": "CGV"
+      "agb": "CGV",
+      "sla": "SLA"
     }
   },
   "producer": {
@@ -871,15 +898,15 @@
     "detailForm": {
       "name": {
         "de": {
-          "label": "Nom en allemand",
+          "label": "Nom en allemand (Auf Deutsch)",
           "placeholder": "z.B. Nutztiere in Sömmerung"
         },
         "fr": {
-          "label": "Nom Français",
+          "label": "Nom en français",
           "placeholder": "p.ex. Animaux de rente en estivage"
         },
         "it": {
-          "label": "Nom Italien",
+          "label": "Nom en Italien (in italiano)",
           "placeholder": "p.es. Animali da reddito estivati"
         },
         "disabledInfo": {
@@ -892,15 +919,15 @@
       "technicalFields": "Informations techniques",
       "description": {
         "de": {
-          "label": "Description Allemand",
+          "label": "Description en allemand (Auf Deutsch)",
           "placeholder": "z.B. Dieses Datenprodukt enthält die Art und Anzahl Nutztiere pro Betrieb, die im Inland gesömmert wurden."
         },
         "fr": {
-          "label": "Description Français",
+          "label": "Description en français",
           "placeholder": "Par exemple, ce produit de données contient le type et le nombre d'animaux d'élevage par exploitation qui ont été gardés localement pendant l'été."
         },
         "it": {
-          "label": "Description Italien",
+          "label": "Description en italien (in italiano)",
           "placeholder": "Ad esempio, questo prodotto di dati contiene il tipo e il numero di animali da allevamento per azienda agricola che sono stati ospitati in loco durante l'estate."
         }
       },
@@ -925,11 +952,11 @@
         "placeholder": "par ex. /api/v1/bur/{{bur}}/animaux_d_elevage"
       },
       "restClientRequestTemplate": {
-        "label": "Modèle de corps de requête (JSON/XML)",
+        "label": "Template du Request-Body (JSON/XML) (facultatif)",
         "placeholder": "par ex. { \"statut\": \"actif\" }"
       },
       "restClientChangeDetectionPathTemplate": {
-        "label": "Chemin pour la détection des modifications",
+        "label": "Chemin pour la détection de changements (Change Detection) (facultatif)",
         "placeholder": "par ex. /api/v1/animaux_d_elevage/modifications"
       },
       "cancel": "Annuler",
@@ -965,7 +992,7 @@
       "additionalInfo": "Informations complémentaires (facultatif)",
       "extendedDescription": {
         "de": {
-          "label": "Description détaillée en allemand",
+          "label": "Description détaillée en allemand (Auf Deutsch)",
           "placeholder": "Konkret werden folgende Daten übermittelt:\n- Datum der Erfassung bzw. der letzten Änderung dieses Datensatzes im kantonalen System\n- KT_ID_B Kantonale Identifikationsnummer der Betriebsform auf der Stufe, auf der die nachfolgenden Daten erfasst wurden\n..."
         },
         "fr": {
@@ -973,7 +1000,7 @@
           "placeholder": "Concrètement, les données suivantes sont transmises : \n- Date resp. la saisie ou la dernière modification du jeu de données dans le système cantonal\n- KT_ID_B Numéro cantonal de la forme d’exploitation au niveau de laquelle les données suivantes ont été saisies\n..."
         },
         "it": {
-          "label": "Description détaillée en italien",
+          "label": "Description détaillée en italien (in italiano)",
           "placeholder": "Concretamente vengono trasmessi i dati seguenti:\n- Data di registrazione o dell’ultima modifica di questo set di dati nel sistema cantonale\n- KT_ID_B Numero d’identificazione cantonale della forma di azienda al livello a cui sono stati registrati i dati seguenti:\n..."
         },
         "heading": "Description détaillée"
@@ -1015,7 +1042,24 @@
           "message": "Remarque: Le système ne peut pas être modifié de manière autonome après l'activation. Les modifications souhaitées peuvent être demandées via [mailto:support@agridata.ch]."
         }
       },
-      "saveChanges": "Publier les modifications"
+      "saveChanges": "Publier les modifications",
+      "consentRequired": {
+        "label": "Faut-il obtenir l'accord du producteur ?",
+        "true": {
+          "title": "Oui, le producteur doit donner son accord",
+          "subtitle": "Produit de données soumis à autorisation"
+        },
+        "false": {
+          "title": "Non, aucune autorisation n'est requise",
+          "subtitle": "Produit de données relevant du droit public (base juridique)"
+        },
+        "disabledInfo": "Modification impossible après publication",
+        "notEditable": "L'obligation d'autorisation ne peut plus être modifiée"
+      },
+      "consentRequiredInfo": {
+        "title": "Obligation de consentement",
+        "subtitle": "Précisez si les producteurs (par exemple, les agriculteurs, les éleveurs) doivent donner leur consentement explicite à la transmission des données ou si les produits de données sont affichés uniquement à titre informatif.\n\nEn principe, tout accès aux données nécessite le consentement actif du producteur. Les produits de données relevant du droit public, pour lesquels il existe une base légale et qui ne nécessitent donc pas de consentement, constituent une exception."
+      }
     },
     "saveAndPublish": {
       "success": {
@@ -1161,7 +1205,8 @@
   "data-product": {
     "stateCode": {
       "DRAFT": "Brouillon",
-      "ACTIVE": "Publié"
+      "ACTIVE": "Publié",
+      "DEPRECATED": "Deprecated"
     }
   },
   "wysiwyg": {
@@ -1187,5 +1232,31 @@
     "cancelAction": {
       "label": "Rejeter"
     }
+  },
+  "dataCatalog": {
+    "products": {
+      "count": "{{ count }} produit(s) de données"
+    },
+    "sort": {
+      "nameAsc": "Nom ascendant",
+      "nameDesc": "Nom descendant",
+      "systemAsc": "Système ascendant",
+      "systemDesc": "Système descendant",
+      "providerAsc": "Fournisseur de données ascendant",
+      "providerDesc": "Fournisseur de données descendant"
+    },
+    "empty": {
+      "title": "Aucune entrée disponible",
+      "message": "Aucune entrée trouvée"
+    },
+    "product": {
+      "deprecated": "obsolète/inactif"
+    },
+    "list": {
+      "allLoaded": "Tous les produits de données chargés"
+    }
+  },
+  "infinite-scroll": {
+    "loading": "Chargement des entrées"
   }
 }

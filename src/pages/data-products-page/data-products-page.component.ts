@@ -26,7 +26,7 @@ import {
   PageResponseDto,
   ResourceQueryDto,
 } from '@/entities/openapi';
-import { getStatusTranslation } from '@/pages/data-products-page';
+import { getDataProductState, getStatusTranslation } from '@/pages/data-products-page';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { DataProductDtoDirective } from '@/shared/data-product';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
@@ -88,6 +88,7 @@ export class DataProductsPageComponent {
   protected readonly faLayerGroup = faLayerGroup;
   protected readonly faTrashCan = faTrashCan;
   protected readonly getBadgeVariant = getBadgeVariant;
+  protected readonly getDataProductState = getDataProductState;
   protected readonly getStatusTranslation = getStatusTranslation;
 
   private readonly nameTemplate =
@@ -131,7 +132,7 @@ export class DataProductsPageComponent {
           cellCssClasses: 'whitespace-nowrap',
           sortable: false,
           sortValueFn: (item: DataProductDto) =>
-            item ? this.getStatusTranslation(item?.stateCode, this.i18nService) : '',
+            item ? this.getStatusTranslation(this.getDataProductState(item), this.i18nService) : '',
         },
       ],
       rowMenuActions: this.getRowMenuActions,

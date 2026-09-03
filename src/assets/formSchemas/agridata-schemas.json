@@ -287,19 +287,22 @@
           "de": {
             "type": "string",
             "minLength": 0,
-            "maxLength": 1000
+            "maxLength": 10000
           },
           "fr": {
             "type": "string",
             "minLength": 0,
-            "maxLength": 1000
+            "maxLength": 10000
           },
           "it": {
             "type": "string",
             "minLength": 0,
-            "maxLength": 1000
+            "maxLength": 10000
           }
         }
+      },
+      "consentRequired": {
+        "type": "boolean"
       }
     },
     "required": [
@@ -309,7 +312,8 @@
       "restClientId",
       "restClientPathTemplate",
       "restClientMethodCode",
-      "flowCode"
+      "flowCode",
+      "consentRequired"
     ]
   }
 }

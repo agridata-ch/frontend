@@ -31,6 +31,16 @@ type Story = StoryObj<AgridataRadioGroupComponent>;
 
 export const Default: Story = {};
 
+export const RadioWithoutSubtitle: Story = {
+  args: {
+    options: [
+      { title: 'Yes', value: 'yes' },
+      { title: 'No', value: 'no' },
+    ],
+    value: 'no',
+  },
+};
+
 export const WithPreselectedValue: Story = {
   args: { value: 'professional' },
 };

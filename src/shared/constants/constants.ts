@@ -12,6 +12,7 @@ export const ROUTE_PATHS = {
   AGB_PATH: 'cms/agb',
   PRIVACY_POLICY_PATH: 'cms/privacy-policy',
   ONBOARDING_PATH: 'cms/onboarding',
+  SLA_PATH: 'cms/sla',
   FORBIDDEN: 'forbidden',
   ERROR: 'error',
   EXTERNAL_SERVICE_ERROR: 'external-service-error',
@@ -48,6 +49,7 @@ export const CMS_BLOCKS = {
   IMAGE_GRID: 'blocks.image-grid',
   SECTION_IMAGE_CARD: 'layout.section-image-card',
   SECTION_TIMELINE: 'layout.section-timeline',
+  DATA_CATALOG: 'blocks.data-catalog',
 };
 
 export const VIDEO_FORMATS = ['.mp4', '.webm', '.wmv', '.avi', '.mov', '.mkv', '.flv'];
