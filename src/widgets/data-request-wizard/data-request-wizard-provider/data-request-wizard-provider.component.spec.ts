@@ -3,12 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter, Router, withComponentInputBinding } from '@angular/router';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService, DataRequestService, UidRegisterService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
@@ -299,7 +299,7 @@ describe('DataRequestWizardProviderComponent', () => {
   describe('handleClose (provider-specific)', () => {
     it('should navigate to provider path', () => {
       const router = TestBed.inject(Router);
-      const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+      const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
       component['refreshListNeeded'].set(true);
 
       component['handleClose']();
@@ -335,9 +335,9 @@ describe('DataRequestWizardProviderComponent', () => {
   describe('handleNextStep (shared logic)', () => {
     it('should not call wizard.nextStep when next step is disabled', () => {
       const wizard = component['wizard']()!;
-      const nextStepSpy = jest.spyOn(wizard, 'nextStep');
-      jest.spyOn(component as any, 'handleSave').mockImplementation();
-      jest.spyOn(component as any, 'isNextStepDisabled').mockReturnValue(true);
+      const nextStepSpy = vi.spyOn(wizard, 'nextStep');
+      vi.spyOn(component as any, 'handleSave').mockImplementation(() => {});
+      vi.spyOn(component as any, 'isNextStepDisabled').mockReturnValue(true);
 
       component['handleNextStep']();
 
@@ -346,9 +346,9 @@ describe('DataRequestWizardProviderComponent', () => {
 
     it('should call wizard.nextStep when next step is not disabled', () => {
       const wizard = component['wizard']()!;
-      const nextStepSpy = jest.spyOn(wizard, 'nextStep');
-      jest.spyOn(component as any, 'handleSave').mockImplementation();
-      jest.spyOn(component as any, 'isNextStepDisabled').mockReturnValue(false);
+      const nextStepSpy = vi.spyOn(wizard, 'nextStep');
+      vi.spyOn(component as any, 'handleSave').mockImplementation(() => {});
+      vi.spyOn(component as any, 'isNextStepDisabled').mockReturnValue(false);
 
       component['handleNextStep']();
 

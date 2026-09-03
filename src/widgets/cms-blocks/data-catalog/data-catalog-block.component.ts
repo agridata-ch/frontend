@@ -10,9 +10,9 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataProductService } from '@/entities/api';
 import { PublicDataProductDto } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { InfiniteScrollComponent } from '@/shared/infinite-scroll';
 import { AgridataSelectComponent, SelectOption } from '@/shared/ui/agridata-select';

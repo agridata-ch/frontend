@@ -3,8 +3,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DataRequestDto, DataRequestStateEnum, DataRequestUpdateDto } from '@/entities/openapi';
-import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/pages/data-requests-consumer';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/shared/data-request';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective } from '@/shared/i18n';
 import { flattenFormGroup } from '@/shared/lib/form.helper';

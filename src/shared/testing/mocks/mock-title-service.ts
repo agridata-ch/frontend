@@ -1,6 +1,6 @@
 import { signal, WritableSignal } from '@angular/core';
 
-import { TitleService } from '@/app/title.service';
+import { TitleService } from '@/shared/lib/title.service';
 import { MockifyWithWritableSignals } from '@/shared/testing/mocks';
 
 export type MockTitleServiceSignals = {
@@ -17,9 +17,9 @@ export function createMockTitleService(): MockTitleService {
   const roRoute = signal<string | undefined>(undefined);
 
   return {
-    setPageTitleByRoute: jest.fn(),
-    setI18nTitle: jest.fn(),
-    setTranslatedTitle: jest.fn(),
+    setPageTitleByRoute: vi.fn(),
+    setI18nTitle: vi.fn(),
+    setTranslatedTitle: vi.fn(),
     roTranslatedTitle,
     ro18nTitle,
     roRoute,

@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ErrorAlertList } from '@/shared/error-alert-list/error-alert-list.component';
 import { I18nPipe } from '@/shared/i18n';
 import { ButtonComponent } from '@/shared/ui/button';

@@ -1,8 +1,8 @@
 import { inject, Service } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AGATE_LOGIN_ID_IMPERSONATION_HEADER, ROUTE_PATHS } from '@/shared/constants/constants';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 
 import { AuthService } from './auth.service';
 

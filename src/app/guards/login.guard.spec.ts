@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import type { Mock } from 'vitest';
 
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
@@ -11,13 +12,13 @@ describe('LoginAuthGuard', () => {
   let guard: LoginAuthGuard;
   let authService: MockAuthService;
   let mockRouter: {
-    createUrlTree: jest.Mock;
+    createUrlTree: Mock;
   };
   const mockUrlTree = 'some url';
 
   beforeEach(() => {
     mockRouter = {
-      createUrlTree: jest.fn().mockReturnValue(mockUrlTree),
+      createUrlTree: vi.fn().mockReturnValue(mockUrlTree),
     };
 
     authService = createMockAuthService();
@@ -34,7 +35,7 @@ describe('LoginAuthGuard', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should navigate to "/" and return true when user is authenticated', async () => {

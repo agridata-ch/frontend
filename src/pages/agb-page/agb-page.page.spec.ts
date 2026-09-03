@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import type { Mocked } from 'vitest';
 
 import { AgbService } from '@/entities/api';
 import { CmsService } from '@/entities/cms';
@@ -19,12 +20,12 @@ import { AgbPage } from './agb-page.page';
 describe('AgbPage', () => {
   let component: AgbPage;
   let fixture: ComponentFixture<AgbPage>;
-  let mockRouter: jest.Mocked<Router>;
+  let mockRouter: Mocked<Router>;
 
   beforeEach(async () => {
     mockRouter = {
-      navigate: jest.fn(),
-    } as unknown as jest.Mocked<Router>;
+      navigate: vi.fn(),
+    } as unknown as Mocked<Router>;
 
     await TestBed.configureTestingModule({
       providers: [
@@ -72,7 +73,7 @@ describe('AgbPage', () => {
       const httpErrorResponse = new HttpErrorResponse({ status: 404 });
       const mockError = new Error('Not found', { cause: httpErrorResponse });
 
-      jest.spyOn(component['agbPageResource'], 'error').mockReturnValue(mockError);
+      vi.spyOn(component['agbPageResource'], 'error').mockReturnValue(mockError);
 
       fixture.detectChanges();
 
@@ -85,7 +86,7 @@ describe('AgbPage', () => {
       const httpErrorResponse = new HttpErrorResponse({ status: 400 });
       const mockError = new Error('Error', { cause: httpErrorResponse });
 
-      jest.spyOn(component['agbPageResource'], 'error').mockReturnValue(mockError);
+      vi.spyOn(component['agbPageResource'], 'error').mockReturnValue(mockError);
 
       fixture.detectChanges();
 

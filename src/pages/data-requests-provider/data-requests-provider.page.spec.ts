@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import type { Mocked } from 'vitest';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/shared/data-request';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import {
   createMockDataRequestService,
   MockDataRequestService,
@@ -15,24 +17,21 @@ import {
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
-import {
-  DataRequestsProviderPage,
-  FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM,
-} from './data-requests-provider.page';
+import { DataRequestsProviderPage } from './data-requests-provider.page';
 
 describe('DataRequestsProviderPage - component behavior', () => {
   let fixture: ComponentFixture<DataRequestsProviderPage>;
   let component: DataRequestsProviderPage;
   let dataRequestService: MockDataRequestService;
   let errorService: MockErrorHandlerService;
-  let mockRouter: jest.Mocked<Router>;
+  let mockRouter: Mocked<Router>;
   let agridataStateService: MockAgridataStateService;
 
   beforeEach(async () => {
     mockRouter = {
-      navigate: jest.fn().mockResolvedValue(true),
-      currentNavigation: jest.fn().mockReturnValue(null),
-    } as unknown as jest.Mocked<Router>;
+      navigate: vi.fn().mockResolvedValue(true),
+      currentNavigation: vi.fn().mockReturnValue(null),
+    } as unknown as Mocked<Router>;
     dataRequestService = createMockDataRequestService();
     errorService = createMockErrorHandlerService();
     agridataStateService = createMockAgridataStateService();
@@ -115,13 +114,13 @@ describe('DataRequestsProviderPage - component behavior', () => {
     };
 
     mockRouter = {
-      navigate: jest.fn().mockResolvedValue(true),
-      currentNavigation: jest.fn().mockReturnValue(mockNavigation),
-    } as unknown as jest.Mocked<Router>;
+      navigate: vi.fn().mockResolvedValue(true),
+      currentNavigation: vi.fn().mockReturnValue(mockNavigation),
+    } as unknown as Mocked<Router>;
 
     TestBed.resetTestingModule();
 
-    const reloadSpy = jest.spyOn(component['dataRequestsResource'], 'reload');
+    const reloadSpy = vi.spyOn(component['dataRequestsResource'], 'reload');
 
     fixture.detectChanges();
     await fixture.whenStable();
@@ -136,13 +135,13 @@ describe('DataRequestsProviderPage - component behavior', () => {
       },
     };
     mockRouter = {
-      navigate: jest.fn().mockResolvedValue(true),
-      currentNavigation: jest.fn().mockReturnValue(mockNavigation),
-    } as unknown as jest.Mocked<Router>;
+      navigate: vi.fn().mockResolvedValue(true),
+      currentNavigation: vi.fn().mockReturnValue(mockNavigation),
+    } as unknown as Mocked<Router>;
 
     TestBed.resetTestingModule();
 
-    const reloadSpy = jest.spyOn(component['dataRequestsResource'], 'reload');
+    const reloadSpy = vi.spyOn(component['dataRequestsResource'], 'reload');
 
     fixture.detectChanges();
     await fixture.whenStable();

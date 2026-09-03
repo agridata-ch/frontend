@@ -3,11 +3,12 @@ import { Router, RouterOutlet } from '@angular/router';
 import { faDatabase, faPlus } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/shared/data-request';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective } from '@/shared/i18n';
 import {
@@ -17,8 +18,6 @@ import {
 import { ButtonVariants } from '@/shared/ui/button';
 import { DataRequestProviderTableComponent } from '@/widgets/data-request-provider-table';
 import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-wizard';
-
-export const FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM = 'refresh';
 
 /**
  * Displays a table of existing data requests and integrates a side panel for creating or editing

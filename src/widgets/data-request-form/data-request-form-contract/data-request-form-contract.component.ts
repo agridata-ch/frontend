@@ -2,7 +2,7 @@ import { Component, computed, input, output } from '@angular/core';
 
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nDirective } from '@/shared/i18n';
-import { AlertType, AlertComponent } from '@/widgets/alert';
+import { AlertType, AlertComponent } from '@/shared/ui/alert';
 import { DataRequestContractSigningComponent } from '@/widgets/data-request-contract-signing';
 
 /**

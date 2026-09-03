@@ -19,7 +19,7 @@ import { AgridataStateService, DISMISSED_MIGRATIONS_KEY } from './agridata-state
 
 const createMockBackendVersionService = () =>
   ({
-    fetchBackendInfo: jest.fn().mockResolvedValue({ version: BE_VERSION }),
+    fetchBackendInfo: vi.fn().mockResolvedValue({ version: BE_VERSION }),
   }) satisfies Partial<BackendInfoService>;
 
 describe('AgridataStateService', () => {
@@ -66,7 +66,7 @@ describe('AgridataStateService', () => {
   });
 
   it('setActiveUid updates preferences and calls userService.updateUserPreferences', async () => {
-    userService.updateUserPreferences = jest.fn().mockReturnValue(Promise.resolve());
+    userService.updateUserPreferences = vi.fn().mockReturnValue(Promise.resolve());
 
     await service.setActiveUid('ABC');
 
@@ -108,7 +108,7 @@ describe('AgridataStateService', () => {
   });
 
   it('addConfirmedMiratedUids appends ids and calls updateUserPreferences', async () => {
-    userService.updateUserPreferences = jest.fn().mockReturnValue(Promise.resolve());
+    userService.updateUserPreferences = vi.fn().mockReturnValue(Promise.resolve());
 
     // ensure initial prefs empty
     authService.__testSignals.userInfo.set(mockUserInfo);

@@ -14,9 +14,9 @@ import { createResourceValueComputed } from '@/shared/lib/api.helper';
 import { AuthService } from '@/shared/lib/auth';
 import { contractAgbUrl } from '@/shared/lib/cms';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
+import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants, HrefTarget } from '@/shared/ui/button';
-import { AlertComponent, AlertType } from '@/widgets/alert';
 import { DataRequestContractPdfComponent } from '@/widgets/data-request-contract-pdf';
 
 import { DataRequestCompletionSigningStatusComponent } from './data-request-completion-signing-status';

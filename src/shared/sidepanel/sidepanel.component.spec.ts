@@ -43,7 +43,7 @@ describe('SidepanelComponent', () => {
   });
 
   it('should emit closeSidepanel when handleClose is called', () => {
-    const closeSpy = jest.spyOn(component.closeSidepanel, 'emit');
+    const closeSpy = vi.spyOn(component.closeSidepanel, 'emit');
     component.handleClose();
     expect(closeSpy).toHaveBeenCalled();
   });
@@ -60,7 +60,7 @@ describe('SidepanelComponent', () => {
     };
 
     it('should emit closeSidepanel when the panel is open', () => {
-      const closeSpy = jest.spyOn(component.closeSidepanel, 'emit');
+      const closeSpy = vi.spyOn(component.closeSidepanel, 'emit');
       componentRef.setInput('isOpen', true);
       fixture.detectChanges();
 
@@ -70,7 +70,7 @@ describe('SidepanelComponent', () => {
     });
 
     it('should not emit closeSidepanel when the panel is closed', () => {
-      const closeSpy = jest.spyOn(component.closeSidepanel, 'emit');
+      const closeSpy = vi.spyOn(component.closeSidepanel, 'emit');
 
       pressKey('Escape');
 
@@ -78,7 +78,7 @@ describe('SidepanelComponent', () => {
     });
 
     it('should not emit closeSidepanel when manual closing is prevented', () => {
-      const closeSpy = jest.spyOn(component.closeSidepanel, 'emit');
+      const closeSpy = vi.spyOn(component.closeSidepanel, 'emit');
       componentRef.setInput('isOpen', true);
       componentRef.setInput('preventManualClose', true);
       fixture.detectChanges();
@@ -89,7 +89,7 @@ describe('SidepanelComponent', () => {
     });
 
     it('should not emit closeSidepanel for other keys', () => {
-      const closeSpy = jest.spyOn(component.closeSidepanel, 'emit');
+      const closeSpy = vi.spyOn(component.closeSidepanel, 'emit');
       componentRef.setInput('isOpen', true);
       fixture.detectChanges();
 

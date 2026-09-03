@@ -313,16 +313,16 @@ export type MockCmsService = Mockify<CmsService>;
  */
 export function createMockCmsService(): MockCmsService {
   return {
-    fetchLandingPage: jest.fn().mockResolvedValue(mockCmsResponse),
-    fetchImprintPage: jest.fn().mockResolvedValue(mockCmsResponse),
-    fetchPrivacyPolicyPage: jest.fn().mockResolvedValue(mockCmsResponse),
-    fetchCmsPages: jest.fn().mockResolvedValue([mockCmsResponse]),
-    fetchCmsPage: jest.fn().mockResolvedValue(mockCmsResponse),
-    fetchOnboardingPage: jest.fn().mockResolvedValue(mockCmsResponse),
-    submitContactForm: jest.fn().mockResolvedValue(undefined),
-    submitOnboardingForm: jest.fn().mockResolvedValue(undefined),
-    fetchAgbPage: jest.fn().mockResolvedValue(mockCmsResponse),
-    fetchSlaPage: jest.fn().mockResolvedValue(mockCmsResponse),
+    fetchLandingPage: vi.fn().mockResolvedValue(mockCmsResponse),
+    fetchImprintPage: vi.fn().mockResolvedValue(mockCmsResponse),
+    fetchPrivacyPolicyPage: vi.fn().mockResolvedValue(mockCmsResponse),
+    fetchCmsPages: vi.fn().mockResolvedValue([mockCmsResponse]),
+    fetchCmsPage: vi.fn().mockResolvedValue(mockCmsResponse),
+    fetchOnboardingPage: vi.fn().mockResolvedValue(mockCmsResponse),
+    submitContactForm: vi.fn().mockResolvedValue(undefined),
+    submitOnboardingForm: vi.fn().mockResolvedValue(undefined),
+    fetchAgbPage: vi.fn().mockResolvedValue(mockCmsResponse),
+    fetchSlaPage: vi.fn().mockResolvedValue(mockCmsResponse),
   } satisfies MockCmsService;
 }
 

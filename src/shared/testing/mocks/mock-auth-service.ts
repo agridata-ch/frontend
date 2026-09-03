@@ -1,5 +1,3 @@
-/// <reference types="jest" />
-
 import { signal, WritableSignal } from '@angular/core';
 
 import { UidDto, UserInfoDto } from '@/entities/openapi';
@@ -61,15 +59,15 @@ export function createMockAuthService(): MockAuthService {
     isSupporter,
 
     // Methods
-    clearAuthorizedUidsCache: jest.fn(),
-    getUserEmail: jest.fn().mockReturnValue(''),
-    getUserFullName: jest.fn().mockReturnValue(''),
-    getUserId: jest.fn().mockReturnValue(undefined),
-    initializeAuth: jest.fn(),
-    initializeAuthorizedUids: jest.fn(),
-    login: jest.fn(),
-    logout: jest.fn(),
-    refreshUserInfo: jest.fn().mockResolvedValue(undefined),
+    clearAuthorizedUidsCache: vi.fn(),
+    getUserEmail: vi.fn().mockReturnValue(''),
+    getUserFullName: vi.fn().mockReturnValue(''),
+    getUserId: vi.fn().mockReturnValue(undefined),
+    initializeAuth: vi.fn(),
+    initializeAuthorizedUids: vi.fn(),
+    login: vi.fn(),
+    logout: vi.fn(),
+    refreshUserInfo: vi.fn().mockResolvedValue(undefined),
     // test-only writable signals
     __testSignals: {
       hasMobileNumber,

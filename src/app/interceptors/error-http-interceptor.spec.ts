@@ -10,11 +10,18 @@ import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
-import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ExceptionDto, ExceptionEnum } from '@/entities/openapi';
 import { DebugService } from '@/features/debug/debug.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ExternalServiceHttpError } from '@/shared/error/external-service-http-error';
+import {
+  AUTHORIZED_UIDS_ERROR_HANDLING,
+  enhanceHttpErrorWithMethod,
+  getErrorMethod,
+  hasMethod,
+  METHOD_ENHANCED,
+} from '@/shared/error/http-error-method';
 import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAgridataStateService,
@@ -22,23 +29,16 @@ import {
   DummyComponent,
 } from '@/shared/testing/mocks';
 
-import {
-  AUTHORIZED_UIDS_ERROR_HANDLING,
-  enhanceHttpErrorWithMethod,
-  errorHttpInterceptor,
-  getErrorMethod,
-  hasMethod,
-  METHOD_ENHANCED,
-} from './error-http-interceptor';
+import { errorHttpInterceptor } from './error-http-interceptor';
 
 const mockDebugService: Partial<DebugService> = {
-  addRequest: jest.fn(),
-  addResponse: jest.fn(),
+  addRequest: vi.fn(),
+  addResponse: vi.fn(),
 };
 
 const createMockAuthService = () =>
   ({
-    clearAuthorizedUidsCache: jest.fn(),
+    clearAuthorizedUidsCache: vi.fn(),
     isAuthenticated: signal<boolean>(false),
   }) satisfies Partial<AuthService>;
 
@@ -78,442 +78,467 @@ describe('errorHttpInterceptor', () => {
 
   afterEach(() => {
     httpMock.verify();
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  it('should track successful requests and responses', (done) => {
-    const testUrl = '/api/test';
+  it('should track successful requests and responses', () =>
+    new Promise<void>((done) => {
+      const testUrl = '/api/test';
 
-    httpClient.get(testUrl).subscribe({
-      next: () => {
-        expect(debugService.addRequest).toHaveBeenCalledWith(testUrl, 'GET');
-        expect(debugService.addResponse).toHaveBeenCalledWith(testUrl, 'GET', 200, 'OK', false);
-        done();
-      },
-    });
+      httpClient.get(testUrl).subscribe({
+        next: () => {
+          expect(debugService.addRequest).toHaveBeenCalledWith(testUrl, 'GET');
+          expect(debugService.addResponse).toHaveBeenCalledWith(testUrl, 'GET', 200, 'OK', false);
+          done();
+        },
+      });
 
-    const req = httpMock.expectOne(testUrl);
-    expect(req.request.method).toBe('GET');
-    req.flush({ data: 'test' });
-  });
+      const req = httpMock.expectOne(testUrl);
+      expect(req.request.method).toBe('GET');
+      req.flush({ data: 'test' });
+    }));
 
-  it('should track failed requests and responses with error status', (done) => {
-    const testUrl = '/api/error';
-    const errorStatus = 500;
-    const errorStatusText = 'Internal Server Error';
+  it('should track failed requests and responses with error status', () =>
+    new Promise<void>((done) => {
+      const testUrl = '/api/error';
+      const errorStatus = 500;
+      const errorStatusText = 'Internal Server Error';
 
-    httpClient.get(testUrl).subscribe({
-      error: (error: HttpErrorResponse) => {
-        expect(debugService.addRequest).toHaveBeenCalledWith(testUrl, 'GET');
-        expect(debugService.addResponse).toHaveBeenCalledWith(
-          testUrl,
-          'GET',
-          errorStatus,
-          errorStatusText,
-          true,
-          undefined,
-        );
-        expect(error.status).toBe(errorStatus);
-        done();
-      },
-    });
+      httpClient.get(testUrl).subscribe({
+        error: (error: HttpErrorResponse) => {
+          expect(debugService.addRequest).toHaveBeenCalledWith(testUrl, 'GET');
+          expect(debugService.addResponse).toHaveBeenCalledWith(
+            testUrl,
+            'GET',
+            errorStatus,
+            errorStatusText,
+            true,
+            undefined,
+          );
+          expect(error.status).toBe(errorStatus);
+          done();
+        },
+      });
 
-    const req = httpMock.expectOne(testUrl);
-    req.flush(null, { status: errorStatus, statusText: errorStatusText });
-  });
+      const req = httpMock.expectOne(testUrl);
+      req.flush(null, { status: errorStatus, statusText: errorStatusText });
+    }));
 
-  it('should enhance error with HTTP method', (done) => {
-    const testUrl = '/api/error';
+  it('should enhance error with HTTP method', () =>
+    new Promise<void>((done) => {
+      const testUrl = '/api/error';
 
-    httpClient.post(testUrl, {}).subscribe({
-      error: (error: HttpErrorResponse) => {
-        expect(hasMethod(error)).toBe(true);
-        if (hasMethod(error)) {
-          expect(error.method).toBe('POST');
+      httpClient.post(testUrl, {}).subscribe({
+        error: (error: HttpErrorResponse) => {
+          expect(hasMethod(error)).toBe(true);
+          if (hasMethod(error)) {
+            expect(error.method).toBe('POST');
+          }
+          done();
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(null, { status: 404, statusText: 'Not Found' });
+    }));
+
+  it('should extract requestId from backend ExceptionDto error', () =>
+    new Promise<void>((done) => {
+      const testUrl = '/api/error';
+      const requestId = 'test-request-id-123';
+      const backendError: ExceptionDto = {
+        requestId,
+        message: 'Test error message',
+      };
+
+      httpClient.get(testUrl).subscribe({
+        error: () => {
+          expect(debugService.addResponse).toHaveBeenCalledWith(
+            testUrl,
+            'GET',
+            400,
+            'Bad Request',
+            true,
+            requestId,
+          );
+          done();
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(backendError, { status: 400, statusText: 'Bad Request' });
+    }));
+
+  it('should handle error without requestId gracefully', () =>
+    new Promise<void>((done) => {
+      const testUrl = '/api/error';
+
+      httpClient.get(testUrl).subscribe({
+        error: () => {
+          expect(debugService.addResponse).toHaveBeenCalledWith(
+            testUrl,
+            'GET',
+            403,
+            'Forbidden',
+            true,
+            undefined,
+          );
+          done();
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush({ someOtherError: 'data' }, { status: 403, statusText: 'Forbidden' });
+    }));
+
+  it('should handle different HTTP methods correctly', () =>
+    new Promise<void>((done) => {
+      const testUrl = '/api/resource';
+
+      httpClient.delete(testUrl).subscribe({
+        error: (error: HttpErrorResponse) => {
+          expect(debugService.addRequest).toHaveBeenCalledWith(testUrl, 'DELETE');
+          if (hasMethod(error)) {
+            expect(error.method).toBe('DELETE');
+          }
+          done();
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(null, { status: 404, statusText: 'Not Found' });
+    }));
+
+  it('should handle error without statusText', () =>
+    new Promise<void>((done) => {
+      const testUrl = '/api/error';
+
+      httpClient.get(testUrl).subscribe({
+        error: () => {
+          expect(debugService.addResponse).toHaveBeenCalledWith(
+            testUrl,
+            'GET',
+            500,
+            'Unknown Error',
+            true,
+            undefined,
+          );
+          done();
+        },
+      });
+
+      const req = httpMock.expectOne(testUrl);
+      req.flush(null, { status: 500, statusText: '' });
+    }));
+
+  it('should track multiple requests independently', () =>
+    new Promise<void>((done) => {
+      const url1 = '/api/first';
+      const url2 = '/api/second';
+      let completedRequests = 0;
+
+      const checkCompletion = () => {
+        completedRequests++;
+        if (completedRequests === 2) {
+          expect(debugService.addRequest).toHaveBeenCalledTimes(2);
+          expect(debugService.addResponse).toHaveBeenCalledTimes(2);
+          expect(debugService.addRequest).toHaveBeenCalledWith(url1, 'GET');
+          expect(debugService.addRequest).toHaveBeenCalledWith(url2, 'POST');
+          done();
         }
-        done();
-      },
-    });
+      };
 
-    const req = httpMock.expectOne(testUrl);
-    req.flush(null, { status: 404, statusText: 'Not Found' });
-  });
+      httpClient.get(url1).subscribe({
+        next: checkCompletion,
+      });
 
-  it('should extract requestId from backend ExceptionDto error', (done) => {
-    const testUrl = '/api/error';
-    const requestId = 'test-request-id-123';
-    const backendError: ExceptionDto = {
-      requestId,
-      message: 'Test error message',
-    };
+      httpClient.post(url2, {}).subscribe({
+        next: checkCompletion,
+      });
 
-    httpClient.get(testUrl).subscribe({
-      error: () => {
-        expect(debugService.addResponse).toHaveBeenCalledWith(
-          testUrl,
-          'GET',
-          400,
-          'Bad Request',
-          true,
-          requestId,
-        );
-        done();
-      },
-    });
+      const req1 = httpMock.expectOne(url1);
+      req1.flush({});
 
-    const req = httpMock.expectOne(testUrl);
-    req.flush(backendError, { status: 400, statusText: 'Bad Request' });
-  });
-
-  it('should handle error without requestId gracefully', (done) => {
-    const testUrl = '/api/error';
-
-    httpClient.get(testUrl).subscribe({
-      error: () => {
-        expect(debugService.addResponse).toHaveBeenCalledWith(
-          testUrl,
-          'GET',
-          403,
-          'Forbidden',
-          true,
-          undefined,
-        );
-        done();
-      },
-    });
-
-    const req = httpMock.expectOne(testUrl);
-    req.flush({ someOtherError: 'data' }, { status: 403, statusText: 'Forbidden' });
-  });
-
-  it('should handle different HTTP methods correctly', (done) => {
-    const testUrl = '/api/resource';
-
-    httpClient.delete(testUrl).subscribe({
-      error: (error: HttpErrorResponse) => {
-        expect(debugService.addRequest).toHaveBeenCalledWith(testUrl, 'DELETE');
-        if (hasMethod(error)) {
-          expect(error.method).toBe('DELETE');
-        }
-        done();
-      },
-    });
-
-    const req = httpMock.expectOne(testUrl);
-    req.flush(null, { status: 404, statusText: 'Not Found' });
-  });
-
-  it('should handle error without statusText', (done) => {
-    const testUrl = '/api/error';
-
-    httpClient.get(testUrl).subscribe({
-      error: () => {
-        expect(debugService.addResponse).toHaveBeenCalledWith(
-          testUrl,
-          'GET',
-          500,
-          'Unknown Error',
-          true,
-          undefined,
-        );
-        done();
-      },
-    });
-
-    const req = httpMock.expectOne(testUrl);
-    req.flush(null, { status: 500, statusText: '' });
-  });
-
-  it('should track multiple requests independently', (done) => {
-    const url1 = '/api/first';
-    const url2 = '/api/second';
-    let completedRequests = 0;
-
-    const checkCompletion = () => {
-      completedRequests++;
-      if (completedRequests === 2) {
-        expect(debugService.addRequest).toHaveBeenCalledTimes(2);
-        expect(debugService.addResponse).toHaveBeenCalledTimes(2);
-        expect(debugService.addRequest).toHaveBeenCalledWith(url1, 'GET');
-        expect(debugService.addRequest).toHaveBeenCalledWith(url2, 'POST');
-        done();
-      }
-    };
-
-    httpClient.get(url1).subscribe({
-      next: checkCompletion,
-    });
-
-    httpClient.post(url2, {}).subscribe({
-      next: checkCompletion,
-    });
-
-    const req1 = httpMock.expectOne(url1);
-    req1.flush({});
-
-    const req2 = httpMock.expectOne(url2);
-    req2.flush({});
-  });
+      const req2 = httpMock.expectOne(url2);
+      req2.flush({});
+    }));
 
   describe('maintenance navigation', () => {
-    it('should navigate to maintenance and rethrow error when maintenance error occurs for authenticated user', (done) => {
-      const testUrl = '/api/test';
-      const maintenanceError: ExceptionDto = {
-        requestId: 'test-request-id',
-        type: ExceptionEnum.Maintenance,
-        message: 'System is under maintenance',
-      };
+    it('should navigate to maintenance and rethrow error when maintenance error occurs for authenticated user', () =>
+      new Promise<void>((done) => {
+        const testUrl = '/api/test';
+        const maintenanceError: ExceptionDto = {
+          requestId: 'test-request-id',
+          type: ExceptionEnum.Maintenance,
+          message: 'System is under maintenance',
+        };
 
-      authService.isAuthenticated.set(true);
-      const navigateSpy = jest.spyOn(router, 'navigate');
+        authService.isAuthenticated.set(true);
+        const navigateSpy = vi.spyOn(router, 'navigate');
 
-      httpClient.get(testUrl).subscribe({
-        next: () => {
-          done(new Error('Should rethrow error when navigating to maintenance'));
-        },
-        error: (error: HttpErrorResponse) => {
-          expect(error.status).toBe(503);
-          expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.MAINTENANCE]);
-          done();
-        },
-      });
+        httpClient.get(testUrl).subscribe({
+          next: () => {
+            throw new Error('Should rethrow error when navigating to maintenance');
+          },
+          error: (error: HttpErrorResponse) => {
+            expect(error.status).toBe(503);
+            expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.MAINTENANCE]);
+            done();
+          },
+        });
 
-      const req = httpMock.expectOne(testUrl);
-      req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
-    });
+        const req = httpMock.expectOne(testUrl);
+        req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
+      }));
 
-    it('should not navigate to maintenance when user is not authenticated', (done) => {
-      const testUrl = '/api/test';
-      const maintenanceError: ExceptionDto = {
-        requestId: 'test-request-id',
-        type: ExceptionEnum.Maintenance,
-        message: 'System is under maintenance',
-      };
+    it('should not navigate to maintenance when user is not authenticated', () =>
+      new Promise<void>((done) => {
+        const testUrl = '/api/test';
+        const maintenanceError: ExceptionDto = {
+          requestId: 'test-request-id',
+          type: ExceptionEnum.Maintenance,
+          message: 'System is under maintenance',
+        };
 
-      authService.isAuthenticated.set(false);
-      const navigateSpy = jest.spyOn(router, 'navigate');
+        authService.isAuthenticated.set(false);
+        const navigateSpy = vi.spyOn(router, 'navigate');
 
-      httpClient.get(testUrl).subscribe({
-        error: (error: HttpErrorResponse) => {
-          expect(error.status).toBe(503);
-          expect(navigateSpy).not.toHaveBeenCalled();
-          done();
-        },
-      });
+        httpClient.get(testUrl).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error.status).toBe(503);
+            expect(navigateSpy).not.toHaveBeenCalled();
+            done();
+          },
+        });
 
-      const req = httpMock.expectOne(testUrl);
-      req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
-    });
+        const req = httpMock.expectOne(testUrl);
+        req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
+      }));
 
-    it('should not navigate to maintenance when current route is in blacklist (home page)', (done) => {
-      const testUrl = '/api/test';
-      const maintenanceError: ExceptionDto = {
-        requestId: 'test-request-id',
-        type: ExceptionEnum.Maintenance,
-        message: 'System is under maintenance',
-      };
+    it('should not navigate to maintenance when current route is in blacklist (home page)', () =>
+      new Promise<void>((done) => {
+        const testUrl = '/api/test';
+        const maintenanceError: ExceptionDto = {
+          requestId: 'test-request-id',
+          type: ExceptionEnum.Maintenance,
+          message: 'System is under maintenance',
+        };
 
-      authService.isAuthenticated.set(true);
-      agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(`/`);
-      const navigateSpy = jest.spyOn(router, 'navigate');
+        authService.isAuthenticated.set(true);
+        agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(`/`);
+        const navigateSpy = vi.spyOn(router, 'navigate');
 
-      httpClient.get(testUrl).subscribe({
-        error: (error: HttpErrorResponse) => {
-          expect(error.status).toBe(503);
-          expect(navigateSpy).not.toHaveBeenCalled();
-          done();
-        },
-      });
+        httpClient.get(testUrl).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error.status).toBe(503);
+            expect(navigateSpy).not.toHaveBeenCalled();
+            done();
+          },
+        });
 
-      const req = httpMock.expectOne(testUrl);
-      req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
-    });
+        const req = httpMock.expectOne(testUrl);
+        req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
+      }));
 
-    it('should not navigate to maintenance when current route is privacy policy', (done) => {
-      const testUrl = '/api/test';
-      const maintenanceError: ExceptionDto = {
-        requestId: 'test-request-id',
-        type: ExceptionEnum.Maintenance,
-        message: 'System is under maintenance',
-      };
+    it('should not navigate to maintenance when current route is privacy policy', () =>
+      new Promise<void>((done) => {
+        const testUrl = '/api/test';
+        const maintenanceError: ExceptionDto = {
+          requestId: 'test-request-id',
+          type: ExceptionEnum.Maintenance,
+          message: 'System is under maintenance',
+        };
 
-      authService.isAuthenticated.set(true);
-      agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(
-        `/${ROUTE_PATHS.PRIVACY_POLICY_PATH}`,
-      );
+        authService.isAuthenticated.set(true);
+        agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(
+          `/${ROUTE_PATHS.PRIVACY_POLICY_PATH}`,
+        );
 
-      const navigateSpy = jest.spyOn(router, 'navigate');
+        const navigateSpy = vi.spyOn(router, 'navigate');
 
-      httpClient.get(testUrl).subscribe({
-        error: (error: HttpErrorResponse) => {
-          expect(error.status).toBe(503);
-          expect(navigateSpy).not.toHaveBeenCalled();
-          done();
-        },
-      });
+        httpClient.get(testUrl).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error.status).toBe(503);
+            expect(navigateSpy).not.toHaveBeenCalled();
+            done();
+          },
+        });
 
-      const req = httpMock.expectOne(testUrl);
-      req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
-    });
+        const req = httpMock.expectOne(testUrl);
+        req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
+      }));
 
-    it('should not navigate to maintenance when current route is already maintenance page', (done) => {
-      const testUrl = '/api/test';
-      const maintenanceError: ExceptionDto = {
-        requestId: 'test-request-id',
-        type: ExceptionEnum.Maintenance,
-        message: 'System is under maintenance',
-      };
+    it('should not navigate to maintenance when current route is already maintenance page', () =>
+      new Promise<void>((done) => {
+        const testUrl = '/api/test';
+        const maintenanceError: ExceptionDto = {
+          requestId: 'test-request-id',
+          type: ExceptionEnum.Maintenance,
+          message: 'System is under maintenance',
+        };
 
-      authService.isAuthenticated.set(true);
-      agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(
-        `/${ROUTE_PATHS.MAINTENANCE}`,
-      );
+        authService.isAuthenticated.set(true);
+        agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(
+          `/${ROUTE_PATHS.MAINTENANCE}`,
+        );
 
-      const navigateSpy = jest.spyOn(router, 'navigate');
+        const navigateSpy = vi.spyOn(router, 'navigate');
 
-      httpClient.get(testUrl).subscribe({
-        error: (error: HttpErrorResponse) => {
-          expect(error.status).toBe(503);
-          expect(navigateSpy).not.toHaveBeenCalled();
-          done();
-        },
-      });
+        httpClient.get(testUrl).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error.status).toBe(503);
+            expect(navigateSpy).not.toHaveBeenCalled();
+            done();
+          },
+        });
 
-      const req = httpMock.expectOne(testUrl);
-      req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
-    });
+        const req = httpMock.expectOne(testUrl);
+        req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
+      }));
 
-    it('should not navigate to maintenance when error is not maintenance type', (done) => {
-      const testUrl = '/api/test';
-      const otherError: ExceptionDto = {
-        requestId: 'test-request-id',
-        type: ExceptionEnum.Generic,
-        message: 'Resource not found',
-      };
+    it('should not navigate to maintenance when error is not maintenance type', () =>
+      new Promise<void>((done) => {
+        const testUrl = '/api/test';
+        const otherError: ExceptionDto = {
+          requestId: 'test-request-id',
+          type: ExceptionEnum.Generic,
+          message: 'Resource not found',
+        };
 
-      authService.isAuthenticated.set(true);
+        authService.isAuthenticated.set(true);
 
-      const navigateSpy = jest.spyOn(router, 'navigate');
+        const navigateSpy = vi.spyOn(router, 'navigate');
 
-      httpClient.get(testUrl).subscribe({
-        error: (error: HttpErrorResponse) => {
-          expect(error.status).toBe(404);
-          expect(navigateSpy).not.toHaveBeenCalled();
-          done();
-        },
-      });
+        httpClient.get(testUrl).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error.status).toBe(404);
+            expect(navigateSpy).not.toHaveBeenCalled();
+            done();
+          },
+        });
 
-      const req = httpMock.expectOne(testUrl);
-      req.flush(otherError, { status: 404, statusText: 'Not Found' });
-    });
+        const req = httpMock.expectOne(testUrl);
+        req.flush(otherError, { status: 404, statusText: 'Not Found' });
+      }));
 
-    it('should not navigate to maintenance when error is not ExceptionDto', (done) => {
-      const testUrl = '/api/test';
-      const plainError = { error: 'Something went wrong' };
+    it('should not navigate to maintenance when error is not ExceptionDto', () =>
+      new Promise<void>((done) => {
+        const testUrl = '/api/test';
+        const plainError = { error: 'Something went wrong' };
 
-      authService.isAuthenticated.set(true);
+        authService.isAuthenticated.set(true);
 
-      const navigateSpy = jest.spyOn(router, 'navigate');
+        const navigateSpy = vi.spyOn(router, 'navigate');
 
-      httpClient.get(testUrl).subscribe({
-        error: (error: HttpErrorResponse) => {
-          expect(error.status).toBe(500);
-          expect(navigateSpy).not.toHaveBeenCalled();
-          done();
-        },
-      });
+        httpClient.get(testUrl).subscribe({
+          error: (error: HttpErrorResponse) => {
+            expect(error.status).toBe(500);
+            expect(navigateSpy).not.toHaveBeenCalled();
+            done();
+          },
+        });
 
-      const req = httpMock.expectOne(testUrl);
-      req.flush(plainError, { status: 500, statusText: 'Internal Server Error' });
-    });
+        const req = httpMock.expectOne(testUrl);
+        req.flush(plainError, { status: 500, statusText: 'Internal Server Error' });
+      }));
 
-    it('should navigate to maintenance and rethrow error when currentRoute is null', (done) => {
-      const testUrl = '/api/test';
-      const maintenanceError: ExceptionDto = {
-        requestId: 'test-request-id',
-        type: ExceptionEnum.Maintenance,
-        message: 'System is under maintenance',
-      };
+    it('should navigate to maintenance and rethrow error when currentRoute is null', () =>
+      new Promise<void>((done) => {
+        const testUrl = '/api/test';
+        const maintenanceError: ExceptionDto = {
+          requestId: 'test-request-id',
+          type: ExceptionEnum.Maintenance,
+          message: 'System is under maintenance',
+        };
 
-      authService.isAuthenticated.set(true);
-      agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(undefined);
-      const navigateSpy = jest.spyOn(router, 'navigate');
+        authService.isAuthenticated.set(true);
+        agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(undefined);
+        const navigateSpy = vi.spyOn(router, 'navigate');
 
-      httpClient.get(testUrl).subscribe({
-        next: () => {
-          done(new Error('Should rethrow error when navigating to maintenance'));
-        },
-        error: (error: HttpErrorResponse) => {
-          expect(error.status).toBe(503);
-          expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.MAINTENANCE]);
-          done();
-        },
-      });
+        httpClient.get(testUrl).subscribe({
+          next: () => {
+            throw new Error('Should rethrow error when navigating to maintenance');
+          },
+          error: (error: HttpErrorResponse) => {
+            expect(error.status).toBe(503);
+            expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.MAINTENANCE]);
+            done();
+          },
+        });
 
-      const req = httpMock.expectOne(testUrl);
-      req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
-    });
+        const req = httpMock.expectOne(testUrl);
+        req.flush(maintenanceError, { status: 503, statusText: 'Service Unavailable' });
+      }));
   });
 
   describe('authorized UIDs error handling', () => {
     const testUrl = '/api/authorized-uids';
     const context = new HttpContext().set(AUTHORIZED_UIDS_ERROR_HANDLING, true);
 
-    it('should throw ExternalServiceHttpError and clear cache on 504', (done) => {
-      const externalServiceError: ExceptionDto = {
-        requestId: 'test-request-id',
-        type: ExceptionEnum.ExternalServiceError,
-        message: 'External Service Error',
-      };
+    it('should throw ExternalServiceHttpError and clear cache on 504', () =>
+      new Promise<void>((done) => {
+        const externalServiceError: ExceptionDto = {
+          requestId: 'test-request-id',
+          type: ExceptionEnum.ExternalServiceError,
+          message: 'External Service Error',
+        };
 
-      httpClient.get(testUrl, { context }).subscribe({
-        next: () => done(new Error('Should not complete on 504')),
-        error: (error: unknown) => {
-          expect(error).toBeInstanceOf(ExternalServiceHttpError);
-          expect(authService.clearAuthorizedUidsCache).toHaveBeenCalled();
-          done();
-        },
-      });
+        httpClient.get(testUrl, { context }).subscribe({
+          next: () => {
+            throw new Error('Should not complete on 504');
+          },
+          error: (error: unknown) => {
+            expect(error).toBeInstanceOf(ExternalServiceHttpError);
+            expect(authService.clearAuthorizedUidsCache).toHaveBeenCalled();
+            done();
+          },
+        });
 
-      const req = httpMock.expectOne(testUrl);
-      req.flush(externalServiceError, { status: 504, statusText: 'Gateway Timeout' });
-    });
+        const req = httpMock.expectOne(testUrl);
+        req.flush(externalServiceError, { status: 504, statusText: 'Gateway Timeout' });
+      }));
 
-    it('should return empty array, set uidMissing and clear cache on 502', (done) => {
-      const uidMissingError: ExceptionDto = {
-        requestId: 'test-request-id',
-        type: ExceptionEnum.UidMissing,
-        message: 'UID Missing',
-      };
+    it('should return empty array, set uidMissing and clear cache on 502', () =>
+      new Promise<void>((done) => {
+        const uidMissingError: ExceptionDto = {
+          requestId: 'test-request-id',
+          type: ExceptionEnum.UidMissing,
+          message: 'UID Missing',
+        };
 
-      httpClient.get<unknown[]>(testUrl, { context }).subscribe({
-        next: (response) => {
-          expect(response).toEqual([]);
-          expect(agridataStateService.setUidMissing).toHaveBeenCalledWith(true);
-          expect(authService.clearAuthorizedUidsCache).toHaveBeenCalled();
-          done();
-        },
-        error: () => done(new Error('Should not error on 502')),
-      });
+        httpClient.get<unknown[]>(testUrl, { context }).subscribe({
+          next: (response) => {
+            expect(response).toEqual([]);
+            expect(agridataStateService.setUidMissing).toHaveBeenCalledWith(true);
+            expect(authService.clearAuthorizedUidsCache).toHaveBeenCalled();
+            done();
+          },
+          error: () => {
+            throw new Error('Should not error on 502');
+          },
+        });
 
-      const req = httpMock.expectOne(testUrl);
-      req.flush(uidMissingError, { status: 502, statusText: 'Bad Gateway' });
-    });
+        const req = httpMock.expectOne(testUrl);
+        req.flush(uidMissingError, { status: 502, statusText: 'Bad Gateway' });
+      }));
 
-    it('should treat 502/504 as normal errors when context token is not set', (done) => {
-      httpClient.get(testUrl).subscribe({
-        next: () => done(new Error('Should not complete on 504 without context')),
-        error: (error: unknown) => {
-          expect(error).toBeInstanceOf(HttpErrorResponse);
-          expect(error).not.toBeInstanceOf(ExternalServiceHttpError);
-          expect(authService.clearAuthorizedUidsCache).not.toHaveBeenCalled();
-          done();
-        },
-      });
+    it('should treat 502/504 as normal errors when context token is not set', () =>
+      new Promise<void>((done) => {
+        httpClient.get(testUrl).subscribe({
+          next: () => {
+            throw new Error('Should not complete on 504 without context');
+          },
+          error: (error: unknown) => {
+            expect(error).toBeInstanceOf(HttpErrorResponse);
+            expect(error).not.toBeInstanceOf(ExternalServiceHttpError);
+            expect(authService.clearAuthorizedUidsCache).not.toHaveBeenCalled();
+            done();
+          },
+        });
 
-      const req = httpMock.expectOne(testUrl);
-      req.flush('Gateway Timeout', { status: 504, statusText: 'Gateway Timeout' });
-    });
+        const req = httpMock.expectOne(testUrl);
+        req.flush('Gateway Timeout', { status: 504, statusText: 'Gateway Timeout' });
+      }));
   });
 });
 

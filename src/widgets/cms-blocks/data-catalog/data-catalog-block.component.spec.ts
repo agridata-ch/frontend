@@ -2,9 +2,9 @@ import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { PublicDataProductDto } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import {
   createMockDataProductService,
@@ -19,10 +19,10 @@ import { DataCatalogBlockComponent } from './data-catalog-block.component';
 class MockIntersectionObserver {
   public static readonly instances: MockIntersectionObserver[] = [];
 
-  readonly observe = jest.fn();
-  readonly unobserve = jest.fn();
-  readonly disconnect = jest.fn();
-  readonly takeRecords = jest.fn();
+  readonly observe = vi.fn();
+  readonly unobserve = vi.fn();
+  readonly disconnect = vi.fn();
+  readonly takeRecords = vi.fn();
 
   constructor(private readonly callback: IntersectionObserverCallback) {
     MockIntersectionObserver.instances.push(this);

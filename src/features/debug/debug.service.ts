@@ -1,9 +1,9 @@
 import { computed, effect, inject, OnDestroy, Service, signal, untracked } from '@angular/core';
 
-import { ErrorDto } from '@/app/error/error-dto';
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DebugLogEntry, DebugLogSource, DebugLogStatus } from '@/features/debug/debug.model';
+import { ErrorDto } from '@/shared/error/error-dto';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 
 export interface RequestInfo {
   url: string;

@@ -4,13 +4,13 @@ import { Router } from '@angular/router';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { TitleService } from '@/app/title.service';
 import { CmsService, StrapiSingleTypeResponse } from '@/entities/cms';
-import { BlockRendererComponent } from '@/features/cms-blocks';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
+import { TitleService } from '@/shared/lib/title.service';
+import { BlockRendererComponent } from '@/widgets/cms-blocks';
 import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
 
 /**

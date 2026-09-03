@@ -1,6 +1,6 @@
 import { TranslocoTestingModule, TranslocoTestingOptions } from '@jsverse/transloco';
 
-import { LANG_STORAGE_KEY } from '@/app/i18n.config';
+import { LANG_STORAGE_KEY } from '@/shared/i18n/i18n.config';
 
 export function createTranslocoTestingModule(options: TranslocoTestingOptions = {}) {
   return TranslocoTestingModule.forRoot({

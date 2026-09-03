@@ -23,7 +23,7 @@ describe('SectionContactFormBlockComponent', () => {
         { provide: I18nService, useValue: mockI18nService },
         {
           provide: CmsService,
-          useValue: { submitContactForm: jest.fn().mockResolvedValue(Promise.resolve()) },
+          useValue: { submitContactForm: vi.fn().mockResolvedValue(Promise.resolve()) },
         },
       ],
     }).compileComponents();
@@ -68,7 +68,7 @@ describe('SectionContactFormBlockComponent', () => {
   });
 
   it('should show error messages using the i18n service', () => {
-    jest.spyOn(mockI18nService, 'translate');
+    vi.spyOn(mockI18nService, 'translate');
 
     const firstNameControl = component['contactForm'].get('firstName') as FormControlWithMessages;
     const lastNameControl = component['contactForm'].get('lastName') as FormControlWithMessages;

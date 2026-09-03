@@ -2,16 +2,17 @@ import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import type { Mocked } from 'vitest';
 
-import { AnalyticsService } from '@/app/analytics.service';
-import { ErrorDto } from '@/app/error/error-dto';
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { ConsentRequestAggregationSummaryDto } from '@/entities/openapi';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
+import { ErrorDto } from '@/shared/error/error-dto';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
+import { AnalyticsService } from '@/shared/lib/analytics.service';
 import { AuthService } from '@/shared/lib/auth';
 import {
   createMockActivatedRoute,
@@ -39,7 +40,7 @@ import {
 describe('ConsentRequestProducerPage - component behavior', () => {
   let fixture: ComponentFixture<ConsentRequestProducerPage>;
   let component: ConsentRequestProducerPage;
-  let mockRouter: jest.Mocked<Router>;
+  let mockRouter: Mocked<Router>;
   let metadataService: MockMasterDataService;
   let agridataStateService: MockAgridataStateService;
   let i18nService: MockI18nService;
@@ -54,11 +55,11 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   beforeEach(async () => {
     const routerEvents$ = new Subject<NavigationEnd>();
     mockRouter = {
-      navigate: jest.fn().mockResolvedValue(true),
-      currentNavigation: jest.fn().mockReturnValue(null),
+      navigate: vi.fn().mockResolvedValue(true),
+      currentNavigation: vi.fn().mockReturnValue(null),
       url: '/consent-request-producer',
       events: routerEvents$.asObservable(),
-    } as unknown as jest.Mocked<Router>;
+    } as unknown as Mocked<Router>;
 
     consentRequestService = createMockConsentRequestService();
     dataRequestService = createMockDataRequestService();
@@ -93,7 +94,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   });
 
   it('routes to the aggregation on selecting a request', () => {
-    const navSpy = jest.spyOn(mockRouter, 'navigate');
+    const navSpy = vi.spyOn(mockRouter, 'navigate');
     const req = mockConsentRequestAggregations[0];
 
     component['navigateToRequest'](req);
@@ -104,7 +105,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   });
 
   it('does not route when the aggregation has no id', () => {
-    const navSpy = jest.spyOn(mockRouter, 'navigate');
+    const navSpy = vi.spyOn(mockRouter, 'navigate');
 
     component['navigateToRequest'](null);
 
@@ -132,10 +133,10 @@ describe('ConsentRequestProducerPage - component behavior', () => {
 
   describe('migration info handling', () => {
     it('should show migration alerts for migrated requests', () => {
-      jest.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(false);
-      jest
-        .spyOn(component.consentRequestResource, 'value')
-        .mockReturnValue(mockConsentRequestAggregations);
+      vi.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(false);
+      vi.spyOn(component.consentRequestResource, 'value').mockReturnValue(
+        mockConsentRequestAggregations,
+      );
 
       fixture.detectChanges();
 
@@ -145,14 +146,11 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     });
 
     it('should add confirmed migration when closing mgiration info', () => {
-      jest.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(false);
-      jest
-        .spyOn(component.consentRequestResource, 'value')
-        .mockReturnValue(mockConsentRequestAggregations);
-      const addConfirmedMiratedUidsSpy = jest.spyOn(
-        agridataStateService,
-        'addConfirmedMigratedUids',
+      vi.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(false);
+      vi.spyOn(component.consentRequestResource, 'value').mockReturnValue(
+        mockConsentRequestAggregations,
       );
+      const addConfirmedMiratedUidsSpy = vi.spyOn(agridataStateService, 'addConfirmedMigratedUids');
 
       fixture.detectChanges();
 
@@ -168,7 +166,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
       const nonMigratedRequests = mockConsentRequestAggregations.filter(
         (req) => !req.showStateAsMigrated,
       );
-      jest.spyOn(component.consentRequestResource, 'value').mockReturnValue(nonMigratedRequests);
+      vi.spyOn(component.consentRequestResource, 'value').mockReturnValue(nonMigratedRequests);
       fixture.detectChanges();
 
       expect(component.visibleMigratedRequests()).toHaveLength(0);
@@ -197,7 +195,7 @@ describe('ConsentRequestProducerPage - component behavior', () => {
       activeRoute.snapshot.queryParamMap = convertToParamMap({ redirect_uri: redirectUri });
       // getAllErrors must return a signal so the computed hasErrors does not throw
       errorService.getAllErrors.mockReturnValue(signal([]));
-      const replaceStateSpy = jest.spyOn(globalThis.history, 'replaceState');
+      const replaceStateSpy = vi.spyOn(globalThis.history, 'replaceState');
 
       const redirectFixture = TestBed.createComponent(ConsentRequestProducerPage);
       redirectFixture.detectChanges();

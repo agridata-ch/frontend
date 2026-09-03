@@ -38,14 +38,14 @@ describe('TableHeaderCellComponent', () => {
     });
 
     it('should emit sort direction change when clicking sortable column', () => {
-      const sortSpy = jest.spyOn(component.sortChange, 'emit');
+      const sortSpy = vi.spyOn(component.sortChange, 'emit');
 
       component['toggleColumnSort']();
       expect(sortSpy).toHaveBeenCalledWith(SortDirections.DESC);
     });
 
     it('should toggle between ASC and DESC sort directions', () => {
-      const sortSpy = jest.spyOn(component.sortChange, 'emit');
+      const sortSpy = vi.spyOn(component.sortChange, 'emit');
 
       fixture.componentRef.setInput('sortDirection', SortDirections.DESC);
       component['toggleColumnSort']();
@@ -53,7 +53,7 @@ describe('TableHeaderCellComponent', () => {
     });
 
     it('should not emit sort change for non-sortable columns', () => {
-      const sortSpy = jest.spyOn(component.sortChange, 'emit');
+      const sortSpy = vi.spyOn(component.sortChange, 'emit');
       testColumn.sortable = false;
       fixture.componentRef.setInput('columnDefinition', testColumn);
 

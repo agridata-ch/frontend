@@ -5,8 +5,8 @@ import { TestBed } from '@angular/core/testing';
 import { Router, NavigationEnd, Scroll as RouterScroll, provideRouter } from '@angular/router';
 import { Subject } from 'rxjs';
 
-import { AnalyticsService } from '@/app/analytics.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { AnalyticsService } from '@/shared/lib/analytics.service';
 import { createMockAgridataStateService, createMockAnalyticsService } from '@/shared/testing/mocks';
 
 import { AppComponent } from './app.component';
@@ -17,7 +17,7 @@ describe('AppComponent', () => {
   let mockViewportScroller: Partial<ViewportScroller>;
   let routerEvents: Subject<RouterScroll>;
   beforeEach(async () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
 
     routerEvents = new Subject<RouterScroll>();
 
@@ -26,7 +26,7 @@ describe('AppComponent', () => {
     };
 
     mockViewportScroller = {
-      scrollToAnchor: jest.fn(),
+      scrollToAnchor: vi.fn(),
     };
 
     await TestBed.configureTestingModule({
@@ -48,9 +48,9 @@ describe('AppComponent', () => {
   });
 
   afterEach(() => {
-    jest.useRealTimers();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.useRealTimers();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('should create the app', () => {
@@ -77,11 +77,11 @@ describe('AppComponent', () => {
 
   it('should do nothing if element with anchor ID is not found', () => {
     // Make getElementById return null to simulate missing element
-    jest.spyOn(document, 'getElementById').mockReturnValue(null);
+    vi.spyOn(document, 'getElementById').mockReturnValue(null);
 
     component['currentAnchor'].set('nonexistent-section');
 
-    jest.advanceTimersByTime(150);
+    vi.advanceTimersByTime(150);
 
     expect(mockViewportScroller.scrollToAnchor).not.toHaveBeenCalled();
   });
@@ -93,11 +93,11 @@ describe('AppComponent', () => {
 
     // Create a mock element with a non-zero top position
     const mockElement = document.createElement('div');
-    jest.spyOn(document, 'getElementById').mockReturnValue(mockElement);
+    vi.spyOn(document, 'getElementById').mockReturnValue(mockElement);
 
     // Set up the anchor and trigger a timeout
     component['currentAnchor'].set('test-section');
-    jest.advanceTimersByTime(150);
+    vi.advanceTimersByTime(150);
 
     // Verify that scrollToAnchor was called at least once
     expect(mockViewportScroller.scrollToAnchor).toHaveBeenCalledWith('test-section');
@@ -106,13 +106,13 @@ describe('AppComponent', () => {
   it('should test requestAnimationFrame behavior with direct function call', () => {
     // Create a mock element that will return different positions on each call
     const mockElement = document.createElement('div');
-    const getBoundingClientRectMock = jest
+    const getBoundingClientRectMock = vi
       .fn()
       .mockReturnValueOnce({ top: 100 } as DOMRect) // First call: unsuccessful (top > 1)
       .mockReturnValueOnce({ top: 0.5 } as DOMRect); // Second call: successful (top < 1)
 
     mockElement.getBoundingClientRect = getBoundingClientRectMock;
-    jest.spyOn(document, 'getElementById').mockReturnValue(mockElement);
+    vi.spyOn(document, 'getElementById').mockReturnValue(mockElement);
 
     // We need to directly access the safeScrollToAnchor function
     // Create a helper function that mimics the behavior of the internal function
@@ -133,7 +133,7 @@ describe('AppComponent', () => {
     }
 
     // Reset any previous calls
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Call our test function directly
     testScrollToAnchor('test-section');
@@ -151,11 +151,11 @@ describe('AppComponent', () => {
     const testComponent = fixture.componentInstance;
 
     // Mock document.readyState to return 'loading'
-    jest.spyOn(document, 'readyState', 'get').mockReturnValue('loading');
+    vi.spyOn(document, 'readyState', 'get').mockReturnValue('loading');
 
     // Mock addEventListener to track calls
-    const addEventListenerMock = jest.fn();
-    jest.spyOn(globalThis, 'addEventListener').mockImplementation(addEventListenerMock);
+    const addEventListenerMock = vi.fn();
+    vi.spyOn(globalThis, 'addEventListener').mockImplementation(addEventListenerMock);
 
     // Trigger the effect
     testComponent['currentAnchor'].set('test-section');
@@ -176,14 +176,14 @@ describe('AppComponent', () => {
       get: () => 'complete',
     });
 
-    jest.spyOn(document, 'getElementById').mockReturnValue(mockElement);
-    jest.spyOn(mockElement, 'getBoundingClientRect').mockReturnValue({ top: 0 } as DOMRect);
+    vi.spyOn(document, 'getElementById').mockReturnValue(mockElement);
+    vi.spyOn(mockElement, 'getBoundingClientRect').mockReturnValue({ top: 0 } as DOMRect);
 
     // Trigger the effect by setting the anchor
     component['currentAnchor'].set(testAnchor);
 
     // Fast-forward timer to trigger the 300ms timeout for already loaded pages
-    jest.advanceTimersByTime(300);
+    vi.advanceTimersByTime(300);
 
     // Check that we tried to scroll at 300ms
     expect(mockViewportScroller.scrollToAnchor).toHaveBeenCalledWith(testAnchor);
@@ -223,21 +223,21 @@ describe('AppComponent', () => {
     // Mock document.readyState
     Object.defineProperty(document, 'readyState', {
       configurable: true,
-      get: jest.fn().mockReturnValue('loading'),
+      get: vi.fn().mockReturnValue('loading'),
     });
 
     // Set up spies
-    const addSpy = jest.spyOn(globalThis, 'addEventListener');
-    const removeSpy = jest.spyOn(globalThis, 'removeEventListener');
+    const addSpy = vi.spyOn(globalThis, 'addEventListener');
+    const removeSpy = vi.spyOn(globalThis, 'removeEventListener');
 
     // Trigger the effect
     instance['currentAnchor'].set('test-section');
     fixture.detectChanges();
 
     // Mock the cleanup function execution
-    const mockCleanup = jest.fn().mockImplementation(() => {
+    const mockCleanup = vi.fn().mockImplementation(() => {
       // Manually call removeEventListener with a mock function
-      globalThis.removeEventListener('load', jest.fn());
+      globalThis.removeEventListener('load', vi.fn());
     });
 
     // Force call our mock cleanup
@@ -260,20 +260,20 @@ describe('AppComponent', () => {
     const testComponent = fixture.componentInstance;
 
     // Mock document.readyState to be 'loading'
-    jest.spyOn(document, 'readyState', 'get').mockReturnValue('loading');
+    vi.spyOn(document, 'readyState', 'get').mockReturnValue('loading');
 
     // Mocks for addEventListener/removeEventListener
-    const loadHandler = jest.fn();
-    const addEventListenerMock = jest.fn((event, handler) => {
+    const loadHandler = vi.fn();
+    const addEventListenerMock = vi.fn((event, handler) => {
       if (event === 'load') {
         loadHandler.mockImplementation(handler);
       }
     });
-    const removeEventListenerMock = jest.fn();
+    const removeEventListenerMock = vi.fn();
 
     // Install mocks
-    jest.spyOn(globalThis, 'addEventListener').mockImplementation(addEventListenerMock);
-    jest.spyOn(globalThis, 'removeEventListener').mockImplementation(removeEventListenerMock);
+    vi.spyOn(globalThis, 'addEventListener').mockImplementation(addEventListenerMock);
+    vi.spyOn(globalThis, 'removeEventListener').mockImplementation(removeEventListenerMock);
 
     try {
       // Trigger the effect
@@ -298,7 +298,7 @@ describe('AppComponent', () => {
         expect(removeEventListenerMock).toHaveBeenCalledWith('load', registeredHandler);
       }
     } finally {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     }
   });
 
@@ -307,17 +307,17 @@ describe('AppComponent', () => {
     const testAnchor = 'test-section';
     const mockElement = document.createElement('div');
 
-    jest.spyOn(document, 'getElementById').mockReturnValue(mockElement);
-    jest.spyOn(mockElement, 'getBoundingClientRect').mockReturnValue({ top: 0 } as DOMRect);
+    vi.spyOn(document, 'getElementById').mockReturnValue(mockElement);
+    vi.spyOn(mockElement, 'getBoundingClientRect').mockReturnValue({ top: 0 } as DOMRect);
 
     // Trigger the effect by setting the anchor
     component['currentAnchor'].set(testAnchor);
 
     // Reset mock to clear previous calls
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Fast-forward timer to trigger the 1000ms timeout (final attempt)
-    jest.advanceTimersByTime(1000);
+    vi.advanceTimersByTime(1000);
 
     // Check that we tried to scroll at 1000ms
     expect(mockViewportScroller.scrollToAnchor).toHaveBeenCalledWith(testAnchor);

@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import type { Mock } from 'vitest';
 
 import { I18nService } from '@/shared/i18n';
 import { createMockI18nService } from '@/shared/testing/mocks';
@@ -7,10 +8,10 @@ import { createMockI18nService } from '@/shared/testing/mocks';
 import { InfiniteScrollComponent } from './infinite-scroll.component';
 
 interface MockIntersectionObserver {
-  readonly observe: jest.Mock;
-  readonly unobserve: jest.Mock;
-  readonly disconnect: jest.Mock;
-  readonly takeRecords: jest.Mock;
+  readonly observe: Mock;
+  readonly unobserve: Mock;
+  readonly disconnect: Mock;
+  readonly takeRecords: Mock;
   readonly trigger: (isIntersecting: boolean) => void;
 }
 
@@ -20,10 +21,10 @@ function createMockIntersectionObserver(
   callback: IntersectionObserverCallback,
 ): MockIntersectionObserver {
   const mock: MockIntersectionObserver = {
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-    disconnect: jest.fn(),
-    takeRecords: jest.fn(),
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn(),
+    takeRecords: vi.fn(),
     trigger: (isIntersecting) =>
       callback(
         [{ isIntersecting } as IntersectionObserverEntry],
@@ -64,7 +65,7 @@ describe('InfiniteScrollComponent', () => {
 
   beforeEach(async () => {
     mockObservers.length = 0;
-    globalThis.IntersectionObserver = jest.fn(
+    globalThis.IntersectionObserver = vi.fn(
       createMockIntersectionObserver,
     ) as unknown as typeof IntersectionObserver;
 

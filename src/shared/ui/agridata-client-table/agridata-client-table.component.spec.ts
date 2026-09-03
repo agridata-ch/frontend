@@ -452,7 +452,7 @@ describe('AgridataClientTableComponent', () => {
   });
 
   it('should log error when no column definition is found for sort param', () => {
-    console.error = jest.fn();
+    console.error = vi.fn();
 
     component.resourceQueryDto.set({
       searchTerm: '',
@@ -488,7 +488,7 @@ describe('AgridataClientTableComponent', () => {
     // Reset the component with new metadata
     fixture.componentRef.setInput('tableMetadata', templateMetadata);
 
-    console.error = jest.fn();
+    console.error = vi.fn();
 
     component.resourceQueryDto.set({
       searchTerm: '',

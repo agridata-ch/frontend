@@ -31,11 +31,11 @@ function createMockApiService() {
     set defaultHeaders(h: HttpHeaders) {
       headers = h;
     },
-    createDataProductDraft: jest.fn().mockReturnValue(of(mockProduct)),
-    getDataProductsPaginated: jest.fn().mockReturnValue(of(mockPageApiResponse)),
-    setDataProductStatus: jest.fn().mockReturnValue(of(mockProduct)),
-    getDataProduct: jest.fn().mockReturnValue(of(mockProduct)),
-    updateDataProductDraft: jest.fn().mockReturnValue(of(mockProduct)),
+    createDataProductDraft: vi.fn().mockReturnValue(of(mockProduct)),
+    getDataProductsPaginated: vi.fn().mockReturnValue(of(mockPageApiResponse)),
+    setDataProductStatus: vi.fn().mockReturnValue(of(mockProduct)),
+    getDataProduct: vi.fn().mockReturnValue(of(mockProduct)),
+    updateDataProductDraft: vi.fn().mockReturnValue(of(mockProduct)),
   };
 }
 

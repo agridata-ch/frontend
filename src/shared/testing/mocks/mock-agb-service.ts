@@ -1,5 +1,3 @@
-/// <reference types="jest" />
-
 import { AgbService } from '@/entities/api';
 import { AgbRevisionDto } from '@/entities/openapi';
 import { Mockify } from '@/shared/testing/mocks';
@@ -25,7 +23,7 @@ export type MockAgbService = Mockify<AgbService>;
  */
 export function createMockAgbService(): MockAgbService {
   return {
-    acceptAgbs: jest.fn().mockResolvedValue(undefined),
-    fetchAgbs: jest.fn().mockResolvedValue(mockAgbRevision),
+    acceptAgbs: vi.fn().mockResolvedValue(undefined),
+    fetchAgbs: vi.fn().mockResolvedValue(mockAgbRevision),
   } satisfies MockAgbService;
 }

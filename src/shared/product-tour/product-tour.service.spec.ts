@@ -6,11 +6,16 @@ import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
 
 import { ProductTourService } from './product-tour.service';
 
-const mockDrive = jest.fn();
-const mockDriverInstance = { drive: mockDrive };
-const mockDriver = jest.fn().mockReturnValue(mockDriverInstance);
+// vi.mock is hoisted above these declarations, so the shared spies must be created
+// inside vi.hoisted() to exist when the factory runs.
+const { mockDrive, mockDriver } = vi.hoisted(() => {
+  const mockDrive = vi.fn();
+  const mockDriverInstance = { drive: mockDrive };
+  const mockDriver = vi.fn().mockReturnValue(mockDriverInstance);
+  return { mockDrive, mockDriver };
+});
 
-jest.mock('driver.js', () => ({
+vi.mock('driver.js', () => ({
   driver: (...args: unknown[]) => mockDriver(...args),
 }));
 
@@ -77,7 +82,7 @@ describe('ProductTourService', () => {
     });
 
     it('should call caller onDestroyed when provided', () => {
-      const onDestroyed = jest.fn();
+      const onDestroyed = vi.fn();
       service.start(mockSteps, { onDestroyed });
 
       const config = mockDriver.mock.calls[0][0];
@@ -111,7 +116,7 @@ describe('ProductTourService', () => {
     });
 
     it('should call caller onPopoverRender when provided', () => {
-      const onPopoverRender = jest.fn();
+      const onPopoverRender = vi.fn();
       service.start(mockSteps, { onPopoverRender });
 
       const wrapper = document.createElement('div');

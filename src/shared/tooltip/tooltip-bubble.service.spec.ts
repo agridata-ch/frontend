@@ -14,14 +14,14 @@ describe('TooltipBubbleService', () => {
   let service: TooltipBubbleService;
 
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     TestBed.configureTestingModule({});
     service = TestBed.inject(TooltipBubbleService);
   });
 
   afterEach(() => {
-    jest.clearAllTimers();
-    jest.useRealTimers();
+    vi.clearAllTimers();
+    vi.useRealTimers();
     document.body.querySelectorAll('[role="tooltip"]').forEach((element) => element.remove());
   });
 
@@ -45,9 +45,11 @@ describe('TooltipBubbleService', () => {
 
   it('should clamp the bubble inside the viewport near the right edge', () => {
     const width = 160;
-    jest
-      .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
-      .mockReturnValue({ ...point(0, 0), width, height: 24 } as DOMRect);
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+      ...point(0, 0),
+      width,
+      height: 24,
+    } as DOMRect);
 
     service.show('Copied', () => point(window.innerWidth - 2, 300));
 
@@ -81,7 +83,7 @@ describe('TooltipBubbleService', () => {
   });
 
   it('should hide the bubble on Escape and notify the owner', () => {
-    const onDismiss = jest.fn();
+    const onDismiss = vi.fn();
     service.show('Copied', () => point(100, 100), { onDismiss });
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
@@ -91,18 +93,18 @@ describe('TooltipBubbleService', () => {
   });
 
   it('should remove a transient bubble and call onHide after its duration', () => {
-    const onHide = jest.fn();
+    const onHide = vi.fn();
     service.showTransient('Copied', () => point(500, 300), 1500, onHide);
     expect(bubble()).not.toBeNull();
 
-    jest.advanceTimersByTime(1500);
+    vi.advanceTimersByTime(1500);
 
     expect(bubble()).toBeNull();
     expect(onHide).toHaveBeenCalledTimes(1);
   });
 
   it('should call onHide when a transient bubble is superseded early', () => {
-    const onHide = jest.fn();
+    const onHide = vi.fn();
     service.showTransient('Copied', () => point(500, 300), 1500, onHide);
 
     service.show('Tooltip', () => point(100, 100));
@@ -111,7 +113,7 @@ describe('TooltipBubbleService', () => {
     expect(bubble()?.textContent).toBe('Tooltip');
 
     // The superseded timer must not fire a second time.
-    jest.advanceTimersByTime(1500);
+    vi.advanceTimersByTime(1500);
     expect(onHide).toHaveBeenCalledTimes(1);
   });
 

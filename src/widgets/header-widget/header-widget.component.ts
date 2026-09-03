@@ -1,11 +1,11 @@
 import { Component, computed, inject, resource } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { CmsService, StrapiCollectionTypeResponse } from '@/entities/cms';
 import { environment } from '@/environments/environment';
 import { LanguageSelectComponent } from '@/features/language-select';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nPipe, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { AuthService } from '@/shared/lib/auth';

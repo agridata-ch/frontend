@@ -72,7 +72,7 @@ describe('AlertComponent', () => {
 
   describe('closeAlert', () => {
     it('should emit true when close button is clicked', () => {
-      jest.spyOn(component.closeAlert, 'emit');
+      vi.spyOn(component.closeAlert, 'emit');
       componentRef.setInput('showCloseButton', true);
       fixture.detectChanges();
 

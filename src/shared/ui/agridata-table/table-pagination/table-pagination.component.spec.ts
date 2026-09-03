@@ -41,7 +41,7 @@ describe('TablePaginationComponent', () => {
     });
 
     it('should emit previous page index when navigating backwards', () => {
-      const pageChangeSpy = jest.spyOn(component.pageChange, 'emit');
+      const pageChangeSpy = vi.spyOn(component.pageChange, 'emit');
       fixture.componentRef.setInput('currentPageIndex', 2);
 
       component['navigateToPreviousPage']();
@@ -49,7 +49,7 @@ describe('TablePaginationComponent', () => {
     });
 
     it('should not navigate below page 0', () => {
-      const pageChangeSpy = jest.spyOn(component.pageChange, 'emit');
+      const pageChangeSpy = vi.spyOn(component.pageChange, 'emit');
       fixture.componentRef.setInput('currentPageIndex', 0);
 
       component['navigateToPreviousPage']();
@@ -57,7 +57,7 @@ describe('TablePaginationComponent', () => {
     });
 
     it('should emit next page index when navigating forwards', () => {
-      const pageChangeSpy = jest.spyOn(component.pageChange, 'emit');
+      const pageChangeSpy = vi.spyOn(component.pageChange, 'emit');
       fixture.componentRef.setInput('currentPageIndex', 2);
 
       component['navigateToNextPage']();
@@ -65,7 +65,7 @@ describe('TablePaginationComponent', () => {
     });
 
     it('should not navigate beyond last page', () => {
-      const pageChangeSpy = jest.spyOn(component.pageChange, 'emit');
+      const pageChangeSpy = vi.spyOn(component.pageChange, 'emit');
       fixture.componentRef.setInput('currentPageIndex', 4);
 
       component['navigateToNextPage']();
@@ -106,7 +106,7 @@ describe('TablePaginationComponent', () => {
     });
 
     it('should emit page size change when selecting new size', () => {
-      const pageSizeChangeSpy = jest.spyOn(component.pageSizeChange, 'emit');
+      const pageSizeChangeSpy = vi.spyOn(component.pageSizeChange, 'emit');
       const newPageSize = 25;
 
       component.setNewPageSize(newPageSize);

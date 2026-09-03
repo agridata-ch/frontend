@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import type { Mock, Mocked } from 'vitest';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { NotificationService } from '@/entities/api/notification.service';
 import { CmsService } from '@/entities/cms';
 import { UserInfoDto } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { AuthService } from '@/shared/lib/auth';
 import {
   createMockNotificationService,
@@ -27,17 +28,17 @@ describe('HeaderWidgetComponent', () => {
   let errorService: MockErrorHandlerService;
   let cmsService: Partial<CmsService>;
   let notificationService: MockNotificationService;
-  let router: jest.Mocked<Router>;
+  let router: Mocked<Router>;
   let stateService: MockAgridataStateService;
   beforeEach(async () => {
     router = {
-      navigate: jest.fn().mockReturnValue(Promise.resolve()),
-      createUrlTree: jest.fn(),
-      serializeUrl: jest.fn(),
+      navigate: vi.fn().mockReturnValue(Promise.resolve()),
+      createUrlTree: vi.fn(),
+      serializeUrl: vi.fn(),
       events: {
-        subscribe: jest.fn(),
+        subscribe: vi.fn(),
       },
-    } as unknown as jest.Mocked<Router>;
+    } as unknown as Mocked<Router>;
     errorService = createMockErrorHandlerService();
     cmsService = mockCmsService;
     authService = createMockAuthService();
@@ -67,7 +68,7 @@ describe('HeaderWidgetComponent', () => {
 
   it('should handle errors from fetchProducersResource and send them to errorService', async () => {
     const testError = new Error('Test error from getProducers');
-    (cmsService.fetchCmsPages as jest.Mock).mockRejectedValueOnce(testError);
+    (cmsService.fetchCmsPages as Mock).mockRejectedValueOnce(testError);
 
     // Create a new fixture with the mocked error
     const errorFixture = TestBed.createComponent(HeaderWidgetComponent);
@@ -105,7 +106,7 @@ describe('HeaderWidgetComponent', () => {
   });
 
   it('login() calls AuthService.login()', () => {
-    const navigateSpy = jest.spyOn(authService, 'login');
+    const navigateSpy = vi.spyOn(authService, 'login');
     component.login();
     expect(navigateSpy).toHaveBeenCalled();
   });

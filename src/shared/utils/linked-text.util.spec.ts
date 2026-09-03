@@ -56,4 +56,22 @@ describe('parseLinkedText', () => {
       after: ' and [second].',
     });
   });
+
+  it('extracts the mailto schema and strips it from the link text', () => {
+    expect(parseLinkedText('Write to [mailto:info@agridata.ch] now.')).toEqual({
+      before: 'Write to ',
+      linkText: 'info@agridata.ch',
+      after: ' now.',
+      urlSchema: 'mailto',
+    });
+  });
+
+  it('extracts the tel schema and strips it from the link text', () => {
+    expect(parseLinkedText('Call [tel:+41123456789] today.')).toEqual({
+      before: 'Call ',
+      linkText: '+41123456789',
+      after: ' today.',
+      urlSchema: 'tel',
+    });
+  });
 });

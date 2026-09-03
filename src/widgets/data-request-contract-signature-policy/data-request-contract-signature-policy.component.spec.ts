@@ -128,7 +128,7 @@ describe('DataRequestContractSignaturePolicyComponent', () => {
 
   describe('handlePolicyChange', () => {
     it('should call setSignatureType and emit reload for a valid value', async () => {
-      const emitSpy = jest.spyOn(component.handleReloadDataRequest, 'emit');
+      const emitSpy = vi.spyOn(component.handleReloadDataRequest, 'emit');
 
       component['handlePolicyChange'](SignatureTypeEnum.IndividualSignature);
       await fixture.whenStable();

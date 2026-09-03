@@ -19,11 +19,11 @@ const available: DataProductDocumentMetadataDto = {
 
 function createMockApiService() {
   return {
-    addDataProductDocument: jest.fn().mockReturnValue(of(new HttpResponse({ body: available }))),
-    getDataProductDocumentsMetadata: jest.fn().mockReturnValue(of([available])),
-    getDataProductDocumentMetadata: jest.fn().mockReturnValue(of(available)),
-    getDataProductDocument: jest.fn().mockReturnValue(of(new Blob())),
-    deleteDataProductDocument: jest.fn().mockReturnValue(of({})),
+    addDataProductDocument: vi.fn().mockReturnValue(of(new HttpResponse({ body: available }))),
+    getDataProductDocumentsMetadata: vi.fn().mockReturnValue(of([available])),
+    getDataProductDocumentMetadata: vi.fn().mockReturnValue(of(available)),
+    getDataProductDocument: vi.fn().mockReturnValue(of(new Blob())),
+    deleteDataProductDocument: vi.fn().mockReturnValue(of({})),
   };
 }
 
@@ -47,7 +47,7 @@ describe('DataProductDocumentService', () => {
   describe('uploadDocument', () => {
     it('delegates to addDataProductDocument, reports progress and resolves with the document', async () => {
       const file = new File(['pdf'], 'a.pdf', { type: 'application/pdf' });
-      const onProgress = jest.fn();
+      const onProgress = vi.fn();
       apiService.addDataProductDocument.mockReturnValue(
         of(
           { type: HttpEventType.UploadProgress, loaded: 50, total: 100 },
@@ -108,24 +108,24 @@ describe('DataProductDocumentService', () => {
     });
 
     it('retries after a transient failure instead of failing the scan', async () => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
       apiService.getDataProductDocumentMetadata
         .mockReturnValueOnce(throwError(() => new Error('network')))
         .mockReturnValue(of(available));
 
       const resultPromise = service.awaitDocumentProcessed('product-1', 'doc-1');
       // Let the failing poll settle, then advance past the poll interval so it retries.
-      await jest.advanceTimersByTimeAsync(2000);
+      await vi.advanceTimersByTimeAsync(2000);
 
       await expect(resultPromise).resolves.toBe(DocumentScanStatusEnum.Available);
       expect(apiService.getDataProductDocumentMetadata).toHaveBeenCalledTimes(2);
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
   });
 
   describe('getDocument with abort signal', () => {
     it('rejects and cancels the in-flight request when aborted', async () => {
-      const unsubscribe = jest.fn();
+      const unsubscribe = vi.fn();
       apiService.getDataProductDocumentMetadata.mockReturnValue({
         subscribe: () => ({ unsubscribe }),
       });

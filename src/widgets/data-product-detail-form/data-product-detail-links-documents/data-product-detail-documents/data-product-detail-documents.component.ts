@@ -1,7 +1,7 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective } from '@/shared/i18n';
 import { AgridataDropzoneComponent } from '@/shared/ui/agridata-dropzone';
 import { BadgeVariant } from '@/shared/ui/badge';

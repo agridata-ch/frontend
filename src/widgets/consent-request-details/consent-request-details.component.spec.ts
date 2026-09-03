@@ -4,9 +4,8 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import type { Mock, Mocked } from 'vitest';
 
-import { AnalyticsService } from '@/app/analytics.service';
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
@@ -15,7 +14,9 @@ import {
   ConsentRequestAggregationStateEnum,
   ConsentRequestStateEnum,
 } from '@/entities/openapi';
-import { REDIRECT_TIMEOUT } from '@/pages/consent-request-producer/consent-request-producer.page.model';
+import { REDIRECT_TIMEOUT } from '@/shared/consent-request';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
+import { AnalyticsService } from '@/shared/lib/analytics.service';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import {
   createMockActivatedRoute,
@@ -42,7 +43,7 @@ describe('ConsentRequestDetailsComponent', () => {
   let fixture: ComponentFixture<ConsentRequestDetailsComponent>;
   let component: ConsentRequestDetailsComponent;
   let componentRef: ComponentRef<ConsentRequestDetailsComponent>;
-  let toastService: { show: jest.Mock };
+  let toastService: { show: Mock };
   let consentRequestService: MockConsentRequestService;
   let agridataStateService: MockAgridataStateService;
   let errorService: MockErrorHandlerService;
@@ -51,7 +52,7 @@ describe('ConsentRequestDetailsComponent', () => {
   let mockLocation: MockLocation;
   let masterDataService: MockMasterDataService;
   beforeEach(async () => {
-    toastService = { show: jest.fn() };
+    toastService = { show: vi.fn() };
     agridataStateService = createMockAgridataStateService();
     // the aggregation resource only fetches once a producer uid is active
     agridataStateService.__testSignals.activeUid.set('uid-1');
@@ -60,8 +61,8 @@ describe('ConsentRequestDetailsComponent', () => {
     activeRoute = createMockActivatedRoute();
     masterDataService = createMockMasterDataService();
     mockRouter = {
-      navigate: jest.fn().mockResolvedValue(true),
-    } as unknown as jest.Mocked<Router>;
+      navigate: vi.fn().mockResolvedValue(true),
+    } as unknown as Mocked<Router>;
     const mockDocument = createMockDocument();
     mockLocation = mockDocument.location;
 
@@ -108,13 +109,13 @@ describe('ConsentRequestDetailsComponent', () => {
   });
 
   it('handleCloseDetails routes back to parent component', () => {
-    const navSpy = jest.spyOn(mockRouter, 'navigate');
+    const navSpy = vi.spyOn(mockRouter, 'navigate');
     component['handleCloseDetails']();
     expect(navSpy).toHaveBeenCalled();
   });
 
   it('should close details when Escape key is pressed', async () => {
-    const navSpy = jest.spyOn(mockRouter, 'navigate');
+    const navSpy = vi.spyOn(mockRouter, 'navigate');
     fixture.detectChanges();
 
     const event = new KeyboardEvent('keydown', { key: 'Escape' });
@@ -127,8 +128,8 @@ describe('ConsentRequestDetailsComponent', () => {
   it('should should show toast after acceptRequest', async () => {
     componentRef.setInput('aggregationId', 'dr-1');
 
-    const navSpy = jest.spyOn(mockRouter, 'navigate');
-    const resourceSpy = jest.spyOn(component['consentRequestResource'], 'reload');
+    const navSpy = vi.spyOn(mockRouter, 'navigate');
+    const resourceSpy = vi.spyOn(component['consentRequestResource'], 'reload');
     await fixture.whenStable();
 
     await component['acceptRequest']();
@@ -146,8 +147,8 @@ describe('ConsentRequestDetailsComponent', () => {
   it('should should show toast after rejectRequest', async () => {
     componentRef.setInput('aggregationId', 'dr-1');
 
-    const navSpy = jest.spyOn(mockRouter, 'navigate');
-    const resourceSpy = jest.spyOn(component['consentRequestResource'], 'reload');
+    const navSpy = vi.spyOn(mockRouter, 'navigate');
+    const resourceSpy = vi.spyOn(component['consentRequestResource'], 'reload');
     await fixture.whenStable();
 
     await component['rejectRequest']();
@@ -277,7 +278,7 @@ describe('ConsentRequestDetailsComponent', () => {
   });
 
   it('should disable buttons when impersonating', () => {
-    jest.spyOn(agridataStateService, 'isImpersonating').mockReturnValue(true);
+    vi.spyOn(agridataStateService, 'isImpersonating').mockReturnValue(true);
     fixture.detectChanges();
 
     // Query all button elements
@@ -298,7 +299,7 @@ describe('ConsentRequestDetailsComponent', () => {
   describe('checkForRedirect', () => {
     it('should set shouldRedirect to true when redirectUrl matches the regex pattern', async () => {
       const testRedirectUrl = 'https://valid-external-redirect.com';
-      activeRoute.snapshot.queryParamMap.get = jest.fn().mockReturnValue(testRedirectUrl);
+      activeRoute.snapshot.queryParamMap.get = vi.fn().mockReturnValue(testRedirectUrl);
       fixture.detectChanges();
 
       const mockRequest = {
@@ -320,7 +321,7 @@ describe('ConsentRequestDetailsComponent', () => {
 
     it('should reset redirect when redirectUrlPattern is missing', async () => {
       const testRedirectUrl = 'https://valid-external-redirect.com';
-      activeRoute.snapshot.queryParamMap.get = jest.fn().mockReturnValue(testRedirectUrl);
+      activeRoute.snapshot.queryParamMap.get = vi.fn().mockReturnValue(testRedirectUrl);
       fixture.detectChanges();
 
       component['shouldRedirect'].set(true);
@@ -343,7 +344,7 @@ describe('ConsentRequestDetailsComponent', () => {
 
     it('should reset redirect when regex does not match', async () => {
       const testRedirectUrl = 'https://invalid-domain.com';
-      activeRoute.snapshot.queryParamMap.get = jest.fn().mockReturnValue(testRedirectUrl);
+      activeRoute.snapshot.queryParamMap.get = vi.fn().mockReturnValue(testRedirectUrl);
       fixture.detectChanges();
 
       component['shouldRedirect'].set(true);
@@ -367,12 +368,12 @@ describe('ConsentRequestDetailsComponent', () => {
 
     it('should handle invalid regex pattern and reset redirect', async () => {
       const testRedirectUrl = 'https://valid-external-redirect.com';
-      activeRoute.snapshot.queryParamMap.get = jest.fn().mockReturnValue(testRedirectUrl);
+      activeRoute.snapshot.queryParamMap.get = vi.fn().mockReturnValue(testRedirectUrl);
       fixture.detectChanges();
 
       component['shouldRedirect'].set(true);
 
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
       const mockRequest = {
         ...mockConsentRequestAggregations[0],
         dataRequest: {
@@ -406,32 +407,32 @@ describe('ConsentRequestDetailsComponent', () => {
       expect(component['countdownTimer']).toBeTruthy();
 
       // Restore originals
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     it('should redirect when timer is finished', () => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
       const testRedirectUrl = 'https://test-redirect-with-timeout.com';
       component['redirectUrl'].set(testRedirectUrl);
       component['showRedirect'].set(true);
 
       TestBed.tick();
 
-      jest.advanceTimersByTime(REDIRECT_TIMEOUT + 1);
+      vi.advanceTimersByTime(REDIRECT_TIMEOUT + 1);
 
       expect(mockLocation.href).toBe(testRedirectUrl);
 
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
   });
 
   describe('startCountdown', () => {
     beforeEach(() => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
     });
 
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     it('should decrement countdown value correctly', () => {
@@ -442,20 +443,20 @@ describe('ConsentRequestDetailsComponent', () => {
 
       expect(component['countdownValue']()).toBe(initialValue);
 
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       fixture.detectChanges();
 
       expect(component['countdownValue']()).toBe(initialValue - 1);
 
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       fixture.detectChanges();
 
       expect(component['countdownValue']()).toBe(initialValue - 2);
     });
 
     it('should clear the interval when countdown reaches 0', () => {
-      jest.useRealTimers();
-      jest.useFakeTimers();
+      vi.useRealTimers();
+      vi.useFakeTimers();
       component['showRedirect'].set(true);
 
       TestBed.tick();
@@ -465,28 +466,28 @@ describe('ConsentRequestDetailsComponent', () => {
       // The redirect timeout fires at the same instant as the countdown's final tick, so depending
       // on timer ordering the interval is cleared at 0 or 1. Either way the countdown must have run
       // to completion (<= 1, never negative) and then stopped (no further decrements).
-      jest.advanceTimersByTime(initialValue * 1000);
+      vi.advanceTimersByTime(initialValue * 1000);
       const valueAfterCountdown = component['countdownValue']();
 
-      jest.advanceTimersByTime(initialValue * 1000);
+      vi.advanceTimersByTime(initialValue * 1000);
 
       expect(valueAfterCountdown).toBeLessThanOrEqual(1);
       expect(component['countdownValue']()).toBe(valueAfterCountdown);
     });
 
     it('should clear the interval when starting with countdown value 1', () => {
-      jest.useRealTimers();
-      jest.useFakeTimers();
+      vi.useRealTimers();
+      vi.useFakeTimers();
       component['showRedirect'].set(true);
 
       component['countdownValue'].set(1);
 
       const originalSetInterval = window.setInterval;
-      const mockSetInterval = jest.fn().mockReturnValue(123);
+      const mockSetInterval = vi.fn().mockReturnValue(123);
       window.setInterval = mockSetInterval as any;
 
       const originalClearInterval = window.clearInterval;
-      const mockClearInterval = jest.fn();
+      const mockClearInterval = vi.fn();
       window.clearInterval = mockClearInterval as any;
 
       TestBed.tick();
@@ -507,7 +508,7 @@ describe('ConsentRequestDetailsComponent', () => {
     });
 
     it('should perform redirect when redirectDirectly is called', () => {
-      jest.useRealTimers();
+      vi.useRealTimers();
       component['showRedirect'].set(true);
 
       const testRedirectUrl = 'https://test-redirect-flow.com';
@@ -519,19 +520,19 @@ describe('ConsentRequestDetailsComponent', () => {
     });
 
     it('should decrement countdown correctly when startCountdown is called', () => {
-      jest.useRealTimers();
-      jest.useFakeTimers();
+      vi.useRealTimers();
+      vi.useFakeTimers();
       component['showRedirect'].set(true);
 
       TestBed.tick();
 
       const initialValue = component['countdownValue']();
 
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
 
       expect(component['countdownValue']()).toBe(initialValue - 1);
 
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
   });
 

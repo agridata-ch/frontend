@@ -5,7 +5,7 @@ import { ConsentRequestProducerViewV2Dto, ConsentRequestStateEnum } from '@/enti
 import { ConsentRequestDecisionStore } from '@/shared/consent-request';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { AgridataToggleComponent } from '@/shared/ui/agridata-toggle';
-import { AlertComponent } from '@/widgets/alert';
+import { AlertComponent } from '@/shared/ui/alert';
 
 import { DataRequestConsentRequestDecisionsComponent } from './data-request-consent-request-decisions.component';
 

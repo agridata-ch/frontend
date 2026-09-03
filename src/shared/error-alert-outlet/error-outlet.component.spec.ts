@@ -2,8 +2,8 @@ import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ErrorDto } from '@/app/error/error-dto';
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { ErrorDto } from '@/shared/error/error-dto';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { createMockErrorHandlerService, MockErrorHandlerService } from '@/shared/testing/mocks';
 
 import { ErrorOutletComponent } from './error-outlet.component';
@@ -24,7 +24,7 @@ describe('ErrorOutletComponent', () => {
 
   beforeEach(async () => {
     errorService = createMockErrorHandlerService();
-    errorService.getErrorsForHandler = jest.fn().mockReturnValue(signal([testError]));
+    errorService.getErrorsForHandler = vi.fn().mockReturnValue(signal([testError]));
 
     await TestBed.configureTestingModule({
       imports: [ErrorOutletComponent],

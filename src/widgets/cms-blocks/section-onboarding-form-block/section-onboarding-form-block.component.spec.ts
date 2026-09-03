@@ -283,16 +283,16 @@ describe('SectionOnboardingFormBlockComponent', () => {
       });
 
       it('marks all controls as touched', async () => {
-        const spy = jest.spyOn(component['onboardingForm'], 'markAllAsTouched');
+        const spy = vi.spyOn(component['onboardingForm'], 'markAllAsTouched');
         await component['handleSubmit']();
         expect(spy).toHaveBeenCalled();
       });
 
       it('scrolls to the first invalid element', async () => {
-        const mockScrollIntoView = jest.fn();
-        jest
-          .spyOn(component['elementRef'].nativeElement, 'querySelector')
-          .mockReturnValue({ scrollIntoView: mockScrollIntoView });
+        const mockScrollIntoView = vi.fn();
+        vi.spyOn(component['elementRef'].nativeElement, 'querySelector').mockReturnValue({
+          scrollIntoView: mockScrollIntoView,
+        });
 
         await component['handleSubmit']();
 
@@ -300,7 +300,7 @@ describe('SectionOnboardingFormBlockComponent', () => {
       });
 
       it('does not throw when no invalid element exists in the DOM', async () => {
-        jest.spyOn(component['elementRef'].nativeElement, 'querySelector').mockReturnValue(null);
+        vi.spyOn(component['elementRef'].nativeElement, 'querySelector').mockReturnValue(null);
         await expect(component['handleSubmit']()).resolves.toBeUndefined();
       });
     });

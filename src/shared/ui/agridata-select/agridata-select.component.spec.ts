@@ -60,7 +60,7 @@ describe('AgridataSelectComponent', () => {
       ];
       componentRef.setInput('options', options);
       // Simulate control value
-      componentRef.setInput('control', { value: '2', setValue: jest.fn() });
+      componentRef.setInput('control', { value: '2', setValue: vi.fn() });
       fixture.detectChanges();
       expect(component.selectedOption()).toEqual(options[1].value);
     });
@@ -74,7 +74,7 @@ describe('AgridataSelectComponent', () => {
         { value: '1', label: 'Option 1' },
         { value: '2', label: 'Option 2' },
       ];
-      const setValueMock = jest.fn();
+      const setValueMock = vi.fn();
       componentRef.setInput('options', options);
       componentRef.setInput('control', { value: '', setValue: setValueMock });
       openComponent.isDropdownOpen.set(true);

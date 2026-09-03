@@ -1,10 +1,10 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import {
   createMockAgridataStateService,
   createMockContractRevisionService,
@@ -66,9 +66,9 @@ describe('DataRequestDetailsContractComponent', () => {
   });
 
   it('should emit handleSeal immediately and reload the contract after the success delay', async () => {
-    jest.useFakeTimers();
-    const reloadSpy = jest.spyOn(component.contractResource, 'reload');
-    const sealedSpy = jest.fn();
+    vi.useFakeTimers();
+    const reloadSpy = vi.spyOn(component.contractResource, 'reload');
+    const sealedSpy = vi.fn();
     component.handleSeal.subscribe(sealedSpy);
 
     component['sealContract']();
@@ -83,12 +83,12 @@ describe('DataRequestDetailsContractComponent', () => {
     expect(sealedSpy).toHaveBeenCalledTimes(1);
     expect(reloadSpy).not.toHaveBeenCalled();
 
-    jest.advanceTimersByTime(1500);
+    vi.advanceTimersByTime(1500);
 
     // The local view refresh that hides the seal button stays on the timer.
     expect(reloadSpy).toHaveBeenCalledTimes(1);
     expect(sealedSpy).toHaveBeenCalledTimes(1);
 
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 });

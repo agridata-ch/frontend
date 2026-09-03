@@ -11,26 +11,26 @@ export type MockDataProductService = Mockify<DataProductService>;
  */
 export function createMockDataProductService(): MockDataProductService {
   return {
-    createDataProduct: jest.fn().mockResolvedValue({}),
-    deleteDataProduct: jest.fn().mockResolvedValue(undefined),
-    getAllDataProducts: jest.fn().mockResolvedValue({
+    createDataProduct: vi.fn().mockResolvedValue({}),
+    deleteDataProduct: vi.fn().mockResolvedValue(undefined),
+    getAllDataProducts: vi.fn().mockResolvedValue({
       items: [] as DataProductDto[],
       totalItems: 0,
       totalPages: 0,
       currentPage: 0,
       pageSize: 10,
     }),
-    getDataProductById: jest.fn().mockResolvedValue({}),
-    getPublicProducts: jest.fn().mockResolvedValue({
+    getDataProductById: vi.fn().mockResolvedValue({}),
+    getPublicProducts: vi.fn().mockResolvedValue({
       items: [],
       totalItems: 0,
       totalPages: 0,
       currentPage: 0,
       pageSize: 12,
     }),
-    getPublicProductById: jest.fn().mockResolvedValue({}),
-    patchDataProduct: jest.fn().mockResolvedValue({}),
-    setDataProductStatus: jest.fn().mockResolvedValue({}),
-    updateDataProduct: jest.fn().mockResolvedValue({}),
+    getPublicProductById: vi.fn().mockResolvedValue({}),
+    patchDataProduct: vi.fn().mockResolvedValue({}),
+    setDataProductStatus: vi.fn().mockResolvedValue({}),
+    updateDataProduct: vi.fn().mockResolvedValue({}),
   } satisfies MockDataProductService;
 }

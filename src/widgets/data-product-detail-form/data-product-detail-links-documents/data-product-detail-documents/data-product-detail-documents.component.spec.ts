@@ -172,8 +172,8 @@ describe('DataProductDetailDocumentsComponent', () => {
   });
 
   it('downloads an existing document through the store', async () => {
-    URL.createObjectURL = jest.fn().mockReturnValue('blob:mock');
-    URL.revokeObjectURL = jest.fn();
+    URL.createObjectURL = vi.fn().mockReturnValue('blob:mock');
+    URL.revokeObjectURL = vi.fn();
     documentService.listDocuments.mockResolvedValueOnce([
       {
         id: 'doc-1',
@@ -191,9 +191,9 @@ describe('DataProductDetailDocumentsComponent', () => {
   });
 
   it('opens an existing document in a new tab through the store', async () => {
-    URL.createObjectURL = jest.fn().mockReturnValue('blob:mock');
-    URL.revokeObjectURL = jest.fn();
-    const openSpy = jest.spyOn(globalThis, 'open').mockImplementation(() => null);
+    URL.createObjectURL = vi.fn().mockReturnValue('blob:mock');
+    URL.revokeObjectURL = vi.fn();
+    const openSpy = vi.spyOn(globalThis, 'open').mockImplementation(() => null);
     documentService.listDocuments.mockResolvedValueOnce([
       {
         id: 'doc-1',

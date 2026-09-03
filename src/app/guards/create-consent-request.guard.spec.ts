@@ -2,15 +2,16 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap, Router, UrlTree } from '@angular/router';
 import { of, throwError } from 'rxjs';
+import type { Mock } from 'vitest';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
-import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
 import { CreateConsentRequestGuard } from '@/app/guards/create-consent-request.guard';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { CreateConsentRequestDto, UidDto } from '@/entities/openapi';
 import { ConsentRequestCreatedDto } from '@/entities/openapi/model/consentRequestCreatedDto';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
+import { ExternalServiceHttpError } from '@/shared/error/external-service-http-error';
 import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAuthService,
@@ -38,13 +39,13 @@ describe('createConsentRequestGuard', () => {
   const mockErrorUrlTree = { toString: () => 'error-url' } as UrlTree;
 
   let mockRouter: {
-    createUrlTree: jest.Mock;
-    parseUrl: jest.Mock;
-    navigate: jest.Mock;
+    createUrlTree: Mock;
+    parseUrl: Mock;
+    navigate: Mock;
   };
 
   let mockProducerUidGuard: {
-    canActivate: jest.Mock;
+    canActivate: Mock;
   };
 
   let agridataStateService: MockAgridataStateService;
@@ -54,13 +55,13 @@ describe('createConsentRequestGuard', () => {
     authService.initializeAuthorizedUids.mockResolvedValue([{ uid: testUid } as UidDto]);
     errorService = createMockErrorHandlerService();
     mockRouter = {
-      createUrlTree: jest.fn().mockReturnValue(mockUrlTree),
-      parseUrl: jest.fn().mockReturnValue(mockErrorUrlTree),
-      navigate: jest.fn(),
+      createUrlTree: vi.fn().mockReturnValue(mockUrlTree),
+      parseUrl: vi.fn().mockReturnValue(mockErrorUrlTree),
+      navigate: vi.fn(),
     };
 
     mockProducerUidGuard = {
-      canActivate: jest.fn().mockResolvedValue(true),
+      canActivate: vi.fn().mockResolvedValue(true),
     };
     consentRequestService = createMockConsentRequestService();
 
@@ -310,11 +311,11 @@ describe('createConsentRequestGuard', () => {
 
   describe('404 error handling with redirect', () => {
     beforeEach(() => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
     });
 
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     it('should navigate to producer page with redirect_uri query param on 404 error', async () => {
@@ -374,7 +375,7 @@ describe('createConsentRequestGuard', () => {
 
       expect(errorService.handleError).not.toHaveBeenCalled();
 
-      jest.advanceTimersByTime(100);
+      vi.advanceTimersByTime(100);
 
       expect(errorService.handleError).toHaveBeenCalledWith(
         expect.any(Error),

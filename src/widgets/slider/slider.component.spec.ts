@@ -43,9 +43,7 @@ describe('SliderComponent', () => {
 
   it('should initialize slider after view init', () => {
     const mockChildren = Array(4).fill({});
-    jest
-      .spyOn(component.sliderTrack.nativeElement, 'children', 'get')
-      .mockReturnValue(mockChildren);
+    vi.spyOn(component.sliderTrack.nativeElement, 'children', 'get').mockReturnValue(mockChildren);
 
     component.ngAfterViewInit();
     fixture.detectChanges();

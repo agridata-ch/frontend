@@ -5,6 +5,6 @@ export type MockUidRegisterService = Mockify<UidRegisterService>;
 
 export function createMockUidRegisterService(): MockUidRegisterService {
   return {
-    fetchUidInfosOfCurrentUser: jest.fn().mockResolvedValue([]),
+    fetchUidInfosOfCurrentUser: vi.fn().mockResolvedValue([]),
   };
 }

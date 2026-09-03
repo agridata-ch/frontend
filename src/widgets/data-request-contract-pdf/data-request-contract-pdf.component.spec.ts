@@ -1,10 +1,10 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import {
   createMockAgridataStateService,
@@ -68,9 +68,9 @@ describe('DataRequestContractPdfComponent', () => {
   describe('handleOpenPdf', () => {
     it('should fetch the PDF and open it in a new tab', async () => {
       const mockUrl = 'blob:http://localhost/mock-pdf';
-      URL.createObjectURL = jest.fn().mockReturnValue(mockUrl);
-      URL.revokeObjectURL = jest.fn();
-      const openSpy = jest.spyOn(globalThis, 'open').mockImplementation(() => null);
+      URL.createObjectURL = vi.fn().mockReturnValue(mockUrl);
+      URL.revokeObjectURL = vi.fn();
+      const openSpy = vi.spyOn(globalThis, 'open').mockImplementation(() => null);
 
       component['handleOpenPdf']();
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
@@ -121,14 +121,14 @@ describe('DataRequestContractPdfComponent', () => {
   describe('handleDownloadPdf', () => {
     it('should fetch the PDF and trigger a download', async () => {
       const mockUrl = 'blob:http://localhost/mock-pdf';
-      URL.createObjectURL = jest.fn().mockReturnValue(mockUrl);
-      URL.revokeObjectURL = jest.fn();
+      URL.createObjectURL = vi.fn().mockReturnValue(mockUrl);
+      URL.revokeObjectURL = vi.fn();
 
-      const mockAnchor = { href: '', download: '', click: jest.fn(), remove: jest.fn() };
-      const createElementSpy = jest
+      const mockAnchor = { href: '', download: '', click: vi.fn(), remove: vi.fn() };
+      const createElementSpy = vi
         .spyOn(document, 'createElement')
         .mockReturnValue(mockAnchor as unknown as HTMLElement);
-      const appendChildSpy = jest
+      const appendChildSpy = vi
         .spyOn(document.body, 'appendChild')
         .mockImplementation((node) => node);
 
@@ -167,15 +167,15 @@ describe('DataRequestContractPdfComponent', () => {
     });
 
     it('should reset isLoadingDownload after fetch completes', async () => {
-      const mockAnchor = { href: '', download: '', click: jest.fn(), remove: jest.fn() };
-      const createElementSpy = jest
+      const mockAnchor = { href: '', download: '', click: vi.fn(), remove: vi.fn() };
+      const createElementSpy = vi
         .spyOn(document, 'createElement')
         .mockReturnValue(mockAnchor as unknown as HTMLElement);
-      const appendChildSpy = jest
+      const appendChildSpy = vi
         .spyOn(document.body, 'appendChild')
         .mockImplementation((node) => node);
-      URL.createObjectURL = jest.fn().mockReturnValue('blob:mock');
-      URL.revokeObjectURL = jest.fn();
+      URL.createObjectURL = vi.fn().mockReturnValue('blob:mock');
+      URL.revokeObjectURL = vi.fn();
 
       component['handleDownloadPdf']();
       expect(component['isLoadingDownload']()).toBe(true);

@@ -17,7 +17,7 @@ describe('ConsentRequestListComponent', () => {
 
   beforeEach(async () => {
     mockI18nService = {
-      useObjectTranslation: jest.fn().mockImplementation((obj) => obj?.['en'] || 'Test Title'),
+      useObjectTranslation: vi.fn().mockImplementation((obj) => obj?.['en'] || 'Test Title'),
     };
 
     await TestBed.configureTestingModule({
@@ -61,8 +61,8 @@ describe('ConsentRequestListComponent', () => {
     };
 
     const mockEvent = new Event('click');
-    jest.spyOn(mockEvent, 'stopPropagation');
-    const updateSpy = jest.spyOn(component.updateConsentRequestStatus, 'emit');
+    vi.spyOn(mockEvent, 'stopPropagation');
+    const updateSpy = vi.spyOn(component.updateConsentRequestStatus, 'emit');
 
     component.acceptRequest(mockEvent, mockRequest);
 
