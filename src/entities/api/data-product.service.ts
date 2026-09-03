@@ -6,6 +6,7 @@ import {
   DataProductsService,
   DataProductUpdateDto,
   PageResponseDtoPublicDataProductDto,
+  PublicDataProductDto,
   PublicDataProductsService,
   ResourceQueryDto,
 } from '@/entities/openapi';
@@ -117,4 +118,7 @@ export class DataProductService {
         .pipe(map((response) => asPageResponse(response))),
     );
   };
+
+  getPublicProductById = (id: string): Promise<PublicDataProductDto> =>
+    firstValueFrom(this.publicApiService.getPublicDataProduct(id));
 }

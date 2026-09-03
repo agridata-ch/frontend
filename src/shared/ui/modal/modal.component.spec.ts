@@ -57,7 +57,7 @@ describe('ModalComponent', () => {
     fixture.detectChanges();
 
     const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
-    expect(buttons.length).toBe(1);
+    expect(buttons).toHaveLength(1);
   });
 
   it('should hide close button when showCloseButton is false', () => {
@@ -66,7 +66,7 @@ describe('ModalComponent', () => {
     fixture.detectChanges();
 
     const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
-    expect(buttons.length).toBe(0);
+    expect(buttons).toHaveLength(0);
   });
 
   it('should close modal and emit closed event when close button is clicked', () => {

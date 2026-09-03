@@ -105,7 +105,7 @@ describe('AgridataTableComponent', () => {
       fixture.detectChanges();
       const pageData = component['pageData']();
 
-      expect(pageData.items.length).toBe(3);
+      expect(pageData.items).toHaveLength(3);
       expect(pageData.currentPage).toBe(0);
       expect(pageData.totalPages).toBe(2);
       expect(pageData.totalItems).toBe(15);
@@ -128,17 +128,17 @@ describe('AgridataTableComponent', () => {
 
     it('should render table with correct number of columns', () => {
       const headerCells = fixture.debugElement.queryAll(By.css('app-table-header-cell'));
-      expect(headerCells.length).toBe(3);
+      expect(headerCells).toHaveLength(3);
     });
 
     it('should render correct number of data rows', () => {
       const rows = fixture.debugElement.queryAll(By.css('tbody tr'));
-      expect(rows.length).toBe(3);
+      expect(rows).toHaveLength(3);
     });
 
     it('should render table cells for each column', () => {
       const cells = fixture.debugElement.queryAll(By.css('app-table-cell'));
-      expect(cells.length).toBe(9); // 3 rows × 3 columns
+      expect(cells).toHaveLength(9); // 3 rows × 3 columns
     });
 
     it('should display loading state when data is loading', () => {
@@ -212,12 +212,12 @@ describe('AgridataTableComponent', () => {
       fixture.detectChanges();
 
       const actionCells = fixture.debugElement.queryAll(By.css('app-table-row-menu'));
-      expect(actionCells.length).toBe(3);
+      expect(actionCells).toHaveLength(3);
     });
 
     it('should not render actions column when actions are not provided', () => {
       const actionCells = fixture.debugElement.queryAll(By.css('app-table-actions'));
-      expect(actionCells.length).toBe(0);
+      expect(actionCells).toHaveLength(0);
     });
   });
 

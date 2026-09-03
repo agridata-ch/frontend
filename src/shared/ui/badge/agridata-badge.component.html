@@ -1,3 +1,6 @@
 <span [class]="appliedClasses()" class="whitespace-nowrap">
+  @if (icon()) {
+    <fa-icon [icon]="icon()" />
+  }
   {{ text() }}
 </span>

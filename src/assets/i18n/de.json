@@ -84,7 +84,7 @@
         "missingBurInfo": "Fehlt ein Standort? Melden Sie sich direkt bei {{ consumer }}, damit diese den Standort anfragen und Sie die Zustimmung geben können."
       },
       "footerInformationNoBur": "Sie haben alle Standorte deaktiviert. Wenn Sie diese Anfrage komplett ablehnen möchten, klicken Sie bitte auf Abbrechen und danach auf den Ablehnen-Button.",
-      "noConsentRequired": "Keine Aktion erforderlich Dieser Datenbezug basiert auf einer gesetzlichen Grundlage. Eine Zustimmung oder Ablehnung Ihrerseits ist nicht erforderlich. Diese Ansicht dient Ihrer Information und Transparenz."
+      "noConsentRequired": "Keine Aktion erforderlich. Dieser Datenbezug basiert auf einer gesetzlichen Grundlage. Eine Zustimmung oder Ablehnung Ihrerseits ist nicht erforderlich. Diese Ansicht dient Ihrer Information und Transparenz."
     },
     "toast": {
       "title": {
@@ -300,7 +300,7 @@
       },
       "products": {
         "allSystems": "Alle Systeme",
-        "publicSectorProductSuffix": "öffentlich-rechlich"
+        "publicSectorProductSuffix": "öffentlich-rechtlich"
       }
     },
     "preview": {
@@ -881,7 +881,8 @@
           "title": "Entwurf gelöscht",
           "message": "Der Entwurf wurde erfolgreich gelöscht."
         }
-      }
+      },
+      "provider": "Datenanbieter"
     },
     "createNew": "Datenprodukt erfassen",
     "detailPanel": {
@@ -1059,6 +1060,10 @@
       "consentRequiredInfo": {
         "title": "Zustimmungspflicht",
         "subtitle": "Legen Sie fest, ob Produzenten (z. B. Landwirte, Tierhalter) einer Datenübermittlung explizit zustimmen müssen oder ob die Datenprodukte lediglich zu Informationszwecken angezeigt werden.\n\nGrundsätzlich erfordert jeder Datenbezug die aktive Zustimmung des Produzenten. Eine Ausnahme bilden öffentlich-rechtliche Datenprodukte, für welche eine gesetzliche Grundlage besteht und daher keine Zustimmung notwendig ist."
+      },
+      "costs": {
+        "title": "Kosten",
+        "subtitle": "Legen Sie fest, ob für die Nutzung dieses Datenprodukts Kosten anfallen. agridata.ch dient lediglich als Informationsplattform und weist Datenbezüger darauf hin, dass die Nutzung kostenpflichtig ist. Die Festlegung der Konditionen, die Rechnungsstellung sowie die Abwicklung der Zahlungen liegen allein in der Verantwortung des Datenanbieters."
       }
     },
     "saveAndPublish": {
@@ -1233,7 +1238,7 @@
       "label": "Verwerfen"
     }
   },
-  "dataCatalog": {
+  "data-catalog": {
     "products": {
       "count": "{{ count }} Datenprodukt(e)"
     },
@@ -1250,7 +1255,12 @@
       "message": "Es wurden keine Einträge gefunden"
     },
     "product": {
-      "deprecated": "veraltet/inaktiv"
+      "deprecated": "veraltet/inaktiv",
+      "showDetails": "Details ansehen",
+      "publicSector": "Öffentlich-Rechtlich",
+      "description": "Beschreibung",
+      "links": "Links",
+      "extendedDescription": "Erweiterte Beschreibung"
     },
     "list": {
       "allLoaded": "Alle Datenprodukte geladen"

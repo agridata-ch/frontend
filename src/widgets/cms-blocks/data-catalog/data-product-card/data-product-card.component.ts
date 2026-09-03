@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
+import { faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
 
 import { PublicDataProductDto } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { CardComponent } from '@/shared/ui/card';
 
 /**
@@ -13,7 +15,7 @@ import { CardComponent } from '@/shared/ui/card';
  */
 @Component({
   selector: 'app-data-product-card',
-  imports: [AgridataBadgeComponent, CardComponent, I18nDirective],
+  imports: [AgridataBadgeComponent, ButtonComponent, CardComponent, I18nDirective],
   templateUrl: './data-product-card.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -24,9 +26,14 @@ export class DataProductCardComponent {
   // Constants
   protected readonly BadgeSize = BadgeSize;
   protected readonly BadgeVariant = BadgeVariant;
+  protected readonly ButtonVariants = ButtonVariants;
+  protected readonly publicSectorIcon = faShieldCheck;
 
   // Input properties
   readonly product = input.required<PublicDataProductDto>();
+
+  // Output properties
+  readonly handleShowDetails = output<string>();
 
   // Computed Signals
   protected readonly description = computed(() =>

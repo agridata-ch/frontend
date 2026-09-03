@@ -1848,6 +1848,7 @@ components:
       required:
       - id
       - stateCode
+      - consentRequired
       properties:
         id:
           $ref: "#/components/schemas/UUID"
@@ -1896,6 +1897,11 @@ components:
           description: State of the data product
           examples:
           - ACTIVE
+        consentRequired:
+          type: boolean
+          description: If a consent is required for this data product
+          examples:
+          - true
     ResourceQueryDto:
       type: object
       properties:
@@ -5347,6 +5353,39 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Public Data Source Systems
       x-api-subset: agridata.ch Web App
+  /public/api/products/v2/{id}:
+    get:
+      description: Retrieves a single publicly available data product. Publicly accessible.
+      operationId: getPublicDataProduct
+      tags:
+      - Public Data Products
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicDataProductDto"
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Public Data Product
+      x-api-subset: agridata.ch Web App
   /public/api/products/v2/{id}/documents:
     get:
       description: Retrieves metadata for all successfully virus-scanned documents
@@ -5464,7 +5503,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.16.0-rc.7
+  version: 1.16.0-rc.9
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

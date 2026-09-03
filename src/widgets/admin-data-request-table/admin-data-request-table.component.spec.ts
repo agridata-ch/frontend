@@ -94,7 +94,7 @@ describe('DataRequestTableComponent', () => {
     const metadata = component['dataRequestsTableMetaData']();
 
     expect(metadata.idColumn).toBe('id');
-    expect(metadata.columns.length).toBe(5);
+    expect(metadata.columns).toHaveLength(5);
     expect(metadata.columns[0].sortable).toBe(true);
     expect(metadata.columns[0].renderer.type).toBe('template');
   });

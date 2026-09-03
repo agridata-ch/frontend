@@ -350,7 +350,7 @@ describe('DataRequestWizardBaseComponent', () => {
     it('should populate formControlSteps from formsModel', () => {
       const steps = component['formControlSteps']();
 
-      expect(steps.length).toBe(dataRequestFormsModel.length);
+      expect(steps).toHaveLength(dataRequestFormsModel.length);
       expect(steps.map((s) => s.id)).toEqual(dataRequestFormsModel.map((m) => m.formGroupName));
     });
 

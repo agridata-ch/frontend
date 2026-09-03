@@ -112,7 +112,7 @@ describe('NotificationCenterPageComponent - component behavior', () => {
   describe('tableMetaData computed signal', () => {
     it('should produce 4 columns', () => {
       const metadata = component['tableMetaData']();
-      expect(metadata.columns.length).toBe(4);
+      expect(metadata.columns).toHaveLength(4);
     });
 
     it('should configure the title column as TEMPLATE renderer', () => {

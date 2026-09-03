@@ -15,6 +15,7 @@
   <span>{{ pageTitle() }}</span>
 </div>
 <app-error-outlet></app-error-outlet>
+<router-outlet />
 @for (block of pageBlocks(); track `${block.__component}_${block.id}`) {
 <app-cms-block-renderer
   [block]="block"

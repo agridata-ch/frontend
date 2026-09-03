@@ -1,0 +1,77 @@
+<app-modal
+  [open]="open()"
+  [title]="name()"
+  [dataTestId]="'public-data-product-detail-modal'"
+  (closed)="handleClose.emit()"
+>
+  <ng-container *i18n="let t; prefix: 'data-catalog'">
+    @if (loading()) {
+      <fa-icon
+        animation="spin"
+        [icon]="faSpinnerThird"
+        size="3x"
+        class="flex items-center justify-center py-10"
+      />
+    } @else if (product(); as product) {
+      <div class="flex flex-col gap-6 text-left">
+        <div class="flex flex-col gap-8">
+          <div class="flex flex-wrap gap-2">
+            @if (providerName()) {
+              <app-agridata-badge
+                [text]="providerName()"
+                [variant]="BadgeVariant.DARK"
+                [size]="BadgeSize.SM"
+              />
+            }
+            @if (sourceSystemName()) {
+              <app-agridata-badge
+                [text]="sourceSystemName()"
+                [variant]="BadgeVariant.DARK"
+                [size]="BadgeSize.SM"
+              />
+            }
+            @if (product.deprecatedSince) {
+              <app-agridata-badge
+                [text]="t('product.deprecated')"
+                [variant]="BadgeVariant.ERROR"
+                [size]="BadgeSize.SM"
+              />
+            }
+          </div>
+
+          @if (!product.consentRequired) {
+            <app-agridata-badge
+              [icon]="publicSectorIcon"
+              [text]="t('product.publicSector')"
+              [variant]="BadgeVariant.DEFAULT"
+              [size]="BadgeSize.SM"
+            />
+          }
+        </div>
+
+        @if (description()) {
+          <section class="flex flex-col gap-6">
+            <h4 class="font-semibold">{{ t('product.description') }}</h4>
+            <p class="whitespace-pre-line text-agridata-tertiary-text">{{ description() }}</p>
+          </section>
+        }
+
+        @if (product.links && product.links.length > 0) {
+          <section class="flex flex-col gap-6">
+            <h4 class="font-semibold">{{ t('product.links') }}</h4>
+            <app-agridata-links-list [links]="product.links" />
+          </section>
+        }
+        @if (extendedDescription()) {
+          <section class="flex flex-col gap-6">
+            <h4 class="font-semibold">{{ t('product.extendedDescription') }}</h4>
+            <p
+              [innerHTML]="extendedDescription()"
+              class="whitespace-pre-line text-agridata-tertiary-text rich-text-content"
+            ></p>
+          </section>
+        }
+      </div>
+    }
+  </ng-container>
+</app-modal>

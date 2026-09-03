@@ -1,0 +1,13 @@
+<div appViewSection [isViewMode]="true">
+  @for (link of links(); track $index) {
+    <a
+      class="flex items-center gap-2 px-4 py-3 text-agridata-primary-600 hover:underline"
+      [href]="link.url"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <fa-icon [icon]="faLink" />
+      <span>{{ link.displayText || link.url }}</span>
+    </a>
+  }
+</div>

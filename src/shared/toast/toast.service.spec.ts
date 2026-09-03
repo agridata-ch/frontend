@@ -22,7 +22,7 @@ describe('ToastService', () => {
     const toasts = service.toasts();
     expect(returnedId).toBe(1);
 
-    expect(toasts.length).toBe(1);
+    expect(toasts).toHaveLength(1);
     const toast = toasts[0];
     expect(toast.id).toBe(1);
     expect(toast.title).toBe('Test Title');
@@ -34,7 +34,7 @@ describe('ToastService', () => {
     const secondId = service.show('Another', 'Msg', ToastType.Warning);
     const updated = service.toasts();
     expect(secondId).toBe(2);
-    expect(updated.length).toBe(2);
+    expect(updated).toHaveLength(2);
     expect(updated[0].id).toBe(2);
     expect(updated[1].id).toBe(1);
   });
@@ -47,13 +47,13 @@ describe('ToastService', () => {
     service.dismiss(id);
 
     toasts = service.toasts();
-    expect(toasts.length).toBe(0);
+    expect(toasts).toHaveLength(0);
   });
 
   it('clear() should remove all toasts immediately', () => {
     service.show('One', 'Msg1', ToastType.Info);
     service.show('Two', 'Msg2', ToastType.Error);
-    expect(service.toasts().length).toBe(2);
+    expect(service.toasts()).toHaveLength(2);
 
     service.clear();
     expect(service.toasts()).toEqual([]);
