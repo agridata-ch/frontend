@@ -1,3 +1,9 @@
+## [1.19.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.3...v1.19.0-rc.4) (2026-09-03)
+
+### Bug Fixes
+
+- **modal:** mobile modal ([80c60cf](https://github.com/agridata-ch/frontend/commit/80c60cfde55506991abdaf2664ed2cfdc5d33020)), references [DIGIB2-1443](https://github.com/agridata-ch/frontend/issues/-1443)
+
 ## [1.19.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.2...v1.19.0-rc.3) (2026-09-03)
 
 ### Features
