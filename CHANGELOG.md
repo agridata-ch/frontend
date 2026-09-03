@@ -1,3 +1,9 @@
+## [1.19.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.18.0...v1.19.0-rc.1) (2026-09-03)
+
+### Features
+
+- **deps:** update dependency @tiptap/core to v3.30.4 [security] ([8b2752a](https://github.com/agridata-ch/frontend/commit/8b2752ae098591cb849a69c0e690c0af34e9f75b))
+
 ## [1.18.0](https://github.com/agridata-ch/frontend/compare/v1.17.1...v1.18.0) (2026-09-03)
 
 ### Features
