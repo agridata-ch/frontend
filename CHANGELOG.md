@@ -1,3 +1,25 @@
+## [1.18.0](https://github.com/agridata-ch/frontend/compare/v1.17.1...v1.18.0) (2026-09-03)
+
+### Features
+
+- **agb:** add custom styling to list ([50f55e7](https://github.com/agridata-ch/frontend/commit/50f55e724f2d9c10935a3aec5f2b1fad88f142e5)), references [DIGIB2-1590](https://github.com/agridata-ch/frontend/issues/-1590)
+- **consent-request aggregation:** add single get aggregation ([b9056aa](https://github.com/agridata-ch/frontend/commit/b9056aad131d3221fb3dcc0f6c08edb126c7c637)), references [DIGIB2-1600](https://github.com/agridata-ch/frontend/issues/-1600)
+- **consent-request:** add BUR decision ([b96202d](https://github.com/agridata-ch/frontend/commit/b96202db02d25c9a7e0364b56f01bf2598746aae)), references [DIGIB2-531](https://github.com/agridata-ch/frontend/issues/-531)
+- **consent-request:** add LEGALLY_PERMITTED info ([b49bdf7](https://github.com/agridata-ch/frontend/commit/b49bdf7e7d1956f23c87bb965157dac423712b97)), references [DIGIB2-1557](https://github.com/agridata-ch/frontend/issues/-1557)
+- **data-catalog:** add public data-catalog ([d5fbab1](https://github.com/agridata-ch/frontend/commit/d5fbab1029d12bad3d9277d4228c5231a886a67f)), references [DIGIB2-1442](https://github.com/agridata-ch/frontend/issues/-1442)
+- **data-product:** add public-sector data-product ([ec8548f](https://github.com/agridata-ch/frontend/commit/ec8548f0588497ffab72b9054adc1452e1f7a66d)), references [DIGIB2-1553](https://github.com/agridata-ch/frontend/issues/-1553)
+- **data-products:** show deprecation state in data product table and sidepanel ([89066fb](https://github.com/agridata-ch/frontend/commit/89066fb75cf86a03a174693e66b8ed52cb05ad2d)), references [DIGIB2-1672](https://github.com/agridata-ch/frontend/issues/-1672)
+- **data-request:** add public-sector product selection ([038581c](https://github.com/agridata-ch/frontend/commit/038581c55c7eee6fd37ddf1b927d63ae5997c2bf)), references [DIGIB2-1554](https://github.com/agridata-ch/frontend/issues/-1554)
+- **sla:** add sla page ([ce85306](https://github.com/agridata-ch/frontend/commit/ce85306b615a49b1b56a99fb1f6dc995ec3d26cc)), references [DIGIB2-1611](https://github.com/agridata-ch/frontend/issues/-1611)
+- **wysiwyg:** add htmlLengthLimit plugin ([8f354a1](https://github.com/agridata-ch/frontend/commit/8f354a146e8f2c61604eb68a5d791e1e91e61dbc)), references [DIGIB2-1644](https://github.com/agridata-ch/frontend/issues/-1644)
+
+### Bug Fixes
+
+- **consent-request:** fix create consent-request ([8e706f1](https://github.com/agridata-ch/frontend/commit/8e706f13c6fb601ea92da481083b5729a5c9867e)), references [DIGIB2-1600](https://github.com/agridata-ch/frontend/issues/-1600)
+- **semantic-release:** add conventional-changelog-writer ([ed0a5ea](https://github.com/agridata-ch/frontend/commit/ed0a5ea2c8624bf08738d730604ac1de8cd9550b))
+- **semantic-release:** fix changelog generation ([41cfe4e](https://github.com/agridata-ch/frontend/commit/41cfe4e67485f77a3513dcdc289e136a0ef3c2da)), references [DIGIB2-1640](https://github.com/agridata-ch/frontend/issues/-1640)
+- **semantic-release:** force conventional-changelog-writer@9 via override ([b4ec887](https://github.com/agridata-ch/frontend/commit/b4ec8875ed86d9e2969371cfbf148b9a8301f3af))
+
 ## [1.18.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.18.0-rc.10...v1.18.0-rc.11) (2026-09-01)
 
 ### Features
