@@ -1,3 +1,9 @@
+## [1.19.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.5...v1.19.0-rc.6) (2026-09-07)
+
+### Features
+
+- **data-products:** add provider name in product table for admin users ([636afc5](https://github.com/agridata-ch/frontend/commit/636afc5ac360effc6204f27a71011eb8b17d03c0)), references [DIGIB2-1356](https://github.com/agridata-ch/frontend/issues/-1356)
+
 ## [1.19.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.4...v1.19.0-rc.5) (2026-09-07)
 
 ### Features
