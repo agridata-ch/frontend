@@ -1,3 +1,9 @@
+## [1.19.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.4...v1.19.0-rc.5) (2026-09-07)
+
+### Features
+
+- **vitest:** migrate from jest to vitest ([6be6092](https://github.com/agridata-ch/frontend/commit/6be60923244fb9b0dd1dcb68f78d40fb69a318c5)), references [DIGIB2-972](https://github.com/agridata-ch/frontend/issues/-972)
+
 ## [1.19.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.3...v1.19.0-rc.4) (2026-09-03)
 
 ### Bug Fixes
