@@ -1,6 +1,6 @@
 import { Component, effect, inject, resource } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { faDatabase, faPlus } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faFileCheck, faPlus } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DataRequestService } from '@/entities/api';
@@ -44,7 +44,7 @@ export class DataRequestsProviderPage {
 
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly buttonIcon = faPlus;
-  protected readonly icon = faDatabase;
+  protected readonly icon = faFileCheck;
   protected readonly stateService = inject(AgridataStateService);
   protected readonly dataRequestsResource = resource({
     params: () => ({ actingRole: this.stateService.actingRole() }),

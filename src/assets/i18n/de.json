@@ -941,15 +941,15 @@
         "placeholder": "Bitte wählen Sie das System"
       },
       "restClientIdentifier": {
-        "label": "System-Schnittstelle wählen",
+        "label": "System-Schnittstelle wählen (optional)",
         "placeholder": "Bitte wählen Sie die System-Schnittstelle"
       },
       "restClientMethod": {
-        "label": "Übertragungsmethode wählen",
+        "label": "Übertragungsmethode wählen (optional)",
         "placeholder": "Bitte wählen Sie die Übertragungsmethode"
       },
       "restClientPathTemplate": {
-        "label": "URL-Pfad-Template (Schnittstelle)",
+        "label": "URL-Pfad-Template (Schnittstelle, optional)",
         "placeholder": "z.B. /api/v1/bur/{{bur}}/nutztiere"
       },
       "restClientRequestTemplate": {
@@ -964,7 +964,7 @@
       "saveDraft": "Als Entwurf speichern",
       "saveAndPublish": "Speichern und publizieren",
       "flowCode": {
-        "label": "Übertragungsmodus wählen",
+        "label": "Übertragungsmodus wählen (optional)",
         "placeholder": "Bitte wählen Sie den Übertragungsmodus"
       },
       "tab": {

@@ -941,15 +941,15 @@
         "placeholder": "Veuillez sélectionner le système"
       },
       "restClientIdentifier": {
-        "label": "Sélectionner l'interface système",
+        "label": "Sélectionner l'interface système (facultatif)",
         "placeholder": "Veuillez sélectionner l'interface système"
       },
       "restClientMethod": {
-        "label": "Sélectionner la méthode de transfert",
+        "label": "Sélectionner la méthode de transfert (facultatif)",
         "placeholder": "Veuillez sélectionner la méthode de transfert"
       },
       "restClientPathTemplate": {
-        "label": "Modèle de chemin URL (Interface)",
+        "label": "Modèle de chemin URL (Interface, facultatif)",
         "placeholder": "par ex. /api/v1/bur/{{bur}}/animaux_d_elevage"
       },
       "restClientRequestTemplate": {
@@ -964,7 +964,7 @@
       "saveDraft": "Enregistrer comme brouillon",
       "saveAndPublish": "Enregistrer et publier",
       "flowCode": {
-        "label": "Sélectionner le mode de transfert",
+        "label": "Sélectionner le mode de transfert (facultatif)",
         "placeholder": "Veuillez sélectionner le mode de transfert"
       },
       "tab": {
