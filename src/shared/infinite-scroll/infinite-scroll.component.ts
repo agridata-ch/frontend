@@ -84,7 +84,7 @@ export class InfiniteScrollComponent {
 
         this.evaluate();
       },
-      { rootMargin: '-400px' },
+      { rootMargin: '-300px' },
     );
     observer.observe(this.el.nativeElement);
     this.destroyRef.onDestroy(() => observer.disconnect());
