@@ -12,7 +12,7 @@
       <app-form-control
         [control]="getFormControl('consentRequired')"
         [controlType]="ControlTypes.RADIO_GROUP"
-        [radioOptions]="radioOptions()"
+        [radioOptions]="radioOptionsConsentRequired()"
         [disabledInfo]="t('consentRequired.disabledInfo')"
         [isViewMode]="isViewMode()"
         [id]="'consentRequired'"
@@ -91,6 +91,44 @@
           [class.px-4]="isViewMode()"
           isWysiwyg
         />
+      </div>
+    }
+  </div>
+
+  <div #costSection class="flex flex-col gap-4">
+    <h3>{{ t('costs.title') }}</h3>
+
+    <span class="text-agridata-secondary-text">{{ t('costs.subtitle') }}</span>
+
+    <div appViewSection [isViewMode]="isViewMode()">
+      <app-form-control
+        [control]="getFormControl('paymentRequired')"
+        [controlType]="ControlTypes.RADIO_GROUP"
+        [radioOptions]="radioOptionsPaymentRequired()"
+        [disabledInfo]="t('paymentRequired.disabledInfo')"
+        [isViewMode]="isViewMode()"
+        [id]="'paymentRequired'"
+        [label]="t('paymentRequired.label')"
+        [class.px-3]="isViewMode()"
+        [class.py-4]="isViewMode()"
+      />
+    </div>
+
+    @if (paymentRequired()) {
+      <div appViewSection [isViewMode]="isViewMode()">
+        @for (lang of availableLangs; track lang) {
+          <app-form-control
+            [control]="getFormControl(`pricingBasis.${lang}`)"
+            [controlType]="ControlTypes.TEXT_AREA"
+            [label]="t(`pricingBasis.${lang}.label`)"
+            [placeholder]="t(`pricingBasis.${lang}.placeholder`)"
+            [isViewMode]="isViewMode()"
+            [id]="`pricingBasis-${lang}`"
+            [class.py-3]="isViewMode()"
+            [class.px-4]="isViewMode()"
+            isWysiwyg
+          />
+        }
       </div>
     }
   </div>

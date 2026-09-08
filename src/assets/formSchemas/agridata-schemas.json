@@ -303,13 +303,38 @@
       },
       "consentRequired": {
         "type": "boolean"
+      },
+      "paymentRequired": {
+        "type": "boolean"
+      },
+      "pricingBasis": {
+        "type": "object",
+        "properties": {
+          "de": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 1000
+          },
+          "fr": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 1000
+          },
+          "it": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 1000
+          }
+        },
+        "required": ["de", "fr", "it"]
       }
     },
     "required": [
       "name",
       "description",
       "dataSourceSystemId",
-      "consentRequired"
+      "consentRequired",
+      "paymentRequired"
     ]
   }
 }

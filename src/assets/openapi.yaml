@@ -315,7 +315,7 @@ components:
           type: string
           description: BUR of the data producer; null for UID-based consent requests
           examples:
-          - "99910003"
+          - A99910003
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
           description: State of the consent request
@@ -524,7 +524,7 @@ components:
           type: string
           description: BUR of the data producer; null for UID-based consent requests
           examples:
-          - "99910003"
+          - A99910003
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
           description: State of the consent request
@@ -5721,7 +5721,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.17.0
+  version: 1.17.1-rc.2
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

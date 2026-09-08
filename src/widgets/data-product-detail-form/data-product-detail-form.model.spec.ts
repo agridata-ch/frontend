@@ -175,6 +175,37 @@ describe('data-product-detail-form.model', () => {
       expect(payload).not.toHaveProperty('dataSourceSystemId');
       expect(payload).not.toHaveProperty('restClientId');
     });
+
+    it('should null out pricingBasis when paymentRequired is false, even if stale values remain', () => {
+      const form = buildForm();
+      const info = form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION) as FormGroup;
+      getFormControl(info, 'paymentRequired').setValue(true);
+      getFormControl(info, 'pricingBasis.de').setValue('Preis DE');
+      getFormControl(info, 'pricingBasis.fr').setValue('Preis FR');
+      getFormControl(info, 'pricingBasis.it').setValue('Preis IT');
+      getFormControl(info, 'paymentRequired').setValue(false);
+
+      const payload = buildDataProductPayload(form);
+
+      expect(payload['pricingBasis']).toBeNull();
+    });
+
+    it('should keep pricingBasis in the payload when paymentRequired is true', () => {
+      const form = buildForm();
+      const info = form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION) as FormGroup;
+      getFormControl(info, 'paymentRequired').setValue(true);
+      getFormControl(info, 'pricingBasis.de').setValue('Preis DE');
+      getFormControl(info, 'pricingBasis.fr').setValue('Preis FR');
+      getFormControl(info, 'pricingBasis.it').setValue('Preis IT');
+
+      const payload = buildDataProductPayload(form);
+
+      expect(payload['pricingBasis']).toEqual({
+        de: 'Preis DE',
+        fr: 'Preis FR',
+        it: 'Preis IT',
+      });
+    });
   });
 
   describe('isFieldDisabledAfterPublish', () => {
