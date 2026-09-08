@@ -47,6 +47,14 @@ export function isFieldDisabledAfterPublish(field: string, isAdmin: boolean): bo
   return DISABLED_FIELDS_AFTER_PUBLISH[role].has(field.split('.')[0]);
 }
 
+// Only include fields that can be locked by this function.
+// This prevents applyDisabledAfterPublish from changing fields that are controlled
+// by other components (e.g. pricingBasis), whose enabled/disabled state may depend
+// on their own logic.
+const FIELDS_LOCKABLE_AFTER_PUBLISH = new Set(
+  Object.values(DISABLED_FIELDS_AFTER_PUBLISH).flatMap((fields) => [...fields]),
+);
+
 /**
  * Disables/enables a form group's controls according to the per-role locked set while editing a
  * published product. Uses the default emitEvent so the form-control's control.events subscription
@@ -58,7 +66,7 @@ export function applyDisabledAfterPublish(
   editMode: boolean,
   isAdmin: boolean,
 ): void {
-  for (const field of Object.keys(group.controls)) {
+  for (const field of FIELDS_LOCKABLE_AFTER_PUBLISH) {
     const control = group.get(field);
     if (!control) continue;
     const disable = editMode && isFieldDisabledAfterPublish(field, isAdmin);
@@ -75,6 +83,12 @@ export function buildDataProductPayload(form: FormGroup): Record<string, unknown
   // because these are ENUM values and the backend will reject an empty string, but will accept null
   if (payload['restClientMethodCode'] === '') payload['restClientMethodCode'] = null;
   if (payload['flowCode'] === '') payload['flowCode'] = null;
+
+  // The backend requires pricingBasis to be null when payment is not required; the form only
+  // disables the pricingBasis controls (keeping stale text so it's not lost if the user
+  // re-enables payment), so flattenFormGroup would otherwise omit the key and leave a stale
+  // pricingBasis on the backend.
+  if (payload['paymentRequired'] === false) payload['pricingBasis'] = null;
 
   // 'provider' is a UI-only filter control added imperatively by the technical tab; it must
   // never reach the backend.
@@ -93,6 +107,10 @@ export const dataProductFormsModel: FormModel[] = [
     formGroupName: FORM_TAB_IDS.NAME_AND_DESCRIPTION,
     fields: [
       { name: 'consentRequired' },
+      { name: 'paymentRequired' },
+      { name: 'pricingBasis.de' },
+      { name: 'pricingBasis.fr' },
+      { name: 'pricingBasis.it' },
       { name: 'name.de' },
       { name: 'name.fr' },
       { name: 'name.it' },
