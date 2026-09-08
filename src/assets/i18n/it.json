@@ -941,15 +941,15 @@
         "placeholder": "Si prega di selezionare il sistema"
       },
       "restClientIdentifier": {
-        "label": "Seleziona interfaccia di sistema",
+        "label": "Seleziona interfaccia di sistema (facoltativo)",
         "placeholder": "Si prega di selezionare l'interfaccia di sistema"
       },
       "restClientMethod": {
-        "label": "Seleziona metodo di trasferimento",
+        "label": "Seleziona metodo di trasferimento (facoltativo)",
         "placeholder": "Si prega di selezionare il metodo di trasferimento"
       },
       "restClientPathTemplate": {
-        "label": "Template percorso URL (interfaccia)",
+        "label": "Template percorso URL (interfaccia, facoltativo)",
         "placeholder": "es. /api/v1/bur/{{bur}}/nutztiere"
       },
       "restClientRequestTemplate": {
@@ -964,7 +964,7 @@
       "saveDraft": "Salva come bozza",
       "saveAndPublish": "Salva e pubblica",
       "flowCode": {
-        "label": "Seleziona modalità di trasferimento",
+        "label": "Seleziona modalità di trasferimento (facoltativo)",
         "placeholder": "Si prega di selezionare la modalità di trasferimento"
       },
       "tab": {
