@@ -127,7 +127,7 @@ describe('DataProductDetailFormComponent', () => {
     });
 
     it('should set hasError=true on invalid tabs after publish attempt', async () => {
-      // nameAndDescription tab has required fields (dataSourceSystemId)
+      // technicalFields tab has required fields (dataSourceSystemId)
       // so triggering saveAndPublish without filling them should mark tab as having errors
       await component['saveAndPublish']();
       fixture.detectChanges();

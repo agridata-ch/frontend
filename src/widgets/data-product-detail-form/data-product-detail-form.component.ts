@@ -146,7 +146,7 @@ export class DataProductDetailFormComponent {
     return [
       {
         id: FORM_TAB_IDS.NAME_AND_DESCRIPTION,
-        label: this.i18nService.translate('data-products.detailForm.tab.nameAndDescription'),
+        label: this.i18nService.translate('data-products.detailForm.tab.generalInfo'),
         hasError: attempted && (this.form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION)?.invalid ?? false),
       },
       {
