@@ -46,7 +46,7 @@ export class DataRequestFormRequestProductComponent {
   protected readonly ControlTypes = ControlTypes;
   protected readonly faSpinnerThird = faSpinnerThird;
   protected readonly getFormControl = getFormControl;
-  protected readonly productDataLink = `${environment.appBaseUrl}/cms/data-consumer#dataProduct`;
+  protected readonly productDataLink = `${environment.appBaseUrl}/cms/data-catalog`;
 
   // Input properties
   readonly dataProviderId = input<string>();

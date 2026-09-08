@@ -14,15 +14,15 @@
           <span class="text-agridata-primary-text whitespace-pre-line">
             {{ getFieldFromLang(product, 'description') }}
           </span>
+          <a
+            [href]="getProductDataLink(product.id)"
+            target="_blank"
+            class="text-agridata-primary-600 hover:underline cursor-pointer"
+          >
+            {{ t('moreInfos') }}
+          </a>
         </div>
       }
-      <a
-        [href]="productDataLink"
-        target="_blank"
-        class="text-agridata-primary-600 hover:underline cursor-pointer"
-      >
-        {{ t('moreInfos') }}
-      </a>
     </div>
   </app-agridata-accordion>
 </div>

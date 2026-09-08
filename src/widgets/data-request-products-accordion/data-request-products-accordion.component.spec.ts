@@ -123,8 +123,11 @@ describe('DataRequestProductsAccordionComponent', () => {
     });
 
     it('should link to the public data product information', () => {
+      componentRef.setInput('products', mockProducts);
+      fixture.detectChanges();
+
       const link = fixture.debugElement.nativeElement.querySelector('a');
-      expect(link.getAttribute('href')).toBe(component.productDataLink);
+      expect(link.getAttribute('href')).toBe(component.getProductDataLink(mockProducts[0].id));
     });
   });
 });
