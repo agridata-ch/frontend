@@ -65,19 +65,7 @@ export class NavigationWidgetComponent {
           icon: faFileCheck,
           route: `/${ROUTE_PATHS.ADMIN_PATH}`,
         },
-      (this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) ||
-        this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_PROVIDER)) &&
-        !this.agridataStateService.isImpersonating() && {
-          label: 'data-products.pageTitle',
-          icon: faLayerGroup,
-          route: `/${ROUTE_PATHS.DATA_PRODUCTS_PATH}`,
-        },
-      this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) &&
-        !this.agridataStateService.isImpersonating() && {
-          label: 'supporter.pageTitle',
-          icon: faUsers,
-          route: `/${ROUTE_PATHS.SUPPORT_PATH}`,
-        },
+
       (this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) ||
         this.agridataStateService.isImpersonating()) && {
         label: 'producer.pageTitle',
@@ -94,6 +82,19 @@ export class NavigationWidgetComponent {
         icon: faDatabase,
         route: `/${ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH}`,
       },
+      (this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) ||
+        this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_PROVIDER)) &&
+        !this.agridataStateService.isImpersonating() && {
+          label: 'data-products.pageTitle',
+          icon: faLayerGroup,
+          route: `/${ROUTE_PATHS.DATA_PRODUCTS_PATH}`,
+        },
+      this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) &&
+        !this.agridataStateService.isImpersonating() && {
+          label: 'supporter.pageTitle',
+          icon: faUsers,
+          route: `/${ROUTE_PATHS.SUPPORT_PATH}`,
+        },
     ].filter(Boolean),
   );
 
