@@ -1064,6 +1064,31 @@
       "costs": {
         "title": "Coûts",
         "subtitle": "Déterminez si l’utilisation de ce produit de données est payante. agridata.ch sert uniquement de plateforme d’information et informe les utilisateurs de données que l’utilisation est soumise à des frais. La définition des conditions, la facturation ainsi que le traitement des paiements relèvent de la seule responsabilité du fournisseur de données."
+      },
+      "pricingBasis": {
+        "fr": {
+          "label": "Base des coûts en français",
+          "placeholder": "L’achat de ce paquet de données est soumis à des redevances conformément à l’OId-BDTA (RS 916.404.1)."
+        },
+        "de": {
+          "label": "Base des coûts en allmand",
+          "placeholder": "Für den Bezug dieses Datenpakets fallen Gebühren gemäss IdTVD-V (SR 916.404.1) an."
+        },
+        "it": {
+          "label": "Base des coûts en italien",
+          "placeholder": "L'acquisto di questo pacchetto di dati è soggetto a tassazione conformemente all’OIBDTA (SR 916.404.1)."
+        }
+      },
+      "paymentRequired": {
+        "label": "L’utilisation de ce produit de données est-elle payante ?",
+        "true": {
+          "title": "Oui, l’utilisation est payante.",
+          "subtitle": "Produit de données payant (la facturation est effectuée directement par le fournisseur de données)"
+        },
+        "false": {
+          "title": "Non, l’utilisation est gratuite.",
+          "subtitle": "Produit de données gratuit"
+        }
       }
     },
     "saveAndPublish": {
@@ -1263,7 +1288,9 @@
       "publicSector": "Réglementé par la loi",
       "description": "Description",
       "links": "Liens",
-      "extendedDescription": "Informations complémentaires"
+      "extendedDescription": "Informations complémentaires",
+      "paymentRequired": "Frais (fournisseur)",
+      "costs": "Coûts"
     },
     "list": {
       "allLoaded": "Tous les produits de données chargés"

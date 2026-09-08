@@ -24,11 +24,21 @@
         [appTooltip]="t('product.deprecated.tooltip')"
       />
     }
+  </div>
+  <div cardLabels class="flex gap-2">
     @if (!product().consentRequired) {
       <app-agridata-badge
         [icon]="publicSectorIcon"
         [text]="t('product.publicSector')"
         [variant]="BadgeVariant.DEFAULT"
+        [size]="BadgeSize.SM"
+      />
+    }
+    @if (product().paymentRequired) {
+      <app-agridata-badge
+        [icon]="chfCircleIcon"
+        [text]="t('product.paymentRequired')"
+        [variant]="BadgeVariant.LIGHT"
         [size]="BadgeSize.SM"
       />
     }

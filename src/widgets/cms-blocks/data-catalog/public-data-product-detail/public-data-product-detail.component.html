@@ -32,7 +32,7 @@
             }
           </div>
 
-          @if (product.deprecatedSince || !product.consentRequired) {
+          @if (product.deprecatedSince || !product.consentRequired || product.paymentRequired) {
             <div class="flex flex-wrap gap-2">
               @if (product.deprecatedSince) {
                 <app-agridata-badge
@@ -47,6 +47,14 @@
                   [icon]="publicSectorIcon"
                   [text]="t('product.publicSector')"
                   [variant]="BadgeVariant.DEFAULT"
+                  [size]="BadgeSize.SM"
+                />
+              }
+              @if (product.paymentRequired) {
+                <app-agridata-badge
+                  [icon]="chfCircleIcon"
+                  [text]="t('product.paymentRequired')"
+                  [variant]="BadgeVariant.LIGHT"
                   [size]="BadgeSize.SM"
                 />
               }
@@ -76,6 +84,12 @@
               [innerHTML]="extendedDescription()"
               class="whitespace-pre-line rich-text-content"
             ></p>
+          </section>
+        }
+        @if (paymentRequired() && pricingBasis()) {
+          <section class="flex flex-col gap-6">
+            <h4>{{ t('product.costs') }}</h4>
+            <p [innerHTML]="pricingBasis()" class="whitespace-pre-line rich-text-content"></p>
           </section>
         }
       </div>

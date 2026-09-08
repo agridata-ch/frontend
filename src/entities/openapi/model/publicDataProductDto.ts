@@ -46,6 +46,14 @@ export interface PublicDataProductDto {
      * If a consent is required for this data product
      */
     consentRequired: boolean;
+    /**
+     * If a payment is required for this data product
+     */
+    paymentRequired: boolean;
+    /**
+     * Legal basis for the pricing of this data product, if payment is required
+     */
+    pricingBasis?: TranslationDto;
 }
 export namespace PublicDataProductDto {
 }
