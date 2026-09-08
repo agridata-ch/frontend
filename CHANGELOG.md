@@ -1,3 +1,9 @@
+## [1.19.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.6...v1.19.0-rc.7) (2026-09-08)
+
+### Bug Fixes
+
+- **infinite-scroll:** reduce rootMargin ([e68385c](https://github.com/agridata-ch/frontend/commit/e68385cea85c24851db1b0d110e0968108336df2)), references [DIGIB2-1442](https://github.com/agridata-ch/frontend/issues/-1442)
+
 ## [1.19.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.5...v1.19.0-rc.6) (2026-09-07)
 
 ### Features
