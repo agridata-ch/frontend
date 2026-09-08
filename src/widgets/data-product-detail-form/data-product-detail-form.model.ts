@@ -17,7 +17,7 @@ export const SAVE_MODE = {
 };
 
 export const FORM_TAB_IDS = {
-  NAME_AND_DESCRIPTION: 'nameAndDescription',
+  NAME_AND_DESCRIPTION: 'generalInfo',
   TECHNICAL_FIELDS: 'technicalFields',
   LINKS_DOCUMENTS: 'linksAndDocuments',
 };
