@@ -1,3 +1,9 @@
+## [1.19.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.7...v1.19.0-rc.8) (2026-09-09)
+
+### Features
+
+- **product-accordion:** add dedicated detail link ([edf9600](https://github.com/agridata-ch/frontend/commit/edf960047c0ed061a990e01df9c2eff50fcc3c0f)), references [DIGIB2-1638](https://github.com/agridata-ch/frontend/issues/-1638)
+
 ## [1.19.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.6...v1.19.0-rc.7) (2026-09-08)
 
 ### Bug Fixes
