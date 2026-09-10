@@ -16,6 +16,7 @@ import { DataProductService } from '@/entities/api';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
+import { TooltipDirective } from '@/shared/tooltip';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { AgridataLinksListComponent } from '@/shared/ui/links-list';
 import { ModalComponent } from '@/shared/ui/modal';
@@ -35,6 +36,7 @@ import { ModalComponent } from '@/shared/ui/modal';
     FontAwesomeModule,
     I18nDirective,
     ModalComponent,
+    TooltipDirective,
   ],
   templateUrl: './public-data-product-detail.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

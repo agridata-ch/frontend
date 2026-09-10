@@ -41,7 +41,7 @@ describe('data-product-state.model', () => {
     });
 
     it('returns WARNING for the deprecated state', () => {
-      expect(getBadgeVariant(DATA_PRODUCT_DEPRECATED_STATE)).toBe(BadgeVariant.ERROR);
+      expect(getBadgeVariant(DATA_PRODUCT_DEPRECATED_STATE)).toBe(BadgeVariant.WARNING);
     });
   });
 

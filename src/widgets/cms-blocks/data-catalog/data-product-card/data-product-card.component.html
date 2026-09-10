@@ -14,24 +14,25 @@
         [size]="BadgeSize.SM"
       />
     }
+  </div>
+  <div cardLabels class="flex gap-2">
     @if (product().deprecatedSince) {
       <app-agridata-badge
-        [text]="t('product.deprecated')"
-        [variant]="BadgeVariant.ERROR"
+        [text]="t('product.deprecated.text')"
+        [variant]="BadgeVariant.WARNING"
         [size]="BadgeSize.SM"
+        [appTooltip]="t('product.deprecated.tooltip')"
       />
     }
-  </div>
-  @if (!product().consentRequired) {
-    <div cardLabels class="flex gap-2">
+    @if (!product().consentRequired) {
       <app-agridata-badge
         [icon]="publicSectorIcon"
         [text]="t('product.publicSector')"
         [variant]="BadgeVariant.DEFAULT"
         [size]="BadgeSize.SM"
       />
-    </div>
-  }
+    }
+  </div>
   <div cardFooter class="flex justify-end">
     <app-agridata-button
       [variant]="ButtonVariants.Secondary"
