@@ -3,6 +3,7 @@ import { faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
 
 import { PublicDataProductDto } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
+import { TooltipDirective } from '@/shared/tooltip';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { CardComponent } from '@/shared/ui/card';
@@ -15,7 +16,13 @@ import { CardComponent } from '@/shared/ui/card';
  */
 @Component({
   selector: 'app-data-product-card',
-  imports: [AgridataBadgeComponent, ButtonComponent, CardComponent, I18nDirective],
+  imports: [
+    AgridataBadgeComponent,
+    ButtonComponent,
+    CardComponent,
+    I18nDirective,
+    TooltipDirective,
+  ],
   templateUrl: './data-product-card.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

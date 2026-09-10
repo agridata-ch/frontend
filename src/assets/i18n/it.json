@@ -57,7 +57,7 @@
         "UNKNOWN": "Sconosciuto",
         "PARTIALLY_GRANTED": "Parzialmente approvato",
         "PARTIALLY_OPENED": "Parzialmente aperto",
-        "LEGALLY_PERMITTED": "Regolamentato legalmente"
+        "LEGALLY_PERMITTED": "Regolamentato dalla legge"
       },
       "footerInformation": "Potrà modificare la sua scelta in qualsiasi momento qui. I dati possono essere trasmessi solo in presenza di un consenso attivo.",
       "requestDate": "Richiesta del {{ date }}",
@@ -68,7 +68,7 @@
         "migrated": "Ripreso da «Mia condivisione dei dati agricoli – MAF»"
       },
       "decisions": {
-        "title": "Panoramica delle aziende",
+        "title": "Panoramica dell'azienda e delle sedi",
         "description": "Questa richiesta riguarda la vostra azienda (UID) e le relative sedi (BUR). Il consenso si applica sempre all'azienda. Fondamentalmente, acconsentite alle sedi richieste; tramite “Modifica sedi” potete escludere singole sedi dalla richiesta.",
         "uidGroupTitle": "La mia azienda richiesta",
         "uid": "Identificazione dell'azienda (UID): {{ uid }}",
@@ -77,7 +77,7 @@
           "enabled": "Selezionato",
           "disabled": "Escluso"
         },
-        "edit": "Modifica sedi",
+        "edit": "Modificare il consenso per sede",
         "cancel": "Annulla",
         "burGroupTitle": "Le mie sedi richieste",
         "nonProducerInfo": "Qui i produttori di dati vedono le loro sedi richieste.",
@@ -110,7 +110,7 @@
         "DECLINED": "Rifiutato",
         "PARTIALLY_OPENED": "Parzialmente aperto",
         "PARTIALLY_GRANTED": "Parzialmente approvato",
-        "LEGALLY_PERMITTED": "Regolamentato legalmente"
+        "LEGALLY_PERMITTED": "Regolamentato dalla legge"
       }
     },
     "emptyState": {
@@ -300,7 +300,7 @@
       },
       "products": {
         "allSystems": "Tutti i sistemi",
-        "publicSectorProductSuffix": "di diritto pubblico"
+        "publicSectorProductSuffix": "Regolamentato dalla legge"
       }
     },
     "preview": {
@@ -969,7 +969,7 @@
       },
       "tab": {
         "technicalFields": "Informazioni tecniche",
-        "nameAndDescription": "Nome e descrizione",
+        "generalInfo": "Generale",
         "linksAndDocuments": "Link e documenti"
       },
       "edit": "Modifica",
@@ -1211,7 +1211,7 @@
     "stateCode": {
       "DRAFT": "Bozza",
       "ACTIVE": "Pubblicato",
-      "DEPRECATED": "obsoleto/inattivo"
+      "DEPRECATED": "In esaurimento"
     }
   },
   "wysiwyg": {
@@ -1255,9 +1255,12 @@
       "message": "Nessuna voce trovata"
     },
     "product": {
-      "deprecated": "obsoleto/inattivo",
+      "deprecated": {
+        "text": "In esaurimento",
+        "tooltip": "Questo prodotto dati non è più disponibile per nuove richieste. I flussi di dati esistenti rimangono attivi."
+      },
       "showDetails": "Visualizza i dettagli",
-      "publicSector": "Di diritto pubblico",
+      "publicSector": "Regolamentato dalla legge",
       "description": "Descrizione",
       "links": "Links",
       "extendedDescription": "Ulteriori informazioni"

@@ -68,7 +68,7 @@
         "migrated": "Übernommen aus Meine Agrardatenfreigabe - MAF"
       },
       "decisions": {
-        "title": "Übersicht der Betriebe",
+        "title": "Betriebs- und Standortübersicht",
         "description": "Diese Anfrage betrifft Ihr Unternehmen (UID) und die dazugehörigen Standorte (BUR). Die Zustimmung gilt immer für das Unternehmen. Grundsätzlich stimmen Sie den angefragten Standorten zu, über „Standorte bearbeiten“ können Sie einzelne Standorte von der Anfrage ausschliessen.",
         "uidGroupTitle": "Mein angefragter Betrieb",
         "uid": "Unternehmens-Identifikation (UID): {{ uid }}",
@@ -77,7 +77,7 @@
           "enabled": "Ausgewählt",
           "disabled": "Ausgeschlossen"
         },
-        "edit": "Standorte bearbeiten",
+        "edit": "Zustimmung pro Standort ändern",
         "cancel": "Abbrechen",
         "burGroupTitle": "Meine angefragten Standorte",
         "nonProducerInfo": "Hier sehen die Datenproduzenten ihre anfragten Standorte.",
@@ -300,7 +300,7 @@
       },
       "products": {
         "allSystems": "Alle Systeme",
-        "publicSectorProductSuffix": "öffentlich-rechtlich"
+        "publicSectorProductSuffix": "Gesetzlich geregelt"
       }
     },
     "preview": {
@@ -552,7 +552,7 @@
     },
     "privacy": {
       "title": "Datenschutz",
-      "description": "Zwischen {{ provider }} und {{ consumer }} besteht ein Vertrag für die Datenübermittlung. Dieser Vertrag **regelt die ausschliessliche Nutzung für den oben beschriebenen Zweck** und verpflichtet {{ consumer }} rechtlich zur Einhaltung des Schweizer Datenschutzgesetzes (DSG)."
+      "description": "Zwischen {{ provider }} und {{ consumer }} besteht ein Vertrag für die Datenübertragung. Dieser Vertrag **regelt die ausschliessliche Nutzung für den oben beschriebenen Zweck** und verpflichtet {{ consumer }} rechtlich zur Einhaltung des Schweizer Datenschutzgesetzes (DSG)."
     }
   },
   "forms": {
@@ -969,7 +969,7 @@
       },
       "tab": {
         "technicalFields": "Technische Informationen",
-        "nameAndDescription": "Name und Beschreibung",
+        "generalInfo": "Allgemein",
         "linksAndDocuments": "Links und Dokumente"
       },
       "edit": "Bearbeiten",
@@ -1211,7 +1211,7 @@
     "stateCode": {
       "DRAFT": "Entwurf",
       "ACTIVE": "Publiziert",
-      "DEPRECATED": "veraltet/inaktiv"
+      "DEPRECATED": "Auslaufend"
     }
   },
   "wysiwyg": {
@@ -1255,9 +1255,12 @@
       "message": "Es wurden keine Einträge gefunden"
     },
     "product": {
-      "deprecated": "veraltet/inaktiv",
+      "deprecated": {
+        "text": "Auslaufend",
+        "tooltip": "Dieses Datenprodukt steht für neue Anträge nicht mehr zur Verfügung. Bestehende Datenflüsse laufen weiterhin."
+      },
       "showDetails": "Details ansehen",
-      "publicSector": "Öffentlich-Rechtlich",
+      "publicSector": "Gesetzlich geregelt",
       "description": "Beschreibung",
       "links": "Links",
       "extendedDescription": "Erweiterte Beschreibung"

@@ -68,7 +68,7 @@
         "migrated": "Repris de Mon partage de données agricoles - MAF"
       },
       "decisions": {
-        "title": "Aperçu des entreprises",
+        "title": "Aperçu de l'exploitation et des sites",
         "description": "Cette demande concerne votre entreprise (UID) et les sites associés (BUR). Le consentement s'applique toujours à l'entreprise. En principe, vous consentez aux sites demandés; via «Modifier les sites», vous pouvez exclure des sites individuels de la demande.",
         "uidGroupTitle": "Mon entreprise demandée",
         "uid": "Numéro d'identification de l'entreprise (UID) : {{ uid }}",
@@ -77,7 +77,7 @@
           "enabled": "Sélectionné",
           "disabled": "Exclu"
         },
-        "edit": "Modifier les sites",
+        "edit": "Modifier le consentement par site",
         "cancel": "Annuler",
         "burGroupTitle": "Mes sites demandés",
         "nonProducerInfo": "Ici, les producteurs de données voient leurs sites demandés.",
@@ -300,7 +300,7 @@
       },
       "products": {
         "allSystems": "Tous les systèmes",
-        "publicSectorProductSuffix": "de droit public"
+        "publicSectorProductSuffix": "Réglementé par la loi"
       }
     },
     "preview": {
@@ -969,7 +969,7 @@
       },
       "tab": {
         "technicalFields": "Informations techniques",
-        "nameAndDescription": "Nom et description",
+        "generalInfo": "Général",
         "linksAndDocuments": "Liens et documents"
       },
       "edit": "Modifier",
@@ -1211,7 +1211,7 @@
     "stateCode": {
       "DRAFT": "Brouillon",
       "ACTIVE": "Publié",
-      "DEPRECATED": "obsolète/inactif"
+      "DEPRECATED": "En fin de série"
     }
   },
   "wysiwyg": {
@@ -1255,9 +1255,12 @@
       "message": "Aucune entrée trouvée"
     },
     "product": {
-      "deprecated": "obsolète/inactif",
+      "deprecated": {
+        "text": "En fin de série",
+        "tooltip": "Ce produit de données n'est plus disponible pour de nouvelles demandes. Les flux de données existants restent actifs."
+      },
       "showDetails": "Voir les détails",
-      "publicSector": "De droit public",
+      "publicSector": "Réglementé par la loi",
       "description": "Description",
       "links": "Liens",
       "extendedDescription": "Informations complémentaires"
