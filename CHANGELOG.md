@@ -1,3 +1,9 @@
+## [1.19.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.8...v1.19.0-rc.9) (2026-09-10)
+
+### Features
+
+- **data-catalog:** update badge color/position ([0320e7d](https://github.com/agridata-ch/frontend/commit/0320e7d1db707cf98497747e14d4342e14228ded)), references [DIGIB2-1699](https://github.com/agridata-ch/frontend/issues/-1699)
+
 ## [1.19.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.7...v1.19.0-rc.8) (2026-09-09)
 
 ### Features
