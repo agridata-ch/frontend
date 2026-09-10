@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
-import { faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
+import { faCircleChf, faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
 
 import { PublicDataProductDto } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
@@ -35,6 +35,7 @@ export class DataProductCardComponent {
   protected readonly BadgeVariant = BadgeVariant;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly publicSectorIcon = faShieldCheck;
+  protected readonly chfCircleIcon = faCircleChf;
 
   // Input properties
   readonly product = input.required<PublicDataProductDto>();

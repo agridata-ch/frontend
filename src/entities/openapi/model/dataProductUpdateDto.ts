@@ -61,6 +61,16 @@ export interface DataProductUpdateDto {
      * If a consent is required for this data product
      */
     consentRequired?: boolean;
+    /**
+     * If a payment is required for this data product
+     */
+    paymentRequired?: boolean;
+    /**
+     * Pricing basis of the data product
+     */
+    pricingBasis?: DataProductDescriptionDto;
+    pricingBasisPresentWhenPaymentRequired?: boolean;
+    pricingBasisAbsentWhenPaymentNotRequired?: boolean;
 }
 export namespace DataProductUpdateDto {
 }

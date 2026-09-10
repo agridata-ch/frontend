@@ -175,18 +175,21 @@ export class DataRequestsService extends BaseService {
 
     /**
      * Get Consent Requests Of Data Request
-     * Retrieves the consent requests of a specific data request. Accessible to the provider who owns the data request.
+     * Retrieves the consent requests of a specific data request. Accessible to the provider who owns the data request and to the consumer who owns the data request.
      * @param id 
      * @param lastModifiedFrom Only consent requests that were modified after this timestamp are returned.
      * @param page 
+     * @param searchTerm 
      * @param size 
+     * @param sortBy Field names to sort by. Ascending by default; prefix with - for descending. Defaults to -modifiedAt.
+     * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getConsentRequestsOfDataRequest(id: string, lastModifiedFrom?: string, page?: number, size?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageResponseDtoConsentRequestFundamentalViewDto>;
-    public getConsentRequestsOfDataRequest(id: string, lastModifiedFrom?: string, page?: number, size?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageResponseDtoConsentRequestFundamentalViewDto>>;
-    public getConsentRequestsOfDataRequest(id: string, lastModifiedFrom?: string, page?: number, size?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageResponseDtoConsentRequestFundamentalViewDto>>;
-    public getConsentRequestsOfDataRequest(id: string, lastModifiedFrom?: string, page?: number, size?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getConsentRequestsOfDataRequest(id: string, lastModifiedFrom?: string, page?: number, searchTerm?: string, size?: number, sortBy?: Array<string>, actingRole?: 'CONSUMER' | 'PROVIDER', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageResponseDtoConsentRequestFundamentalViewDto>;
+    public getConsentRequestsOfDataRequest(id: string, lastModifiedFrom?: string, page?: number, searchTerm?: string, size?: number, sortBy?: Array<string>, actingRole?: 'CONSUMER' | 'PROVIDER', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageResponseDtoConsentRequestFundamentalViewDto>>;
+    public getConsentRequestsOfDataRequest(id: string, lastModifiedFrom?: string, page?: number, searchTerm?: string, size?: number, sortBy?: Array<string>, actingRole?: 'CONSUMER' | 'PROVIDER', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageResponseDtoConsentRequestFundamentalViewDto>>;
+    public getConsentRequestsOfDataRequest(id: string, lastModifiedFrom?: string, page?: number, searchTerm?: string, size?: number, sortBy?: Array<string>, actingRole?: 'CONSUMER' | 'PROVIDER', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getConsentRequestsOfDataRequest.');
         }
@@ -197,7 +200,17 @@ export class DataRequestsService extends BaseService {
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>page, 'page');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>searchTerm, 'searchTerm');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>size, 'size');
+        if (sortBy) {
+            sortBy.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'sortBy');
+            })
+        }
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>actingRole, 'actingRole');
 
         let localVarHeaders = this.defaultHeaders;
 
