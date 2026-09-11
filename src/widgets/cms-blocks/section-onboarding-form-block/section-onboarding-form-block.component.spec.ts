@@ -91,7 +91,7 @@ describe('SectionOnboardingFormBlockComponent', () => {
     });
 
     it('initialises with one person in the persons array', () => {
-      expect(component['personsArray'].length).toBe(1);
+      expect(component['personsArray']).toHaveLength(1);
     });
 
     it('initial person group has all expected fields', () => {
@@ -110,7 +110,7 @@ describe('SectionOnboardingFormBlockComponent', () => {
     it('adds a new person group to the persons array', () => {
       component['addPerson']();
 
-      expect(component['personsArray'].length).toBe(2);
+      expect(component['personsArray']).toHaveLength(2);
     });
 
     it('new person group has all expected fields', () => {
@@ -130,19 +130,19 @@ describe('SectionOnboardingFormBlockComponent', () => {
   describe('removePerson', () => {
     it('removes the person at the given index when multiple persons exist', () => {
       component['addPerson']();
-      expect(component['personsArray'].length).toBe(2);
+      expect(component['personsArray']).toHaveLength(2);
 
       component['removePerson'](1);
 
-      expect(component['personsArray'].length).toBe(1);
+      expect(component['personsArray']).toHaveLength(1);
     });
 
     it('does not remove the last remaining person', () => {
-      expect(component['personsArray'].length).toBe(1);
+      expect(component['personsArray']).toHaveLength(1);
 
       component['removePerson'](0);
 
-      expect(component['personsArray'].length).toBe(1);
+      expect(component['personsArray']).toHaveLength(1);
     });
   });
 
@@ -283,16 +283,16 @@ describe('SectionOnboardingFormBlockComponent', () => {
       });
 
       it('marks all controls as touched', async () => {
-        const spy = jest.spyOn(component['onboardingForm'], 'markAllAsTouched');
+        const spy = vi.spyOn(component['onboardingForm'], 'markAllAsTouched');
         await component['handleSubmit']();
         expect(spy).toHaveBeenCalled();
       });
 
       it('scrolls to the first invalid element', async () => {
-        const mockScrollIntoView = jest.fn();
-        jest
-          .spyOn(component['elementRef'].nativeElement, 'querySelector')
-          .mockReturnValue({ scrollIntoView: mockScrollIntoView });
+        const mockScrollIntoView = vi.fn();
+        vi.spyOn(component['elementRef'].nativeElement, 'querySelector').mockReturnValue({
+          scrollIntoView: mockScrollIntoView,
+        });
 
         await component['handleSubmit']();
 
@@ -300,7 +300,7 @@ describe('SectionOnboardingFormBlockComponent', () => {
       });
 
       it('does not throw when no invalid element exists in the DOM', async () => {
-        jest.spyOn(component['elementRef'].nativeElement, 'querySelector').mockReturnValue(null);
+        vi.spyOn(component['elementRef'].nativeElement, 'querySelector').mockReturnValue(null);
         await expect(component['handleSubmit']()).resolves.toBeUndefined();
       });
     });
@@ -337,11 +337,11 @@ describe('SectionOnboardingFormBlockComponent', () => {
     it('resets persons array to one entry on success', async () => {
       component['addPerson']();
       component['addPerson']();
-      expect(component['personsArray'].length).toBe(3);
+      expect(component['personsArray']).toHaveLength(3);
 
       await component['handleSubmit']();
 
-      expect(component['personsArray'].length).toBe(1);
+      expect(component['personsArray']).toHaveLength(1);
     });
 
     it('shows success toast on successful submission', async () => {

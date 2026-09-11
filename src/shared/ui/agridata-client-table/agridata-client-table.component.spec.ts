@@ -113,7 +113,7 @@ describe('AgridataClientTableComponent', () => {
       );
       const mockResourceRef = MockResources.createMockResourceRef(fetchedData);
 
-      expect(mockResourceRef.value().items.length).toBe(3);
+      expect(mockResourceRef.value().items).toHaveLength(3);
       expect(mockResourceRef.value().totalItems).toBe(3);
     });
   });
@@ -172,7 +172,7 @@ describe('AgridataClientTableComponent', () => {
       );
       const mockResourceRef = MockResources.createMockResourceRef(fetchedData);
 
-      expect(mockResourceRef.value().items.length).toBe(1);
+      expect(mockResourceRef.value().items).toHaveLength(1);
       expect(mockResourceRef.value().items[0].name).toBe('John Doe');
     });
 
@@ -322,7 +322,7 @@ describe('AgridataClientTableComponent', () => {
       );
       const mockResourceRef = MockResources.createMockResourceRef(fetchedData);
 
-      expect(mockResourceRef.value().items.length).toBe(1);
+      expect(mockResourceRef.value().items).toHaveLength(1);
       expect(mockResourceRef.value().items[0].name).toBe('Jane Smithers');
     });
   });
@@ -338,7 +338,7 @@ describe('AgridataClientTableComponent', () => {
       );
       const mockResourceRef = MockResources.createMockResourceRef(fetchedData);
 
-      expect(mockResourceRef.value().items.length).toBe(0);
+      expect(mockResourceRef.value().items).toHaveLength(0);
       expect(mockResourceRef.value().totalItems).toBe(0);
     });
 
@@ -352,7 +352,7 @@ describe('AgridataClientTableComponent', () => {
       );
       const mockResourceRef = MockResources.createMockResourceRef(fetchedData);
 
-      expect(mockResourceRef.value().items.length).toBe(0);
+      expect(mockResourceRef.value().items).toHaveLength(0);
       expect(mockResourceRef.value().totalItems).toBe(0);
     });
 
@@ -376,7 +376,7 @@ describe('AgridataClientTableComponent', () => {
       );
       const mockResourceRef = MockResources.createMockResourceRef(fetchedData);
 
-      expect(mockResourceRef.value().items.length).toBe(3); // Without search function, all entries should be returned
+      expect(mockResourceRef.value().items).toHaveLength(3); // Without search function, all entries should be returned
     });
 
     it('should reset page to 0 when requesting a page number that is too high', () => {
@@ -452,7 +452,7 @@ describe('AgridataClientTableComponent', () => {
   });
 
   it('should log error when no column definition is found for sort param', () => {
-    console.error = jest.fn();
+    console.error = vi.fn();
 
     component.resourceQueryDto.set({
       searchTerm: '',
@@ -488,7 +488,7 @@ describe('AgridataClientTableComponent', () => {
     // Reset the component with new metadata
     fixture.componentRef.setInput('tableMetadata', templateMetadata);
 
-    console.error = jest.fn();
+    console.error = vi.fn();
 
     component.resourceQueryDto.set({
       searchTerm: '',
@@ -562,7 +562,7 @@ describe('AgridataClientTableComponent', () => {
 
     // Sorted by name length (ASC): John Doe (8), Bob Wilson (10), Jane Smith (10)
     expect(mockResourceRef.value().items[0].name).toBe('John Doe');
-    expect(mockResourceRef.value().items[1].name.length).toBe(10);
-    expect(mockResourceRef.value().items[2].name.length).toBe(13);
+    expect(mockResourceRef.value().items[1].name).toHaveLength(10);
+    expect(mockResourceRef.value().items[2].name).toHaveLength(13);
   });
 });

@@ -2,13 +2,14 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import type { Mock, MockInstance } from 'vitest';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService, DataRequestService, UidRegisterService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto } from '@/entities/openapi';
 import { ACTING_ROLES } from '@/shared/constants/constants';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
@@ -39,7 +40,7 @@ describe('AdminDataRequestDetailsComponent', () => {
   let dataRequestService: MockDataRequestService;
   let errorService: MockErrorHandlerService;
   let stateService: MockAgridataStateService;
-  let router: { navigate: jest.Mock };
+  let router: { navigate: Mock };
 
   const dataRequestId = 'test-request-id';
   const actingRole = ACTING_ROLES.ADMIN;
@@ -50,8 +51,8 @@ describe('AdminDataRequestDetailsComponent', () => {
     return fixture.debugElement.query(By.directive(DataRequestDetailsComponent)).componentInstance;
   }
 
-  function mockDetailsReload(): jest.SpyInstance {
-    return jest
+  function mockDetailsReload(): MockInstance {
+    return vi
       .spyOn(getDetailsComponent().dataRequestResource, 'reload')
       .mockImplementation(() => true);
   }
@@ -60,7 +61,7 @@ describe('AdminDataRequestDetailsComponent', () => {
     dataRequestService = createMockDataRequestService();
     errorService = createMockErrorHandlerService();
     stateService = createMockAgridataStateService();
-    router = { navigate: jest.fn() };
+    router = { navigate: vi.fn() };
 
     stateService.__testSignals.actingRole.set(actingRole);
 

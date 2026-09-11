@@ -42,6 +42,10 @@ export interface PublicDataProductDto {
     extendedDescription?: TranslationDto;
     deprecatedSince?: string;
     stateCode: DataProductDtoStateCode;
+    /**
+     * If a consent is required for this data product
+     */
+    consentRequired: boolean;
 }
 export namespace PublicDataProductDto {
 }

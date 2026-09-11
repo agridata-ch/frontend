@@ -77,12 +77,12 @@ describe('Toast Utilities', () => {
 
   describe('getUndoAction()', () => {
     it('returns an object with the correct i18n label', () => {
-      const result = getUndoAction(jest.fn());
+      const result = getUndoAction(vi.fn());
       expect(result.label).toBe('consent-request.toast.undo');
     });
 
     it('calls the provided undoAction when callback is invoked', () => {
-      const undoAction = jest.fn();
+      const undoAction = vi.fn();
       const result = getUndoAction(undoAction);
       result.callback();
       expect(undoAction).toHaveBeenCalledTimes(1);
@@ -150,9 +150,9 @@ describe('Toast Utilities', () => {
       mockElement.style.visibility = 'visible';
       mockElement.style.opacity = '1';
       document.body.appendChild(mockElement);
-      const clickSpy = jest.spyOn(mockElement, 'click');
+      const clickSpy = vi.spyOn(mockElement, 'click');
 
-      const moveNext = jest.fn();
+      const moveNext = vi.fn();
       const opts = { driver: { moveNext } } as unknown as Parameters<
         NonNullable<NonNullable<(typeof steps)[0]['popover']>['onNextClick']>
       >[2];
@@ -238,13 +238,13 @@ describe('moveNextWhenReady (via onNextClick)', () => {
 
   afterEach(() => {
     accordion.remove();
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   /** Queue-based rAF helper: install AFTER onNextClick so Angular's scheduler is unaffected. */
   function installRafQueue(): { flushRaf: (frames: number) => void } {
     const queue: FrameRequestCallback[] = [];
-    jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
       queue.push(cb);
       return queue.length;
     });
@@ -259,7 +259,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
   }
 
   it('should call moveNext after element position stabilises (no animation)', async () => {
-    jest.spyOn(accordion, 'getBoundingClientRect').mockReturnValue({
+    vi.spyOn(accordion, 'getBoundingClientRect').mockReturnValue({
       left: 50,
       top: 0,
       right: 200,
@@ -272,7 +272,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
     } as DOMRect);
 
     const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
-    const moveNext = jest.fn();
+    const moveNext = vi.fn();
     const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
 
     steps[0].popover?.onNextClick?.(accordion, null as never, opts);
@@ -290,7 +290,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
     // Simulate subpixel float noise at the final resting position
     const positions = [50.0, 50.0001, 50.0002];
     let posIndex = 0;
-    jest.spyOn(accordion, 'getBoundingClientRect').mockImplementation(
+    vi.spyOn(accordion, 'getBoundingClientRect').mockImplementation(
       () =>
         ({
           left: positions[Math.min(posIndex++, positions.length - 1)],
@@ -306,7 +306,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
     );
 
     const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
-    const moveNext = jest.fn();
+    const moveNext = vi.fn();
     const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
 
     steps[0].popover?.onNextClick?.(accordion, null as never, opts);
@@ -323,7 +323,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
   it('should not resolve while element left >= window.innerWidth (panel still closed via w-0)', async () => {
     // Simulate the element being ng-content-projected inside a closed w-0 sidepanel:
     // getBoundingClientRect().left equals window.innerWidth (behind the right viewport edge)
-    jest.spyOn(accordion, 'getBoundingClientRect').mockReturnValue({
+    vi.spyOn(accordion, 'getBoundingClientRect').mockReturnValue({
       left: window.innerWidth,
       top: 0,
       right: window.innerWidth,
@@ -336,7 +336,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
     } as DOMRect);
 
     const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
-    const moveNext = jest.fn();
+    const moveNext = vi.fn();
     const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
 
     steps[0].popover?.onNextClick?.(accordion, null as never, opts);
@@ -354,7 +354,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
     // Simulate a slide-in: element starts off to the right, then moves into viewport
     const positions = [window.innerWidth, window.innerWidth - 100, 300, 200, 100, 100, 100];
     let posIndex = 0;
-    jest.spyOn(accordion, 'getBoundingClientRect').mockImplementation(
+    vi.spyOn(accordion, 'getBoundingClientRect').mockImplementation(
       () =>
         ({
           left: positions[Math.min(posIndex++, positions.length - 1)],
@@ -370,7 +370,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
     );
 
     const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
-    const moveNext = jest.fn();
+    const moveNext = vi.fn();
     const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
 
     steps[0].popover?.onNextClick?.(accordion, null as never, opts);
@@ -392,7 +392,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
     accordion.remove();
 
     const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
-    const moveNext = jest.fn();
+    const moveNext = vi.fn();
     const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
 
     steps[0].popover?.onNextClick?.(document.body, null as never, opts);

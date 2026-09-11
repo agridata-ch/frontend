@@ -2,8 +2,8 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ErrorDto } from '@/app/error/error-dto';
-import { ErrorAlertComponent } from '@/widgets/error-alert/error-alert.component';
+import { ErrorDto } from '@/shared/error/error-dto';
+import { ErrorAlertComponent } from '@/shared/ui/error-alert/error-alert.component';
 
 import { ErrorAlertList } from './error-alert-list.component';
 
@@ -38,13 +38,13 @@ describe('ErrorAlertList', () => {
     componentRef.setInput('errors', mockErrors);
     fixture.detectChanges();
     const alerts = fixture.debugElement.queryAll(By.directive(ErrorAlertComponent));
-    expect(alerts.length).toBe(mockErrors.length);
+    expect(alerts).toHaveLength(mockErrors.length);
   });
 
   it('should emit closeErrors when an error alert is closed', () => {
     componentRef.setInput('errors', mockErrors);
     fixture.detectChanges();
-    jest.spyOn(component.closeErrors, 'emit');
+    vi.spyOn(component.closeErrors, 'emit');
     // Simulate close event from child
     component.closeErrors.emit(true);
     expect(component.closeErrors.emit).toHaveBeenCalledWith(true);
@@ -54,6 +54,6 @@ describe('ErrorAlertList', () => {
     componentRef.setInput('errors', []);
     fixture.detectChanges();
     const alerts = fixture.debugElement.queryAll(By.directive(ErrorAlertComponent));
-    expect(alerts.length).toBe(0);
+    expect(alerts).toHaveLength(0);
   });
 });

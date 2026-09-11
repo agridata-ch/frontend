@@ -1,5 +1,3 @@
-/// <reference types="jest" />
-
 import { ContractRevisionService } from '@/entities/api';
 import { ContractRevisionDto, OtpChallengeDto, SignatureSlotCodeEnum } from '@/entities/openapi';
 import { Mockify } from '@/shared/testing/mocks';
@@ -52,12 +50,12 @@ export type MockContractRevisionService = Mockify<ContractRevisionService>;
  */
 export function createMockContractRevisionService(): MockContractRevisionService {
   return {
-    fetchContract: jest.fn().mockResolvedValue(mockContractRevision),
-    getContractRevisionPdf: jest
+    fetchContract: vi.fn().mockResolvedValue(mockContractRevision),
+    getContractRevisionPdf: vi
       .fn()
       .mockResolvedValue(new Blob(['pdf'], { type: 'application/pdf' })),
-    sealContract: jest.fn().mockResolvedValue(undefined),
-    startSigningProcess: jest.fn().mockResolvedValue(mockOtpChallenge),
-    verifySigningProcess: jest.fn().mockResolvedValue(mockContractRevision),
+    sealContract: vi.fn().mockResolvedValue(undefined),
+    startSigningProcess: vi.fn().mockResolvedValue(mockOtpChallenge),
+    verifySigningProcess: vi.fn().mockResolvedValue(mockContractRevision),
   } satisfies MockContractRevisionService;
 }

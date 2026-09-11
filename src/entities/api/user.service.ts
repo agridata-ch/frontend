@@ -3,7 +3,6 @@ import { inject, Service } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { AUTHORIZED_UIDS_ERROR_HANDLING } from '@/app/interceptors/error-http-interceptor';
 import {
   ResourceQueryDto,
   UserInfoDto,
@@ -11,6 +10,7 @@ import {
   UsersService,
 } from '@/entities/openapi';
 import { ActingRole } from '@/shared/constants/constants';
+import { AUTHORIZED_UIDS_ERROR_HANDLING } from '@/shared/error/http-error-method';
 import { PageResponseDto, arrayToObjectSortParams, asPageResponse } from '@/shared/lib/api.helper';
 
 /**

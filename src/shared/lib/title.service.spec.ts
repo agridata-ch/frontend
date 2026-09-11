@@ -1,20 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
 import { of } from 'rxjs';
+import type { Mock } from 'vitest';
 
-import { TitleService } from '@/app/title.service';
 import { I18nService } from '@/shared/i18n';
+import { TitleService } from '@/shared/lib/title.service';
 import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
 
 describe('TitleService', () => {
   let service: TitleService;
   let i18nService: MockI18nService;
-  let title: { setTitle: jest.Mock };
+  let title: { setTitle: Mock };
 
   beforeEach(() => {
     i18nService = createMockI18nService();
     title = {
-      setTitle: jest.fn(),
+      setTitle: vi.fn(),
     };
 
     TestBed.configureTestingModule({
@@ -45,7 +46,7 @@ describe('TitleService', () => {
 
   it('should update i18n title and translate it when setI18nTitle is called', () => {
     const translatedTitle = 'Translated Title';
-    i18nService.selectTranslate = jest.fn().mockReturnValue(of(translatedTitle));
+    i18nService.selectTranslate = vi.fn().mockReturnValue(of(translatedTitle));
 
     service.setI18nTitle('test.title');
 
@@ -55,7 +56,7 @@ describe('TitleService', () => {
   });
 
   it('should not translate when setI18nTitle is called with undefined', () => {
-    i18nService.selectTranslate = jest.fn().mockReturnValue(of('Title'));
+    i18nService.selectTranslate = vi.fn().mockReturnValue(of('Title'));
 
     service.setI18nTitle(undefined);
 
@@ -65,7 +66,7 @@ describe('TitleService', () => {
 
   it('should set route and i18n title when setPageTitleByRoute is called', () => {
     const translatedTitle = 'Page Title';
-    i18nService.selectTranslate = jest.fn().mockReturnValue(of(translatedTitle));
+    i18nService.selectTranslate = vi.fn().mockReturnValue(of(translatedTitle));
 
     service.setPageTitleByRoute('/test-route', 'test.page.title');
 
@@ -82,7 +83,7 @@ describe('TitleService', () => {
   });
 
   it('should not set title for CMS routes', () => {
-    i18nService.selectTranslate = jest.fn().mockReturnValue(of('CMS Title'));
+    i18nService.selectTranslate = vi.fn().mockReturnValue(of('CMS Title'));
 
     service.setPageTitleByRoute('/cms/test-page', 'cms.title');
 
@@ -110,7 +111,7 @@ describe('TitleService', () => {
   it('should retranslate title when language changes', () => {
     const translatedTitleDe = 'German Title';
     const translatedTitleFr = 'French Title';
-    i18nService.selectTranslate = jest
+    i18nService.selectTranslate = vi
       .fn()
       .mockReturnValueOnce(of(translatedTitleDe))
       .mockReturnValueOnce(of(translatedTitleFr));

@@ -1,4 +1,5 @@
 import { Component, Signal, computed, input } from '@angular/core';
+import { FaIconComponent, IconDefinition } from '@fortawesome/angular-fontawesome';
 
 export enum BadgeVariant {
   DEFAULT = 'default',
@@ -26,10 +27,11 @@ export enum BadgeSize {
 @Component({
   selector: 'app-agridata-badge',
   templateUrl: './agridata-badge.component.html',
-  imports: [],
+  imports: [FaIconComponent],
 })
 export class AgridataBadgeComponent {
   readonly text = input<string>('');
+  readonly icon = input<IconDefinition>();
   readonly variant = input<BadgeVariant>(BadgeVariant.DEFAULT);
   readonly size = input<BadgeSize>(BadgeSize.MD);
 

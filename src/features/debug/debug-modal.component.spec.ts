@@ -136,7 +136,7 @@ describe('DebugModalComponent', () => {
     fixture.detectChanges();
 
     const logs = component['logs']();
-    expect(logs.length).toBe(5);
+    expect(logs).toHaveLength(5);
   });
 
   it('should display empty state when no logs are available', () => {

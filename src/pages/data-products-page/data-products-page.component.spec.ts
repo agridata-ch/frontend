@@ -1,30 +1,34 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProductDto, DataProductDtoStateCode, ResourceQueryDto } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { PageResponseDto } from '@/shared/lib/api.helper';
+import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAgridataStateService,
+  createMockAuthService,
   createMockDataProductService,
   createMockErrorHandlerService,
   createMockI18nService,
   createMockToastService,
+  MockAuthService,
   MockDataProductService,
   MockI18nService,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ToastService } from '@/shared/toast';
-import { CellRendererTypes } from '@/shared/ui/agridata-table';
+import { CellRendererTypes, ColumnDefinition } from '@/shared/ui/agridata-table';
 
 import { DataProductsPageComponent } from './data-products-page.component';
 
 describe('DataProductsPageComponent - component behavior', () => {
   let fixture: ComponentFixture<DataProductsPageComponent>;
   let component: DataProductsPageComponent;
+  let authService: MockAuthService;
   let dataProductService: MockDataProductService;
   let i18nService: MockI18nService;
 
@@ -42,6 +46,7 @@ describe('DataProductsPageComponent - component behavior', () => {
   });
 
   beforeEach(async () => {
+    authService = createMockAuthService();
     dataProductService = createMockDataProductService();
     i18nService = createMockI18nService();
 
@@ -49,6 +54,7 @@ describe('DataProductsPageComponent - component behavior', () => {
       imports: [DataProductsPageComponent, createTranslocoTestingModule()],
       providers: [
         { provide: AgridataStateService, useValue: createMockAgridataStateService() },
+        { provide: AuthService, useValue: authService },
         { provide: DataProductService, useValue: dataProductService },
         { provide: ErrorHandlerService, useValue: createMockErrorHandlerService() },
         { provide: I18nService, useValue: i18nService },
@@ -150,34 +156,35 @@ describe('DataProductsPageComponent - component behavior', () => {
   });
 
   describe('table metadata computed signal', () => {
-    it('should include two columns in table metadata', () => {
+    const findColumn = (name: string): ColumnDefinition<DataProductDto> | undefined =>
+      component['dataProductsTableMetaData']().columns.find((column) => column.name === name);
+
+    it('should include three columns for a non-admin', () => {
       const metadata = component['dataProductsTableMetaData']();
-      expect(metadata.columns.length).toBe(3);
+      expect(metadata.columns).toHaveLength(3);
     });
 
     it('should configure the name column with template renderer', () => {
-      const metadata = component['dataProductsTableMetaData']();
-      const nameColumn = metadata.columns[0];
+      const nameColumn = findColumn('data-products.table.name');
 
-      expect(nameColumn.name).toBe('data-products.table.name');
-      expect(nameColumn.sortable).toBe(true);
-      expect(nameColumn.sortField).toBe('productName');
-      expect(nameColumn.renderer.type).toBe(CellRendererTypes.TEMPLATE);
+      expect(nameColumn).toBeDefined();
+      expect(nameColumn?.sortable).toBe(true);
+      expect(nameColumn?.sortField).toBe('productName');
+      expect(nameColumn?.renderer.type).toBe(CellRendererTypes.TEMPLATE);
     });
 
     it('should configure the system column with function renderer', () => {
       const metadata = component['dataProductsTableMetaData']();
       const systemColumn = metadata.columns[1];
 
-      expect(systemColumn.name).toBe('data-products.table.system');
-      expect(systemColumn.sortable).toBe(true);
-      expect(systemColumn.sortField).toBe('systemName');
-      expect(systemColumn.renderer.type).toBe(CellRendererTypes.FUNCTION);
+      expect(systemColumn).toBeDefined();
+      expect(systemColumn?.sortable).toBe(true);
+      expect(systemColumn?.sortField).toBe('systemName');
+      expect(systemColumn?.renderer.type).toBe(CellRendererTypes.FUNCTION);
     });
 
     it('should use FUNCTION renderer on system column to call i18nService.useObjectTranslation', () => {
-      const metadata = component['dataProductsTableMetaData']();
-      const systemColumn = metadata.columns[1];
+      const systemColumn = findColumn('data-products.table.system');
 
       const mockProduct: DataProductDto = {
         id: 'product-1',
@@ -191,7 +198,7 @@ describe('DataProductsPageComponent - component behavior', () => {
         },
       };
 
-      if (systemColumn.renderer.type === CellRendererTypes.FUNCTION) {
+      if (systemColumn?.renderer.type === CellRendererTypes.FUNCTION) {
         systemColumn.renderer.cellRenderFn(mockProduct);
         expect(i18nService.useObjectTranslation).toHaveBeenCalledWith(
           mockProduct.dataSourceSystem?.name,
@@ -203,6 +210,23 @@ describe('DataProductsPageComponent - component behavior', () => {
       const metadata = component['dataProductsTableMetaData']();
 
       expect(metadata.rowMenuActions).toBe(component.getRowMenuActions);
+    });
+  });
+
+  describe('provider column visibility', () => {
+    const providerColumn = (): ColumnDefinition<DataProductDto> | undefined =>
+      component['dataProductsTableMetaData']().columns.find(
+        (column) => column.name === 'data-products.table.provider',
+      );
+
+    it('should hide the provider column for a non-admin', () => {
+      expect(providerColumn()).toBeUndefined();
+    });
+
+    it('should show the provider column for an admin', () => {
+      authService.__testSignals.isAdmin.set(true);
+
+      expect(providerColumn()?.sortField).toBe('providerName');
     });
   });
 

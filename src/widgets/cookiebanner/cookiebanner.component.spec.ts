@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { AnalyticsService } from '@/app/analytics.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { AnalyticsService } from '@/shared/lib/analytics.service';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
@@ -44,7 +44,7 @@ describe('CookiebannerComponent', () => {
 
   afterEach(() => {
     localStorage.clear();
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should create', () => {
@@ -53,7 +53,7 @@ describe('CookiebannerComponent', () => {
 
   describe('acceptCookies', () => {
     it('should call analyticsService.setCookiesAccepted with true', () => {
-      analyticsService.setCookiesAccepted = jest.fn();
+      analyticsService.setCookiesAccepted = vi.fn();
 
       component['acceptCookies']();
 
@@ -61,7 +61,7 @@ describe('CookiebannerComponent', () => {
     });
 
     it('should call closeCookieBanner', () => {
-      const closeSpy = jest.spyOn(component as any, 'closeCookieBanner');
+      const closeSpy = vi.spyOn(component as any, 'closeCookieBanner');
 
       component['acceptCookies']();
 
@@ -71,7 +71,7 @@ describe('CookiebannerComponent', () => {
 
   describe('declineCookies', () => {
     it('should call analyticsService.setCookiesAccepted with false', () => {
-      analyticsService.setCookiesAccepted = jest.fn();
+      analyticsService.setCookiesAccepted = vi.fn();
 
       component['declineCookies']();
 
@@ -79,7 +79,7 @@ describe('CookiebannerComponent', () => {
     });
 
     it('should call closeCookieBanner', () => {
-      const closeSpy = jest.spyOn(component as any, 'closeCookieBanner');
+      const closeSpy = vi.spyOn(component as any, 'closeCookieBanner');
 
       component['declineCookies']();
 

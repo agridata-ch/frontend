@@ -1,6 +1,6 @@
 import { isDevMode } from '@angular/core';
 
-import { availableLangs } from '../../transloco.config';
+import { availableLangs } from '../../../transloco.config';
 export const LANG_STORAGE_KEY = 'lang';
 
 function getBrowserLang(availableLangs: string[], fallback: string): string {

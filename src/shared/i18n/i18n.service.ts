@@ -2,8 +2,8 @@ import { inject, Service, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoService } from '@jsverse/transloco';
 
-import { LANG_STORAGE_KEY } from '@/app/i18n.config';
 import { TranslationDto } from '@/entities/openapi';
+import { LANG_STORAGE_KEY } from '@/shared/i18n/i18n.config';
 
 /**
  * Implements a service for managing application language state. It persists the active language in

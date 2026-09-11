@@ -1,9 +1,9 @@
 import { inject, Service } from '@angular/core';
 import { CanActivate, Router, UrlTree } from '@angular/router';
 
-import { ExternalServiceHttpError } from '@/app/error/external-service-http-error';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { ExternalServiceHttpError } from '@/shared/error/external-service-http-error';
 import { AuthService } from '@/shared/lib/auth';
 
 /**

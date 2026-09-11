@@ -4,14 +4,14 @@ export function installMockLocalStorage(initial: LocalStore = {}) {
   let store: LocalStore = { ...initial };
 
   const mock = {
-    getItem: jest.fn((k: string) => (k in store ? store[k] : null)),
-    setItem: jest.fn((k: string, v: string) => {
+    getItem: vi.fn((k: string) => (k in store ? store[k] : null)),
+    setItem: vi.fn((k: string, v: string) => {
       store[k] = String(v);
     }),
-    removeItem: jest.fn((k: string) => {
+    removeItem: vi.fn((k: string) => {
       delete store[k];
     }),
-    clear: jest.fn(() => {
+    clear: vi.fn(() => {
       store = {};
     }),
     // test helpers:
@@ -24,7 +24,7 @@ export function installMockLocalStorage(initial: LocalStore = {}) {
   };
 
   // Replace the window.localStorage getter (JSDOM exposes it as a property)
-  jest.spyOn(globalThis, 'localStorage', 'get').mockReturnValue(mock as unknown as Storage);
+  vi.spyOn(globalThis, 'localStorage', 'get').mockReturnValue(mock as unknown as Storage);
 
   return mock;
 }

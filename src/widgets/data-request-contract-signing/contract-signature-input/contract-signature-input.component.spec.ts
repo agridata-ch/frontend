@@ -3,10 +3,10 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ExceptionEnum, SignatureSlotCodeEnum } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
@@ -157,10 +157,10 @@ describe('ContractSignatureInputComponent', () => {
     });
 
     it('should start the resend countdown', () => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
       component['handleStartSigning']();
       expect(component['countdownValue']()).toBeGreaterThan(0);
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     it('should set showResendCooldownAlert when OtpResendCooldown error is returned', async () => {
@@ -213,7 +213,7 @@ describe('ContractSignatureInputComponent', () => {
     });
 
     it('should emit signingSuccess and show success toast on successful verification', async () => {
-      const successSpy = jest.fn();
+      const successSpy = vi.fn();
       component.signingSuccess.subscribe(successSpy);
 
       component['handleVerifySigning'](new Event('submit'));

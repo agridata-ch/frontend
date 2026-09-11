@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import type { Mocked } from 'vitest';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { NotificationService } from '@/entities/api/notification.service';
 import {
   InboxEntryDto,
@@ -9,6 +9,7 @@ import {
   ResourceQueryDto,
   TargetTypeCodeEnum,
 } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { PageResponseDto } from '@/shared/lib/api.helper';
 import { AuthService } from '@/shared/lib/auth';
@@ -39,7 +40,7 @@ describe('NotificationCenterPageComponent - component behavior', () => {
   let i18nService: MockI18nService;
   let toastService: MockToastService;
   let authService: MockAuthService;
-  let mockRouter: jest.Mocked<Pick<Router, 'navigateByUrl'>>;
+  let mockRouter: Mocked<Pick<Router, 'navigateByUrl'>>;
 
   const mockResponse: PageResponseDto<InboxEntryDto> = {
     items: mockInboxEntries,
@@ -55,7 +56,7 @@ describe('NotificationCenterPageComponent - component behavior', () => {
     i18nService = createMockI18nService();
     toastService = createMockToastService();
     authService = createMockAuthService();
-    mockRouter = { navigateByUrl: jest.fn().mockResolvedValue(true) } as unknown as jest.Mocked<
+    mockRouter = { navigateByUrl: vi.fn().mockResolvedValue(true) } as unknown as Mocked<
       Pick<Router, 'navigateByUrl'>
     >;
 
@@ -112,7 +113,7 @@ describe('NotificationCenterPageComponent - component behavior', () => {
   describe('tableMetaData computed signal', () => {
     it('should produce 4 columns', () => {
       const metadata = component['tableMetaData']();
-      expect(metadata.columns.length).toBe(4);
+      expect(metadata.columns).toHaveLength(4);
     });
 
     it('should configure the title column as TEMPLATE renderer', () => {
@@ -280,7 +281,7 @@ describe('NotificationCenterPageComponent - component behavior', () => {
   describe('syncEffect', () => {
     it('should reload fetchNotificationsResource when notifyMutation is called', async () => {
       await fixture.whenStable();
-      const reloadSpy = jest.spyOn(component.fetchNotificationsResource, 'reload');
+      const reloadSpy = vi.spyOn(component.fetchNotificationsResource, 'reload');
 
       notificationService.notifyMutation();
       fixture.detectChanges();

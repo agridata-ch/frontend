@@ -5,18 +5,18 @@ import { Mockify } from '@/shared/testing/mocks';
 export type MockUserService = Mockify<UserService>;
 
 export const mockUserService = {
-  getAuthorizedUids: jest.fn().mockReturnValue(Promise.resolve([{ uid: '123' } as UidDto])),
-  getProducers: jest
+  getAuthorizedUids: vi.fn().mockReturnValue(Promise.resolve([{ uid: '123' } as UidDto])),
+  getProducers: vi
     .fn()
     .mockReturnValue(Promise.resolve({ items: [], totalItems: 0, totalPages: 1, page: 0 })),
 } satisfies Partial<UserService>;
 
 export function createMockUserService(): MockUserService {
   return {
-    updateUserPreferences: jest.fn().mockResolvedValue(Promise.resolve()),
-    getUserInfo: jest.fn().mockReturnValue(Promise.resolve({} as UserInfoDto)),
-    getAuthorizedUids: jest.fn().mockReturnValue(Promise.resolve([{ uid: '123' } as UidDto])),
-    getProducers: jest
+    updateUserPreferences: vi.fn().mockResolvedValue(Promise.resolve()),
+    getUserInfo: vi.fn().mockReturnValue(Promise.resolve({} as UserInfoDto)),
+    getAuthorizedUids: vi.fn().mockReturnValue(Promise.resolve([{ uid: '123' } as UidDto])),
+    getProducers: vi
       .fn()
       .mockReturnValue(Promise.resolve({ items: [], totalItems: 0, totalPages: 1, page: 0 })),
   };

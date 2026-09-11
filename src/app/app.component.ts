@@ -18,9 +18,9 @@ import {
   Scroll,
 } from '@angular/router';
 
-import { AnalyticsService } from '@/app/analytics.service';
 import { DebugModalComponent } from '@/features/debug/debug-modal.component';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
+import { AnalyticsService } from '@/shared/lib/analytics.service';
 
 /**
  * The root Angular component that renders the application shell. It provides the router outlet as

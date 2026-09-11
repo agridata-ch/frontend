@@ -13,11 +13,11 @@ import { Router } from '@angular/router';
 import { faBell, faEye } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { NotificationService } from '@/entities/api/notification.service';
 import { InboxEntryDto, ResourceQueryDto } from '@/entities/openapi';
 import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { PageResponseDto, createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';

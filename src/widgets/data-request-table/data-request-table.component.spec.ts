@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ComponentRef, ResourceRef, Signal, inputBinding, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import type { Mocked } from 'vitest';
 
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
@@ -26,16 +27,16 @@ describe('DataRequestTableComponent', () => {
   let fixture: ComponentFixture<DataRequestTableComponent>;
   let component: DataRequestTableComponent;
   let componentRef: ComponentRef<DataRequestTableComponent>;
-  let mockI18nService: jest.Mocked<I18nService>;
+  let mockI18nService: Mocked<I18nService>;
   let dataRequestService: MockDataRequestService;
   let toastService: MockToastService;
   let dataRequestsResource: Signal<ResourceRef<DataRequestDto[] | undefined>>;
   beforeEach(async () => {
     mockI18nService = {
-      translate: jest.fn(),
-      useObjectTranslation: jest.fn(),
+      translate: vi.fn(),
+      useObjectTranslation: vi.fn(),
       lang: signal('de'),
-    } as unknown as jest.Mocked<I18nService>;
+    } as unknown as Mocked<I18nService>;
     dataRequestService = createMockDataRequestService();
     toastService = createMockToastService();
     dataRequestsResource = signal(MockResources.createMockResourceRef(mockDataRequests));
@@ -70,7 +71,7 @@ describe('DataRequestTableComponent', () => {
       (r) => r.stateCode === DataRequestStateEnum.ToBeSignedByConsumer,
     )!;
     const actions = component.getFilteredActions(toBeSignedRequest);
-    expect(actions.length).toBe(1);
+    expect(actions).toHaveLength(1);
     expect(actions[0].label).toBe('data-request.table.tableActions.details');
   });
 
@@ -78,7 +79,7 @@ describe('DataRequestTableComponent', () => {
     const actions = component.getFilteredActions(
       mockDataRequests.find((r) => r.stateCode === DataRequestStateEnum.InReview),
     );
-    expect(actions.length).toBe(2);
+    expect(actions).toHaveLength(2);
     expect(actions[0].label).toBe('data-request.table.tableActions.details');
     expect(actions[1].label).toBe('data-request.table.tableActions.retreat');
   });
@@ -89,7 +90,7 @@ describe('DataRequestTableComponent', () => {
   });
 
   it('should get translated state value', () => {
-    const i18nServiceSpy = jest.spyOn(mockI18nService, 'translate');
+    const i18nServiceSpy = vi.spyOn(mockI18nService, 'translate');
 
     component['getStatusTranslation'](DataRequestStateEnum.Draft);
 
@@ -128,7 +129,7 @@ describe('DataRequestTableComponent', () => {
   });
 
   it('should emit action when row action is triggered', () => {
-    const emitSpy = jest.spyOn(component.tableRowAction, 'emit');
+    const emitSpy = vi.spyOn(component.tableRowAction, 'emit');
     const request = mockDataRequests[0];
 
     const metadata = component['dataRequestsTableMetaData']();
@@ -141,7 +142,7 @@ describe('DataRequestTableComponent', () => {
     const metadata = component['dataRequestsTableMetaData']();
 
     expect(metadata.idColumn).toBe('id');
-    expect(metadata.columns.length).toBe(5);
+    expect(metadata.columns).toHaveLength(5);
     expect(metadata.columns[0].name).toBe(component['dataRequestHumanFriendlyIdHeader']);
     expect(metadata.columns[0].sortable).toBe(true);
     expect(metadata.columns[0].renderer.type).toBe('template');
@@ -187,7 +188,7 @@ describe('DataRequestTableComponent', () => {
   });
 
   it('details action callback should emit tableRowAction', () => {
-    const emitSpy = jest.spyOn(component.tableRowAction, 'emit');
+    const emitSpy = vi.spyOn(component.tableRowAction, 'emit');
     const request = mockDataRequests.find((r) => r.stateCode === DataRequestStateEnum.Draft)!;
     const actions = component.getFilteredActions(request);
     const detailsAction = actions[0];
@@ -230,7 +231,7 @@ describe('DataRequestTableComponent', () => {
     const draftRequest = mockDataRequests.find((r) => r.stateCode === DataRequestStateEnum.Draft)!;
     const actions = component.getFilteredActions(draftRequest);
 
-    expect(actions.length).toBe(2);
+    expect(actions).toHaveLength(2);
     expect(actions[0].label).toBe('data-request.table.tableActions.details');
     expect(actions[1].label).toBe('data-request.table.tableActions.delete');
   });

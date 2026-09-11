@@ -3,13 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter, Router, withComponentInputBinding } from '@angular/router';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService, DataRequestService, UidRegisterService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
-import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/pages/data-requests-consumer';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
+import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/shared/data-request';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
@@ -211,13 +211,13 @@ describe('DataRequestWizardConsumerComponent', () => {
 
   describe('handleNextStep (shared logic)', () => {
     it('should call handleSave when form is not disabled', () => {
-      const spy = jest.spyOn(component as any, 'handleSave');
+      const spy = vi.spyOn(component as any, 'handleSave');
       component['handleNextStep']();
       expect(spy).toHaveBeenCalled();
     });
 
     it('should not call handleSave when form is disabled', () => {
-      const handleSaveSpy = jest.spyOn(component as any, 'handleSave');
+      const handleSaveSpy = vi.spyOn(component as any, 'handleSave');
       component['dataRequest'].set({
         id: '123',
         stateCode: DataRequestStateEnum.InReview,
@@ -231,9 +231,9 @@ describe('DataRequestWizardConsumerComponent', () => {
 
     it('should not call wizard.nextStep when next step is disabled', () => {
       const wizard = component['wizard']()!;
-      const nextStepSpy = jest.spyOn(wizard, 'nextStep');
-      jest.spyOn(component as any, 'handleSave').mockImplementation();
-      jest.spyOn(component as any, 'isNextStepDisabled').mockReturnValue(true);
+      const nextStepSpy = vi.spyOn(wizard, 'nextStep');
+      vi.spyOn(component as any, 'handleSave').mockImplementation(() => {});
+      vi.spyOn(component as any, 'isNextStepDisabled').mockReturnValue(true);
 
       component['handleNextStep']();
 
@@ -242,9 +242,9 @@ describe('DataRequestWizardConsumerComponent', () => {
 
     it('should call wizard.nextStep when next step is not disabled', () => {
       const wizard = component['wizard']()!;
-      const nextStepSpy = jest.spyOn(wizard, 'nextStep');
-      jest.spyOn(component as any, 'handleSave').mockImplementation();
-      jest.spyOn(component as any, 'isNextStepDisabled').mockReturnValue(false);
+      const nextStepSpy = vi.spyOn(wizard, 'nextStep');
+      vi.spyOn(component as any, 'handleSave').mockImplementation(() => {});
+      vi.spyOn(component as any, 'isNextStepDisabled').mockReturnValue(false);
 
       component['handleNextStep']();
 
@@ -254,14 +254,14 @@ describe('DataRequestWizardConsumerComponent', () => {
 
   describe('handlePreviousStep', () => {
     it('should call handleSave when form is not disabled', () => {
-      const spy = jest.spyOn(component as any, 'handleSave');
+      const spy = vi.spyOn(component as any, 'handleSave');
       component['handlePreviousStep']();
       expect(spy).toHaveBeenCalled();
     });
 
     it('should reset hasFreshReleasedToProvider', () => {
       component['hasFreshReleasedToProvider'].set(true);
-      jest.spyOn(component as any, 'handleSave').mockImplementation();
+      vi.spyOn(component as any, 'handleSave').mockImplementation(() => {});
 
       component['handlePreviousStep']();
 
@@ -276,7 +276,7 @@ describe('DataRequestWizardConsumerComponent', () => {
         stateCode: DataRequestStateEnum.InReview,
         advantages: [],
       });
-      const handleSave = jest.spyOn(component as any, 'handleSave');
+      const handleSave = vi.spyOn(component as any, 'handleSave');
 
       component['handleStepChange']();
 
@@ -284,7 +284,7 @@ describe('DataRequestWizardConsumerComponent', () => {
     });
 
     it('should call handleSave when form is not disabled', () => {
-      const handleSave = jest.spyOn(component as any, 'handleSave');
+      const handleSave = vi.spyOn(component as any, 'handleSave');
 
       component['handleStepChange']();
 
@@ -313,15 +313,15 @@ describe('DataRequestWizardConsumerComponent', () => {
 
   describe('handleSubmitAndContinue (consumer-specific)', () => {
     beforeEach(() => {
-      jest.spyOn(component['wizard']() as never, 'nextStep').mockImplementation();
-      jest.spyOn(console, 'error').mockImplementation();
-      jest.spyOn(component as any, 'handleSave').mockResolvedValue(undefined);
-      jest.spyOn(component['form'], 'markAllAsTouched').mockImplementation();
-      jest.spyOn(component as any, 'updateFormSteps').mockImplementation();
+      vi.spyOn(component['wizard']()!, 'nextStep').mockImplementation(() => {});
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.spyOn(component as any, 'handleSave').mockResolvedValue(undefined);
+      vi.spyOn(component['form'], 'markAllAsTouched').mockImplementation(() => {});
+      vi.spyOn(component as any, 'updateFormSteps').mockImplementation(() => {});
     });
 
     afterEach(() => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     });
 
     it('should not call submitDataRequest when form is invalid', async () => {
@@ -436,7 +436,7 @@ describe('DataRequestWizardConsumerComponent', () => {
         advantages: [],
       };
       dataRequestService.retreatDataRequest.mockResolvedValue(retreatedRequest);
-      const updateFormStepsSpy = jest.spyOn(component as any, 'updateFormSteps');
+      const updateFormStepsSpy = vi.spyOn(component as any, 'updateFormSteps');
 
       await component['handleRetreat']();
 
@@ -455,7 +455,7 @@ describe('DataRequestWizardConsumerComponent', () => {
       fixture.detectChanges();
 
       component['wizard']()!.currentStepId.set('contract');
-      const wizardSpy = jest.spyOn(component['wizard']()!, 'handleChangeStep');
+      const wizardSpy = vi.spyOn(component['wizard']()!, 'handleChangeStep');
 
       await component['handleRetreat']();
 
@@ -497,7 +497,7 @@ describe('DataRequestWizardConsumerComponent', () => {
   describe('handleClose (consumer-specific)', () => {
     it('should navigate to consumer path with refresh state', () => {
       const router = TestBed.inject(Router);
-      const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+      const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
       component['refreshListNeeded'].set(true);
 
       component['handleClose']();
@@ -530,11 +530,11 @@ describe('DataRequestWizardConsumerComponent', () => {
 
   describe('handleRelease (consumer-specific)', () => {
     beforeEach(() => {
-      jest.spyOn(console, 'error').mockImplementation();
+      vi.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     afterEach(() => {
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     });
 
     it('should return early if form is invalid', async () => {

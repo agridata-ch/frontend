@@ -122,25 +122,18 @@ select {
     margin-bottom: 0;
   }
 
-  /* Unordered lists: centered custom bullet (mirrors data-request-advantages).
-     flex-wrap + full-width nested lists keep sublists stacking below, not in a row. */
+  /* Unordered lists: custom bullet as a hanging marker inside the ul padding.
+     Block layout keeps wrapped text aligned under the text, and nested lists
+     stack on their own row below. */
   ul > li {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    column-gap: 0.5rem;
+    position: relative;
   }
   ul > li::before {
     content: '•';
+    position: absolute;
+    left: -1rem;
     font-size: 1.5em;
     line-height: 1;
-  }
-  ul > li > * {
-    min-width: 0; /* let the paragraph wrap instead of forcing overflow */
-  }
-  ul > li > ul,
-  ul > li > ol {
-    flex-basis: 100%; /* nested list drops to its own full-width row */
   }
 
   a {

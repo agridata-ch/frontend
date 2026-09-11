@@ -53,7 +53,7 @@ describe('AgridataFileDownloadComponent', () => {
 
   describe('open action', () => {
     it('renders a clickable file-name button that emits handleOpen when downloadable', () => {
-      const emitSpy = jest.fn();
+      const emitSpy = vi.fn();
       component.handleOpen.subscribe(emitSpy);
       componentRef.setInput('downloadable', true);
       fixture.detectChanges();
@@ -75,7 +75,7 @@ describe('AgridataFileDownloadComponent', () => {
 
   describe('download action', () => {
     it('renders a download button that emits handleDownload when downloadable', () => {
-      const emitSpy = jest.fn();
+      const emitSpy = vi.fn();
       component.handleDownload.subscribe(emitSpy);
       componentRef.setInput('downloadable', true);
       fixture.detectChanges();
@@ -105,7 +105,7 @@ describe('AgridataFileDownloadComponent', () => {
 
   describe('remove action', () => {
     it('renders a remove button that emits handleRemove when removable', () => {
-      const emitSpy = jest.fn();
+      const emitSpy = vi.fn();
       component.handleRemove.subscribe(emitSpy);
       componentRef.setInput('removable', true);
       fixture.detectChanges();
@@ -127,7 +127,7 @@ describe('AgridataFileDownloadComponent', () => {
     });
 
     it('emits handleRestore when the restore button is clicked', () => {
-      const emitSpy = jest.fn();
+      const emitSpy = vi.fn();
       component.handleRestore.subscribe(emitSpy);
       componentRef.setInput('markedForRemoval', true);
       fixture.detectChanges();

@@ -2,7 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, input, model, output, signal } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
@@ -12,16 +11,17 @@ import {
   SignatureSlotCodeEnum,
 } from '@/entities/openapi';
 import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import { contractAgbUrl } from '@/shared/lib/cms';
 import { createFormControl, getFormControl } from '@/shared/lib/form.helper';
 import { ToastService, ToastType } from '@/shared/toast';
+import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { AgridataBadgeComponent } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ControlTypes, FormControlComponent } from '@/shared/ui/form-control';
 import { startCountdown } from '@/shared/utils';
-import { AlertComponent, AlertType } from '@/widgets/alert';
 import {
   RESEND_OTP_INTERVAL_MS,
   SlotChallenge,

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import type { Mock } from 'vitest';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { AGATE_LOGIN_ID_IMPERSONATION_HEADER } from '@/shared/constants/constants';
@@ -80,8 +81,8 @@ describe('SupporterOverlayComponent', () => {
   describe('disableSupportMode', () => {
     it('should remove the impersonation parameter from sessionStorage and close the window', () => {
       // Setup spies
-      const removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem').mockImplementation();
-      const windowCloseSpy = jest.spyOn(window, 'close').mockImplementation();
+      const removeItemSpy = vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => {});
+      const windowCloseSpy = vi.spyOn(window, 'close').mockImplementation(() => {});
 
       // Call the method
       component.disableSupportMode();
@@ -97,9 +98,9 @@ describe('SupporterOverlayComponent', () => {
 
     it('should only remove the specific item from sessionStorage', () => {
       // Setup
-      jest.spyOn(Storage.prototype, 'removeItem').mockImplementation();
-      jest.spyOn(window, 'close').mockImplementation();
-      jest.spyOn(Storage.prototype, 'clear').mockImplementation();
+      vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => {});
+      vi.spyOn(window, 'close').mockImplementation(() => {});
+      vi.spyOn(Storage.prototype, 'clear').mockImplementation(() => {});
 
       // Call the method
       component.disableSupportMode();
@@ -109,9 +110,9 @@ describe('SupporterOverlayComponent', () => {
       expect(sessionStorage.clear).not.toHaveBeenCalled();
 
       // Cleanup
-      (sessionStorage.removeItem as jest.Mock).mockRestore();
-      (window.close as jest.Mock).mockRestore();
-      (sessionStorage.clear as jest.Mock).mockRestore();
+      (sessionStorage.removeItem as Mock).mockRestore();
+      (window.close as Mock).mockRestore();
+      (sessionStorage.clear as Mock).mockRestore();
     });
   });
 });

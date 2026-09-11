@@ -22,11 +22,11 @@ import { impersonationInterceptor } from '@/app/interceptors/impersonation-inter
 import { AgridataTitleStrategy } from '@/app/title.strategy';
 import { Configuration } from '@/entities/openapi';
 import { environment } from '@/environments/environment';
+import { i18nConfig } from '@/shared/i18n/i18n.config';
+import { GA_MEASUREMENT_ID, GA_SCRIPT_URL } from '@/shared/lib/analytics.config';
 import { oidcConfig } from '@/shared/lib/auth';
 
-import { GA_MEASUREMENT_ID, GA_SCRIPT_URL } from './analytics.config';
 import { routes } from './app.routes';
-import { i18nConfig } from './i18n.config';
 import { SkipMissingParamTranspiler } from './skip-missing-param-transpiler';
 import { TranslocoHttpLoader } from './transloco-loader';
 

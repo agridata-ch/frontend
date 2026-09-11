@@ -10,7 +10,7 @@ const beVersion = '1.0.0';
 
 const createMockBackendVersionService = () =>
   ({
-    fetchBackendInfo: jest.fn().mockResolvedValue({ version: beVersion }),
+    fetchBackendInfo: vi.fn().mockResolvedValue({ version: beVersion }),
   }) satisfies Partial<BackendInfoService>;
 
 describe('MaintenancePage', () => {
@@ -40,12 +40,31 @@ describe('MaintenancePage', () => {
   });
 
   it('should navigate to route when maintenance is no longer active', async () => {
-    const navSpy = jest.spyOn(router, 'navigate');
+    const navSpy = vi.spyOn(router, 'navigate');
 
     fixture.detectChanges();
 
     await fixture.whenStable();
 
     expect(navSpy).toHaveBeenCalledWith(['/']);
+  });
+
+  it('should stay on the page and warn when the backend is still unreachable', async () => {
+    backendVersionService.fetchBackendInfo.mockRejectedValue(new Error('down'));
+    const navSpy = vi.spyOn(router, 'navigate');
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+    await Promise.resolve();
+
+    expect(navSpy).not.toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalled();
+  });
+
+  it('should reload the page', () => {
+    // jsdom's location.reload is a non-configurable no-op that can't be spied; assert the
+    // delegation runs without throwing.
+    expect(() => component['reloadPage']()).not.toThrow();
   });
 });

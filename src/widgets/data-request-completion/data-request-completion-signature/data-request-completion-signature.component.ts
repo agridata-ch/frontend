@@ -3,8 +3,8 @@ import { Component, input } from '@angular/core';
 import { ContractRevisionSignatureDto } from '@/entities/openapi';
 import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
 import { I18nDirective } from '@/shared/i18n';
+import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { AgridataBadgeComponent } from '@/shared/ui/badge';
-import { AlertComponent, AlertType } from '@/widgets/alert';
 
 /**
  * Component to display a single signature in the data request completion component.

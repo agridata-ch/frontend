@@ -10,6 +10,7 @@ import { DataProductCardComponent } from './data-product-card.component';
 const mockProduct: PublicDataProductDto = {
   id: 'product-1',
   stateCode: 'ACTIVE' as PublicDataProductDto['stateCode'],
+  consentRequired: false,
   name: { de: 'Produktname' },
   description: { de: 'Produktbeschreibung' },
   dataSourceSystem: {
@@ -61,7 +62,12 @@ describe('DataProductCardComponent', () => {
   });
 
   it('should not render a badge when there is no data source system', () => {
-    componentRef.setInput('product', { ...mockProduct, dataSourceSystem: undefined });
+    // consentRequired: true so the (unrelated) public-sector badge does not render here.
+    componentRef.setInput('product', {
+      ...mockProduct,
+      dataSourceSystem: undefined,
+      consentRequired: true,
+    });
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('app-agridata-badge')).toBeNull();

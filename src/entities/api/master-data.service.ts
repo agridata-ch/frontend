@@ -1,8 +1,8 @@
 import { effect, inject, Service, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataProductDto, DataProvidersService, DataProviderDto } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 

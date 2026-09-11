@@ -128,7 +128,7 @@ describe('DataRequestAdvantagesComponent', () => {
 
       component['syncToControl']();
 
-      expect(advantagesControl.value?.length).toBe(1);
+      expect(advantagesControl.value).toHaveLength(1);
     });
 
     it('should drop advantages whose only content is whitespace', () => {

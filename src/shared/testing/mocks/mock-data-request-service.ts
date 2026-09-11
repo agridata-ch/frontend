@@ -43,25 +43,25 @@ export type MockDataRequestService = Mockify<DataRequestService>;
 
 /**
  * Factory that creates a strict mock implementation of DataRequestService for tests.
- * All methods are jest.fn mocks returning the same default values as the standalone mock above.
+ * All methods are vi.fn mocks returning the same default values as the standalone mock above.
  *
  * CommentLastReviewed: 2025-11-04
  */
 export function createMockDataRequestService(): MockDataRequestService {
   return {
-    approveDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
-    createDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
-    deleteDataRequest: jest.fn().mockResolvedValue(undefined),
-    fetchDataRequest: jest.fn(),
-    fetchDataRequests: jest.fn().mockResolvedValue(mockDataRequests),
-    retreatDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
-    activateDataRequest: jest.fn().mockResolvedValue(mockDataRequests[0]),
-    submitDataRequest: jest.fn().mockResolvedValue(undefined),
-    updateDataRequestDetails: jest.fn().mockResolvedValue(undefined),
-    updateDataRequestValidRedirectUriRegex: jest.fn().mockResolvedValue(undefined),
-    uploadLogo: jest.fn().mockResolvedValue(undefined),
-    releaseDataRequestToBeActivated: jest.fn().mockResolvedValue(mockDataRequests[0]),
-    releaseDataRequestToProvider: jest.fn().mockResolvedValue(mockDataRequests[0]),
-    setSignatureType: jest.fn().mockResolvedValue(mockDataRequests[0]),
+    approveDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
+    createDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
+    deleteDataRequest: vi.fn().mockResolvedValue(undefined),
+    fetchDataRequest: vi.fn(),
+    fetchDataRequests: vi.fn().mockResolvedValue(mockDataRequests),
+    retreatDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
+    activateDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
+    submitDataRequest: vi.fn().mockResolvedValue(undefined),
+    updateDataRequestDetails: vi.fn().mockResolvedValue(undefined),
+    updateDataRequestValidRedirectUriRegex: vi.fn().mockResolvedValue(undefined),
+    uploadLogo: vi.fn().mockResolvedValue(undefined),
+    releaseDataRequestToBeActivated: vi.fn().mockResolvedValue(mockDataRequests[0]),
+    releaseDataRequestToProvider: vi.fn().mockResolvedValue(mockDataRequests[0]),
+    setSignatureType: vi.fn().mockResolvedValue(mockDataRequests[0]),
   } satisfies MockDataRequestService;
 }

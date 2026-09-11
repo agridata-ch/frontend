@@ -1,10 +1,6 @@
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {
-  faAdd,
-  faExternalLink,
-  faTrashCan,
-} from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faAdd, faTrashCan } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { LinkDto } from '@/entities/openapi';
@@ -18,7 +14,7 @@ import { I18nDirective, I18nService } from '@/shared/i18n';
 import { getFormArray, getFormControl, getFormControlWithMessages } from '@/shared/lib/form.helper';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
-import { ViewSectionDirective } from '@/shared/view-section';
+import { AgridataLinksListComponent } from '@/shared/ui/links-list';
 
 import { absoluteUrlValidator, MAX_LINKS } from './data-product-links.validators';
 
@@ -34,13 +30,13 @@ import { absoluteUrlValidator, MAX_LINKS } from './data-product-links.validators
 @Component({
   selector: 'app-data-product-links',
   imports: [
+    AgridataLinksListComponent,
     ButtonComponent,
     CrossFieldGroupDirective,
     FontAwesomeModule,
     FormControlComponent,
     I18nDirective,
     ReactiveFormsModule,
-    ViewSectionDirective,
   ],
   templateUrl: './data-product-links.component.html',
 })
@@ -52,7 +48,6 @@ export class DataProductLinksComponent {
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly getFormControl = getFormControl;
   protected readonly faAdd = faAdd;
-  protected readonly faLink = faExternalLink;
   protected readonly faTrashCan = faTrashCan;
 
   private readonly initializedGroups = new WeakSet<FormGroup>();

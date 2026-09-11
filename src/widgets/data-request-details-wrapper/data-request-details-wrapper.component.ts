@@ -3,9 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
 import { DATA_REQUEST_NEW_ID, DataRequestWizardComponent } from '@/widgets/data-request-wizard';

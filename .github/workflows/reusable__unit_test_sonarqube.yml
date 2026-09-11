@@ -28,7 +28,15 @@ jobs:
         run: npx eslint src/
 
       - name: Run unit tests
-        run: npx jest --coverage --no-cache --watch=false
+        run: npm run test:coverage
+
+      - name: Run architecture tests
+        run: npm run test:arch
+
+      # Vitest's v8 reporter emits full branch/condition data that the old Jest lcov didn't.
+      # Sonar folds conditions into its coverage metric, so keep it line-based as before.
+      - name: Strip branch data from lcov (Sonar measures line coverage)
+        run: sed -i -E '/^BR(DA|F|H):/d' coverage/lcov.info
 
       - name: Run SonarQube Analysis
         uses: SonarSource/sonarqube-scan-action@v8

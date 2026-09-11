@@ -1,7 +1,7 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErrorDto } from '@/app/error/error-dto';
+import { ErrorDto } from '@/shared/error/error-dto';
 import { I18nService } from '@/shared/i18n';
 import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
 

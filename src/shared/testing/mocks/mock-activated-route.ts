@@ -1,5 +1,3 @@
-/// <reference types="jest" />
-
 import { ActivatedRoute, convertToParamMap, ParamMap } from '@angular/router';
 
 export interface MockActivatedRoute {

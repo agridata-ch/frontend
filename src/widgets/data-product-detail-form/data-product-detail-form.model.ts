@@ -17,7 +17,7 @@ export const SAVE_MODE = {
 };
 
 export const FORM_TAB_IDS = {
-  NAME_AND_DESCRIPTION: 'nameAndDescription',
+  NAME_AND_DESCRIPTION: 'generalInfo',
   TECHNICAL_FIELDS: 'technicalFields',
   LINKS_DOCUMENTS: 'linksAndDocuments',
 };
@@ -75,6 +75,10 @@ export function buildDataProductPayload(form: FormGroup): Record<string, unknown
   // because these are ENUM values and the backend will reject an empty string, but will accept null
   if (payload['restClientMethodCode'] === '') payload['restClientMethodCode'] = null;
   if (payload['flowCode'] === '') payload['flowCode'] = null;
+
+  // 'provider' is a UI-only filter control added imperatively by the technical tab; it must
+  // never reach the backend.
+  delete payload['provider'];
 
   // Links are optional and empty rows are UI-only scaffolding; drop them before save.
   if (Array.isArray(payload['links'])) {

@@ -73,14 +73,14 @@ describe('AgridataAccordionComponent', () => {
   });
 
   it('should call ngAfterViewInit and updateContentHeight on initialization', () => {
-    const updateSpy = jest.spyOn(component as any, 'updateContentHeight');
+    const updateSpy = vi.spyOn(component as any, 'updateContentHeight');
     component.ngAfterViewInit();
     expect(updateSpy).toHaveBeenCalled();
   });
 
   it('should handle updateContentHeight when expanded', () => {
     // Setup a spy instead of directly using signals
-    jest.spyOn(openComponent, 'isExpanded').mockReturnValue(true);
+    vi.spyOn(openComponent, 'isExpanded').mockReturnValue(true);
 
     // Setup mocks for the DOM elements
     openComponent.contentWrapper = {
@@ -99,7 +99,7 @@ describe('AgridataAccordionComponent', () => {
 
   it('should not update content height when collapsed', () => {
     // Setup a spy instead of directly using signals
-    jest.spyOn(openComponent, 'isExpanded').mockReturnValue(false);
+    vi.spyOn(openComponent, 'isExpanded').mockReturnValue(false);
 
     openComponent.contentWrapper = {
       nativeElement: { style: { height: '0px' } },
@@ -116,7 +116,7 @@ describe('AgridataAccordionComponent', () => {
 
   it('should handle case when contentInner is undefined', () => {
     // Setup a spy instead of directly using signals
-    jest.spyOn(openComponent, 'isExpanded').mockReturnValue(true);
+    vi.spyOn(openComponent, 'isExpanded').mockReturnValue(true);
 
     openComponent.contentWrapper = {
       nativeElement: { style: { height: '0px' } },
@@ -130,7 +130,7 @@ describe('AgridataAccordionComponent', () => {
   it('should handle toggle when contentWrapper is undefined during expand', () => {
     // Create a mock for the isExpanded signal that supports both getting and setting
     const originalIsExpanded = openComponent.isExpanded;
-    const mockIsExpandedSet = jest.fn();
+    const mockIsExpandedSet = vi.fn();
 
     // Replace the signal with our mock that returns false and has a set method
     openComponent.isExpanded = function () {
@@ -159,8 +159,8 @@ describe('AgridataAccordionComponent', () => {
       openComponent.contentWrapper = {
         nativeElement: {
           style: { height: '0px' },
-          addEventListener: jest.fn(),
-          removeEventListener: jest.fn(),
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
         },
       };
       openComponent.contentInner = {
@@ -185,7 +185,7 @@ describe('AgridataAccordionComponent', () => {
       };
 
       // Add transition end handler spy
-      const addTransitionSpy = jest.spyOn(openComponent, 'addTransitionEndHandler');
+      const addTransitionSpy = vi.spyOn(openComponent, 'addTransitionEndHandler');
 
       // Trigger expand
       openComponent.toggleAccordion();
@@ -218,7 +218,7 @@ describe('AgridataAccordionComponent', () => {
     it('should handle collapsing animation with setTimeout', () => {
       // Create a mock for the isExpanded signal that supports both getting and setting
       const originalIsExpanded = openComponent.isExpanded;
-      const mockIsExpandedSet = jest.fn();
+      const mockIsExpandedSet = vi.fn();
 
       // Replace the signal with our mock that returns true and has a set method
       openComponent.isExpanded = function () {
@@ -227,11 +227,11 @@ describe('AgridataAccordionComponent', () => {
       openComponent.isExpanded.set = mockIsExpandedSet;
 
       // Setup spies
-      const addTransitionSpy = jest.spyOn(openComponent, 'addTransitionEndHandler');
+      const addTransitionSpy = vi.spyOn(openComponent, 'addTransitionEndHandler');
 
       try {
         // Mock setTimeout
-        jest.useFakeTimers();
+        vi.useFakeTimers();
 
         // Trigger collapse
         openComponent.toggleAccordion();
@@ -243,7 +243,7 @@ describe('AgridataAccordionComponent', () => {
         expect(addTransitionSpy).toHaveBeenCalled();
 
         // Run the setTimeout
-        jest.runAllTimers();
+        vi.runAllTimers();
 
         // Should set height to 0
         expect(openComponent.contentWrapper.nativeElement.style.height).toBe('0px');
@@ -256,13 +256,13 @@ describe('AgridataAccordionComponent', () => {
         expect(mockIsExpandedSet).toHaveBeenCalledWith(false);
       } finally {
         // Reset timers and restore original function
-        jest.useRealTimers();
+        vi.useRealTimers();
         openComponent.isExpanded = originalIsExpanded;
       }
     });
 
     it('should handle transition end events properly', () => {
-      const mockCallback = jest.fn();
+      const mockCallback = vi.fn();
 
       // Call the private method
       openComponent.addTransitionEndHandler(mockCallback);
@@ -292,7 +292,7 @@ describe('AgridataAccordionComponent', () => {
       // Set contentWrapper to undefined
       openComponent.contentWrapper = undefined;
 
-      const mockCallback = jest.fn();
+      const mockCallback = vi.fn();
       openComponent.addTransitionEndHandler(mockCallback);
 
       // Callback should not be called

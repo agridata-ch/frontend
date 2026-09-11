@@ -31,6 +31,18 @@ describe('ScrollFadeDirective', () => {
 
     fixture = TestBed.createComponent(TestHostComponent);
     host = fixture.nativeElement.querySelector('#scrollable');
+
+    // jsdom's CSS parser drops calc() and normalises `to bottom` out of gradients, so reading
+    // back host.style.maskImage is lossy. Store the raw value verbatim to assert the directive's
+    // actual output rather than jsdom's re-serialisation.
+    let maskImage = '';
+    Object.defineProperty(host.style, 'maskImage', {
+      get: () => maskImage,
+      set: (value: string) => {
+        maskImage = value;
+      },
+      configurable: true,
+    });
   });
 
   afterEach(() => {

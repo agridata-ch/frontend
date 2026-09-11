@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 import { of } from 'rxjs';
+import type { Mock } from 'vitest';
 
 import { UidDto, UserInfoDto, UsersService } from '@/entities/openapi';
 import { USER_ROLES } from '@/shared/constants/constants';
@@ -22,11 +23,11 @@ const uid = '081';
 describe('AuthService', () => {
   let authService: AuthService;
   let mockOidc: {
-    checkAuth: jest.Mock;
-    authorize: jest.Mock<void, []>;
-    logoff: jest.Mock;
+    checkAuth: Mock;
+    authorize: Mock<() => void>;
+    logoff: Mock;
   };
-  let mockRouter: { navigate: jest.Mock<Promise<boolean>, [unknown[]]> };
+  let mockRouter: { navigate: Mock<(args: unknown[]) => Promise<boolean>> };
   let userService: MockUserService;
 
   beforeEach(() => {
@@ -34,11 +35,11 @@ describe('AuthService', () => {
     userService.getUserInfo.mockReturnValue(of(mockUserInfo));
     userService.getAuthorizedUids.mockReturnValue(of([{ uid: uid } as UidDto]));
 
-    mockRouter = { navigate: jest.fn() };
+    mockRouter = { navigate: vi.fn() };
     mockOidc = {
-      checkAuth: jest.fn(),
-      authorize: jest.fn(),
-      logoff: jest.fn(),
+      checkAuth: vi.fn(),
+      authorize: vi.fn(),
+      logoff: vi.fn(),
     };
 
     TestBed.configureTestingModule({
@@ -132,7 +133,7 @@ describe('AuthService', () => {
     expect(result).toBeFalsy();
     expect(authService.isAuthenticated()).toBe(false);
     expect(authService.userInfo()).toBeFalsy();
-    expect(authService.userRoles().length).toBe(0);
+    expect(authService.userRoles()).toHaveLength(0);
   });
 
   it('login() calls oidc.authorize()', () => {
@@ -196,7 +197,7 @@ describe('AuthService', () => {
     const result = await authService.initializeAuthorizedUids();
 
     expect(result).toBeTruthy();
-    expect(result.length).toBe(1);
+    expect(result).toHaveLength(1);
     expect(result[0].uid).toBe(uid);
   });
 });
@@ -204,21 +205,21 @@ describe('AuthService', () => {
 describe('AuthService User Properties', () => {
   let authService: AuthService;
   let mockOidc: {
-    checkAuth: jest.Mock;
-    authorize: jest.Mock<void, []>;
-    logoff: jest.Mock;
+    checkAuth: Mock;
+    authorize: Mock<() => void>;
+    logoff: Mock;
   };
-  let mockRouter: { navigate: jest.Mock<Promise<boolean>, [unknown[]]> };
+  let mockRouter: { navigate: Mock<(args: unknown[]) => Promise<boolean>> };
   let userService: MockUserService;
 
   beforeEach(() => {
     userService = createMockUserService();
     userService.getAuthorizedUids.mockReturnValue(of([{ uid: uid } as UidDto]));
-    mockRouter = { navigate: jest.fn() };
+    mockRouter = { navigate: vi.fn() };
     mockOidc = {
-      checkAuth: jest.fn(),
-      authorize: jest.fn(),
-      logoff: jest.fn(),
+      checkAuth: vi.fn(),
+      authorize: vi.fn(),
+      logoff: vi.fn(),
     };
   });
 
@@ -296,11 +297,11 @@ describe('AuthService User Properties', () => {
 
 describe('AuthService justLoggedIn', () => {
   let mockOidc: {
-    checkAuth: jest.Mock;
-    authorize: jest.Mock<void, []>;
-    logoff: jest.Mock;
+    checkAuth: Mock;
+    authorize: Mock<() => void>;
+    logoff: Mock;
   };
-  let mockRouter: { navigate: jest.Mock<Promise<boolean>, [unknown[]]> };
+  let mockRouter: { navigate: Mock<(args: unknown[]) => Promise<boolean>> };
   let userService: MockUserService;
   const originalUrl = `${window.location.pathname}${window.location.search}`;
 
@@ -308,8 +309,8 @@ describe('AuthService justLoggedIn', () => {
     userService = createMockUserService();
     userService.getUserInfo.mockReturnValue(of(mockUserInfo));
     userService.getAuthorizedUids.mockReturnValue(of([{ uid } as UidDto]));
-    mockRouter = { navigate: jest.fn() };
-    mockOidc = { checkAuth: jest.fn(), authorize: jest.fn(), logoff: jest.fn() };
+    mockRouter = { navigate: vi.fn() };
+    mockOidc = { checkAuth: vi.fn(), authorize: vi.fn(), logoff: vi.fn() };
   });
 
   afterEach(() => {

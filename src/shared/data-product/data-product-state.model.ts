@@ -10,7 +10,7 @@ export type DataProductState = DataProductDtoStateCode | typeof DATA_PRODUCT_DEP
 export function getBadgeVariant(stateCode?: string) {
   if (stateCode === DataProductDtoStateCode.Draft) return BadgeVariant.INFO;
   if (stateCode === DataProductDtoStateCode.Active) return BadgeVariant.SUCCESS;
-  if (stateCode === DATA_PRODUCT_DEPRECATED_STATE) return BadgeVariant.ERROR;
+  if (stateCode === DATA_PRODUCT_DEPRECATED_STATE) return BadgeVariant.WARNING;
   return BadgeVariant.DEFAULT;
 }
 

@@ -9,9 +9,9 @@ describe('I18nPipe', () => {
 
   beforeEach(() => {
     translocoService = {
-      translate: jest.fn((key: string) => `translated:${key}`),
+      translate: vi.fn((key: string) => `translated:${key}`),
     } as unknown as TranslocoService;
-    cdr = { markForCheck: jest.fn() } as unknown as ChangeDetectorRef;
+    cdr = { markForCheck: vi.fn() } as unknown as ChangeDetectorRef;
   });
 
   it('should create an instance', () => {

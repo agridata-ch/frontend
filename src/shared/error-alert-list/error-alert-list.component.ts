@@ -1,8 +1,8 @@
 import { Component, input, output } from '@angular/core';
 
-import { ErrorDto } from '@/app/error/error-dto';
+import { ErrorDto } from '@/shared/error/error-dto';
 import { ButtonVariants } from '@/shared/ui/button';
-import { ErrorAlertComponent } from '@/widgets/error-alert/error-alert.component';
+import { ErrorAlertComponent } from '@/shared/ui/error-alert';
 
 /**
  * An Alert component that displays local error messages to the user. It registers a unique handler

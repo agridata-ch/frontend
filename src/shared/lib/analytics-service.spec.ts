@@ -3,9 +3,9 @@ import { TranslocoService } from '@jsverse/transloco';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { of } from 'rxjs';
 
-import { GA_MEASUREMENT_ID, GA_SCRIPT_URL } from '@/app/analytics.config';
-import { TitleService } from '@/app/title.service';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { GA_MEASUREMENT_ID, GA_SCRIPT_URL } from '@/shared/lib/analytics.config';
+import { TitleService } from '@/shared/lib/title.service';
 import {
   createMockAgridataStateService,
   MockAgridataStateService,
@@ -28,7 +28,7 @@ describe('AnalyticsServiceService', () => {
     localStorage.setItem('cookiesAccepted', 'true');
 
     oidcService = {
-      checkAuth: jest.fn(),
+      checkAuth: vi.fn(),
       isAuthenticated$: of({
         isAuthenticated: true,
         allConfigsAuthenticated: [],
@@ -76,7 +76,7 @@ describe('AnalyticsServiceService', () => {
   it('should call gtag when logEvent is called', () => {
     const window = globalThis as unknown as { gtag?: () => void };
 
-    const gtagSpy = jest.spyOn(window, 'gtag');
+    const gtagSpy = vi.spyOn(window, 'gtag');
     service.logEvent('test_event', { param1: 'value1' });
 
     expect(gtagSpy).toHaveBeenCalledWith('event', 'test_event', { param1: 'value1' });
@@ -85,7 +85,7 @@ describe('AnalyticsServiceService', () => {
   it('should set user properties on lang change', () => {
     const window = globalThis as unknown as { gtag?: () => void };
 
-    const gtagSpy = jest.spyOn(window, 'gtag');
+    const gtagSpy = vi.spyOn(window, 'gtag');
 
     translocoService.setActiveLang('fr');
     TestBed.tick();
@@ -96,7 +96,7 @@ describe('AnalyticsServiceService', () => {
   it('should track page changes', () => {
     const window = globalThis as unknown as { gtag?: () => void };
 
-    const gtagSpy = jest.spyOn(window, 'gtag');
+    const gtagSpy = vi.spyOn(window, 'gtag');
 
     titleService.__testSignals.roTranslatedTitle.set('new page');
     titleService.__testSignals.ro18nTitle.set('new.page');
@@ -128,7 +128,7 @@ describe('AnalyticsServiceService', () => {
     it('should disable analytics when cookies are declined', () => {
       service.setCookiesAccepted(false);
       const window = globalThis as unknown as { gtag?: () => void };
-      const gtagSpy = jest.spyOn(window, 'gtag');
+      const gtagSpy = vi.spyOn(window, 'gtag');
 
       service.logEvent('test_event');
 
@@ -141,7 +141,7 @@ describe('AnalyticsServiceService', () => {
       service.setCookiesAccepted(true);
 
       const window = globalThis as unknown as { gtag?: () => void };
-      const gtagSpy = jest.spyOn(window, 'gtag');
+      const gtagSpy = vi.spyOn(window, 'gtag');
 
       service.logEvent('test_event');
 
@@ -193,7 +193,7 @@ describe('AnalyticsServiceService', () => {
 
     it('should not inject gtag script when cookies are not accepted', () => {
       const window = globalThis as unknown as { gtag?: () => void };
-      const gtagSpy = jest.spyOn(window, 'gtag');
+      const gtagSpy = vi.spyOn(window, 'gtag');
 
       // Trigger some analytics actions
       titleService.__testSignals.roTranslatedTitle.set('test page');
@@ -205,7 +205,7 @@ describe('AnalyticsServiceService', () => {
 
     it('should not call gtag when logEvent is called without cookie acceptance', () => {
       const window = globalThis as unknown as { gtag?: () => void };
-      const gtagSpy = jest.spyOn(window, 'gtag');
+      const gtagSpy = vi.spyOn(window, 'gtag');
 
       serviceWithoutCookies.logEvent('test_event', { param1: 'value1' });
 
@@ -214,7 +214,7 @@ describe('AnalyticsServiceService', () => {
 
     it('should not set user properties when cookies are not accepted', () => {
       const window = globalThis as unknown as { gtag?: () => void };
-      const gtagSpy = jest.spyOn(window, 'gtag');
+      const gtagSpy = vi.spyOn(window, 'gtag');
 
       serviceWithoutCookies.setUserProperties({ test: 'value' });
 

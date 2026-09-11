@@ -4,7 +4,8 @@ import { TooltipDirective } from '@/shared/tooltip';
 
 /**
  * Generic content card providing shared chrome and layout. Renders an optional title and description
- * plus a `[cardTags]` projection slot for consumer-specific badges/tags. Holds no domain knowledge.
+ * plus `[cardTags]` (badges/tags) and `[cardFooter]` (bottom-aligned actions) projection slots for
+ * consumer-specific content. Holds no domain knowledge.
  *
  * CommentLastReviewed: 2026-08-27
  */

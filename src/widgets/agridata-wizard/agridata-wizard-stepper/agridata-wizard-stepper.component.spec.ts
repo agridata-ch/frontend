@@ -31,11 +31,11 @@ describe('AgridataWizardStepperComponent', () => {
 
   it('should render the correct number of steps', () => {
     const stepButtons = fixture.debugElement.queryAll(By.css('.step-bubble'));
-    expect(stepButtons.length).toBe(mockSteps.length);
+    expect(stepButtons).toHaveLength(mockSteps.length);
   });
 
   it('should emit handleClickStep when a step is clicked', () => {
-    jest.spyOn(component, 'handleClickStep');
+    vi.spyOn(component, 'handleClickStep');
     const stepButtons = fixture.debugElement.queryAll(By.css('.step-bubble'));
     stepButtons[2].nativeElement.click();
     expect(component.handleClickStep).toHaveBeenCalledWith(2);

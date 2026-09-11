@@ -27,10 +27,11 @@ export class DataRequestProductsAccordionComponent {
   readonly currentLanguage = computed(() => this.lang() ?? this.i18nService.lang());
   readonly productsList = computed<DataProductDto[]>(() => this.products() ?? []);
 
-  readonly productDataLink = `${environment.appBaseUrl}/cms/data-consumer#dataProduct`;
-
   getFieldFromLang = (product: DataProductDto, field: keyof DataProductDto) => {
     const fieldValue = product?.[field];
     return (fieldValue as Record<string, string>)?.[this.currentLanguage()] ?? '';
   };
+
+  getProductDataLink = (productId: string) =>
+    `${environment.appBaseUrl}/cms/data-catalog/${productId}`;
 }

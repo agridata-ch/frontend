@@ -1,5 +1,6 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import type { Mock } from 'vitest';
 
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
@@ -12,16 +13,16 @@ describe('DataRequestDetailsRequestComponent', () => {
   let fixture: ComponentFixture<DataRequestDetailsRequestComponent>;
   let component: DataRequestDetailsRequestComponent;
   let componentRef: ComponentRef<DataRequestDetailsRequestComponent>;
-  let showTransient: jest.Mock;
+  let showTransient: Mock;
 
   beforeEach(async () => {
-    showTransient = jest.fn();
+    showTransient = vi.fn();
 
     await TestBed.configureTestingModule({
       imports: [DataRequestDetailsRequestComponent],
       providers: [
         { provide: I18nService, useValue: createMockI18nService() },
-        { provide: TooltipBubbleService, useValue: { show: jest.fn(), showTransient } },
+        { provide: TooltipBubbleService, useValue: { show: vi.fn(), showTransient } },
       ],
     }).compileComponents();
 
@@ -58,11 +59,11 @@ describe('DataRequestDetailsRequestComponent', () => {
   });
 
   describe('handleCopy', () => {
-    let writeText: jest.Mock;
+    let writeText: Mock;
 
     beforeEach(() => {
-      jest.useFakeTimers();
-      writeText = jest.fn().mockResolvedValue(undefined);
+      vi.useFakeTimers();
+      writeText = vi.fn().mockResolvedValue(undefined);
       Object.defineProperty(navigator, 'clipboard', {
         configurable: true,
         value: { writeText },
@@ -78,7 +79,7 @@ describe('DataRequestDetailsRequestComponent', () => {
     });
 
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     function copy() {

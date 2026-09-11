@@ -22,7 +22,7 @@ describe('ButtonComponent', () => {
   });
 
   it('should emit handleClick event on onButtonClick', () => {
-    const clickSpy = jest.spyOn(component.handleClick, 'emit');
+    const clickSpy = vi.spyOn(component.handleClick, 'emit');
     const event = new MouseEvent('click');
     component.onButtonClick(event);
     expect(clickSpy).toHaveBeenCalled();
@@ -32,7 +32,7 @@ describe('ButtonComponent', () => {
     fixture.componentRef.setInput('disabled', true);
     fixture.detectChanges();
 
-    const clickSpy = jest.spyOn(component.handleClick, 'emit');
+    const clickSpy = vi.spyOn(component.handleClick, 'emit');
     component.onButtonClick(new MouseEvent('click'));
 
     expect(clickSpy).not.toHaveBeenCalled();
@@ -93,19 +93,19 @@ describe('ButtonComponent', () => {
     async function hover(el: HTMLElement): Promise<void> {
       await fixture.whenStable();
       el.dispatchEvent(new MouseEvent('mouseenter'));
-      jest.advanceTimersByTime(300);
+      vi.advanceTimersByTime(300);
       await fixture.whenStable();
       fixture.detectChanges();
     }
 
     beforeEach(() => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
     });
 
     afterEach(() => {
       getTooltip()?.remove();
-      jest.clearAllTimers();
-      jest.useRealTimers();
+      vi.clearAllTimers();
+      vi.useRealTimers();
     });
 
     it('should show an explicit tooltip on the button on mouseenter', async () => {

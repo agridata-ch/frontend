@@ -31,7 +31,7 @@ describe('I18nService', () => {
     translocoService = TestBed.inject(TranslocoService);
   });
 
-  afterEach(() => jest.restoreAllMocks());
+  afterEach(() => vi.restoreAllMocks());
 
   it('should be created', () => {
     expect(service).toBeTruthy();
@@ -60,7 +60,7 @@ describe('I18nService', () => {
   });
 
   it('setActiveLang delegates to TranslocoService.setActiveLang()', () => {
-    const spy = jest.spyOn(translocoService, 'setActiveLang');
+    const spy = vi.spyOn(translocoService, 'setActiveLang');
 
     service.setActiveLang('fr');
     expect(spy).toHaveBeenCalledWith('fr');
@@ -68,7 +68,7 @@ describe('I18nService', () => {
 
   it('should translate keys using TranslocoService', () => {
     const params = { name: 'John' };
-    const translateSpy = jest.spyOn(translocoService, 'translate');
+    const translateSpy = vi.spyOn(translocoService, 'translate');
     const result = service.translate(translationKey, params);
     expect(translateSpy).toHaveBeenCalledWith(translationKey, params);
     expect(result).toBe('hallo John');

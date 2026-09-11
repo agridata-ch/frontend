@@ -51,6 +51,7 @@ function fillValidForm(component: DataProductDetailFormComponent): void {
       },
     },
     [FORM_TAB_IDS.TECHNICAL_FIELDS]: {
+      provider: 'provider1',
       dataSourceSystemId: 'sys-1',
       restClientId: 'rc-1',
       restClientMethodCode: 'GET',
@@ -126,7 +127,7 @@ describe('DataProductDetailFormComponent', () => {
     });
 
     it('should set hasError=true on invalid tabs after publish attempt', async () => {
-      // nameAndDescription tab has required fields (dataSourceSystemId)
+      // technicalFields tab has required fields (dataSourceSystemId)
       // so triggering saveAndPublish without filling them should mark tab as having errors
       await component['saveAndPublish']();
       fixture.detectChanges();
@@ -138,7 +139,7 @@ describe('DataProductDetailFormComponent', () => {
 
     it('should not redden the documents tab while a scan is only pending', () => {
       component['publishAttempted'].set(true);
-      jest.spyOn(component['uploadStore'], 'hasBlockingState').mockReturnValue(false);
+      vi.spyOn(component['uploadStore'], 'hasBlockingState').mockReturnValue(false);
 
       const documentsTab = component['tabs']().find((t) => t.id === FORM_TAB_IDS.LINKS_DOCUMENTS);
       expect(documentsTab?.hasError).toBe(false);
@@ -146,7 +147,7 @@ describe('DataProductDetailFormComponent', () => {
 
     it('should redden the documents tab when a document has failed', () => {
       component['publishAttempted'].set(true);
-      jest.spyOn(component['uploadStore'], 'hasBlockingState').mockReturnValue(true);
+      vi.spyOn(component['uploadStore'], 'hasBlockingState').mockReturnValue(true);
 
       const documentsTab = component['tabs']().find((t) => t.id === FORM_TAB_IDS.LINKS_DOCUMENTS);
       expect(documentsTab?.hasError).toBe(true);
@@ -155,7 +156,7 @@ describe('DataProductDetailFormComponent', () => {
 
   describe('scrollToFirstError', () => {
     it('activates the links & documents tab when it is the first invalid tab', () => {
-      jest.spyOn(component['form'], 'get').mockImplementation(
+      vi.spyOn(component['form'], 'get').mockImplementation(
         (path) =>
           ({
             invalid: path === FORM_TAB_IDS.LINKS_DOCUMENTS,
@@ -227,7 +228,7 @@ describe('DataProductDetailFormComponent', () => {
 
   describe('cancel', () => {
     it('should navigate to data-products list with refresh=false by default', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
+      const navigateSpy = vi.spyOn(router, 'navigate');
       component['cancel']();
       expect(navigateSpy).toHaveBeenCalledWith(['data-products'], {
         state: { [FORCE_RELOAD_DATA_PRODUCTS_STATE_PARAM]: false },
@@ -235,7 +236,7 @@ describe('DataProductDetailFormComponent', () => {
     });
 
     it('should navigate with refresh=true when refreshListNeeded is set', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
+      const navigateSpy = vi.spyOn(router, 'navigate');
       component['refreshListNeeded'].set(true);
       component['cancel']();
       expect(navigateSpy).toHaveBeenCalledWith(['data-products'], {
@@ -251,7 +252,7 @@ describe('DataProductDetailFormComponent', () => {
     });
 
     it('should exit edit mode on cancel without navigating', () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
+      const navigateSpy = vi.spyOn(router, 'navigate');
       component['enterEditMode']();
 
       component['cancel']();
@@ -378,7 +379,7 @@ describe('DataProductDetailFormComponent', () => {
     });
 
     it('should navigate to list with refresh=true after a successful patch', async () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
+      const navigateSpy = vi.spyOn(router, 'navigate');
       dataProductService.patchDataProduct.mockResolvedValue({ id: 'ex-id' } as DataProductDto);
       await enterEditMode();
       fillValidForm(component);
@@ -433,8 +434,8 @@ describe('DataProductDetailFormComponent', () => {
     });
 
     it('should not patch, stay on the documents tab and not navigate when documents are unready', async () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
-      jest.spyOn(component['uploadStore'], 'hasUnreadyDocuments').mockReturnValue(true);
+      const navigateSpy = vi.spyOn(router, 'navigate');
+      vi.spyOn(component['uploadStore'], 'hasUnreadyDocuments').mockReturnValue(true);
       await enterEditMode();
       fillValidForm(component);
       component['currentDataProductId'].set('ex-id');
@@ -447,7 +448,7 @@ describe('DataProductDetailFormComponent', () => {
     });
 
     it('should show an error toast when documents are unready', async () => {
-      jest.spyOn(component['uploadStore'], 'hasUnreadyDocuments').mockReturnValue(true);
+      vi.spyOn(component['uploadStore'], 'hasUnreadyDocuments').mockReturnValue(true);
       await enterEditMode();
       fillValidForm(component);
       component['currentDataProductId'].set('ex-id');
@@ -462,8 +463,8 @@ describe('DataProductDetailFormComponent', () => {
     });
 
     it('should not commit document removals when documents are unready', async () => {
-      const commitSpy = jest.spyOn(component['uploadStore'], 'commitRemovals');
-      jest.spyOn(component['uploadStore'], 'hasUnreadyDocuments').mockReturnValue(true);
+      const commitSpy = vi.spyOn(component['uploadStore'], 'commitRemovals');
+      vi.spyOn(component['uploadStore'], 'hasUnreadyDocuments').mockReturnValue(true);
       await enterEditMode();
       fillValidForm(component);
       component['currentDataProductId'].set('ex-id');
@@ -475,8 +476,8 @@ describe('DataProductDetailFormComponent', () => {
 
     it('should upload documents and await their scans before patching', async () => {
       dataProductService.patchDataProduct.mockResolvedValue({ id: 'ex-id' } as DataProductDto);
-      const uploadSpy = jest.spyOn(component['uploadStore'], 'uploadAll');
-      const scanSpy = jest.spyOn(component['uploadStore'], 'awaitPendingScans');
+      const uploadSpy = vi.spyOn(component['uploadStore'], 'uploadAll');
+      const scanSpy = vi.spyOn(component['uploadStore'], 'awaitPendingScans');
       await enterEditMode();
       fillValidForm(component);
       component['currentDataProductId'].set('ex-id');
@@ -577,8 +578,8 @@ describe('DataProductDetailFormComponent', () => {
 
     it('should save without waiting for document scans', async () => {
       dataProductService.createDataProduct.mockResolvedValue({ id: 'saved-id' } as DataProductDto);
-      const scanSpy = jest.spyOn(component['uploadStore'], 'awaitPendingScans');
-      jest.spyOn(component['uploadStore'], 'hasUnreadyDocuments').mockReturnValue(true);
+      const scanSpy = vi.spyOn(component['uploadStore'], 'awaitPendingScans');
+      vi.spyOn(component['uploadStore'], 'hasUnreadyDocuments').mockReturnValue(true);
 
       await component['saveDraft']();
 
@@ -593,7 +594,7 @@ describe('DataProductDetailFormComponent', () => {
 
     it('should update URL via location.replaceState after create', async () => {
       const location = TestBed.inject(Location);
-      const replaceStateSpy = jest.spyOn(location, 'replaceState');
+      const replaceStateSpy = vi.spyOn(location, 'replaceState');
       dataProductService.createDataProduct.mockResolvedValue({ id: 'saved-id' } as DataProductDto);
 
       await component['saveDraft']();
@@ -690,7 +691,7 @@ describe('DataProductDetailFormComponent', () => {
     });
 
     it('should navigate to list with refresh=true after publish', async () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
+      const navigateSpy = vi.spyOn(router, 'navigate');
       const savedProduct = { id: 'pub-id' } as DataProductDto;
       dataProductService.createDataProduct.mockResolvedValue(savedProduct);
       dataProductService.setDataProductStatus.mockResolvedValue(savedProduct);
@@ -752,9 +753,9 @@ describe('DataProductDetailFormComponent', () => {
     });
 
     it('should leave the product as a draft when documents are unready', async () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
+      const navigateSpy = vi.spyOn(router, 'navigate');
       dataProductService.createDataProduct.mockResolvedValue({ id: 'pub-id' } as DataProductDto);
-      jest.spyOn(component['uploadStore'], 'hasUnreadyDocuments').mockReturnValue(true);
+      vi.spyOn(component['uploadStore'], 'hasUnreadyDocuments').mockReturnValue(true);
       fillValidForm(component);
 
       await component['confirmPublish']();

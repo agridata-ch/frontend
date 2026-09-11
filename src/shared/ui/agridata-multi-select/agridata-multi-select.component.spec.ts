@@ -205,7 +205,7 @@ describe('AgridataMultiSelectComponent', () => {
 
       const event = {
         target: { checked: true },
-        stopPropagation: jest.fn(),
+        stopPropagation: vi.fn(),
       } as unknown as Event;
       component['onSelectAllToggle'](mockCategories[0], event);
 
@@ -221,7 +221,7 @@ describe('AgridataMultiSelectComponent', () => {
 
       const event = {
         target: { checked: false },
-        stopPropagation: jest.fn(),
+        stopPropagation: vi.fn(),
       } as unknown as Event;
       component['onSelectAllToggle'](mockCategories[0], event);
 
@@ -236,7 +236,7 @@ describe('AgridataMultiSelectComponent', () => {
 
       const event = {
         target: { checked: true },
-        stopPropagation: jest.fn(),
+        stopPropagation: vi.fn(),
       } as unknown as Event;
       component['onSelectAllToggle'](mockCategories[0], event);
 
@@ -345,7 +345,7 @@ describe('AgridataMultiSelectComponent', () => {
       componentRef.setInput('disabled', true);
       fixture.detectChanges();
 
-      const event = { target: { checked: true }, stopPropagation: jest.fn() } as unknown as Event;
+      const event = { target: { checked: true }, stopPropagation: vi.fn() } as unknown as Event;
       component['onOptionToggle']('1', event);
 
       expect(control.value).toEqual([]);
@@ -364,7 +364,7 @@ describe('AgridataMultiSelectComponent', () => {
       componentRef.setInput('disabled', true);
       fixture.detectChanges();
 
-      const event = { target: { checked: true }, stopPropagation: jest.fn() } as unknown as Event;
+      const event = { target: { checked: true }, stopPropagation: vi.fn() } as unknown as Event;
       component['onSelectAllToggle'](categories[0], event);
 
       expect(control.value).toEqual([]);

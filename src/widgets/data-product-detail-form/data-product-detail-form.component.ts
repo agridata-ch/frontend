@@ -22,12 +22,8 @@ import { DataProductUpdateDto as DataProductUpdateDtoSchema } from '@/assets/for
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProductDto, DataProductDtoStateCode, DataProductStateEnum } from '@/entities/openapi';
-import {
-  getBadgeVariant,
-  getDataProductState,
-  getStatusTranslation,
-} from '@/pages/data-products-page';
 import { ACTING_ROLES, ROUTE_PATHS } from '@/shared/constants/constants';
+import { getBadgeVariant, getDataProductState, getStatusTranslation } from '@/shared/data-product';
 import { I18nDirective, I18nFormatDirective, I18nService } from '@/shared/i18n';
 import { buildReactiveForm, populateFormFromDto } from '@/shared/lib/form.helper';
 import { ScrollFadeDirective } from '@/shared/scroll-fade';
@@ -150,7 +146,7 @@ export class DataProductDetailFormComponent {
     return [
       {
         id: FORM_TAB_IDS.NAME_AND_DESCRIPTION,
-        label: this.i18nService.translate('data-products.detailForm.tab.nameAndDescription'),
+        label: this.i18nService.translate('data-products.detailForm.tab.generalInfo'),
         hasError: attempted && (this.form.get(FORM_TAB_IDS.NAME_AND_DESCRIPTION)?.invalid ?? false),
       },
       {

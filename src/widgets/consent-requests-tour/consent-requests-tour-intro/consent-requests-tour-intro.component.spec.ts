@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import type { Mock } from 'vitest';
 
 import { I18nService } from '@/shared/i18n';
 import { ProductTourService } from '@/shared/product-tour/product-tour.service';
@@ -66,7 +67,7 @@ describe('ConsentRequestsTourIntroComponent', () => {
   it('should pass 4 steps when starting the tour', () => {
     component['startTour']();
 
-    const steps = (productTourService.start as jest.Mock).mock.calls[0][0];
+    const steps = (productTourService.start as Mock).mock.calls[0][0];
     expect(steps).toHaveLength(4);
   });
 

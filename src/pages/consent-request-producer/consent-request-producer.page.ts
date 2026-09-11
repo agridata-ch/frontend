@@ -14,23 +14,22 @@ import { faFileCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { filter, map, startWith } from 'rxjs';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ConsentRequestAggregationSummaryDto } from '@/entities/openapi';
+import { FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM } from '@/shared/consent-request';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
 import {
   createResourceErrorHandlerEffect,
   createResourceValueComputed,
 } from '@/shared/lib/api.helper';
+import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { ButtonComponent } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal';
-import { AlertComponent, AlertType } from '@/widgets/alert';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 import { ConsentRequestsTourIntroComponent } from '@/widgets/consent-requests-tour/consent-requests-tour-intro/consent-requests-tour-intro.component';
-
-import { FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM } from './consent-request-producer.page.model';
 
 /**
  * Handles the display and interaction of consent requests for producers. It displays a table of

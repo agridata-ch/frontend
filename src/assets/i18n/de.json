@@ -68,7 +68,7 @@
         "migrated": "Übernommen aus Meine Agrardatenfreigabe - MAF"
       },
       "decisions": {
-        "title": "Übersicht der Betriebe",
+        "title": "Betriebs- und Standortübersicht",
         "description": "Diese Anfrage betrifft Ihr Unternehmen (UID) und die dazugehörigen Standorte (BUR). Die Zustimmung gilt immer für das Unternehmen. Grundsätzlich stimmen Sie den angefragten Standorten zu, über „Standorte bearbeiten“ können Sie einzelne Standorte von der Anfrage ausschliessen.",
         "uidGroupTitle": "Mein angefragter Betrieb",
         "uid": "Unternehmens-Identifikation (UID): {{ uid }}",
@@ -77,14 +77,14 @@
           "enabled": "Ausgewählt",
           "disabled": "Ausgeschlossen"
         },
-        "edit": "Standorte bearbeiten",
+        "edit": "Zustimmung pro Standort ändern",
         "cancel": "Abbrechen",
         "burGroupTitle": "Meine angefragten Standorte",
         "nonProducerInfo": "Hier sehen die Datenproduzenten ihre anfragten Standorte.",
         "missingBurInfo": "Fehlt ein Standort? Melden Sie sich direkt bei {{ consumer }}, damit diese den Standort anfragen und Sie die Zustimmung geben können."
       },
       "footerInformationNoBur": "Sie haben alle Standorte deaktiviert. Wenn Sie diese Anfrage komplett ablehnen möchten, klicken Sie bitte auf Abbrechen und danach auf den Ablehnen-Button.",
-      "noConsentRequired": "Keine Aktion erforderlich Dieser Datenbezug basiert auf einer gesetzlichen Grundlage. Eine Zustimmung oder Ablehnung Ihrerseits ist nicht erforderlich. Diese Ansicht dient Ihrer Information und Transparenz."
+      "noConsentRequired": "Keine Aktion erforderlich. Dieser Datenbezug basiert auf einer gesetzlichen Grundlage. Eine Zustimmung oder Ablehnung Ihrerseits ist nicht erforderlich. Diese Ansicht dient Ihrer Information und Transparenz."
     },
     "toast": {
       "title": {
@@ -300,7 +300,7 @@
       },
       "products": {
         "allSystems": "Alle Systeme",
-        "publicSectorProductSuffix": "öffentlich-rechlich"
+        "publicSectorProductSuffix": "Gesetzlich geregelt"
       }
     },
     "preview": {
@@ -552,7 +552,7 @@
     },
     "privacy": {
       "title": "Datenschutz",
-      "description": "Zwischen {{ provider }} und {{ consumer }} besteht ein Vertrag für die Datenübermittlung. Dieser Vertrag **regelt die ausschliessliche Nutzung für den oben beschriebenen Zweck** und verpflichtet {{ consumer }} rechtlich zur Einhaltung des Schweizer Datenschutzgesetzes (DSG)."
+      "description": "Zwischen {{ provider }} und {{ consumer }} besteht ein Vertrag für die Datenübertragung. Dieser Vertrag **regelt die ausschliessliche Nutzung für den oben beschriebenen Zweck** und verpflichtet {{ consumer }} rechtlich zur Einhaltung des Schweizer Datenschutzgesetzes (DSG)."
     }
   },
   "forms": {
@@ -881,7 +881,8 @@
           "title": "Entwurf gelöscht",
           "message": "Der Entwurf wurde erfolgreich gelöscht."
         }
-      }
+      },
+      "provider": "Datenanbieter"
     },
     "createNew": "Datenprodukt erfassen",
     "detailPanel": {
@@ -940,35 +941,35 @@
         "placeholder": "Bitte wählen Sie das System"
       },
       "restClientIdentifier": {
-        "label": "System-Schnittstelle wählen",
+        "label": "System-Schnittstelle wählen (optional)",
         "placeholder": "Bitte wählen Sie die System-Schnittstelle"
       },
       "restClientMethod": {
-        "label": "Übertragungsmethode wählen",
+        "label": "Übertragungsmethode wählen (optional)",
         "placeholder": "Bitte wählen Sie die Übertragungsmethode"
       },
       "restClientPathTemplate": {
-        "label": "URL-Pfad-Template (Schnittstelle)",
+        "label": "URL-Pfad-Template (Schnittstelle, optional)",
         "placeholder": "z.B. /api/v1/bur/{{bur}}/nutztiere"
       },
       "restClientRequestTemplate": {
-        "label": "Request-Body Template (JSON/XML) (Optional)",
+        "label": "Request-Body Template (JSON/XML, optional)",
         "placeholder": "z.B. { \"status\": \"active\" }"
       },
       "restClientChangeDetectionPathTemplate": {
-        "label": "Pfad für Änderungserkennung (Change Detection) (Optional)",
+        "label": "Pfad für Änderungserkennung (Change Detection, optional)",
         "placeholder": "z.B. /api/v1/nutztiere/changes"
       },
       "cancel": "Abbrechen",
       "saveDraft": "Als Entwurf speichern",
       "saveAndPublish": "Speichern und publizieren",
       "flowCode": {
-        "label": "Übertragungsmodus wählen",
+        "label": "Übertragungsmodus wählen (optional)",
         "placeholder": "Bitte wählen Sie den Übertragungsmodus"
       },
       "tab": {
         "technicalFields": "Technische Informationen",
-        "nameAndDescription": "Name und Beschreibung",
+        "generalInfo": "Allgemein",
         "linksAndDocuments": "Links und Dokumente"
       },
       "edit": "Bearbeiten",
@@ -1059,6 +1060,10 @@
       "consentRequiredInfo": {
         "title": "Zustimmungspflicht",
         "subtitle": "Legen Sie fest, ob Produzenten (z. B. Landwirte, Tierhalter) einer Datenübermittlung explizit zustimmen müssen oder ob die Datenprodukte lediglich zu Informationszwecken angezeigt werden.\n\nGrundsätzlich erfordert jeder Datenbezug die aktive Zustimmung des Produzenten. Eine Ausnahme bilden öffentlich-rechtliche Datenprodukte, für welche eine gesetzliche Grundlage besteht und daher keine Zustimmung notwendig ist."
+      },
+      "costs": {
+        "title": "Kosten",
+        "subtitle": "Legen Sie fest, ob für die Nutzung dieses Datenprodukts Kosten anfallen. agridata.ch dient lediglich als Informationsplattform und weist Datenbezüger darauf hin, dass die Nutzung kostenpflichtig ist. Die Festlegung der Konditionen, die Rechnungsstellung sowie die Abwicklung der Zahlungen liegen allein in der Verantwortung des Datenanbieters."
       }
     },
     "saveAndPublish": {
@@ -1206,7 +1211,7 @@
     "stateCode": {
       "DRAFT": "Entwurf",
       "ACTIVE": "Publiziert",
-      "DEPRECATED": "Deprecated"
+      "DEPRECATED": "Auslaufend"
     }
   },
   "wysiwyg": {
@@ -1233,7 +1238,7 @@
       "label": "Verwerfen"
     }
   },
-  "dataCatalog": {
+  "data-catalog": {
     "products": {
       "count": "{{ count }} Datenprodukt(e)"
     },
@@ -1250,7 +1255,15 @@
       "message": "Es wurden keine Einträge gefunden"
     },
     "product": {
-      "deprecated": "veraltet/inaktiv"
+      "deprecated": {
+        "text": "Auslaufend",
+        "tooltip": "Dieses Datenprodukt steht für neue Anträge nicht mehr zur Verfügung. Bestehende Datenflüsse laufen weiterhin."
+      },
+      "showDetails": "Details ansehen",
+      "publicSector": "Gesetzlich geregelt",
+      "description": "Beschreibung",
+      "links": "Links",
+      "extendedDescription": "Erweiterte Beschreibung"
     },
     "list": {
       "allLoaded": "Alle Datenprodukte geladen"

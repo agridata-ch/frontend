@@ -2,6 +2,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import type { Mock } from 'vitest';
 
 import { I18nService } from '@/shared/i18n';
 import { getErrorMessage } from '@/shared/lib/form.helper';
@@ -10,8 +11,8 @@ import { ButtonComponent } from '@/shared/ui/button';
 
 import { FormControlComponent } from './form-control.component';
 
-jest.mock('@/shared/lib/form.helper', () => ({
-  getErrorMessage: jest.fn(),
+vi.mock('@/shared/lib/form.helper', () => ({
+  getErrorMessage: vi.fn(),
 }));
 
 describe('FormControlComponent', () => {
@@ -141,7 +142,7 @@ describe('FormControlComponent', () => {
       ctrl.setErrors({ required: true });
       componentRef.setInput('control', ctrl);
 
-      (getErrorMessage as jest.Mock).mockReturnValue('This field is required.');
+      (getErrorMessage as Mock).mockReturnValue('This field is required.');
       fixture.detectChanges();
 
       expect(component['errorMessage']()).toBe('This field is required.');

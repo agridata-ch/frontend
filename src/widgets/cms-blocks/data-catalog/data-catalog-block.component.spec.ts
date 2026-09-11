@@ -1,8 +1,10 @@
+import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { PublicDataProductDto } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import {
   createMockDataProductService,
@@ -17,10 +19,10 @@ import { DataCatalogBlockComponent } from './data-catalog-block.component';
 class MockIntersectionObserver {
   public static readonly instances: MockIntersectionObserver[] = [];
 
-  readonly observe = jest.fn();
-  readonly unobserve = jest.fn();
-  readonly disconnect = jest.fn();
-  readonly takeRecords = jest.fn();
+  readonly observe = vi.fn();
+  readonly unobserve = vi.fn();
+  readonly disconnect = vi.fn();
+  readonly takeRecords = vi.fn();
 
   constructor(private readonly callback: IntersectionObserverCallback) {
     MockIntersectionObserver.instances.push(this);
@@ -37,6 +39,7 @@ class MockIntersectionObserver {
 const product = (id: string): PublicDataProductDto => ({
   id,
   stateCode: 'ACTIVE' as PublicDataProductDto['stateCode'],
+  consentRequired: false,
   name: { de: `Produkt ${id}` },
 });
 
@@ -82,6 +85,7 @@ describe('DataCatalogBlockComponent', () => {
         { provide: DataProductService, useValue: dataProductService },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: createMockI18nService() },
+        provideRouter([]),
       ],
     }).compileComponents();
 
@@ -262,5 +266,53 @@ describe('DataCatalogBlockComponent', () => {
 
     // The first failure blocks further loads, so the error is reported once, not on every scroll.
     expect(errorService.handleError).toHaveBeenCalledTimes(1);
+  });
+
+  it('opens the detail modal and mirrors the id into the path when a card is clicked', async () => {
+    dataProductService.getPublicProducts.mockResolvedValue({
+      items: [product('x')],
+      totalItems: 1,
+      totalPages: 1,
+      currentPage: 0,
+      pageSize: 10,
+    });
+    dataProductService.getPublicProductById.mockResolvedValue(product('x'));
+
+    await init();
+    fixture.nativeElement.querySelector('app-data-product-card button')?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(dataProductService.getPublicProductById).toHaveBeenCalledWith('x');
+    expect(fixture.nativeElement.querySelector('app-modal > div')).not.toBeNull();
+    expect(TestBed.inject(Location).path()).toContain('x');
+  });
+
+  it('closes the detail modal and clears the path via the close button', async () => {
+    dataProductService.getPublicProducts.mockResolvedValue({
+      items: [product('x')],
+      totalItems: 1,
+      totalPages: 1,
+      currentPage: 0,
+      pageSize: 10,
+    });
+    dataProductService.getPublicProductById.mockResolvedValue(product('x'));
+
+    await init();
+    fixture.nativeElement.querySelector('app-data-product-card button')?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    fixture.nativeElement
+      .querySelector('[data-testid="public-data-product-detail-modal-close"]')
+      ?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('app-modal > div')).toBeNull();
+    expect(TestBed.inject(Location).path()).not.toContain('x');
   });
 });

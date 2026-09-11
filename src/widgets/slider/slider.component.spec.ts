@@ -43,9 +43,7 @@ describe('SliderComponent', () => {
 
   it('should initialize slider after view init', () => {
     const mockChildren = Array(4).fill({});
-    jest
-      .spyOn(component.sliderTrack.nativeElement, 'children', 'get')
-      .mockReturnValue(mockChildren);
+    vi.spyOn(component.sliderTrack.nativeElement, 'children', 'get').mockReturnValue(mockChildren);
 
     component.ngAfterViewInit();
     fixture.detectChanges();
@@ -67,10 +65,10 @@ describe('SliderComponent', () => {
   it('should calculate total pages correctly', () => {
     component['slideCount'].set(4);
     component['slidesPerPage'].set(2);
-    expect(component['totalPages']().length).toBe(2);
+    expect(component['totalPages']()).toHaveLength(2);
 
     component['slidesPerPage'].set(1);
-    expect(component['totalPages']().length).toBe(4);
+    expect(component['totalPages']()).toHaveLength(4);
   });
 
   it('should not go to previous slide when at first slide', () => {

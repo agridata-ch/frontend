@@ -100,7 +100,7 @@ describe('NotificationOverlayContentComponent', () => {
 
     it('should set isLoadingMarkAllAsRead to false after error', async () => {
       notificationService.markAllAsRead.mockRejectedValueOnce(new Error('Network error'));
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       componentRef.setInput('notifications', mockInboxEntries);
 
       component['handleMarkAllAsRead']();
@@ -123,7 +123,7 @@ describe('NotificationOverlayContentComponent', () => {
   describe('navigateToNotifications', () => {
     it('should navigate to the notifications path', () => {
       const router = TestBed.inject(Router);
-      const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true);
+      const navigateSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
 
       component['navigateToNotifications']();
 

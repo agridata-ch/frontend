@@ -11,8 +11,6 @@ import {
   WritableSignal,
 } from '@angular/core';
 
-import { AnalyticsService } from '@/app/analytics.service';
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
@@ -32,8 +30,10 @@ import {
   isOpenAggregationState,
   matchesAggregationStateFilter,
 } from '@/shared/consent-request';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
+import { AnalyticsService } from '@/shared/lib/analytics.service';
 import { ToastService } from '@/shared/toast';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import {

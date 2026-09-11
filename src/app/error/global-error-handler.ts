@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorHandler, inject, Injectable } from '@angular/core';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 
 /**
  * Global error handler that delegates error processing to the ErrorHandlerService.

@@ -40,7 +40,7 @@ export type MockNotificationService = Mockify<NotificationService>;
 
 /**
  * Factory that creates a strict mock implementation of NotificationService for tests.
- * All methods are jest.fn mocks returning the same default values as the standalone mocks above.
+ * All methods are vi.fn mocks returning the same default values as the standalone mocks above.
  *
  * CommentLastReviewed: 2026-05-11
  */
@@ -48,12 +48,12 @@ export function createMockNotificationService(): MockNotificationService {
   const mutationTrigger = signal(0);
   return {
     mutationTrigger,
-    notifyMutation: jest.fn().mockImplementation(() => mutationTrigger.update((n) => n + 1)),
-    fetchHeaderNotifications: jest.fn().mockResolvedValue(mockHeaderNotifications),
-    fetchNotifications: jest.fn().mockResolvedValue(undefined),
-    markNotificationAsRead: jest.fn().mockResolvedValue(undefined),
-    markNotificationAsUnread: jest.fn().mockResolvedValue(undefined),
-    toggleReadStatus: jest.fn().mockResolvedValue(undefined),
-    markAllAsRead: jest.fn().mockResolvedValue(undefined),
+    notifyMutation: vi.fn().mockImplementation(() => mutationTrigger.update((n) => n + 1)),
+    fetchHeaderNotifications: vi.fn().mockResolvedValue(mockHeaderNotifications),
+    fetchNotifications: vi.fn().mockResolvedValue(undefined),
+    markNotificationAsRead: vi.fn().mockResolvedValue(undefined),
+    markNotificationAsUnread: vi.fn().mockResolvedValue(undefined),
+    toggleReadStatus: vi.fn().mockResolvedValue(undefined),
+    markAllAsRead: vi.fn().mockResolvedValue(undefined),
   } satisfies MockNotificationService;
 }

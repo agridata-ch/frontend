@@ -96,10 +96,10 @@ export type MockConsentRequestService = Mockify<ConsentRequestService>;
  */
 export function createMockConsentRequestService(): MockConsentRequestService {
   return {
-    fetchConsentRequests: jest.fn().mockResolvedValue(mockConsentRequestAggregations),
-    fetchConsentRequestAggregation: jest.fn().mockResolvedValue(mockConsentRequestAggregations[0]),
-    updateConsentRequestStatus: jest.fn().mockResolvedValue(undefined),
-    updateConsentRequestStatuses: jest.fn().mockResolvedValue([]),
-    createConsentRequests: jest.fn().mockResolvedValue(undefined),
+    fetchConsentRequests: vi.fn().mockResolvedValue(mockConsentRequestAggregations),
+    fetchConsentRequestAggregation: vi.fn().mockResolvedValue(mockConsentRequestAggregations[0]),
+    updateConsentRequestStatus: vi.fn().mockResolvedValue(undefined),
+    updateConsentRequestStatuses: vi.fn().mockResolvedValue([]),
+    createConsentRequests: vi.fn().mockResolvedValue(undefined),
   } satisfies MockConsentRequestService;
 }

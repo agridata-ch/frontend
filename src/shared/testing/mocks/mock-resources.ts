@@ -1,5 +1,3 @@
-/// <reference types="jest" />
-
 import {
   computed,
   ResourceRef,
@@ -44,16 +42,16 @@ export class MockResources {
       status: statusSignal,
       snapshot: snapshotSignal,
 
-      asReadonly: jest.fn(),
-      reload: jest.fn().mockReturnValue(false),
-      set: jest.fn((v: T) => valueSignal.set(v)),
-      update: jest.fn((fn: (v: T) => T) => valueSignal.set(fn(valueSignal()))),
+      asReadonly: vi.fn(),
+      reload: vi.fn().mockReturnValue(false),
+      set: vi.fn((v: T) => valueSignal.set(v)),
+      update: vi.fn((fn: (v: T) => T) => valueSignal.set(fn(valueSignal()))),
 
       hasValue(): this is ResourceRef<Exclude<T, undefined>> {
         return true;
       },
 
-      destroy: jest.fn(),
+      destroy: vi.fn(),
     };
   }
 }

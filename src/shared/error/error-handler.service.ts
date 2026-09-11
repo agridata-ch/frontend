@@ -1,9 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { OnDestroy, Service, type Signal, signal, WritableSignal } from '@angular/core';
 
-import { ErrorDto, TranslationItem } from '@/app/error/error-dto';
-import { getErrorMethod } from '@/app/interceptors/error-http-interceptor';
-import { ExceptionDto } from '@/entities/openapi';
+import { ErrorDto, TranslationItem } from '@/shared/error/error-dto';
+import { getErrorMethod } from '@/shared/error/http-error-method';
+
+interface ExceptionDtoLike {
+  requestId: string;
+}
 
 export interface ResourceValueError extends Error {
   cause: ErrorWithCause;
@@ -269,7 +272,7 @@ export class ErrorHandlerService implements OnDestroy {
     }
   }
 
-  private isExceptionDto(obj: unknown): obj is ExceptionDto {
+  private isExceptionDto(obj: unknown): obj is ExceptionDtoLike {
     return obj !== null && typeof obj === 'object' && 'requestId' in obj;
   }
 

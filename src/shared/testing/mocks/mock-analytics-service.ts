@@ -1,14 +1,14 @@
-import { AnalyticsService } from '@/app/analytics.service';
+import { AnalyticsService } from '@/shared/lib/analytics.service';
 import { Mockify } from '@/shared/testing/mocks';
 
 export type MockAnalyticsService = Mockify<AnalyticsService>;
 
 export function createMockAnalyticsService(): MockAnalyticsService {
   return {
-    getCookiesAccepted: jest.fn().mockReturnValue(false),
-    logEvent: jest.fn(),
-    logPageHit: jest.fn(),
-    setCookiesAccepted: jest.fn(),
-    setUserProperties: jest.fn(),
+    getCookiesAccepted: vi.fn().mockReturnValue(false),
+    logEvent: vi.fn(),
+    logPageHit: vi.fn(),
+    setCookiesAccepted: vi.fn(),
+    setUserProperties: vi.fn(),
   } satisfies MockAnalyticsService;
 }

@@ -1,17 +1,21 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, DestroyRef, inject, input, model, output } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, model, output } from '@angular/core';
 import { faClose } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 import { I18nPipe } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
+// Shared across all modal instances so overlapping modals don't fight over the html overflow style.
+let openModalCount = 0;
+let previousHtmlOverflow = '';
+
 /**
  * A reusable modal component that can display content in a modal dialog. It includes a title,
  * a close button, and emits an event when the popup is closed. The visibility of the popup
  * is controlled by an input model.
  *
- * CommentLastReviewed: 2025-10-13
+ * CommentLastReviewed: 2026-09-02
  */
 @Component({
   selector: 'app-modal',
@@ -36,6 +40,24 @@ export class ModalComponent {
 
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly closeIcon = faClose;
+
+  // Lock background scrolling while any modal is open so the page behind it stays put. Reference-counted
+  // across all modal instances so a closing modal only restores scroll once the last one has closed.
+  private readonly bodyScrollLock = effect((onCleanup) => {
+    if (!this.open()) return;
+    const html = this.document.documentElement;
+    if (openModalCount === 0) {
+      previousHtmlOverflow = html.style.overflow;
+      html.style.overflow = 'hidden';
+    }
+    openModalCount++;
+    onCleanup(() => {
+      openModalCount--;
+      if (openModalCount === 0) {
+        html.style.overflow = previousHtmlOverflow;
+      }
+    });
+  });
 
   private readonly escapeHandler = (event: KeyboardEvent): void => {
     if (event.key !== 'Escape' || !this.open()) {

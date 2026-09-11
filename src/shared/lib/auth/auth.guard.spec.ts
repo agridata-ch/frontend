@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
+import type { Mock } from 'vitest';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { AGATE_LOGIN_ID_IMPERSONATION_HEADER, ROUTE_PATHS } from '@/shared/constants/constants';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import {
   createMockAuthService,
   MockAuthService,
@@ -26,11 +27,11 @@ describe('AuthorizationGuard', () => {
     fakeUrlTree = new UrlTree();
 
     mockRouter = {
-      parseUrl: jest.fn().mockReturnValue(fakeUrlTree),
+      parseUrl: vi.fn().mockReturnValue(fakeUrlTree),
     };
     mockActivatedRouteSnapshot = {
       queryParamMap: {
-        get: jest.fn().mockReturnValue(undefined),
+        get: vi.fn().mockReturnValue(undefined),
       },
       data: { roles: [] },
       url: {},
@@ -105,7 +106,7 @@ describe('AuthorizationGuard', () => {
   it('should set header in sessionStorage when query param is present', async () => {
     // Arrange
     const testAgateLoginId = 'test-agateLoginId';
-    (mockActivatedRouteSnapshot.queryParamMap?.get as jest.Mock).mockReturnValue(testAgateLoginId);
+    (mockActivatedRouteSnapshot.queryParamMap?.get as Mock).mockReturnValue(testAgateLoginId);
     authService.initializeAuth.mockResolvedValue(true);
     sessionStorage.removeItem(AGATE_LOGIN_ID_IMPERSONATION_HEADER);
 

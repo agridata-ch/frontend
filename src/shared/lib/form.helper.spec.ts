@@ -37,18 +37,18 @@ const arrayOfObjectSchema: JsonSchema = {
 describe('Form Helper', () => {
   // Create mock I18nService directly
   const i18n: I18nService = {
-    translate: jest.fn((key: string) => `Translated: ${key}`),
-    translateSignal: jest.fn((key: string) => jest.fn(() => `Translated: ${key}`)),
-    useObjectTranslation: jest.fn((obj) => obj?.de ?? ''),
-    lang: jest.fn(() => 'de'),
+    translate: vi.fn((key: string) => `Translated: ${key}`),
+    translateSignal: vi.fn((key: string) => vi.fn(() => `Translated: ${key}`)),
+    useObjectTranslation: vi.fn((obj) => obj?.de ?? ''),
+    lang: vi.fn(() => 'de'),
   } as unknown as I18nService;
 
   beforeEach(() => {
-    jest.spyOn(i18n, 'translate');
+    vi.spyOn(i18n, 'translate');
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('buildReactiveForm', () => {

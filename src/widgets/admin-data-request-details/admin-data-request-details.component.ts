@@ -1,10 +1,10 @@
 import { Component, computed, inject, input, resource, signal, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { ContractRevisionService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestStateEnum, SealAttemptStateEnum } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { DataRequestDetailsComponent } from '@/widgets/data-request-details';

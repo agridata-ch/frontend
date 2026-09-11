@@ -57,7 +57,7 @@ describe('ModalComponent', () => {
     fixture.detectChanges();
 
     const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
-    expect(buttons.length).toBe(1);
+    expect(buttons).toHaveLength(1);
   });
 
   it('should hide close button when showCloseButton is false', () => {
@@ -66,14 +66,14 @@ describe('ModalComponent', () => {
     fixture.detectChanges();
 
     const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
-    expect(buttons.length).toBe(0);
+    expect(buttons).toHaveLength(0);
   });
 
   it('should close modal and emit closed event when close button is clicked', () => {
     componentRef.setInput('open', true);
     fixture.detectChanges();
 
-    const closedSpy = jest.fn();
+    const closedSpy = vi.fn();
     component.closed.subscribe(closedSpy);
 
     const buttons = fixture.debugElement.queryAll(By.directive(ButtonComponent));
@@ -89,7 +89,7 @@ describe('ModalComponent', () => {
     componentRef.setInput('open', true);
     fixture.detectChanges();
 
-    const closedSpy = jest.fn();
+    const closedSpy = vi.fn();
     component.closed.subscribe(closedSpy);
 
     component.close();
@@ -103,7 +103,7 @@ describe('ModalComponent', () => {
     componentRef.setInput('open', true);
     fixture.detectChanges();
 
-    const closedSpy = jest.fn();
+    const closedSpy = vi.fn();
     component.closed.subscribe(closedSpy);
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
@@ -118,7 +118,7 @@ describe('ModalComponent', () => {
     componentRef.setInput('showCloseButton', false);
     fixture.detectChanges();
 
-    const closedSpy = jest.fn();
+    const closedSpy = vi.fn();
     component.closed.subscribe(closedSpy);
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
@@ -132,7 +132,7 @@ describe('ModalComponent', () => {
     componentRef.setInput('open', false);
     fixture.detectChanges();
 
-    const closedSpy = jest.fn();
+    const closedSpy = vi.fn();
     component.closed.subscribe(closedSpy);
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
@@ -145,7 +145,7 @@ describe('ModalComponent', () => {
     componentRef.setInput('open', true);
     fixture.detectChanges();
 
-    const bubbleListener = jest.fn();
+    const bubbleListener = vi.fn();
     document.addEventListener('keydown', bubbleListener);
 
     document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));

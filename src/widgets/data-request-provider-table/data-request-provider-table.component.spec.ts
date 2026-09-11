@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ComponentRef, ResourceRef, Signal, inputBinding, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import type { Mocked } from 'vitest';
 
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
@@ -19,15 +20,15 @@ describe('DataRequestProviderTableComponent', () => {
   let fixture: ComponentFixture<DataRequestProviderTableComponent>;
   let component: DataRequestProviderTableComponent;
   let componentRef: ComponentRef<DataRequestProviderTableComponent>;
-  let mockI18nService: jest.Mocked<I18nService>;
+  let mockI18nService: Mocked<I18nService>;
   let dataRequestService: MockDataRequestService;
   let dataRequestsResource: Signal<ResourceRef<DataRequestDto[] | undefined>>;
   beforeEach(async () => {
     mockI18nService = {
-      translate: jest.fn(),
-      useObjectTranslation: jest.fn(),
+      translate: vi.fn(),
+      useObjectTranslation: vi.fn(),
       lang: signal('de'),
-    } as unknown as jest.Mocked<I18nService>;
+    } as unknown as Mocked<I18nService>;
     dataRequestService = createMockDataRequestService();
     dataRequestsResource = signal(MockResources.createMockResourceRef(mockDataRequests));
     await TestBed.configureTestingModule({
@@ -57,7 +58,7 @@ describe('DataRequestProviderTableComponent', () => {
 
   it('getFilteredActions returns only details action for most states', () => {
     const actions = component.getFilteredActions(mockDataRequests[0]);
-    expect(actions.length).toBe(1);
+    expect(actions).toHaveLength(1);
     expect(actions[0].label).toBe('data-request.table.tableActions.details');
   });
 
@@ -67,7 +68,7 @@ describe('DataRequestProviderTableComponent', () => {
   });
 
   it('should get translated state value', () => {
-    const i18nServiceSpy = jest.spyOn(mockI18nService, 'translate');
+    const i18nServiceSpy = vi.spyOn(mockI18nService, 'translate');
 
     component['getStatusTranslation'](DataRequestStateEnum.Draft);
 
@@ -92,7 +93,7 @@ describe('DataRequestProviderTableComponent', () => {
   });
 
   it('should emit action when row action is triggered', () => {
-    const emitSpy = jest.spyOn(component.tableRowAction, 'emit');
+    const emitSpy = vi.spyOn(component.tableRowAction, 'emit');
     const request = mockDataRequests[0];
 
     const metadata = component['dataRequestsTableMetaData']();
@@ -105,7 +106,7 @@ describe('DataRequestProviderTableComponent', () => {
     const metadata = component['dataRequestsTableMetaData']();
 
     expect(metadata.idColumn).toBe('id');
-    expect(metadata.columns.length).toBe(6);
+    expect(metadata.columns).toHaveLength(6);
     expect(metadata.columns[0].name).toBe(component['dataRequestHumanFriendlyIdHeader']);
     expect(metadata.columns[0].sortable).toBe(true);
     expect(metadata.columns[0].renderer.type).toBe('template');
@@ -151,7 +152,7 @@ describe('DataRequestProviderTableComponent', () => {
   });
 
   it('details action callback should emit tableRowAction', () => {
-    const emitSpy = jest.spyOn(component.tableRowAction, 'emit');
+    const emitSpy = vi.spyOn(component.tableRowAction, 'emit');
     const request = mockDataRequests[0];
     const actions = component.getFilteredActions(request);
     const detailsAction = actions[0];

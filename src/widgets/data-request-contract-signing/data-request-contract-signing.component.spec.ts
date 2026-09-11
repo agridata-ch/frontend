@@ -132,7 +132,7 @@ describe('DataRequestContractSigningComponent', () => {
 
   describe('onSigningSuccess', () => {
     it('should update activeContractId and emit reloadDataRequest when contract has an id', () => {
-      const reloadSpy = jest.fn();
+      const reloadSpy = vi.fn();
       component.reloadDataRequest.subscribe(reloadSpy);
 
       component['onSigningSuccess'](mockContractRevision);
@@ -142,7 +142,7 @@ describe('DataRequestContractSigningComponent', () => {
     });
 
     it('should not emit reloadDataRequest when contract has no id', () => {
-      const reloadSpy = jest.fn();
+      const reloadSpy = vi.fn();
       component.reloadDataRequest.subscribe(reloadSpy);
 
       component['onSigningSuccess']({

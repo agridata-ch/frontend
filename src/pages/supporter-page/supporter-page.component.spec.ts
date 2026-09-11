@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import type { Mock, MockInstance } from 'vitest';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { UserService } from '@/entities/api/user.service';
 import { UserInfoDto } from '@/entities/openapi';
 import { SupporterPageComponent } from '@/pages/supporter-page/supporter-page.component';
 import { AGATE_LOGIN_ID_IMPERSONATION_HEADER } from '@/shared/constants/constants';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nPipe } from '@/shared/i18n';
 import {
   createMockUserService,
@@ -45,7 +46,7 @@ describe('SupporterPageComponent', () => {
 
   it('should handle errors from fetchProducersResource and send them to errorService', async () => {
     const testError = new Error('Test error from getProducers');
-    (userService.getProducers as jest.Mock).mockRejectedValueOnce(testError);
+    (userService.getProducers as Mock).mockRejectedValueOnce(testError);
 
     // Create a new fixture with the mocked error
     const errorFixture = TestBed.createComponent(SupporterPageComponent);
@@ -138,12 +139,12 @@ describe('SupporterPageComponent', () => {
   });
 
   describe('openImpersonationTab', () => {
-    let windowOpenSpy: jest.SpyInstance;
+    let windowOpenSpy: MockInstance;
 
     beforeEach(() => {
       // location.origin is provided via the mock DOCUMENT (origin: https://test.example.com);
       // jsdom 26 no longer allows redefining window.location directly.
-      windowOpenSpy = jest.spyOn(globalThis, 'open').mockImplementation(() => null);
+      windowOpenSpy = vi.spyOn(globalThis, 'open').mockImplementation(() => null);
     });
 
     afterEach(() => {

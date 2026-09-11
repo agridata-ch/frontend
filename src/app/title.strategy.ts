@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
 
-import { TitleService } from '@/app/title.service';
+import { TitleService } from '@/shared/lib/title.service';
 
 /**
  * Service to manage and set the document title based on the current route and language.

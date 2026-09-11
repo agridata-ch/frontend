@@ -22,11 +22,11 @@ import {
 import { TranslocoService } from '@jsverse/transloco';
 import { debounceTime, firstValueFrom } from 'rxjs';
 
-import { ErrorHandlerService } from '@/app/error/error-handler.service';
 import { DataRequestUpdateDto } from '@/assets/formSchemas/agridata-schemas.json';
 import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
