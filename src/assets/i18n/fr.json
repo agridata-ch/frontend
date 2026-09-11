@@ -953,11 +953,11 @@
         "placeholder": "par ex. /api/v1/bur/{{bur}}/animaux_d_elevage"
       },
       "restClientRequestTemplate": {
-        "label": "Template du Request-Body (JSON/XML) (facultatif)",
+        "label": "Template du Request-Body (JSON/XML, facultatif)",
         "placeholder": "par ex. { \"statut\": \"actif\" }"
       },
       "restClientChangeDetectionPathTemplate": {
-        "label": "Chemin pour la détection de changements (Change Detection) (facultatif)",
+        "label": "Chemin pour la détection de changements (Change Detection, facultatif)",
         "placeholder": "par ex. /api/v1/animaux_d_elevage/modifications"
       },
       "cancel": "Annuler",

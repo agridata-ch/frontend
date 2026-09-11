@@ -953,11 +953,11 @@
         "placeholder": "z.B. /api/v1/bur/{{bur}}/nutztiere"
       },
       "restClientRequestTemplate": {
-        "label": "Request-Body Template (JSON/XML) (Optional)",
+        "label": "Request-Body Template (JSON/XML, optional)",
         "placeholder": "z.B. { \"status\": \"active\" }"
       },
       "restClientChangeDetectionPathTemplate": {
-        "label": "Pfad für Änderungserkennung (Change Detection) (Optional)",
+        "label": "Pfad für Änderungserkennung (Change Detection, optional)",
         "placeholder": "z.B. /api/v1/nutztiere/changes"
       },
       "cancel": "Abbrechen",

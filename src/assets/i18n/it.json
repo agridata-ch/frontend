@@ -953,11 +953,11 @@
         "placeholder": "es. /api/v1/bur/{{bur}}/nutztiere"
       },
       "restClientRequestTemplate": {
-        "label": "Template del Request-Body (JSON/XML) (opzionale)",
+        "label": "Template del Request-Body (JSON/XML, facoltativo)",
         "placeholder": "es. { \"status\": \"active\" }"
       },
       "restClientChangeDetectionPathTemplate": {
-        "label": "Percorso per il rilevamento delle modifiche (Change Detection) (opzionale)",
+        "label": "Percorso per il rilevamento delle modifiche (Change Detection, facoltativo)",
         "placeholder": "es. /api/v1/nutztiere/changes"
       },
       "cancel": "Annulla",
