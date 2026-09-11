@@ -1,3 +1,9 @@
+## [1.19.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.9...v1.19.0-rc.10) (2026-09-11)
+
+### Features
+
+- **agridata-schema:** update schema ([38b71b6](https://github.com/agridata-ch/frontend/commit/38b71b6f46567243c4efbbf7714aa829b4d5e7f9)), references [DIGIB2-1680](https://github.com/agridata-ch/frontend/issues/-1680)
+
 ## [1.19.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.8...v1.19.0-rc.9) (2026-09-10)
 
 ### Features
