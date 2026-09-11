@@ -1,3 +1,9 @@
+## [1.19.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.11...v1.19.0-rc.12) (2026-09-11)
+
+### Bug Fixes
+
+- **i18n:** fix translations ([91201d7](https://github.com/agridata-ch/frontend/commit/91201d78d42986944750fdf93faa06d34f385824))
+
 ## [1.19.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.10...v1.19.0-rc.11) (2026-09-11)
 
 ### Features
