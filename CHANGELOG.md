@@ -1,3 +1,23 @@
+## [1.19.0](https://github.com/agridata-ch/frontend/compare/v1.18.0...v1.19.0) (2026-09-11)
+
+### Features
+
+- **agridata-schema:** update schema ([d0d1176](https://github.com/agridata-ch/frontend/commit/d0d11764a1d9447e8f0704720a1507395bbb45b1)), references [DIGIB2-1680](https://github.com/agridata-ch/frontend/issues/-1680)
+- **agridata-schema:** update schema ([38b71b6](https://github.com/agridata-ch/frontend/commit/38b71b6f46567243c4efbbf7714aa829b4d5e7f9)), references [DIGIB2-1680](https://github.com/agridata-ch/frontend/issues/-1680)
+- **data-catalog:** add product-detail ([100cc1b](https://github.com/agridata-ch/frontend/commit/100cc1b6d85c20397a44af7f9aa236bd56ced21f)), references [DIGIB2-1443](https://github.com/agridata-ch/frontend/issues/-1443)
+- **data-catalog:** update badge color/position ([0320e7d](https://github.com/agridata-ch/frontend/commit/0320e7d1db707cf98497747e14d4342e14228ded)), references [DIGIB2-1699](https://github.com/agridata-ch/frontend/issues/-1699)
+- **data-products:** add provider name in product table for admin users ([636afc5](https://github.com/agridata-ch/frontend/commit/636afc5ac360effc6204f27a71011eb8b17d03c0)), references [DIGIB2-1356](https://github.com/agridata-ch/frontend/issues/-1356)
+- **deps:** deps update ([624ca19](https://github.com/agridata-ch/frontend/commit/624ca1956c62fb0d1a12a725faae9608fb8f0296)), references [DIGIB2-1608](https://github.com/agridata-ch/frontend/issues/-1608)
+- **deps:** update dependency @tiptap/core to v3.30.4 [security] ([8b2752a](https://github.com/agridata-ch/frontend/commit/8b2752ae098591cb849a69c0e690c0af34e9f75b))
+- **product-accordion:** add dedicated detail link ([edf9600](https://github.com/agridata-ch/frontend/commit/edf960047c0ed061a990e01df9c2eff50fcc3c0f)), references [DIGIB2-1638](https://github.com/agridata-ch/frontend/issues/-1638)
+- **vitest:** migrate from jest to vitest ([6be6092](https://github.com/agridata-ch/frontend/commit/6be60923244fb9b0dd1dcb68f78d40fb69a318c5)), references [DIGIB2-972](https://github.com/agridata-ch/frontend/issues/-972)
+
+### Bug Fixes
+
+- **i18n:** fix translations ([91201d7](https://github.com/agridata-ch/frontend/commit/91201d78d42986944750fdf93faa06d34f385824))
+- **infinite-scroll:** reduce rootMargin ([e68385c](https://github.com/agridata-ch/frontend/commit/e68385cea85c24851db1b0d110e0968108336df2)), references [DIGIB2-1442](https://github.com/agridata-ch/frontend/issues/-1442)
+- **modal:** mobile modal ([80c60cf](https://github.com/agridata-ch/frontend/commit/80c60cfde55506991abdaf2664ed2cfdc5d33020)), references [DIGIB2-1443](https://github.com/agridata-ch/frontend/issues/-1443)
+
 ## [1.19.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.19.0-rc.11...v1.19.0-rc.12) (2026-09-11)
 
 ### Bug Fixes
