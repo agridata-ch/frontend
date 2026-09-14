@@ -1,3 +1,10 @@
+## [1.20.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.19.0...v1.20.0-rc.1) (2026-09-14)
+
+### Features
+
+- **data-request:** add producer tab ([ba57962](https://github.com/agridata-ch/frontend/commit/ba57962cbc4b6981faabd3ec6f173db82cc73101)), references [DIGIB2-617](https://github.com/agridata-ch/frontend/issues/-617)
+- **deps:** update renovatebot/github-action action to v46.3.1 ([d1e783c](https://github.com/agridata-ch/frontend/commit/d1e783c2544f54c246f6fbf50d0e29d7edae61b7))
+
 ## [1.19.0](https://github.com/agridata-ch/frontend/compare/v1.18.0...v1.19.0) (2026-09-11)
 
 ### Features
