@@ -1,6 +1,6 @@
 <ng-template #messageContent>
-  @if (message()) {
-    <span>{{ message() }}</span>
+  @if (message(); as message) {
+    <span [i18nFormat]="message"></span>
   } @else {
     <ng-content></ng-content>
   }

@@ -147,9 +147,9 @@
         "products": {
           "label": "Système et produits souhaités",
           "placeholder": "Sélectionner des produits",
-          "moreInfos": "Plus d'informations",
+          "toCatalog": "Vers le catalogue des produits",
           "sublabel": "Vous ne pouvez demander simultanément que des produits issus d'un seul et même système. Pour les produits de données provenant d'autres systèmes, veuillez créer une demande de données distincte.",
-          "paymentRequiredWarning": "Vous avez sélectionné au moins un produit de données payant. Les coûts sont directement facturés par {{provider}} (et non par agridata.ch ). Vous trouverez plus de détails dans le catalogue de données"
+          "paymentRequiredWarning": "Vous avez sélectionné au moins un produit de données payant. Les frais sont facturés directement par {{provider}} (et non par agridata.ch). Vous trouverez les détails et les prix dans le [catalogue de produits]."
         },
         "title": {
           "label": "Titre de la demande de données",
