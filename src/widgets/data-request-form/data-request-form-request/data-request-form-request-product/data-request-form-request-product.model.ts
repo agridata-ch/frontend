@@ -10,6 +10,7 @@ export const CONSENT_CATEGORY_SUFFIX = '::consent';
 export interface ProductOption {
   deprecated: boolean;
   label: string;
+  paymentRequired: boolean;
   value: string;
 }
 
@@ -31,6 +32,7 @@ export function mapProductToOption(product: DataProductDto, lang: string): Produ
   return {
     deprecated: product.deprecatedSince !== null,
     label: product.name?.[lang as keyof typeof product.name] ?? '',
+    paymentRequired: product.paymentRequired,
     value: product.id,
   };
 }

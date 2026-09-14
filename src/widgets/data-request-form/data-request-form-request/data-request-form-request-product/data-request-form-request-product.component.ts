@@ -1,5 +1,6 @@
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { faArrowUpRightFromSquare } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -12,7 +13,10 @@ import {
   MultiSelectCategory,
 } from '@/shared/ui/agridata-multi-select';
 import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
+import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
+import { LinkedTextComponent } from '@/shared/ui/linked-text';
+import { parseLinkedText } from '@/shared/utils';
 
 import {
   buildCategoriesMap,
@@ -34,6 +38,8 @@ import {
     FontAwesomeModule,
     I18nDirective,
     ReactiveFormsModule,
+    AlertComponent,
+    LinkedTextComponent,
   ],
   templateUrl: './data-request-form-request-product.component.html',
 })
@@ -44,6 +50,7 @@ export class DataRequestFormRequestProductComponent {
 
   // Constants
   protected readonly ControlTypes = ControlTypes;
+  protected readonly faArrowUpRightFromSquare = faArrowUpRightFromSquare;
   protected readonly faSpinnerThird = faSpinnerThird;
   protected readonly getFormControl = getFormControl;
   protected readonly productDataLink = `${environment.appBaseUrl}/cms/data-catalog`;
@@ -114,6 +121,18 @@ export class DataRequestFormRequestProductComponent {
         .map((p) => mapProductToOption(p, lang)),
     }));
   });
+
+  protected readonly paymentRequiredProviderName = computed(() =>
+    this.metaDataService.providerName(this.selectedProviderId(), this.i18nService.lang()),
+  );
+
+  protected readonly paymentRequiredWarningParts = computed(() =>
+    parseLinkedText(
+      this.i18nService.translate('data-request.form.request.products.paymentRequiredWarning', {
+        provider: this.paymentRequiredProviderName(),
+      }),
+    ),
+  );
 
   protected readonly showProducts = computed(() => this.selectedProviderId() !== '');
 
@@ -186,6 +205,12 @@ export class DataRequestFormRequestProductComponent {
     return null;
   }
 
+  protected hasPaymentRequiredSelection(): boolean {
+    const productsControl = getFormControl(this.form()!, 'request.products');
+    const selectedIds = (productsControl?.value as string[]) ?? [];
+    return this.dataProducts().some((p) => selectedIds.includes(p.id) && p.paymentRequired);
+  }
+
   protected hasProductsError(): boolean {
     const control = getFormControl(this.form()!, 'request.products');
     return (control?.touched && control?.invalid) ?? false;
@@ -209,4 +234,6 @@ export class DataRequestFormRequestProductComponent {
     }
     this.selectedProviderId.set(value as string);
   }
+
+  protected readonly AlertType = AlertType;
 }

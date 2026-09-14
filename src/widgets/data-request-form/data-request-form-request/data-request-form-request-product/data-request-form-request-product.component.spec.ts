@@ -55,6 +55,7 @@ const mockDataProducts: DataProductDto[] = [
     name: { de: 'Produkt 1', fr: 'Produit 1', it: 'Prodotto 1' },
     stateCode: 'DRAFT',
     consentRequired: true,
+    paymentRequired: false,
     dataSourceSystemCode: 'AGIS',
     dataSourceSystem: {
       id: 'agis-system',
@@ -72,6 +73,7 @@ const mockDataProducts: DataProductDto[] = [
     name: { de: 'Produkt 2', fr: 'Produit 2', it: 'Prodotto 2' },
     stateCode: 'DRAFT',
     consentRequired: true,
+    paymentRequired: true,
     dataSourceSystemCode: 'AGIS',
     dataSourceSystem: {
       id: 'agis-system',
@@ -89,6 +91,7 @@ const mockDataProducts: DataProductDto[] = [
     name: { de: 'Produkt 3', fr: 'Produit 3', it: 'Prodotto 3' },
     stateCode: 'DRAFT',
     consentRequired: true,
+    paymentRequired: false,
     dataSourceSystemCode: 'TVD',
     dataSourceSystem: {
       id: 'tvd-system',
@@ -481,6 +484,41 @@ describe('DataRequestProductComponent', () => {
       fixture.detectChanges();
 
       expect(component['hasProviderError']()).toBe(false);
+    });
+  });
+
+  describe('hasPaymentRequiredSelection', () => {
+    beforeEach(() => {
+      (masterDataService.getProductsForProvider as Mock).mockReturnValue(mockDataProducts);
+      component['selectedProviderId'].set('provider-1');
+      component['productsLoading'].set(false);
+    });
+
+    it('should return false when no products are selected', () => {
+      expect(component['hasPaymentRequiredSelection']()).toBe(false);
+    });
+
+    it('should return false when selected products do not require payment', () => {
+      const productsControl = component.form()!.get('request.products');
+      productsControl?.setValue(['product-1', 'product-3']);
+
+      expect(component['hasPaymentRequiredSelection']()).toBe(false);
+    });
+
+    it('should return true when a selected product requires payment', () => {
+      const productsControl = component.form()!.get('request.products');
+      productsControl?.setValue(['product-1', 'product-2']);
+
+      expect(component['hasPaymentRequiredSelection']()).toBe(true);
+    });
+  });
+
+  describe('paymentRequiredProviderName', () => {
+    it('should resolve the selected provider name', () => {
+      masterDataService.__testSignals.dataProviders.set(mockDataProviders);
+      component['selectedProviderId'].set('provider-1');
+
+      expect(component['paymentRequiredProviderName']()).toBe('Anbieter 1');
     });
   });
 

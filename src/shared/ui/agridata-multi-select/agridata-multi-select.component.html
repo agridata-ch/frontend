@@ -13,17 +13,25 @@
           <span
             (click)="onOptionToggle(option.value, $event)"
             (keydown.enter)="onOptionToggle(option.value, $event)"
-            class="bg-gray-300 rounded-sm text-xs px-2 py-1 group"
-            [class.cursor-not-allowed]="disabled()"
-            [class.hover:bg-gray-400]="!disabled()"
-            [class.hover:text-gray-100]="!disabled()"
+            class="rounded-sm text-xs px-2 py-1 group flex items-center gap-1 border"
+            [class]="
+              disabled()
+                ? 'cursor-not-allowed bg-gray-200 border-gray-300 text-gray-600'
+                : 'bg-agridata-primary-100 border-agridata-primary-700 text-agridata-primary-text hover:bg-agridata-primary-50 hover:border-agridata-primary-600'
+            "
             [attr.aria-disabled]="disabled()"
           >
-            {{ option.label }}
+            @if (option.paymentRequired) {
+              <fa-icon
+                [icon]="paymentRequiredIcon"
+                [class.text-gray-800]="!disabled()"
+                [class.text-gray-600]="disabled()"
+              />
+            }
+            <span>{{ option.label }}</span>
             <fa-icon
               [icon]="iconClose"
-              class="ml-1 text-gray-500"
-              [class.group-hover:text-gray-100]="!disabled()"
+              [class.group-hover:text-agridata-primary-700]="!disabled()"
               [ariaDisabled]="!disabled()"
             />
           </span>

@@ -3,9 +3,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {
   faChevronDown,
   faChevronUp,
-  faSearch,
   faTimes,
 } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faCircleChf } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
@@ -48,7 +48,7 @@ export class AgridataMultiSelectComponent {
   protected readonly chevronDown = faChevronDown;
   protected readonly chevronUp = faChevronUp;
   protected readonly iconClose = faTimes;
-  protected readonly iconSearch = faSearch;
+  protected readonly paymentRequiredIcon = faCircleChf;
 
   // Input properties
   readonly categories = input<MultiSelectCategory[]>([]);
