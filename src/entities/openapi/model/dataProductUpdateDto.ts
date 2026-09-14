@@ -19,48 +19,22 @@ import { DataProductDescriptionDto } from './dataProductDescriptionDto';
  * Data transfer object representing a data product
  */
 export interface DataProductUpdateDto { 
-    /**
-     * Name of the data product
-     */
     name?: DataProductNameDto;
-    /**
-     * Description of the data product
-     */
     description?: DataProductDescriptionDto;
     dataSourceSystemId?: string;
     restClientId?: string;
-    /**
-     * Template for the path from which the data product will be fetched
-     */
     restClientPathTemplate?: string;
-    /**
-     * Template for the path from which the data product will be fetched
-     */
     restClientRequestTemplate?: string;
-    /**
-     * The http-method used to fetch the data product
-     */
     restClientMethodCode?: RestClientMethodCodeEnum;
-    /**
-     * The flow code used for authorizing data retrieval
-     */
     flowCode?: FlowCodeEnum;
-    /**
-     * Template for the path for retrieving updates to the data product
-     */
     restClientChangeDetectionPathTemplate?: string;
-    /**
-     * List of relevant product links
-     */
     links?: Array<LinkDto>;
-    /**
-     * Extended product details
-     */
     extendedDescription?: DataProductExtendedDescriptionDto;
-    /**
-     * If a consent is required for this data product
-     */
     consentRequired?: boolean;
+    paymentRequired?: boolean;
+    pricingBasis?: DataProductDescriptionDto;
+    pricingBasisPresentWhenPaymentRequired?: boolean;
+    pricingBasisAbsentWhenPaymentNotRequired?: boolean;
 }
 export namespace DataProductUpdateDto {
 }

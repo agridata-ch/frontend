@@ -74,5 +74,6 @@ export interface UserInfoDto {
     rolesAtLastLogin?: Array<string>;
     lastAcceptedAgbDate?: string;
     lastAcceptedAgbRevisionId?: string;
+    enforceAgbAcceptanceFrom?: string;
 }
 

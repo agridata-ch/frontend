@@ -107,6 +107,10 @@ export interface DataRequestDto {
      * A list of advantages to the producer for sharing their data
      */
     advantages: Array<DataRequestAdvantageDto>;
+    /**
+     * Whether this data request also has BUR based consent requests in addition to the purely UID based ones. Derived from the flow codes of the requested data products.
+     */
+    burPresent: boolean;
 }
 export namespace DataRequestDto {
 }

@@ -159,6 +159,36 @@ components:
           items:
             $ref: "#/components/schemas/ConsentRequestStateDto"
           description: List of consent requests included in this aggregation
+    ConsentRequestCleanupResultDto:
+      description: Data transfer object representing the result of a consent request
+        cleanup run
+      type: object
+      properties:
+        fromInclusive:
+          $ref: "#/components/schemas/LocalDate"
+          description: First day of the evaluated time window (inclusive)
+          type: string
+          examples:
+          - 2026-09-05
+        toInclusive:
+          $ref: "#/components/schemas/LocalDate"
+          description: Last day of the evaluated time window (inclusive)
+          type: string
+          examples:
+          - 2026-09-06
+        terminatedConsentRequestCount:
+          type: integer
+          format: int64
+          description: Number of consent requests that were terminated during this
+            run
+          examples:
+          - 8
+        durationMs:
+          type: integer
+          format: int64
+          description: Duration of the cleanup run in milliseconds
+          examples:
+          - 1234
     ConsentRequestConsumerViewV2Dto:
       description: Data transfer object representing a consent request
       type: object
@@ -316,6 +346,7 @@ components:
           - id
           - stateCode
           - advantages
+          - burPresent
           properties:
             id:
               $ref: "#/components/schemas/UUID"
@@ -465,6 +496,13 @@ components:
                 $ref: "#/components/schemas/DataRequestAdvantageDto"
               description: A list of advantages to the producer for sharing their
                 data
+            burPresent:
+              type: boolean
+              description: Whether this data request also has BUR based consent requests
+                in addition to the purely UID based ones. Derived from the flow codes
+                of the requested data products.
+              examples:
+              - true
     ConsentRequestProducerViewV2Dto:
       type: object
       description: Data transfer object representing a consent request
@@ -715,6 +753,7 @@ components:
       - id
       - stateCode
       - consentRequired
+      - paymentRequired
       properties:
         id:
           $ref: "#/components/schemas/UUID"
@@ -792,6 +831,16 @@ components:
           description: If a consent is required for this data product
           examples:
           - true
+        paymentRequired:
+          type: boolean
+          description: If a payment is required for this data product
+          examples:
+          - true
+        pricingBasis:
+          $ref: "#/components/schemas/TranslationDto"
+          description: "Legal basis for the pricing of this data product, if payment\
+            \ is required"
+          type: object
     DataProductExtendedDescriptionDto:
       type: object
       properties:
@@ -850,70 +899,70 @@ components:
       type: object
       properties:
         name:
-          $ref: "#/components/schemas/DataProductNameDto"
+          $ref: "#/components/schemas/JsonNullableDataProductNameDto"
           description: Name of the data product
-          type: object
         description:
-          $ref: "#/components/schemas/DataProductDescriptionDto"
+          $ref: "#/components/schemas/JsonNullableDataProductDescriptionDto"
           description: Description of the data product
-          type: object
         dataSourceSystemId:
-          $ref: "#/components/schemas/UUID"
+          $ref: "#/components/schemas/JsonNullableUUID"
           description: UUID of DataSourceSystem
-          type: string
           examples:
           - 5335d715-e95c-4777-a424-ab73f2ff5618
         restClientId:
-          $ref: "#/components/schemas/UUID"
+          $ref: "#/components/schemas/JsonNullableUUID"
           description: UUID of rest client code
-          type: string
           examples:
           - b1398c9d-c28d-4e7e-b5f0-f5d615a6471c
         restClientPathTemplate:
-          type: string
+          $ref: "#/components/schemas/JsonNullableString"
           description: Template for the path from which the data product will be fetched
           examples:
           - "v1/animal/{{uid}}"
-          maxLength: 1000
         restClientRequestTemplate:
-          type: string
-          description: Template for the path from which the data product will be fetched
+          $ref: "#/components/schemas/JsonNullableString"
+          description: Template of the request body for fetching the data product
           examples:
           - "{\"search\":{\"uid\":\"{{uid}}\"}}"
           maxLength: 1000
         restClientMethodCode:
-          $ref: "#/components/schemas/RestClientMethodCodeEnum"
+          $ref: "#/components/schemas/JsonNullableRestClientMethodCodeEnum"
           description: The http-method used to fetch the data product
-          type: string
           examples:
           - GET
         flowCode:
-          $ref: "#/components/schemas/FlowCodeEnum"
+          $ref: "#/components/schemas/JsonNullableFlowCodeEnum"
           description: The flow code used for authorizing data retrieval
-          type: string
           examples:
           - UID_BASED_PRE_VALIDATION
         restClientChangeDetectionPathTemplate:
-          type: string
+          $ref: "#/components/schemas/JsonNullableString"
           description: Template for the path for retrieving updates to the data product
           examples:
           - "v1/animal-updates/{{uid}}?since={{LAST_CHANGED_SINCE}}"
-          maxLength: 1000
         links:
-          type: array
-          items:
-            $ref: "#/components/schemas/LinkDto"
+          $ref: "#/components/schemas/JsonNullableListLinkDto"
           description: List of relevant product links
-          maxItems: 5
         extendedDescription:
-          $ref: "#/components/schemas/DataProductExtendedDescriptionDto"
+          $ref: "#/components/schemas/JsonNullableDataProductExtendedDescriptionDto"
           description: Extended product details
-          type: object
         consentRequired:
-          type: boolean
+          $ref: "#/components/schemas/JsonNullableBoolean"
           description: If a consent is required for this data product
           examples:
           - true
+        paymentRequired:
+          $ref: "#/components/schemas/JsonNullableBoolean"
+          description: If a payment is required for this data product
+          examples:
+          - true
+        pricingBasis:
+          $ref: "#/components/schemas/JsonNullableDataProductDescriptionDto"
+          description: Pricing basis of the data product
+        pricingBasisPresentWhenPaymentRequired:
+          type: boolean
+        pricingBasisAbsentWhenPaymentNotRequired:
+          type: boolean
     DataProviderDto:
       type: object
       required:
@@ -1044,6 +1093,7 @@ components:
       - id
       - stateCode
       - advantages
+      - burPresent
       properties:
         id:
           $ref: "#/components/schemas/UUID"
@@ -1192,6 +1242,13 @@ components:
           items:
             $ref: "#/components/schemas/DataRequestAdvantageDto"
           description: A list of advantages to the producer for sharing their data
+        burPresent:
+          type: boolean
+          description: Whether this data request also has BUR based consent requests
+            in addition to the purely UID based ones. Derived from the flow codes
+            of the requested data products.
+          examples:
+          - true
     DataRequestPurposeDto:
       type: object
       properties:
@@ -1518,6 +1575,26 @@ components:
           $ref: "#/components/schemas/TargetTypeCodeEnum"
         targetId:
           $ref: "#/components/schemas/UUID"
+    JsonNullableBoolean:
+      type: boolean
+    JsonNullableDataProductDescriptionDto:
+      $ref: "#/components/schemas/DataProductDescriptionDto"
+    JsonNullableDataProductExtendedDescriptionDto:
+      $ref: "#/components/schemas/DataProductExtendedDescriptionDto"
+    JsonNullableDataProductNameDto:
+      $ref: "#/components/schemas/DataProductNameDto"
+    JsonNullableFlowCodeEnum:
+      $ref: "#/components/schemas/FlowCodeEnum"
+    JsonNullableListLinkDto:
+      type: array
+      items:
+        $ref: "#/components/schemas/LinkDto"
+    JsonNullableRestClientMethodCodeEnum:
+      $ref: "#/components/schemas/RestClientMethodCodeEnum"
+    JsonNullableString:
+      type: string
+    JsonNullableUUID:
+      $ref: "#/components/schemas/UUID"
     LegalFormEnum:
       type: string
       enum:
@@ -1849,6 +1926,7 @@ components:
       - id
       - stateCode
       - consentRequired
+      - paymentRequired
       properties:
         id:
           $ref: "#/components/schemas/UUID"
@@ -1902,6 +1980,16 @@ components:
           description: If a consent is required for this data product
           examples:
           - true
+        paymentRequired:
+          type: boolean
+          description: If a payment is required for this data product
+          examples:
+          - true
+        pricingBasis:
+          $ref: "#/components/schemas/TranslationDto"
+          description: "Legal basis for the pricing of this data product, if payment\
+            \ is required"
+          type: object
     ResourceQueryDto:
       type: object
       properties:
@@ -2130,6 +2218,15 @@ components:
           type: string
           examples:
           - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        enforceAgbAcceptanceFrom:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: "Date and time from which the user must accept the current\
+            \ AGB. NULL means no acceptance is currently pending; a value in the future\
+            \ indicates an optional, dismissible reminder until that date; a value\
+            \ in the past or present indicates acceptance must be enforced immediately."
+          type: string
+          examples:
+          - 2026-09-09T14:35:00
     UserPreferencesDto:
       type: object
       properties:
@@ -2413,6 +2510,57 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Einwilliger
+      x-api-subset: agridata.ch Web App
+  /api/agreement/v1/consent-requests/cleanup:
+    post:
+      description: "Triggers the consent request cleanup that otherwise runs as a\
+        \ scheduled daily job, and waits for it to finish. Only accessible to administrators.\
+        \ The run is guarded by the same cluster-wide advisory lock as the scheduled\
+        \ job, so a conflict is reported if a cleanup is already running. By default,\
+        \ the same two-day window as the scheduled job is used; an explicit window\
+        \ can be passed to catch up on days that were missed, e.g. after an outage."
+      operationId: triggerConsentRequestCleanup
+      tags:
+      - Consent Requests
+      parameters:
+      - description: First day of the window to clean up (inclusive). Defaults to
+          two days ago.
+        name: fromInclusive
+        in: query
+        schema:
+          $ref: "#/components/schemas/LocalDate"
+      - description: Last day of the window to clean up (inclusive). Defaults to yesterday.
+        name: toInclusive
+        in: query
+        schema:
+          $ref: "#/components/schemas/LocalDate"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentRequestCleanupResultDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Trigger Consent Request Cleanup
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/consent-requests/{id}:
     get:
@@ -3086,7 +3234,8 @@ paths:
   /api/agreement/v1/data-requests/{id}/consent-requests:
     get:
       description: Retrieves the consent requests of a specific data request. Accessible
-        to the provider who owns the data request.
+        to the provider who owns the data request and to the consumer who owns the
+        data request.
       operationId: getConsentRequestsOfDataRequest
       tags:
       - Data Requests
@@ -3112,6 +3261,10 @@ paths:
           format: int32
           minimum: 0
           default: 0
+      - name: searchTerm
+        in: query
+        schema:
+          type: string
       - name: size
         in: query
         schema:
@@ -3120,6 +3273,28 @@ paths:
           maximum: 1000
           minimum: 1
           default: 100
+      - description: Field names to sort by. Ascending by default; prefix with - for
+          descending. Defaults to -modifiedAt.
+        name: sortBy
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - CONSUMER
+          - PROVIDER
       responses:
         "200":
           description: OK
@@ -3147,7 +3322,10 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenanbieter
-      x-api-subset: Data Provider
+        - agridata.ch.Agridata_Datenbezueger
+      x-api-subset:
+      - agridata.ch Web App
+      - Data Provider
   /api/agreement/v1/data-requests/{id}/logo:
     put:
       description: Updates the logo of a specific data request. Only accessible to
@@ -5422,6 +5600,46 @@ paths:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get Public Data Product Documents Metadata
       x-api-subset: agridata.ch Web App
+  /public/api/products/v2/{id}/documents/{documentId}/download:
+    get:
+      description: Downloads the content of a successfully virus-scanned document
+        of a publicly available data product.
+      operationId: getPublicDataProductDocument
+      tags:
+      - Public Data Products
+      parameters:
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Public Data Product Document
+      x-api-subset: agridata.ch Web App
   /public/api/user/v1/current-agb-revision:
     get:
       description: Returns the current Agb revision.
@@ -5503,7 +5721,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.16.0-rc.9
+  version: 1.17.0
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

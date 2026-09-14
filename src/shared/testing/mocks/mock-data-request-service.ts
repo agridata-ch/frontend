@@ -1,5 +1,10 @@
 import { DataRequestService } from '@/entities/api';
-import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import {
+  ConsentRequestFundamentalViewDto,
+  DataRequestDto,
+  DataRequestStateEnum,
+} from '@/entities/openapi';
+import { PageResponseDto } from '@/shared/lib/api.helper';
 import { Mockify } from '@/shared/testing/mocks';
 
 export const mockDataRequests: DataRequestDto[] = [
@@ -39,6 +44,31 @@ export const mockDataRequests: DataRequestDto[] = [
   } as DataRequestDto,
 ];
 
+export const mockConsentRequestsPage: PageResponseDto<ConsentRequestFundamentalViewDto> = {
+  items: [
+    {
+      id: 'cr-1',
+      dataRequestId: '1',
+      dataProducerUid: 'CHE-111.111.111',
+      dataProducerBur: '11111',
+      stateCode: 'OPENED',
+      lastModifiedDateTime: '2025-01-01T00:00:00Z',
+    },
+    {
+      id: 'cr-2',
+      dataRequestId: '1',
+      dataProducerUid: 'CHE-222.222.222',
+      dataProducerBur: '22222',
+      stateCode: 'GRANTED',
+      lastModifiedDateTime: '2025-01-02T00:00:00Z',
+    },
+  ],
+  totalItems: 2,
+  totalPages: 1,
+  currentPage: 0,
+  pageSize: 10,
+};
+
 export type MockDataRequestService = Mockify<DataRequestService>;
 
 /**
@@ -54,6 +84,7 @@ export function createMockDataRequestService(): MockDataRequestService {
     deleteDataRequest: vi.fn().mockResolvedValue(undefined),
     fetchDataRequest: vi.fn(),
     fetchDataRequests: vi.fn().mockResolvedValue(mockDataRequests),
+    getConsentRequestsOfDataRequest: vi.fn().mockResolvedValue(mockConsentRequestsPage),
     retreatDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
     activateDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
     submitDataRequest: vi.fn().mockResolvedValue(undefined),

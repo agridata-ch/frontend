@@ -148,7 +148,8 @@
           "label": "Sistema e prodotti desiderati",
           "placeholder": "Selezionare i prodotti",
           "moreInfos": "Ulteriori informazioni",
-          "sublabel": "Potete richiedere contemporaneamente solo prodotti provenienti da un unico sistema. Per prodotti dati di altri sistemi, registrate una domanda di dati separata."
+          "sublabel": "Potete richiedere contemporaneamente solo prodotti provenienti da un unico sistema. Per prodotti dati di altri sistemi, registrate una domanda di dati separata.",
+          "paymentRequiredWarning": "Ha selezionato almeno un prodotto dati a pagamento. I costi saranno fatturati direttamente da {{provider}} (non da agridata.ch). Trovate maggiori dettagli nel catalogo dati."
         },
         "title": {
           "label": "Titolo della domanda di dati",
@@ -415,6 +416,12 @@
           "description": "Tutte le firme richieste dei beneficiari e dei fornitori di dati sono state acquisite e sono riportate nel PDF. Per finalizzare il contratto, deve ora essere avviata la sigillatura del contratto tramite il servizio di firma di UFIT.",
           "action": "Sigillare il contratto"
         }
+      },
+      "producer": {
+        "emptyState": {
+          "title": "Non sono stati trovati produttori",
+          "message": "Desidera aggiungere un produttore all'elenco?"
+        }
       }
     },
     "invitationLink": {
@@ -553,7 +560,10 @@
     "privacy": {
       "title": "Protezione dei dati",
       "description": "Tra {{ provider }} e {{ consumer }} è in vigore un contratto relativo al trasferimento dei dati. Tale contratto **disciplina l'utilizzo esclusivo per lo scopo sopra descritto** e impone a {{ consumer }} l'obbligo giuridico di rispettare la legge svizzera sulla protezione dei dati (LPD)."
-    }
+    },
+    "uid": "UID",
+    "bur": "BUR",
+    "lastChanged": "Modificato il"
   },
   "forms": {
     "error": {
@@ -1064,6 +1074,31 @@
       "costs": {
         "title": "Costi",
         "subtitle": "Stabilite se l’utilizzo di questo prodotto di dati è soggetto a costi. agridata.ch funge esclusivamente da piattaforma informativa e informa gli utenti dei dati che l’utilizzo è a pagamento. La definizione delle condizioni, la fatturazione e la gestione dei pagamenti sono di esclusiva responsabilità del fornitore dei dati."
+      },
+      "pricingBasis": {
+        "fr": {
+          "label": "Base dei costi in francese",
+          "placeholder": "L’achat de ce paquet de données est soumis à des redevances conformément à l’OId-BDTA (RS 916.404.1)."
+        },
+        "de": {
+          "label": "Base dei costi in tedesco",
+          "placeholder": "Für den Bezug dieses Datenpakets fallen Gebühren gemäss IdTVD-V (SR 916.404.1) an."
+        },
+        "it": {
+          "label": "Base dei costi in tedesco",
+          "placeholder": "L'acquisto di questo pacchetto di dati è soggetto a tassazione conformemente all’OIBDTA (SR 916.404.1)."
+        }
+      },
+      "paymentRequired": {
+        "label": "Ci sono costi per l’utilizzo di questo prodotto dati?",
+        "true": {
+          "title": "Sì, l’utilizzo è a pagamento.",
+          "subtitle": "Prodotto dati a pagamento (la fatturazione avviene direttamente tramite il fornitore dei dati)"
+        },
+        "false": {
+          "title": "No, l’utilizzo è gratuito.",
+          "subtitle": "Prodotto dati gratuito"
+        }
       }
     },
     "saveAndPublish": {
@@ -1263,7 +1298,9 @@
       "publicSector": "Regolamentato dalla legge",
       "description": "Descrizione",
       "links": "Links",
-      "extendedDescription": "Ulteriori informazioni"
+      "extendedDescription": "Ulteriori informazioni",
+      "paymentRequired": "Costi (fornitore)",
+      "costs": "Costi"
     },
     "list": {
       "allLoaded": "Tutti i prodotti dati caricati"
