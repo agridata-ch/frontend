@@ -4,6 +4,7 @@ export * from './burDto';
 export * from './consentRequestAggregationDto';
 export * from './consentRequestAggregationStateEnum';
 export * from './consentRequestAggregationSummaryDto';
+export * from './consentRequestCleanupResultDto';
 export * from './consentRequestConsumerViewV2Dto';
 export * from './consentRequestCreatedDto';
 export * from './consentRequestFundamentalViewDto';

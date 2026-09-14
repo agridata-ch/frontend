@@ -1,14 +1,17 @@
 import { inject, Service } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 
 import { DataRequestsService } from '@/entities/openapi/api/dataRequests.service';
 import { ActingRole } from '@/shared/constants/constants';
+import { asPageResponse, PageResponseDto } from '@/shared/lib/api.helper';
 
 import {
+  ConsentRequestFundamentalViewDto,
   DataRequestDto,
   DataRequestStateEnum,
   DataRequestUpdateDto,
   DataRequestValidRedirectUriRegexUpdateDto,
+  ResourceQueryDto,
   SignatureTypeEnum,
 } from '../openapi';
 
@@ -37,6 +40,26 @@ export class DataRequestService {
       ),
     );
   }
+
+  getConsentRequestsOfDataRequest = (
+    dataRequestId: string,
+    queryDto: ResourceQueryDto,
+    actingRole?: ActingRole,
+  ): Promise<PageResponseDto<ConsentRequestFundamentalViewDto>> => {
+    return firstValueFrom(
+      this.apiService
+        .getConsentRequestsOfDataRequest(
+          dataRequestId,
+          undefined, // lastModifiedFrom
+          queryDto.page,
+          queryDto.searchTerm,
+          queryDto.size,
+          queryDto.sortParams,
+          actingRole as 'CONSUMER' | 'PROVIDER' | undefined,
+        )
+        .pipe(map((response) => asPageResponse(response))),
+    );
+  };
 
   async createDataRequest(dataRequest: DataRequestUpdateDto): Promise<DataRequestDto> {
     return firstValueFrom(this.apiService.createDataRequestDraft(dataRequest));

@@ -18,6 +18,7 @@ import { ACTING_ROLES } from '@/shared/constants/constants';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nService } from '@/shared/i18n';
+import { AuthService } from '@/shared/lib/auth';
 import { ScrollFadeDirective } from '@/shared/scroll-fade';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { AgridataTabsComponent, Tab } from '@/shared/ui/agridata-tabs';
@@ -26,6 +27,7 @@ import { DataRequestDetailsRequestComponent } from './data-request-details-reque
 import { DETAILS_TABS_ID } from './data-request-details.model';
 import { DataRequestContentComponent } from '../data-request-content';
 import { DataRequestDetailsContractComponent } from '../data-request-details-contract/data-request-details-contract.component';
+import { DataRequestDetailsProducersComponent } from '../data-request-details-producers';
 
 /**
  * Displays detailed information about a data request in a sidepanel with tabs.
@@ -43,6 +45,7 @@ import { DataRequestDetailsContractComponent } from '../data-request-details-con
     FontAwesomeModule,
     DataRequestDetailsRequestComponent,
     DataRequestDetailsContractComponent,
+    DataRequestDetailsProducersComponent,
     DataRequestContentComponent,
     ScrollFadeDirective,
   ],
@@ -50,6 +53,7 @@ import { DataRequestDetailsContractComponent } from '../data-request-details-con
 })
 export class DataRequestDetailsComponent {
   // Injects
+  private readonly authService = inject(AuthService);
   private readonly contractRevisionService = inject(ContractRevisionService);
   private readonly dataRequestService = inject(DataRequestService);
   private readonly errorService = inject(ErrorHandlerService);
@@ -110,6 +114,9 @@ export class DataRequestDetailsComponent {
     { id: DETAILS_TABS_ID.PREVIEW, label: this.previewTabLabel() },
     // Other tabs will be added when the corresponding components are implemented.
     // { id: DETAILS_TABS_ID.PRODUCER, label: this.producerTabLabel() },
+    ...(this.authService.isConsumer()
+      ? [{ id: DETAILS_TABS_ID.PRODUCER, label: this.producerTabLabel() }]
+      : []),
     ...(this.dataRequest()?.currentContractRevisionId
       ? [{ id: DETAILS_TABS_ID.CONTRACT, label: this.contractTabLabel() }]
       : []),

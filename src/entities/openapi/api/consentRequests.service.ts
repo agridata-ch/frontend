@@ -17,6 +17,8 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { ConsentRequestCleanupResultDto } from '../model/consentRequestCleanupResultDto';
+// @ts-ignore
 import { ConsentRequestCreatedDto } from '../model/consentRequestCreatedDto';
 // @ts-ignore
 import { ConsentRequestProducerViewDto } from '../model/consentRequestProducerViewDto';
@@ -215,6 +217,68 @@ export class ConsentRequestsService extends BaseService {
         let localVarPath = `/api/agreement/v1/consent-requests`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<ConsentRequestProducerViewDto>>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Trigger Consent Request Cleanup
+     * Triggers the consent request cleanup that otherwise runs as a scheduled daily job, and waits for it to finish. Only accessible to administrators. The run is guarded by the same cluster-wide advisory lock as the scheduled job, so a conflict is reported if a cleanup is already running. By default, the same two-day window as the scheduled job is used; an explicit window can be passed to catch up on days that were missed, e.g. after an outage.
+     * @param fromInclusive First day of the window to clean up (inclusive). Defaults to two days ago.
+     * @param toInclusive Last day of the window to clean up (inclusive). Defaults to yesterday.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public triggerConsentRequestCleanup(fromInclusive?: string, toInclusive?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<ConsentRequestCleanupResultDto>;
+    public triggerConsentRequestCleanup(fromInclusive?: string, toInclusive?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ConsentRequestCleanupResultDto>>;
+    public triggerConsentRequestCleanup(fromInclusive?: string, toInclusive?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ConsentRequestCleanupResultDto>>;
+    public triggerConsentRequestCleanup(fromInclusive?: string, toInclusive?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>fromInclusive, 'fromInclusive');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>toInclusive, 'toInclusive');
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (SecurityScheme) required
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/agreement/v1/consent-requests/cleanup`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<ConsentRequestCleanupResultDto>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
