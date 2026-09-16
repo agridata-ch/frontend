@@ -1,3 +1,9 @@
+## [1.20.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.2...v1.20.0-rc.3) (2026-09-16)
+
+### Features
+
+- **data-request:** add payment required functionality to product selection ([62d393d](https://github.com/agridata-ch/frontend/commit/62d393d1fa171b8fddcd8563b937909915588e6b)), references [DIGIB2-1681](https://github.com/agridata-ch/frontend/issues/-1681)
+
 ## [1.20.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.1...v1.20.0-rc.2) (2026-09-16)
 
 ### Features
