@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 
-import { Block, ImageGridBlock } from '@/entities/cms';
+import { Block, ImageGridBlock, resolveAlt } from '@/entities/cms';
 import { generateMediaUrl } from '@/shared/lib/cms';
 
 /**
@@ -17,6 +17,7 @@ export class ImageGridBlockComponent {
   readonly block = input.required<Block>();
 
   readonly generateMediaUrl = generateMediaUrl;
+  protected readonly resolveAlt = resolveAlt;
 
   protected readonly cmsData = computed(() => {
     return this.block() as ImageGridBlock;

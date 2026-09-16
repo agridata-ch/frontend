@@ -12,13 +12,12 @@ import { ModalComponent } from '@/shared/ui/modal/modal.component';
 import { parseLinkedText } from '@/shared/utils';
 
 /**
- * Site-wide modal that shows the current AGB (terms & conditions) to PROVIDER/CONSUMER users after
- * sign-in. Presentational only — visibility, skippability, and acceptance are owned by
- * {@link AgbModalService}. When the modal is skippable (returning user with a newer revision, before
- * the enforce deadline) the close/remind-later buttons are shown and the deadline info text is
- * displayed; otherwise the user must accept.
+ * Site-wide modal that shows the current AGB (terms & conditions) to PROVIDER/CONSUMER users after sign-in. Presentational
+ * only — visibility, skippability, and acceptance are owned by {@link AgbModalService}. When the
+ * modal is skippable (the user's enforce deadline is still in the future) the close/remind-later
+ * buttons are shown and the deadline info text is displayed; otherwise the user must accept.
  *
- * CommentLastReviewed: 2026-07-28
+ * CommentLastReviewed: 2026-09-16
  */
 @Component({
   selector: 'app-agb-modal',

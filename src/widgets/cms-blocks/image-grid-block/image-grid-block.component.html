@@ -4,8 +4,8 @@
 >
   @for (img of cmsData().images; track img.id) {
     <img
-      [src]="generateMediaUrl(img.url)"
-      [alt]="img.alternativeText"
+      [src]="generateMediaUrl(img.file.url)"
+      [alt]="resolveAlt(img.imageAlt, img.file)"
       class="max-h-11 object-contain"
     />
   }
