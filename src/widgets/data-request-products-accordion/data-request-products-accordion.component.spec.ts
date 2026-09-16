@@ -9,6 +9,7 @@ import { DataRequestProductsAccordionComponent } from './data-request-products-a
 
 const mockProducts: DataProductDto[] = [
   {
+    paymentRequired: false,
     id: '123',
     stateCode: 'DRAFT',
     consentRequired: false,
@@ -16,6 +17,7 @@ const mockProducts: DataProductDto[] = [
     description: { de: 'Beschreibung 1', fr: 'Description 1', it: 'Descrizione 1' },
   },
   {
+    paymentRequired: false,
     id: '456',
     stateCode: 'DRAFT',
     consentRequired: false,
@@ -100,6 +102,7 @@ describe('DataRequestProductsAccordionComponent', () => {
 
     it('should return an empty string when the language is absent from the field', () => {
       const partialProduct: DataProductDto = {
+        paymentRequired: false,
         id: '789',
         stateCode: 'DRAFT',
         consentRequired: false,

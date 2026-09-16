@@ -26,6 +26,7 @@ describe('DataRequestFormContractComponent', () => {
   let contractRevisionService: MockContractRevisionService;
 
   const mockDataRequest: DataRequestDto = {
+    burPresent: false,
     id: 'dr-1',
     stateCode: DataRequestStateEnum.InReview,
     advantages: [],

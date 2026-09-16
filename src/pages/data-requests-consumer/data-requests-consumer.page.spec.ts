@@ -163,6 +163,7 @@ describe('DataRequestsConsumerPage - component behavior', () => {
   it('should set isButtonDisabled based on loaded draft count threshold', async () => {
     const createDraftRequests = (count: number): DataRequestDto[] =>
       Array.from({ length: count }, (_, index) => ({
+        burPresent: false,
         id: `request-${index}`,
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],

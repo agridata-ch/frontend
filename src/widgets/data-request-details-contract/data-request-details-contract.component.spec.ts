@@ -23,6 +23,7 @@ describe('DataRequestDetailsContractComponent', () => {
   let fixture: ComponentFixture<DataRequestDetailsContractComponent>;
 
   const dataRequest: DataRequestDto = {
+    burPresent: false,
     currentContractRevisionId: 'cr-1',
     id: 'dr-1',
     stateCode: DataRequestStateEnum.ToBeSignedByProvider,

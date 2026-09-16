@@ -37,6 +37,7 @@ class MockIntersectionObserver {
 }
 
 const product = (id: string): PublicDataProductDto => ({
+  paymentRequired: false,
   id,
   stateCode: 'ACTIVE' as PublicDataProductDto['stateCode'],
   consentRequired: false,

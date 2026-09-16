@@ -93,6 +93,7 @@ describe('DataRequestWizardConsumerComponent', () => {
   describe('saveDataRequest (consumer-specific)', () => {
     it('should call createDataRequest when saving a new draft', async () => {
       const returned: DataRequestDto = {
+        burPresent: false,
         id: 'ABC123',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -115,6 +116,7 @@ describe('DataRequestWizardConsumerComponent', () => {
 
     it('should create request without logo', async () => {
       const newDto: DataRequestDto = {
+        burPresent: false,
         id: 'NEW123',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -130,6 +132,7 @@ describe('DataRequestWizardConsumerComponent', () => {
 
     it('should create request with logo', async () => {
       const newDto: DataRequestDto = {
+        burPresent: false,
         id: 'NEW123',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -189,6 +192,7 @@ describe('DataRequestWizardConsumerComponent', () => {
   describe('formDisabled (shared logic)', () => {
     it('should return false when stateCode is Draft', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -198,6 +202,7 @@ describe('DataRequestWizardConsumerComponent', () => {
 
     it('should return true when stateCode is InReview', async () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.InReview,
         advantages: [],
@@ -219,6 +224,7 @@ describe('DataRequestWizardConsumerComponent', () => {
     it('should not call handleSave when form is disabled', () => {
       const handleSaveSpy = vi.spyOn(component as any, 'handleSave');
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.InReview,
         advantages: [],
@@ -272,6 +278,7 @@ describe('DataRequestWizardConsumerComponent', () => {
   describe('handleStepChange (shared logic)', () => {
     it('should not call handleSave when form is disabled', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.InReview,
         advantages: [],
@@ -337,6 +344,7 @@ describe('DataRequestWizardConsumerComponent', () => {
         id: 'test-id',
         stateCode: DataRequestStateEnum.InReview,
         advantages: [],
+        burPresent: false,
       };
       Object.defineProperty(component['form'], 'valid', { get: () => true });
       dataRequestService.submitDataRequest.mockResolvedValue(mockResponse);
@@ -364,6 +372,7 @@ describe('DataRequestWizardConsumerComponent', () => {
   describe('updateDataRequestFromInputEffect (shared logic)', () => {
     it('should update dataRequest when initialDataRequest is set', async () => {
       const newRequest: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -381,6 +390,7 @@ describe('DataRequestWizardConsumerComponent', () => {
     it('should set refreshListNeeded to true', async () => {
       component['currentDataRequestId'].set('test-id-123');
       const retreatedRequest: DataRequestDto = {
+        burPresent: false,
         id: 'test-id-123',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -403,6 +413,7 @@ describe('DataRequestWizardConsumerComponent', () => {
     it('should call retreatDataRequest with the current dataRequestId', async () => {
       component['currentDataRequestId'].set('test-id-456');
       const retreatedRequest: DataRequestDto = {
+        burPresent: false,
         id: 'test-id-456',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -417,6 +428,7 @@ describe('DataRequestWizardConsumerComponent', () => {
     it('should update dataRequest signal with retreated data', async () => {
       component['currentDataRequestId'].set('test-id-789');
       const retreatedRequest: DataRequestDto = {
+        burPresent: false,
         id: 'test-id-789',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -431,6 +443,7 @@ describe('DataRequestWizardConsumerComponent', () => {
     it('should call updateFormSteps after retreating', async () => {
       component['currentDataRequestId'].set('test-id-update');
       const retreatedRequest: DataRequestDto = {
+        burPresent: false,
         id: 'test-id-update',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -446,6 +459,7 @@ describe('DataRequestWizardConsumerComponent', () => {
     it('should navigate to PRODUCER step when current step is CONTRACT', async () => {
       component['currentDataRequestId'].set('test-id-contract');
       const retreatedRequest: DataRequestDto = {
+        burPresent: false,
         id: 'test-id-contract',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -511,6 +525,7 @@ describe('DataRequestWizardConsumerComponent', () => {
   describe('canReleaseDataRequest (consumer-specific)', () => {
     it('should return true when stateCode is ToBeReleasedByConsumer', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.ToBeReleasedByConsumer,
         advantages: [],
@@ -520,6 +535,7 @@ describe('DataRequestWizardConsumerComponent', () => {
 
     it('should return false when stateCode is Draft', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -556,6 +572,7 @@ describe('DataRequestWizardConsumerComponent', () => {
 
     it('should call releaseDataRequestToProvider and update state on success', async () => {
       const releasedRequest: DataRequestDto = {
+        burPresent: false,
         id: 'release-id',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
         advantages: [],
@@ -637,6 +654,7 @@ describe('DataRequestWizardConsumerComponent', () => {
   describe('checkExternalCompletion (consumer-specific)', () => {
     it('should return true for CONTRACT when stateCode is ToBeReleasedByConsumer', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.ToBeReleasedByConsumer,
         advantages: [],
@@ -646,6 +664,7 @@ describe('DataRequestWizardConsumerComponent', () => {
 
     it('should return true for CONTRACT when stateCode is ToBeSignedByProvider', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
         advantages: [],
@@ -655,6 +674,7 @@ describe('DataRequestWizardConsumerComponent', () => {
 
     it('should return false for CONTRACT when stateCode is Draft', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -664,6 +684,7 @@ describe('DataRequestWizardConsumerComponent', () => {
 
     it('should return true for COMPLETION when stateCode is ToBeSignedByProvider', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
         advantages: [],

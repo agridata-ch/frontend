@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 
-import { Card } from '@/entities/cms';
+import { Card, resolveAlt } from '@/entities/cms';
 import { generateMediaUrl } from '@/shared/lib/cms';
 import { MarkdownPipe } from '@/shared/markdown/markdown.pipe';
 
@@ -22,6 +22,7 @@ export class CardBlockComponent {
   readonly bgColorClass = input<string>();
 
   protected readonly generateMediaUrl = generateMediaUrl;
+  protected readonly resolveAlt = resolveAlt;
 
   readonly isColorized = computed(() => this.card().colorized);
   readonly cardColor = computed(() => {

@@ -2,8 +2,8 @@
 <div class="flex flex-wrap justify-center gap-6 mt-10">
   @for (image of cmsData().images; track image.id) {
     <img
-      [src]="generateMediaUrl(image.url)"
-      [alt]="image.alternativeText"
+      [src]="generateMediaUrl(image.file.url)"
+      [alt]="resolveAlt(image.imageAlt, image.file)"
       class="rounded-lg h-28 lg:h-32 xl:h-40"
     />
   }

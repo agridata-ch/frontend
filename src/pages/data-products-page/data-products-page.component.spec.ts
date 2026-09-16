@@ -33,6 +33,7 @@ describe('DataProductsPageComponent - component behavior', () => {
   let i18nService: MockI18nService;
 
   const createProduct = (stateCode: DataProductDtoStateCode): DataProductDto => ({
+    paymentRequired: false,
     id: 'product-1',
     stateCode,
     consentRequired: false,
@@ -77,6 +78,7 @@ describe('DataProductsPageComponent - component behavior', () => {
   describe('resource loading', () => {
     it('should load data products on init', async () => {
       const mockProduct: DataProductDto = {
+        paymentRequired: false,
         id: 'product-1',
         stateCode: 'DRAFT',
         consentRequired: false,
@@ -187,6 +189,7 @@ describe('DataProductsPageComponent - component behavior', () => {
       const systemColumn = findColumn('data-products.table.system');
 
       const mockProduct: DataProductDto = {
+        paymentRequired: false,
         id: 'product-1',
         stateCode: 'DRAFT',
         consentRequired: false,

@@ -17,6 +17,7 @@ describe('data-product-state.model', () => {
     stateCode: DataProductDtoStateCode,
     deprecatedSince?: string,
   ): DataProductDto => ({
+    paymentRequired: false,
     consentRequired: false,
     deprecatedSince,
     id: 'product-id',

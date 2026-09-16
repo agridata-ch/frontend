@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { Image, SEO, SeoOpenGraph } from '@/entities/cms';
+import { Image, resolveAlt, SEO, SeoOpenGraph } from '@/entities/cms';
 
 import { SeoService } from './seo.service';
 
@@ -24,10 +24,12 @@ describe('SeoService', () => {
     keywords: 'test, keywords, seo',
     metaDescription: 'Test description for SEO',
     metaImage: mockImage,
+    metaImageAlt: 'Test alt Text',
     metaTitle: 'Test Title',
     openGraph: {
       ogDescription: 'OG Description',
       ogImage: mockImage,
+      ogImageAlt: 'Test OG Image Alt',
       ogTitle: 'OG Title',
       ogType: 'website',
       ogUrl: 'https://example.com/page',
@@ -168,7 +170,9 @@ describe('SeoService', () => {
       service.updateSeo(mockSeo);
 
       const ogImageAltTag = metaService.getTag('property="og:image:alt"');
-      expect(ogImageAltTag?.content).toBe(mockImage.alternativeText);
+      expect(ogImageAltTag?.content).toBe(
+        resolveAlt(mockSeo.openGraph.ogImageAlt, mockSeo.openGraph.ogImage),
+      );
     });
 
     it('should use fallback values when openGraph is not provided', () => {
@@ -368,6 +372,7 @@ describe('SeoService', () => {
         keywords: '',
         metaDescription: '',
         metaImage: null as unknown as Image,
+        metaImageAlt: '',
         metaTitle: '',
         openGraph: null as unknown as SeoOpenGraph,
         structuredData: null as unknown as JSON,
@@ -392,7 +397,7 @@ describe('SeoService', () => {
 
       const seoWithImageNoAlt = {
         ...mockSeo,
-        openGraph: { ...mockSeo.openGraph, ogImage: imageWithoutAlt },
+        openGraph: { ...mockSeo.openGraph, ogImage: imageWithoutAlt, ogImageAlt: '' },
       };
       service.updateSeo(seoWithImageNoAlt);
 

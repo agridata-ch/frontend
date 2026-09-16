@@ -24,6 +24,7 @@ import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing
 import { DataRequestCompletionComponent } from './data-request-completion.component';
 
 const mockDataRequest: DataRequestDto = {
+  burPresent: false,
   id: 'dr-1',
   stateCode: 'TO_BE_SIGNED_BY_CONSUMER',
   humanFriendlyId: 'DR-001',
@@ -35,6 +36,7 @@ const mockDataRequest: DataRequestDto = {
 };
 
 const mockDataProduct: DataProductDto = {
+  paymentRequired: false,
   id: 'product-1',
   name: { de: 'Produkt A', fr: 'Produit A', it: 'Prodotto A' },
   stateCode: 'DRAFT',
@@ -121,6 +123,7 @@ describe('DataRequestCompletionComponent', () => {
 
     it('should filter out products not in the data request', () => {
       const otherProduct: DataProductDto = {
+        paymentRequired: false,
         id: 'product-99',
         name: { de: 'Other' },
         stateCode: 'DRAFT',

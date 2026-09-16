@@ -19,6 +19,7 @@ export const mockConsentRequestAggregations: ConsentRequestAggregationDto[] = [
     stateCode: ConsentRequestAggregationStateEnum.Opened,
     requestDate: '2025-05-01',
     dataRequest: {
+      burPresent: false,
       id: 'dr-1',
       title: { de: 'Antrag A' },
       dataConsumerDisplayName: 'Test AG',
@@ -33,6 +34,7 @@ export const mockConsentRequestAggregations: ConsentRequestAggregationDto[] = [
     stateCode: ConsentRequestAggregationStateEnum.Granted,
     requestDate: '2025-05-02',
     dataRequest: {
+      burPresent: false,
       id: 'dr-2',
       title: { de: 'Antrag B' },
       dataConsumerDisplayName: 'Demo GmbH',
@@ -51,6 +53,7 @@ export const mockConsentRequestAggregations: ConsentRequestAggregationDto[] = [
     stateCode: ConsentRequestAggregationStateEnum.Opened,
     requestDate: '2025-05-03',
     dataRequest: {
+      burPresent: false,
       id: 'dr-3',
       title: { de: 'Antrag C' },
       dataConsumerDisplayName: 'Open AG',
@@ -69,6 +72,7 @@ export const mockConsentRequestAggregations: ConsentRequestAggregationDto[] = [
     stateCode: ConsentRequestAggregationStateEnum.PartiallyOpened,
     requestDate: '2025-05-04',
     dataRequest: {
+      burPresent: false,
       id: 'dr-4',
       title: { de: 'Antrag D' },
       dataConsumerDisplayName: 'Partial AG',
