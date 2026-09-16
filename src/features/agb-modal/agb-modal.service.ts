@@ -7,10 +7,11 @@ import { AuthService } from '@/shared/lib/auth';
 
 /**
  * Owns the show/accept state for the sign-in AGB modal so the modal component stays presentational.
- * Decides when the modal should appear (role- and version-gated), whether it may be skipped, and
- * whether consent is enforced (blocking the whole app), and records acceptance.
+ * Visibility and mandatoriness are decided exclusively from the user's `enforceAgbAcceptanceFrom`
+ * deadline: absent means no acceptance pending, a future date means optional/dismissible, and a date
+ * in the past or present means consent is enforced (blocking the whole app). Also records acceptance.
  *
- * CommentLastReviewed: 2026-07-28
+ * CommentLastReviewed: 2026-09-16
  */
 @Service()
 export class AgbModalService {
@@ -30,70 +31,26 @@ export class AgbModalService {
   });
   private readonly agb = computed<AgbRevisionDto | undefined>(() => this.agbResource.value());
 
-  readonly enforceConsentFrom = computed(() => this.agb()?.enforceConsentFrom);
-
-  private readonly accepted = computed(() => {
-    const userInfo = this.authService.userInfo();
-    const revision = this.agb();
-    if (!revision?.id || !revision.validFrom) {
-      return false;
-    }
-    if (userInfo?.lastAcceptedAgbRevisionId !== revision.id) {
-      return false;
-    }
-    const acceptedDate = userInfo?.lastAcceptedAgbDate;
-    if (!acceptedDate) {
-      return false;
-    }
-    return new Date(acceptedDate) >= new Date(revision.validFrom);
-  });
-
-  private readonly shouldShow = computed(() => {
-    if (!this.authService.isAuthenticated()) {
-      return false;
-    }
-    if (!this.authService.isConsumer() && !this.authService.isDataProvider()) {
-      return false;
-    }
-    if (!this.agb()?.id) {
-      return false;
-    }
-    if (this.accepted()) {
-      return false;
-    }
-
-    return true;
-  });
-
-  private readonly enforcePassed = computed(() => {
-    const raw = this.enforceConsentFrom();
-    return !!raw && new Date(raw).getTime() <= Date.now();
-  });
+  readonly enforceConsentFrom = computed(
+    () => this.authService.userInfo()?.enforceAgbAcceptanceFrom,
+  );
 
   readonly hasAcceptedPreviousAgb = computed(
     () => !!this.authService.userInfo()?.lastAcceptedAgbDate,
   );
 
-  // Skippable only when a returning user has a newer revision to accept and the enforce deadline has
-  // not passed yet. First-time users and passed deadlines are non-skippable.
-  readonly isSkippable = computed(
-    () => this.shouldShow() && this.hasAcceptedPreviousAgb() && !this.enforcePassed(),
-  );
-
-  private readonly isEnforcementEligible = computed(
+  private readonly shouldShow = computed(
     () =>
-      this.authService.isAuthenticated() &&
-      (this.authService.isConsumer() || this.authService.isDataProvider()),
+      (this.authService.isConsumer() || this.authService.isDataProvider()) &&
+      !!this.enforceConsentFrom(),
   );
 
-  private readonly isConsentStatusResolving = computed(
-    () => this.isEnforcementEligible() && this.agbResource.isLoading(),
-  );
+  readonly isAgbConsentEnforced = computed(() => {
+    const raw = this.enforceConsentFrom();
+    return !!raw && new Date(raw).getTime() <= Date.now();
+  });
 
-  // Consent is enforced: the modal is shown and cannot be skipped, so the whole app must be blocked.
-  readonly isAgbConsentEnforced = computed(
-    () => this.isConsentStatusResolving() || (this.shouldShow() && !this.isSkippable()),
-  );
+  readonly isSkippable = computed(() => this.shouldShow() && !this.isAgbConsentEnforced());
 
   // Effects
   private readonly syncOpenEffect = effect(() => {

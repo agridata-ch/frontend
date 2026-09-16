@@ -51,7 +51,6 @@ const mockDataProviders: DataProviderDto[] = [
 
 const mockDataProducts: DataProductDto[] = [
   {
-    paymentRequired: false,
     id: 'product-1',
     name: { de: 'Produkt 1', fr: 'Produit 1', it: 'Prodotto 1' },
     stateCode: 'DRAFT',
@@ -70,7 +69,6 @@ const mockDataProducts: DataProductDto[] = [
     },
   },
   {
-    paymentRequired: false,
     id: 'product-2',
     name: { de: 'Produkt 2', fr: 'Produit 2', it: 'Prodotto 2' },
     stateCode: 'DRAFT',
@@ -89,7 +87,6 @@ const mockDataProducts: DataProductDto[] = [
     },
   },
   {
-    paymentRequired: false,
     id: 'product-3',
     name: { de: 'Produkt 3', fr: 'Produit 3', it: 'Prodotto 3' },
     stateCode: 'DRAFT',
