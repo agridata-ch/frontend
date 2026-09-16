@@ -1,3 +1,10 @@
+## [1.20.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.3...v1.20.0-rc.4) (2026-09-16)
+
+### Features
+
+- **agbs:** update AGB modal behaviour with updated visibility/acceptance logic ([c2d8829](https://github.com/agridata-ch/frontend/commit/c2d8829400da00361994d47b775fd653e06e7cde)), references [DIGIB2-1685](https://github.com/agridata-ch/frontend/issues/-1685)
+- **cms:** add new image alt text ([32ff9bf](https://github.com/agridata-ch/frontend/commit/32ff9bfcd3d2dfda9c3fa8d16081a722d0bffe21)), references [DIGIB2-1030](https://github.com/agridata-ch/frontend/issues/-1030)
+
 ## [1.20.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.2...v1.20.0-rc.3) (2026-09-16)
 
 ### Features
