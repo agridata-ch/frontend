@@ -1,3 +1,9 @@
+## [1.20.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.1...v1.20.0-rc.2) (2026-09-16)
+
+### Features
+
+- **data-products:** add payment requirement and pricing basis fields to data product ([0925edc](https://github.com/agridata-ch/frontend/commit/0925edc8fec367faf509656f80faaa80423c864d)), references [DIGIB2-1604](https://github.com/agridata-ch/frontend/issues/-1604)
+
 ## [1.20.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.19.0...v1.20.0-rc.1) (2026-09-14)
 
 ### Features
