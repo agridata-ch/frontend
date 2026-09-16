@@ -10,7 +10,7 @@
   @if (card().image) {
     <img
       [src]="generateMediaUrl(card().image.url)"
-      alt="{{ card().image.alternativeText }}"
+      alt="{{ resolveAlt(card().imageAlt, card().image) }}"
       class="w-[50px] h-[50px]"
     />
   }

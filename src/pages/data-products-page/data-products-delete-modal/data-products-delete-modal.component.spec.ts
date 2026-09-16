@@ -28,6 +28,7 @@ describe('DataProductsDeleteModalComponent', () => {
   let toastService: MockToastService;
 
   const createProduct = (stateCode: DataProductDtoStateCode): DataProductDto => ({
+    paymentRequired: false,
     id: 'product-1',
     stateCode,
     consentRequired: false,

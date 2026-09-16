@@ -1,7 +1,7 @@
 export interface Image {
   id: number;
   documentId: string;
-  alternativeText: string;
+  alternativeText: string | null;
   url: string;
   formats?: {
     thumbnail?: ImageFormat;
@@ -24,6 +24,12 @@ interface ImageFormat {
   url: string;
 }
 
+export interface ImageWithAlt {
+  id: number;
+  file: Image;
+  imageAlt: string | null;
+}
+
 export interface CTA {
   id: number;
   href: string;
@@ -37,6 +43,7 @@ export interface ListItem {
   id: number;
   label: string;
   icon: Image;
+  iconAlt: string | null;
 }
 
 export interface List {
@@ -50,6 +57,7 @@ export type CardColors = 'Blue' | 'Green' | 'Red' | 'Yellow' | 'Orange';
 export interface Card {
   id: number;
   image: Image;
+  imageAlt: string | null;
   heading: string;
   text: string;
   colorized: boolean;
@@ -59,6 +67,7 @@ export interface Card {
 export interface LinkedImage {
   id: number;
   image: Image;
+  imageAlt: string | null;
   link: string;
 }
 
@@ -70,6 +79,7 @@ export interface TextImageBlock {
   reversed: boolean;
   list: List | null;
   image: Image;
+  imageAlt: string | null;
   button: CTA | null;
   linkedImages?: LinkedImage[];
 }
@@ -78,6 +88,7 @@ export interface ImageCardBlock {
   __component: string;
   id: number;
   image: Image;
+  imageAlt: string | null;
   card: Card;
 }
 
@@ -87,6 +98,7 @@ export interface HeroBlock {
   subHeading: string;
   cta: CTA[];
   image: Image;
+  imageAlt: string | null;
   list: List;
 }
 
@@ -101,6 +113,7 @@ export interface FooterBlock {
 export interface UserFeedbackBlock {
   id: number;
   image: Image;
+  imageAlt: string | null;
   name: string;
   location: string;
   quote: string;
@@ -117,6 +130,7 @@ export interface SectionMediaBlock {
     alternativeText: string | null;
     url: string;
   };
+  mediaAlt: string | null;
   anchorId: string;
 }
 
@@ -231,7 +245,7 @@ export interface SectionImageCardBlock {
 export interface ImageGridBlock {
   __component: string;
   id: number;
-  images: Image[];
+  images: ImageWithAlt[];
   anchorId: string;
 }
 
@@ -239,7 +253,7 @@ export interface ImageListBlock {
   __component: string;
   id: number;
   heading: string;
-  images: Image[];
+  images: ImageWithAlt[];
 }
 
 export interface TimelineCardBlock {
@@ -248,6 +262,7 @@ export interface TimelineCardBlock {
   heading: string;
   description: string;
   image: Image;
+  imageAlt: string | null;
 }
 
 export interface SectionTimelineBlock {
@@ -331,6 +346,7 @@ export interface SEO {
   metaTitle: string;
   metaDescription: string;
   metaImage: Image;
+  metaImageAlt: string | null;
   openGraph: SeoOpenGraph;
   keywords: string;
   structuredData: JSON;
@@ -340,6 +356,12 @@ export interface SeoOpenGraph {
   ogTitle: string;
   ogDescription: string;
   ogImage: Image;
+  ogImageAlt: string | null;
   ogUrl: string;
   ogType: string;
 }
+
+export const resolveAlt = (
+  alt: string | null | undefined,
+  file?: { alternativeText: string | null } | null,
+): string => alt ?? file?.alternativeText ?? '';

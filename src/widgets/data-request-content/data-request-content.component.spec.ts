@@ -26,6 +26,7 @@ describe('DataRequestContentComponent', () => {
   let masterDataService: MockMasterDataService;
 
   const mockDataRequest: DataRequestDto = {
+    burPresent: false,
     id: 'test-id',
     stateCode: DataRequestStateEnum.Draft,
     advantages: [],
@@ -61,8 +62,20 @@ describe('DataRequestContentComponent', () => {
   describe('products', () => {
     it('should only keep the products of the request', () => {
       const mockProducts: DataProductDto[] = [
-        { id: 'product1', name: { de: 'Product 1' }, stateCode: 'DRAFT', consentRequired: false },
-        { id: 'product2', name: { de: 'Product 2' }, stateCode: 'DRAFT', consentRequired: false },
+        {
+          id: 'product1',
+          name: { de: 'Product 1' },
+          stateCode: 'DRAFT',
+          consentRequired: false,
+          paymentRequired: false,
+        },
+        {
+          id: 'product2',
+          name: { de: 'Product 2' },
+          stateCode: 'DRAFT',
+          consentRequired: false,
+          paymentRequired: false,
+        },
       ];
       masterDataService.__testSignals.dataProducts.set(mockProducts);
       fixture.detectChanges();
@@ -72,7 +85,13 @@ describe('DataRequestContentComponent', () => {
 
     it('should be empty when the request has no products', () => {
       masterDataService.__testSignals.dataProducts.set([
-        { id: 'product1', name: { de: 'Product 1' }, stateCode: 'DRAFT', consentRequired: false },
+        {
+          id: 'product1',
+          name: { de: 'Product 1' },
+          stateCode: 'DRAFT',
+          consentRequired: false,
+          paymentRequired: false,
+        },
       ]);
       componentRef.setInput('dataRequest', { ...mockDataRequest, products: [] });
       fixture.detectChanges();

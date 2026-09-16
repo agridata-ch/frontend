@@ -70,6 +70,7 @@ describe('DataRequestDetailsWrapperComponent', () => {
 
   it('should set shouldShowActiveComponent to true when stateCode is ACTIVE', async () => {
     dataRequestService.fetchDataRequest.mockResolvedValueOnce({
+      burPresent: false,
       id: 'test-id',
       stateCode: 'ACTIVE',
       dataProviderId: 'provider-id',
@@ -85,6 +86,7 @@ describe('DataRequestDetailsWrapperComponent', () => {
 
   it('should set shouldShowActiveComponent to false for non-ACTIVE states', async () => {
     dataRequestService.fetchDataRequest.mockResolvedValueOnce({
+      burPresent: false,
       id: 'test-id',
       stateCode: 'DRAFT',
       dataProviderId: 'provider-id',

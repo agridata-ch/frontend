@@ -9,6 +9,7 @@ import { PageResponseDto } from '@/shared/lib/api.helper';
 import { DataProductService } from './data-product.service';
 
 const mockProduct: DataProductDto = {
+  paymentRequired: false,
   id: 'dp-1',
   stateCode: 'DRAFT',
   consentRequired: false,

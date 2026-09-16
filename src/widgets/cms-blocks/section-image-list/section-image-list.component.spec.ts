@@ -16,8 +16,16 @@ describe('SectionImageListComponent', () => {
     id: 201,
     heading: 'Images Heading',
     images: [
-      { id: 101, url: 'img1.jpg', alternativeText: 'First image', documentId: 'doc1' },
-      { id: 102, url: 'img2.jpg', alternativeText: 'Second image', documentId: 'doc2' },
+      {
+        id: 101,
+        imageAlt: null,
+        file: { id: 101, url: 'img1.jpg', alternativeText: 'First image', documentId: 'doc1' },
+      },
+      {
+        id: 102,
+        imageAlt: null,
+        file: { id: 102, url: 'img2.jpg', alternativeText: 'Second image', documentId: 'doc2' },
+      },
     ],
   };
 

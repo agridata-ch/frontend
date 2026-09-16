@@ -9,6 +9,7 @@ import { Mockify } from '@/shared/testing/mocks';
 
 export const mockDataRequests: DataRequestDto[] = [
   {
+    burPresent: false,
     id: '1',
     stateCode: DataRequestStateEnum.Draft,
     submissionDate: '2025-01-01',
@@ -22,6 +23,7 @@ export const mockDataRequests: DataRequestDto[] = [
     },
   } as DataRequestDto,
   {
+    burPresent: false,
     id: '2',
     stateCode: DataRequestStateEnum.InReview,
     submissionDate: '2025-01-02',
@@ -35,6 +37,7 @@ export const mockDataRequests: DataRequestDto[] = [
     },
   } as DataRequestDto,
   {
+    burPresent: false,
     id: '3',
     stateCode: DataRequestStateEnum.ToBeSignedByConsumer,
     submissionDate: '2025-01-03',

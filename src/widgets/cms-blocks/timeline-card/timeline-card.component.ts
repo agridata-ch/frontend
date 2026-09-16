@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 
-import { Block, TimelineCardBlock } from '@/entities/cms';
+import { Block, resolveAlt, TimelineCardBlock } from '@/entities/cms';
 import { generateMediaUrl } from '@/shared/lib/cms';
 
 /**
@@ -19,6 +19,7 @@ export class TimelineCardComponent {
   readonly index = input<number>(0);
 
   readonly generateMediaUrl = generateMediaUrl;
+  readonly resolveAlt = resolveAlt;
 
   protected readonly cmsData = computed(() => {
     return this.block() as TimelineCardBlock;
@@ -29,6 +30,7 @@ export class TimelineCardComponent {
   });
 
   protected readonly alternativeText = computed(() => {
-    return this.cmsData().image.alternativeText;
+    const data = this.cmsData();
+    return resolveAlt(data.imageAlt, data.image);
   });
 }

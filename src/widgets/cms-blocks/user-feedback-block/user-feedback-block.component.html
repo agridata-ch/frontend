@@ -2,7 +2,7 @@
   @if (block().image) {
     <img
       [src]="generateMediaUrl(block().image.url)"
-      [alt]="block().image.alternativeText"
+      [alt]="resolveAlt(block().imageAlt, block().image)"
       class="w-[200px] h-[200px] rounded-full hidden lg:block shrink-0 object-fit"
     />
   }
@@ -12,7 +12,7 @@
       @if (block().image) {
         <img
           [src]="generateMediaUrl(block().image.url)"
-          [alt]="block().image.alternativeText"
+          [alt]="resolveAlt(block().imageAlt, block().image)"
           class="w-[50px] h-[50px] rounded-full lg:hidden"
         />
       }

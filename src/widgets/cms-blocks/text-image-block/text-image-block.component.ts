@@ -2,7 +2,7 @@ import { Component, computed, input } from '@angular/core';
 import { faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { Block, TextImageBlock } from '@/entities/cms';
+import { Block, resolveAlt, TextImageBlock } from '@/entities/cms';
 import { generateMediaUrl } from '@/shared/lib/cms';
 import { MarkdownPipe } from '@/shared/markdown/markdown.pipe';
 import { ButtonComponent, ButtonVariants, HrefTarget } from '@/shared/ui/button';
@@ -23,6 +23,7 @@ export class TextImageBlockComponent {
   readonly block = input.required<Block>();
 
   readonly generateMediaUrl = generateMediaUrl;
+  readonly resolveAlt = resolveAlt;
   readonly ButtonVariants = ButtonVariants;
   readonly HrefTarget = HrefTarget;
 
@@ -37,6 +38,7 @@ export class TextImageBlockComponent {
   });
 
   protected readonly alternativeText = computed(() => {
-    return this.cmsData().image.alternativeText;
+    const data = this.cmsData();
+    return resolveAlt(data.imageAlt, data.image);
   });
 }

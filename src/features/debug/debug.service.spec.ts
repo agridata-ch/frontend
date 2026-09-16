@@ -345,7 +345,7 @@ describe('DebugService', () => {
 
   describe('route tracking', () => {
     it('records route navigations emitted by the state service', () => {
-      agridataStateService.currentRoute.set('/new-route');
+      agridataStateService.__testSignals.currentRoute.set('/new-route');
       TestBed.tick();
 
       const routeLog = service.debugLogs().find((log) => log.source === DebugLogSource.ROUTE_END);

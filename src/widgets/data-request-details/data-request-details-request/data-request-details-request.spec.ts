@@ -32,6 +32,7 @@ describe('DataRequestDetailsRequestComponent', () => {
 
     // Set required input before detectChanges
     componentRef.setInput('dataRequest', {
+      burPresent: false,
       id: 'test-id',
       dataProviderId: 'test-provider',
       submissionDate: '2026-01-09T10:00:00Z',
@@ -45,6 +46,7 @@ describe('DataRequestDetailsRequestComponent', () => {
   describe('computed signals', () => {
     it('should compute formattedSubmissionDate correctly', () => {
       componentRef.setInput('dataRequest', {
+        burPresent: false,
         id: 'test-id',
         dataProviderId: 'test-provider',
         submissionDate: '2026-01-09T10:00:00Z',
@@ -70,6 +72,7 @@ describe('DataRequestDetailsRequestComponent', () => {
       });
 
       componentRef.setInput('dataRequest', {
+        burPresent: false,
         id: 'test-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Active,

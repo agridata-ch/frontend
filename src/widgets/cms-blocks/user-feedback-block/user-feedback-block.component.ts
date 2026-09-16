@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 
-import { UserFeedbackBlock } from '@/entities/cms';
+import { resolveAlt, UserFeedbackBlock } from '@/entities/cms';
 import { generateMediaUrl } from '@/shared/lib/cms';
 
 /**
@@ -17,4 +17,5 @@ export class UserFeedbackBlockComponent {
   readonly block = input.required<UserFeedbackBlock>();
 
   protected readonly generateMediaUrl = generateMediaUrl;
+  protected readonly resolveAlt = resolveAlt;
 }

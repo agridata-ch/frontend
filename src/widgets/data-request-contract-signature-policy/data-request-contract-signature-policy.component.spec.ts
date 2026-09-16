@@ -29,6 +29,7 @@ const mockContract: ContractRevisionDto = {
 };
 
 const mockDataRequest: DataRequestDto = {
+  burPresent: false,
   id: 'dr-1',
   stateCode: 'DRAFT',
   advantages: [],

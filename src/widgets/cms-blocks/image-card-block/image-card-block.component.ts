@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 
-import { Block, ImageCardBlock } from '@/entities/cms';
+import { Block, ImageCardBlock, resolveAlt } from '@/entities/cms';
 import { generateMediaUrl } from '@/shared/lib/cms';
 
 import { CardBlockComponent } from '../card-block';
@@ -25,6 +25,7 @@ export class ImageCardBlockComponent {
   });
 
   protected readonly alternativeText = computed(() => {
-    return this.cmsData().image.alternativeText;
+    const data = this.cmsData();
+    return resolveAlt(data.imageAlt, data.image);
   });
 }
