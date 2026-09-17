@@ -46,7 +46,7 @@ export interface DataRequestUpdateDto {
      */
     dataConsumerStreet?: string;
     /**
-     * 2 letter country code of the data consumer
+     * 2 letter valid ISO 3166-1 alpha-2 country code of the data consumer
      */
     dataConsumerCountry?: string;
     /**

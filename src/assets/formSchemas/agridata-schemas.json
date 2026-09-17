@@ -58,17 +58,17 @@
           "de": {
             "type": "string",
             "minLength": 10,
-            "maxLength": 1000
+            "maxLength": 5000
           },
           "fr": {
             "type": "string",
             "minLength": 10,
-            "maxLength": 1000
+            "maxLength": 5000
           },
           "it": {
             "type": "string",
             "minLength": 10,
-            "maxLength": 1000
+            "maxLength": 5000
           }
         },
         "required": [
