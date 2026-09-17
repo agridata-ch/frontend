@@ -1,3 +1,9 @@
+## [1.20.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.7...v1.20.0-rc.8) (2026-09-17)
+
+### Features
+
+- **request-purpose:** use wysiwyg for request purpose, refactor form control rendering ([8b4abd7](https://github.com/agridata-ch/frontend/commit/8b4abd7c81727d86628b7b6d3f4d4174eedd1e80)), references [DIGIB2-1706](https://github.com/agridata-ch/frontend/issues/-1706)
+
 ## [1.20.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.6...v1.20.0-rc.7) (2026-09-17)
 
 ### Bug Fixes
