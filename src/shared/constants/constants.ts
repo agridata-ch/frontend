@@ -32,6 +32,10 @@ export const USER_ROLES = {
 export const COUNTRIES = {
   CH: 'CH',
   LI: 'LI',
+  DE: 'DE',
+  FR: 'FR',
+  AT: 'AT',
+  ES: 'ES',
 };
 
 export const CMS_BLOCKS = {

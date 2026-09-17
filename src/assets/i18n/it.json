@@ -602,10 +602,6 @@
     },
     "uidMissingWarning": "Al momento non è ancora presente alcun numero UID relativo alla Sua persona o alla Sua azienda. Poiché sono coinvolti diversi sistemi, potrebbero essere necessari alcuni giorni prima che disponiamo di tutti i dati necessari per il corretto funzionamento di agridata.ch. La preghiamo di riprovare tra qualche giorno. Se il problema persiste, la preghiamo di contattare l'assistenza ({{ phoneNumber }})."
   },
-  "countries": {
-    "CH": "Svizzera",
-    "LI": "Liechtenstein"
-  },
   "header": {
     "helpAndSupport": {
       "title": "Aiuto e supporto",

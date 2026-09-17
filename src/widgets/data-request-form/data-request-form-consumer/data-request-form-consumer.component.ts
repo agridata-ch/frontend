@@ -75,12 +75,11 @@ export class DataRequestFormConsumerComponent {
   readonly logoErrorMessage = signal<string | null>(null);
 
   readonly countries = computed(() => {
-    return Object.entries(COUNTRIES).map(([key, value]) => {
-      return {
-        label: this.i18nService.translate(`countries.${key}`),
-        value: value,
-      };
-    });
+    const regionNames = new Intl.DisplayNames([this.i18nService.lang()], { type: 'region' });
+    return Object.values(COUNTRIES).map((value) => ({
+      label: regionNames.of(value) ?? value,
+      value,
+    }));
   });
 
   readonly logoPreviewUrl = computed(() => {

@@ -11,6 +11,7 @@ import { AuthService } from '@/shared/lib/auth';
 import {
   createMockI18nService,
   createMockUidRegisterService,
+  MockI18nService,
   MockUidRegisterService,
   createMockAuthService,
   MockAuthService,
@@ -45,14 +46,16 @@ describe('DataRequestFormConsumerComponent', () => {
   let errorService: MockErrorHandlerService;
   let uidService: MockUidRegisterService;
   let authService: MockAuthService;
+  let i18nService: MockI18nService;
   beforeEach(async () => {
     errorService = createMockErrorHandlerService();
     uidService = createMockUidRegisterService();
     authService = createMockAuthService();
+    i18nService = createMockI18nService();
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, DataRequestFormConsumerComponent],
       providers: [
-        { provide: I18nService, useValue: createMockI18nService() },
+        { provide: I18nService, useValue: i18nService },
         { provide: AuthService, useValue: authService },
         { provide: UidRegisterService, useValue: uidService },
         { provide: ErrorHandlerService, useValue: errorService },
@@ -71,14 +74,20 @@ describe('DataRequestFormConsumerComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should compute countries list with translated labels', () => {
-    // Ensure form is properly set before accessing computed signals
+  it('should compute countries list with localized labels for the active language', () => {
     const countries = component.countries();
-    expect(Array.isArray(countries)).toBe(true);
-    countries.forEach((country) => {
-      expect(country.label).toMatch(`countries.${country.value}`);
-      expect(Object.values(COUNTRIES)).toContain(country.value);
-    });
+    expect(countries).toHaveLength(Object.values(COUNTRIES).length);
+
+    const swiss = countries.find((country) => country.value === COUNTRIES.CH);
+    expect(swiss?.label).toBe('Schweiz');
+  });
+
+  it('should update country labels when the active language changes', () => {
+    i18nService.lang.set('fr');
+    fixture.detectChanges();
+
+    const swiss = component.countries().find((country) => country.value === COUNTRIES.CH);
+    expect(swiss?.label).toBe('Suisse');
   });
 
   it('should handle errors from fetchUidInfosOfCurrentUser and send them to errorService', async () => {

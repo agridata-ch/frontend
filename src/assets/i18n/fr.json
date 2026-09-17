@@ -602,10 +602,6 @@
     },
     "uidMissingWarning": "Aucun numéro d'identification fiscale (UID) n'est encore enregistré pour vous ou votre entreprise. Étant donné que plusieurs systèmes sont impliqués, cela peut prendre quelques jours avant que nous disposions de toutes les informations nécessaires au bon fonctionnement d'agridata.ch. Veuillez réessayer dans quelques jours. Si le problème persiste, veuillez contacter le service d'assistance ({{ phoneNumber }})."
   },
-  "countries": {
-    "CH": "Suisse",
-    "LI": "Liechtenstein"
-  },
   "header": {
     "helpAndSupport": {
       "title": "Aide et assistance",
