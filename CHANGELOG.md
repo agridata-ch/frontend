@@ -1,3 +1,9 @@
+## [1.20.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.8...v1.20.0-rc.9) (2026-09-17)
+
+### Features
+
+- **multi-select:** enhance dropdown behavior with dynamic placement and update translations ([330a4d5](https://github.com/agridata-ch/frontend/commit/330a4d54de89e541937a6b1b65affc83e13ebfb8)), references [DIGIB2-1681](https://github.com/agridata-ch/frontend/issues/-1681)
+
 ## [1.20.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.7...v1.20.0-rc.8) (2026-09-17)
 
 ### Features
