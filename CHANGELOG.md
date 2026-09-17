@@ -1,3 +1,9 @@
+## [1.20.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.4...v1.20.0-rc.5) (2026-09-17)
+
+### Features
+
+- **countries:** add additional countries and update localization for country labels ([13814c9](https://github.com/agridata-ch/frontend/commit/13814c97b5d6b1815db1f242442e0e0bf6a21da4)), references [DIGIB2-1707](https://github.com/agridata-ch/frontend/issues/-1707)
+
 ## [1.20.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.3...v1.20.0-rc.4) (2026-09-16)
 
 ### Features
