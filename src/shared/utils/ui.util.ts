@@ -1,4 +1,4 @@
-import { WritableSignal } from '@angular/core';
+import { effect, ElementRef, Signal, signal, WritableSignal } from '@angular/core';
 
 export enum VerticalPlacement {
   TOP = 'top',
@@ -23,13 +23,76 @@ export function calculateVerticalPlacement(
   triggerRect: Pick<DOMRect, 'bottom' | 'top'>,
   contentHeight: number,
   viewportHeight: number = window.innerHeight,
+  boundaryTop: number = 0,
 ): VerticalPlacement {
   const spaceBelow = viewportHeight - triggerRect.bottom;
   if (spaceBelow >= contentHeight) {
     return VerticalPlacement.BOTTOM;
   }
-  const spaceAbove = triggerRect.top;
+  const spaceAbove = triggerRect.top - boundaryTop;
   return spaceAbove > spaceBelow ? VerticalPlacement.TOP : VerticalPlacement.BOTTOM;
+}
+
+/**
+ * Finds the nearest scrollable/clipping ancestor and returns its top and bottom edge, falling back
+ * to the viewport bounds when the trigger sits in unclipped, page-level flow. Both edges must come
+ * from the same reference frame so `calculateVerticalPlacement` compares like with like.
+ */
+function getClippingBoundary(element: HTMLElement): Pick<DOMRect, 'bottom' | 'top'> {
+  let ancestor = element.parentElement;
+  while (ancestor) {
+    if (/(auto|scroll|hidden)/.test(getComputedStyle(ancestor).overflowY)) {
+      return ancestor.getBoundingClientRect();
+    }
+    ancestor = ancestor.parentElement;
+  }
+  return { top: 0, bottom: window.innerHeight };
+}
+
+/**
+ * Reactively tracks whether a popover anchored to `trigger` should open above it instead of below,
+ * based on `calculateVerticalPlacement` and the space left by the nearest clipping ancestor. Shared
+ * by the select-style dropdowns (`agridata-select`, `agridata-multi-select`) so both flip consistently
+ * instead of each re-implementing the same effect.
+ *
+ * CommentLastReviewed: 2026-09-17
+ *
+ * @param trigger The element the popover is anchored to (e.g. the dropdown's toggle button).
+ * @param popover The floating element being placed.
+ */
+export function createOpenAboveSignal(
+  trigger: Signal<ElementRef<HTMLElement> | undefined>,
+  popover: Signal<ElementRef<HTMLElement> | undefined>,
+): Signal<boolean> {
+  const openAbove = signal(false);
+
+  const recalculate = (triggerElement: HTMLElement, popoverElement: HTMLElement): void => {
+    const boundary = getClippingBoundary(triggerElement);
+    const placement = calculateVerticalPlacement(
+      triggerElement.getBoundingClientRect(),
+      popoverElement.getBoundingClientRect().height,
+      boundary.bottom,
+      boundary.top,
+    );
+    openAbove.set(placement === VerticalPlacement.TOP);
+  };
+
+  effect((onCleanup) => {
+    const triggerElement = trigger()?.nativeElement;
+    const popoverElement = popover()?.nativeElement;
+    if (!triggerElement || !popoverElement) {
+      return;
+    }
+
+    recalculate(triggerElement, popoverElement);
+
+    const resizeObserver = new ResizeObserver(() => recalculate(triggerElement, popoverElement));
+    resizeObserver.observe(triggerElement);
+    resizeObserver.observe(popoverElement);
+    onCleanup(() => resizeObserver.disconnect());
+  });
+
+  return openAbove.asReadonly();
 }
 
 /**

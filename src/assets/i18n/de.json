@@ -147,9 +147,9 @@
         "products": {
           "label": "Gewünschtes System und Produkte",
           "placeholder": "Produkte auswählen",
-          "toCatalog": "Zum Produktkatalog",
+          "toCatalog": "Übersicht verfügbare Daten",
           "sublabel": "Sie können nur Produkte aus einem einzigen System gleichzeitig beantragen. Für Datenprodukte aus anderen Systemen erfassen Sie bitte einen separaten Datenantrag.",
-          "paymentRequiredWarning": "Sie haben mindestens ein kostenpflichtiges Datenprodukt ausgewählt. Die Kosten werden direkt von {{provider}} verrechnet (nicht von agridata.ch). Details und Preisangaben zu den Produkten finden Sie im [Produktkatalog]."
+          "paymentRequiredWarning": "Sie haben mindestens ein kostenpflichtiges Datenprodukt ausgewählt. Die Kosten werden direkt von {{provider}} verrechnet (nicht von agridata.ch). Details und Preisangaben zu den Produkten finden Sie in der [Übersicht der verfügbaren Daten]."
         },
         "title": {
           "label": "Titel des Datenantrages",

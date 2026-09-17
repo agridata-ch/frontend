@@ -1,4 +1,13 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   faChevronDown,
@@ -16,6 +25,7 @@ import {
   MultiSelectCategory,
   MultiSelectOption,
 } from '@/shared/ui/agridata-multi-select';
+import { createOpenAboveSignal } from '@/shared/utils';
 
 import { AgridataMultiSelectOptionComponent } from './agridata-multi-select-option/agridata-multi-select-option.component';
 import { SearchInputComponent } from '../search-input/search-input.component';
@@ -70,6 +80,11 @@ export class AgridataMultiSelectComponent {
   protected readonly selectAllLabel = this.i18nService.translateSignal(
     'input.formControl.multiSelect.selectAll',
   );
+
+  private readonly popover = viewChild<ElementRef<HTMLDivElement>>('popover');
+  private readonly triggerButton = viewChild<ElementRef<HTMLButtonElement>>('triggerButton');
+
+  protected readonly openAbove = createOpenAboveSignal(this.triggerButton, this.popover);
 
   // Computed Signals
   protected readonly activeCategoryLabel = computed<string | null>(() => {
