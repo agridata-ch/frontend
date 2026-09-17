@@ -1,3 +1,9 @@
+## [1.20.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.5...v1.20.0-rc.6) (2026-09-17)
+
+### Features
+
+- **data-catalog:** add filter ([f416333](https://github.com/agridata-ch/frontend/commit/f41633398a8f270efa4e00a9c2649b39b01075cd)), references [DIGIB2-1673](https://github.com/agridata-ch/frontend/issues/-1673)
+
 ## [1.20.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.4...v1.20.0-rc.5) (2026-09-17)
 
 ### Features
