@@ -1304,6 +1304,14 @@
     },
     "list": {
       "allLoaded": "Tous les produits de données chargés"
+    },
+    "filter": {
+      "provider": {
+        "all": "Tous les prestataires"
+      },
+      "system": {
+        "all": "Tous les systèmes"
+      }
     }
   },
   "infinite-scroll": {

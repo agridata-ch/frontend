@@ -11,7 +11,12 @@ import {
 } from '@/entities/openapi';
 import { ActingRole } from '@/shared/constants/constants';
 import { AUTHORIZED_UIDS_ERROR_HANDLING } from '@/shared/error/http-error-method';
-import { PageResponseDto, arrayToObjectSortParams, asPageResponse } from '@/shared/lib/api.helper';
+import {
+  PageResponseDto,
+  arrayToObjectSortParams,
+  asPageResponse,
+  columnFiltersToObject,
+} from '@/shared/lib/api.helper';
 
 /**
  * Service for interacting with participant-related API endpoints. Provides methods to retrieve UIDs
@@ -40,6 +45,7 @@ export class UserService {
     return firstValueFrom(
       this.apiService
         .getProducers(
+          columnFiltersToObject(queryDto.columnFilters),
           queryDto.language,
           queryDto.page,
           queryDto.searchTerm,

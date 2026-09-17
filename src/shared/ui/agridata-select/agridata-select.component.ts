@@ -21,7 +21,7 @@ import { I18nPipe } from '@/shared/i18n';
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
 import { calculateVerticalPlacement, VerticalPlacement } from '@/shared/utils';
 
-import { SelectOption } from './agridata-select.model';
+import { SelectOption, SelectOptionGroup } from './agridata-select.model';
 
 /**
  * Implements the select field logic. It manages dropdown state, tracks the selected option, and
@@ -42,6 +42,7 @@ export class AgridataSelectComponent {
 
   readonly control = input<FormControlWithMessages>();
   readonly customClass = input<string>('');
+  readonly groups = input<SelectOptionGroup[]>([]);
   readonly isViewMode = input<boolean>(false);
   readonly disabled = input<boolean>(false);
   readonly hasError = input<boolean>(false);
@@ -60,6 +61,11 @@ export class AgridataSelectComponent {
   protected readonly dropdownIcon = computed(() =>
     this.isDropdownOpen() ? this.chevronUp : this.chevronDown,
   );
+  // Flat + grouped options combined, so a selected value resolves its label regardless of source.
+  private readonly allOptions = computed<SelectOption[]>(() => [
+    ...this.options(),
+    ...this.groups().flatMap((group) => group.options),
+  ]);
 
   protected readonly popoverCalculator = effect(() => {
     const trigger = this.trigger()?.nativeElement;
@@ -89,7 +95,7 @@ export class AgridataSelectComponent {
   }
 
   getSelectedOptionLabel() {
-    return this.options().find((o) => o.value === this.selectedOption())?.label ?? null;
+    return this.allOptions().find((o) => o.value === this.selectedOption())?.label ?? null;
   }
 
   handleOptionSelect(value: string | number | null, event: Event) {

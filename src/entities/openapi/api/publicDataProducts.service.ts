@@ -202,7 +202,8 @@ export class PublicDataProductsService extends BaseService {
 
     /**
      * Get Public Data Products Paginated
-     * Retrieves a paginated list of all publicly available data products. Publicly accessible.
+     * Retrieves a paginated list of all publicly available data products. Publicly accessible. Supports pagination, sorting, search and column filtering on \&#39;dataSourceSystemId\&#39; and \&#39;dataProviderId\&#39;, e.g. filter&#x3D;dataProviderId:&lt;uuid&gt;,&lt;uuid&gt;;dataSourceSystemId:&lt;uuid&gt;.
+     * @param filter 
      * @param language 
      * @param page 
      * @param searchTerm 
@@ -211,12 +212,14 @@ export class PublicDataProductsService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPublicDataProductsPaginated(language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageResponseDtoPublicDataProductDto>;
-    public getPublicDataProductsPaginated(language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageResponseDtoPublicDataProductDto>>;
-    public getPublicDataProductsPaginated(language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageResponseDtoPublicDataProductDto>>;
-    public getPublicDataProductsPaginated(language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageResponseDtoPublicDataProductDto>;
+    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageResponseDtoPublicDataProductDto>>;
+    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageResponseDtoPublicDataProductDto>>;
+    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>filter, 'filter');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>language, 'language');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

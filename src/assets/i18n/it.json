@@ -1304,6 +1304,14 @@
     },
     "list": {
       "allLoaded": "Tutti i prodotti dati caricati"
+    },
+    "filter": {
+      "provider": {
+        "all": "Tutti i fornitori"
+      },
+      "system": {
+        "all": "Tutti i sistemi"
+      }
     }
   },
   "infinite-scroll": {
