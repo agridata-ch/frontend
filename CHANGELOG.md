@@ -1,3 +1,9 @@
+## [1.20.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.6...v1.20.0-rc.7) (2026-09-17)
+
+### Bug Fixes
+
+- **agridata-select:** fix group styling ([cf606bc](https://github.com/agridata-ch/frontend/commit/cf606bcdaee6c625fee0febb35e11db18030147a)), references [DIGIB2-1673](https://github.com/agridata-ch/frontend/issues/-1673)
+
 ## [1.20.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.5...v1.20.0-rc.6) (2026-09-17)
 
 ### Features
