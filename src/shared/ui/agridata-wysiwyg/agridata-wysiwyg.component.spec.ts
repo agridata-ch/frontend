@@ -2,6 +2,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
+import { FormControlWithMessages } from '@/shared/lib/form.helper';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { AgridataWysiwygComponent } from './agridata-wysiwyg.component';
@@ -162,6 +163,33 @@ describe('AgridataWysiwygComponent', () => {
       editor?.commands.clearContent();
 
       expect(overLimit.componentInstance.control()?.value).toBe('');
+    });
+  });
+
+  describe('minLength', () => {
+    it('reports minlength when the visible text is under the limit, even if the HTML is longer', () => {
+      const shortControl = new FormControl('') as FormControlWithMessages;
+      shortControl.minLength = 10;
+      const shortFixture = TestBed.createComponent(AgridataWysiwygComponent);
+      shortFixture.componentRef.setInput('control', shortControl);
+      shortFixture.detectChanges();
+
+      // '<p>abc</p>' is 10 characters, but the visible text is only 3.
+      shortFixture.componentInstance['editor']?.commands.setContent('<p>abc</p>');
+
+      expect(shortControl.errors?.['minlength']).toBeTruthy();
+    });
+
+    it('clears minlength once the visible text reaches the limit', () => {
+      const longControl = new FormControl('') as FormControlWithMessages;
+      longControl.minLength = 10;
+      const longFixture = TestBed.createComponent(AgridataWysiwygComponent);
+      longFixture.componentRef.setInput('control', longControl);
+      longFixture.detectChanges();
+
+      longFixture.componentInstance['editor']?.commands.setContent(`<p>${'a'.repeat(10)}</p>`);
+
+      expect(longControl.errors?.['minlength']).toBeFalsy();
     });
   });
 

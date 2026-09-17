@@ -50,6 +50,7 @@ describe('DataRequestDescriptionComponent', () => {
     componentRef = fixture.componentRef;
     componentRef.setInput('form', createMockForm());
     fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
@@ -59,9 +60,18 @@ describe('DataRequestDescriptionComponent', () => {
   describe('form input', () => {
     it('should render form controls when form is provided', () => {
       const compiled = fixture.nativeElement as HTMLElement;
-      expect(compiled.querySelector('#requestTitleDe')).toBeTruthy();
-      expect(compiled.querySelector('#requestDescriptionDe')).toBeTruthy();
-      expect(compiled.querySelector('#requestPurposeDe')).toBeTruthy();
+      expect(compiled.querySelector('#request-title-de')).toBeTruthy();
+      expect(compiled.querySelector('#request-description-de')).toBeTruthy();
+      expect(compiled.querySelector('#request-purpose-de')).toBeTruthy();
+    });
+
+    it('should render form controls for every supported language', () => {
+      const compiled = fixture.nativeElement as HTMLElement;
+      for (const lang of ['de', 'fr', 'it']) {
+        expect(compiled.querySelector(`#request-title-${lang}`)).toBeTruthy();
+        expect(compiled.querySelector(`#request-description-${lang}`)).toBeTruthy();
+        expect(compiled.querySelector(`#request-purpose-${lang}`)).toBeTruthy();
+      }
     });
 
     it('should not render when no form is provided', () => {
@@ -69,7 +79,7 @@ describe('DataRequestDescriptionComponent', () => {
       fixture.detectChanges();
 
       const compiled = fixture.nativeElement as HTMLElement;
-      expect(compiled.querySelector('#requestTitleDe')).toBeNull();
+      expect(compiled.querySelector('#request-title-de')).toBeNull();
     });
   });
 
