@@ -315,7 +315,7 @@ components:
           type: string
           description: BUR of the data producer; null for UID-based consent requests
           examples:
-          - A99910003
+          - "99910003"
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
           description: State of the consent request
@@ -524,7 +524,7 @@ components:
           type: string
           description: BUR of the data producer; null for UID-based consent requests
           examples:
-          - A99910003
+          - "99910003"
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
           description: State of the consent request
@@ -2013,6 +2013,14 @@ components:
         searchTerm:
           type: string
           description: string to search for in the resource
+        columnFilters:
+          type: array
+          items:
+            type: string
+          description: "Column filters in the form '<column>:<value>[,<value>]', multiple\
+            \ filters separated by ';'. Values of the same column are combined with\
+            \ OR, filters on different columns with AND. Duplicate values are ignored.\
+            \ The filterable columns are documented per endpoint."
         language:
           type: string
           description: language code for multilingual fields. Must be supported by
@@ -3775,6 +3783,14 @@ paths:
       tags:
       - Notifications
       parameters:
+      - name: filter
+        in: query
+        schema:
+          description: "Column filters in the form '<column>:<value>[,<value>]', multiple\
+            \ filters separated by ';'. Values of the same column are combined with\
+            \ OR, filters on different columns with AND. Duplicate values are ignored.\
+            \ The filterable columns are documented per endpoint."
+          type: object
       - name: language
         in: query
         schema:
@@ -4211,11 +4227,20 @@ paths:
   /api/products/v2:
     get:
       description: "Retrieves a paginated list of all available data products. Accessible\
-        \ to users with the producer, and admin. Supports pagination."
+        \ to users with the producer, and admin. Supports pagination, sorting and\
+        \ column filtering on 'dataSourceSystemId' and 'dataProviderId', e.g. filter=dataProviderId:<uuid>,<uuid>;dataSourceSystemId:<uuid>."
       operationId: getDataProductsPaginated
       tags:
       - Data Products
       parameters:
+      - name: filter
+        in: query
+        schema:
+          description: "Column filters in the form '<column>:<value>[,<value>]', multiple\
+            \ filters separated by ';'. Values of the same column are combined with\
+            \ OR, filters on different columns with AND. Duplicate values are ignored.\
+            \ The filterable columns are documented per endpoint."
+          type: object
       - name: language
         in: query
         schema:
@@ -5266,6 +5291,14 @@ paths:
       tags:
       - Users
       parameters:
+      - name: filter
+        in: query
+        schema:
+          description: "Column filters in the form '<column>:<value>[,<value>]', multiple\
+            \ filters separated by ';'. Values of the same column are combined with\
+            \ OR, filters on different columns with AND. Duplicate values are ignored.\
+            \ The filterable columns are documented per endpoint."
+          type: object
       - name: language
         in: query
         schema:
@@ -5411,12 +5444,21 @@ paths:
       x-api-subset: agridata.ch Web App
   /public/api/products/v2:
     get:
-      description: Retrieves a paginated list of all publicly available data products.
-        Publicly accessible.
+      description: "Retrieves a paginated list of all publicly available data products.\
+        \ Publicly accessible. Supports pagination, sorting, search and column filtering\
+        \ on 'dataSourceSystemId' and 'dataProviderId', e.g. filter=dataProviderId:<uuid>,<uuid>;dataSourceSystemId:<uuid>."
       operationId: getPublicDataProductsPaginated
       tags:
       - Public Data Products
       parameters:
+      - name: filter
+        in: query
+        schema:
+          description: "Column filters in the form '<column>:<value>[,<value>]', multiple\
+            \ filters separated by ';'. Values of the same column are combined with\
+            \ OR, filters on different columns with AND. Duplicate values are ignored.\
+            \ The filterable columns are documented per endpoint."
+          type: object
       - name: language
         in: query
         schema:
@@ -5721,7 +5763,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.17.1-rc.2
+  version: 1.17.0-rc.16
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

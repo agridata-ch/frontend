@@ -1300,6 +1300,14 @@
     },
     "list": {
       "allLoaded": "Alle Datenprodukte geladen"
+    },
+    "filter": {
+      "provider": {
+        "all": "Alle Anbieter"
+      },
+      "system": {
+        "all": "Alle Systeme"
+      }
     }
   },
   "infinite-scroll": {

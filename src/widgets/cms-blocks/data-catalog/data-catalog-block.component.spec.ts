@@ -3,15 +3,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import { DataProductService } from '@/entities/api/data-product.service';
-import { PublicDataProductDto } from '@/entities/openapi';
+import { MasterDataService } from '@/entities/api/master-data.service';
+import { DataProviderDto, DataSourceSystemDto, PublicDataProductDto } from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import {
   createMockDataProductService,
   createMockErrorHandlerService,
   createMockI18nService,
+  createMockMasterDataService,
   MockDataProductService,
   MockErrorHandlerService,
+  MockMasterDataService,
 } from '@/shared/testing/mocks';
 
 import { DataCatalogBlockComponent } from './data-catalog-block.component';
@@ -44,11 +47,21 @@ const product = (id: string): PublicDataProductDto => ({
   name: { de: `Produkt ${id}` },
 });
 
+const provider = (id: string): DataProviderDto => ({ id, name: { de: `Provider ${id}` } });
+
+const system = (id: string, providerId: string): DataSourceSystemDto => ({
+  id,
+  name: { de: `System ${id}` },
+  dataProvider: provider(providerId),
+  legalBasis: { de: '' },
+});
+
 describe('DataCatalogBlockComponent', () => {
   let component: DataCatalogBlockComponent;
   let fixture: ComponentFixture<DataCatalogBlockComponent>;
   let dataProductService: MockDataProductService;
   let errorService: MockErrorHandlerService;
+  let masterDataService: MockMasterDataService;
   const originalObserver = globalThis.IntersectionObserver;
 
   const observer = () => MockIntersectionObserver.instances[0];
@@ -79,6 +92,7 @@ describe('DataCatalogBlockComponent', () => {
 
     dataProductService = createMockDataProductService();
     errorService = createMockErrorHandlerService();
+    masterDataService = createMockMasterDataService();
 
     await TestBed.configureTestingModule({
       imports: [DataCatalogBlockComponent],
@@ -86,6 +100,7 @@ describe('DataCatalogBlockComponent', () => {
         { provide: DataProductService, useValue: dataProductService },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: createMockI18nService() },
+        { provide: MasterDataService, useValue: masterDataService },
         provideRouter([]),
       ],
     }).compileComponents();
@@ -315,5 +330,83 @@ describe('DataCatalogBlockComponent', () => {
 
     expect(fixture.nativeElement.querySelector('app-modal > div')).toBeNull();
     expect(TestBed.inject(Location).path()).not.toContain('x');
+  });
+
+  describe('filtering', () => {
+    const page = {
+      items: [product('a')],
+      totalItems: 1,
+      totalPages: 1,
+      currentPage: 0,
+      pageSize: 10,
+    };
+
+    beforeEach(() => {
+      dataProductService.getPublicProducts.mockResolvedValue(page);
+      masterDataService.getPublicDataProviders.mockResolvedValue([provider('p1'), provider('p2')]);
+      masterDataService.getPublicDataSourceSystems.mockResolvedValue([
+        system('s1', 'p1'),
+        system('s2', 'p2'),
+      ]);
+    });
+
+    it('loads provider and system filter options on init, grouped by provider', async () => {
+      await init();
+
+      // "All providers" option plus one per provider.
+      expect(component['providerOptions']()).toHaveLength(3);
+      expect(component['systemGroups']()).toHaveLength(2);
+      expect(component['systemGroups']()[0].options).toHaveLength(1);
+    });
+
+    it('shows the selected provider systems as a flat list, without groups', async () => {
+      await init();
+      component['handleProviderChange']('p1');
+      fixture.detectChanges();
+
+      expect(component['systemGroups']()).toHaveLength(0);
+      // "All systems" + the single system belonging to the selected provider.
+      const flat = component['systemFlatOptions']();
+      expect(flat).toHaveLength(2);
+      expect(flat[1].value).toBe('s1');
+    });
+
+    it('resets the selected system and refetches with the provider filter', async () => {
+      await init();
+      component['selectedSystemId'].set('s1');
+      component['handleProviderChange']('p1');
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(component['selectedSystemId']()).toBeNull();
+      expect(dataProductService.getPublicProducts).toHaveBeenLastCalledWith(
+        expect.objectContaining({ page: 0, columnFilters: ['dataProviderId:p1'] }),
+      );
+    });
+
+    it('refetches with the system filter when a system is selected', async () => {
+      await init();
+      component['handleSystemChange']('s1');
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(dataProductService.getPublicProducts).toHaveBeenLastCalledWith(
+        expect.objectContaining({ page: 0, columnFilters: ['dataSourceSystemId:s1'] }),
+      );
+    });
+
+    it('combines provider and system filters', async () => {
+      await init();
+      component['handleProviderChange']('p1');
+      component['handleSystemChange']('s1');
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(dataProductService.getPublicProducts).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          columnFilters: ['dataProviderId:p1', 'dataSourceSystemId:s1'],
+        }),
+      );
+    });
   });
 });

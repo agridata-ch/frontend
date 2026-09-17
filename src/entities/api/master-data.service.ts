@@ -1,7 +1,14 @@
 import { effect, inject, Service, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
-import { DataProductDto, DataProvidersService, DataProviderDto } from '@/entities/openapi';
+import {
+  DataProductDto,
+  DataProvidersService,
+  DataProviderDto,
+  DataSourceSystemDto,
+  PublicDataProvidersService,
+  PublicDataSourceSystemsService,
+} from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
@@ -18,6 +25,8 @@ export class MasterDataService {
   private readonly dataProvidersService = inject(DataProvidersService);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
+  private readonly publicDataProvidersService = inject(PublicDataProvidersService);
+  private readonly publicDataSourceSystemsService = inject(PublicDataSourceSystemsService);
 
   // Signals
   private readonly _dataProviders = signal<DataProviderDto[]>([]);
@@ -82,6 +91,20 @@ export class MasterDataService {
       }) ?? []
     );
   }
+
+  /**
+   * All publicly available data providers (unauthenticated endpoint). Used by the public data
+   * catalog filter.
+   */
+  getPublicDataProviders = (): Promise<DataProviderDto[]> =>
+    firstValueFrom(this.publicDataProvidersService.getPublicDataProviders());
+
+  /**
+   * All publicly available data source systems (unauthenticated endpoint). Each carries its
+   * `dataProvider` back-reference, so the catalog groups/filters them by provider client-side.
+   */
+  getPublicDataSourceSystems = (): Promise<DataSourceSystemDto[]> =>
+    firstValueFrom(this.publicDataSourceSystemsService.getPublicDataSourceSystems());
 
   /**
    * Translated name of a data provider. Returns an empty string while the providers are still

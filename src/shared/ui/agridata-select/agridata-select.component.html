@@ -49,6 +49,24 @@
           }
         </div>
       }
+      @for (group of groups(); track group.label) {
+        <div class="px-5 py-2 text-xs font-semibold uppercase text-gray-500 bg-gray-50">
+          {{ group.label }}
+        </div>
+        @for (option of group.options; track option.value) {
+          <div
+            class="flex items-center gap-2 pl-8 pr-5 py-3 hover:bg-gray-100 cursor-pointer"
+            [class.bg-gray-100]="isSelected(option.value)"
+            (click)="handleOptionSelect(option.value, $event)"
+            (keydown.enter)="handleOptionSelect(option.value, $event)"
+          >
+            <span>{{ option.label }}</span>
+            @if (isSelected(option.value)) {
+              <fa-icon [icon]="checkIcon" class="text-agridata-secondary-text" />
+            }
+          </div>
+        }
+      }
     </div>
   }
 </div>

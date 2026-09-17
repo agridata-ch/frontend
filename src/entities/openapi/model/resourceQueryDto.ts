@@ -27,6 +27,10 @@ export interface ResourceQueryDto {
      */
     searchTerm?: string;
     /**
+     * Column filters in the form \'<column>:<value>[,<value>]\', multiple filters separated by \';\'. Values of the same column are combined with OR, filters on different columns with AND. Duplicate values are ignored. The filterable columns are documented per endpoint.
+     */
+    columnFilters?: Array<string>;
+    /**
      * language code for multilingual fields. Must be supported by application.
      */
     language?: string;
