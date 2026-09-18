@@ -6,7 +6,7 @@
     [dataTestId]="'alert-migration-' + request.id"
     (closeAlert)="closeMigrationInfo(request.id)"
     class="mb-4"
-    [title]="t('migrationInfo.title', { consumerName: request.dataRequest?.dataConsumerDisplayName })"
+    [title]="t('migrationInfo.title', { consumerName: getMigratedRequestConsumerName(request) })"
     [message]="t('migrationInfo.description', { name: getMigratedRequestTitle(request) })"
   />
   }

@@ -57,7 +57,7 @@
         "UNKNOWN": "Sconosciuto",
         "PARTIALLY_GRANTED": "Parzialmente approvato",
         "PARTIALLY_OPENED": "Parzialmente aperto",
-        "LEGALLY_PERMITTED": "Regolamentato dalla legge"
+        "LEGALLY_PERMITTED": "Di diritto pubblico"
       },
       "footerInformation": "Potrà modificare la sua scelta in qualsiasi momento qui. I dati possono essere trasmessi solo in presenza di un consenso attivo.",
       "requestDate": "Richiesta del {{ date }}",
@@ -84,7 +84,7 @@
         "missingBurInfo": "Manca una sede? Contattate direttamente {{ consumer }} affinché possa richiederla e voi possiate dare il consenso."
       },
       "footerInformationNoBur": "Avete disattivato tutte le sedi. Se desiderate rifiutare completamente questa richiesta, cliccate su Annulla e poi sul pulsante Rifiuta.",
-      "noConsentRequired": "Nessuna azione richiesta. Questo riferimento ai dati si basa su una base legale. Non è richiesto il Suo consenso o rifiuto. Questa visualizzazione serve per la Sua informazione e trasparenza."
+      "noConsentRequired": "Nessuna azione richiesta. Questo accesso ai dati avviene su una base di diritto pubblico. Questa visualizzazione serve a scopo di informazione trasparente."
     },
     "toast": {
       "title": {
@@ -110,7 +110,7 @@
         "DECLINED": "Rifiutato",
         "PARTIALLY_OPENED": "Parzialmente aperto",
         "PARTIALLY_GRANTED": "Parzialmente approvato",
-        "LEGALLY_PERMITTED": "Regolamentato dalla legge"
+        "LEGALLY_PERMITTED": "Di diritto pubblico"
       }
     },
     "emptyState": {
@@ -266,8 +266,18 @@
           "placeholder": "...@......."
         },
         "dataConsumerDisplayName": {
-          "label": "Nome visualizzato / abbreviazione",
-          "placeholder": "Nome visualizzato / abbreviazione"
+          "de": {
+            "label": "Nome visualizzato / Abbreviazione in tedesco",
+            "placeholder": "Nome visualizzato / abbreviazione"
+          },
+          "fr": {
+            "label": "Nome visualizzato / Abbreviazione in francese",
+            "placeholder": "Nome visualizzato / Abbreviazione in francese"
+          },
+          "it": {
+            "label": "Nome visualizzato / Abbreviazione in italiano",
+            "placeholder": "Nome visualizzato / Abbreviazione in italiano"
+          }
         },
         "logo": {
           "label": "Logo",
@@ -301,7 +311,7 @@
       },
       "products": {
         "allSystems": "Tutti i sistemi",
-        "publicSectorProductSuffix": "Regolamentato dalla legge"
+        "publicSectorProductSuffix": "Di diritto pubblico"
       }
     },
     "preview": {
@@ -320,7 +330,7 @@
           "consumer": "Acquirente di dati",
           "request": "Richiesta di dati",
           "preview": "Anteprima",
-          "producer": "Produttore di dati",
+          "producer": "Gruppo target",
           "contract": "Contratto",
           "completion": "Conclusione"
         },
@@ -1291,7 +1301,7 @@
         "tooltip": "Questo prodotto dati non è più disponibile per nuove richieste. I flussi di dati esistenti rimangono attivi."
       },
       "showDetails": "Visualizza i dettagli",
-      "publicSector": "Regolamentato dalla legge",
+      "publicSector": "Di diritto pubblico",
       "description": "Descrizione",
       "links": "Links",
       "extendedDescription": "Ulteriori informazioni",

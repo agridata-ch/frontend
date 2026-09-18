@@ -13,14 +13,13 @@ import { DataRequestAdvantageDto } from './dataRequestAdvantageDto';
 import { ConsentRequestProducerViewDtoDataRequestStateCode } from './consentRequestProducerViewDtoDataRequestStateCode';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
-import { DataRequestConsumerDisplayNameDto } from './dataRequestConsumerDisplayNameDto';
 import { SignatureTypeEnum } from './signatureTypeEnum';
 
 
 /**
- * Data transfer object representing a data request
+ * Details of the underlying data request
  */
-export interface DataRequestDto { 
+export interface DataRequestV1Dto { 
     id: string;
     dataProviderId?: string;
     dataSourceSystemId?: string;
@@ -57,7 +56,7 @@ export interface DataRequestDto {
     /**
      * Shorter name of the data consumer defined by the data consumer used when displaying the request to the producer
      */
-    dataConsumerDisplayName?: DataRequestConsumerDisplayNameDto;
+    dataConsumerDisplayName?: string;
     /**
      * Uid of the data consumer
      */
@@ -113,7 +112,7 @@ export interface DataRequestDto {
      */
     burPresent: boolean;
 }
-export namespace DataRequestDto {
+export namespace DataRequestV1Dto {
 }
 
 

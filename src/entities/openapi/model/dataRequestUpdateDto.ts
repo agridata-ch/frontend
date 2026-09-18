@@ -11,6 +11,7 @@ import { DataRequestPurposeDto } from './dataRequestPurposeDto';
 import { DataRequestAdvantageDto } from './dataRequestAdvantageDto';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
+import { DataRequestConsumerDisplayNameDto } from './dataRequestConsumerDisplayNameDto';
 
 
 /**
@@ -32,7 +33,7 @@ export interface DataRequestUpdateDto {
     /**
      * Shorter name of the data consumer defined by the data consumer used when displaying the request to the producer
      */
-    dataConsumerDisplayName?: string;
+    dataConsumerDisplayName?: DataRequestConsumerDisplayNameDto;
     /**
      * City of the data consumer
      */

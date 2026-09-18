@@ -99,7 +99,7 @@ describe('DataRequestDetailsComponent', () => {
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
-        dataConsumerDisplayName: 'Test Consumer',
+        dataConsumerDisplayName: { de: 'Test Consumer' },
         dataConsumerCity: 'Test City',
         contactPhoneNumber: '1234567890',
         contactEmailAddress: 'test@example.com',
@@ -156,7 +156,7 @@ describe('DataRequestDetailsComponent', () => {
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
-        dataConsumerDisplayName: 'Test Consumer',
+        dataConsumerDisplayName: { de: 'Test Consumer' },
       };
 
       dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);

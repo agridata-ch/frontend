@@ -18,7 +18,9 @@ export const dataRequestFormsModel: DataRequestFormModel[] = [
   {
     formGroupName: FORM_GROUP_NAMES.CONSUMER,
     fields: [
-      { name: 'dataConsumerDisplayName' },
+      { name: 'dataConsumerDisplayName.de' },
+      { name: 'dataConsumerDisplayName.fr' },
+      { name: 'dataConsumerDisplayName.it' },
       { name: 'dataConsumerCity' },
       { name: 'dataConsumerZip' },
       { name: 'dataConsumerStreet' },

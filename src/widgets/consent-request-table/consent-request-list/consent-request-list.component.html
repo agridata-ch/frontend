@@ -27,7 +27,7 @@
       </div>
       <div class="flex justify-between">
         <app-agridata-contact-card
-          [name]="request.dataRequest?.dataConsumerDisplayName"
+          [name]="getTranslatedConsumerName(request)"
           [imageUrl]="request.dataRequest?.dataConsumerLogoBase64"
           [secondaryName]="request.dataRequest?.dataConsumerCity"
           [size]="AvatarSize.MEDIUM"

@@ -9,7 +9,7 @@ import {
   viewChild,
 } from '@angular/core';
 
-import { DataRequestDto } from '@/entities/openapi';
+import { DataRequestDto, TranslationDto } from '@/entities/openapi';
 import { DataRequestDtoDirective, getBadgeVariant } from '@/shared/data-request';
 import { I18nService } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
@@ -37,7 +37,7 @@ import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
   ],
 })
 export class AdminDataRequestTableComponent {
-  protected readonly i18nService = inject(I18nService);
+  private readonly i18nService = inject(I18nService);
 
   readonly dataRequestsResource = input.required<ResourceRef<DataRequestDto[] | undefined>>();
   readonly dataRequests = input.required<DataRequestDto[]>();
@@ -72,7 +72,7 @@ export class AdminDataRequestTableComponent {
               template: this.dataRequestConsumerTemplate(),
             },
             sortable: true,
-            sortValueFn: (item) => item?.dataConsumerDisplayName ?? '',
+            sortValueFn: (item) => this.getTranslation(item?.dataConsumerDisplayName),
           },
           {
             name: this.dataRequestTitleHeader,
@@ -81,7 +81,7 @@ export class AdminDataRequestTableComponent {
               template: this.dataRequestTitleTemplate(),
             },
             sortable: true,
-            sortValueFn: (item) => this.i18nService.useObjectTranslation(item?.title),
+            sortValueFn: (item) => this.getTranslation(item?.title),
           },
           {
             name: this.dataRequestSubmissionDateHeader,
@@ -98,11 +98,10 @@ export class AdminDataRequestTableComponent {
             renderer: {
               type: CellRendererTypes.FUNCTION,
               cellRenderFn: (item) =>
-                this.i18nService.useObjectTranslation(item.dataSourceSystem?.dataProvider?.name),
+                this.getTranslation(item.dataSourceSystem?.dataProvider?.name),
             },
             sortable: true,
-            sortValueFn: (item) =>
-              this.i18nService.useObjectTranslation(item.dataSourceSystem?.dataProvider?.name),
+            sortValueFn: (item) => this.getTranslation(item.dataSourceSystem?.dataProvider?.name),
           },
           {
             name: this.dataRequestStateHeader,
@@ -124,5 +123,10 @@ export class AdminDataRequestTableComponent {
   protected getStatusTranslation(value?: string) {
     if (!value) return '';
     return this.i18nService.translate(`data-request.stateCode.${value}`);
+  }
+
+  protected getTranslation(key: TranslationDto | undefined) {
+    if (!key) return '';
+    return this.i18nService.useObjectTranslation(key);
   }
 }

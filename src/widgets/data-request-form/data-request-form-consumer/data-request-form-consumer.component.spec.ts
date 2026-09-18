@@ -27,7 +27,11 @@ import { DataRequestFormConsumerComponent } from './data-request-form-consumer.c
 function createTestFormGroup(): FormGroup {
   return new FormGroup({
     consumer: new FormGroup({
-      dataConsumerDisplayName: new FormControl(''),
+      dataConsumerDisplayName: new FormGroup({
+        de: new FormControl(''),
+        fr: new FormControl(''),
+        it: new FormControl(''),
+      }),
       dataConsumerCity: new FormControl(''),
       dataConsumerZip: new FormControl(''),
       dataConsumerStreet: new FormControl(''),
@@ -137,9 +141,9 @@ describe('DataRequestFormConsumerComponent', () => {
   });
 
   describe('handleChangeConsumerInitials', () => {
-    it('should update initials from event', () => {
+    it('should update the display name for the active language from the event', () => {
       const event = { target: { value: 'Bob Marley' } } as unknown as Event;
-      component.handleChangeConsumerInitials(event);
+      component.handleChangeConsumerInitials('de', event);
       expect(component.consumerDisplayName()).toBe('Bob Marley');
     });
   });
