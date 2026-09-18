@@ -140,15 +140,15 @@
         "headline": "Inhalt des Datenantrags definieren",
         "provider": {
           "label": "Datenanbieter",
-          "sublabel": "Bestimmen Sie den gewünschten Datenanbieter sowie die spezifischen Datenprodukte für Ihren Antrag.",
+          "sublabel": "Wählen Sie den Anbieter, das System und die gewünschten Datenprodukte aus. Detaillierte Informationen zu den Inhalten finden Sie in der Übersicht.",
           "placeholder": "Datenanbieter auswählen",
           "heading": "Datenprodukte auswählen"
         },
         "products": {
-          "label": "Gewünschtes System und Produkte",
-          "placeholder": "Produkte auswählen",
-          "toCatalog": "Übersicht verfügbare Daten",
-          "sublabel": "Sie können nur Produkte aus einem einzigen System gleichzeitig beantragen. Für Datenprodukte aus anderen Systemen erfassen Sie bitte einen separaten Datenantrag.",
+          "label": "System und Datenprodukte",
+          "placeholder": "Datenprodukte auswählen",
+          "toCatalog": "Übersicht der verfügbaren Daten",
+          "sublabel": "Wählen Sie die Datenprodukte aus.",
           "paymentRequiredWarning": "Sie haben mindestens ein kostenpflichtiges Datenprodukt ausgewählt. Die Kosten werden direkt von {{provider}} verrechnet (nicht von agridata.ch). Details und Preisangaben zu den Produkten finden Sie in der [Übersicht der verfügbaren Daten]."
         },
         "title": {
@@ -222,7 +222,7 @@
         }
       },
       "consumer": {
-        "headline": "Angaben zum Datenbezüger",
+        "headline": "Angaben zu Ihrer Organisation",
         "name": {
           "label": "Name",
           "placeholder": "Name"
@@ -254,8 +254,8 @@
           "logo": "Logo"
         },
         "contact": {
-          "label": "Ihre Kontaktangaben",
-          "sublabel": "Telefon und E-Mail für Rückfragen zu Ihrem Antrag ausfüllen."
+          "label": "Ihre Kontaktangaben für Produzenten",
+          "sublabel": "Telefon und E-Mail für Rückfragen zu Ihrem Antrag ausfüllen. Diese Angaben werden den Landwirten und Tierhaltern angezeigt, damit sie sich bei Ihnen für inhaltliche Fragen zur Datenanfrage melden können."
         },
         "contactPhoneNumber": {
           "label": "Telefon Nr.",
@@ -266,12 +266,12 @@
           "placeholder": "...@......."
         },
         "dataConsumerDisplayName": {
-          "label": "Anzeigename/Kurzform",
-          "placeholder": "Anzeigename/Kurzform"
+          "label": "Anzeigename / Kurzform",
+          "placeholder": "Anzeigename / Kurzform"
         },
         "logo": {
           "label": "Logo",
-          "upload": "Bild hochladen",
+          "upload": "Logo hochladen",
           "error": {
             "invalidFileType": "Ungültiger Dateityp. Bitte laden Sie eine PNG- oder JPG-Datei hoch.",
             "size": "Die Datei ist zu gross. Max. erlaubte Grösse: {{ maxSize }}"
@@ -279,13 +279,13 @@
         }
       },
       "producer": {
-        "info": "Nachdem der Vertrag von allen Vertragspartner unterzeichnet wurde, erhalten Sie eine E-Mail-Einladungs-Vorlage. Diese Vorlage wird einen für Ihren Antrag spezifischen Link enthalten. Damit können Sie danach gezielt Ihre Datenproduzenten einladen.",
-        "title": "Datenproduzenten bestimmen",
-        "description": "Bestimmen Sie, welche Gruppe von Datenproduzenten Sie mit Ihrem Antrag ansprechen möchten.",
+        "info": "Sie können Datenproduzenten erst anfragen, wenn der Vertrag vom Datenbezüger und Datenanbieter digital signiert sowie von agridata.ch aktiviert wurde. Danach erhalten Sie einen Einladungs-Link, den Sie an die definierte Zielgruppe zustellen können.",
+        "title": "Zielgruppe des Datenantrages bestimmen",
+        "description": "Definieren Sie, welchen Datenproduzenten Sie eine Datenanfrage stellen werden. Diese Angabe wird in den Vertrag übernommen, um sicherzustellen, dass nur die relevante Zielgruppe angefragt wird.",
         "targetGroup": {
-          "label": "Gruppe von Datenproduzenten",
-          "placeholder": "Gruppe von Datenproduzenten",
-          "helperText": "Beispiel: alle Bio-Landwirte"
+          "label": "Zielgruppe der Datenproduzenten",
+          "placeholder": "Zielgruppe der Datenproduzenten",
+          "helperText": "Beispiel: Mitglieder der Labelorganisation"
         }
       },
       "contract": {
@@ -897,7 +897,7 @@
       "titleUpdate": "Datenprodukt bearbeiten",
       "publishConfirmation": {
         "title": "Datenprodukt publizieren?",
-        "description": "Mit dem Publizieren wird dieses Datenprodukt auf agridata.ch live geschaltet. \nBitte beachten Sie:\n\n**Öffentlicher Katalog:** Das Produkt ist ab sofort für alle Datenbezüger sichtbar.\n**Datenantrag:** Datenbezüger können direkt einen digitalen Antrag für diese Daten stellen.\n**Produzenten-Zustimmung:** Name und Beschreibung werden eins zu eins den Landwirten und Tierhaltern angezeigt, wenn sie ihre Zustimmung zur Datenfreigabe erteilen. Bitte achten Sie auf eine einfache, verständliche Sprache.",
+        "description": "Mit dem Publizieren wird dieses Datenprodukt auf agridata.ch live geschaltet. \nBitte beachten Sie:\n\n**Öffentlicher Katalog:** Das Produkt ist ab sofort für alle Datenbezüger sichtbar.\n**Datenantrag:** Datenbezüger können direkt einen digitalen Antrag für diese Daten stellen.\n**Produzenten-Zustimmung:** Name und Beschreibung werden eins zu eins den Landwirten und Tierhaltern angezeigt, wenn sie ihre Zustimmung zur Datenanfrage erteilen. Bitte achten Sie auf eine einfache und verständliche Sprache.",
         "cancel": "Abbrechen",
         "publish": "Ja, publizieren"
       }
@@ -1295,8 +1295,8 @@
       "description": "Beschreibung",
       "links": "Links",
       "extendedDescription": "Erweiterte Beschreibung",
-      "paymentRequired": "Kosten (Anbieter)",
-      "costs": "Kosten"
+      "paymentRequired": "Kostenpflichtig durch Anbieter",
+      "costs": "Kosten für Datenbezüger"
     },
     "list": {
       "allLoaded": "Alle Datenprodukte geladen"
