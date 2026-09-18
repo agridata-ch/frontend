@@ -14,11 +14,11 @@
           <span
             (click)="onOptionToggle(option.value, $event)"
             (keydown.enter)="onOptionToggle(option.value, $event)"
-            class="rounded-sm text-sm px-2 py-1 group flex items-center gap-1 border"
+            class="rounded-sm text-xs px-2 py-1 group flex items-center gap-1 ring-1"
             [class]="
               disabled()
-                ? 'cursor-not-allowed bg-gray-200 border-gray-300 text-gray-600'
-                : 'bg-agridata-primary-100 border-agridata-primary-700 text-agridata-primary-text hover:bg-agridata-primary-50 hover:border-agridata-primary-600'
+                ? 'cursor-not-allowed bg-gray-200 ring-gray-300 text-gray-600'
+                : 'bg-agridata-primary-100 ring-agridata-primary-700 text-agridata-primary-text hover:bg-agridata-primary-50 hover:border-agridata-primary-600'
             "
             [attr.aria-disabled]="disabled()"
           >

@@ -191,6 +191,16 @@ describe('AgbModalService', () => {
       expect(stateService.setAgbConsentEnforced).toHaveBeenLastCalledWith(true);
     });
 
+    it('leaves the app unblocked for a non consumer/provider role even when the deadline has passed', async () => {
+      signIn(PAST_ENFORCE_DATE);
+      authService.__testSignals.isConsumer.set(false);
+
+      const service = await createService();
+
+      expect(service.isAgbConsentEnforced()).toBe(false);
+      expect(stateService.setAgbConsentEnforced).toHaveBeenLastCalledWith(false);
+    });
+
     it('leaves the app unblocked when there is no pending deadline', async () => {
       signIn(undefined);
 

@@ -39,15 +39,17 @@ export class AgbModalService {
     () => !!this.authService.userInfo()?.lastAcceptedAgbDate,
   );
 
+  private readonly isConsentRelevantRole = computed(
+    () => this.authService.isConsumer() || this.authService.isDataProvider(),
+  );
+
   private readonly shouldShow = computed(
-    () =>
-      (this.authService.isConsumer() || this.authService.isDataProvider()) &&
-      !!this.enforceConsentFrom(),
+    () => this.isConsentRelevantRole() && !!this.enforceConsentFrom(),
   );
 
   readonly isAgbConsentEnforced = computed(() => {
     const raw = this.enforceConsentFrom();
-    return !!raw && new Date(raw).getTime() <= Date.now();
+    return this.isConsentRelevantRole() && !!raw && new Date(raw).getTime() <= Date.now();
   });
 
   readonly isSkippable = computed(() => this.shouldShow() && !this.isAgbConsentEnforced());
