@@ -1,3 +1,9 @@
+## [1.20.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.9...v1.20.0-rc.10) (2026-09-18)
+
+### Bug Fixes
+
+- **agb-enforcement:** fix agb-enforcement ([f5c1465](https://github.com/agridata-ch/frontend/commit/f5c146536ac057c0f36871f9fcf1c2cb175612ff)), references [DIGIB2-1685](https://github.com/agridata-ch/frontend/issues/-1685)
+
 ## [1.20.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.8...v1.20.0-rc.9) (2026-09-17)
 
 ### Features
