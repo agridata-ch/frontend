@@ -140,15 +140,15 @@
         "headline": "Definire il contenuto della domanda di dati",
         "provider": {
           "label": "Fornitore di dati",
-          "sublabel": "Determinate il fornitore di dati desiderato e i prodotti dati specifici per la vostra domanda.",
+          "sublabel": "Selezionate il fornitore, il sistema e i prodotti dati desiderati. Trovate informazioni dettagliate sui contenuti nella panoramica.",
           "placeholder": "Selezionare un fornitore di dati",
           "heading": "Selezione dei prodotti dati"
         },
         "products": {
-          "label": "Sistema e prodotti desiderati",
-          "placeholder": "Selezionare i prodotti",
+          "label": "Sistema e prodotti dati",
+          "placeholder": "Selezionare i prodotti dati",
           "toCatalog": "Panoramica dei dati disponibili",
-          "sublabel": "Potete richiedere contemporaneamente solo prodotti provenienti da un unico sistema. Per prodotti dati di altri sistemi, registrate una domanda di dati separata.",
+          "sublabel": "Selezionate i prodotti dati.",
           "paymentRequiredWarning": "Avete selezionato almeno un prodotto dati a pagamento. I costi vengono addebitati direttamente da {{provider}} (e non da agridata.ch). I dettagli e i prezzi dei prodotti sono disponibili nella [panoramica dei dati disponibili]."
         },
         "title": {
@@ -222,7 +222,7 @@
         }
       },
       "consumer": {
-        "headline": "Informazioni sull’acquirente di dati",
+        "headline": "Informazioni sulla vostra organizzazione",
         "name": {
           "label": "Nome",
           "placeholder": "Nome"
@@ -254,8 +254,8 @@
           "logo": "Logo"
         },
         "contact": {
-          "label": "Le tue informazioni di contatto",
-          "sublabel": "Telefono ed e-mail per eventuali domande sulla sua richiesta."
+          "label": "Le vostre informazioni di contatto per i produttori",
+          "sublabel": "Inserire telefono ed e-mail per eventuali chiarimenti sulla richiesta. Questi dati verranno mostrati agli agricoltori e ai detentori di animali affinché possano contattarvi per domande relative al contenuto della richiesta di dati."
         },
         "contactPhoneNumber": {
           "label": "Numero di telefono",
@@ -266,12 +266,12 @@
           "placeholder": "...@......."
         },
         "dataConsumerDisplayName": {
-          "label": "Nome visualizzato/abbreviazione",
-          "placeholder": "Nome visualizzato/abbreviazione"
+          "label": "Nome visualizzato / abbreviazione",
+          "placeholder": "Nome visualizzato / abbreviazione"
         },
         "logo": {
           "label": "Logo",
-          "upload": "Carica un'immagine",
+          "upload": "Carica logo",
           "error": {
             "invalidFileType": "Tipo di file non valido. Carica un file PNG o JPG.",
             "size": "Il file è troppo grande. Dimensione massima consentita: {{ maxSize }}"
@@ -279,13 +279,13 @@
         }
       },
       "producer": {
-        "info": "Dopo che il contratto è stato firmato da tutte le parti, ricevi un modello di invito via e-mail contenente un link specifico per la tua richiesta. In questo modo potrai invitare in modo mirato i tuoi produttori di dati.",
-        "title": "Determinare i produttori di dati",
-        "description": "Decidi a quale gruppo di produttori di dati vuoi rivolgerti con la tua richiesta.",
+        "info": "Potrete inviare le richieste ai produttori di dati solo dopo che il contratto sarà stato firmato digitalmente dal richiedente e dal fornitore di dati e attivato da agridata.ch. Successivamente riceverete un link di invito che potrete inviare al gruppo target definito.",
+        "title": "Definire il gruppo target della richiesta dati",
+        "description": "Definite a quali produttori di dati invierete una richiesta di dati. Questa indicazione sarà inserita nel contratto per garantire che venga interpellato solo il gruppo target pertinente.",
         "targetGroup": {
-          "label": "Gruppo di produttori di dati",
-          "placeholder": "Gruppo di produttori di dati",
-          "helperText": "Esempio: tutti gli agricoltori bio"
+          "label": "Gruppo target dei produttori di dati",
+          "placeholder": "Gruppo target dei produttori di dati",
+          "helperText": "Esempio: Membri dell'organizzazione del marchio"
         }
       },
       "contract": {
@@ -897,7 +897,7 @@
       "titleUpdate": "Modifica prodotto dati",
       "publishConfirmation": {
         "title": "Pubblicare il prodotto dati?",
-        "description": "Con la pubblicazione, questo prodotto dati sarà attivato su agridata.ch. \nSi prega di notare:\n\n**Catalogo pubblico:** Il prodotto è immediatamente visibile a tutti gli acquirenti di dati.\n**Richiesta di dati:** Gli acquirenti di dati possono presentare direttamente una richiesta digitale per questi dati.\n**Consenso dei produttori:** Nome e descrizione verranno mostrati esattamente agli agricoltori e agli allevatori quando daranno il loro consenso alla condivisione dei dati. Si prega di utilizzare un linguaggio semplice e comprensibile.",
+        "description": "Con la pubblicazione, questo prodotto dati sarà attivato su agridata.ch. \nSi prega di notare:\n\n**Catalogo pubblico:** Il prodotto è immediatamente visibile a tutti gli acquirenti di dati.\n**Richiesta di dati:** Gli acquirenti di dati possono presentare direttamente una richiesta digitale per questi dati.\n**Consenso dei produttori:** Nome e descrizione verranno mostrati esattamente agli agricoltori e agli allevatori quando daranno il loro consenso alla richiesta di dati. Si prega di utilizzare un linguaggio semplice e comprensibile.",
         "cancel": "Annulla",
         "publish": "Sì, pubblica"
       }
@@ -1295,8 +1295,8 @@
       "description": "Descrizione",
       "links": "Links",
       "extendedDescription": "Ulteriori informazioni",
-      "paymentRequired": "Costi (fornitore)",
-      "costs": "Costi"
+      "paymentRequired": "Costi del fornitore",
+      "costs": "Costi per i richiedenti di dati"
     },
     "list": {
       "allLoaded": "Tutti i prodotti dati caricati"

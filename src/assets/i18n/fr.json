@@ -140,15 +140,15 @@
         "headline": "Définir le contenu de la demande de données",
         "provider": {
           "label": "Fournisseur de données",
-          "sublabel": "Déterminez le fournisseur de données souhaité ainsi que les produits de données spécifiques pour votre demande.",
+          "sublabel": "Sélectionnez le fournisseur, le système et les produits de données souhaités. Vous trouverez des informations détaillées sur le contenu dans l'aperçu.",
           "placeholder": "Sélectionner un fournisseur de données",
           "heading": "Sélection des produits de données"
         },
         "products": {
-          "label": "Système et produits souhaités",
-          "placeholder": "Sélectionner des produits",
+          "label": "Système et produits de données",
+          "placeholder": "Sélectionner les produits de données",
           "toCatalog": "Aperçu des données disponibles",
-          "sublabel": "Vous ne pouvez demander simultanément que des produits issus d'un seul et même système. Pour les produits de données provenant d'autres systèmes, veuillez créer une demande de données distincte.",
+          "sublabel": "Sélectionnez les produits de données.",
           "paymentRequiredWarning": "Vous avez sélectionné au moins un produit de données payant. Les frais sont facturés directement par {{provider}} (et non par agridata.ch). Vous trouverez les détails et les prix des produits dans [l’aperçu des données disponibles]."
         },
         "title": {
@@ -222,7 +222,7 @@
         }
       },
       "consumer": {
-        "headline": "Informations sur le bénéficiaire des données",
+        "headline": "Informations sur votre organisation",
         "name": {
           "label": "Nom",
           "placeholder": "Nom"
@@ -254,8 +254,8 @@
           "logo": "Logo"
         },
         "contact": {
-          "label": "Vos coordonnées",
-          "sublabel": "Téléphone et e-mail pour des questions concernant votre demande."
+          "label": "Vos coordonnées pour les producteurs",
+          "sublabel": "Saisissez le numéro de téléphone et l'adresse e-mail pour les questions relatives à votre demande. Ces informations seront affichées aux agriculteurs et détenteurs d'animaux afin qu'ils puissent vous contacter pour toute question sur le contenu de la demande de données."
         },
         "contactPhoneNumber": {
           "label": "Numéro de téléphone",
@@ -271,7 +271,7 @@
         },
         "logo": {
           "label": "Logo",
-          "upload": "Télécharger une image",
+          "upload": "Télécharger le logo",
           "error": {
             "invalidFileType": "Type de fichier invalide. Veuillez télécharger un fichier PNG ou JPG.",
             "size": "Le fichier est trop volumineux. Taille maximale autorisée: {{ maxSize }}"
@@ -279,13 +279,13 @@
         }
       },
       "producer": {
-        "info": "Une fois le contrat signé par toutes les parties contractantes, vous recevrez une e-mail modèle d'invitation par e-mail. Cette e-mail contiendra un lien spécifique à votre demande. Vous pourrez ainsi inviter de manière ciblée vos producteurs de données.",
-        "title": "Déterminer les producteurs de données",
-        "description": "Déterminez quel groupe de producteurs de données vous souhaitez cibler avec votre demande.",
+        "info": "Vous ne pourrez solliciter les producteurs de données qu'une fois le contrat signé électroniquement par le demandeur et le fournisseur de données, puis activé par agridata.ch. Vous recevrez ensuite un lien d'invitation que vous pourrez transmettre au groupe cible défini.",
+        "title": "Définir le groupe cible de la demande de données",
+        "description": "Définissez à quels producteurs de données vous allez adresser une demande de données. Cette indication sera intégrée au contrat afin de garantir que seule le groupe cible pertinent soit sollicité.",
         "targetGroup": {
-          "label": "Groupe de producteurs de données",
-          "placeholder": "Groupe de producteurs de données",
-          "helperText": "Exemple : tous les agriculteurs bio"
+          "label": "Groupe cible des producteurs de données",
+          "placeholder": "Groupe cible des producteurs de données",
+          "helperText": "Exemple : Membres de l'organisation de label"
         }
       },
       "contract": {
@@ -897,7 +897,7 @@
       "titleUpdate": "Modifier le produit de données",
       "publishConfirmation": {
         "title": "Publier le produit de données?",
-        "description": "En publiant, ce produit de données sera mis en ligne sur agridata.ch. \nVeuillez noter:\n\n**Catalogue public:** Le produit est désormais visible par tous les utilisateurs de données.\n**Demande de données:** Les utilisateurs de données peuvent directement soumettre une demande numérique pour ces données.\n**Consentement du producteur:** Le nom et la description seront affichés tels quels aux agriculteurs et éleveurs lorsqu'ils donneront leur consentement pour le partage des données. Veuillez utiliser un langage simple et compréhensible.",
+        "description": "En publiant, ce produit de données sera mis en ligne sur agridata.ch. \nVeuillez noter:\n\n**Catalogue public:** Le produit est désormais visible par tous les utilisateurs de données.\n**Demande de données:** Les utilisateurs de données peuvent directement soumettre une demande numérique pour ces données.\n**Consentement du producteur:** Le nom et la description seront affichés tels quels aux agriculteurs et éleveurs lorsqu'ils donneront leur consentement à la demande de données. Veuillez utiliser un langage simple et compréhensible.",
         "cancel": "Annuler",
         "publish": "Oui, publier"
       }
@@ -1295,8 +1295,8 @@
       "description": "Description",
       "links": "Liens",
       "extendedDescription": "Informations complémentaires",
-      "paymentRequired": "Frais (fournisseur)",
-      "costs": "Coûts"
+      "paymentRequired": "Frais du fournisseur",
+      "costs": "Frais pour les requérants de données"
     },
     "list": {
       "allLoaded": "Tous les produits de données chargés"
