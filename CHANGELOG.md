@@ -1,3 +1,10 @@
+## [1.20.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.11...v1.20.0-rc.12) (2026-09-18)
+
+### Features
+
+- **data-request:** add consumer displayname multilingual ([847a2bc](https://github.com/agridata-ch/frontend/commit/847a2bc3f5f3f6bbd78c18f29d84b7649453ea30)), references [DIGIB2-1698](https://github.com/agridata-ch/frontend/issues/-1698)
+- **deps:** fix vitest version ([c04fbfd](https://github.com/agridata-ch/frontend/commit/c04fbfdecc1edf298ac8436002499c1c147af61c))
+
 ## [1.20.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.10...v1.20.0-rc.11) (2026-09-18)
 
 ### Features
