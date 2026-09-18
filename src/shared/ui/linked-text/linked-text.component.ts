@@ -9,7 +9,13 @@ import { LinkedTextParts } from '@/shared/utils';
  * otherwise the link text is rendered as plain text so a malformed translation never
  * produces a broken anchor.
  *
- * CommentLastReviewed: 2026-07-23
+ * The whole snippet is built as one HTML string and bound via a single `[innerHTML]`, so no
+ * template whitespace sits between the parts. This keeps the exact spacing baked into the parsed
+ * strings (e.g. `after: '.'` renders directly after the link, with no stray space) and stays
+ * correct regardless of how the template file is formatted. Angular sanitizes the bound string
+ * on assignment, which escapes the text and preserves the safe `<a>` markup.
+ *
+ * CommentLastReviewed: 2026-09-18
  */
 @Component({
   selector: 'app-linked-text',
@@ -21,7 +27,17 @@ export class LinkedTextComponent {
   readonly href = input<string>();
 
   // Computed Signals
-  protected readonly resolvedHref = computed<string | null>(() => {
+  protected readonly content = computed<string>(() => {
+    const { before, linkText, after } = this.parts();
+    const href = this.resolvedHref();
+    const link = href
+      ? `<a href="${href}" target="_blank" rel="noopener noreferrer" class="underline hover:text-agridata-primary-600">${linkText ?? ''}</a>`
+      : (linkText ?? '');
+
+    return before + link + after;
+  });
+
+  private readonly resolvedHref = computed<string | null>(() => {
     const explicit = this.href();
     if (explicit) return explicit;
 
