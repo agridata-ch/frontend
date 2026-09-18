@@ -57,7 +57,7 @@
         "UNKNOWN": "Unbekannt",
         "PARTIALLY_GRANTED": "Teilweise Zugestimmt",
         "PARTIALLY_OPENED": "Teilweise Offen",
-        "LEGALLY_PERMITTED": "Gesetzlich geregelt"
+        "LEGALLY_PERMITTED": "Öffentlich-rechtlich"
       },
       "footerInformation": "Sie können Ihre Entscheidung später jederzeit hier ändern. Daten können nur übermittelt werden, wenn eine aktive Zustimmung vorliegt.",
       "requestDate": "Anfrage vom {{ date }}",
@@ -84,7 +84,7 @@
         "missingBurInfo": "Fehlt ein Standort? Melden Sie sich direkt bei {{ consumer }}, damit diese den Standort anfragen und Sie die Zustimmung geben können."
       },
       "footerInformationNoBur": "Sie haben alle Standorte deaktiviert. Wenn Sie diese Anfrage komplett ablehnen möchten, klicken Sie bitte auf Abbrechen und danach auf den Ablehnen-Button.",
-      "noConsentRequired": "Keine Aktion erforderlich. Dieser Datenbezug basiert auf einer gesetzlichen Grundlage. Eine Zustimmung oder Ablehnung Ihrerseits ist nicht erforderlich. Diese Ansicht dient Ihrer Information und Transparenz."
+      "noConsentRequired": "Keine Aktion erforderlich. Dieser Datenbezug erfolgt auf öffentlich-rechtlicher Grundlage. Diese Anzeige dient der transparenten Information."
     },
     "toast": {
       "title": {
@@ -110,7 +110,7 @@
         "DECLINED": "Abgelehnt",
         "PARTIALLY_OPENED": "Teilweise Offen",
         "PARTIALLY_GRANTED": "Teilweise Zugestimmt",
-        "LEGALLY_PERMITTED": "Gesetzlich geregelt"
+        "LEGALLY_PERMITTED": "Öffentlich-rechtlich"
       }
     },
     "emptyState": {
@@ -266,8 +266,18 @@
           "placeholder": "...@......."
         },
         "dataConsumerDisplayName": {
-          "label": "Anzeigename / Kurzform",
-          "placeholder": "Anzeigename / Kurzform"
+          "de": {
+            "label": "Anzeigename / Kurzform Deutsch",
+            "placeholder": "Anzeigename / Kurzform Deutsch"
+          },
+          "fr": {
+            "label": "Anzeigename / Kurzform Französisch",
+            "placeholder": "Anzeigename / Kurzform Französisch"
+          },
+          "it": {
+            "label": "Anzeigename / Kurzform Italienisch",
+            "placeholder": "Anzeigename / Kurzform Italienisch"
+          }
         },
         "logo": {
           "label": "Logo",
@@ -301,7 +311,7 @@
       },
       "products": {
         "allSystems": "Alle Systeme",
-        "publicSectorProductSuffix": "Gesetzlich geregelt"
+        "publicSectorProductSuffix": "Öffentlich-rechtlich"
       }
     },
     "preview": {
@@ -320,7 +330,7 @@
           "consumer": "Bezüger",
           "request": "Antrag",
           "preview": "Vorschau",
-          "producer": "Produzent",
+          "producer": "Zielgruppe",
           "contract": "Vertrag",
           "completion": "Abschluss"
         },
@@ -1291,7 +1301,7 @@
         "tooltip": "Dieses Datenprodukt steht für neue Anträge nicht mehr zur Verfügung. Bestehende Datenflüsse laufen weiterhin."
       },
       "showDetails": "Details ansehen",
-      "publicSector": "Gesetzlich geregelt",
+      "publicSector": "Öffentlich-rechtlich",
       "description": "Beschreibung",
       "links": "Links",
       "extendedDescription": "Erweiterte Beschreibung",

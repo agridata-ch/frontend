@@ -40,6 +40,7 @@ model/consentRequestProducerViewDtoDataRequestStateCode.ts
 model/consentRequestProducerViewV2Dto.ts
 model/consentRequestStateDto.ts
 model/consentRequestStateEnum.ts
+model/consentRequestStatusSummaryDto.ts
 model/contractRevisionDto.ts
 model/contractRevisionSignatureDto.ts
 model/createConsentRequestDto.ts
@@ -56,6 +57,7 @@ model/dataProviderExceptionDto.ts
 model/dataProviderReferenceDto.ts
 model/dataProviderStatus.ts
 model/dataRequestAdvantageDto.ts
+model/dataRequestConsumerDisplayNameDto.ts
 model/dataRequestContextDto.ts
 model/dataRequestDescriptionDto.ts
 model/dataRequestDto.ts
@@ -64,6 +66,7 @@ model/dataRequestStateEnum.ts
 model/dataRequestSummaryDto.ts
 model/dataRequestTitleDto.ts
 model/dataRequestUpdateDto.ts
+model/dataRequestV1Dto.ts
 model/dataRequestValidRedirectUriRegexUpdateDto.ts
 model/dataSourceSystemDto.ts
 model/dataSourceSystemReferenceDto.ts
@@ -95,6 +98,7 @@ model/restClientMethodCodeEnum.ts
 model/sealAttemptStateEnum.ts
 model/signatureSlotCodeEnum.ts
 model/signatureTypeEnum.ts
+model/stateCountsDto.ts
 model/targetTypeCodeEnum.ts
 model/translationDto.ts
 model/uidDto.ts

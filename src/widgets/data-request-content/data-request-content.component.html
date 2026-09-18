@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-10 py-4">
   <div class="flex flex-col gap-4">
     <app-agridata-contact-card
-      [name]="dataRequest().dataConsumerDisplayName"
+      [name]="consumerDisplayName()"
       [imageUrl]="dataRequest().dataConsumerLogoBase64"
       [secondaryName]="dataRequest().dataConsumerCity"
       [size]="AvatarSize.MEDIUM"
@@ -19,7 +19,7 @@
     <app-data-request-products-accordion
       [attr.id]="lang() ? null : 'data-request-products-accordion'"
       [products]="products()"
-      [consumerName]="dataRequest().dataConsumerDisplayName"
+      [consumerName]="consumerDisplayName()"
       [providerName]="providerName()"
       [lang]="lang()"
     />
@@ -32,16 +32,14 @@
   <app-data-request-purpose
     [attr.id]="lang() ? null : 'data-request-purpose'"
     [purpose]="dataRequest().purpose"
-    [consumerName]="dataRequest().dataConsumerDisplayName"
+    [consumerName]="consumerDisplayName()"
     [lang]="lang()"
   />
 
-  <app-data-request-consent-request-decisions
-    [consumerName]="dataRequest().dataConsumerDisplayName"
-  />
+  <app-data-request-consent-request-decisions [consumerName]="consumerDisplayName()" />
 
   <app-data-request-privacy-infos
-    [consumerName]="dataRequest().dataConsumerDisplayName"
+    [consumerName]="consumerDisplayName()"
     [providerName]="providerName()"
     [lang]="lang()"
   />
@@ -49,7 +47,7 @@
   <app-data-request-contact
     [phoneNumber]="dataRequest().contactPhoneNumber"
     [email]="dataRequest().contactEmailAddress"
-    [organisationName]="dataRequest().dataConsumerDisplayName"
+    [organisationName]="consumerDisplayName()"
     [lang]="lang()"
   />
 </div>

@@ -315,7 +315,7 @@ components:
           type: string
           description: BUR of the data producer; null for UID-based consent requests
           examples:
-          - "99910003"
+          - A99910003
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
           description: State of the consent request
@@ -340,8 +340,8 @@ components:
           examples:
           - 2025-05-19
         dataRequest:
-          type: object
           description: Details of the underlying data request
+          type: object
           required:
           - id
           - stateCode
@@ -524,7 +524,7 @@ components:
           type: string
           description: BUR of the data producer; null for UID-based consent requests
           examples:
-          - "99910003"
+          - A99910003
         stateCode:
           $ref: "#/components/schemas/ConsentRequestStateEnum"
           description: State of the consent request
@@ -579,6 +579,17 @@ components:
       - DECLINED
       - LEGALLY_PERMITTED
       - NOT_CREATED
+    ConsentRequestStatusSummaryDto:
+      description: "KPI summary of consent requests for a data request, broken down\
+        \ by mode (UID/BUR)"
+      type: object
+      properties:
+        uid:
+          $ref: "#/components/schemas/StateCountsDto"
+        bur:
+          $ref: "#/components/schemas/StateCountsDto"
+          description: Null when the data request has no BUR-based consent requests
+          type: object
     ContractRevisionDto:
       type: object
       required:
@@ -1052,6 +1063,21 @@ components:
           type: string
           examples:
           - Evitare inserimenti multipli
+    DataRequestConsumerDisplayNameDto:
+      type: object
+      properties:
+        de:
+          type: string
+          examples:
+          - Bio Suisse
+        fr:
+          type: string
+          examples:
+          - Bio Suisse
+        it:
+          type: string
+          examples:
+          - Bio Suisse
     DataRequestContextDto:
       description: Data transfer object representing a minimal version of a data request
         for UI/UX use.
@@ -1089,6 +1115,314 @@ components:
     DataRequestDto:
       type: object
       description: Data transfer object representing a data request
+      required:
+      - id
+      - stateCode
+      - advantages
+      - burPresent
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the data request
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+        dataProviderId:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the data provider responsible for this
+            data request. This value is derived from the data source systems of the
+            associated data products.
+          type: string
+          examples:
+          - e37b148b-9a0f-4c2e-80c5-fe9c9416b640
+        dataSourceSystemId:
+          $ref: "#/components/schemas/UUID"
+        dataSourceSystem:
+          $ref: "#/components/schemas/DataSourceSystemReferenceDto"
+        humanFriendlyId:
+          type: string
+          description: Human friendly id of the data request
+          examples:
+          - GL56
+        submissionDate:
+          type: string
+          format: date
+          examples:
+          - 2025-06-16T11:04:51.823889
+          description: Date and time when the data request was submitted
+        title:
+          $ref: "#/components/schemas/DataRequestTitleDto"
+          description: Title of the data request
+          type: object
+        description:
+          $ref: "#/components/schemas/DataRequestDescriptionDto"
+          description: 'Description of the data request '
+          type: object
+        purpose:
+          $ref: "#/components/schemas/DataRequestPurposeDto"
+          description: Purpose of the data request
+          type: object
+        products:
+          type: array
+          items:
+            type: string
+            format: uuid
+            pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          description: List of data products requested
+        stateCode:
+          type:
+          - string
+          - object
+          enum:
+          - DRAFT
+          - IN_REVIEW
+          - TO_BE_SIGNED_BY_CONSUMER
+          - TO_BE_RELEASED_BY_CONSUMER
+          - TO_BE_SIGNED_BY_PROVIDER
+          - TO_BE_RELEASED_BY_PROVIDER
+          - TO_BE_ACTIVATED
+          - ACTIVE
+          description: State of the data request
+        dataConsumerLegalName:
+          type: string
+          description: LegalName of the data consumer taken from the uid register
+          examples:
+          - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
+          maxLength: 255
+        dataConsumerDisplayName:
+          $ref: "#/components/schemas/DataRequestConsumerDisplayNameDto"
+          description: Shorter name of the data consumer defined by the data consumer
+            used when displaying the request to the producer
+          type: object
+        dataConsumerUid:
+          type: string
+          description: Uid of the data consumer
+          examples:
+          - CHE101708094
+        dataConsumerCity:
+          type: string
+          description: City of the data consumer
+          examples:
+          - Basel
+          maxLength: 120
+        dataConsumerZip:
+          type: string
+          description: Zip code of the data consumer
+          examples:
+          - "4052"
+          maxLength: 10
+        dataConsumerStreet:
+          type: string
+          description: Street of the data consumer
+          examples:
+          - Peter Merian-Str. 34
+          maxLength: 255
+        dataConsumerCountry:
+          type: string
+          description: 2 letter country code of the data consumer
+          examples:
+          - CH
+          maxLength: 2
+        contactPhoneNumber:
+          type: string
+          description: Contact phone number for the data request
+          examples:
+          - +41 79 123 45 67
+          maxLength: 50
+        contactEmailAddress:
+          type: string
+          description: Contact email address for the data request
+          examples:
+          - example@labelorganisation.ch
+          maxLength: 255
+        dataConsumerLogoBase64:
+          type: string
+          description: Base64-encoded logo of the data consumer
+          examples:
+          - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+        targetGroup:
+          type: string
+          maxLength: 150
+        validRedirectUriRegex:
+          type: string
+          description: Regex of valid redirect_uri. Must compile as regex successfully.
+          examples:
+          - ^https:\/\/www\.dummy-label-organisation\/.*$
+          maxLength: 255
+        currentContractRevisionId:
+          $ref: "#/components/schemas/UUID"
+          description: Id of current contract revision
+          type: string
+        consumerSignatureType:
+          $ref: "#/components/schemas/SignatureTypeEnum"
+          description: Signature type for consumer
+          type: string
+        providerSignatureType:
+          $ref: "#/components/schemas/SignatureTypeEnum"
+          description: Signature type for provider
+          type: string
+        advantages:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataRequestAdvantageDto"
+          description: A list of advantages to the producer for sharing their data
+        burPresent:
+          type: boolean
+          description: Whether this data request also has BUR based consent requests
+            in addition to the purely UID based ones. Derived from the flow codes
+            of the requested data products.
+          examples:
+          - true
+    DataRequestPurposeDto:
+      type: object
+      properties:
+        de:
+          type: string
+          examples:
+          - Bewertung der Bodenqualität
+        fr:
+          type: string
+          examples:
+          - Évaluation de la qualité du sol
+        it:
+          type: string
+          examples:
+          - Valutazione della qualità del suolo
+    DataRequestStateEnum:
+      type: string
+      enum:
+      - DRAFT
+      - IN_REVIEW
+      - TO_BE_SIGNED_BY_CONSUMER
+      - TO_BE_RELEASED_BY_CONSUMER
+      - TO_BE_SIGNED_BY_PROVIDER
+      - TO_BE_RELEASED_BY_PROVIDER
+      - TO_BE_ACTIVATED
+      - ACTIVE
+    DataRequestSummaryDto:
+      type: object
+      description: Reduced data transfer object representing a data request
+      required:
+      - id
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the data request
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+        dataConsumerDisplayName:
+          $ref: "#/components/schemas/DataRequestConsumerDisplayNameDto"
+          description: Shorter name of the data consumer defined by the data consumer
+            used when displaying the request to the producer
+          type: object
+        dataConsumerLogoBase64:
+          type: string
+          description: Base64-encoded logo of the data consumer
+          examples:
+          - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+        dataConsumerCity:
+          type: string
+          description: City of the data consumer
+          examples:
+          - Basel
+        title:
+          $ref: "#/components/schemas/DataRequestTitleDto"
+          description: Title of the data request
+          type: object
+    DataRequestTitleDto:
+      type: object
+      properties:
+        de:
+          type: string
+          examples:
+          - Anfrage zu Bodentypen und Bodenqualitätsdaten
+        fr:
+          type: string
+          examples:
+          - Demande sur les types de sols et les données de qualité du sol
+        it:
+          type: string
+          examples:
+          - Richiesta sui tipi di suolo e sui dati sulla qualità del suolo
+    DataRequestUpdateDto:
+      description: Data transfer object representing a data request
+      type: object
+      properties:
+        title:
+          $ref: "#/components/schemas/DataRequestTitleDto"
+          description: Title of the data request
+          type: object
+        description:
+          $ref: "#/components/schemas/DataRequestDescriptionDto"
+          description: 'Description of the data request '
+          type: object
+        purpose:
+          $ref: "#/components/schemas/DataRequestPurposeDto"
+          description: Purpose of the data request
+          type: object
+        dataConsumerDisplayName:
+          $ref: "#/components/schemas/DataRequestConsumerDisplayNameDto"
+          description: Shorter name of the data consumer defined by the data consumer
+            used when displaying the request to the producer
+          type: object
+        dataConsumerCity:
+          type: string
+          description: City of the data consumer
+          examples:
+          - Basel
+        dataConsumerZip:
+          type: string
+          description: Zip code of the data consumer
+          examples:
+          - "4052"
+        dataConsumerStreet:
+          type: string
+          description: Street of the data consumer
+          examples:
+          - Peter Merian-Str. 34
+        dataConsumerCountry:
+          type: string
+          description: 2 letter valid ISO 3166-1 alpha-2 country code of the data
+            consumer
+          examples:
+          - CH
+        contactPhoneNumber:
+          type: string
+          description: Contact phone number for the data request
+          examples:
+          - +41 79 123 45 67
+          maxLength: 50
+        contactEmailAddress:
+          type: string
+          description: Contact email address for the data request
+          examples:
+          - example@labelorganisation.ch
+          maxLength: 255
+        targetGroup:
+          type: string
+          description: Target group of the data request
+          examples:
+          - von allen Bio Suisse Mitgliedern
+        products:
+          type: array
+          items:
+            type: string
+            format: uuid
+            pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          description: List of data products requested
+          examples:
+          - - c661ea48-106d-4d7a-a5d1-a9a6db48dd8c
+        advantages:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataRequestAdvantageDto"
+          description: A list of advantages to the producer for sharing their data
+      required:
+      - advantages
+    DataRequestV1Dto:
+      description: Details of the underlying data request
+      type: object
       required:
       - id
       - stateCode
@@ -1249,154 +1583,6 @@ components:
             of the requested data products.
           examples:
           - true
-    DataRequestPurposeDto:
-      type: object
-      properties:
-        de:
-          type: string
-          examples:
-          - Bewertung der Bodenqualität
-        fr:
-          type: string
-          examples:
-          - Évaluation de la qualité du sol
-        it:
-          type: string
-          examples:
-          - Valutazione della qualità del suolo
-    DataRequestStateEnum:
-      type: string
-      enum:
-      - DRAFT
-      - IN_REVIEW
-      - TO_BE_SIGNED_BY_CONSUMER
-      - TO_BE_RELEASED_BY_CONSUMER
-      - TO_BE_SIGNED_BY_PROVIDER
-      - TO_BE_RELEASED_BY_PROVIDER
-      - TO_BE_ACTIVATED
-      - ACTIVE
-    DataRequestSummaryDto:
-      type: object
-      description: Reduced data transfer object representing a data request
-      required:
-      - id
-      properties:
-        id:
-          $ref: "#/components/schemas/UUID"
-          description: Unique identifier of the data request
-          type: string
-          examples:
-          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
-        dataConsumerDisplayName:
-          type: string
-          description: Shorter name of the data consumer defined by the data consumer
-            used when displaying the request to the producer
-          examples:
-          - Bio Suisse
-        dataConsumerLogoBase64:
-          type: string
-          description: Base64-encoded logo of the data consumer
-          examples:
-          - "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
-        dataConsumerCity:
-          type: string
-          description: City of the data consumer
-          examples:
-          - Basel
-        title:
-          $ref: "#/components/schemas/DataRequestTitleDto"
-          description: Title of the data request
-          type: object
-    DataRequestTitleDto:
-      type: object
-      properties:
-        de:
-          type: string
-          examples:
-          - Anfrage zu Bodentypen und Bodenqualitätsdaten
-        fr:
-          type: string
-          examples:
-          - Demande sur les types de sols et les données de qualité du sol
-        it:
-          type: string
-          examples:
-          - Richiesta sui tipi di suolo e sui dati sulla qualità del suolo
-    DataRequestUpdateDto:
-      description: Data transfer object representing a data request
-      type: object
-      properties:
-        title:
-          $ref: "#/components/schemas/DataRequestTitleDto"
-          description: Title of the data request
-          type: object
-        description:
-          $ref: "#/components/schemas/DataRequestDescriptionDto"
-          description: 'Description of the data request '
-          type: object
-        purpose:
-          $ref: "#/components/schemas/DataRequestPurposeDto"
-          description: Purpose of the data request
-          type: object
-        dataConsumerDisplayName:
-          type: string
-          description: Shorter name of the data consumer defined by the data consumer
-            used when displaying the request to the producer
-          examples:
-          - Bio Suisse
-        dataConsumerCity:
-          type: string
-          description: City of the data consumer
-          examples:
-          - Basel
-        dataConsumerZip:
-          type: string
-          description: Zip code of the data consumer
-          examples:
-          - "4052"
-        dataConsumerStreet:
-          type: string
-          description: Street of the data consumer
-          examples:
-          - Peter Merian-Str. 34
-        dataConsumerCountry:
-          type: string
-          description: 2 letter country code of the data consumer
-          examples:
-          - CH
-        contactPhoneNumber:
-          type: string
-          description: Contact phone number for the data request
-          examples:
-          - +41 79 123 45 67
-          maxLength: 50
-        contactEmailAddress:
-          type: string
-          description: Contact email address for the data request
-          examples:
-          - example@labelorganisation.ch
-          maxLength: 255
-        targetGroup:
-          type: string
-          description: Target group of the data request
-          examples:
-          - von allen Bio Suisse Mitgliedern
-        products:
-          type: array
-          items:
-            type: string
-            format: uuid
-            pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
-          description: List of data products requested
-          examples:
-          - - c661ea48-106d-4d7a-a5d1-a9a6db48dd8c
-        advantages:
-          type: array
-          items:
-            $ref: "#/components/schemas/DataRequestAdvantageDto"
-          description: A list of advantages to the producer for sharing their data
-      required:
-      - advantages
     DataRequestValidRedirectUriRegexUpdateDto:
       type: object
       properties:
@@ -2074,6 +2260,23 @@ components:
       enum:
       - INDIVIDUAL_SIGNATURE
       - COLLECTIVE_SIGNATURE
+    StateCountsDto:
+      type: object
+      description: "Counts of consent requests by status, for a single mode (UID or\
+        \ BUR)"
+      properties:
+        total:
+          type: integer
+          format: int64
+        open:
+          type: integer
+          format: int64
+        granted:
+          type: integer
+          format: int64
+        declined:
+          type: integer
+          format: int64
     TargetTypeCodeEnum:
       type: string
       enum:
@@ -3334,6 +3537,48 @@ paths:
       x-api-subset:
       - agridata.ch Web App
       - Data Provider
+  /api/agreement/v1/data-requests/{id}/consent-requests/status-summary:
+    get:
+      description: "Retrieves KPI counts (total/open/granted/declined) of consent\
+        \ requests for a data request, broken down by UID/BUR mode. Accessible to\
+        \ the consumer who owns the data request."
+      operationId: getConsentRequestStatusSummaryOfDataRequest
+      tags:
+      - Data Requests
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsentRequestStatusSummaryDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Consent Request Status Summary Of Data Request
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/logo:
     put:
       description: Updates the logo of a specific data request. Only accessible to
@@ -5763,7 +6008,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.17.0-rc.16
+  version: 1.18.0-rc.4
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

@@ -46,6 +46,9 @@ export class DataRequestContentComponent {
   readonly lang = input<string>();
 
   // Computed Signals
+  protected readonly consumerDisplayName = computed(() =>
+    this.i18nService.useObjectTranslation(this.dataRequest().dataConsumerDisplayName, this.lang()),
+  );
   protected readonly description = computed(() =>
     this.i18nService.useObjectTranslation(this.dataRequest().description, this.lang()),
   );

@@ -57,7 +57,7 @@
         "UNKNOWN": "Inconnu",
         "PARTIALLY_GRANTED": "Partiellement approuvé",
         "PARTIALLY_OPENED": "Partiellement ouvert",
-        "LEGALLY_PERMITTED": "Réglementé par la loi"
+        "LEGALLY_PERMITTED": "De droit public"
       },
       "footerInformation": "Vous pouvez modifier votre choix à tout moment ici. Les données ne peuvent être transmises qu'en cas de consentement explicite.",
       "requestDate": "Demande du {{ date }}",
@@ -84,7 +84,7 @@
         "missingBurInfo": "Un site manque ? Contactez directement {{ consumer }} afin qu'ils puissent demander le site et que vous puissiez donner votre consentement."
       },
       "footerInformationNoBur": "Vous avez désactivé tous les sites. Si vous souhaitez refuser complètement cette demande, veuillez cliquer sur Annuler, puis sur le bouton Refuser.",
-      "noConsentRequired": "Aucune action requise. Cette référence de données est basée sur une base légale. Votre consentement ou votre refus n'est pas nécessaire. Cette vue sert à votre information et à votre transparence."
+      "noConsentRequired": "Aucune action requise. Ce prélèvement de données repose sur une base de droit public. Cet affichage est proposé à titre d'information transparente."
     },
     "toast": {
       "title": {
@@ -110,7 +110,7 @@
         "DECLINED": "Refusé",
         "PARTIALLY_OPENED": "Partiellement ouvert",
         "PARTIALLY_GRANTED": "Partiellement approuvé",
-        "LEGALLY_PERMITTED": "Réglementé par la loi"
+        "LEGALLY_PERMITTED": "De droit public"
       }
     },
     "emptyState": {
@@ -266,8 +266,18 @@
           "placeholder": "...@......"
         },
         "dataConsumerDisplayName": {
-          "label": "Nom d'affichage / Abréviation",
-          "placeholder": "Nom d'affichage / Abréviation"
+          "de": {
+            "label": "Nom d'affichage / Abréviation en allemand",
+            "placeholder": "Nom d'affichage / Abréviation en allemand"
+          },
+          "fr": {
+            "label": "Nom d'affichage / Abréviation en français",
+            "placeholder": "Nom d'affichage / Abréviation en français"
+          },
+          "it": {
+            "label": "Nom d'affichage / Abréviation en italien",
+            "placeholder": "Nom d'affichage / Abréviation en italien"
+          }
         },
         "logo": {
           "label": "Logo",
@@ -301,7 +311,7 @@
       },
       "products": {
         "allSystems": "Tous les systèmes",
-        "publicSectorProductSuffix": "Réglementé par la loi"
+        "publicSectorProductSuffix": "De droit public"
       }
     },
     "preview": {
@@ -320,7 +330,7 @@
           "consumer": "Requérant des données",
           "request": "Demande de données",
           "preview": "Aperçu",
-          "producer": "Fournisseur de données",
+          "producer": "Groupe cible",
           "contract": "Contrat",
           "completion": "Conclusion"
         },
@@ -1291,7 +1301,7 @@
         "tooltip": "Ce produit de données n'est plus disponible pour de nouvelles demandes. Les flux de données existants restent actifs."
       },
       "showDetails": "Voir les détails",
-      "publicSector": "Réglementé par la loi",
+      "publicSector": "De droit public",
       "description": "Description",
       "links": "Liens",
       "extendedDescription": "Informations complémentaires",

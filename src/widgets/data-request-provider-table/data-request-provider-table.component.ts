@@ -115,10 +115,12 @@ export class DataRequestProviderTableComponent {
             name: this.dataRequestConsumerHeader,
             renderer: {
               type: CellRendererTypes.FUNCTION,
-              cellRenderFn: (item) => item?.dataConsumerDisplayName ?? '',
+              cellRenderFn: (item) =>
+                this.i18nService.useObjectTranslation(item?.dataConsumerDisplayName),
             },
             sortable: true,
-            sortValueFn: (item) => item.dataConsumerDisplayName ?? '',
+            sortValueFn: (item) =>
+              this.i18nService.useObjectTranslation(item.dataConsumerDisplayName),
           },
           {
             name: this.dataRequestSystemHeader,

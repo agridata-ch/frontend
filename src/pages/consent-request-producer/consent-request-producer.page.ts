@@ -186,6 +186,10 @@ export class ConsentRequestProducerPage {
     this.agridataStateService.addConfirmedMigratedUids([requestId]);
   }
 
+  protected getMigratedRequestConsumerName(request: ConsentRequestAggregationSummaryDto): string {
+    return this.i18nService.useObjectTranslation(request?.dataRequest?.dataConsumerDisplayName);
+  }
+
   protected getMigratedRequestTitle(request: ConsentRequestAggregationSummaryDto): string {
     return this.i18nService.useObjectTranslation(request?.dataRequest?.title);
   }

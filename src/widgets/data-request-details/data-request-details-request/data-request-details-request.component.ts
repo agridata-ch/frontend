@@ -54,6 +54,9 @@ export class DataRequestDetailsRequestComponent {
   protected readonly copyFeedbackKey = signal('');
 
   // Computed signals
+  protected readonly consumerDisplayName = computed(() =>
+    this.i18nService.useObjectTranslation(this.dataRequest().dataConsumerDisplayName),
+  );
   protected readonly formattedSubmissionDate = computed(() =>
     formatDate(this.dataRequest().submissionDate),
   );

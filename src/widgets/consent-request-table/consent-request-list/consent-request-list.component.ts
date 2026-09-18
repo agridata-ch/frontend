@@ -50,6 +50,10 @@ export class ConsentRequestListComponent {
     this.openDetails.emit(request);
   }
 
+  getTranslatedConsumerName(request: ConsentRequestAggregationSummaryDto) {
+    return this.i18nService.useObjectTranslation(request.dataRequest?.dataConsumerDisplayName);
+  }
+
   getTranslatedTitle(request: ConsentRequestAggregationSummaryDto) {
     return this.i18nService.useObjectTranslation(request.dataRequest?.title);
   }
