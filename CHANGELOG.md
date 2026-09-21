@@ -1,3 +1,26 @@
+## [1.20.0](https://github.com/agridata-ch/frontend/compare/v1.19.0...v1.20.0) (2026-09-21)
+
+### Features
+
+- **agbs:** update AGB modal behaviour with updated visibility/acceptance logic ([c2d8829](https://github.com/agridata-ch/frontend/commit/c2d8829400da00361994d47b775fd653e06e7cde)), references [DIGIB2-1685](https://github.com/agridata-ch/frontend/issues/-1685)
+- **cms:** add new image alt text ([32ff9bf](https://github.com/agridata-ch/frontend/commit/32ff9bfcd3d2dfda9c3fa8d16081a722d0bffe21)), references [DIGIB2-1030](https://github.com/agridata-ch/frontend/issues/-1030)
+- **countries:** add additional countries and update localization for country labels ([13814c9](https://github.com/agridata-ch/frontend/commit/13814c97b5d6b1815db1f242442e0e0bf6a21da4)), references [DIGIB2-1707](https://github.com/agridata-ch/frontend/issues/-1707)
+- **data-catalog:** add filter ([f416333](https://github.com/agridata-ch/frontend/commit/f41633398a8f270efa4e00a9c2649b39b01075cd)), references [DIGIB2-1673](https://github.com/agridata-ch/frontend/issues/-1673)
+- **data-products:** add payment requirement and pricing basis fields to data product ([0925edc](https://github.com/agridata-ch/frontend/commit/0925edc8fec367faf509656f80faaa80423c864d)), references [DIGIB2-1604](https://github.com/agridata-ch/frontend/issues/-1604)
+- **data-request:** add consumer displayname multilingual ([847a2bc](https://github.com/agridata-ch/frontend/commit/847a2bc3f5f3f6bbd78c18f29d84b7649453ea30)), references [DIGIB2-1698](https://github.com/agridata-ch/frontend/issues/-1698)
+- **data-request:** add payment required functionality to product selection ([62d393d](https://github.com/agridata-ch/frontend/commit/62d393d1fa171b8fddcd8563b937909915588e6b)), references [DIGIB2-1681](https://github.com/agridata-ch/frontend/issues/-1681)
+- **data-request:** add producer tab ([ba57962](https://github.com/agridata-ch/frontend/commit/ba57962cbc4b6981faabd3ec6f173db82cc73101)), references [DIGIB2-617](https://github.com/agridata-ch/frontend/issues/-617)
+- **deps:** fix vitest version ([c04fbfd](https://github.com/agridata-ch/frontend/commit/c04fbfdecc1edf298ac8436002499c1c147af61c))
+- **deps:** update renovatebot/github-action action to v46.3.1 ([d1e783c](https://github.com/agridata-ch/frontend/commit/d1e783c2544f54c246f6fbf50d0e29d7edae61b7))
+- **i18n:** update translations ([5c10c14](https://github.com/agridata-ch/frontend/commit/5c10c14eb576efaf3aa22e8af8ee1b15ece75636))
+- **multi-select:** enhance dropdown behavior with dynamic placement and update translations ([330a4d5](https://github.com/agridata-ch/frontend/commit/330a4d54de89e541937a6b1b65affc83e13ebfb8)), references [DIGIB2-1681](https://github.com/agridata-ch/frontend/issues/-1681)
+- **request-purpose:** use wysiwyg for request purpose, refactor form control rendering ([8b4abd7](https://github.com/agridata-ch/frontend/commit/8b4abd7c81727d86628b7b6d3f4d4174eedd1e80)), references [DIGIB2-1706](https://github.com/agridata-ch/frontend/issues/-1706)
+
+### Bug Fixes
+
+- **agb-enforcement:** fix agb-enforcement ([f5c1465](https://github.com/agridata-ch/frontend/commit/f5c146536ac057c0f36871f9fcf1c2cb175612ff)), references [DIGIB2-1685](https://github.com/agridata-ch/frontend/issues/-1685)
+- **agridata-select:** fix group styling ([cf606bc](https://github.com/agridata-ch/frontend/commit/cf606bcdaee6c625fee0febb35e11db18030147a)), references [DIGIB2-1673](https://github.com/agridata-ch/frontend/issues/-1673)
+
 ## [1.20.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.20.0-rc.11...v1.20.0-rc.12) (2026-09-18)
 
 ### Features
