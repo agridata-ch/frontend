@@ -1,3 +1,9 @@
+## [1.21.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.20.0...v1.21.0-rc.1) (2026-09-21)
+
+### Features
+
+- **public-data-product:** add documents download ([e3fef6f](https://github.com/agridata-ch/frontend/commit/e3fef6fbfc4cf4a6469fc1c184e7f43c896ff7a3)), references [DIGIB2-1682](https://github.com/agridata-ch/frontend/issues/-1682)
+
 ## [1.20.0](https://github.com/agridata-ch/frontend/compare/v1.19.0...v1.20.0) (2026-09-21)
 
 ### Features
