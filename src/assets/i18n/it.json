@@ -522,7 +522,7 @@
       "title": "Sintesi e conclusione",
       "signingStatus": {
         "heading": "Stato della firma",
-        "badgeText": "Persona {{ posizione }}",
+        "badgeText": "Persona {{ position }}",
         "signedDescription": "Firmato da {{ name }}",
         "dataConsumer": {
           "heading": "Firma dei destinatari dei dati"
@@ -1306,7 +1306,8 @@
       "links": "Links",
       "extendedDescription": "Ulteriori informazioni",
       "paymentRequired": "Costi del fornitore",
-      "costs": "Costi per i richiedenti di dati"
+      "costs": "Costi per i richiedenti di dati",
+      "documents": "Documenti"
     },
     "list": {
       "allLoaded": "Tutti i prodotti dati caricati"

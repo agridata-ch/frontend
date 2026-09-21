@@ -12,12 +12,15 @@ import { faCircleChf, faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/cla
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { DataProductService } from '@/entities/api';
+import { DataProductDocumentService, DataProductService } from '@/entities/api';
+import { DataProductDocumentMetadataDto } from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
+import { createDocumentDownloadHandler } from '@/shared/lib/document-download.helper';
 import { TooltipDirective } from '@/shared/tooltip';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
+import { AgridataFileDownloadComponent } from '@/shared/ui/file-download';
 import { AgridataLinksListComponent } from '@/shared/ui/links-list';
 import { ModalComponent } from '@/shared/ui/modal';
 
@@ -32,6 +35,7 @@ import { ModalComponent } from '@/shared/ui/modal';
   selector: 'app-public-data-product-detail',
   imports: [
     AgridataBadgeComponent,
+    AgridataFileDownloadComponent,
     AgridataLinksListComponent,
     FontAwesomeModule,
     I18nDirective,
@@ -44,6 +48,7 @@ import { ModalComponent } from '@/shared/ui/modal';
 export class PublicDataProductDetailComponent {
   // Injects
   private readonly dataProductService = inject(DataProductService);
+  private readonly documentService = inject(DataProductDocumentService);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
 
@@ -68,6 +73,15 @@ export class PublicDataProductDetailComponent {
         ? this.dataProductService.getPublicProductById(params.id)
         : Promise.resolve(undefined),
   });
+
+  protected readonly documentsResource = resource({
+    params: () => ({ id: this.productId() }),
+    loader: ({ params }) =>
+      params.id ? this.documentService.listDocumentsPublic(params.id) : Promise.resolve(undefined),
+  });
+
+  // Signals
+  protected readonly downloads = createDocumentDownloadHandler(this.errorService);
 
   // Computed signals
   protected readonly open = computed(() => !!this.productId());
@@ -102,4 +116,23 @@ export class PublicDataProductDetailComponent {
   private readonly closeOnErrorEffect = effect(() => {
     if (this.productResource.error()) this.handleClose.emit();
   });
+
+  // Computed
+  protected readonly hasLinks = computed(() => !!this.product()?.links?.length);
+  protected readonly documents = computed(() => this.documentsResource.value() ?? []);
+
+  // Methods
+  protected handleDownload(doc: DataProductDocumentMetadataDto): void {
+    const id = this.productId();
+    if (!id) return;
+    this.downloads.download(doc.id, doc.fileName, () =>
+      this.documentService.downloadDocumentPublic(id, doc.id),
+    );
+  }
+
+  protected handleOpen(doc: DataProductDocumentMetadataDto): void {
+    const id = this.productId();
+    if (!id) return;
+    this.downloads.open(doc.id, () => this.documentService.downloadDocumentPublic(id, doc.id));
+  }
 }
