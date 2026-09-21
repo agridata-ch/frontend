@@ -13,6 +13,7 @@ import { DataRequestAdvantageDto } from './dataRequestAdvantageDto';
 import { ConsentRequestProducerViewDtoDataRequestStateCode } from './consentRequestProducerViewDtoDataRequestStateCode';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
+import { DataRequestConsumerDisplayNameDto } from './dataRequestConsumerDisplayNameDto';
 import { SignatureTypeEnum } from './signatureTypeEnum';
 
 
@@ -56,7 +57,7 @@ export interface DataRequestDto {
     /**
      * Shorter name of the data consumer defined by the data consumer used when displaying the request to the producer
      */
-    dataConsumerDisplayName?: string;
+    dataConsumerDisplayName?: DataRequestConsumerDisplayNameDto;
     /**
      * Uid of the data consumer
      */
@@ -107,6 +108,10 @@ export interface DataRequestDto {
      * A list of advantages to the producer for sharing their data
      */
     advantages: Array<DataRequestAdvantageDto>;
+    /**
+     * Whether this data request also has BUR based consent requests in addition to the purely UID based ones. Derived from the flow codes of the requested data products.
+     */
+    burPresent: boolean;
 }
 export namespace DataRequestDto {
 }

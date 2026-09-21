@@ -1,11 +1,20 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  ElementRef,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   faChevronDown,
   faChevronUp,
-  faSearch,
   faTimes,
 } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faCircleChf } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
@@ -16,6 +25,7 @@ import {
   MultiSelectCategory,
   MultiSelectOption,
 } from '@/shared/ui/agridata-multi-select';
+import { createOpenAboveSignal } from '@/shared/utils';
 
 import { AgridataMultiSelectOptionComponent } from './agridata-multi-select-option/agridata-multi-select-option.component';
 import { SearchInputComponent } from '../search-input/search-input.component';
@@ -48,7 +58,7 @@ export class AgridataMultiSelectComponent {
   protected readonly chevronDown = faChevronDown;
   protected readonly chevronUp = faChevronUp;
   protected readonly iconClose = faTimes;
-  protected readonly iconSearch = faSearch;
+  protected readonly paymentRequiredIcon = faCircleChf;
 
   // Input properties
   readonly categories = input<MultiSelectCategory[]>([]);
@@ -70,6 +80,11 @@ export class AgridataMultiSelectComponent {
   protected readonly selectAllLabel = this.i18nService.translateSignal(
     'input.formControl.multiSelect.selectAll',
   );
+
+  private readonly popover = viewChild<ElementRef<HTMLDivElement>>('popover');
+  private readonly triggerButton = viewChild<ElementRef<HTMLButtonElement>>('triggerButton');
+
+  protected readonly openAbove = createOpenAboveSignal(this.triggerButton, this.popover);
 
   // Computed Signals
   protected readonly activeCategoryLabel = computed<string | null>(() => {

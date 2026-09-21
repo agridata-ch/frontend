@@ -20,27 +20,44 @@ describe('AgridataRadioGroupComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should apply the name input to every rendered radio input', () => {
+    fixture.componentRef.setInput('options', [
+      { title: 'Yes', subtitle: '', value: true },
+      { title: 'No', subtitle: '', value: false },
+    ]);
+    fixture.componentRef.setInput('name', 'paymentRequired');
+    fixture.detectChanges();
+
+    const radios = Array.from(
+      fixture.nativeElement.querySelectorAll('input[type="radio"]'),
+    ) as HTMLInputElement[];
+    expect(radios).toHaveLength(2);
+    expect(radios.every((radio) => radio.name === 'paymentRequired')).toBe(true);
+  });
+
   describe('view mode', () => {
     beforeEach(() => {
       fixture.componentRef.setInput('options', [
-        { title: 'Yes', subtitle: '', value: true },
-        { title: 'No', subtitle: '', value: false },
+        { title: 'Yes', subtitle: 'Yes subtitle', value: true },
+        { title: 'No', subtitle: 'No subtitle', value: false },
       ]);
-      fixture.componentRef.setInput('value', false);
       fixture.componentRef.setInput('isViewMode', true);
-      fixture.detectChanges();
     });
 
-    it('should keep the options but disable them and drop the border', () => {
-      const radios = Array.from(
-        fixture.nativeElement.querySelectorAll('input[type="radio"]'),
-      ) as HTMLInputElement[];
-      expect(radios).toHaveLength(2);
-      expect(radios.every((radio) => radio.disabled)).toBe(true);
+    it('should show only the selected option title, without radio inputs or subtitle', () => {
+      fixture.componentRef.setInput('value', false);
+      fixture.detectChanges();
 
-      const container = fixture.nativeElement.querySelector('div') as HTMLElement;
-      expect(container.classList).toContain('border-transparent');
-      expect(container.classList).not.toContain('border-agridata-stroke');
+      expect(fixture.nativeElement.textContent).toContain('No');
+      expect(fixture.nativeElement.textContent).not.toContain('Yes');
+      expect(fixture.nativeElement.textContent).not.toContain('No subtitle');
+      expect(fixture.nativeElement.querySelectorAll('input[type="radio"]')).toHaveLength(0);
+    });
+
+    it('should show a placeholder when no option is selected', () => {
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.textContent).toContain('–');
     });
   });
 });

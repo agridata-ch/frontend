@@ -11,7 +11,12 @@ import {
   ResourceQueryDto,
 } from '@/entities/openapi';
 import { ActingRole } from '@/shared/constants/constants';
-import { arrayToObjectSortParams, asPageResponse, PageResponseDto } from '@/shared/lib/api.helper';
+import {
+  arrayToObjectSortParams,
+  asPageResponse,
+  columnFiltersToObject,
+  PageResponseDto,
+} from '@/shared/lib/api.helper';
 
 type DataProductActingRoles = 'PROVIDER' | 'ADMIN' | undefined;
 
@@ -50,6 +55,7 @@ export class DataProductService {
     return firstValueFrom(
       this.apiService
         .getDataProductsPaginated(
+          columnFiltersToObject(queryDto.columnFilters),
           queryDto.language,
           queryDto.page,
           queryDto.searchTerm,
@@ -109,6 +115,7 @@ export class DataProductService {
     return firstValueFrom(
       this.publicApiService
         .getPublicDataProductsPaginated(
+          columnFiltersToObject(queryDto.columnFilters),
           queryDto.language,
           queryDto.page,
           queryDto.searchTerm,

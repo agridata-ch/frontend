@@ -1,0 +1,21 @@
+<div class="flex flex-col gap-10 py-4" *i18n="let t; prefix: 'data-request.details.producer'">
+  <app-agridata-table
+    class="block"
+    [dataProvider]="producersResource"
+    [tableMetadata]="tableMetadata()"
+    [(queryParameters)]="resourceQueryDto"
+    [enableSearch]="true"
+    [emptyStateTemplate]="emptyStateTemplate"
+  >
+    <ng-template #stateTemplate [appConsentRequestFundamentalViewDtoGuard] let-item>
+      <app-agridata-badge
+        [text]="getStateTranslation(item.stateCode)"
+        [variant]="getConsentRequestBadgeVariant(item.stateCode)"
+        [size]="BadgeSize.SM"
+      />
+    </ng-template>
+  </app-agridata-table>
+  <ng-template #emptyStateTemplate>
+    <app-empty-state [title]="t('emptyState.title')" />
+  </ng-template>
+</div>

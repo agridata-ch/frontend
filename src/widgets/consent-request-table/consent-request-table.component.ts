@@ -148,7 +148,7 @@ export class ConsentRequestTableComponent {
           },
           sortable: true,
           sortValueFn: (item: ConsentRequestAggregationSummaryDto) =>
-            item.dataRequest?.dataConsumerDisplayName ?? '',
+            this.getTranslation(item.dataRequest?.dataConsumerDisplayName),
         },
         {
           name: this.dataRequestTitleHeader,

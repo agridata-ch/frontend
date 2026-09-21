@@ -52,6 +52,8 @@ export function createMockMasterDataService(): MockMasterDataService {
     dataProviders,
     fetchProductsByProvider: vi.fn(),
     getProductsForProvider,
+    getPublicDataProviders: vi.fn(() => Promise.resolve([])),
+    getPublicDataSourceSystems: vi.fn(() => Promise.resolve([])),
     providerName,
     providersLoading,
     __testSignals: {

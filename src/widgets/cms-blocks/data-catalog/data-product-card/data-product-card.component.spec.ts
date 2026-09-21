@@ -8,6 +8,7 @@ import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
 import { DataProductCardComponent } from './data-product-card.component';
 
 const mockProduct: PublicDataProductDto = {
+  paymentRequired: false,
   id: 'product-1',
   stateCode: 'ACTIVE' as PublicDataProductDto['stateCode'],
   consentRequired: false,

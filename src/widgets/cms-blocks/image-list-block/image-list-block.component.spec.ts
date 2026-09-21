@@ -2,6 +2,8 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { ImageListBlock } from '@/entities/cms';
+
 import { ImageListBlockComponent } from './image-list-block.component';
 
 describe('ImageListComponent', () => {
@@ -17,13 +19,22 @@ describe('ImageListComponent', () => {
     fixture = TestBed.createComponent(ImageListBlockComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
-    const testData = {
+    const testData: ImageListBlock = {
+      __component: 'test-comp',
+      id: 1,
       heading: 'Test Heading',
       images: [
-        { id: 1, url: 'test1.jpg', alternativeText: 'Image 1' },
-        { id: 2, url: 'test2.jpg', alternativeText: 'Image 2' },
+        {
+          id: 1,
+          imageAlt: null,
+          file: { id: 1, documentId: 'doc1', url: 'test1.jpg', alternativeText: 'Image 1' },
+        },
+        {
+          id: 2,
+          imageAlt: null,
+          file: { id: 2, documentId: 'doc2', url: 'test2.jpg', alternativeText: 'Image 2' },
+        },
       ],
-      __component: 'test-comp',
     };
     componentRef.setInput('block', testData);
     fixture.detectChanges();

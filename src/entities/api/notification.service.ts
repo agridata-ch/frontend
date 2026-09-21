@@ -1,7 +1,12 @@
 import { inject, Service, signal } from '@angular/core';
 import { firstValueFrom, map } from 'rxjs';
 
-import { PageResponseDto, arrayToObjectSortParams, asPageResponse } from '@/shared/lib/api.helper';
+import {
+  PageResponseDto,
+  arrayToObjectSortParams,
+  asPageResponse,
+  columnFiltersToObject,
+} from '@/shared/lib/api.helper';
 
 import {
   InboxEntryDto,
@@ -29,13 +34,14 @@ export class NotificationService {
   fetchHeaderNotifications(locale: string) {
     const page = 0; // Fetch the first page of notifications
     const size = 5; // Limit to 5 notifications for the header
-    return firstValueFrom(this.apiService.getInbox(locale, page, undefined, size));
+    return firstValueFrom(this.apiService.getInbox(undefined, locale, page, undefined, size));
   }
 
   fetchNotifications(queryDto?: ResourceQueryDto): Promise<PageResponseDto<InboxEntryDto>> {
     return firstValueFrom(
       this.apiService
         .getInbox(
+          columnFiltersToObject(queryDto?.columnFilters),
           queryDto?.language,
           queryDto?.page,
           queryDto?.searchTerm,

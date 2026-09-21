@@ -1,13 +1,4 @@
-import {
-  Component,
-  computed,
-  effect,
-  ElementRef,
-  input,
-  model,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { Component, computed, ElementRef, input, model, signal, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   faCheck,
@@ -19,9 +10,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
 import { I18nPipe } from '@/shared/i18n';
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
-import { calculateVerticalPlacement, VerticalPlacement } from '@/shared/utils';
+import { createOpenAboveSignal } from '@/shared/utils';
 
-import { SelectOption } from './agridata-select.model';
+import { SelectOption, SelectOptionGroup } from './agridata-select.model';
 
 /**
  * Implements the select field logic. It manages dropdown state, tracks the selected option, and
@@ -37,11 +28,12 @@ import { SelectOption } from './agridata-select.model';
   templateUrl: './agridata-select.component.html', // Consider renaming the template file if needed
 })
 export class AgridataSelectComponent {
-  protected readonly popover = viewChild<ElementRef>('popover');
-  protected readonly trigger = viewChild<ElementRef>('trigger');
+  protected readonly popover = viewChild<ElementRef<HTMLElement>>('popover');
+  protected readonly trigger = viewChild<ElementRef<HTMLElement>>('trigger');
 
   readonly control = input<FormControlWithMessages>();
   readonly customClass = input<string>('');
+  readonly groups = input<SelectOptionGroup[]>([]);
   readonly isViewMode = input<boolean>(false);
   readonly disabled = input<boolean>(false);
   readonly hasError = input<boolean>(false);
@@ -55,23 +47,16 @@ export class AgridataSelectComponent {
   protected readonly chevronUp = faChevronUp;
 
   protected readonly isDropdownOpen = signal<boolean>(false);
-  protected readonly openAbove = signal(false);
+  protected readonly openAbove = createOpenAboveSignal(this.trigger, this.popover);
 
   protected readonly dropdownIcon = computed(() =>
     this.isDropdownOpen() ? this.chevronUp : this.chevronDown,
   );
-
-  protected readonly popoverCalculator = effect(() => {
-    const trigger = this.trigger()?.nativeElement;
-    const popover = this.popover()?.nativeElement;
-    if (trigger && popover) {
-      const placement = calculateVerticalPlacement(
-        trigger.getBoundingClientRect(),
-        popover.getBoundingClientRect().height,
-      );
-      this.openAbove.set(placement === VerticalPlacement.TOP);
-    }
-  });
+  // Flat + grouped options combined, so a selected value resolves its label regardless of source.
+  private readonly allOptions = computed<SelectOption[]>(() => [
+    ...this.options(),
+    ...this.groups().flatMap((group) => group.options),
+  ]);
 
   ngOnInit(): void {
     // Initialize selected option based on the control's value
@@ -89,7 +74,7 @@ export class AgridataSelectComponent {
   }
 
   getSelectedOptionLabel() {
-    return this.options().find((o) => o.value === this.selectedOption())?.label ?? null;
+    return this.allOptions().find((o) => o.value === this.selectedOption())?.label ?? null;
   }
 
   handleOptionSelect(value: string | number | null, event: Event) {

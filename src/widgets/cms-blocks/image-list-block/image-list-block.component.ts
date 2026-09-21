@@ -1,6 +1,6 @@
 import { Component, computed, input } from '@angular/core';
 
-import { Block, ImageListBlock } from '@/entities/cms';
+import { Block, ImageListBlock, resolveAlt } from '@/entities/cms';
 import { generateMediaUrl } from '@/shared/lib/cms';
 
 /**
@@ -17,6 +17,7 @@ export class ImageListBlockComponent {
   readonly block = input.required<Block>();
 
   readonly generateMediaUrl = generateMediaUrl;
+  readonly resolveAlt = resolveAlt;
 
   protected readonly cmsData = computed(() => {
     return this.block() as ImageListBlock;

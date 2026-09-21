@@ -9,6 +9,7 @@ import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
 import { LinkedTextParts, parseLinkedText } from '@/shared/utils';
 
 import { PURPOSE_PDF_FILENAMES } from './data-request-form-request-description.model';
+import { availableLangs } from '../../../../../transloco.config';
 
 /**
  * Displays the multilingual title, description and purpose fields of a data request form.
@@ -25,8 +26,8 @@ export class DataRequestFormRequestDescriptionComponent {
   private readonly i18nService = inject(I18nService);
 
   // Constants
+  protected readonly availableLangs = availableLangs;
   protected readonly ControlTypes = ControlTypes;
-  protected readonly getFormControl = getFormControl;
 
   // Input properties
   readonly form = input<FormGroup>();
@@ -40,4 +41,8 @@ export class DataRequestFormRequestDescriptionComponent {
   protected readonly purposeSublabelParts = computed<LinkedTextParts>(() =>
     parseLinkedText(this.i18nService.translate('data-request.form.request.purpose.sublabel')),
   );
+
+  protected getFormControl(path: string) {
+    return getFormControl(this.form()!, path);
+  }
 }

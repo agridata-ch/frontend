@@ -211,6 +211,7 @@ describe('DataProductDetailFormComponent', () => {
       component['getTabForm'](FORM_TAB_IDS.NAME_AND_DESCRIPTION).get('consentRequired');
 
     const product = (consentRequired: boolean): DataProductDto => ({
+      paymentRequired: false,
       id: 'p-1',
       stateCode: 'DRAFT',
       consentRequired,

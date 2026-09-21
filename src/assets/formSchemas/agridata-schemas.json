@@ -58,17 +58,17 @@
           "de": {
             "type": "string",
             "minLength": 10,
-            "maxLength": 1000
+            "maxLength": 5000
           },
           "fr": {
             "type": "string",
             "minLength": 10,
-            "maxLength": 1000
+            "maxLength": 5000
           },
           "it": {
             "type": "string",
             "minLength": 10,
-            "maxLength": 1000
+            "maxLength": 5000
           }
         },
         "required": [
@@ -78,9 +78,29 @@
         ]
       },
       "dataConsumerDisplayName": {
-        "type": "string",
-        "minLength": 3,
-        "maxLength": 255
+        "type": "object",
+        "properties": {
+          "de": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "fr": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          },
+          "it": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "de",
+          "fr",
+          "it"
+        ]
       },
       "dataConsumerCity": {
         "type": "string",
@@ -303,13 +323,38 @@
       },
       "consentRequired": {
         "type": "boolean"
+      },
+      "paymentRequired": {
+        "type": "boolean"
+      },
+      "pricingBasis": {
+        "type": "object",
+        "properties": {
+          "de": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 1000
+          },
+          "fr": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 1000
+          },
+          "it": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 1000
+          }
+        },
+        "required": ["de", "fr", "it"]
       }
     },
     "required": [
       "name",
       "description",
       "dataSourceSystemId",
-      "consentRequired"
+      "consentRequired",
+      "paymentRequired"
     ]
   }
 }

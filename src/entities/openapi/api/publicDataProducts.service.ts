@@ -97,6 +97,55 @@ export class PublicDataProductsService extends BaseService {
     }
 
     /**
+     * Get Public Data Product Document
+     * Downloads the content of a successfully virus-scanned document of a publicly available data product.
+     * @param documentId 
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getPublicDataProductDocument(documentId: string, id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Blob>;
+    public getPublicDataProductDocument(documentId: string, id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Blob>>;
+    public getPublicDataProductDocument(documentId: string, id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Blob>>;
+    public getPublicDataProductDocument(documentId: string, id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (documentId === null || documentId === undefined) {
+            throw new Error('Required parameter documentId was null or undefined when calling getPublicDataProductDocument.');
+        }
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getPublicDataProductDocument.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/octet-stream',
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let localVarPath = `/public/api/products/v2/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/documents/${this.configuration.encodeParam({name: "documentId", value: documentId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/download`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: "blob",
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get Public Data Product Documents Metadata
      * Retrieves metadata for all successfully virus-scanned documents of a publicly available data product. Publicly accessible.
      * @param id 
@@ -153,7 +202,8 @@ export class PublicDataProductsService extends BaseService {
 
     /**
      * Get Public Data Products Paginated
-     * Retrieves a paginated list of all publicly available data products. Publicly accessible.
+     * Retrieves a paginated list of all publicly available data products. Publicly accessible. Supports pagination, sorting, search and column filtering on \&#39;dataSourceSystemId\&#39; and \&#39;dataProviderId\&#39;, e.g. filter&#x3D;dataProviderId:&lt;uuid&gt;,&lt;uuid&gt;;dataSourceSystemId:&lt;uuid&gt;.
+     * @param filter 
      * @param language 
      * @param page 
      * @param searchTerm 
@@ -162,12 +212,14 @@ export class PublicDataProductsService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPublicDataProductsPaginated(language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageResponseDtoPublicDataProductDto>;
-    public getPublicDataProductsPaginated(language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageResponseDtoPublicDataProductDto>>;
-    public getPublicDataProductsPaginated(language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageResponseDtoPublicDataProductDto>>;
-    public getPublicDataProductsPaginated(language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageResponseDtoPublicDataProductDto>;
+    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageResponseDtoPublicDataProductDto>>;
+    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageResponseDtoPublicDataProductDto>>;
+    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>filter, 'filter');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>language, 'language');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

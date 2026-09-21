@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "1.19.0",
+  "version": "1.20.0-rc.12",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -43,7 +43,7 @@
     "@angular/platform-browser": "22.1.4",
     "@angular/platform-browser-dynamic": "22.1.4",
     "@angular/router": "22.1.4",
-    "@awesome.me/kit-0b6d1ed528": "1.0.39",
+    "@awesome.me/kit-0b6d1ed528": "1.0.40",
     "@jsverse/transloco": "8.4.0",
     "@tiptap/core": "3.30.5",
     "@tiptap/extensions": "3.30.5",
@@ -113,7 +113,7 @@
     "ts-node": "10.9.2",
     "typescript": "6.0.3",
     "typescript-eslint": "8.68.0",
-    "vitest": "^4.1.11"
+    "vitest": "4.1.11"
   },
   "config": {
     "commitizen": {

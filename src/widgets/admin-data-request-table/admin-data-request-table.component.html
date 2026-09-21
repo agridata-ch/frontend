@@ -7,7 +7,7 @@
     <div class="flex items-center gap-2">
       <app-agridata-contact-card
         [imageUrl]="item.dataConsumerLogoBase64"
-        [name]="item.dataConsumerDisplayName"
+        [name]="getTranslation(item.dataConsumerDisplayName)"
         [secondaryName]="item.dataConsumerCity"
         [size]="AvatarSize.SMALL"
         [skin]="AvatarSkin.LIGHT"
@@ -15,11 +15,8 @@
     </div>
   </ng-template>
   <ng-template #dataRequestTitle [appDataRequestDtoGuard] let-item>
-    <span
-      class="text-agridata-primary-600 agridata-ellipsis"
-      [title]="this.i18nService.useObjectTranslation(item?.title)"
-    >
-      {{ this.i18nService.useObjectTranslation(item?.title) }}
+    <span class="text-agridata-primary-600 agridata-ellipsis" [title]="getTranslation(item?.title)">
+      {{ getTranslation(item?.title) }}
     </span>
   </ng-template>
   <ng-template #dataRequestState [appDataRequestDtoGuard] let-item>

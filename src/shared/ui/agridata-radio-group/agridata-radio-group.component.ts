@@ -28,6 +28,9 @@ export class AgridataRadioGroupComponent {
 
   // Computed Signals
   protected readonly isDisabled = computed(() => this.disabled() || this.isViewMode());
+  protected readonly selectedOption = computed(() =>
+    this.options().find((option) => option.value === this.value()),
+  );
 
   // Effects
   // control.value is not a signal, so under zoneless CD an external setValue() (e.g. populateForm)

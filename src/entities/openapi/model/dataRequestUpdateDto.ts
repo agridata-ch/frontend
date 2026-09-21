@@ -11,6 +11,7 @@ import { DataRequestPurposeDto } from './dataRequestPurposeDto';
 import { DataRequestAdvantageDto } from './dataRequestAdvantageDto';
 import { DataRequestTitleDto } from './dataRequestTitleDto';
 import { DataRequestDescriptionDto } from './dataRequestDescriptionDto';
+import { DataRequestConsumerDisplayNameDto } from './dataRequestConsumerDisplayNameDto';
 
 
 /**
@@ -32,7 +33,7 @@ export interface DataRequestUpdateDto {
     /**
      * Shorter name of the data consumer defined by the data consumer used when displaying the request to the producer
      */
-    dataConsumerDisplayName?: string;
+    dataConsumerDisplayName?: DataRequestConsumerDisplayNameDto;
     /**
      * City of the data consumer
      */
@@ -46,7 +47,7 @@ export interface DataRequestUpdateDto {
      */
     dataConsumerStreet?: string;
     /**
-     * 2 letter country code of the data consumer
+     * 2 letter valid ISO 3166-1 alpha-2 country code of the data consumer
      */
     dataConsumerCountry?: string;
     /**

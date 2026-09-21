@@ -38,6 +38,7 @@ describe('DataRequestPreviewComponent', () => {
 
     // Set required input before detectChanges
     const mockDataRequest: DataRequestDto = {
+      burPresent: false,
       id: 'test-id',
       stateCode: DataRequestStateEnum.Draft,
       advantages: [],

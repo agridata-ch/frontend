@@ -57,7 +57,7 @@
         "UNKNOWN": "Inconnu",
         "PARTIALLY_GRANTED": "Partiellement approuvé",
         "PARTIALLY_OPENED": "Partiellement ouvert",
-        "LEGALLY_PERMITTED": "Réglementé par la loi"
+        "LEGALLY_PERMITTED": "De droit public"
       },
       "footerInformation": "Vous pouvez modifier votre choix à tout moment ici. Les données ne peuvent être transmises qu'en cas de consentement explicite.",
       "requestDate": "Demande du {{ date }}",
@@ -84,7 +84,7 @@
         "missingBurInfo": "Un site manque ? Contactez directement {{ consumer }} afin qu'ils puissent demander le site et que vous puissiez donner votre consentement."
       },
       "footerInformationNoBur": "Vous avez désactivé tous les sites. Si vous souhaitez refuser complètement cette demande, veuillez cliquer sur Annuler, puis sur le bouton Refuser.",
-      "noConsentRequired": "Aucune action requise. Cette référence de données est basée sur une base légale. Votre consentement ou votre refus n'est pas nécessaire. Cette vue sert à votre information et à votre transparence."
+      "noConsentRequired": "Aucune action requise. Ce prélèvement de données repose sur une base de droit public. Cet affichage est proposé à titre d'information transparente."
     },
     "toast": {
       "title": {
@@ -110,7 +110,7 @@
         "DECLINED": "Refusé",
         "PARTIALLY_OPENED": "Partiellement ouvert",
         "PARTIALLY_GRANTED": "Partiellement approuvé",
-        "LEGALLY_PERMITTED": "Réglementé par la loi"
+        "LEGALLY_PERMITTED": "De droit public"
       }
     },
     "emptyState": {
@@ -140,15 +140,16 @@
         "headline": "Définir le contenu de la demande de données",
         "provider": {
           "label": "Fournisseur de données",
-          "sublabel": "Déterminez le fournisseur de données souhaité ainsi que les produits de données spécifiques pour votre demande.",
+          "sublabel": "Sélectionnez le fournisseur, le système et les produits de données souhaités. Vous trouverez des informations détaillées sur le contenu dans l'aperçu.",
           "placeholder": "Sélectionner un fournisseur de données",
           "heading": "Sélection des produits de données"
         },
         "products": {
-          "label": "Système et produits souhaités",
-          "placeholder": "Sélectionner des produits",
-          "moreInfos": "Plus d'informations",
-          "sublabel": "Vous ne pouvez demander simultanément que des produits issus d'un seul et même système. Pour les produits de données provenant d'autres systèmes, veuillez créer une demande de données distincte."
+          "label": "Système et produits de données",
+          "placeholder": "Sélectionner les produits de données",
+          "toCatalog": "Aperçu des données disponibles",
+          "sublabel": "Sélectionnez les produits de données.",
+          "paymentRequiredWarning": "Vous avez sélectionné au moins un produit de données payant. Les frais sont facturés directement par {{provider}} (et non par agridata.ch). Vous trouverez les détails et les prix des produits dans [l’aperçu des données disponibles]."
         },
         "title": {
           "label": "Titre de la demande de données",
@@ -221,7 +222,7 @@
         }
       },
       "consumer": {
-        "headline": "Informations sur le bénéficiaire des données",
+        "headline": "Informations sur votre organisation",
         "name": {
           "label": "Nom",
           "placeholder": "Nom"
@@ -253,8 +254,8 @@
           "logo": "Logo"
         },
         "contact": {
-          "label": "Vos coordonnées",
-          "sublabel": "Téléphone et e-mail pour des questions concernant votre demande."
+          "label": "Vos coordonnées pour les producteurs",
+          "sublabel": "Saisissez le numéro de téléphone et l'adresse e-mail pour les questions relatives à votre demande. Ces informations seront affichées aux agriculteurs et détenteurs d'animaux afin qu'ils puissent vous contacter pour toute question sur le contenu de la demande de données."
         },
         "contactPhoneNumber": {
           "label": "Numéro de téléphone",
@@ -265,12 +266,22 @@
           "placeholder": "...@......"
         },
         "dataConsumerDisplayName": {
-          "label": "Nom d'affichage / Abréviation",
-          "placeholder": "Nom d'affichage / Abréviation"
+          "de": {
+            "label": "Nom d'affichage / Abréviation en allemand",
+            "placeholder": "Nom d'affichage / Abréviation en allemand"
+          },
+          "fr": {
+            "label": "Nom d'affichage / Abréviation en français",
+            "placeholder": "Nom d'affichage / Abréviation en français"
+          },
+          "it": {
+            "label": "Nom d'affichage / Abréviation en italien",
+            "placeholder": "Nom d'affichage / Abréviation en italien"
+          }
         },
         "logo": {
           "label": "Logo",
-          "upload": "Télécharger une image",
+          "upload": "Télécharger le logo",
           "error": {
             "invalidFileType": "Type de fichier invalide. Veuillez télécharger un fichier PNG ou JPG.",
             "size": "Le fichier est trop volumineux. Taille maximale autorisée: {{ maxSize }}"
@@ -278,13 +289,13 @@
         }
       },
       "producer": {
-        "info": "Une fois le contrat signé par toutes les parties contractantes, vous recevrez une e-mail modèle d'invitation par e-mail. Cette e-mail contiendra un lien spécifique à votre demande. Vous pourrez ainsi inviter de manière ciblée vos producteurs de données.",
-        "title": "Déterminer les producteurs de données",
-        "description": "Déterminez quel groupe de producteurs de données vous souhaitez cibler avec votre demande.",
+        "info": "Vous ne pourrez solliciter les producteurs de données qu'une fois le contrat signé électroniquement par le demandeur et le fournisseur de données, puis activé par agridata.ch. Vous recevrez ensuite un lien d'invitation que vous pourrez transmettre au groupe cible défini.",
+        "title": "Définir le groupe cible de la demande de données",
+        "description": "Définissez à quels producteurs de données vous allez adresser une demande de données. Cette indication sera intégrée au contrat afin de garantir que seule le groupe cible pertinent soit sollicité.",
         "targetGroup": {
-          "label": "Groupe de producteurs de données",
-          "placeholder": "Groupe de producteurs de données",
-          "helperText": "Exemple : tous les agriculteurs bio"
+          "label": "Groupe cible des producteurs de données",
+          "placeholder": "Groupe cible des producteurs de données",
+          "helperText": "Exemple : Membres de l'organisation de label"
         }
       },
       "contract": {
@@ -300,7 +311,7 @@
       },
       "products": {
         "allSystems": "Tous les systèmes",
-        "publicSectorProductSuffix": "Réglementé par la loi"
+        "publicSectorProductSuffix": "De droit public"
       }
     },
     "preview": {
@@ -319,7 +330,7 @@
           "consumer": "Requérant des données",
           "request": "Demande de données",
           "preview": "Aperçu",
-          "producer": "Fournisseur de données",
+          "producer": "Groupe cible",
           "contract": "Contrat",
           "completion": "Conclusion"
         },
@@ -414,6 +425,12 @@
           "heading": "Scellement du contrat",
           "description": "Toutes les signatures requises des bénéficiaires et des fournisseurs de données ont été saisies et sont affichées dans le PDF. Pour finaliser le contrat, le scellement du contrat via le service de signature d’OFIT doit maintenant être initié.",
           "action": "Sceller le contrat"
+        }
+      },
+      "producer": {
+        "emptyState": {
+          "title": "Aucun producteur trouvé",
+          "message": "Souhaitez-vous ajouter un producteur à la liste?"
         }
       }
     },
@@ -553,7 +570,10 @@
     "privacy": {
       "title": "Protection des données",
       "description": "Un contrat régissant le transfert de données a été conclu entre {{ provider }} et {{ consumer }}. Ce contrat **prévoit une utilisation exclusivement réservée à la finalité décrite ci-dessus** et impose à {{ consumer }} l'obligation légale de se conformer à la loi suisse sur la protection des données (LPD)."
-    }
+    },
+    "uid": "UID",
+    "bur": "BUR",
+    "lastChanged": "Modifié le"
   },
   "forms": {
     "error": {
@@ -591,10 +611,6 @@
       "description": "Votre approbation pour la demande de données {{name}} a été repris de « Mon partage de données agricoles (MAF) ».\nVous trouverez la demande dans le tableau ci-dessous et pouvez modifier votre approbation si nécessaire."
     },
     "uidMissingWarning": "Aucun numéro d'identification fiscale (UID) n'est encore enregistré pour vous ou votre entreprise. Étant donné que plusieurs systèmes sont impliqués, cela peut prendre quelques jours avant que nous disposions de toutes les informations nécessaires au bon fonctionnement d'agridata.ch. Veuillez réessayer dans quelques jours. Si le problème persiste, veuillez contacter le service d'assistance ({{ phoneNumber }})."
-  },
-  "countries": {
-    "CH": "Suisse",
-    "LI": "Liechtenstein"
   },
   "header": {
     "helpAndSupport": {
@@ -891,7 +907,7 @@
       "titleUpdate": "Modifier le produit de données",
       "publishConfirmation": {
         "title": "Publier le produit de données?",
-        "description": "En publiant, ce produit de données sera mis en ligne sur agridata.ch. \nVeuillez noter:\n\n**Catalogue public:** Le produit est désormais visible par tous les utilisateurs de données.\n**Demande de données:** Les utilisateurs de données peuvent directement soumettre une demande numérique pour ces données.\n**Consentement du producteur:** Le nom et la description seront affichés tels quels aux agriculteurs et éleveurs lorsqu'ils donneront leur consentement pour le partage des données. Veuillez utiliser un langage simple et compréhensible.",
+        "description": "En publiant, ce produit de données sera mis en ligne sur agridata.ch. \nVeuillez noter:\n\n**Catalogue public:** Le produit est désormais visible par tous les utilisateurs de données.\n**Demande de données:** Les utilisateurs de données peuvent directement soumettre une demande numérique pour ces données.\n**Consentement du producteur:** Le nom et la description seront affichés tels quels aux agriculteurs et éleveurs lorsqu'ils donneront leur consentement à la demande de données. Veuillez utiliser un langage simple et compréhensible.",
         "cancel": "Annuler",
         "publish": "Oui, publier"
       }
@@ -1064,6 +1080,31 @@
       "costs": {
         "title": "Coûts",
         "subtitle": "Déterminez si l’utilisation de ce produit de données est payante. agridata.ch sert uniquement de plateforme d’information et informe les utilisateurs de données que l’utilisation est soumise à des frais. La définition des conditions, la facturation ainsi que le traitement des paiements relèvent de la seule responsabilité du fournisseur de données."
+      },
+      "pricingBasis": {
+        "fr": {
+          "label": "Base des coûts en français",
+          "placeholder": "L’achat de ce paquet de données est soumis à des redevances conformément à l’OId-BDTA (RS 916.404.1)."
+        },
+        "de": {
+          "label": "Base des coûts en allmand",
+          "placeholder": "Für den Bezug dieses Datenpakets fallen Gebühren gemäss IdTVD-V (SR 916.404.1) an."
+        },
+        "it": {
+          "label": "Base des coûts en italien",
+          "placeholder": "L'acquisto di questo pacchetto di dati è soggetto a tassazione conformemente all’OIBDTA (SR 916.404.1)."
+        }
+      },
+      "paymentRequired": {
+        "label": "L’utilisation de ce produit de données est-elle payante ?",
+        "true": {
+          "title": "Oui, l’utilisation est payante.",
+          "subtitle": "Produit de données payant (la facturation est effectuée directement par le fournisseur de données)"
+        },
+        "false": {
+          "title": "Non, l’utilisation est gratuite.",
+          "subtitle": "Produit de données gratuit"
+        }
       }
     },
     "saveAndPublish": {
@@ -1260,13 +1301,23 @@
         "tooltip": "Ce produit de données n'est plus disponible pour de nouvelles demandes. Les flux de données existants restent actifs."
       },
       "showDetails": "Voir les détails",
-      "publicSector": "Réglementé par la loi",
+      "publicSector": "De droit public",
       "description": "Description",
       "links": "Liens",
-      "extendedDescription": "Informations complémentaires"
+      "extendedDescription": "Informations complémentaires",
+      "paymentRequired": "Frais du fournisseur",
+      "costs": "Frais pour les requérants de données"
     },
     "list": {
       "allLoaded": "Tous les produits de données chargés"
+    },
+    "filter": {
+      "provider": {
+        "all": "Tous les prestataires"
+      },
+      "system": {
+        "all": "Tous les systèmes"
+      }
     }
   },
   "infinite-scroll": {

@@ -94,11 +94,12 @@ describe('DataRequestDetailsComponent', () => {
   describe('updateDataRequestFromRessourceEffect', () => {
     it('should update dataRequest when request loaded', async () => {
       const newRequest: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
-        dataConsumerDisplayName: 'Test Consumer',
+        dataConsumerDisplayName: { de: 'Test Consumer' },
         dataConsumerCity: 'Test City',
         contactPhoneNumber: '1234567890',
         contactEmailAddress: 'test@example.com',
@@ -120,6 +121,7 @@ describe('DataRequestDetailsComponent', () => {
       // The resource starts loading immediately, but may resolve quickly
       // We need to check before it finishes loading
       const slowRequest: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Draft,
@@ -149,11 +151,12 @@ describe('DataRequestDetailsComponent', () => {
 
     it('should open panel once data is loaded', async () => {
       const newRequest: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
-        dataConsumerDisplayName: 'Test Consumer',
+        dataConsumerDisplayName: { de: 'Test Consumer' },
       };
 
       dataRequestService.fetchDataRequest.mockResolvedValue(newRequest);
@@ -199,6 +202,7 @@ describe('DataRequestDetailsComponent', () => {
 
     it('should be called when sidepanel emits closeSidepanel', async () => {
       const newRequest: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Draft,
@@ -225,6 +229,7 @@ describe('DataRequestDetailsComponent', () => {
   describe('RedirectUrlRegexEditable', () => {
     it('should pass isRedirectUriRegexEditable to the request details component', async () => {
       const newRequest: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Draft,
@@ -251,6 +256,7 @@ describe('DataRequestDetailsComponent', () => {
   describe('preview tab', () => {
     it('should render the preview of the loaded data request', async () => {
       const request: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         dataProviderId: 'test-provider',
         stateCode: DataRequestStateEnum.Draft,
@@ -274,6 +280,7 @@ describe('DataRequestDetailsComponent', () => {
   describe('contract loading', () => {
     it('should not fetch contract while contract tab is not active', async () => {
       const requestWithContract: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         currentContractRevisionId: 'contract-revision-id',
         dataProviderId: 'test-provider',
@@ -293,6 +300,7 @@ describe('DataRequestDetailsComponent', () => {
 
     it('should fetch contract when contract tab becomes active', async () => {
       const requestWithContract: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         currentContractRevisionId: 'contract-revision-id',
         dataProviderId: 'test-provider',
@@ -319,6 +327,7 @@ describe('DataRequestDetailsComponent', () => {
 
     it('should refetch contract when opening contract tab repeatedly', async () => {
       const requestWithContract: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         currentContractRevisionId: 'contract-revision-id',
         dataProviderId: 'test-provider',
@@ -368,6 +377,7 @@ describe('DataRequestDetailsComponent', () => {
       sealState?: SealAttemptStateEnum;
     }): Promise<ComponentFixture<DataRequestDetailsComponent>> => {
       const request: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         dataProviderId: 'test-provider',
         currentContractRevisionId: options.currentContractRevisionId ?? 'contract-revision-id',

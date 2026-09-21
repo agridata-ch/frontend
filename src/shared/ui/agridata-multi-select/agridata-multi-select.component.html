@@ -1,5 +1,6 @@
 <div class="relative w-full min-w-0" (appClickOutside)="handleClickOutside()">
   <button
+    #triggerButton
     type="button"
     class="w-full border border-gray-300 px-5 py-3 text-left flex justify-between items-center bg-white rounded-md"
     [class]="customClass()"
@@ -13,17 +14,25 @@
           <span
             (click)="onOptionToggle(option.value, $event)"
             (keydown.enter)="onOptionToggle(option.value, $event)"
-            class="bg-gray-300 rounded-sm text-xs px-2 py-1 group"
-            [class.cursor-not-allowed]="disabled()"
-            [class.hover:bg-gray-400]="!disabled()"
-            [class.hover:text-gray-100]="!disabled()"
+            class="rounded-sm text-xs px-2 py-1 group flex items-center gap-1 ring-1"
+            [class]="
+              disabled()
+                ? 'cursor-not-allowed bg-gray-200 ring-gray-300 text-gray-600'
+                : 'bg-agridata-primary-100 ring-agridata-primary-700 text-agridata-primary-text hover:bg-agridata-primary-50 hover:border-agridata-primary-600'
+            "
             [attr.aria-disabled]="disabled()"
           >
-            {{ option.label }}
+            @if (option.paymentRequired) {
+              <fa-icon
+                [icon]="paymentRequiredIcon"
+                [class.text-gray-800]="!disabled()"
+                [class.text-gray-600]="disabled()"
+              />
+            }
+            <span>{{ option.label }}</span>
             <fa-icon
               [icon]="iconClose"
-              class="ml-1 text-gray-500"
-              [class.group-hover:text-gray-100]="!disabled()"
+              [class.group-hover:text-agridata-primary-700]="!disabled()"
               [ariaDisabled]="!disabled()"
             />
           </span>
@@ -37,7 +46,11 @@
 
   @if (isDropdownOpen()) {
     <div
-      class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
+      #popover
+      class="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-70 overflow-auto"
+      [class.mt-1]="!openAbove()"
+      [class.mb-1]="openAbove()"
+      [class.bottom-full]="openAbove()"
     >
       @if (enableSearch()) {
         <div class="sticky top-0 border-b border-gray-200 bg-white p-2 z-1">

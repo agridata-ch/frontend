@@ -8,7 +8,7 @@ import {
   output,
   resource,
 } from '@angular/core';
-import { faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
+import { faCircleChf, faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -52,6 +52,7 @@ export class PublicDataProductDetailComponent {
   protected readonly BadgeVariant = BadgeVariant;
   protected readonly faSpinnerThird = faSpinnerThird;
   protected readonly publicSectorIcon = faShieldCheck;
+  protected readonly chfCircleIcon = faCircleChf;
 
   // Input properties
   readonly productId = input<string | undefined>(undefined);
@@ -80,6 +81,10 @@ export class PublicDataProductDetailComponent {
   );
   protected readonly extendedDescription = computed(() =>
     this.i18nService.useObjectTranslation(this.product()?.extendedDescription),
+  );
+  protected readonly paymentRequired = computed(() => this.product()?.paymentRequired ?? false);
+  protected readonly pricingBasis = computed(() =>
+    this.i18nService.useObjectTranslation(this.product()?.pricingBasis),
   );
   protected readonly providerName = computed(() =>
     this.i18nService.useObjectTranslation(this.product()?.dataSourceSystem?.dataProvider.name),

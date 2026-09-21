@@ -154,7 +154,9 @@ describe('DataRequestTableComponent', () => {
     const metadata = component['dataRequestsTableMetaData']();
     const providerColumn = metadata.columns[3];
     const row = component['dataRequests']()[0];
-    const item = mockDataRequests[0];
+    // The client table sorts the data in place, so mockDataRequests is reordered by the time
+    // this runs. Pick a request that actually carries a provider name instead of a fixed index.
+    const item = mockDataRequests.find((request) => request.dataSourceSystem?.dataProvider?.name)!;
     expect(row).toBeTruthy();
 
     mockI18nService.useObjectTranslation.mockReturnValue('Translated Provider Name');

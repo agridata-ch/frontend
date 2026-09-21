@@ -57,7 +57,7 @@
         "UNKNOWN": "Unbekannt",
         "PARTIALLY_GRANTED": "Teilweise Zugestimmt",
         "PARTIALLY_OPENED": "Teilweise Offen",
-        "LEGALLY_PERMITTED": "Gesetzlich geregelt"
+        "LEGALLY_PERMITTED": "Öffentlich-rechtlich"
       },
       "footerInformation": "Sie können Ihre Entscheidung später jederzeit hier ändern. Daten können nur übermittelt werden, wenn eine aktive Zustimmung vorliegt.",
       "requestDate": "Anfrage vom {{ date }}",
@@ -84,7 +84,7 @@
         "missingBurInfo": "Fehlt ein Standort? Melden Sie sich direkt bei {{ consumer }}, damit diese den Standort anfragen und Sie die Zustimmung geben können."
       },
       "footerInformationNoBur": "Sie haben alle Standorte deaktiviert. Wenn Sie diese Anfrage komplett ablehnen möchten, klicken Sie bitte auf Abbrechen und danach auf den Ablehnen-Button.",
-      "noConsentRequired": "Keine Aktion erforderlich. Dieser Datenbezug basiert auf einer gesetzlichen Grundlage. Eine Zustimmung oder Ablehnung Ihrerseits ist nicht erforderlich. Diese Ansicht dient Ihrer Information und Transparenz."
+      "noConsentRequired": "Keine Aktion erforderlich. Dieser Datenbezug erfolgt auf öffentlich-rechtlicher Grundlage. Diese Anzeige dient der transparenten Information."
     },
     "toast": {
       "title": {
@@ -110,7 +110,7 @@
         "DECLINED": "Abgelehnt",
         "PARTIALLY_OPENED": "Teilweise Offen",
         "PARTIALLY_GRANTED": "Teilweise Zugestimmt",
-        "LEGALLY_PERMITTED": "Gesetzlich geregelt"
+        "LEGALLY_PERMITTED": "Öffentlich-rechtlich"
       }
     },
     "emptyState": {
@@ -140,15 +140,16 @@
         "headline": "Inhalt des Datenantrags definieren",
         "provider": {
           "label": "Datenanbieter",
-          "sublabel": "Bestimmen Sie den gewünschten Datenanbieter sowie die spezifischen Datenprodukte für Ihren Antrag.",
+          "sublabel": "Wählen Sie den Anbieter, das System und die gewünschten Datenprodukte aus. Detaillierte Informationen zu den Inhalten finden Sie in der Übersicht.",
           "placeholder": "Datenanbieter auswählen",
           "heading": "Datenprodukte auswählen"
         },
         "products": {
-          "label": "Gewünschtes System und Produkte",
-          "placeholder": "Produkte auswählen",
-          "moreInfos": "Weitere Infos",
-          "sublabel": "Sie können nur Produkte aus einem einzigen System gleichzeitig beantragen. Für Datenprodukte aus anderen Systemen erfassen Sie bitte einen separaten Datenantrag."
+          "label": "System und Datenprodukte",
+          "placeholder": "Datenprodukte auswählen",
+          "toCatalog": "Übersicht der verfügbaren Daten",
+          "sublabel": "Wählen Sie die Datenprodukte aus.",
+          "paymentRequiredWarning": "Sie haben mindestens ein kostenpflichtiges Datenprodukt ausgewählt. Die Kosten werden direkt von {{provider}} verrechnet (nicht von agridata.ch). Details und Preisangaben zu den Produkten finden Sie in der [Übersicht der verfügbaren Daten]."
         },
         "title": {
           "label": "Titel des Datenantrages",
@@ -221,7 +222,7 @@
         }
       },
       "consumer": {
-        "headline": "Angaben zum Datenbezüger",
+        "headline": "Angaben zu Ihrer Organisation",
         "name": {
           "label": "Name",
           "placeholder": "Name"
@@ -253,8 +254,8 @@
           "logo": "Logo"
         },
         "contact": {
-          "label": "Ihre Kontaktangaben",
-          "sublabel": "Telefon und E-Mail für Rückfragen zu Ihrem Antrag ausfüllen."
+          "label": "Ihre Kontaktangaben für Produzenten",
+          "sublabel": "Telefon und E-Mail für Rückfragen zu Ihrem Antrag ausfüllen. Diese Angaben werden den Landwirten und Tierhaltern angezeigt, damit sie sich bei Ihnen für inhaltliche Fragen zur Datenanfrage melden können."
         },
         "contactPhoneNumber": {
           "label": "Telefon Nr.",
@@ -265,12 +266,22 @@
           "placeholder": "...@......."
         },
         "dataConsumerDisplayName": {
-          "label": "Anzeigename/Kurzform",
-          "placeholder": "Anzeigename/Kurzform"
+          "de": {
+            "label": "Anzeigename / Kurzform Deutsch",
+            "placeholder": "Anzeigename / Kurzform Deutsch"
+          },
+          "fr": {
+            "label": "Anzeigename / Kurzform Französisch",
+            "placeholder": "Anzeigename / Kurzform Französisch"
+          },
+          "it": {
+            "label": "Anzeigename / Kurzform Italienisch",
+            "placeholder": "Anzeigename / Kurzform Italienisch"
+          }
         },
         "logo": {
           "label": "Logo",
-          "upload": "Bild hochladen",
+          "upload": "Logo hochladen",
           "error": {
             "invalidFileType": "Ungültiger Dateityp. Bitte laden Sie eine PNG- oder JPG-Datei hoch.",
             "size": "Die Datei ist zu gross. Max. erlaubte Grösse: {{ maxSize }}"
@@ -278,13 +289,13 @@
         }
       },
       "producer": {
-        "info": "Nachdem der Vertrag von allen Vertragspartner unterzeichnet wurde, erhalten Sie eine E-Mail-Einladungs-Vorlage. Diese Vorlage wird einen für Ihren Antrag spezifischen Link enthalten. Damit können Sie danach gezielt Ihre Datenproduzenten einladen.",
-        "title": "Datenproduzenten bestimmen",
-        "description": "Bestimmen Sie, welche Gruppe von Datenproduzenten Sie mit Ihrem Antrag ansprechen möchten.",
+        "info": "Sie können Datenproduzenten erst anfragen, wenn der Vertrag vom Datenbezüger und Datenanbieter digital signiert sowie von agridata.ch aktiviert wurde. Danach erhalten Sie einen Einladungs-Link, den Sie an die definierte Zielgruppe zustellen können.",
+        "title": "Zielgruppe des Datenantrages bestimmen",
+        "description": "Definieren Sie, welchen Datenproduzenten Sie eine Datenanfrage stellen werden. Diese Angabe wird in den Vertrag übernommen, um sicherzustellen, dass nur die relevante Zielgruppe angefragt wird.",
         "targetGroup": {
-          "label": "Gruppe von Datenproduzenten",
-          "placeholder": "Gruppe von Datenproduzenten",
-          "helperText": "Beispiel: alle Bio-Landwirte"
+          "label": "Zielgruppe der Datenproduzenten",
+          "placeholder": "Zielgruppe der Datenproduzenten",
+          "helperText": "Beispiel: Mitglieder der Labelorganisation"
         }
       },
       "contract": {
@@ -300,7 +311,7 @@
       },
       "products": {
         "allSystems": "Alle Systeme",
-        "publicSectorProductSuffix": "Gesetzlich geregelt"
+        "publicSectorProductSuffix": "Öffentlich-rechtlich"
       }
     },
     "preview": {
@@ -319,7 +330,7 @@
           "consumer": "Bezüger",
           "request": "Antrag",
           "preview": "Vorschau",
-          "producer": "Produzent",
+          "producer": "Zielgruppe",
           "contract": "Vertrag",
           "completion": "Abschluss"
         },
@@ -414,6 +425,12 @@
           "heading": "Vertragssiegelung",
           "description": "Alle erforderlichen Signaturen der Datenbezüger und Datenanbieter sind erfasst und im PDF abgebildet. Zur finalen Abschliessung muss nun die Siegelung des Vertrags über den Signaturdienst des BIT initiiert werden.",
           "action": "Vertrag siegeln"
+        }
+      },
+      "producer": {
+        "emptyState": {
+          "title": "Keine Produzenten gefunden",
+          "message": "Möchten Sie einen Produzenten in die Liste aufnehmen?"
         }
       }
     },
@@ -553,7 +570,10 @@
     "privacy": {
       "title": "Datenschutz",
       "description": "Zwischen {{ provider }} und {{ consumer }} besteht ein Vertrag für die Datenübertragung. Dieser Vertrag **regelt die ausschliessliche Nutzung für den oben beschriebenen Zweck** und verpflichtet {{ consumer }} rechtlich zur Einhaltung des Schweizer Datenschutzgesetzes (DSG)."
-    }
+    },
+    "uid": "UID",
+    "bur": "BUR",
+    "lastChanged": "Geändert am"
   },
   "forms": {
     "error": {
@@ -591,10 +611,6 @@
       "description": "Ihre Zustimmung für die Datenanfrage {{name}} wurde aus “Meine Agrardatenfreigaben (MAF)” übernommen.\nSie finden die Anfrage in der untenstehenden Tabelle und können bei Bedarf die Zustimmung ändern."
     },
     "uidMissingWarning": "Zu Ihrer Person oder Unternehmen ist zurzeit noch keine UID vorhanden. Da verschiedene Systeme involviert sind, kann es einige Tage dauern bis wir alle relevanten Angaben haben, damit agridata.ch funktionieren kann. Bitte versuchen sie es in ein paar Tage nochmal. Besteht Ihr Problem weiterhin, melden sie sich bitte beim Support ({{ phoneNumber }})."
-  },
-  "countries": {
-    "CH": "Schweiz",
-    "LI": "Liechtenstein"
   },
   "header": {
     "helpAndSupport": {
@@ -891,7 +907,7 @@
       "titleUpdate": "Datenprodukt bearbeiten",
       "publishConfirmation": {
         "title": "Datenprodukt publizieren?",
-        "description": "Mit dem Publizieren wird dieses Datenprodukt auf agridata.ch live geschaltet. \nBitte beachten Sie:\n\n**Öffentlicher Katalog:** Das Produkt ist ab sofort für alle Datenbezüger sichtbar.\n**Datenantrag:** Datenbezüger können direkt einen digitalen Antrag für diese Daten stellen.\n**Produzenten-Zustimmung:** Name und Beschreibung werden eins zu eins den Landwirten und Tierhaltern angezeigt, wenn sie ihre Zustimmung zur Datenfreigabe erteilen. Bitte achten Sie auf eine einfache, verständliche Sprache.",
+        "description": "Mit dem Publizieren wird dieses Datenprodukt auf agridata.ch live geschaltet. \nBitte beachten Sie:\n\n**Öffentlicher Katalog:** Das Produkt ist ab sofort für alle Datenbezüger sichtbar.\n**Datenantrag:** Datenbezüger können direkt einen digitalen Antrag für diese Daten stellen.\n**Produzenten-Zustimmung:** Name und Beschreibung werden eins zu eins den Landwirten und Tierhaltern angezeigt, wenn sie ihre Zustimmung zur Datenanfrage erteilen. Bitte achten Sie auf eine einfache und verständliche Sprache.",
         "cancel": "Abbrechen",
         "publish": "Ja, publizieren"
       }
@@ -1064,6 +1080,31 @@
       "costs": {
         "title": "Kosten",
         "subtitle": "Legen Sie fest, ob für die Nutzung dieses Datenprodukts Kosten anfallen. agridata.ch dient lediglich als Informationsplattform und weist Datenbezüger darauf hin, dass die Nutzung kostenpflichtig ist. Die Festlegung der Konditionen, die Rechnungsstellung sowie die Abwicklung der Zahlungen liegen allein in der Verantwortung des Datenanbieters."
+      },
+      "pricingBasis": {
+        "fr": {
+          "label": "Kostengrundlage Französisch",
+          "placeholder": "L’achat de ce paquet de données est soumis à des redevances conformément à l’OId-BDTA (RS 916.404.1)."
+        },
+        "de": {
+          "label": "Kostengrundlage Deutsch",
+          "placeholder": "Für den Bezug dieses Datenpakets fallen Gebühren gemäss IdTVD-V (SR 916.404.1) an."
+        },
+        "it": {
+          "label": "Kostengrundlage Italienisch",
+          "placeholder": "L'acquisto di questo pacchetto di dati è soggetto a tassazione conformemente all’OIBDTA (SR 916.404.1)."
+        }
+      },
+      "paymentRequired": {
+        "label": "Fallen für die Nutzung dieses Datenprodukts Kosten an?",
+        "true": {
+          "title": "Ja, dieses Produkt ist kostenpflichtig.",
+          "subtitle": "Kostenpflichtiges Datenprodukt (Abrechnung erfolgt direkt durch den Datenanbieter)"
+        },
+        "false": {
+          "title": "Nein, die Nutzung ist kostenlos",
+          "subtitle": "Kostenloses Datenprodukt"
+        }
       }
     },
     "saveAndPublish": {
@@ -1260,13 +1301,23 @@
         "tooltip": "Dieses Datenprodukt steht für neue Anträge nicht mehr zur Verfügung. Bestehende Datenflüsse laufen weiterhin."
       },
       "showDetails": "Details ansehen",
-      "publicSector": "Gesetzlich geregelt",
+      "publicSector": "Öffentlich-rechtlich",
       "description": "Beschreibung",
       "links": "Links",
-      "extendedDescription": "Erweiterte Beschreibung"
+      "extendedDescription": "Erweiterte Beschreibung",
+      "paymentRequired": "Kostenpflichtig durch Anbieter",
+      "costs": "Kosten für Datenbezüger"
     },
     "list": {
       "allLoaded": "Alle Datenprodukte geladen"
+    },
+    "filter": {
+      "provider": {
+        "all": "Alle Anbieter"
+      },
+      "system": {
+        "all": "Alle Systeme"
+      }
     }
   },
   "infinite-scroll": {

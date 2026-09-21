@@ -2,7 +2,7 @@ import { DOCUMENT, inject, Renderer2, RendererFactory2, Service } from '@angular
 import { Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { SEO, SeoOpenGraph, Image } from '@/entities/cms';
+import { SEO, SeoOpenGraph, Image, resolveAlt } from '@/entities/cms';
 import { environment } from '@/environments/environment';
 
 interface DefaultMetaTags {
@@ -90,8 +90,9 @@ export class SeoService {
     const ogImage: Image | undefined = og.ogImage || metaImage;
     if (ogImage?.url) {
       this.setOgTag('og:image', ogImage.url);
-      if (ogImage.alternativeText) {
-        this.setOgTag('og:image:alt', ogImage.alternativeText);
+      const ogAltText = resolveAlt(og.ogImageAlt, og.ogImage);
+      if (ogAltText) {
+        this.setOgTag('og:image:alt', ogAltText);
       }
     }
 

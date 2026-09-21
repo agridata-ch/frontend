@@ -38,6 +38,17 @@ describe('DataProductDetailInfoComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  // Radio groups don't carry their own id, but the form-control label they sit next to does
+  // (`[for]="id()"`) and is rendered as a sibling within the same container, so scope by that.
+  const radioInputsFor = (controlId: string) => {
+    const label = fixture.nativeElement.querySelector(
+      `label[for="${controlId}"]`,
+    ) as HTMLLabelElement;
+    return Array.from(
+      label.parentElement!.querySelectorAll('input[type="radio"]'),
+    ) as HTMLInputElement[];
+  };
+
   describe('getFormControl', () => {
     it('should return the name.de control', () => {
       expect(component['getFormControl']('name.de')).toBeTruthy();
@@ -54,13 +65,18 @@ describe('DataProductDetailInfoComponent', () => {
     it('should return the consentRequired control', () => {
       expect(component['getFormControl']('consentRequired')).toBeTruthy();
     });
+
+    it('should return the paymentRequired control', () => {
+      expect(component['getFormControl']('paymentRequired')).toBeTruthy();
+    });
+
+    it('should return the pricingBasis.de control', () => {
+      expect(component['getFormControl']('pricingBasis.de')).toBeTruthy();
+    });
   });
 
   describe('consent required radio group', () => {
-    const radioInputs = () =>
-      Array.from(
-        fixture.nativeElement.querySelectorAll('input[type="radio"]'),
-      ) as HTMLInputElement[];
+    const radioInputs = () => radioInputsFor('consentRequired');
 
     it('should render one radio per option and write the user choice into the control', async () => {
       const radios = radioInputs();
@@ -81,6 +97,99 @@ describe('DataProductDetailInfoComponent', () => {
       component['getFormControl']('consentRequired').setValue(false);
       await fixture.whenStable();
       expect(radioInputs()[1].checked).toBe(true);
+    });
+
+    it('should not affect the paymentRequired selection when a consentRequired option is clicked', async () => {
+      const paymentRadios = radioInputsFor('paymentRequired');
+
+      radioInputs()[0].click();
+      await fixture.whenStable();
+
+      expect(component['getFormControl']('paymentRequired').value).toBe(false);
+      expect(paymentRadios[0].checked).toBe(true);
+    });
+  });
+
+  describe('payment required radio group', () => {
+    const radioInputs = () => radioInputsFor('paymentRequired');
+
+    it('should render one radio per option, defaulting to the false option', () => {
+      const radios = radioInputs();
+      expect(radios).toHaveLength(2);
+      expect(radios[0].checked).toBe(true);
+      expect(radios[1].checked).toBe(false);
+    });
+
+    it('should write true into the control when the true-valued option is clicked', async () => {
+      const radios = radioInputs();
+
+      // second option carries value=true (radioOptionsPaymentRequired[1])
+      radios[1].click();
+      await fixture.whenStable();
+
+      expect(component['getFormControl']('paymentRequired').value).toBe(true);
+    });
+
+    it('should write false into the control when the false-valued option is clicked', async () => {
+      component['getFormControl']('paymentRequired').setValue(true);
+      await fixture.whenStable();
+
+      radioInputs()[0].click();
+      await fixture.whenStable();
+
+      expect(component['getFormControl']('paymentRequired').value).toBe(false);
+    });
+
+    it('should not affect the consentRequired selection when a paymentRequired option is clicked', async () => {
+      const consentRadios = radioInputsFor('consentRequired');
+      const consentValueBefore = component['getFormControl']('consentRequired').value;
+      const consentCheckedBefore = consentRadios.map((radio) => radio.checked);
+
+      radioInputs()[0].click();
+      await fixture.whenStable();
+
+      expect(component['getFormControl']('consentRequired').value).toBe(consentValueBefore);
+      expect(consentRadios.map((radio) => radio.checked)).toEqual(consentCheckedBefore);
+    });
+  });
+
+  describe('pricing basis fields', () => {
+    it('should disable the pricing basis controls while paymentRequired is false', () => {
+      for (const lang of availableLangs) {
+        expect(component['getFormControl'](`pricingBasis.${lang}`).disabled).toBe(true);
+      }
+    });
+
+    it('should enable the pricing basis controls once paymentRequired becomes true, and disable them again once it becomes false', async () => {
+      component['getFormControl']('paymentRequired').setValue(true);
+      await fixture.whenStable();
+
+      for (const lang of availableLangs) {
+        expect(component['getFormControl'](`pricingBasis.${lang}`).enabled).toBe(true);
+      }
+
+      component['getFormControl']('paymentRequired').setValue(false);
+      await fixture.whenStable();
+
+      for (const lang of availableLangs) {
+        expect(component['getFormControl'](`pricingBasis.${lang}`).disabled).toBe(true);
+      }
+    });
+
+    it('should keep pricing basis values once paymentRequired becomes false again', async () => {
+      component['getFormControl']('paymentRequired').setValue(true);
+      await fixture.whenStable();
+
+      for (const lang of availableLangs) {
+        component['getFormControl'](`pricingBasis.${lang}`).setValue('some pricing text');
+      }
+
+      component['getFormControl']('paymentRequired').setValue(false);
+      await fixture.whenStable();
+
+      for (const lang of availableLangs) {
+        expect(component['getFormControl'](`pricingBasis.${lang}`).value).toBe('some pricing text');
+      }
     });
   });
 

@@ -8,6 +8,7 @@
  * Do not edit the class manually.
  */
 import { DataRequestTitleDto } from './dataRequestTitleDto';
+import { DataRequestConsumerDisplayNameDto } from './dataRequestConsumerDisplayNameDto';
 
 
 /**
@@ -18,7 +19,7 @@ export interface DataRequestSummaryDto {
     /**
      * Shorter name of the data consumer defined by the data consumer used when displaying the request to the producer
      */
-    dataConsumerDisplayName?: string;
+    dataConsumerDisplayName?: DataRequestConsumerDisplayNameDto;
     /**
      * Base64-encoded logo of the data consumer
      */

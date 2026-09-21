@@ -92,6 +92,40 @@ describe('AgridataSelectComponent', () => {
     });
   });
 
+  describe('grouped options', () => {
+    const groups = [
+      { label: 'Provider A', options: [{ value: 'a1', label: 'System A1' }] },
+      { label: 'Provider B', options: [{ value: 'b1', label: 'System B1' }] },
+    ];
+
+    it('resolves the selected label from a grouped option', () => {
+      componentRef.setInput('groups', groups);
+      component.selectedOption.set('b1');
+      fixture.detectChanges();
+
+      expect(component.getSelectedOptionLabel()).toBe('System B1');
+    });
+
+    it('renders group headers and their options when opened', () => {
+      componentRef.setInput('groups', groups);
+      openComponent.isDropdownOpen.set(true);
+      fixture.detectChanges();
+
+      const text = fixture.nativeElement.textContent;
+      expect(text).toContain('Provider A');
+      expect(text).toContain('System A1');
+      expect(text).toContain('System B1');
+    });
+
+    it('selects a grouped option', () => {
+      const event = { stopPropagation: () => {} } as unknown as Event;
+      componentRef.setInput('groups', groups);
+      openComponent.handleOptionSelect('a1', event);
+
+      expect(component.selectedOption()).toBe('a1');
+    });
+  });
+
   describe('click outside behavior', () => {
     it('should close the dropdown when clicking outside', () => {
       openComponent.isDropdownOpen.set(true);

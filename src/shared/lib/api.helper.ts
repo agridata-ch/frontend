@@ -29,6 +29,15 @@ export function arrayToObjectSortParams(sortParams: Array<string> | undefined, p
   return sortObj;
 }
 
+export function columnFiltersToObject(columnFilters: Array<string> | undefined) {
+  if (!columnFilters || columnFilters.length === 0) {
+    return undefined;
+  }
+  // Wrapped as an object so the OpenAPI base service emits it as the `filter` query param
+  // (same trick as arrayToObjectSortParams). Entries are joined with ';' per column.
+  return { filter: columnFilters.join(';') };
+}
+
 export function createResourceErrorHandlerEffect<T>(
   resource: ResourceRef<T>,
   errorService: ErrorHandlerService,

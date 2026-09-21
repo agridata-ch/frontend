@@ -108,6 +108,7 @@ describe('DataRequestWizardProviderComponent', () => {
   describe('canReleaseContract (provider-specific)', () => {
     it('should return false when stateCode is ToBeSignedByProvider', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
         advantages: [],
@@ -117,6 +118,7 @@ describe('DataRequestWizardProviderComponent', () => {
 
     it('should return true when stateCode is ToBeReleasedByProvider', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
         advantages: [],
@@ -126,6 +128,7 @@ describe('DataRequestWizardProviderComponent', () => {
 
     it('should return false when stateCode is Draft', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -135,6 +138,7 @@ describe('DataRequestWizardProviderComponent', () => {
 
     it('should return false when stateCode is ToBeReleasedByConsumer', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.ToBeReleasedByConsumer,
         advantages: [],
@@ -146,6 +150,7 @@ describe('DataRequestWizardProviderComponent', () => {
   describe('checkExternalCompletion (provider-specific)', () => {
     it('should return true for CONTRACT when stateCode is ToBeReleasedByProvider', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
         advantages: [],
@@ -155,6 +160,7 @@ describe('DataRequestWizardProviderComponent', () => {
 
     it('should return false for CONTRACT when stateCode is ToBeSignedByProvider', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
         advantages: [],
@@ -164,6 +170,7 @@ describe('DataRequestWizardProviderComponent', () => {
 
     it('should return true for COMPLETION when stateCode is Active', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.Active,
         advantages: [],
@@ -173,6 +180,7 @@ describe('DataRequestWizardProviderComponent', () => {
 
     it('should return false for COMPLETION when stateCode is ToBeSignedByProvider', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
         advantages: [],
@@ -198,6 +206,7 @@ describe('DataRequestWizardProviderComponent', () => {
     it('should return early if canReleaseContract is false', async () => {
       component['currentDataRequestId'].set('test-id');
       component['dataRequest'].set({
+        burPresent: false,
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
         advantages: [],
@@ -210,12 +219,14 @@ describe('DataRequestWizardProviderComponent', () => {
 
     it('should call releaseDataRequestToBeActivated with the current dataRequestId', async () => {
       const released: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeActivated,
         advantages: [],
       };
       component['currentDataRequestId'].set('test-id');
       component['dataRequest'].set({
+        burPresent: false,
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
         advantages: [],
@@ -229,12 +240,14 @@ describe('DataRequestWizardProviderComponent', () => {
 
     it('should update dataRequest and refreshListNeeded on success', async () => {
       const released: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeActivated,
         advantages: [],
       };
       component['currentDataRequestId'].set('test-id');
       component['dataRequest'].set({
+        burPresent: false,
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
         advantages: [],
@@ -249,12 +262,14 @@ describe('DataRequestWizardProviderComponent', () => {
 
     it('should reset isHandlingReleaseDataRequest to false after success', async () => {
       const released: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeActivated,
         advantages: [],
       };
       component['currentDataRequestId'].set('test-id');
       component['dataRequest'].set({
+        burPresent: false,
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
         advantages: [],
@@ -270,6 +285,7 @@ describe('DataRequestWizardProviderComponent', () => {
       const testError = new Error('release failed');
       component['currentDataRequestId'].set('test-id');
       component['dataRequest'].set({
+        burPresent: false,
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
         advantages: [],
@@ -284,6 +300,7 @@ describe('DataRequestWizardProviderComponent', () => {
     it('should reset isHandlingReleaseDataRequest to false after failure', async () => {
       component['currentDataRequestId'].set('test-id');
       component['dataRequest'].set({
+        burPresent: false,
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeReleasedByProvider,
         advantages: [],
@@ -313,6 +330,7 @@ describe('DataRequestWizardProviderComponent', () => {
   describe('formDisabled (shared logic)', () => {
     it('should return false when stateCode is Draft', () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.Draft,
         advantages: [],
@@ -322,6 +340,7 @@ describe('DataRequestWizardProviderComponent', () => {
 
     it('should return true when stateCode is InReview', async () => {
       component['dataRequest'].set({
+        burPresent: false,
         id: '123',
         stateCode: DataRequestStateEnum.InReview,
         advantages: [],
@@ -389,6 +408,7 @@ describe('DataRequestWizardProviderComponent', () => {
   describe('updateDataRequestFromInputEffect (shared logic)', () => {
     it('should update dataRequest when initialDataRequest is set', async () => {
       const newRequest: DataRequestDto = {
+        burPresent: false,
         id: 'test-id',
         stateCode: DataRequestStateEnum.ToBeSignedByProvider,
         advantages: [],

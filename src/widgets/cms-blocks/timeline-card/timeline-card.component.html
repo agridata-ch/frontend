@@ -20,7 +20,7 @@
       <img
         class="flex w-60 object-cover"
         [src]="generateMediaUrl(cmsData().image.url)"
-        [alt]="cmsData().image.alternativeText"
+        [alt]="resolveAlt(cmsData().imageAlt, cmsData().image)"
       />
     </div>
   </div>

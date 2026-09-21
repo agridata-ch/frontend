@@ -12,6 +12,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { ValidatorFn } from '@angular/forms';
 import {
   faBold,
   faItalic,
@@ -68,6 +69,19 @@ function htmlLengthLimit(limit: number | null): Extension {
 }
 
 /**
+ * Angular's stock `Validators.minLength` checks `control.value.length`, but this control stores
+ * serialised HTML (e.g. `<p>ab</p>` is already 10 characters for 2 visible ones). Check the visible
+ * text length instead so the "at least N characters" error reflects what the user actually typed.
+ */
+function minVisibleTextLength(min: number): ValidatorFn {
+  return (control) => {
+    const html = typeof control.value === 'string' ? control.value : '';
+    const text = new DOMParser().parseFromString(html, 'text/html').body.textContent ?? '';
+    return text.length < min ? { minlength: true } : null;
+  };
+}
+
+/**
  * Implements a simple headless WYSIWYG rich-text editor based on TipTap. It binds to a reactive form
  * control, offers a minimal toolbar (bold, italic, underline, bullet + numbered lists, reset format),
  * supports error and disabled states, and a read-only view mode that renders the stored HTML. It emits
@@ -120,6 +134,7 @@ export class AgridataWysiwygComponent {
   private editorControl?: FormControlWithMessages;
   private editorPlaceholder?: string;
   private editorMaxCharacters?: number | null;
+  private minLengthValidatedControl?: FormControlWithMessages;
 
   // Signals
   private readonly editorState = signal(0);
@@ -217,6 +232,12 @@ export class AgridataWysiwygComponent {
 
   private createEditor(element: HTMLElement): void {
     const control = this.control();
+
+    if (control?.minLength != null && control !== this.minLengthValidatedControl) {
+      control.addValidators(minVisibleTextLength(control.minLength));
+      control.updateValueAndValidity();
+      this.minLengthValidatedControl = control;
+    }
 
     this.editor = new Editor({
       element,

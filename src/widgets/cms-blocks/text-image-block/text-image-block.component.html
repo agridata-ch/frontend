@@ -34,7 +34,7 @@
           <a [href]="linkedImage.link" target="_blank" rel="noopener noreferrer">
             <img
               [src]="generateMediaUrl(linkedImage.image.url)"
-              [alt]="linkedImage.image.alternativeText"
+              [alt]="resolveAlt(linkedImage.imageAlt, linkedImage.image)"
               class="rounded-lg border border-agridata-stroke max-h-10"
             />
           </a>
