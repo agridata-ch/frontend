@@ -1306,7 +1306,8 @@
       "links": "Liens",
       "extendedDescription": "Informations complémentaires",
       "paymentRequired": "Frais du fournisseur",
-      "costs": "Frais pour les requérants de données"
+      "costs": "Frais pour les requérants de données",
+      "documents": "Documents"
     },
     "list": {
       "allLoaded": "Tous les produits de données chargés"

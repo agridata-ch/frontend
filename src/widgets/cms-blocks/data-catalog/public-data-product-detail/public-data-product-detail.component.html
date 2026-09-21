@@ -71,10 +71,36 @@
           </section>
         }
 
-        @if (product.links && product.links.length > 0) {
-          <section class="flex flex-col gap-6">
-            <h4>{{ t('product.links') }}</h4>
-            <app-agridata-links-list [links]="product.links" />
+        @if (hasLinks() || documents().length) {
+          <section class="flex flex-col sm:flex-row gap-8">
+            @if (hasLinks()) {
+              <div class="flex flex-1 flex-col gap-6">
+                <h4>{{ t('product.links') }}</h4>
+                <app-agridata-links-list [links]="product.links ?? []" />
+              </div>
+            }
+            @if (documents().length) {
+              <div class="flex flex-1 flex-col gap-6">
+                <h4>{{ t('product.documents') }}</h4>
+                <ul
+                  class="flex flex-col rounded-lg border border-agridata-stroke divide-y divide-agridata-stroke"
+                >
+                  @for (doc of documents(); track doc.id) {
+                    <li class="p-3">
+                      <app-agridata-file-download
+                        [fileName]="doc.fileName"
+                        [sizeBytes]="doc.sizeBytes"
+                        [downloadable]="true"
+                        [isOpening]="downloads.isOpening(doc.id)"
+                        [isDownloading]="downloads.isDownloading(doc.id)"
+                        (handleOpen)="handleOpen(doc)"
+                        (handleDownload)="handleDownload(doc)"
+                      />
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
           </section>
         }
         @if (extendedDescription()) {

@@ -6,6 +6,7 @@ import {
   DataProductDocumentMetadataDto,
   DataProductsService,
   DocumentScanStatusEnum,
+  PublicDataProductsService,
 } from '@/entities/openapi';
 import { ActingRole } from '@/shared/constants/constants';
 
@@ -21,6 +22,7 @@ type DataProductActingRoles = 'PROVIDER' | 'ADMIN' | undefined;
 @Service()
 export class DataProductDocumentService {
   private readonly apiService = inject(DataProductsService);
+  private readonly publicApiService = inject(PublicDataProductsService);
 
   private readonly maxPollDurationMs = 5 * 60 * 1000;
   // Fallback delay between poll iterations. When the backend honours the long-poll each request
@@ -197,5 +199,23 @@ export class DataProductDocumentService {
       }, ms);
       abortSignal?.addEventListener('abort', onAbort, { once: true });
     });
+  }
+
+  listDocumentsPublic(dataProductId: string): Promise<DataProductDocumentMetadataDto[]> {
+    return firstValueFrom(
+      this.publicApiService.getPublicDataProductDocumentsMetadata(dataProductId),
+    );
+  }
+
+  downloadDocumentPublic(dataProductId: string, documentId: string): Promise<Blob> {
+    return firstValueFrom(
+      this.publicApiService.getPublicDataProductDocument(
+        documentId,
+        dataProductId,
+        undefined,
+        undefined,
+        { httpHeaderAccept: 'application/octet-stream' },
+      ),
+    );
   }
 }
