@@ -1,3 +1,9 @@
+## [1.21.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.21.0-rc.1...v1.21.0-rc.2) (2026-09-22)
+
+### Features
+
+- **data-request:** add producers metadata ([b469cce](https://github.com/agridata-ch/frontend/commit/b469cced22ac8b7421a89a6641230c35eb809360)), references [DIGIB2-1683](https://github.com/agridata-ch/frontend/issues/-1683)
+
 ## [1.21.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.20.0...v1.21.0-rc.1) (2026-09-21)
 
 ### Features
