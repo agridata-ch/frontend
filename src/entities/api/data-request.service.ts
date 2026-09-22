@@ -41,6 +41,12 @@ export class DataRequestService {
     );
   }
 
+  fetchProducersMetadata(dataRequestId: string) {
+    return firstValueFrom(
+      this.apiService.getConsentRequestStatusSummaryOfDataRequest(dataRequestId),
+    );
+  }
+
   getConsentRequestsOfDataRequest = (
     dataRequestId: string,
     queryDto: ResourceQueryDto,

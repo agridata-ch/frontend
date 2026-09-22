@@ -1,6 +1,7 @@
 import { DataRequestService } from '@/entities/api';
 import {
   ConsentRequestFundamentalViewDto,
+  ConsentRequestStatusSummaryDto,
   DataRequestDto,
   DataRequestStateEnum,
 } from '@/entities/openapi';
@@ -72,6 +73,11 @@ export const mockConsentRequestsPage: PageResponseDto<ConsentRequestFundamentalV
   pageSize: 10,
 };
 
+export const mockConsentRequestStatusSummary: ConsentRequestStatusSummaryDto = {
+  uid: { total: 1562, open: 86, granted: 978, declined: 498 },
+  bur: { total: 2536, open: 244, granted: 2006, declined: 286 },
+};
+
 export type MockDataRequestService = Mockify<DataRequestService>;
 
 /**
@@ -87,6 +93,7 @@ export function createMockDataRequestService(): MockDataRequestService {
     deleteDataRequest: vi.fn().mockResolvedValue(undefined),
     fetchDataRequest: vi.fn(),
     fetchDataRequests: vi.fn().mockResolvedValue(mockDataRequests),
+    fetchProducersMetadata: vi.fn().mockResolvedValue(mockConsentRequestStatusSummary),
     getConsentRequestsOfDataRequest: vi.fn().mockResolvedValue(mockConsentRequestsPage),
     retreatDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
     activateDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),

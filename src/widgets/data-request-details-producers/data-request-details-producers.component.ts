@@ -34,6 +34,7 @@ import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { EmptyStateComponent } from '@/shared/ui/empty-state';
 
 import { ConsentRequestFundamentalViewDtoDirective } from './consent-request-fundamental-view-dto.directive';
+import { DataRequestDetailsProducersMetadataComponent } from './data-request-details-producers-metadata';
 
 /**
  * Shows the producers (consent requests) of a data request in the "Producer" tab of the Data
@@ -50,6 +51,7 @@ import { ConsentRequestFundamentalViewDtoDirective } from './consent-request-fun
     ConsentRequestFundamentalViewDtoDirective,
     I18nDirective,
     EmptyStateComponent,
+    DataRequestDetailsProducersMetadataComponent,
   ],
   templateUrl: './data-request-details-producers.component.html',
 })

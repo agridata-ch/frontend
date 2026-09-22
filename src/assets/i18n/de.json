@@ -431,6 +431,15 @@
         "emptyState": {
           "title": "Keine Produzenten gefunden",
           "message": "Möchten Sie einen Produzenten in die Liste aufnehmen?"
+        },
+        "metadata": {
+          "title": "Status der Datenanfragen",
+          "total": "Total Anfragen",
+          "open": "Offen",
+          "granted": "Zugestimmt",
+          "declined": "Abgelehnt",
+          "uid": "UID",
+          "bur": "BUR"
         }
       }
     },

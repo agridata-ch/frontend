@@ -431,6 +431,10 @@
         "emptyState": {
           "title": "Non sono stati trovati produttori",
           "message": "Desidera aggiungere un produttore all'elenco?"
+        },
+        "metadata": {
+          "uid": "UID",
+          "bur": "BUR"
         }
       }
     },
