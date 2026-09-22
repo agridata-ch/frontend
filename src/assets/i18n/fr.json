@@ -431,6 +431,10 @@
         "emptyState": {
           "title": "Aucun producteur trouvé",
           "message": "Souhaitez-vous ajouter un producteur à la liste?"
+        },
+        "metadata": {
+          "uid": "UID",
+          "bur": "BUR"
         }
       }
     },

@@ -53,7 +53,6 @@ export class DataRequestDetailsWrapperComponent {
   protected readonly dataRequestsResource = resource({
     params: () => ({ actingRole: this.stateService.actingRole(), id: this.dataRequestId() }),
     loader: ({ params }) => {
-      console.log('Loading data request with ID:', params.id);
       if (!params?.id || params.id === DATA_REQUEST_NEW_ID) {
         return Promise.resolve(undefined);
       }
