@@ -1,3 +1,9 @@
+## [1.21.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.21.0-rc.2...v1.21.0-rc.3) (2026-09-23)
+
+### Features
+
+- **consent-request:** add foreign badge and alert for international consumers ([64631a0](https://github.com/agridata-ch/frontend/commit/64631a04458a0e30247d311f28a31201bf5e8caf)), references [DIGIB2-1659](https://github.com/agridata-ch/frontend/issues/-1659)
+
 ## [1.21.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.21.0-rc.1...v1.21.0-rc.2) (2026-09-22)
 
 ### Features
