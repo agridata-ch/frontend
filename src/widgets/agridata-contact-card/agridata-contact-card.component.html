@@ -5,8 +5,17 @@
       <div class="agridata-ellipsis font-medium" [title]="name()">{{ name() }}</div>
     }
     @if (secondaryName()) {
-      <div class="agridata-ellipsis text-gray-500 text-sm" [title]="secondaryName()">
-        {{ secondaryName() }}
+      <div class="flex items-center gap-2">
+        <div class="agridata-ellipsis text-gray-500 text-sm" [title]="secondaryName()">
+          {{ secondaryName() }}
+        </div>
+        @if (showForeignBadge()) {
+          <app-agridata-badge
+            [icon]="iconGlobe"
+            [text]="'agridata-contact-card.foreignBadge' | i18n"
+            [size]="BadgeSize.SM"
+          />
+        }
       </div>
     }
   </div>

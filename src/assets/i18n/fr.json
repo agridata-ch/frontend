@@ -573,7 +573,11 @@
     },
     "privacy": {
       "title": "Protection des données",
-      "description": "Un contrat régissant le transfert de données a été conclu entre {{ provider }} et {{ consumer }}. Ce contrat **prévoit une utilisation exclusivement réservée à la finalité décrite ci-dessus** et impose à {{ consumer }} l'obligation légale de se conformer à la loi suisse sur la protection des données (LPD)."
+      "description": "Un contrat régissant le transfert de données a été conclu entre {{ provider }} et {{ consumer }}. Ce contrat **prévoit une utilisation exclusivement réservée à la finalité décrite ci-dessus** et impose à {{ consumer }} l'obligation légale de se conformer à la loi suisse sur la protection des données (LPD).",
+      "foreignConsumerAlert": {
+        "title": "Requérant international de données",
+        "message": "Le destinataire est établi à l'étranger ({{city}}, {{country}}). Le transfert des données est protégé par le contrat d'échange de données selon les normes suisses en matière de protection des données."
+      }
     },
     "uid": "UID",
     "bur": "BUR",
@@ -1327,5 +1331,8 @@
   },
   "infinite-scroll": {
     "loading": "Chargement des entrées"
+  },
+  "agridata-contact-card": {
+    "foreignBadge": "Requérant international de données"
   }
 }

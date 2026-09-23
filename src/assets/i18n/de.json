@@ -578,7 +578,11 @@
     },
     "privacy": {
       "title": "Datenschutz",
-      "description": "Zwischen {{ provider }} und {{ consumer }} besteht ein Vertrag für die Datenübertragung. Dieser Vertrag **regelt die ausschliessliche Nutzung für den oben beschriebenen Zweck** und verpflichtet {{ consumer }} rechtlich zur Einhaltung des Schweizer Datenschutzgesetzes (DSG)."
+      "description": "Zwischen {{ provider }} und {{ consumer }} besteht ein Vertrag für die Datenübertragung. Dieser Vertrag **regelt die ausschliessliche Nutzung für den oben beschriebenen Zweck** und verpflichtet {{ consumer }} rechtlich zur Einhaltung des Schweizer Datenschutzgesetzes (DSG).",
+      "foreignConsumerAlert": {
+        "title": "Internationaler Datenbezüger",
+        "message": "Der Empfänger hat seinen Sitz im Ausland ({{city}}, {{country}}). Die Datenübermittlung ist durch den Datenaustauschvertrag nach Schweizer Datenschutzstandard geschützt."
+      }
     },
     "uid": "UID",
     "bur": "BUR",
@@ -1332,5 +1336,8 @@
   },
   "infinite-scroll": {
     "loading": "Einträge werden geladen"
+  },
+  "agridata-contact-card": {
+    "foreignBadge": "Internationaler Datenbezüger"
   }
 }
