@@ -15,6 +15,7 @@ import {
   createMockMasterDataService,
   MockMasterDataService,
 } from '@/shared/testing/mocks';
+import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { DataRequestPrivacyInfosComponent } from '@/widgets/data-request-privacy-infos';
 
 import { DataRequestContentComponent } from './data-request-content.component';
@@ -57,6 +58,40 @@ describe('DataRequestContentComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('isForeignConsumer', () => {
+    it.each([
+      ['no country is set', undefined, false],
+      ['the consumer is in Switzerland', 'CH', false],
+      ['the consumer is not in Switzerland', 'DE', true],
+    ])('should be %s when %s', (_label, dataConsumerCountry, expected) => {
+      componentRef.setInput('dataRequest', { ...mockDataRequest, dataConsumerCountry });
+      fixture.detectChanges();
+
+      expect(component['isForeignConsumer']()).toBe(expected);
+
+      const contactCard = fixture.debugElement.query(By.directive(AgridataContactCardComponent));
+      expect(contactCard.componentInstance.showForeignBadge()).toBe(expected);
+
+      const privacyInfos = fixture.debugElement.query(
+        By.directive(DataRequestPrivacyInfosComponent),
+      );
+      expect(privacyInfos.componentInstance.isForeignConsumer()).toBe(expected);
+    });
+  });
+
+  it('should pass the consumer city and country on to the privacy infos', () => {
+    componentRef.setInput('dataRequest', {
+      ...mockDataRequest,
+      dataConsumerCity: 'Berlin',
+      dataConsumerCountry: 'DE',
+    });
+    fixture.detectChanges();
+
+    const privacyInfos = fixture.debugElement.query(By.directive(DataRequestPrivacyInfosComponent));
+    expect(privacyInfos.componentInstance.dataConsumerCity()).toBe('Berlin');
+    expect(privacyInfos.componentInstance.dataConsumerCountry()).toBe('DE');
   });
 
   describe('products', () => {

@@ -573,7 +573,11 @@
     },
     "privacy": {
       "title": "Protezione dei dati",
-      "description": "Tra {{ provider }} e {{ consumer }} è in vigore un contratto relativo al trasferimento dei dati. Tale contratto **disciplina l'utilizzo esclusivo per lo scopo sopra descritto** e impone a {{ consumer }} l'obbligo giuridico di rispettare la legge svizzera sulla protezione dei dati (LPD)."
+      "description": "Tra {{ provider }} e {{ consumer }} è in vigore un contratto relativo al trasferimento dei dati. Tale contratto **disciplina l'utilizzo esclusivo per lo scopo sopra descritto** e impone a {{ consumer }} l'obbligo giuridico di rispettare la legge svizzera sulla protezione dei dati (LPD).",
+      "foreignConsumerAlert": {
+        "title": "Richiedente internazionale di dati",
+        "message": "Il destinatario ha sede all'estero ({{city}}, {{country}}). Il trasferimento dei dati è protetto dal contratto di scambio di dati secondo lo standard svizzero in materia di protezione dei dati."
+      }
     },
     "uid": "UID",
     "bur": "BUR",
@@ -1327,5 +1331,8 @@
   },
   "infinite-scroll": {
     "loading": "Voci in caricamento"
+  },
+  "agridata-contact-card": {
+    "foreignBadge": "Richiedente internazionale di dati"
   }
 }

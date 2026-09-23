@@ -52,6 +52,10 @@ export class DataRequestContentComponent {
   protected readonly description = computed(() =>
     this.i18nService.useObjectTranslation(this.dataRequest().description, this.lang()),
   );
+  protected readonly isForeignConsumer = computed(
+    () =>
+      !!this.dataRequest().dataConsumerCountry && this.dataRequest().dataConsumerCountry !== 'CH',
+  );
   protected readonly products = computed(() =>
     this.metaDataService
       .getProductsForProvider(this.dataRequest().dataProviderId ?? '')

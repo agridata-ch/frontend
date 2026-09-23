@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
+import { AgridataBadgeComponent } from '@/shared/ui/badge';
 
 import { AgridataContactCardComponent } from './agridata-contact-card.component';
 
@@ -78,5 +79,35 @@ describe('AgridataContactCardComponent', () => {
 
     const secondaryNameElement = fixture.debugElement.query(By.css('.text-gray-500'));
     expect(secondaryNameElement).toBeNull();
+  });
+
+  describe('showForeignBadge', () => {
+    beforeEach(() => {
+      fixture.componentRef.setInput('secondaryName', 'Berlin');
+    });
+
+    it('should not display the badge by default', () => {
+      fixture.detectChanges();
+
+      const badge = fixture.debugElement.query(By.directive(AgridataBadgeComponent));
+      expect(badge).toBeNull();
+    });
+
+    it('should display the badge when true', () => {
+      fixture.componentRef.setInput('showForeignBadge', true);
+      fixture.detectChanges();
+
+      const badge = fixture.debugElement.query(By.directive(AgridataBadgeComponent));
+      expect(badge).not.toBeNull();
+    });
+
+    it('should not display the badge when secondary name is not provided', () => {
+      fixture.componentRef.setInput('secondaryName', undefined);
+      fixture.componentRef.setInput('showForeignBadge', true);
+      fixture.detectChanges();
+
+      const badge = fixture.debugElement.query(By.directive(AgridataBadgeComponent));
+      expect(badge).toBeNull();
+    });
   });
 });
