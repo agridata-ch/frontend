@@ -16,6 +16,7 @@
     [attr.aria-disabled]="isDisabled() ? 'true' : null"
     [tabindex]="isDisabled() ? -1 : tabindex()"
     [attr.aria-label]="ariaLabel()"
+    [attr.aria-expanded]="ariaExpanded()"
     [attr.data-testid]="dataTestId()"
     [appTooltip]="tooltipText()"
     (click)="onButtonClick($event)"

@@ -85,4 +85,39 @@ describe('AlertComponent', () => {
       expect(component.closeAlert.emit).toHaveBeenCalledWith(true);
     });
   });
+
+  describe('isExpandable', () => {
+    it('should not render the expand/collapse toggle by default', () => {
+      fixture.detectChanges();
+
+      const toggle = fixture.debugElement.query(By.css('button[aria-expanded]'));
+
+      expect(toggle).toBeNull();
+    });
+
+    it('should start collapsed when isExpandable is enabled', () => {
+      componentRef.setInput('title', 'Title');
+      componentRef.setInput('isExpandable', true);
+      fixture.detectChanges();
+
+      expect(component['isExpanded']()).toBe(false);
+    });
+
+    it('should expand and collapse again when the toggle is clicked', () => {
+      componentRef.setInput('title', 'Title');
+      componentRef.setInput('isExpandable', true);
+      fixture.detectChanges();
+
+      const toggle = fixture.debugElement.query(By.css('button[aria-expanded]'));
+      toggle?.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(component['isExpanded']()).toBe(true);
+
+      toggle?.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(component['isExpanded']()).toBe(false);
+    });
+  });
 });

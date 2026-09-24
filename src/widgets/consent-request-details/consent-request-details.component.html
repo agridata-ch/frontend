@@ -19,9 +19,15 @@
   </div>
   <app-error-outlet></app-error-outlet>
   <div class="overflow-y-auto flex flex-col gap-6 grow pb-10" appScrollFade>
-    @if (request()?.showStateAsMigrated) {
-      <app-alert [type]="AlertType.INFO" [message]="t('request.migrated')" />
+    @if (request()?.showStateAsMigratedFromMaf || request()?.showStateAsMigratedFromTvd) {
+      <app-alert
+        [type]="AlertType.INFO"
+        [message]="
+          t(request()?.showStateAsMigratedFromMaf ? 'request.migratedMaf' : 'request.migratedTvd')
+        "
+      />
     }
+
     @if (request()?.dataRequest; as dataRequest) {
       <app-data-request-content [dataRequest]="dataRequest" />
     }

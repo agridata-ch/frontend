@@ -37,6 +37,7 @@ export interface ConsentRequestProducerViewDto {
      */
     lastStateChangeDate?: string;
     requestDate?: string;
+    /** @deprecated */
     dataRequest?: ConsentRequestProducerViewDtoDataRequest;
 }
 export namespace ConsentRequestProducerViewDto {

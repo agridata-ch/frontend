@@ -25,7 +25,7 @@ type Story = StoryObj<AlertComponent>;
 const story = (args: Story['args']): Story => ({
   render: (storyArgs) => ({
     props: storyArgs,
-    template: `<app-alert [type]="type" [additionalInfo]="additionalInfo" [message]="message" [title]="title" [showCloseButton]="showCloseButton"></app-alert>`,
+    template: `<app-alert [type]="type" [additionalInfo]="additionalInfo" [message]="message" [title]="title" [showCloseButton]="showCloseButton" [isExpandable]="expandable"></app-alert>`,
   }),
   args,
 });
@@ -70,4 +70,12 @@ export const WithCloseButton = story({
   message:
     'This alert includes a close button. Click the button to dismiss the alert and trigger any associated close logic.',
   showCloseButton: true,
+});
+
+export const Expandable = story({
+  type: AlertType.INFO,
+  title: 'Expandable alert',
+  message: 'Click the toggle text to collapse or expand this message.',
+  showCloseButton: true,
+  isExpandable: true,
 });

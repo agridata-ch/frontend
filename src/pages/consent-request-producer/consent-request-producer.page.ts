@@ -28,6 +28,7 @@ import {
 import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { ButtonComponent } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal';
+import { ConsentRequestMigrationAlertsComponent } from '@/widgets/consent-request-migration-alerts';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 import { ConsentRequestsTourIntroComponent } from '@/widgets/consent-requests-tour/consent-requests-tour-intro/consent-requests-tour-intro.component';
 
@@ -43,16 +44,17 @@ import { ConsentRequestsTourIntroComponent } from '@/widgets/consent-requests-to
 @Component({
   selector: 'app-consent-request-producer-page',
   imports: [
+    AlertComponent,
+    ButtonComponent,
+    ConsentRequestMigrationAlertsComponent,
+    ConsentRequestsTourIntroComponent,
     ConsentRequestTableComponent,
+    ErrorOutletComponent,
     FontAwesomeModule,
     I18nDirective,
     I18nPipe,
-    ErrorOutletComponent,
-    AlertComponent,
-    RouterOutlet,
     ModalComponent,
-    ButtonComponent,
-    ConsentRequestsTourIntroComponent,
+    RouterOutlet,
   ],
   templateUrl: './consent-request-producer.page.html',
 })
@@ -142,15 +144,6 @@ export class ConsentRequestProducerPage {
     return this.i18nService.translate('producer.uidMissingWarning', { phoneNumber });
   });
 
-  readonly migratedRequests = computed(() =>
-    this.consentRequestResource.value().filter((request) => request.showStateAsMigrated),
-  );
-
-  readonly visibleMigratedRequests = computed(() => {
-    const dismissedIds = this.dismissedMigrationIds();
-    return this.migratedRequests().filter((request) => !dismissedIds.has(request.id));
-  });
-
   readonly showTourIntro = computed(() => {
     const userPreferences = this.agridataStateService.userPreferences();
     // don't show the tour intro if there is a consent request id in the route (so we don't interrupt the user when they are navigating directly to a specific request)
@@ -163,11 +156,6 @@ export class ConsentRequestProducerPage {
     );
   });
 
-  private readonly dismissedMigrationIds = computed<Set<string>>(() => {
-    const storedIds = this.agridataStateService.userPreferences().dismissedMigratedIds;
-    return storedIds ? new Set(storedIds) : new Set();
-  });
-
   // Methods
   protected closeTourIntro() {
     this.agridataStateService.saveTourIntroSeen(true);
@@ -178,21 +166,9 @@ export class ConsentRequestProducerPage {
   protected navigateToRequest = (request?: ConsentRequestAggregationSummaryDto | null) => {
     const aggregationId = request?.id;
     if (aggregationId) {
-      this.router.navigate([aggregationId], { relativeTo: this.activeRoute }).then();
+      void this.router.navigate([aggregationId], { relativeTo: this.activeRoute });
     }
   };
-
-  protected closeMigrationInfo(requestId: string) {
-    this.agridataStateService.addConfirmedMigratedUids([requestId]);
-  }
-
-  protected getMigratedRequestConsumerName(request: ConsentRequestAggregationSummaryDto): string {
-    return this.i18nService.useObjectTranslation(request?.dataRequest?.dataConsumerDisplayName);
-  }
-
-  protected getMigratedRequestTitle(request: ConsentRequestAggregationSummaryDto): string {
-    return this.i18nService.useObjectTranslation(request?.dataRequest?.title);
-  }
 
   protected readonly redirect = (): void => {
     const url = this.redirectUrl();

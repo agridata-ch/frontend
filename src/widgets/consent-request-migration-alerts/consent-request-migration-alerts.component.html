@@ -1,0 +1,38 @@
+<ng-container *i18n="let t; prefix: 'producer'">
+  <ng-template #groupsContent let-groups>
+    <div class="grid gap-4 mt-2">
+      <p>{{ t('migrationInfo.common.intro') }}</p>
+      @for (group of groups; track group.consumerName) {
+        <div>
+          <p class="font-semibold">
+            {{
+              t('migrationInfo.common.requestsFromConsumer', { consumerName: group.consumerName })
+            }}
+          </p>
+          <ul class="list-disc ml-5">
+            @for (request of group.requests; track request.id) {
+              <li>{{ getMigratedRequestTitle(request) }}</li>
+            }
+          </ul>
+        </div>
+      }
+      <p>{{ t('migrationInfo.common.tableHint') }}</p>
+    </div>
+  </ng-template>
+
+  @for (migrationInfo of migrationInfos(); track migrationInfo.id) {
+    <app-alert
+      [type]="AlertType.INFO"
+      [showCloseButton]="true"
+      isExpandable
+      [dataTestId]="'alert-migration-' + migrationInfo.id"
+      [title]="t(migrationInfo.titleKey)"
+      class="mb-4"
+      (closeAlert)="handleClose(migrationInfo)"
+    >
+      <ng-container
+        *ngTemplateOutlet="groupsContent; context: { $implicit: migrationInfo.groups }"
+      />
+    </app-alert>
+  }
+</ng-container>

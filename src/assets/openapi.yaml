@@ -85,8 +85,22 @@ components:
           - 2025-05-19
         showStateAsMigrated:
           type: boolean
-          description: Indicates whether the aggregated state originates from migrated
-            consent requests
+          description: "Indicates whether the aggregated state originates from migrated\
+            \ consent requests. Only considers MAF migrations. Deprecated: use showStateAsMigratedFromMaf\
+            \ instead."
+          deprecated: true
+          examples:
+          - true
+        showStateAsMigratedFromMaf:
+          type: boolean
+          description: Indicates whether the aggregated state originates from consent
+            requests migrated from MAF
+          examples:
+          - true
+        showStateAsMigratedFromTvd:
+          type: boolean
+          description: Indicates whether the aggregated state originates from consent
+            requests migrated from Identitas (TVD)
           examples:
           - true
         lastStateChangeDate:
@@ -140,8 +154,22 @@ components:
           - 2025-05-19
         showStateAsMigrated:
           type: boolean
-          description: Indicates whether the aggregated state originates from migrated
-            consent requests
+          description: "Indicates whether the aggregated state originates from migrated\
+            \ consent requests. Only considers MAF migrations. Deprecated: use showStateAsMigratedFromMaf\
+            \ instead."
+          deprecated: true
+          examples:
+          - true
+        showStateAsMigratedFromMaf:
+          type: boolean
+          description: Indicates whether the aggregated state originates from consent
+            requests migrated from MAF
+          examples:
+          - true
+        showStateAsMigratedFromTvd:
+          type: boolean
+          description: Indicates whether the aggregated state originates from consent
+            requests migrated from Identitas (TVD)
           examples:
           - true
         lastStateChangeDate:
@@ -341,6 +369,7 @@ components:
           - 2025-05-19
         dataRequest:
           description: Details of the underlying data request
+          deprecated: true
           type: object
           required:
           - id
@@ -533,7 +562,19 @@ components:
           - GRANTED
         showStateAsMigrated:
           type: boolean
-          description: If the state should be shown as migrated
+          description: "If the state should be shown as migrated. Only considers MAF\
+            \ migrations. Deprecated: use showStateAsMigratedFromMaf instead."
+          deprecated: true
+          examples:
+          - true
+        showStateAsMigratedFromMaf:
+          type: boolean
+          description: If the state should be shown as migrated from MAF
+          examples:
+          - true
+        showStateAsMigratedFromTvd:
+          type: boolean
+          description: If the state should be shown as migrated from Identitas (TVD)
           examples:
           - true
         lastStateChangeDate:
@@ -1422,6 +1463,7 @@ components:
       - advantages
     DataRequestV1Dto:
       description: Details of the underlying data request
+      deprecated: true
       type: object
       required:
       - id
@@ -1682,6 +1724,7 @@ components:
       enum:
       - GENERIC
       - UID_MISSING
+      - UID_CLAIM_MISSING
       - EXTERNAL_SERVICE_ERROR
       - CONSENT_NOT_GRANTED
       - OTP_INVALID
@@ -3485,7 +3528,7 @@ paths:
           minimum: 1
           default: 100
       - description: Field names to sort by. Ascending by default; prefix with - for
-          descending. Defaults to -modifiedAt.
+          descending. Defaults to -lastModifiedDateTime.
         name: sortBy
         in: query
         schema:
@@ -3751,6 +3794,60 @@ paths:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+  /api/agreement/v1/data-requests/{id}/uids/{uid}/consent-requests:
+    get:
+      description: Retrieves the UID- and BUR-based consent requests of a specific
+        data request for a single producer UID. Accessible to the consumer who owns
+        the data request.
+      operationId: getConsentRequestsOfDataRequestAndUid
+      tags:
+      - Data Requests
+      parameters:
+      - description: The UUID of the data request
+        example: 3da3a459-d3c2-48af-b8d0-02bc95146468
+        name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - description: The UID of the data producer
+        example: CHE123456789
+        name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^(?:CHE|ZZZ)\\d{9}$"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConsentRequestFundamentalViewDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Consent Requests Of Data Request And Uid
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/valid-redirect-uri-regex:
     put:
@@ -5606,10 +5703,10 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Support
       x-api-subset: agridata.ch Web App
-  /api/user/v1/uid/{uid}/authorized-burs:
+  /api/user/v1/uids/{uid}/authorized-burs:
     get:
-      description: Retrieves all BURs authorized for the given UID. Only accessible
-        to admin users.
+      description: Retrieves all BURs authorized for the given UID. Accessible to
+        consumers and admin users.
       operationId: getAuthorizedBursByUid
       tags:
       - Users
@@ -5647,8 +5744,11 @@ paths:
       summary: Get Authorized Burs By Uid
       security:
       - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
-      x-api-subset: agridata.ch Web App
+      x-api-subset:
+      - agridata.ch Web App
+      - Data Consumer
   /api/user/v1/user-info:
     get:
       description: Retrieves user-info for the currently authenticated user.
@@ -6008,7 +6108,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.18.0-rc.4
+  version: 1.20.0-rc.1
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 
