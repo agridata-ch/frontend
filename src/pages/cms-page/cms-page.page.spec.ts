@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, provideRouter } from '@angular/router';
 
-import { CmsService } from '@/entities/cms';
+import { CmsService, PageLayoutType } from '@/entities/cms';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { mockCmsResponse, mockCmsService } from '@/shared/testing/mocks';
 
@@ -37,6 +37,24 @@ describe('CmsPage', () => {
 
     it('footerBlock returns footer from the CMS page data', () => {
       expect(component['footerBlock']()).toBe(mockCmsResponse.data.footer);
+    });
+
+    it('layoutType defaults to DEFAULT when the page has no layout_type', () => {
+      expect(component['layoutType']()).toBe(PageLayoutType.DEFAULT);
+    });
+
+    it('layoutType returns the page layout_type when set', async () => {
+      mockCmsService.fetchCmsPage.mockResolvedValueOnce({
+        ...mockCmsResponse,
+        data: { ...mockCmsResponse.data, layout_type: PageLayoutType.NEWS_BLOG },
+      });
+
+      const testFixture = TestBed.createComponent(CmsPage);
+      testFixture.detectChanges();
+      await testFixture.whenStable();
+      testFixture.detectChanges();
+
+      expect(testFixture.componentInstance['layoutType']()).toBe(PageLayoutType.NEWS_BLOG);
     });
   });
 

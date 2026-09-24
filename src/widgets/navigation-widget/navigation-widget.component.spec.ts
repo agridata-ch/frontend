@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
-import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawesome';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
@@ -86,14 +86,7 @@ describe('NavigationWidgetComponent', () => {
       const items = component.navigationItems();
       expect(Array.isArray(items)).toBe(true);
       expect(items).toHaveLength(1);
-
-      const navItem = items[0] as {
-        label: string;
-        icon: IconDefinition;
-        route: string;
-      };
-      expect(navItem).not.toBe(false);
-      expect(navItem.route).toBe(`/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`);
+      expect(items[0].route).toBe(`/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`);
     });
   });
 });

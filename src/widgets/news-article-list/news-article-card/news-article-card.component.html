@@ -1,0 +1,19 @@
+<app-card
+  [title]="article().title"
+  [description]="article().teaserText"
+  [imageUrl]="imageUrl()"
+  [imageAlt]="imageAlt()"
+>
+  <div cardTags class="flex items-center justify-between gap-2">
+    @if (article().createdAt; as creationDate) {
+      <span class="text-sm text-agridata-tertiary-text">{{ creationDate | agridataDate }}</span>
+    }
+    @if (article().category; as category) {
+      <app-agridata-badge
+        [text]="category.name"
+        [variant]="BadgeVariant.DARK"
+        [size]="BadgeSize.SM"
+      />
+    }
+  </div>
+</app-card>

@@ -73,6 +73,35 @@ describe('CmsService', () => {
     });
   });
 
+  describe('fetchNewsArticles', () => {
+    const today = new Date().toISOString().slice(0, 10);
+    const endDateFilter = `&filters[$or][0][endDate][$null]=true&filters[$or][1][endDate][$gte]=${today}`;
+
+    it('sends a GET request with locale, stable sort, pagination, endDate filter and draft status', () => {
+      service.fetchNewsArticles('de', 2, 9);
+
+      const req = httpMock.expectOne(
+        `${environment.cmsBaseUrl}/api/news-articles?locale=de` +
+          `&sort=publishedAt:desc,id:desc&pagination[page]=2&pagination[pageSize]=9` +
+          `${endDateFilter}&status=draft`,
+      );
+      expect(req.request.method).toBe('GET');
+      req.flush({ data: [], meta: { pagination: {} } });
+    });
+
+    it('uses the provided locale, page and page size', () => {
+      service.fetchNewsArticles('fr', 1, 25);
+
+      const req = httpMock.expectOne(
+        `${environment.cmsBaseUrl}/api/news-articles?locale=fr` +
+          `&sort=publishedAt:desc,id:desc&pagination[page]=1&pagination[pageSize]=25` +
+          `${endDateFilter}&status=draft`,
+      );
+      expect(req.request.method).toBe('GET');
+      req.flush({ data: [], meta: { pagination: {} } });
+    });
+  });
+
   describe('submitOnboardingForm', () => {
     it('sends a POST request to the onboarding form endpoint', () => {
       service.submitOnboardingForm(mockOnboardingData);
