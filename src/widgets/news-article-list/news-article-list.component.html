@@ -1,0 +1,33 @@
+<div class="flex flex-col gap-3" *i18n="let t; prefix: 'news'">
+  @if (articles().length > 0 || loading()) {
+    <ul
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 auto-rows-fr gap-6 w-full"
+    >
+      @for (article of articles(); track article.id) {
+        <li class="h-full">
+          <app-news-article-card [article]="article" />
+        </li>
+      }
+      @if (loading()) {
+        @for (s of skeletons(); track $index) {
+          <li class="h-full">
+            <app-card [loading]="true" />
+          </li>
+        }
+      }
+    </ul>
+  } @else if (loaded() && !error()) {
+    <app-empty-state [title]="t('empty.title')" [message]="t('empty.message')" />
+  }
+
+  <app-infinite-scroll
+    [loading]="loading()"
+    [hasMore]="hasMore()"
+    [hasItems]="articles().length > 0"
+    (loadMore)="loadNext()"
+  >
+    @if (totalPages() > 1) {
+      {{ t('list.allLoaded') }}
+    }
+  </app-infinite-scroll>
+</div>

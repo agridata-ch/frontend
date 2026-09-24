@@ -1,25 +1,29 @@
 @if (environment()) {
   <div
-    class="absolute top-0 left-0 w-0 h-0 border-t-[100px] border-r-[100px] border-r-transparent z-10"
+    class="absolute top-0 left-0 w-0 h-0 border-t-100 border-r-100 border-r-transparent z-10"
     [class]="envColor()"
   >
     <span
-      class="absolute -top-[75px] left-[16px] -rotate-45 text-sm font-bold text-black whitespace-nowrap"
+      class="absolute -top-18.75 left-4 -rotate-45 text-sm font-bold text-black whitespace-nowrap"
     >
       {{ environment() }}
     </span>
   </div>
 }
-<div class="px-12 flex justify-between bg-agridata-primary-text text-white h-[100px]">
-  <a class="agridata-logo text-[40px] flex items-center" routerLink="/">
-    <img src="/assets/images/agridata-logo.svg" alt="Agridata Logo" class="h-[45px]" />
+<div class="px-12 flex justify-between bg-agridata-primary-text text-white h-25">
+  <a class="agridata-logo text-[40px] flex items-center shrink min-w-10" routerLink="/">
+    <img
+      src="/assets/images/agridata-logo.svg"
+      alt="Agridata Logo"
+      class="h-12.5 w-auto max-w-full"
+    />
   </a>
 
   @if (!isAuthenticated()) {
-    <div class="hidden lg:flex items-stretch self-stretch gap-2">
+    <div class="hidden xl:flex items-stretch self-stretch gap-2 min-w-0">
       @for (page of cmsPages(); track page.id) {
         <a [routerLink]="`/cms/${page.slug}`" class="flex items-center px-4 relative text-lg">
-          <span>{{ page.title }}</span>
+          <span class="text-center leading-tight">{{ page.title }}</span>
           @if (currentCmsPageSlug() === page.slug) {
             <div class="absolute inset-x-0 bottom-0 border-b-8 border-white"></div>
           }
@@ -27,7 +31,7 @@
       }
     </div>
   }
-  <div class="hidden lg:flex flex-row gap-10 items-center">
+  <div class="hidden xl:flex flex-row gap-2 items-center shrink-0">
     @if (isAuthenticated()) {
       <app-contact-support-info />
       <app-notification-overlay />
@@ -41,7 +45,7 @@
       </app-agridata-button>
     }
   </div>
-  <div class="flex lg:hidden items-center">
+  <div class="flex xl:hidden items-center">
     <app-navigation-widget [cmsPages]="cmsPages()" />
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { faCircleChf, faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
 
 import { PublicDataProductDto } from '@/entities/openapi';
@@ -24,7 +24,6 @@ import { CardComponent } from '@/shared/ui/card';
     TooltipDirective,
   ],
   templateUrl: './data-product-card.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataProductCardComponent {
   // Injects

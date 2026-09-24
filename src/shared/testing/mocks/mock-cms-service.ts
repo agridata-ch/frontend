@@ -300,8 +300,46 @@ export const mockCmsResponse = {
   meta: {},
 };
 
-import { CmsService } from '@/entities/cms';
+import { CmsService, NewsArticlesResponse } from '@/entities/cms';
 import { Mockify } from '@/shared/testing/mocks';
+
+export const mockNewsArticlesResponse: NewsArticlesResponse = {
+  data: [
+    {
+      id: 1,
+      documentId: 'news-1',
+      title: 'Erster Artikel',
+      slug: 'erster-artikel',
+      description: 'Kurze **Beschreibung** des Artikels.',
+      teaserText: 'Kurzer Teaser.',
+      endDate: '2026-12-31',
+      image: {
+        id: 10,
+        documentId: 'img-1',
+        alternativeText: 'Titelbild',
+        url: '/uploads/news-1.jpg',
+        formats: {
+          thumbnail: {
+            name: 'thumbnail_news-1.jpg',
+            hash: 'thumbnail_news_1',
+            ext: '.jpg',
+            mime: 'image/jpeg',
+            path: null,
+            width: 245,
+            height: 138,
+            size: 8,
+            sizeInBytes: 8000,
+            url: '/uploads/thumbnail_news-1.jpg',
+          },
+        },
+      },
+      imageAlt: 'Titelbild',
+      category: { id: 5, documentId: 'cat-1', name: 'Wetter', slug: 'wetter' },
+      createdAt: '2026-09-01',
+    },
+  ],
+  meta: { pagination: { page: 1, pageSize: 9, pageCount: 1, total: 1 } },
+};
 
 export type MockCmsService = Mockify<CmsService>;
 
@@ -323,6 +361,7 @@ export function createMockCmsService(): MockCmsService {
     submitOnboardingForm: vi.fn().mockResolvedValue(undefined),
     fetchAgbPage: vi.fn().mockResolvedValue(mockCmsResponse),
     fetchSlaPage: vi.fn().mockResolvedValue(mockCmsResponse),
+    fetchNewsArticles: vi.fn().mockResolvedValue(mockNewsArticlesResponse),
   } satisfies MockCmsService;
 }
 

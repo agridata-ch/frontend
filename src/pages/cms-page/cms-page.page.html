@@ -16,12 +16,14 @@
 </div>
 <app-error-outlet></app-error-outlet>
 <router-outlet />
-@for (block of pageBlocks(); track `${block.__component}_${block.id}`) {
+@if (layoutType() === PageLayoutType.NEWS_BLOG) {
+<app-news-blog />
+} @else { @for (block of pageBlocks(); track `${block.__component}_${block.id}`) {
 <app-cms-block-renderer
   [block]="block"
   [index]="$index"
   [isDynamicPage]="true"
 ></app-cms-block-renderer>
-}
+} }
 <app-cms-footer-block [block]="footerBlock()" />
 }

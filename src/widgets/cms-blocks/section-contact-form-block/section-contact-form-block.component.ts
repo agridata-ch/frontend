@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
@@ -28,7 +27,6 @@ import { ControlTypes } from '@/shared/ui/form-control/form-control.model';
   selector: 'app-section-contact-form-block',
   imports: [ReactiveFormsModule, I18nDirective, FormControlComponent, ButtonComponent],
   templateUrl: './section-contact-form-block.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SectionContactFormBlockComponent {
   readonly block = input.required<Block>();

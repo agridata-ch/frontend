@@ -1339,5 +1339,8 @@
   },
   "agridata-contact-card": {
     "foreignBadge": "Internationaler Datenbezüger"
+  },
+  "news": {
+    "title": "Mitteilungen rund um Agridata"
   }
 }

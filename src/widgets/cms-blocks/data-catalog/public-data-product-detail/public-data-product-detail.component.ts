@@ -1,13 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  effect,
-  inject,
-  input,
-  output,
-  resource,
-} from '@angular/core';
+import { Component, computed, effect, inject, input, output, resource } from '@angular/core';
 import { faCircleChf, faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -43,7 +34,6 @@ import { ModalComponent } from '@/shared/ui/modal';
     TooltipDirective,
   ],
   templateUrl: './public-data-product-detail.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PublicDataProductDetailComponent {
   // Injects
