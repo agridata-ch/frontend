@@ -7,7 +7,6 @@ import type { Mocked } from 'vitest';
 import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { ConsentRequestAggregationSummaryDto } from '@/entities/openapi';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
 import { ErrorDto } from '@/shared/error/error-dto';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
@@ -129,61 +128,6 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     }
 
     expect(errorService.handleError).toHaveBeenCalledWith(testError);
-  });
-
-  describe('migration info handling', () => {
-    it('should show migration alerts for migrated requests', () => {
-      vi.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(false);
-      vi.spyOn(component.consentRequestResource, 'value').mockReturnValue(
-        mockConsentRequestAggregations,
-      );
-
-      fixture.detectChanges();
-
-      expect(component.visibleMigratedRequests()).toHaveLength(2);
-      expect(component.visibleMigratedRequests()[0]).toBe(mockConsentRequestAggregations[0]);
-      expect(component.visibleMigratedRequests()[1]).toBe(mockConsentRequestAggregations[2]);
-    });
-
-    it('should add confirmed migration when closing mgiration info', () => {
-      vi.spyOn(component.consentRequestResource, 'isLoading').mockReturnValue(false);
-      vi.spyOn(component.consentRequestResource, 'value').mockReturnValue(
-        mockConsentRequestAggregations,
-      );
-      const addConfirmedMiratedUidsSpy = vi.spyOn(agridataStateService, 'addConfirmedMigratedUids');
-
-      fixture.detectChanges();
-
-      expect(component.visibleMigratedRequests()).toHaveLength(2);
-
-      component['closeMigrationInfo']('1');
-      fixture.detectChanges();
-
-      expect(addConfirmedMiratedUidsSpy).toHaveBeenCalledWith(['1']);
-    });
-
-    it('should return empty array when no migrated requests exist', () => {
-      const nonMigratedRequests = mockConsentRequestAggregations.filter(
-        (req) => !req.showStateAsMigrated,
-      );
-      vi.spyOn(component.consentRequestResource, 'value').mockReturnValue(nonMigratedRequests);
-      fixture.detectChanges();
-
-      expect(component.visibleMigratedRequests()).toHaveLength(0);
-    });
-
-    it('should return migrated request title with data request name if available', () => {
-      const migratedRequest = {
-        ...mockConsentRequestAggregations[0],
-        dataRequest: {
-          ...mockConsentRequestAggregations[0].dataRequest,
-        },
-      } as ConsentRequestAggregationSummaryDto;
-
-      const title = component['getMigratedRequestTitle'](migratedRequest);
-
-      expect(title).toBe(mockConsentRequestAggregations[0].dataRequest?.title?.de);
-    });
   });
 
   describe('redirect functionality', () => {

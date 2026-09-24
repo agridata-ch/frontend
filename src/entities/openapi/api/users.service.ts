@@ -104,7 +104,7 @@ export class UsersService extends BaseService {
 
     /**
      * Get Authorized Burs By Uid
-     * Retrieves all BURs authorized for the given UID. Only accessible to admin users.
+     * Retrieves all BURs authorized for the given UID. Accessible to consumers and admin users.
      * @param uid 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -144,7 +144,7 @@ export class UsersService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/user/v1/uid/${this.configuration.encodeParam({name: "uid", value: uid, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/authorized-burs`;
+        let localVarPath = `/api/user/v1/uids/${this.configuration.encodeParam({name: "uid", value: uid, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/authorized-burs`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<BurDto>>('get', `${basePath}${localVarPath}`,
             {

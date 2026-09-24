@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, computed, input, output } from '@angular/core';
+import { booleanAttribute, Component, computed, input, output, signal } from '@angular/core';
 import {
   faBan,
   faCheckCircle,
@@ -19,7 +19,7 @@ import { AlertType } from './alert.model';
  * selects the appropriate icon, and applies consistent styling for each alert type. It leverages
  * Angular signals and FontAwesome for responsive UI updates and icons.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2026-09-23
  */
 @Component({
   selector: 'app-alert',
@@ -39,12 +39,15 @@ export class AlertComponent {
 
   readonly type = input<AlertType>(AlertType.NEUTRAL);
   readonly showCloseButton = input<boolean>(false);
+  readonly isExpandable = input(false, { transform: booleanAttribute });
   readonly dataTestId = input<string | undefined>();
   readonly title = input<string | undefined>();
   readonly message = input<string>();
   readonly additionalInfo = input<string | undefined>();
 
   readonly closeAlert = output<boolean>();
+
+  protected readonly isExpanded = signal<boolean>(false);
 
   protected readonly alertIcon = computed(() => {
     switch (this.type()) {
@@ -60,4 +63,12 @@ export class AlertComponent {
         return this.iconNeutral;
     }
   });
+
+  protected readonly showContent = computed(
+    () => (!this.isExpandable() && !!this.title()) || this.isExpanded(),
+  );
+
+  protected toggleExpanded(): void {
+    this.isExpanded.update((expanded) => !expanded);
+  }
 }

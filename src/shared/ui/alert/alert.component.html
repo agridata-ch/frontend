@@ -9,8 +9,19 @@
   }
 </ng-template>
 
+<ng-template #expandableButton>
+  <app-agridata-button
+    [variant]="ButtonVariants.Link"
+    [ariaExpanded]="isExpanded()"
+    (handleClick)="toggleExpanded()"
+  >
+    {{ (isExpanded() ? 'common.alert.showLess' : 'common.alert.showMore') | i18n }}
+  </app-agridata-button>
+</ng-template>
+
 <div
-  class="flex items-center gap-2 py-4 px-6 rounded-lg"
+  class="flex flex-col items-center gap-2 py-4 px-6 rounded-lg"
+  [attr.role]="type() === AlertType.ERROR ? 'alert' : 'status'"
   [class.bg-gray-100]="type() === AlertType.NEUTRAL"
   [class.text-gray-600]="type() === AlertType.NEUTRAL"
   [class.bg-orange-100]="type() === AlertType.WARNING"
@@ -22,8 +33,7 @@
   [class.bg-sky-100]="type() === AlertType.INFO"
   [class.text-sky-700]="type() === AlertType.INFO"
 >
-  <!-- content -->
-  <div class="flex flex-col flex-1 min-w-0 whitespace-pre-line">
+  <div class="flex flex-1 gap-2 justify-between w-full">
     <div class="flex items-center gap-2">
       <fa-icon class="shrink-0" size="xl" [icon]="alertIcon()"></fa-icon>
       @if (title()) {
@@ -34,22 +44,35 @@
         </div>
       }
     </div>
-    @if (title()) {
-      <div class="flex flex-col mt-4 lg:mt-1 gap-2">
-        <ng-container [ngTemplateOutlet]="messageContent" />
-      </div>
-    }
+    <div class="flex gap-2 items-center">
+      @if (isExpandable()) {
+        <div class="max-md:hidden">
+          <ng-container [ngTemplateOutlet]="expandableButton" />
+        </div>
+      }
+      @if (showCloseButton()) {
+        <app-agridata-button
+          additionalClass="max-md:self-start"
+          [ariaLabel]="'common.ariaLabel.close' | i18n"
+          [variant]="ButtonVariants.Icon"
+          [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
+          (handleClick)="closeAlert.emit(true)"
+        >
+          <fa-icon size="xl" [icon]="closeIcon"></fa-icon>
+        </app-agridata-button>
+      }
+    </div>
   </div>
-  <!-- close button -->
-  @if (showCloseButton()) {
-    <app-agridata-button
-      [ariaLabel]="'common.ariaLabel.close' | i18n"
-      [variant]="ButtonVariants.Icon"
-      [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
-      (handleClick)="closeAlert.emit(true)"
-      additionalClass="self-start"
-    >
-      <fa-icon size="xl" [icon]="closeIcon"></fa-icon>
-    </app-agridata-button>
+
+  @if (showContent()) {
+    <div class="flex gap-2 w-full">
+      <ng-container [ngTemplateOutlet]="messageContent" />
+    </div>
+  }
+
+  @if (isExpandable()) {
+    <div class="self-start md:hidden">
+      <ng-container [ngTemplateOutlet]="expandableButton" />
+    </div>
   }
 </div>

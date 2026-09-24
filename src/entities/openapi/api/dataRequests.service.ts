@@ -19,6 +19,8 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { ConsentRequestConsumerViewV2Dto } from '../model/consentRequestConsumerViewV2Dto';
 // @ts-ignore
+import { ConsentRequestFundamentalViewDto } from '../model/consentRequestFundamentalViewDto';
+// @ts-ignore
 import { ConsentRequestStatusSummaryDto } from '../model/consentRequestStatusSummaryDto';
 // @ts-ignore
 import { DataRequestDto } from '../model/dataRequestDto';
@@ -240,7 +242,7 @@ export class DataRequestsService extends BaseService {
      * @param page 
      * @param searchTerm 
      * @param size 
-     * @param sortBy Field names to sort by. Ascending by default; prefix with - for descending. Defaults to -modifiedAt.
+     * @param sortBy Field names to sort by. Ascending by default; prefix with - for descending. Defaults to -lastModifiedDateTime.
      * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -371,6 +373,67 @@ export class DataRequestsService extends BaseService {
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get Consent Requests Of Data Request And Uid
+     * Retrieves the UID- and BUR-based consent requests of a specific data request for a single producer UID. Accessible to the consumer who owns the data request.
+     * @param id The UUID of the data request
+     * @param uid The UID of the data producer
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getConsentRequestsOfDataRequestAndUid(id: string, uid: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<ConsentRequestFundamentalViewDto>>;
+    public getConsentRequestsOfDataRequestAndUid(id: string, uid: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<ConsentRequestFundamentalViewDto>>>;
+    public getConsentRequestsOfDataRequestAndUid(id: string, uid: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<ConsentRequestFundamentalViewDto>>>;
+    public getConsentRequestsOfDataRequestAndUid(id: string, uid: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getConsentRequestsOfDataRequestAndUid.');
+        }
+        if (uid === null || uid === undefined) {
+            throw new Error('Required parameter uid was null or undefined when calling getConsentRequestsOfDataRequestAndUid.');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (SecurityScheme) required
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/agreement/v1/data-requests/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/uids/${this.configuration.encodeParam({name: "uid", value: uid, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/consent-requests`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<Array<ConsentRequestFundamentalViewDto>>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

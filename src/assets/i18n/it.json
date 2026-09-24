@@ -65,7 +65,8 @@
         "title": "Visualizzazione dettagliata"
       },
       "request": {
-        "migrated": "Ripreso da «Mia condivisione dei dati agricoli – MAF»"
+        "migratedMaf": "Ripreso da «Mia condivisione dei dati agricoli – MAF»",
+        "migratedTvd": "Ripreso dalla Banca dati sul traffico degli animali (BDTA)"
       },
       "decisions": {
         "title": "Panoramica dell'azienda e delle sedi",
@@ -620,13 +621,16 @@
       "redirectNow": "Direttamente indietro"
     },
     "migrationInfo": {
-      "title": "La richiesta di dati di {{ consumerName }} è ora disponibile qui",
-      "description": "Il tuo consenso alla richiesta di dati {{name}} è stato ripreso da “Mia condivisione dei dati agricoli (MAF)”. Puoi trovare la richiesta nella tabella sottostante e, se necessario, modificare il consenso.",
       "maf": {
         "title": "Sono ora disponibili nuove richieste di dati da “Mia condivisione dei dati agricoli (MAF)”"
       },
       "tvd": {
         "title": "Nuove richieste di dati da \"BDTA/ Identitas\" sono ora disponibili"
+      },
+      "common": {
+        "intro": "Il Suo consenso alle seguenti richieste di dati è stato registrato.",
+        "requestsFromConsumer": "Richiesta/e di dati da parte di {{consumerName}}",
+        "tableHint": "Troverete la richiesta nella tabella sottostante e, se necessario, potrete modificare il consenso."
       }
     },
     "uidMissingWarning": "Al momento non è ancora presente alcun numero UID relativo alla Sua persona o alla Sua azienda. Poiché sono coinvolti diversi sistemi, potrebbero essere necessari alcuni giorni prima che disponiamo di tutti i dati necessari per il corretto funzionamento di agridata.ch. La preghiamo di riprovare tra qualche giorno. Se il problema persiste, la preghiamo di contattare l'assistenza ({{ phoneNumber }})."
@@ -780,6 +784,10 @@
   "common": {
     "ariaLabel": {
       "close": "Chiudi"
+    },
+    "alert": {
+      "showLess": "Mostra meno",
+      "showMore": "Mostra altro"
     }
   },
   "footer": {

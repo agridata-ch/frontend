@@ -23,9 +23,18 @@ export interface ConsentRequestAggregationDto {
     stateCode?: ConsentRequestAggregationStateEnum;
     requestDate?: string;
     /**
-     * Indicates whether the aggregated state originates from migrated consent requests
+     * Indicates whether the aggregated state originates from migrated consent requests. Only considers MAF migrations. Deprecated: use showStateAsMigratedFromMaf instead.
+     * @deprecated
      */
     showStateAsMigrated?: boolean;
+    /**
+     * Indicates whether the aggregated state originates from consent requests migrated from MAF
+     */
+    showStateAsMigratedFromMaf?: boolean;
+    /**
+     * Indicates whether the aggregated state originates from consent requests migrated from Identitas (TVD)
+     */
+    showStateAsMigratedFromTvd?: boolean;
     lastStateChangeDate?: string;
     /**
      * Details of the underlying data request

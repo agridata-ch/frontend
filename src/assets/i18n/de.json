@@ -65,7 +65,8 @@
         "title": "Detailansicht"
       },
       "request": {
-        "migrated": "Übernommen aus Meine Agrardatenfreigabe - MAF"
+        "migratedMaf": "Übernommen aus Meine Agrardatenfreigabe - MAF",
+        "migratedTvd": "Übernommen aus der Tierverkehrsdatenbank (TVD)"
       },
       "decisions": {
         "title": "Betriebs- und Standortübersicht",
@@ -620,13 +621,16 @@
       "redirectNow": "Direkt zurück"
     },
     "migrationInfo": {
-      "title": "Die Datenanfrage von {{ consumerName }} ist jetzt hier verfügbar",
-      "description": "Ihre Zustimmung für die Datenanfrage {{name}} wurde aus “Meine Agrardatenfreigaben (MAF)” übernommen.\nSie finden die Anfrage in der untenstehenden Tabelle und können bei Bedarf die Zustimmung ändern.",
       "maf": {
         "title": "Neue Datenanfragen aus \"Meine Agrardatenfreigaben (MAF)\" jetzt verfügbar"
       },
       "tvd": {
         "title": "Neue Datenanfragen aus \"TVD / Identitas\" jetzt verfügbar"
+      },
+      "common": {
+        "intro": "Ihre Zustimmung für folgende Datenanfragen wurden übernommen.",
+        "requestsFromConsumer": "Datenanfrage(n) von {{consumerName}}",
+        "tableHint": "Sie finden die Anfrage in der untenstehenden Tabelle und können bei Bedarf die Zustimmung ändern."
       }
     },
     "uidMissingWarning": "Zu Ihrer Person oder Unternehmen ist zurzeit noch keine UID vorhanden. Da verschiedene Systeme involviert sind, kann es einige Tage dauern bis wir alle relevanten Angaben haben, damit agridata.ch funktionieren kann. Bitte versuchen sie es in ein paar Tage nochmal. Besteht Ihr Problem weiterhin, melden sie sich bitte beim Support ({{ phoneNumber }})."

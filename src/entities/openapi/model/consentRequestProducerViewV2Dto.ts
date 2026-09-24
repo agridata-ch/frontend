@@ -28,9 +28,18 @@ export interface ConsentRequestProducerViewV2Dto {
      */
     stateCode?: ConsentRequestStateEnum;
     /**
-     * If the state should be shown as migrated
+     * If the state should be shown as migrated. Only considers MAF migrations. Deprecated: use showStateAsMigratedFromMaf instead.
+     * @deprecated
      */
     showStateAsMigrated?: boolean;
+    /**
+     * If the state should be shown as migrated from MAF
+     */
+    showStateAsMigratedFromMaf?: boolean;
+    /**
+     * If the state should be shown as migrated from Identitas (TVD)
+     */
+    showStateAsMigratedFromTvd?: boolean;
     /**
      * Date and time when the state was changed last
      */

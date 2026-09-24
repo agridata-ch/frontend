@@ -27,6 +27,7 @@ export const mockConsentRequestAggregations: ConsentRequestAggregationDto[] = [
       advantages: [],
     },
     showStateAsMigrated: true,
+    showStateAsMigratedFromMaf: true,
     consentRequests: [{ id: '1', stateCode: ConsentRequestStateEnum.Opened }],
   },
   {
@@ -61,6 +62,7 @@ export const mockConsentRequestAggregations: ConsentRequestAggregationDto[] = [
       advantages: [],
     },
     showStateAsMigrated: true,
+    showStateAsMigratedFromTvd: true,
     // every consent request of an OPENED aggregation is still awaiting a decision
     consentRequests: [
       { id: '4', stateCode: ConsentRequestStateEnum.Opened },
