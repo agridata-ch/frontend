@@ -1,13 +1,6 @@
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import {
-  afterNextRender,
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  signal,
-} from '@angular/core';
+import { afterNextRender, Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { DataProductService } from '@/entities/api';
@@ -49,7 +42,6 @@ type SelectValue = string | number | null;
     SearchInputComponent,
   ],
   templateUrl: './data-catalog-block.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataCatalogBlockComponent {
   // Injects

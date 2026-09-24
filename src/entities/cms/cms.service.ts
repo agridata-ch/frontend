@@ -76,6 +76,19 @@ export class CmsService {
       ),
     );
 
+  readonly fetchNewsArticles = (locale: string, page: number, pageSize: number) => {
+    const today = new Date().toISOString().slice(0, 10);
+    return firstValueFrom(
+      this.http.get(
+        `${this.apiUrl}/api/news-articles?locale=${locale}` +
+          `&sort=publishedAt:desc,id:desc` +
+          `&pagination[page]=${page}&pagination[pageSize]=${pageSize}` +
+          `&filters[$or][0][endDate][$null]=true&filters[$or][1][endDate][$gte]=${today}` +
+          `${this.isDevMode ? '&status=draft' : ''}`,
+      ),
+    );
+  };
+
   readonly submitContactForm = (data: ContactFormData) => {
     return firstValueFrom(
       this.http.post(`${this.cmsContactUrl}`, data, {

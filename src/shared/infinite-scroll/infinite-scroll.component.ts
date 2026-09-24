@@ -1,6 +1,5 @@
 import {
   afterNextRender,
-  ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
@@ -29,7 +28,6 @@ import { I18nService } from '@/shared/i18n';
   selector: 'app-infinite-scroll',
   imports: [FontAwesomeModule],
   templateUrl: './infinite-scroll.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfiniteScrollComponent {
   // Injects

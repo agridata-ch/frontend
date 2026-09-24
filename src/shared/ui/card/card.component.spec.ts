@@ -43,6 +43,24 @@ describe('CardComponent', () => {
     expect(fixture.nativeElement.querySelector('.tag')).not.toBeNull();
   });
 
+  it('should render an image when imageUrl is set', () => {
+    const cardFixture = TestBed.createComponent(CardComponent);
+    cardFixture.componentRef.setInput('imageUrl', 'https://cdn.example/x.jpg');
+    cardFixture.componentRef.setInput('imageAlt', 'the alt');
+    cardFixture.detectChanges();
+
+    const img = cardFixture.nativeElement.querySelector('img');
+    expect(img?.getAttribute('src')).toBe('https://cdn.example/x.jpg');
+    expect(img?.getAttribute('alt')).toBe('the alt');
+  });
+
+  it('should render no image when imageUrl is not set', () => {
+    const cardFixture = TestBed.createComponent(CardComponent);
+    cardFixture.detectChanges();
+
+    expect(cardFixture.nativeElement.querySelector('img')).toBeNull();
+  });
+
   it('should render pulsing placeholders instead of content while loading', () => {
     const cardFixture = TestBed.createComponent(CardComponent);
     cardFixture.componentRef.setInput('title', 'My title');
