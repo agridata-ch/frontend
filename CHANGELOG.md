@@ -1,3 +1,9 @@
+## [1.21.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.21.0-rc.3...v1.21.0-rc.4) (2026-09-25)
+
+### Features
+
+- **i18n:** update translations ([024c707](https://github.com/agridata-ch/frontend/commit/024c7073f6e5065ab53dab28e9c06d7851b89201))
+
 ## [1.21.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.21.0-rc.2...v1.21.0-rc.3) (2026-09-23)
 
 ### Features
