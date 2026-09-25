@@ -1,3 +1,12 @@
+## [1.21.0](https://github.com/agridata-ch/frontend/compare/v1.20.0...v1.21.0) (2026-09-25)
+
+### Features
+
+- **consent-request:** add foreign badge and alert for international consumers ([64631a0](https://github.com/agridata-ch/frontend/commit/64631a04458a0e30247d311f28a31201bf5e8caf)), references [DIGIB2-1659](https://github.com/agridata-ch/frontend/issues/-1659)
+- **data-request:** add producers metadata ([b469cce](https://github.com/agridata-ch/frontend/commit/b469cced22ac8b7421a89a6641230c35eb809360)), references [DIGIB2-1683](https://github.com/agridata-ch/frontend/issues/-1683)
+- **i18n:** update translations ([024c707](https://github.com/agridata-ch/frontend/commit/024c7073f6e5065ab53dab28e9c06d7851b89201))
+- **public-data-product:** add documents download ([e3fef6f](https://github.com/agridata-ch/frontend/commit/e3fef6fbfc4cf4a6469fc1c184e7f43c896ff7a3)), references [DIGIB2-1682](https://github.com/agridata-ch/frontend/issues/-1682)
+
 ## [1.21.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.21.0-rc.3...v1.21.0-rc.4) (2026-09-25)
 
 ### Features
