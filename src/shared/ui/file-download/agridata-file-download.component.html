@@ -7,13 +7,18 @@
       [loading]="isOpening()"
       [disabled]="isOpening()"
       (handleClick)="handleOpen.emit()"
+      [ariaLabel]="fileName()"
     >
-      <span [class.line-through]="markedForRemoval()">{{ fileName() }}</span>
+      <span class="break-all line-clamp-1" [class.line-through]="markedForRemoval()">
+        {{ fileName() }}
+      </span>
     </app-agridata-button>
   } @else {
     <span class="font-semibold text-agridata-primary-600 flex gap-2 items-center">
       <fa-icon [icon]="fileIcon()" />
-      <span [class.line-through]="markedForRemoval()">{{ fileName() }}</span>
+      <span class="break-all line-clamp-1" [class.line-through]="markedForRemoval()">
+        {{ fileName() }}
+      </span>
     </span>
   }
 

@@ -14,8 +14,10 @@ export function createMockDataProductDocumentService(): MockDataProductDocumentS
     awaitDocumentProcessed: vi.fn().mockResolvedValue(DocumentScanStatusEnum.Available),
     deleteDocument: vi.fn().mockResolvedValue(undefined),
     downloadDocument: vi.fn().mockResolvedValue(new Blob()),
+    downloadDocumentPublic: vi.fn().mockResolvedValue(new Blob()),
     getDocument: vi.fn().mockResolvedValue({}),
     listDocuments: vi.fn().mockResolvedValue([]),
+    listDocumentsPublic: vi.fn().mockResolvedValue([]),
     uploadDocument: vi.fn().mockResolvedValue({}),
   } satisfies MockDataProductDocumentService;
 }

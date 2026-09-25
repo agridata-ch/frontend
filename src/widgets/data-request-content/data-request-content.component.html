@@ -6,6 +6,7 @@
       [secondaryName]="dataRequest().dataConsumerCity"
       [size]="AvatarSize.MEDIUM"
       [skin]="AvatarSkin.LIGHT"
+      [showForeignBadge]="isForeignConsumer()"
     />
     <h3 class="text-agridata-primary-text">
       {{ title() }}
@@ -42,6 +43,9 @@
     [consumerName]="consumerDisplayName()"
     [providerName]="providerName()"
     [lang]="lang()"
+    [dataConsumerCity]="dataRequest().dataConsumerCity"
+    [dataConsumerCountry]="dataRequest().dataConsumerCountry"
+    [isForeignConsumer]="isForeignConsumer()"
   />
 
   <app-data-request-contact

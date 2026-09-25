@@ -2,12 +2,14 @@ import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
+import { DataProductDocumentService } from '@/entities/api/data-product-document.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataProviderDto, DataSourceSystemDto, PublicDataProductDto } from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import {
+  createMockDataProductDocumentService,
   createMockDataProductService,
   createMockErrorHandlerService,
   createMockI18nService,
@@ -98,6 +100,7 @@ describe('DataCatalogBlockComponent', () => {
       imports: [DataCatalogBlockComponent],
       providers: [
         { provide: DataProductService, useValue: dataProductService },
+        { provide: DataProductDocumentService, useValue: createMockDataProductDocumentService() },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: createMockI18nService() },
         { provide: MasterDataService, useValue: masterDataService },

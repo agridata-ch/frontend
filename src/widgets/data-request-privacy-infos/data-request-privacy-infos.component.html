@@ -1,5 +1,17 @@
 <div class="flex flex-col gap-4" *i18n="let t; prefix: 'data-request.privacy'; lang: lang()">
   <h4>{{ t('title') }}</h4>
+  @if (isForeignConsumer()) {
+    <app-alert
+      [type]="AlertType.INFO"
+      [title]="t('foreignConsumerAlert.title')"
+      [message]="
+        t('foreignConsumerAlert.message', {
+          city: dataConsumerCity(),
+          country: countryDisplayName(),
+        })
+      "
+    />
+  }
   <span
     class="text-agridata-primary-text whitespace-pre-line"
     [i18nFormat]="t('description', { consumer: consumerName(), provider: providerName() })"

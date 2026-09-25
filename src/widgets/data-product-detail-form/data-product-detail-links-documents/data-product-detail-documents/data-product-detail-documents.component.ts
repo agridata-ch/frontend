@@ -1,13 +1,13 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective } from '@/shared/i18n';
+import { createDocumentDownloadHandler } from '@/shared/lib/document-download.helper';
 import { AgridataDropzoneComponent } from '@/shared/ui/agridata-dropzone';
 import { BadgeVariant } from '@/shared/ui/badge';
 import { AgridataFileDownloadComponent } from '@/shared/ui/file-download';
 import { ProgressBarComponent } from '@/shared/ui/progress-bar';
-import { downloadBlob, openBlobInNewTab } from '@/shared/utils';
 import {
   DocumentUploadStore,
   DocumentUploadItem,
@@ -46,8 +46,7 @@ export class DataProductDetailDocumentsComponent {
   readonly isViewMode = input<boolean>(false);
 
   // Signals
-  private readonly downloadingIds = signal<ReadonlySet<string>>(new Set());
-  private readonly openingIds = signal<ReadonlySet<string>>(new Set());
+  protected readonly downloads = createDocumentDownloadHandler(this.errorHandler);
 
   protected badgeVariant(status: DocumentUploadStatus): BadgeVariant {
     switch (status) {
@@ -64,23 +63,11 @@ export class DataProductDetailDocumentsComponent {
   }
 
   protected handleDownload(item: DocumentUploadItem): void {
-    if (this.isDownloading(item)) return;
-    this.toggleLoading(this.downloadingIds, item.localId, true);
-    this.store
-      .downloadDocument(item)
-      .then((blob) => downloadBlob(blob, item.filename))
-      .catch((error) => this.errorHandler.handleError(error))
-      .finally(() => this.toggleLoading(this.downloadingIds, item.localId, false));
+    this.downloads.download(item.localId, item.filename, () => this.store.downloadDocument(item));
   }
 
   protected handleOpen(item: DocumentUploadItem): void {
-    if (this.isOpening(item)) return;
-    this.toggleLoading(this.openingIds, item.localId, true);
-    this.store
-      .downloadDocument(item)
-      .then((blob) => openBlobInNewTab(blob, 'application/pdf'))
-      .catch((error) => this.errorHandler.handleError(error))
-      .finally(() => this.toggleLoading(this.openingIds, item.localId, false));
+    this.downloads.open(item.localId, () => this.store.downloadDocument(item));
   }
 
   protected handleRemove(item: DocumentUploadItem): void {
@@ -95,35 +82,11 @@ export class DataProductDetailDocumentsComponent {
     return item.isExisting && item.status === DocumentUploadStatus.Available;
   }
 
-  protected isDownloading(item: DocumentUploadItem): boolean {
-    return this.downloadingIds().has(item.localId);
-  }
-
-  protected isOpening(item: DocumentUploadItem): boolean {
-    return this.openingIds().has(item.localId);
-  }
-
   protected isScanning(item: DocumentUploadItem): boolean {
     return item.status === DocumentUploadStatus.PendingScan;
   }
 
   protected isUploading(item: DocumentUploadItem): boolean {
     return item.status === DocumentUploadStatus.Uploading;
-  }
-
-  private toggleLoading(
-    ids: ReturnType<typeof signal<ReadonlySet<string>>>,
-    localId: string,
-    loading: boolean,
-  ): void {
-    ids.update((current) => {
-      const next = new Set(current);
-      if (loading) {
-        next.add(localId);
-      } else {
-        next.delete(localId);
-      }
-      return next;
-    });
   }
 }

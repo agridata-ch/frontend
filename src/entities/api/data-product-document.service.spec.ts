@@ -6,6 +6,7 @@ import {
   DataProductDocumentMetadataDto,
   DataProductsService,
   DocumentScanStatusEnum,
+  PublicDataProductsService,
 } from '@/entities/openapi';
 
 import { DataProductDocumentService } from './data-product-document.service';
@@ -27,17 +28,27 @@ function createMockApiService() {
   };
 }
 
+function createMockPublicApiService() {
+  return {
+    getPublicDataProductDocumentsMetadata: vi.fn().mockReturnValue(of([available])),
+    getPublicDataProductDocument: vi.fn().mockReturnValue(of(new Blob())),
+  };
+}
+
 describe('DataProductDocumentService', () => {
   let service: DataProductDocumentService;
   let apiService: ReturnType<typeof createMockApiService>;
+  let publicApiService: ReturnType<typeof createMockPublicApiService>;
 
   beforeEach(() => {
     apiService = createMockApiService();
+    publicApiService = createMockPublicApiService();
 
     TestBed.configureTestingModule({
       providers: [
         DataProductDocumentService,
         { provide: DataProductsService, useValue: apiService },
+        { provide: PublicDataProductsService, useValue: publicApiService },
       ],
     });
 
@@ -192,6 +203,32 @@ describe('DataProductDocumentService', () => {
         'product-1',
         'PROVIDER',
       );
+    });
+  });
+
+  describe('listDocumentsPublic', () => {
+    it('fetches the public document collection', async () => {
+      const result = await service.listDocumentsPublic('product-1');
+
+      expect(publicApiService.getPublicDataProductDocumentsMetadata).toHaveBeenCalledWith(
+        'product-1',
+      );
+      expect(result).toHaveLength(1);
+    });
+  });
+
+  describe('downloadDocumentPublic', () => {
+    it('downloads a public document as a blob', async () => {
+      const result = await service.downloadDocumentPublic('product-1', 'doc-1');
+
+      expect(publicApiService.getPublicDataProductDocument).toHaveBeenCalledWith(
+        'doc-1',
+        'product-1',
+        undefined,
+        undefined,
+        { httpHeaderAccept: 'application/octet-stream' },
+      );
+      expect(result).toBeInstanceOf(Blob);
     });
   });
 });

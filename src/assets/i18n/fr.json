@@ -200,8 +200,8 @@
           }
         },
         "advantages": {
-          "heading": "Saisir les avantages des producteurs de données",
-          "subHeading": "Énumérez ici les avantages concrets dont bénéficient les producteurs de données (p. ex. les agriculteurs, grâce au gain de temps ou à la saisie automatique) suite au partage. Formulez un argument court par champ. Vous pouvez ajouter des avantages supplémentaires via le symbole plus.",
+          "heading": "Saisir les avantages des producteurs de données (facultatif)",
+          "subHeading": "Ces indications sont facultatives. Vous pouvez indiquer ici les avantages concrets que la transmission procure aux producteurs de données (p. ex. gain de temps pour les agriculteurs). Veuillez renseigner chaque avantage dans les trois langues. Pour ajouter d'autres avantages, utilisez le symbole Plus.",
           "de": {
             "label": "Avantage en allemand (Auf Deutsch)",
             "placeholder": "Listen Sie einen Vorteil für die Datenproduzenten auf"
@@ -267,7 +267,7 @@
         },
         "dataConsumerDisplayName": {
           "de": {
-            "label": "Nom d'affichage / Abréviation en allemand",
+            "label": "Nom d'affichage / Abréviation en allemand  (Auf Deutsch)",
             "placeholder": "Nom d'affichage / Abréviation en allemand"
           },
           "fr": {
@@ -275,7 +275,7 @@
             "placeholder": "Nom d'affichage / Abréviation en français"
           },
           "it": {
-            "label": "Nom d'affichage / Abréviation en italien",
+            "label": "Nom d'affichage / Abréviation en italien (in italiano)",
             "placeholder": "Nom d'affichage / Abréviation en italien"
           }
         },
@@ -411,7 +411,7 @@
         "producer": "Fournisseurs de données",
         "contract": "Contrat",
         "email": "Modèle d'e-mail",
-        "preview": "Demande adressée au producteur"
+        "preview": "Aperçu de la demande"
       },
       "sidePanelTitle": "Vue détaillée",
       "redirectUriRegex": {
@@ -431,6 +431,15 @@
         "emptyState": {
           "title": "Aucun producteur trouvé",
           "message": "Souhaitez-vous ajouter un producteur à la liste?"
+        },
+        "metadata": {
+          "title": "Statut des demandes de données",
+          "total": "Nombre total de demandes",
+          "open": "Ouvert",
+          "granted": "Approuvé",
+          "declined": "Rejeté",
+          "uid": "UID",
+          "bur": "BUR"
         }
       }
     },
@@ -569,7 +578,11 @@
     },
     "privacy": {
       "title": "Protection des données",
-      "description": "Un contrat régissant le transfert de données a été conclu entre {{ provider }} et {{ consumer }}. Ce contrat **prévoit une utilisation exclusivement réservée à la finalité décrite ci-dessus** et impose à {{ consumer }} l'obligation légale de se conformer à la loi suisse sur la protection des données (LPD)."
+      "description": "Un contrat régissant le transfert de données a été conclu entre {{ provider }} et {{ consumer }}. Ce contrat **prévoit une utilisation exclusivement réservée à la finalité décrite ci-dessus** et impose à {{ consumer }} l'obligation légale de se conformer à la loi suisse sur la protection des données (LPD).",
+      "foreignConsumerAlert": {
+        "title": "Requérant international de données",
+        "message": "Le destinataire est établi à l'étranger ({{city}}, {{country}}). Le transfert des données est protégé par le contrat d'échange de données selon les normes suisses en matière de protection des données."
+      }
     },
     "uid": "UID",
     "bur": "BUR",
@@ -1306,7 +1319,8 @@
       "links": "Liens",
       "extendedDescription": "Informations complémentaires",
       "paymentRequired": "Frais du fournisseur",
-      "costs": "Frais pour les requérants de données"
+      "costs": "Frais pour les requérants de données",
+      "documents": "Documents"
     },
     "list": {
       "allLoaded": "Tous les produits de données chargés"
@@ -1322,5 +1336,8 @@
   },
   "infinite-scroll": {
     "loading": "Chargement des entrées"
+  },
+  "agridata-contact-card": {
+    "foreignBadge": "Requérant international de données"
   }
 }

@@ -200,8 +200,8 @@
           }
         },
         "advantages": {
-          "heading": "Vorteile der Datenproduzenten erfassen",
-          "subHeading": "Zählen Sie hier die konkreten Vorteile auf, die Datenproduzenten (z. B. Landwirte durch Zeitersparnis oder automatische Übernahme) von der Freigabe haben. Formulieren Sie pro Feld ein kurzes Argument. Weitere Vorteile fügen Sie über das Plus-Symbol hinzu.",
+          "heading": "Vorteile der Datenproduzenten erfassen (optional)",
+          "subHeading": "Die Angaben sind optional. Sie können hier die konkreten Vorteile aufführen, die Datenproduzenten (z. B. Landwirte durch Zeitersparnis) von der Freigabe haben. Füllen Sie einen Vorteil in allen drei Sprachen aus. Weitere Vorteile fügen Sie über das Plus-Symbol hinzu.",
           "de": {
             "label": "Vorteil auf Deutsch",
             "placeholder": "Listen Sie einen Vorteil für die Datenproduzenten auf"
@@ -267,15 +267,15 @@
         },
         "dataConsumerDisplayName": {
           "de": {
-            "label": "Anzeigename / Kurzform Deutsch",
+            "label": "Anzeigename / Kurzform auf Deutsch",
             "placeholder": "Anzeigename / Kurzform Deutsch"
           },
           "fr": {
-            "label": "Anzeigename / Kurzform Französisch",
+            "label": "Anzeigename / Kurzform auf Französisch (en français)",
             "placeholder": "Anzeigename / Kurzform Französisch"
           },
           "it": {
-            "label": "Anzeigename / Kurzform Italienisch",
+            "label": "Anzeigename / Kurzform auf Italienisch (in italiano)",
             "placeholder": "Anzeigename / Kurzform Italienisch"
           }
         },
@@ -411,7 +411,7 @@
         "producer": "Produzenten",
         "contract": "Vertrag",
         "email": "E-Mail Vorlage",
-        "preview": "Anfrage an Produzent"
+        "preview": "Vorschau Anfrage"
       },
       "sidePanelTitle": "Detailansicht",
       "redirectUriRegex": {
@@ -431,6 +431,15 @@
         "emptyState": {
           "title": "Keine Produzenten gefunden",
           "message": "Möchten Sie einen Produzenten in die Liste aufnehmen?"
+        },
+        "metadata": {
+          "title": "Status der Datenanfragen",
+          "total": "Total Anfragen",
+          "open": "Offen",
+          "granted": "Zugestimmt",
+          "declined": "Abgelehnt",
+          "uid": "UID",
+          "bur": "BUR"
         }
       }
     },
@@ -569,7 +578,11 @@
     },
     "privacy": {
       "title": "Datenschutz",
-      "description": "Zwischen {{ provider }} und {{ consumer }} besteht ein Vertrag für die Datenübertragung. Dieser Vertrag **regelt die ausschliessliche Nutzung für den oben beschriebenen Zweck** und verpflichtet {{ consumer }} rechtlich zur Einhaltung des Schweizer Datenschutzgesetzes (DSG)."
+      "description": "Zwischen {{ provider }} und {{ consumer }} besteht ein Vertrag für die Datenübertragung. Dieser Vertrag **regelt die ausschliessliche Nutzung für den oben beschriebenen Zweck** und verpflichtet {{ consumer }} rechtlich zur Einhaltung des Schweizer Datenschutzgesetzes (DSG).",
+      "foreignConsumerAlert": {
+        "title": "Internationaler Datenbezüger",
+        "message": "Der Empfänger hat seinen Sitz im Ausland ({{city}}, {{country}}). Die Datenübermittlung ist durch den Datenaustauschvertrag nach Schweizer Datenschutzstandard geschützt."
+      }
     },
     "uid": "UID",
     "bur": "BUR",
@@ -1306,7 +1319,8 @@
       "links": "Links",
       "extendedDescription": "Erweiterte Beschreibung",
       "paymentRequired": "Kostenpflichtig durch Anbieter",
-      "costs": "Kosten für Datenbezüger"
+      "costs": "Kosten für Datenbezüger",
+      "documents": "Dokumente"
     },
     "list": {
       "allLoaded": "Alle Datenprodukte geladen"
@@ -1322,5 +1336,8 @@
   },
   "infinite-scroll": {
     "loading": "Einträge werden geladen"
+  },
+  "agridata-contact-card": {
+    "foreignBadge": "Internationaler Datenbezüger"
   }
 }
