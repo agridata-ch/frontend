@@ -621,7 +621,13 @@
     },
     "migrationInfo": {
       "title": "La demande de données de {{ consumerName }} est désormais disponible ici.",
-      "description": "Votre approbation pour la demande de données {{name}} a été repris de « Mon partage de données agricoles (MAF) ».\nVous trouverez la demande dans le tableau ci-dessous et pouvez modifier votre approbation si nécessaire."
+      "description": "Votre approbation pour la demande de données {{name}} a été repris de « Mon partage de données agricoles (MAF) ».\nVous trouverez la demande dans le tableau ci-dessous et pouvez modifier votre approbation si nécessaire.",
+      "maf": {
+        "title": "De nouvelles demandes de données issues de \"Mon partage de données agricoles (MAF)\" sont désormais disponibles"
+      },
+      "tvd": {
+        "title": "De nouvelles demandes de données issues de \"BDTA/ Identitas\" sont désormais disponibles"
+      }
     },
     "uidMissingWarning": "Aucun numéro d'identification fiscale (UID) n'est encore enregistré pour vous ou votre entreprise. Étant donné que plusieurs systèmes sont impliqués, cela peut prendre quelques jours avant que nous disposions de toutes les informations nécessaires au bon fonctionnement d'agridata.ch. Veuillez réessayer dans quelques jours. Si le problème persiste, veuillez contacter le service d'assistance ({{ phoneNumber }})."
   },
@@ -1341,6 +1347,8 @@
     "foreignBadge": "Requérant international de données"
   },
   "news": {
-    "title": "Actualités concernant Agridata"
+    "title": "Actualités concernant Agridata",
+    "readMore": "Lire la suite",
+    "createdAt": "Date de création: {{ date }}"
   }
 }

@@ -333,6 +333,21 @@ export interface NewsCategory {
   slug: string;
 }
 
+export interface File {
+  documentId: string;
+  name: string;
+  url: string;
+  mime: string;
+  ext: string;
+}
+
+export interface NewsArticleLocalization {
+  id: number;
+  documentId: string;
+  locale: string;
+  slug: string;
+}
+
 export interface NewsArticle {
   id: number;
   documentId: string;
@@ -345,6 +360,11 @@ export interface NewsArticle {
   imageAlt: string;
   category: NewsCategory | null;
   createdAt: string;
+  locale?: string;
+  attachments?: File[];
+  localizations?: NewsArticleLocalization[];
+  footer?: FooterBlock;
+  blocks?: Block[];
 }
 
 export interface NewsArticlesResponse {
