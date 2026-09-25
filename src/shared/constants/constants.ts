@@ -8,6 +8,7 @@ export const ROUTE_PATHS = {
   NOTIFICATIONS_PATH: 'notifications',
   ADMIN_PATH: 'admin',
   CMS_PATH: 'cms',
+  NEWS_PATH: 'cms/news',
   IMPRESSUM_PATH: 'cms/imprint',
   AGB_PATH: 'cms/agb',
   PRIVACY_POLICY_PATH: 'cms/privacy-policy',

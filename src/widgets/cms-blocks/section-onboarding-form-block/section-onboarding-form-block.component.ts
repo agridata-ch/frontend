@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  computed,
-  inject,
-  input,
-} from '@angular/core';
+import { Component, ElementRef, computed, inject, input } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { Block, CmsService, OnboardingFormData, SectionOnboardingFormBlock } from '@/entities/cms';
@@ -28,7 +21,6 @@ import { AGATE_URLS } from './section-onboarding-form-block.model';
   selector: 'app-section-onboarding-form-block',
   imports: [ReactiveFormsModule, I18nDirective, FormControlComponent, ButtonComponent],
   templateUrl: './section-onboarding-form-block.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SectionOnboardingFormBlockComponent {
   readonly block = input.required<Block>();

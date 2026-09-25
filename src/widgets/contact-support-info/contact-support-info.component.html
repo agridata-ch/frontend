@@ -1,21 +1,22 @@
 <div *i18n="let t; prefix: 'header.helpAndSupport'" (appClickOutside)="closeOverlay()">
   <button
-    class="flex lg:flex-col items-center px-2 lg:px-4 py-2 rounded focus:outline-none"
+    class="flex xl:flex-col items-center xl:px-4 py-2 rounded focus:outline-none"
     (click)="handleToggle()"
     type="button"
   >
-    <div class="flex items-center justify-center w-10 h-10">
-      <fa-icon [icon]="iconQuestion" size="xl" />
+    <div class="flex xl:flex-col items-center gap-3 xl:gap-0 text-lg">
+      <fa-icon class="xl:hidden" [icon]="iconQuestion" />
+      <fa-icon class="hidden xl:flex items-center h-10" [icon]="iconQuestion" size="xl" />
+      <span class="xl:text-gray-400 xl:text-xs">
+        {{ t('title') }}
+      </span>
     </div>
-    <span class="lg:text-gray-400 lg:text-xs">
-      {{ t('title') }}
-    </span>
   </button>
-  <app-popover [isOpen]="showPopover()" class="hidden lg:block">
+  <app-popover [isOpen]="showPopover()" class="hidden xl:block">
     <app-contact-support-info-content (closeOverlay)="closeOverlay()" />
   </app-popover>
   <app-contact-support-info-content
-    class="border border-agridata-stroke rounded-lg lg:hidden flex"
+    class="border border-agridata-stroke rounded-lg xl:hidden flex"
     (closeOverlay)="toggleMobileNavigation.emit()"
   />
 </div>

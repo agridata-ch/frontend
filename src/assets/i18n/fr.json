@@ -200,8 +200,8 @@
           }
         },
         "advantages": {
-          "heading": "Saisir les avantages des producteurs de données",
-          "subHeading": "Énumérez ici les avantages concrets dont bénéficient les producteurs de données (p. ex. les agriculteurs, grâce au gain de temps ou à la saisie automatique) suite au partage. Formulez un argument court par champ. Vous pouvez ajouter des avantages supplémentaires via le symbole plus.",
+          "heading": "Saisir les avantages des producteurs de données (facultatif)",
+          "subHeading": "Ces indications sont facultatives. Vous pouvez indiquer ici les avantages concrets que la transmission procure aux producteurs de données (p. ex. gain de temps pour les agriculteurs). Veuillez renseigner chaque avantage dans les trois langues. Pour ajouter d'autres avantages, utilisez le symbole Plus.",
           "de": {
             "label": "Avantage en allemand (Auf Deutsch)",
             "placeholder": "Listen Sie einen Vorteil für die Datenproduzenten auf"
@@ -267,7 +267,7 @@
         },
         "dataConsumerDisplayName": {
           "de": {
-            "label": "Nom d'affichage / Abréviation en allemand",
+            "label": "Nom d'affichage / Abréviation en allemand  (Auf Deutsch)",
             "placeholder": "Nom d'affichage / Abréviation en allemand"
           },
           "fr": {
@@ -275,7 +275,7 @@
             "placeholder": "Nom d'affichage / Abréviation en français"
           },
           "it": {
-            "label": "Nom d'affichage / Abréviation en italien",
+            "label": "Nom d'affichage / Abréviation en italien (in italiano)",
             "placeholder": "Nom d'affichage / Abréviation en italien"
           }
         },
@@ -411,7 +411,7 @@
         "producer": "Fournisseurs de données",
         "contract": "Contrat",
         "email": "Modèle d'e-mail",
-        "preview": "Demande adressée au producteur"
+        "preview": "Aperçu de la demande"
       },
       "sidePanelTitle": "Vue détaillée",
       "redirectUriRegex": {
@@ -433,6 +433,11 @@
           "message": "Souhaitez-vous ajouter un producteur à la liste?"
         },
         "metadata": {
+          "title": "Statut des demandes de données",
+          "total": "Nombre total de demandes",
+          "open": "Ouvert",
+          "granted": "Approuvé",
+          "declined": "Rejeté",
           "uid": "UID",
           "bur": "BUR"
         }
@@ -616,7 +621,13 @@
     },
     "migrationInfo": {
       "title": "La demande de données de {{ consumerName }} est désormais disponible ici.",
-      "description": "Votre approbation pour la demande de données {{name}} a été repris de « Mon partage de données agricoles (MAF) ».\nVous trouverez la demande dans le tableau ci-dessous et pouvez modifier votre approbation si nécessaire."
+      "description": "Votre approbation pour la demande de données {{name}} a été repris de « Mon partage de données agricoles (MAF) ».\nVous trouverez la demande dans le tableau ci-dessous et pouvez modifier votre approbation si nécessaire.",
+      "maf": {
+        "title": "De nouvelles demandes de données issues de \"Mon partage de données agricoles (MAF)\" sont désormais disponibles"
+      },
+      "tvd": {
+        "title": "De nouvelles demandes de données issues de \"BDTA/ Identitas\" sont désormais disponibles"
+      }
     },
     "uidMissingWarning": "Aucun numéro d'identification fiscale (UID) n'est encore enregistré pour vous ou votre entreprise. Étant donné que plusieurs systèmes sont impliqués, cela peut prendre quelques jours avant que nous disposions de toutes les informations nécessaires au bon fonctionnement d'agridata.ch. Veuillez réessayer dans quelques jours. Si le problème persiste, veuillez contacter le service d'assistance ({{ phoneNumber }})."
   },
@@ -1334,5 +1345,10 @@
   },
   "agridata-contact-card": {
     "foreignBadge": "Requérant international de données"
+  },
+  "news": {
+    "title": "Actualités concernant Agridata",
+    "readMore": "Lire la suite",
+    "createdAt": "Date de création: {{ date }}"
   }
 }

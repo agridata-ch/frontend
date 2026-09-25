@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { environment } from '@/environments/environment';
 
-import { ContactFormData, OnboardingFormData } from './cms.model';
+import { ContactFormData, NewsArticlesResponse, OnboardingFormData } from './cms.model';
 
 /**
  * Service for retrieving CMS-managed content. Provides methods to fetch localized landing pages
@@ -75,6 +75,40 @@ export class CmsService {
         `${this.apiUrl}/api/pages/${slug}?locale=${locale}${this.isDevMode ? '&status=draft' : ''}`,
       ),
     );
+
+  readonly fetchNewsArticles = (locale: string, page: number, pageSize: number) => {
+    const today = new Date().toISOString().slice(0, 10);
+    return firstValueFrom(
+      this.http.get(
+        `${this.apiUrl}/api/news-articles?locale=${locale}` +
+          `&sort=publishedAt:desc,id:desc` +
+          `&pagination[page]=${page}&pagination[pageSize]=${pageSize}` +
+          `&filters[$or][0][endDate][$null]=true&filters[$or][1][endDate][$gte]=${today}` +
+          `${this.isDevMode ? '&status=draft' : ''}`,
+      ),
+    );
+  };
+
+  // A slug is unique to one locale's entry and Strapi 5 only matches it under that same locale
+  // (locale=all was removed). So we search the given locales in order and return the first hit:
+  // the caller passes the active locale first (resolves same-locale links in one request) and the
+  // rest as fallback for links shared from another language. The caller then redirects to the
+  // active-locale sibling via the returned localizations.
+  readonly fetchNewsArticle = async (
+    slug: string,
+    locales: string[],
+  ): Promise<NewsArticlesResponse> => {
+    for (const locale of locales) {
+      const response = await firstValueFrom(
+        this.http.get<NewsArticlesResponse>(
+          `${this.apiUrl}/api/news-articles?filters[slug][$eq]=${slug}&locale=${locale}` +
+            `&populate=localizations${this.isDevMode ? '&status=draft' : ''}`,
+        ),
+      );
+      if (response.data.length) return response;
+    }
+    return { data: [], meta: { pagination: { page: 1, pageSize: 0, pageCount: 0, total: 0 } } };
+  };
 
   readonly submitContactForm = (data: ContactFormData) => {
     return firstValueFrom(

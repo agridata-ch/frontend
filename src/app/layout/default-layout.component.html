@@ -3,14 +3,14 @@
   <app-header-widget class="sticky top-0 z-10"></app-header-widget>
 
   <div class="flex flex-1">
-    <app-navigation-widget class="hidden lg:block"></app-navigation-widget>
+    <app-navigation-widget class="hidden xl:block"></app-navigation-widget>
     <main class="container items-center mx-auto px-6 lg:px-10 py-8 flex-1 overflow-auto">
       <router-outlet></router-outlet>
     </main>
   </div>
   <!-- We moved the toggle button to the default layout to ensure proper positioning -->
   @if (showNavigation()) {
-    <div class="hidden lg:block sticky bottom-0 h-0 overflow-visible pointer-events-none">
+    <div class="hidden xl:block sticky bottom-0 h-0 overflow-visible pointer-events-none">
       <button
         (click)="toggleNavigation()"
         class="pointer-events-auto absolute bottom-14 flex justify-center items-center rounded-full border w-6 h-6 bg-white hover:bg-agridata-background-page transition-[left] duration-300 ease-in-out"

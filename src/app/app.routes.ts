@@ -18,6 +18,7 @@ import { ForbiddenPage } from '@/pages/forbidden';
 import { ImprintPage } from '@/pages/imprint-page';
 import { LandingPage } from '@/pages/landing-page';
 import { MaintenancePage } from '@/pages/maintenance';
+import { NewsArticleDetailPage } from '@/pages/news-article-detail-page';
 import { NotFoundPage } from '@/pages/not-found';
 import { NotificationCenterPageComponent } from '@/pages/notification-center-page';
 import { OnboardingPage } from '@/pages/onboarding-page';
@@ -107,6 +108,19 @@ export const routes: Routes = [
       {
         path: '',
         component: SlaPage,
+      },
+    ],
+  },
+  {
+    // News article detail. Must precede `cms/:slug` so `cms/news/:slug` is not swallowed by the
+    // generic CMS page route and its `:productId` child.
+    path: `${ROUTE_PATHS.NEWS_PATH}/:slug`,
+    component: FullWidthLayoutComponent,
+    canActivate: [AuthorizationGuard, HomeRedirectGuard],
+    children: [
+      {
+        path: '',
+        component: NewsArticleDetailPage,
       },
     ],
   },
