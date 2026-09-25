@@ -200,8 +200,8 @@
           }
         },
         "advantages": {
-          "heading": "Registra i vantaggi dei produttori di dati",
-          "subHeading": "Elencate qui i vantaggi concreti che i produttori di dati (ad es. gli agricoltori, grazie al risparmio di tempo o al trasferimento automatico) traggono dalla condivisione. Formulate un breve argomento per ogni campo. È possibile aggiungere ulteriori vantaggi tramite il simbolo del più.",
+          "heading": "Registra i vantaggi dei produttori di dati (facoltativo)",
+          "subHeading": "Queste indicazioni sono facoltative. Qui è possibile indicare i vantaggi concreti che i produttori di dati (ad es. il risparmio di tempo per gli agricoltori) ottengono dalla condivisione. Compili ogni vantaggio in tutte e tre le lingue. Aggiunga ulteriori vantaggi tramite il simbolo del più.",
           "de": {
             "label": "Vantaggio in tedesco (Auf Deutsch)",
             "placeholder": "Listen Sie einen Vorteil für die Datenproduzenten auf"
@@ -267,11 +267,11 @@
         },
         "dataConsumerDisplayName": {
           "de": {
-            "label": "Nome visualizzato / Abbreviazione in tedesco",
+            "label": "Nome visualizzato / Abbreviazione in tedesco (Auf Deutsch)",
             "placeholder": "Nome visualizzato / abbreviazione"
           },
           "fr": {
-            "label": "Nome visualizzato / Abbreviazione in francese",
+            "label": "Nome visualizzato / Abbreviazione in francese (en français)",
             "placeholder": "Nome visualizzato / Abbreviazione in francese"
           },
           "it": {
@@ -411,7 +411,7 @@
         "producer": "Produttori di dati",
         "contract": "Contratto",
         "email": "Modello di e-mail",
-        "preview": "Richiesta al produttore"
+        "preview": "Anteprima della richiesta"
       },
       "sidePanelTitle": "Vista dettagliata",
       "redirectUriRegex": {
@@ -433,6 +433,11 @@
           "message": "Desidera aggiungere un produttore all'elenco?"
         },
         "metadata": {
+          "title": "Stato delle richieste di dati",
+          "total": "Totale richieste",
+          "open": "Aperto",
+          "granted": "Approvato",
+          "declined": "Rifiutato",
           "uid": "UID",
           "bur": "BUR"
         }
