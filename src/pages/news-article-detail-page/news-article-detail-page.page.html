@@ -1,0 +1,73 @@
+<ng-container *i18n="let t; prefix: 'news'">
+  @if (articleResource.isLoading()) {
+  <fa-icon
+    animation="spin"
+    [icon]="faSpinnerThird"
+    size="3x"
+    class="absolute flex items-center justify-center inset-0"
+  ></fa-icon>
+  } @else if (article(); as article) {
+  <nav
+    class="flex gap-3 py-6 px-8 text-agridata-primary-text font-medium leading-6 bg-white border-b-agridata-stroke border-b"
+  >
+    <a routerLink="/" class="hover:underline cursor-pointer">{{ 'breadcrumb.home' | i18n }}</a>
+    <fa-icon [icon]="breadcrumbIcon" aria-hidden="true" />
+    <a [routerLink]="'/' + ROUTE_PATHS.NEWS_PATH" class="hover:underline cursor-pointer">
+      {{ t('title') }}
+    </a>
+    <fa-icon [icon]="breadcrumbIcon" aria-hidden="true" />
+    <span aria-current="page">{{ article.title }}</span>
+  </nav>
+
+  <app-error-outlet></app-error-outlet>
+
+  <article class="container mx-auto px-6 lg:px-10 py-10 flex flex-col gap-4">
+    <h1>{{ article.title }}</h1>
+
+    <div class="flex items-center gap-3">
+      <span class="text-sm text-agridata-tertiary-text leading-tight">
+        {{ t('createdAt', { date: article.createdAt | agridataDate }) }}</span
+      >
+      @if (article.category; as category) {
+      <app-agridata-badge
+        [text]="category.name"
+        [variant]="BadgeVariant.DARK"
+        [size]="BadgeSize.SM"
+      />
+      }
+    </div>
+
+    @if (article.image; as image) {
+    <img
+      class="w-full aspect-video rounded-lg"
+      [src]="generateMediaUrl(image.url)"
+      [alt]="resolveAlt(article.imageAlt, image)"
+    />
+    }
+
+    <div class="markdown-content" [innerHTML]="article.description | markdown"></div>
+
+    @if (article.attachments?.length) {
+    <ul class="flex flex-col gap-2">
+      @for (attachment of article.attachments; track attachment.documentId) {
+      <li>
+        <a
+          [href]="generateMediaUrl(attachment.url)"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline hover:text-agridata-primary-600"
+        >
+          {{ attachment.name }}
+        </a>
+      </li>
+      }
+    </ul>
+    } @for (block of article.blocks; track `${block.__component}_${block.id}`) {
+    <app-cms-block-renderer [block]="block" [index]="$index" [isDynamicPage]="true" />
+    }
+  </article>
+
+  @if (article.footer; as footer) {
+  <app-cms-footer-block [block]="footer" />
+  } }
+</ng-container>

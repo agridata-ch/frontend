@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { CmsService, NewsArticle, NewsArticlesResponse } from '@/entities/cms';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
@@ -72,6 +73,7 @@ describe('NewsArticleListComponent', () => {
         { provide: CmsService, useValue: cmsService },
         { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: i18nService },
+        provideRouter([]),
       ],
     }).compileComponents();
 

@@ -621,7 +621,13 @@
     },
     "migrationInfo": {
       "title": "Die Datenanfrage von {{ consumerName }} ist jetzt hier verfügbar",
-      "description": "Ihre Zustimmung für die Datenanfrage {{name}} wurde aus “Meine Agrardatenfreigaben (MAF)” übernommen.\nSie finden die Anfrage in der untenstehenden Tabelle und können bei Bedarf die Zustimmung ändern."
+      "description": "Ihre Zustimmung für die Datenanfrage {{name}} wurde aus “Meine Agrardatenfreigaben (MAF)” übernommen.\nSie finden die Anfrage in der untenstehenden Tabelle und können bei Bedarf die Zustimmung ändern.",
+      "maf": {
+        "title": "Neue Datenanfragen aus \"Meine Agrardatenfreigaben (MAF)\" jetzt verfügbar"
+      },
+      "tvd": {
+        "title": "Neue Datenanfragen aus \"TVD / Identitas\" jetzt verfügbar"
+      }
     },
     "uidMissingWarning": "Zu Ihrer Person oder Unternehmen ist zurzeit noch keine UID vorhanden. Da verschiedene Systeme involviert sind, kann es einige Tage dauern bis wir alle relevanten Angaben haben, damit agridata.ch funktionieren kann. Bitte versuchen sie es in ein paar Tage nochmal. Besteht Ihr Problem weiterhin, melden sie sich bitte beim Support ({{ phoneNumber }})."
   },
@@ -774,6 +780,10 @@
   "common": {
     "ariaLabel": {
       "close": "Schliessen"
+    },
+    "alert": {
+      "showLess": "Weniger anzeigen",
+      "showMore": "Mehr anzeigen"
     }
   },
   "footer": {
@@ -1341,6 +1351,8 @@
     "foreignBadge": "Internationaler Datenbezüger"
   },
   "news": {
-    "title": "Mitteilungen rund um Agridata"
+    "title": "Mitteilungen rund um Agridata",
+    "readMore": "Weiter lesen",
+    "createdAt": "Erstellt am:  {{ date }}"
   }
 }

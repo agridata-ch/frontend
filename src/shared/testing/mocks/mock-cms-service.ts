@@ -362,6 +362,7 @@ export function createMockCmsService(): MockCmsService {
     fetchAgbPage: vi.fn().mockResolvedValue(mockCmsResponse),
     fetchSlaPage: vi.fn().mockResolvedValue(mockCmsResponse),
     fetchNewsArticles: vi.fn().mockResolvedValue(mockNewsArticlesResponse),
+    fetchNewsArticle: vi.fn().mockResolvedValue(mockNewsArticlesResponse),
   } satisfies MockCmsService;
 }
 

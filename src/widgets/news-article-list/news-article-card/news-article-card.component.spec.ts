@@ -1,10 +1,13 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideRouter, Router } from '@angular/router';
 
 import { NewsArticle } from '@/entities/cms';
 import { environment } from '@/environments/environment';
+import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { AgridataBadgeComponent } from '@/shared/ui/badge';
+import { ButtonComponent } from '@/shared/ui/button';
 
 import { NewsArticleCardComponent } from './news-article-card.component';
 
@@ -47,7 +50,8 @@ describe('NewsArticleCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NewsArticleCardComponent],
+      imports: [NewsArticleCardComponent, createTranslocoTestingModule()],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NewsArticleCardComponent);
@@ -102,5 +106,15 @@ describe('NewsArticleCardComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).not.toContain('31.12.2026');
+  });
+
+  it('navigates to the article detail route when read-more is clicked', () => {
+    const router = TestBed.inject(Router);
+    const navSpy = vi.spyOn(router, 'navigate').mockResolvedValue(true);
+
+    const button = fixture.debugElement.query(By.directive(ButtonComponent));
+    button.triggerEventHandler('handleClick', null);
+
+    expect(navSpy).toHaveBeenCalledWith(['cms/news', 'erster-artikel']);
   });
 });

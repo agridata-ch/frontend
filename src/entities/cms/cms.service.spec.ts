@@ -102,6 +102,51 @@ describe('CmsService', () => {
     });
   });
 
+  describe('fetchNewsArticle', () => {
+    // A macrotask boundary flushes the microtasks between sequential per-locale requests.
+    const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
+    const url = (slug: string, locale: string) =>
+      `${environment.cmsBaseUrl}/api/news-articles?filters[slug][$eq]=${slug}` +
+      `&locale=${locale}&populate=localizations&status=draft`;
+    const empty = { data: [], meta: { pagination: {} } };
+
+    it('returns the first queried locale whose slug matches and stops there', async () => {
+      const resultPromise = service.fetchNewsArticle('erster-artikel', ['de', 'fr', 'it']);
+
+      const req = httpMock.expectOne(url('erster-artikel', 'de'));
+      expect(req.request.method).toBe('GET');
+      req.flush({ data: [{ id: 1 }], meta: { pagination: {} } });
+
+      const result = await resultPromise;
+      expect(result.data).toHaveLength(1);
+      httpMock.verify(); // no fallback request was made
+    });
+
+    it('falls through the remaining locales until the slug matches', async () => {
+      const resultPromise = service.fetchNewsArticle('primo-articolo', ['de', 'fr', 'it']);
+
+      httpMock.expectOne(url('primo-articolo', 'de')).flush(empty);
+      await tick();
+      httpMock.expectOne(url('primo-articolo', 'fr')).flush(empty);
+      await tick();
+      httpMock.expectOne(url('primo-articolo', 'it')).flush({ data: [{ id: 9 }], meta: {} });
+
+      const result = await resultPromise;
+      expect(result.data).toHaveLength(1);
+    });
+
+    it('resolves with an empty result when no locale has the slug', async () => {
+      const resultPromise = service.fetchNewsArticle('unbekannt', ['de', 'fr']);
+
+      httpMock.expectOne(url('unbekannt', 'de')).flush(empty);
+      await tick();
+      httpMock.expectOne(url('unbekannt', 'fr')).flush(empty);
+
+      const result = await resultPromise;
+      expect(result.data).toHaveLength(0);
+    });
+  });
+
   describe('submitOnboardingForm', () => {
     it('sends a POST request to the onboarding form endpoint', () => {
       service.submitOnboardingForm(mockOnboardingData);
