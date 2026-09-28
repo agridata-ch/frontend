@@ -1,3 +1,9 @@
+## [1.22.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.21.0...v1.22.0-rc.1) (2026-09-28)
+
+### Features
+
+- **news-blog:** add news-blog cms site ([635983f](https://github.com/agridata-ch/frontend/commit/635983f05a76c5625734e383dc9e58c48d6f4d0f)), references [DIGIB2-1552](https://github.com/agridata-ch/frontend/issues/-1552)
+
 ## [1.21.0](https://github.com/agridata-ch/frontend/compare/v1.20.0...v1.21.0) (2026-09-25)
 
 ### Features
