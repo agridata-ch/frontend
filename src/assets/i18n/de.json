@@ -374,7 +374,8 @@
       "TO_BE_RELEASED_BY_CONSUMER": "Abschluss Bezüger offen",
       "TO_BE_SIGNED_BY_PROVIDER": "Unterzeichnung Anbieter offen",
       "TO_BE_RELEASED_BY_PROVIDER": "Abschluss Anbieter offen",
-      "TO_BE_ACTIVATED": "Aktivierung offen"
+      "TO_BE_ACTIVATED": "Aktivierung offen",
+      "PAUSED": "Pausiert"
     },
     "table": {
       "tableActions": {
@@ -1383,5 +1384,11 @@
     "title": "Mitteilungen rund um Agridata",
     "readMore": "Weiter lesen",
     "createdAt": "Erstellt am:  {{ date }}"
+  },
+  "admin-agbs": {
+    "table": {
+      "titleValue": "Allgemeine Geschäftsbedingungen",
+      "pageTitle": "AGB-Verwaltung"
+    }
   }
 }

@@ -140,6 +140,16 @@ export class DataRequestService {
     );
   }
 
+  async pauseDataRequest(dataRequestId: string, actingRole?: ActingRole) {
+    return firstValueFrom(
+      this.apiService.setDataRequestStatus(
+        dataRequestId,
+        JSON.stringify(DataRequestStateEnum.Paused),
+        actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined,
+      ),
+    );
+  }
+
   async releaseDataRequestToProvider(dataRequestId: string, actingRole?: ActingRole) {
     return firstValueFrom(
       this.apiService.setDataRequestStatus(

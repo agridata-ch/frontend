@@ -374,7 +374,8 @@
       "TO_BE_RELEASED_BY_CONSUMER": "Conclusion ouverte au destinataire",
       "TO_BE_SIGNED_BY_PROVIDER": "Fournisseur de signature ouvert",
       "TO_BE_RELEASED_BY_PROVIDER": "Conclusion ouverte à fournisseur",
-      "TO_BE_ACTIVATED": "Activation en cours"
+      "TO_BE_ACTIVATED": "Activation en cours",
+      "PAUSED": "En attente"
     },
     "table": {
       "tableActions": {

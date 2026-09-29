@@ -44,6 +44,7 @@ model/consentRequestStatusSummaryDto.ts
 model/contractRevisionDto.ts
 model/contractRevisionSignatureDto.ts
 model/createConsentRequestDto.ts
+model/createConsentRequestsForUidDto.ts
 model/dataProductDescriptionDto.ts
 model/dataProductDocumentMetadataDto.ts
 model/dataProductDto.ts
