@@ -17,7 +17,8 @@ export const DataRequestStateEnum = {
     ToBeSignedByProvider: 'TO_BE_SIGNED_BY_PROVIDER',
     ToBeReleasedByProvider: 'TO_BE_RELEASED_BY_PROVIDER',
     ToBeActivated: 'TO_BE_ACTIVATED',
-    Active: 'ACTIVE'
+    Active: 'ACTIVE',
+    Paused: 'PAUSED'
 } as const;
 export type DataRequestStateEnum = typeof DataRequestStateEnum[keyof typeof DataRequestStateEnum];
 

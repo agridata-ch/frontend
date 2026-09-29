@@ -5,6 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { DataRequestStateEnum } from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
@@ -45,9 +46,12 @@ export class DataRequestDetailsWrapperComponent {
 
   protected readonly isLoading = computed(() => this.dataRequestsResource.isLoading());
 
-  protected readonly shouldShowActiveComponent = computed(
-    () => this.dataRequest()?.stateCode === 'ACTIVE',
-  );
+  protected readonly shouldShowActiveComponent = computed(() => {
+    const stateCode = this.dataRequest()?.stateCode as DataRequestStateEnum;
+    return (
+      [DataRequestStateEnum.Active, DataRequestStateEnum.Paused] as DataRequestStateEnum[]
+    ).includes(stateCode);
+  });
 
   // Resources
   protected readonly dataRequestsResource = resource({

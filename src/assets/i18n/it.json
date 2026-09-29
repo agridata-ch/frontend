@@ -374,7 +374,8 @@
       "TO_BE_RELEASED_BY_CONSUMER": "Conclusione a discrezione del destinatario",
       "TO_BE_SIGNED_BY_PROVIDER": "Fornitore di firma digitale aperta",
       "TO_BE_RELEASED_BY_PROVIDER": "Conclusione aperta al fornitore",
-      "TO_BE_ACTIVATED": "Attivazione in sospeso"
+      "TO_BE_ACTIVATED": "Attivazione in sospeso",
+      "PAUSED": "In pausa"
     },
     "table": {
       "tableActions": {

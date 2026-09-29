@@ -18,6 +18,7 @@ export * from './consentRequestStatusSummaryDto';
 export * from './contractRevisionDto';
 export * from './contractRevisionSignatureDto';
 export * from './createConsentRequestDto';
+export * from './createConsentRequestsForUidDto';
 export * from './dataProductDescriptionDto';
 export * from './dataProductDocumentMetadataDto';
 export * from './dataProductDto';

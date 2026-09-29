@@ -3,10 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ContractRevisionService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestStateEnum, SealAttemptStateEnum } from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
-import { I18nDirective } from '@/shared/i18n';
+import { I18nDirective, I18nService } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ModalComponent } from '@/shared/ui/modal';
 import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
 
 /**
@@ -18,7 +20,7 @@ import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
  */
 @Component({
   selector: 'app-admin-data-request-details',
-  imports: [ButtonComponent, DataRequestDetailsComponent, I18nDirective],
+  imports: [ButtonComponent, DataRequestDetailsComponent, I18nDirective, ModalComponent],
   templateUrl: './admin-data-request-details.html',
 })
 export class AdminDataRequestDetailsComponent {
@@ -26,6 +28,8 @@ export class AdminDataRequestDetailsComponent {
   private readonly contractRevisionService = inject(ContractRevisionService);
   private readonly dataRequestService = inject(DataRequestService);
   private readonly errorService = inject(ErrorHandlerService);
+  private readonly i18nService = inject(I18nService);
+  private readonly masterDataService = inject(MasterDataService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly stateService = inject(AgridataStateService);
@@ -40,9 +44,13 @@ export class AdminDataRequestDetailsComponent {
   protected readonly isAccepting = signal(false);
   protected readonly isRejecting = signal(false);
   protected readonly isActivating = signal(false);
+  protected readonly isPausing = signal(false);
+  protected readonly showPauseConfirmation = signal(false);
   private readonly refreshListNeeded = signal(false);
 
-  protected readonly isActionPending = computed(() => this.isAccepting() || this.isRejecting());
+  protected readonly isActionPending = computed(
+    () => this.isAccepting() || this.isRejecting() || this.isPausing(),
+  );
 
   // View Children
   private readonly detailsComponent = viewChild(DataRequestDetailsComponent);
@@ -63,6 +71,15 @@ export class AdminDataRequestDetailsComponent {
   protected readonly contractNotSealed = computed(
     () => this.contractResource.value()?.sealState !== SealAttemptStateEnum.Completed,
   );
+
+  protected readonly pauseDescriptionParams = computed(() => {
+    const request = this.detailsComponent()?.dataRequest();
+    return {
+      requestName: this.i18nService.useObjectTranslation(request?.title),
+      provider: this.masterDataService.providerName(request?.dataProviderId),
+      consumer: this.i18nService.useObjectTranslation(request?.dataConsumerDisplayName),
+    };
+  });
 
   protected acceptRequest(): void {
     this.isAccepting.set(true);
@@ -86,6 +103,27 @@ export class AdminDataRequestDetailsComponent {
       })
       .catch((error) => this.errorService.handleError(error))
       .finally(() => this.isActivating.set(false));
+  }
+
+  protected openPauseConfirmation(): void {
+    this.showPauseConfirmation.set(true);
+  }
+
+  protected pauseRequest(): void {
+    this.closePauseConfirmation();
+    this.isPausing.set(true);
+    this.dataRequestService
+      .pauseDataRequest(this.dataRequestId(), this.stateService.actingRole())
+      .then(() => {
+        this.refreshListNeeded.set(true);
+        this.detailsComponent()?.dataRequestResource.reload();
+      })
+      .catch((error) => this.errorService.handleError(error))
+      .finally(() => this.isPausing.set(false));
+  }
+
+  protected closePauseConfirmation(): void {
+    this.showPauseConfirmation.set(false);
   }
 
   protected handleClose(): void {
