@@ -8,6 +8,13 @@
     [enableSearch]="true"
     [emptyStateTemplate]="emptyStateTemplate"
   >
+    <app-agridata-button
+      tableToolbar
+      [variant]="ButtonVariants.Primary"
+      [icon]="addIcon"
+      (handleClick)="openAddModal()"
+      >{{ t('addButton') }}</app-agridata-button
+    >
     <ng-template #stateTemplate [appConsentRequestFundamentalViewDtoGuard] let-item>
       <app-agridata-badge
         [text]="getStateTranslation(item.stateCode)"
@@ -17,6 +24,21 @@
     </ng-template>
   </app-agridata-table>
   <ng-template #emptyStateTemplate>
-    <app-empty-state [title]="t('emptyState.title')" />
+    <app-empty-state [title]="t('emptyState.title')" [message]="t('emptyState.message')">
+      <app-agridata-button
+        emptyStateAction
+        [variant]="ButtonVariants.Primary"
+        [icon]="addIcon"
+        (handleClick)="openAddModal()"
+      >
+        {{ t('addButton') }}
+      </app-agridata-button>
+    </app-empty-state>
   </ng-template>
+
+  <app-data-request-add-producers
+    [dataRequest]="dataRequest()"
+    [(open)]="addProducersOpen"
+    [initialUid]="prefillUid()"
+  />
 </div>

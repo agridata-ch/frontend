@@ -59,6 +59,9 @@ export const CMS_BLOCKS = {
 
 export const VIDEO_FORMATS = ['.mp4', '.webm', '.wmv', '.avi', '.mov', '.mkv', '.flv'];
 
+// Swiss enterprise identification number, unformatted, e.g. CHE123456789.
+export const UID_REGEX = /^CHE\d{9}$/;
+
 export const AGATE_LOGIN_ID_IMPERSONATION_HEADER = 'X-Impersonated-AgateLoginId';
 
 export const ACTING_ROLES = {

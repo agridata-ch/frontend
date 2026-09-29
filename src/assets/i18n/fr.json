@@ -441,7 +441,25 @@
           "declined": "Rejeté",
           "uid": "UID",
           "bur": "BUR"
-        }
+        },
+        "addButton": "Demander un producteur",
+        "modal": {
+          "title": "Demander un producteur",
+          "description": "Pour inclure de nouvelles exploitations dans la demande, vous devez interroger les producteurs via leur UID. Ensuite, vous pouvez choisir parmi la liste des sites d'exploitation. Vous pouvez également gérer la demande via l'API.",
+          "uidLabel": "UID",
+          "uidPlaceholder": "CHE000000000",
+          "cancel": "Annuler",
+          "confirm": "Ajouter {{ count }} demande(s)",
+          "uidInvalid": "format invalide",
+          "noResults": "l'UID saisi n'a pas été trouvé",
+          "burSection": {
+            "title": "Sites d'exploitation",
+            "description": "Sélectionnez dans la liste les sites d'exploitation que vous souhaitez demander.",
+            "selectAll": "Tout sélectionner",
+            "burLabel": "Numéro de site d'exploitation (BUR)"
+          }
+        },
+        "addBurs": "Ajouter des sites d'exploitation"
       }
     },
     "invitationLink": {
@@ -620,6 +638,7 @@
       "description": "Merci d'avoir choisi\u2028Vous serez redirigé automatiquement dans {{ count }} secondes.",
       "redirectNow": "Retour direct"
     },
+    "uidMissingWarning": "Aucun numéro d'identification fiscale (UID) n'est encore enregistré pour vous ou votre entreprise. Étant donné que plusieurs systèmes sont impliqués, cela peut prendre quelques jours avant que nous disposions de toutes les informations nécessaires au bon fonctionnement d'agridata.ch. Veuillez réessayer dans quelques jours. Si le problème persiste, veuillez contacter le service d'assistance ({{ phoneNumber }}).",
     "migrationInfo": {
       "maf": {
         "title": "De nouvelles demandes de données issues de \"Mon partage de données agricoles (MAF)\" sont désormais disponibles"
@@ -632,8 +651,7 @@
         "requestsFromConsumer": "Demande(s) de données émanant de {{consumerName}}",
         "tableHint": "Vous trouverez la demande dans le tableau ci-dessous et pourrez, si nécessaire, modifier votre accord."
       }
-    },
-    "uidMissingWarning": "Aucun numéro d'identification fiscale (UID) n'est encore enregistré pour vous ou votre entreprise. Étant donné que plusieurs systèmes sont impliqués, cela peut prendre quelques jours avant que nous disposions de toutes les informations nécessaires au bon fonctionnement d'agridata.ch. Veuillez réessayer dans quelques jours. Si le problème persiste, veuillez contacter le service d'assistance ({{ phoneNumber }})."
+    }
   },
   "header": {
     "helpAndSupport": {
@@ -815,7 +833,14 @@
     "actions": {
       "accept": "Valider la demande",
       "reject": "Rejeter la demande",
-      "activate": "Activer la demande"
+      "activate": "Activer la demande",
+      "pause": "Mettre la demande en pause",
+      "pauseConfirmation": {
+        "title": "Mettre la demande de données en pause ?",
+        "description": "Vous êtes sur le point de mettre en pause la demande de données {{ requestName }} entre {{ provider }} et {{ consumer }}. Cela interrompra immédiatement l’échange de données entre les parties concernées. Cette action peut être annulée.",
+        "confirm": "Oui, mettre la demande de données en pause",
+        "cancel": "Annuler"
+      }
     }
   },
   "support-info": {

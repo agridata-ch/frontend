@@ -1,11 +1,14 @@
 <!-- Search Section -->
 @if (enableSearch()) {
-  <div class="mb-4 w-60">
-    <app-search-input
-      (handleInput)="handleSearchInput($event)"
-      [isLoading]="dataProvider().isLoading()"
-    >
-    </app-search-input>
+  <div class="mb-4 flex items-center justify-between gap-4">
+    <div class="w-60">
+      <app-search-input
+        (handleInput)="handleSearchInput($event)"
+        [isLoading]="dataProvider().isLoading()"
+      >
+      </app-search-input>
+    </div>
+    <ng-content select="[tableToolbar]"></ng-content>
   </div>
 }
 @if (pageData().items.length === 0 && !dataProvider().isLoading()) {

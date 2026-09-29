@@ -11,7 +11,7 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 export interface ActionDTO {
   icon?: IconDefinition;
   label: string;
-  callback: () => Promise<void>;
+  callback: () => void | Promise<void>;
   isDisabled?: boolean;
 }
 

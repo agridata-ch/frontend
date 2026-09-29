@@ -95,6 +95,7 @@ export function createMockDataRequestService(): MockDataRequestService {
     fetchDataRequests: vi.fn().mockResolvedValue(mockDataRequests),
     fetchProducersMetadata: vi.fn().mockResolvedValue(mockConsentRequestStatusSummary),
     getConsentRequestsOfDataRequest: vi.fn().mockResolvedValue(mockConsentRequestsPage),
+    getConsentRequestsOfDataRequestAndUid: vi.fn().mockResolvedValue(mockConsentRequestsPage.items),
     retreatDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
     activateDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
     submitDataRequest: vi.fn().mockResolvedValue(undefined),

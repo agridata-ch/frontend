@@ -1,0 +1,109 @@
+<app-modal
+  [(open)]="open"
+  [title]="'data-request.details.producer.modal.title' | i18n"
+  [dataTestId]="'add-producers-modal'"
+>
+  <div class="flex flex-col gap-6" *i18n="let t; prefix: 'data-request.details.producer.modal'">
+    <p class="text-sm text-gray-500 whitespace-pre-line">{{ t('description') }}</p>
+
+    <div class="flex" appViewSection [isViewMode]="isUidViewMode()">
+      <div
+        class="flex justify-between items-center"
+        [class.py-3]="isUidViewMode()"
+        [class.pr-5]="isUidViewMode()"
+      >
+        <div class="flex flex-col gap-2 grow">
+          <label
+            class="text-sm text-gray-500"
+            for="add-producers-uid"
+            [class.text-agridata-secondary-text]="isUidViewMode()"
+            [class.text-xs]="isUidViewMode()"
+            [class.pl-5]="isUidViewMode()"
+          >
+            {{ t('uidLabel') }}
+          </label>
+          <app-agridata-input
+            [id]="'add-producers-uid'"
+            [value]="searchValue()"
+            [placeholder]="t('uidPlaceholder')"
+            [hasError]="hasUidError()"
+            [maxCharacters]="12"
+            (handleInput)="searchValue.set($event)"
+            [disabled]="isUidViewMode()"
+            [isViewMode]="isUidViewMode()"
+          />
+          @if (showUidInvalid()) {
+            <p class="text-sm text-red-500" role="alert">{{ t('uidInvalid') }}</p>
+          } @else if (uidNotFound()) {
+            <p class="text-sm text-red-500" role="alert">{{ t('noResults') }}</p>
+          }
+        </div>
+        @if (badgeState()) {
+          <app-agridata-badge
+            [text]="'consent-request.dataRequest.stateCode.' + badgeState() | i18n"
+            [variant]="badgeVariant()"
+            [size]="BadgeSize.SM"
+          />
+        }
+      </div>
+    </div>
+
+    @if (dataRequest().burPresent && entries().length > 0) {
+      <div class="flex flex-col gap-2">
+        <h3 class="font-semibold">{{ t('burSection.title') }}</h3>
+        <p class="text-sm text-gray-500">{{ t('burSection.description') }}</p>
+        <div
+          class="border border-agridata-stroke rounded-md divide-y divide-agridata-stroke overflow-hidden"
+        >
+          <label class="flex items-center gap-3 p-4 cursor-pointer">
+            <input
+              type="checkbox"
+              class="h-4 w-4"
+              [checked]="allSelectableSelected()"
+              [disabled]="selectableEntries().length === 0"
+              (change)="toggleAll()"
+            />
+            <span class="font-medium">{{ t('burSection.selectAll') }}</span>
+          </label>
+          @for (entry of entries(); track entry.key) {
+            <label
+              class="flex items-center gap-3 p-4"
+              [class.cursor-pointer]="!entry.existing"
+              [class.bg-sky-50]="isSelected(entry.key)"
+              [class.opacity-50]="entry.existing"
+            >
+              <input
+                type="checkbox"
+                class="h-4 w-4"
+                [checked]="isSelected(entry.key)"
+                [disabled]="entry.existing"
+                (change)="toggle(entry.key)"
+              />
+              <span class="flex flex-col">
+                <span class="text-sm text-gray-500">{{ t('burSection.burLabel') }}</span>
+                <span>{{ entry.bur }}</span>
+              </span>
+              @if (entry.stateCode) {
+                <app-agridata-badge
+                  class="ml-auto shrink-0"
+                  [text]="'consent-request.dataRequest.stateCode.' + entry.stateCode | i18n"
+                  [variant]="getConsentRequestBadgeVariant(entry.stateCode)"
+                  [size]="BadgeSize.SM"
+                />
+              }
+            </label>
+          }
+        </div>
+      </div>
+    }
+
+    <div class="flex justify-end gap-2">
+      <app-agridata-button [variant]="ButtonVariants.Secondary" (handleClick)="open.set(false)">
+        {{ t('cancel') }}
+      </app-agridata-button>
+      <app-agridata-button [variant]="ButtonVariants.Primary" [disabled]="selectedCount() === 0">
+        {{ t('confirm', { count: selectedCount() }) }}
+      </app-agridata-button>
+    </div>
+  </div>
+</app-modal>

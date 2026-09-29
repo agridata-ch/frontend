@@ -5,6 +5,7 @@ import { Mockify } from '@/shared/testing/mocks';
 export type MockUserService = Mockify<UserService>;
 
 export const mockUserService = {
+  getAuthorizedBursByUid: vi.fn().mockReturnValue(Promise.resolve([])),
   getAuthorizedUids: vi.fn().mockReturnValue(Promise.resolve([{ uid: '123' } as UidDto])),
   getProducers: vi
     .fn()
@@ -15,6 +16,7 @@ export function createMockUserService(): MockUserService {
   return {
     updateUserPreferences: vi.fn().mockResolvedValue(Promise.resolve()),
     getUserInfo: vi.fn().mockReturnValue(Promise.resolve({} as UserInfoDto)),
+    getAuthorizedBursByUid: vi.fn().mockReturnValue(Promise.resolve([])),
     getAuthorizedUids: vi.fn().mockReturnValue(Promise.resolve([{ uid: '123' } as UidDto])),
     getProducers: vi
       .fn()

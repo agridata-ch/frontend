@@ -67,6 +67,13 @@ export class DataRequestService {
     );
   };
 
+  getConsentRequestsOfDataRequestAndUid(
+    id: string,
+    uid: string,
+  ): Promise<ConsentRequestFundamentalViewDto[]> {
+    return firstValueFrom(this.apiService.getConsentRequestsOfDataRequestAndUid(id, uid));
+  }
+
   async createDataRequest(dataRequest: DataRequestUpdateDto): Promise<DataRequestDto> {
     return firstValueFrom(this.apiService.createDataRequestDraft(dataRequest));
   }

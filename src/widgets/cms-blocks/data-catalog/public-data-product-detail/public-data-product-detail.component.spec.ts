@@ -90,7 +90,8 @@ describe('PublicDataProductDetailComponent', () => {
       fixture.detectChanges();
 
       expect(component['documents']()).toHaveLength(2);
-      expect(fixture.nativeElement.querySelectorAll('app-agridata-file-download')).toHaveLength(2);
+      // The modal portals its content to document.body, outside the component subtree.
+      expect(document.body.querySelectorAll('app-agridata-file-download')).toHaveLength(2);
     });
   });
 

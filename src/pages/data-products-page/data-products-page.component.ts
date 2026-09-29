@@ -185,7 +185,7 @@ export class DataProductsPageComponent {
     const viewDetails: ActionDTO = {
       label: 'data-products.table.actions.viewDetails',
       icon: this.faEye,
-      callback: async () => {
+      callback: () => {
         if (!row.id) return;
         this.router.navigate([ROUTE_PATHS.DATA_PRODUCTS_PATH, row.id]);
       },
@@ -193,7 +193,7 @@ export class DataProductsPageComponent {
     const deleteAction: ActionDTO = {
       label: 'data-products.table.actions.delete',
       icon: this.faTrashCan,
-      callback: async () => {
+      callback: () => {
         this.productToDelete.set(row);
       },
     };

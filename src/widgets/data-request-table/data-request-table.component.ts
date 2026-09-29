@@ -168,7 +168,7 @@ export class DataRequestTableComponent {
     const details = {
       icon: this.eyeIcon,
       label: 'data-request.table.tableActions.details',
-      callback: async () => this.tableRowAction.emit(request),
+      callback: () => this.tableRowAction.emit(request),
     };
     const retreat = {
       icon: this.retreatIcon,
@@ -181,7 +181,7 @@ export class DataRequestTableComponent {
     const deleteAction = {
       icon: this.deleteIcon,
       label: 'data-request.table.tableActions.delete',
-      callback: async () => {
+      callback: () => {
         this.requestToDelete.set(request);
         this.showDeleteModal.set(true);
       },
