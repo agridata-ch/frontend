@@ -441,7 +441,25 @@
           "declined": "Abgelehnt",
           "uid": "UID",
           "bur": "BUR"
-        }
+        },
+        "addButton": "Produzent anfragen",
+        "modal": {
+          "title": "Produzent anfragen",
+          "description": "Um neue Betriebe in den Antrag aufzunehmen, müssen Sie die Produzent:innen über ihre UID anfragen. Anschliessend können Sie aus der Liste der Betriebsstätten wählen. \nSie können die Anfrage auch über die API steuern.",
+          "uidLabel": "UID",
+          "uidPlaceholder": "CHE000000000",
+          "cancel": "Abbrechen",
+          "confirm": "{{ count }} Anfrage(n) hinzufügen",
+          "uidInvalid": "ungültiges Format",
+          "noResults": "die eingegebene UID wurde nicht gefunden",
+          "burSection": {
+            "title": "Betriebstätten",
+            "description": "Wählen Sie in der Liste die Betriebsstätten aus, welche Sie anfragen möchten.",
+            "selectAll": "Alle auswählen",
+            "burLabel": "Betriebsstättennummer (BUR)"
+          }
+        },
+        "addBurs": "Betriebstätten hinzufügen"
       }
     },
     "invitationLink": {
@@ -620,6 +638,7 @@
       "description": "Besten Dank für Ihre Entscheidung,\u2028Sie werden in {{ count }} Sekunden automatisch zurück geleitet.",
       "redirectNow": "Direkt zurück"
     },
+    "uidMissingWarning": "Zu Ihrer Person oder Unternehmen ist zurzeit noch keine UID vorhanden. Da verschiedene Systeme involviert sind, kann es einige Tage dauern bis wir alle relevanten Angaben haben, damit agridata.ch funktionieren kann. Bitte versuchen sie es in ein paar Tage nochmal. Besteht Ihr Problem weiterhin, melden sie sich bitte beim Support ({{ phoneNumber }}).",
     "migrationInfo": {
       "maf": {
         "title": "Neue Datenanfragen aus \"Meine Agrardatenfreigaben (MAF)\" jetzt verfügbar"
@@ -632,8 +651,7 @@
         "requestsFromConsumer": "Datenanfrage(n) von {{consumerName}}",
         "tableHint": "Sie finden die Anfrage in der untenstehenden Tabelle und können bei Bedarf die Zustimmung ändern."
       }
-    },
-    "uidMissingWarning": "Zu Ihrer Person oder Unternehmen ist zurzeit noch keine UID vorhanden. Da verschiedene Systeme involviert sind, kann es einige Tage dauern bis wir alle relevanten Angaben haben, damit agridata.ch funktionieren kann. Bitte versuchen sie es in ein paar Tage nochmal. Besteht Ihr Problem weiterhin, melden sie sich bitte beim Support ({{ phoneNumber }})."
+    }
   },
   "header": {
     "helpAndSupport": {
@@ -815,7 +833,14 @@
     "actions": {
       "accept": "Antrag freigeben",
       "reject": "Antrag ablehnen",
-      "activate": "Antrag aktivieren"
+      "activate": "Antrag aktivieren",
+      "pause": "Antrag pausieren",
+      "pauseConfirmation": {
+        "title": "Datenantrag pausieren?",
+        "description": "Sie sind dabei, den Datenantrag {{ requestName }} zwischen {{ provider }} und {{ consumer }} zu pausieren. Dadurch wird der Datenaustausch zwischen den Beteiligten sofort unterbunden. Diese Aktion kann rückgängig gemacht werden.",
+        "confirm": "Ja, Datenantrag pausieren",
+        "cancel": "Abbrechen"
+      }
     }
   },
   "support-info": {

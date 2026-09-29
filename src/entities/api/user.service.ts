@@ -4,6 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import {
+  BurDto,
   ResourceQueryDto,
   UserInfoDto,
   UserPreferencesDto,
@@ -27,6 +28,10 @@ import {
 @Service()
 export class UserService {
   private readonly apiService = inject(UsersService);
+
+  getAuthorizedBursByUid(uid: string): Promise<BurDto[]> {
+    return firstValueFrom(this.apiService.getAuthorizedBursByUid(uid));
+  }
 
   getAuthorizedUids(actingRole?: ActingRole) {
     return this.apiService.getAuthorizedUids(

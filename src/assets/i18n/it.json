@@ -441,7 +441,25 @@
           "declined": "Rifiutato",
           "uid": "UID",
           "bur": "BUR"
-        }
+        },
+        "addButton": "Richiedi produttore",
+        "modal": {
+          "title": "Richiedi produttore",
+          "description": "Per includere nuove aziende nella richiesta, è necessario interrogare i produttori tramite la loro UID. Successivamente, è possibile selezionare dall'elenco delle sedi operative. È possibile controllare la richiesta anche tramite l'API.",
+          "uidLabel": "UID",
+          "uidPlaceholder": "CHE000000000",
+          "cancel": "Annulla",
+          "confirm": "Aggiungi {{ count }} richiesta(e)",
+          "uidInvalid": "formato non valido",
+          "noResults": "l'UID inserito non è stato trovato",
+          "burSection": {
+            "title": "Sedi operative",
+            "description": "Seleziona dall'elenco le sedi operative che desideri richiedere.",
+            "selectAll": "Seleziona tutto",
+            "burLabel": "Numero della sede operativa (BUR)"
+          }
+        },
+        "addBurs": "Aggiungi sedi operative"
       }
     },
     "invitationLink": {
@@ -620,6 +638,7 @@
       "description": "Grazie per aver scelto il nostro serviziodi aver effettuato la tua scelta. Verrai reindirizzato automaticamente tra {{ count }} secondi.",
       "redirectNow": "Direttamente indietro"
     },
+    "uidMissingWarning": "Al momento non è ancora presente alcun numero UID relativo alla Sua persona o alla Sua azienda. Poiché sono coinvolti diversi sistemi, potrebbero essere necessari alcuni giorni prima che disponiamo di tutti i dati necessari per il corretto funzionamento di agridata.ch. La preghiamo di riprovare tra qualche giorno. Se il problema persiste, la preghiamo di contattare l'assistenza ({{ phoneNumber }}).",
     "migrationInfo": {
       "maf": {
         "title": "Sono ora disponibili nuove richieste di dati da “Mia condivisione dei dati agricoli (MAF)”"
@@ -632,8 +651,7 @@
         "requestsFromConsumer": "Richiesta/e di dati da parte di {{consumerName}}",
         "tableHint": "Troverete la richiesta nella tabella sottostante e, se necessario, potrete modificare il consenso."
       }
-    },
-    "uidMissingWarning": "Al momento non è ancora presente alcun numero UID relativo alla Sua persona o alla Sua azienda. Poiché sono coinvolti diversi sistemi, potrebbero essere necessari alcuni giorni prima che disponiamo di tutti i dati necessari per il corretto funzionamento di agridata.ch. La preghiamo di riprovare tra qualche giorno. Se il problema persiste, la preghiamo di contattare l'assistenza ({{ phoneNumber }})."
+    }
   },
   "header": {
     "helpAndSupport": {
@@ -815,7 +833,14 @@
     "actions": {
       "accept": "Approvare la richiesta",
       "reject": "Respingere la richiesta",
-      "activate": "Attiva richiesta"
+      "activate": "Attiva richiesta",
+      "pause": "Mettere in pausa la richiesta",
+      "pauseConfirmation": {
+        "title": "Mettere in pausa la richiesta di dati?",
+        "description": "Stai per mettere in pausa la richiesta di dati {{ requestName }} tra {{ provider }} e {{ consumer }}. In questo modo, lo scambio di dati tra le parti coinvolte verrà interrotto immediatamente. Questa azione può essere annullata.",
+        "confirm": "Sì, mettere in pausa la richiesta di dati",
+        "cancel": "Annulla"
+      }
     }
   },
   "support-info": {

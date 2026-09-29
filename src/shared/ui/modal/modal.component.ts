@@ -1,5 +1,15 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, DestroyRef, effect, inject, input, model, output } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  ElementRef,
+  afterNextRender,
+  effect,
+  inject,
+  input,
+  model,
+  output,
+} from '@angular/core';
 import { faClose } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
@@ -26,6 +36,7 @@ export class ModalComponent {
   // Injects
   private readonly destroyRef = inject(DestroyRef);
   private readonly document = inject(DOCUMENT);
+  private readonly host = inject(ElementRef<HTMLElement>);
 
   // Input properties
   readonly title = input<string>('title');
@@ -40,6 +51,15 @@ export class ModalComponent {
 
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly closeIcon = faClose;
+
+  // Render the modal at document.body so its `fixed` overlay always resolves against the viewport,
+  // escaping any ancestor that establishes a containing block for fixed descendants (a CSS mask,
+  // transform, filter or the sidepanel), which would otherwise clip the modal or its backdrop.
+  private readonly portalToBody = afterNextRender(() => {
+    const el = this.host.nativeElement;
+    this.document.body.appendChild(el);
+    this.destroyRef.onDestroy(() => el.remove());
+  });
 
   // Lock background scrolling while any modal is open so the page behind it stays put. Reference-counted
   // across all modal instances so a closing modal only restores scroll once the last one has closed.

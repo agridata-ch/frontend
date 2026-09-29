@@ -156,7 +156,7 @@ export class DataRequestProviderTableComponent {
     const details = {
       icon: this.eyeIcon,
       label: 'data-request.table.tableActions.details',
-      callback: async () => this.tableRowAction.emit(request),
+      callback: () => this.tableRowAction.emit(request),
     };
 
     return [details];

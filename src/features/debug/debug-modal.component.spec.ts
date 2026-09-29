@@ -108,24 +108,26 @@ describe('DebugModalComponent', () => {
     component.toggleDebugMode();
     fixture.detectChanges();
 
-    const compiled = fixture.nativeElement;
+    // The modal renders at document.body (it portals itself out of the component subtree).
+    const compiled = document.body;
     const browserInfo = compiled.querySelector('.bg-gray-50');
 
     expect(browserInfo).toBeTruthy();
-    expect(browserInfo.textContent).toContain('Browser Information');
-    expect(browserInfo.textContent).toContain('Language:');
-    expect(browserInfo.textContent).toContain('Screen:');
-    expect(browserInfo.textContent).toContain('Viewport:');
-    expect(browserInfo.textContent).toContain('Cookies:');
-    expect(browserInfo.textContent).toContain('Online:');
-    expect(browserInfo.textContent).toContain('User Agent:');
+    expect(browserInfo?.textContent).toContain('Browser Information');
+    expect(browserInfo?.textContent).toContain('Language:');
+    expect(browserInfo?.textContent).toContain('Screen:');
+    expect(browserInfo?.textContent).toContain('Viewport:');
+    expect(browserInfo?.textContent).toContain('Cookies:');
+    expect(browserInfo?.textContent).toContain('Online:');
+    expect(browserInfo?.textContent).toContain('User Agent:');
   });
 
   it('should display logs from debug service', () => {
     component.toggleDebugMode();
     fixture.detectChanges();
 
-    const compiled = fixture.nativeElement;
+    // The modal renders at document.body (it portals itself out of the component subtree).
+    const compiled = document.body;
     const rows = compiled.querySelectorAll('tbody tr');
 
     expect(rows.length).toBeGreaterThan(0);
@@ -146,7 +148,8 @@ describe('DebugModalComponent', () => {
     component.toggleDebugMode();
     fixture.detectChanges();
 
-    const compiled = fixture.nativeElement;
+    // The modal renders at document.body (it portals itself out of the component subtree).
+    const compiled = document.body;
     const emptyMessage = compiled.querySelector('tbody tr td');
 
     expect(emptyMessage?.textContent).toContain('No logs available');
@@ -165,7 +168,8 @@ describe('DebugModalComponent', () => {
     component.toggleDebugMode();
     fixture.detectChanges();
 
-    const compiled = fixture.nativeElement;
+    // The modal renders at document.body (it portals itself out of the component subtree).
+    const compiled = document.body;
     const sourceCells = compiled.querySelectorAll('tbody td:nth-child(2) span');
 
     expect(sourceCells.length).toBeGreaterThan(0);
@@ -181,7 +185,8 @@ describe('DebugModalComponent', () => {
     component.toggleDebugMode();
     fixture.detectChanges();
 
-    const compiled = fixture.nativeElement;
+    // The modal renders at document.body (it portals itself out of the component subtree).
+    const compiled = document.body;
     const timestampCells = compiled.querySelectorAll('tbody td:first-child');
 
     expect(timestampCells.length).toBeGreaterThan(0);
@@ -193,7 +198,8 @@ describe('DebugModalComponent', () => {
     expect(component.debugEnabled()).toBe(false);
     fixture.detectChanges();
 
-    const compiled = fixture.nativeElement;
+    // The modal renders at document.body (it portals itself out of the component subtree).
+    const compiled = document.body;
     const modal = compiled.querySelector('app-modal');
 
     expect(modal).toBeFalsy();
@@ -204,7 +210,8 @@ describe('DebugModalComponent', () => {
     expect(component.debugEnabled()).toBe(true);
     fixture.detectChanges();
 
-    const compiled = fixture.nativeElement;
+    // The modal renders at document.body (it portals itself out of the component subtree).
+    const compiled = document.body;
     const modal = compiled.querySelector('app-modal');
 
     expect(modal).toBeTruthy();

@@ -89,6 +89,10 @@ select {
   outline-color: var(--color-gray-900);
 }
 
+input[type='checkbox'] {
+  cursor: pointer;
+}
+
 /* Rich-text (WYSIWYG) content — shared by the TipTap editor and its read-only [innerHTML] rendering.
    Restores the formatting Tailwind's preflight resets. */
 .rich-text-content {
