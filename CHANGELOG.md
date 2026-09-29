@@ -1,3 +1,9 @@
+## [1.22.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.1...v1.22.0-rc.2) (2026-09-29)
+
+### Features
+
+- **news-blog:** add detail site ([ebc901f](https://github.com/agridata-ch/frontend/commit/ebc901f6dbffaae5f834d04d8339c891ee075469)), references [DIGIB2-1568](https://github.com/agridata-ch/frontend/issues/-1568)
+
 ## [1.22.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.21.0...v1.22.0-rc.1) (2026-09-28)
 
 ### Features
