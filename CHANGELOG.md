@@ -1,3 +1,9 @@
+## [1.22.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.4...v1.22.0-rc.5) (2026-09-30)
+
+### Features
+
+- **data-request:** implement add producer modal ([249642a](https://github.com/agridata-ch/frontend/commit/249642a0291aac6260979c1e92a87e79a7cccd3d)), references [DIGIB2-1223](https://github.com/agridata-ch/frontend/issues/-1223)
+
 ## [1.22.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.3...v1.22.0-rc.4) (2026-09-30)
 
 ### Features
