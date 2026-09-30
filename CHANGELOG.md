@@ -1,3 +1,9 @@
+## [1.22.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.2...v1.22.0-rc.3) (2026-09-30)
+
+### Features
+
+- **producer-page:** add expandable alerts and update migrated request alert styling ([3c4e476](https://github.com/agridata-ch/frontend/commit/3c4e476e2385b7b313570578357682e77119a2bb)), references [DIGIB2-1444](https://github.com/agridata-ch/frontend/issues/-1444)
+
 ## [1.22.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.1...v1.22.0-rc.2) (2026-09-29)
 
 ### Features
