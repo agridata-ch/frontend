@@ -39,7 +39,7 @@
 
     @if (article.image; as image) {
     <img
-      class="w-full aspect-video rounded-lg"
+      class="w-fit rounded-lg max-h-95 object-contain self-center"
       [src]="generateMediaUrl(image.url)"
       [alt]="resolveAlt(article.imageAlt, image)"
     />

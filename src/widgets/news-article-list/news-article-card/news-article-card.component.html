@@ -3,6 +3,7 @@
   [description]="article().teaserText"
   [imageUrl]="imageUrl()"
   [imageAlt]="imageAlt()"
+  (handleClick)="routeToDetail(article().slug)"
 >
   <div cardTags class="flex items-center justify-between gap-2">
     @if (article().createdAt; as creationDate) {
