@@ -1,3 +1,9 @@
+## [1.22.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.3...v1.22.0-rc.4) (2026-09-30)
+
+### Features
+
+- **news-article:** update card, improve image on detail ([9df0ca7](https://github.com/agridata-ch/frontend/commit/9df0ca7374c5dd9bf2696e02fe021337a8b3dbbd)), references [DIGIB2-1568](https://github.com/agridata-ch/frontend/issues/-1568)
+
 ## [1.22.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.2...v1.22.0-rc.3) (2026-09-30)
 
 ### Features
