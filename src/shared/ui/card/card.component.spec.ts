@@ -72,4 +72,32 @@ describe('CardComponent', () => {
     expect(cardFixture.nativeElement.querySelector('span.font-semibold')).toBeNull();
     expect(cardFixture.nativeElement.textContent).not.toContain('My title');
   });
+
+  it('should emit handleClick when the card is clicked', () => {
+    const cardFixture = TestBed.createComponent(CardComponent);
+    const clickSpy = vi.fn();
+    cardFixture.componentInstance.handleClick.subscribe(clickSpy);
+    cardFixture.detectChanges();
+
+    cardFixture.nativeElement.click();
+
+    expect(clickSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not emit handleClick while text is selected', () => {
+    const cardFixture = TestBed.createComponent(CardComponent);
+    cardFixture.componentRef.setInput('description', 'Selectable text');
+    const clickSpy = vi.fn();
+    cardFixture.componentInstance.handleClick.subscribe(clickSpy);
+    cardFixture.detectChanges();
+    document.body.appendChild(cardFixture.nativeElement);
+
+    const range = document.createRange();
+    range.selectNodeContents(cardFixture.nativeElement.querySelector('p'));
+    getSelection()?.addRange(range);
+    cardFixture.nativeElement.click();
+    getSelection()?.removeAllRanges();
+
+    expect(clickSpy).not.toHaveBeenCalled();
+  });
 });

@@ -1,4 +1,9 @@
-<app-card [title]="name()" [description]="description()" *i18n="let t; prefix: 'data-catalog'">
+<app-card
+  [title]="name()"
+  [description]="description()"
+  *i18n="let t; prefix: 'data-catalog'"
+  (handleClick)="handleShowDetails.emit(product().id)"
+>
   <div cardTags class="flex gap-2">
     @if (providerName()) {
       <app-agridata-badge
