@@ -1423,7 +1423,6 @@
       "validTo": "Gültig bis",
       "enforceConsentFrom": "Sperrung ab"
     },
-    "pageTitle": "AGB-Verwaltung",
-    "pageDescription": "Zentralisierte Steuerung Ihrer rechtlichen Rahmenbedingungen und Versionierung für alle Agridata Nexus Schnittstellen."
+    "pageTitle": "AGB-Verwaltung"
   }
 }

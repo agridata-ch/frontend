@@ -5,8 +5,9 @@ import {
   faChevronRight,
   faDatabase,
   faFileCheck,
-  faUsers,
+  faGavel,
   faLayerGroup,
+  faUsers,
 } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -66,7 +67,6 @@ export class NavigationWidgetComponent {
           icon: faFileCheck,
           route: `/${ROUTE_PATHS.ADMIN_PATH}`,
         },
-
       (this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) ||
         this.agridataStateService.isImpersonating()) && {
         label: 'producer.pageTitle',
@@ -89,6 +89,12 @@ export class NavigationWidgetComponent {
           label: 'data-products.pageTitle',
           icon: faLayerGroup,
           route: `/${ROUTE_PATHS.DATA_PRODUCTS_PATH}`,
+        },
+      this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) &&
+        !this.agridataStateService.isImpersonating() && {
+          label: 'admin-agbs.pageTitle',
+          icon: faGavel,
+          route: `/${ROUTE_PATHS.ADMIN_AGBS_PATH}`,
         },
       this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) &&
         !this.agridataStateService.isImpersonating() && {

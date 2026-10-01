@@ -1,0 +1,12 @@
+<ng-container *i18n="let t; prefix: 'admin-agbs'">
+  <h2 class="page-title">
+    <fa-icon [icon]="faGavel" class="mr-3" />
+    {{ t('pageTitle') }}
+  </h2>
+  <app-error-outlet></app-error-outlet>
+  <app-agridata-table
+    [dataProvider]="fetchAgbRevisionsResource"
+    [tableMetadata]="agbRevisionsTableMetaData()"
+    [(queryParameters)]="resourceQueryDto"
+  ></app-agridata-table>
+</ng-container>
