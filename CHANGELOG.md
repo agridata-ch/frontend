@@ -1,3 +1,9 @@
+## [1.22.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.5...v1.22.0-rc.6) (2026-10-01)
+
+### Features
+
+- **data-request:** implement pause confirmation modal ([8a46b9a](https://github.com/agridata-ch/frontend/commit/8a46b9a549c2cf6a8911b5c4cdaa68a914ec9928)), references [DIGIB2-1689](https://github.com/agridata-ch/frontend/issues/-1689)
+
 ## [1.22.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.4...v1.22.0-rc.5) (2026-09-30)
 
 ### Features
