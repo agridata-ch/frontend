@@ -1,12 +1,13 @@
 publiccodeYmlVersion: 0.5.0
 name: agridata.ch Frontend
+applicationSuite: agridata.ch
 url: https://github.com/agridata-ch/frontend
 releaseDate: 2026-01-01
 platforms:
   - web
 categories:
   - application-development
-developmentStatus: beta
+developmentStatus: stable
 softwareType: standalone/web
 organisation:
   uri: https://ld.admin.ch/office/VI.1.5
@@ -29,11 +30,15 @@ description:
       - Data Products
       - Consent Management
       - Data Request Management
+    awards:
+      - Best of Swiss Web - Innovation
 legal:
   license: MIT
 maintenance:
   type: internal
   contacts:
+    - name: Pascal Süess
+      email: pascal.sueess@blw.admin.ch
     - name: Bengt Gade
       email: bengt.gade@blw.admin.ch
     - name: Samuel Imboden
