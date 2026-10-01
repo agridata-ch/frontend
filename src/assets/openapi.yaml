@@ -438,6 +438,7 @@ components:
               - TO_BE_RELEASED_BY_PROVIDER
               - TO_BE_ACTIVATED
               - ACTIVE
+              - PAUSED
               description: State of the data request
             dataConsumerLegalName:
               type: string
@@ -744,6 +745,30 @@ components:
           $ref: "#/components/schemas/UUID"
         uid:
           type: string
+    CreateConsentRequestsForUidDto:
+      description: Data transfer object used to create consent requests for a data
+        producer UID and optionally its BURs
+      type: object
+      required:
+      - uid
+      - burs
+      properties:
+        uid:
+          type: string
+          description: UID of the data producer
+          examples:
+          - CHE101000001
+          pattern: "^(?:CHE|ZZZ)\\d{9}$"
+        burs:
+          type: array
+          items:
+            type: string
+            pattern: "^A\\d{8}$"
+          description: "BURs of the data producer. Required, but may be empty. Every\
+            \ BUR must belong to the UID in AGIS."
+          examples:
+          - - A12345678
+            - A12345679
     DataProductDescriptionDto:
       type: object
       properties:
@@ -1223,6 +1248,7 @@ components:
           - TO_BE_RELEASED_BY_PROVIDER
           - TO_BE_ACTIVATED
           - ACTIVE
+          - PAUSED
           description: State of the data request
         dataConsumerLegalName:
           type: string
@@ -1340,6 +1366,7 @@ components:
       - TO_BE_RELEASED_BY_PROVIDER
       - TO_BE_ACTIVATED
       - ACTIVE
+      - PAUSED
     DataRequestSummaryDto:
       type: object
       description: Reduced data transfer object representing a data request
@@ -1532,6 +1559,7 @@ components:
           - TO_BE_RELEASED_BY_PROVIDER
           - TO_BE_ACTIVATED
           - ACTIVE
+          - PAUSED
           description: State of the data request
         dataConsumerLegalName:
           type: string
@@ -3580,6 +3608,62 @@ paths:
       x-api-subset:
       - agridata.ch Web App
       - Data Provider
+    post:
+      description: "Creates the consent requests of a single data producer UID for\
+        \ a data request. A UID-based consent request is created if it does not exist\
+        \ yet. BURs may only be provided if the data request contains at least one\
+        \ BUR-based data product. When BURs are provided, they are validated against\
+        \ the UID's BURs in AGIS and a BUR-based consent request is created for each\
+        \ of them. Accessible to the consumer who owns the data request."
+      operationId: createConsentRequestsForDataRequest
+      tags:
+      - Data Requests
+      parameters:
+      - description: The UUID of the data request
+        example: 3da3a459-d3c2-48af-b8d0-02bc95146468
+        name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConsentRequestsForUidDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConsentRequestCreatedDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Create Consent Requests For Data Request
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/consent-requests/status-summary:
     get:
       description: "Retrieves KPI counts (total/open/granted/declined) of consent\
@@ -6108,7 +6192,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.20.0-rc.1
+  version: 1.20.0-rc.3
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

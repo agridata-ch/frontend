@@ -457,6 +457,14 @@
             "description": "Wählen Sie in der Liste die Betriebsstätten aus, welche Sie anfragen möchten.",
             "selectAll": "Alle auswählen",
             "burLabel": "Betriebsstättennummer (BUR)"
+          },
+          "success": {
+            "title": "Produzenten erfolgreich angefragt",
+            "message": "{{ count }} Betriebstätten wurden erfolgreich angefragt"
+          },
+          "error": {
+            "title": "Produzenten hinzufügen fehlgeschlagen",
+            "message": "Beim hinzufügen von Betriebstätten ist etwas schief gelaufen: {{ error }}"
           }
         },
         "addBurs": "Betriebstätten hinzufügen"

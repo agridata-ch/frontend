@@ -16,13 +16,16 @@ import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import {
   createMockDataRequestService,
   createMockErrorHandlerService,
+  createMockToastService,
   createMockUserService,
   MockDataRequestService,
   MockErrorHandlerService,
+  MockToastService,
   MockUserService,
   mockDataRequests,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
+import { ToastService, ToastType } from '@/shared/toast';
 
 import { DataRequestAddProducersComponent } from './data-request-add-producers.component';
 
@@ -33,6 +36,7 @@ describe('DataRequestAddProducersComponent', () => {
   let userService: MockUserService;
   let dataRequestService: MockDataRequestService;
   let errorService: MockErrorHandlerService;
+  let toastService: MockToastService;
 
   const UID = 'CHE111111111';
   const withBur: DataRequestDto = { ...mockDataRequests[0], burPresent: true };
@@ -72,6 +76,7 @@ describe('DataRequestAddProducersComponent', () => {
     userService = createMockUserService();
     dataRequestService = createMockDataRequestService();
     errorService = createMockErrorHandlerService();
+    toastService = createMockToastService();
 
     await TestBed.configureTestingModule({
       imports: [DataRequestAddProducersComponent, createTranslocoTestingModule()],
@@ -79,6 +84,7 @@ describe('DataRequestAddProducersComponent', () => {
         { provide: UserService, useValue: userService },
         { provide: DataRequestService, useValue: dataRequestService },
         { provide: ErrorHandlerService, useValue: errorService },
+        { provide: ToastService, useValue: toastService },
         provideHttpClient(),
       ],
     }).compileComponents();
@@ -213,6 +219,103 @@ describe('DataRequestAddProducersComponent', () => {
 
       expect(component['searchValue']()).toBe(UID);
       expect(userService.getAuthorizedBursByUid).toHaveBeenCalledWith(UID);
+    });
+  });
+
+  describe('adding producers', () => {
+    beforeEach(() => {
+      userService.getAuthorizedBursByUid.mockResolvedValue(burs);
+      dataRequestService.getConsentRequestsOfDataRequestAndUid.mockResolvedValue([
+        consent('11111', ConsentRequestStateEnum.Granted),
+      ]);
+    });
+
+    it('should send only the selected, non-existing BURs', async () => {
+      await createComponent(withBur);
+      await search(UID);
+      component['toggleAll']();
+
+      await component['addProducers']();
+
+      expect(dataRequestService.createConsentRequestsForDataRequest).toHaveBeenCalledWith(
+        withBur.id,
+        { uid: UID, burs: ['99999'] },
+      );
+    });
+
+    it('should send an empty BUR list when the data request has no BUR products', async () => {
+      dataRequestService.getConsentRequestsOfDataRequestAndUid.mockResolvedValue([]);
+      await createComponent(mockDataRequests[0]);
+      await search(UID);
+
+      await component['addProducers']();
+
+      expect(dataRequestService.createConsentRequestsForDataRequest).toHaveBeenCalledWith(
+        mockDataRequests[0].id,
+        { uid: UID, burs: [] },
+      );
+    });
+
+    it('should show a success toast, emit handleAdd and close the modal on success', async () => {
+      await createComponent(withBur);
+      componentRef.setInput('open', true);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      await search(UID);
+      component['toggleAll']();
+      const addSpy = vi.fn();
+      component.reloadProducers.subscribe(addSpy);
+
+      await component['addProducers']();
+
+      expect(toastService.show).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.any(String),
+        ToastType.Success,
+      );
+      expect(addSpy).toHaveBeenCalledTimes(1);
+      expect(component.open()).toBe(false);
+      expect(component['isSubmitting']()).toBe(false);
+    });
+
+    it('should show an error toast, not emit and close the modal on error', async () => {
+      dataRequestService.createConsentRequestsForDataRequest.mockRejectedValue(new Error('boom'));
+      await createComponent(withBur);
+      componentRef.setInput('open', true);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      await search(UID);
+      component['toggleAll']();
+      const addSpy = vi.fn();
+      component.reloadProducers.subscribe(addSpy);
+
+      await component['addProducers']();
+
+      expect(toastService.show).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.any(String),
+        ToastType.Error,
+      );
+      expect(addSpy).not.toHaveBeenCalled();
+      expect(component.open()).toBe(false);
+      expect(component['isSubmitting']()).toBe(false);
+    });
+
+    it('should be submitting while the request is in flight', async () => {
+      let resolve: (value: []) => void = () => {};
+      dataRequestService.createConsentRequestsForDataRequest.mockReturnValue(
+        new Promise((r) => (resolve = r)),
+      );
+      await createComponent(withBur);
+      await search(UID);
+      component['toggleAll']();
+
+      const pending = component['addProducers']();
+      expect(component['isSubmitting']()).toBe(true);
+
+      resolve([]);
+      await pending;
+      expect(component['isSubmitting']()).toBe(false);
     });
   });
 

@@ -40,5 +40,6 @@
     [dataRequest]="dataRequest()"
     [(open)]="addProducersOpen"
     [initialUid]="prefillUid()"
+    (reloadProducers)="producersResource.reload()"
   />
 </div>
