@@ -101,7 +101,12 @@
       <app-agridata-button [variant]="ButtonVariants.Secondary" (handleClick)="open.set(false)">
         {{ t('cancel') }}
       </app-agridata-button>
-      <app-agridata-button [variant]="ButtonVariants.Primary" [disabled]="selectedCount() === 0">
+      <app-agridata-button
+        [variant]="ButtonVariants.Primary"
+        [disabled]="selectedCount() === 0 || isSubmitting()"
+        [loading]="isSubmitting()"
+        (handleClick)="addProducers()"
+      >
         {{ t('confirm', { count: selectedCount() }) }}
       </app-agridata-button>
     </div>

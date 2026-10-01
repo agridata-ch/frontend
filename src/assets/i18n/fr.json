@@ -458,6 +458,14 @@
             "description": "Sélectionnez dans la liste les sites d'exploitation que vous souhaitez demander.",
             "selectAll": "Tout sélectionner",
             "burLabel": "Numéro de site d'exploitation (BUR)"
+          },
+          "success": {
+            "title": "Producteurs demandés avec succès",
+            "message": "{{ count }} sites ont été demandés avec succès"
+          },
+          "error": {
+            "title": "L'ajout de producteurs a échoué",
+            "message": "Un problème est survenu lors de l'ajout de sites : {{ error }}"
           }
         },
         "addBurs": "Ajouter des sites d'exploitation"

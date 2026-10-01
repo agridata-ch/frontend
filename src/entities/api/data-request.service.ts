@@ -6,7 +6,9 @@ import { ActingRole } from '@/shared/constants/constants';
 import { asPageResponse, PageResponseDto } from '@/shared/lib/api.helper';
 
 import {
+  ConsentRequestCreatedDto,
   ConsentRequestFundamentalViewDto,
+  CreateConsentRequestsForUidDto,
   DataRequestDto,
   DataRequestStateEnum,
   DataRequestUpdateDto,
@@ -72,6 +74,13 @@ export class DataRequestService {
     uid: string,
   ): Promise<ConsentRequestFundamentalViewDto[]> {
     return firstValueFrom(this.apiService.getConsentRequestsOfDataRequestAndUid(id, uid));
+  }
+
+  createConsentRequestsForDataRequest(
+    id: string,
+    dto: CreateConsentRequestsForUidDto,
+  ): Promise<ConsentRequestCreatedDto[]> {
+    return firstValueFrom(this.apiService.createConsentRequestsForDataRequest(id, dto));
   }
 
   async createDataRequest(dataRequest: DataRequestUpdateDto): Promise<DataRequestDto> {

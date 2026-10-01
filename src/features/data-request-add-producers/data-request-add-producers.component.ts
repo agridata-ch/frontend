@@ -6,6 +6,7 @@ import {
   input,
   linkedSignal,
   model,
+  output,
   resource,
   signal,
   untracked,
@@ -26,7 +27,8 @@ import {
 import { UID_REGEX } from '@/shared/constants/constants';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { isExternalServiceError } from '@/shared/error/http-error-method';
-import { I18nDirective, I18nPipe } from '@/shared/i18n';
+import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
+import { ToastService, ToastType } from '@/shared/toast';
 import { AgridataInputComponent } from '@/shared/ui/agridata-input';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
@@ -44,10 +46,10 @@ interface ProducerEntry {
  * Modal for adding producers to a data request. The consumer enters a UID, the modal loads its
  * authorized BURs alongside the consent requests that already exist for that UID, and shows one
  * selectable entry per still-missing producer. When the data request has no BUR products the entry
- * is the UID itself and an "already added" error is shown if it exists. Submitting is deferred until
- * the backend add endpoint is finalized.
+ * is the UID itself and an "already added" error is shown if it exists. Submitting creates the
+ * consent requests for the selected producers, shows a toast and closes the modal.
  *
- * CommentLastReviewed: 2026-09-29
+ * CommentLastReviewed: 2026-10-01
  */
 @Component({
   selector: 'app-data-request-add-producers',
@@ -66,6 +68,8 @@ export class DataRequestAddProducersComponent {
   // Injects
   private readonly dataRequestService = inject(DataRequestService);
   private readonly errorService = inject(ErrorHandlerService);
+  private readonly i18nService = inject(I18nService);
+  private readonly toastService = inject(ToastService);
   private readonly userService = inject(UserService);
 
   // Constants
@@ -80,7 +84,11 @@ export class DataRequestAddProducersComponent {
   // Model properties
   readonly open = model<boolean>(false);
 
+  // Output properties
+  readonly reloadProducers = output<void>();
+
   // Signals
+  protected readonly isSubmitting = signal(false);
   protected readonly searchValue = signal<string>('');
   // Cleared whenever the searched UID changes so stale BUR keys never linger.
   private readonly selected = linkedSignal<string | undefined, ReadonlySet<string>>({
@@ -214,6 +222,42 @@ export class DataRequestAddProducersComponent {
       this.errorService.handleError(error);
     }
   });
+
+  protected async addProducers(): Promise<void> {
+    const uid = this.searchedUid();
+    if (!uid || this.isSubmitting()) return;
+
+    const burs = this.dataRequest().burPresent
+      ? this.selectableEntries()
+          .filter((entry) => this.isSelected(entry.key))
+          .map((entry) => entry.key)
+      : [];
+    const count = this.selectedCount();
+    const prefix = 'data-request.details.producer.modal';
+
+    this.isSubmitting.set(true);
+    await this.dataRequestService
+      .createConsentRequestsForDataRequest(this.dataRequest().id, { uid, burs })
+      .then(() => {
+        this.toastService.show(
+          this.i18nService.translate(`${prefix}.success.title`),
+          this.i18nService.translate(`${prefix}.success.message`, { count }),
+          ToastType.Success,
+        );
+        this.reloadProducers.emit();
+      })
+      .catch((error: Error) => {
+        this.toastService.show(
+          this.i18nService.translate(`${prefix}.error.title`),
+          this.i18nService.translate(`${prefix}.error.message`, { error: error.message }),
+          ToastType.Error,
+        );
+      })
+      .finally(() => {
+        this.isSubmitting.set(false);
+        this.open.set(false);
+      });
+  }
 
   protected isSelected(key: string): boolean {
     return this.selected().has(key);

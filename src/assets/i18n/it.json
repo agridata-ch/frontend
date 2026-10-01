@@ -458,6 +458,14 @@
             "description": "Seleziona dall'elenco le sedi operative che desideri richiedere.",
             "selectAll": "Seleziona tutto",
             "burLabel": "Numero della sede operativa (BUR)"
+          },
+          "success": {
+            "title": "Produttori richiesti con successo",
+            "message": "{{ count }} Stabilimenti sono stati richiesti con successo"
+          },
+          "error": {
+            "title": "Aggiunta produttori fallita",
+            "message": "Qualcosa è andato storto durante l'aggiunta degli stabilimenti: {{ error }}"
           }
         },
         "addBurs": "Aggiungi sedi operative"
