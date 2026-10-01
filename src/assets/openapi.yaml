@@ -29,6 +29,34 @@ components:
           $ref: "#/components/schemas/AgbTextDto"
           description: Data transfer object representing an agb text
           type: object
+    AgbRevisionOverviewDto:
+      description: Overview of an agb revision without the agb text
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the agb revision
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+        version:
+          type: string
+          description: Version of the agb revision
+          examples:
+          - "1.0"
+        validFrom:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Date and time from which the agb revision is valid
+          type: string
+        validTo:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Date and time until which the agb revision is valid. Empty
+            if open-ended
+          type: string
+        enforceConsentFrom:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Date and time from which the agb revision enforces consent
+          type: string
     AgbTextDto:
       type: object
       properties:
@@ -59,6 +87,28 @@ components:
           $ref: "#/components/schemas/FarmTypeEnum"
         relationSince:
           $ref: "#/components/schemas/LocalDateTime"
+    BurRegisterAddressDto:
+      type: object
+      properties:
+        street:
+          type: string
+        zip:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+    BurRegisterOrganisationDto:
+      type: object
+      properties:
+        name:
+          type: string
+        legalName:
+          type: string
+        uid:
+          type: string
+        address:
+          $ref: "#/components/schemas/BurRegisterAddressDto"
     ConsentRequestAggregationDto:
       description: Data transfer object representing an aggregation of consent requests
       type: object
@@ -1967,6 +2017,45 @@ components:
           description: Number of items per page.
           examples:
           - 10
+    PageResponseDtoAgbRevisionOverviewDto:
+      description: Generic paginated response wrapper.
+      type: object
+      required:
+      - items
+      - totalItems
+      - totalPages
+      - currentPage
+      - pageSize
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgbRevisionOverviewDto"
+          description: List of items on the current page.
+        totalItems:
+          type: integer
+          format: int64
+          description: Total number of items across all pages.
+          examples:
+          - 42
+        totalPages:
+          type: integer
+          format: int32
+          description: Total number of pages available.
+          examples:
+          - 5
+        currentPage:
+          type: integer
+          format: int32
+          description: Current page number (0-based ).
+          examples:
+          - 1
+        pageSize:
+          type: integer
+          format: int32
+          description: Number of items per page.
+          examples:
+          - 10
     PageResponseDtoConsentRequestFundamentalViewDto:
       description: Generic paginated response wrapper.
       type: object
@@ -2559,6 +2648,11 @@ components:
 tags:
 - name: Agb Revision
   description: Provides access to Agb revisions.
+- name: Agb Revision Admin
+  description: Provides admin access to Agb revisions.
+- name: BUR Register Search
+  description: Provides access to organisation details retrieved from the BUR (Business
+    and Enterprise Register).
 - name: Consent Request Aggregations
   description: Provides access to aggregated consent requests for data producers.
     Each aggregation groups consent requests by the data request they belong to.
@@ -4071,6 +4165,86 @@ paths:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
       x-api-subset: Data Consumer
+  /api/bur-register/v1/search:
+    get:
+      description: Retrieves organisation details from the BUR for the UID associated
+        with the currently authenticated consumer. Only accessible to users with the
+        consumer role.
+      operationId: getBurRegisterByUidOfCurrentUser
+      tags:
+      - BUR Register Search
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BurRegisterOrganisationDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get By Uid Of Current User
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: agridata.ch Web App
+  /api/bur-register/v1/search/{uid}:
+    get:
+      description: Retrieves organisation details from the BUR using the specified
+        UID. Accessible to users with the admin role.
+      operationId: getBurRegisterByUid
+      tags:
+      - BUR Register Search
+      parameters:
+      - description: UID of the organisation including the CHE prefix
+        example: CHE113614519
+        required: true
+        name: uid
+        in: path
+        schema:
+          type: string
+          pattern: "^CHE\\d{9}$"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BurRegisterOrganisationDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get By Uid
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
   /api/data-transfer/v2/product/{productId}/data:
     get:
       description: "Retrieves data defined by productId. The needed query parameters\
@@ -5579,6 +5753,84 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
+  /api/user/v1/admin/agb-revisions:
+    get:
+      description: "Returns all Agb revisions. Supports pagination and sorting on\
+        \ 'version', 'validFrom', 'validTo' and 'enforceConsentFrom' (default: -validFrom)."
+      operationId: getAllAgbRevisions
+      tags:
+      - Agb Revision Admin
+      parameters:
+      - name: filter
+        in: query
+        schema:
+          description: "Column filters in the form '<column>:<value>[,<value>]', multiple\
+            \ filters separated by ';'. Values of the same column are combined with\
+            \ OR, filters on different columns with AND. Duplicate values are ignored.\
+            \ The filterable columns are documented per endpoint."
+          type: object
+      - name: language
+        in: query
+        schema:
+          description: language code for multilingual fields. Must be supported by
+            application.
+          type: string
+      - name: page
+        in: query
+        schema:
+          description: page number
+          format: int32
+          type: integer
+          minimum: 0
+          default: 0
+      - name: searchTerm
+        in: query
+        schema:
+          description: string to search for in the resource
+          type: string
+      - name: size
+        in: query
+        schema:
+          description: page size
+          format: int32
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+      - name: sortBy
+        in: query
+        schema:
+          description: List of field names to sort by. Default is ascending prefix
+            with - for descending
+          type: object
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageResponseDtoAgbRevisionOverviewDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get All Agb Revisions
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
   /api/user/v1/agb-revisions/{agb-revision-id}/accept:
     post:
       description: Records acceptance of the current AGB revision for the currently
@@ -6211,7 +6463,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.20.0-rc.13
+  version: 1.21.0-rc.2
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

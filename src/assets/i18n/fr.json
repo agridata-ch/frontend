@@ -1445,7 +1445,6 @@
       "validTo": "Valide jusqu'à",
       "enforceConsentFrom": "Blocage à partir de"
     },
-    "pageTitle": "Gestion des conditions générales",
-    "pageDescription": "Gestion centralisée de votre cadre juridique et gestion des versions pour toutes les interfaces Agridata Nexus."
+    "pageTitle": "Gestion des conditions générales"
   }
 }

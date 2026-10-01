@@ -1445,7 +1445,6 @@
       "validTo": "Valido fino al",
       "enforceConsentFrom": "Blocco dal"
     },
-    "pageTitle": "Gestione dei Termini e Condizioni",
-    "pageDescription": "Gestione centralizzata del quadro normativo e del controllo delle versioni per tutte le interfacce di Agridata Nexus."
+    "pageTitle": "Gestione dei Termini e Condizioni"
   }
 }
