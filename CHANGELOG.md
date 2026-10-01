@@ -1,3 +1,9 @@
+## [1.22.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.7...v1.22.0-rc.8) (2026-10-01)
+
+### Features
+
+- **data-request:** implement add producers ([34a1aa6](https://github.com/agridata-ch/frontend/commit/34a1aa688e79bc1aeb3379cffbc91b2bd516e5d4)), references [DIGIB2-1708](https://github.com/agridata-ch/frontend/issues/-1708)
+
 ## [1.22.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.6...v1.22.0-rc.7) (2026-10-01)
 
 ### Features
