@@ -179,8 +179,9 @@ export class DataRequestDetailsProducersComponent {
   }
 
   protected getStateTranslation(stateCode?: ConsentRequestStateEnum): string {
-    if (!stateCode) return '';
-    return this.i18nService.translate(`consent-request.dataRequest.stateCode.${stateCode}`);
+    return stateCode
+      ? this.i18nService.translate(`consent-request.dataRequest.stateCode.${stateCode}`)
+      : '';
   }
 
   private readonly getRowActions = (item?: ConsentRequestFundamentalViewDto): ActionDTO[] => {

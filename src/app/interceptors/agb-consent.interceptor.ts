@@ -27,11 +27,7 @@ export const agbConsentInterceptor: HttpInterceptorFn = (req, next) => {
   const isBlockedMethod = BLOCKED_METHODS.has(req.method);
   const isWhitelisted = CONSENT_ENDPOINT_WHITELIST.some((path) => req.url.includes(path));
 
-  if (stateService.agbConsentEnforced() && isApiRequest && isBlockedMethod && !isWhitelisted) {
-    return throwError(
-      () => new HttpErrorResponse({ status: 423, statusText: 'Locked', url: req.url }),
-    );
-  }
-
-  return next(req);
+  return stateService.agbConsentEnforced() && isApiRequest && isBlockedMethod && !isWhitelisted
+    ? throwError(() => new HttpErrorResponse({ status: 423, statusText: 'Locked', url: req.url }))
+    : next(req);
 };

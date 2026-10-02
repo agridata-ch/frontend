@@ -210,8 +210,7 @@ export class SeoService {
   }
 
   private buildTitle(title?: string): string {
-    if (!title) return '';
-    return title;
+    return title ?? '';
   }
 
   private getCanonicalUrl(): string {

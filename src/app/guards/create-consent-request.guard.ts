@@ -56,13 +56,9 @@ export class CreateConsentRequestGuard implements CanActivate {
         this.consentRequestService.createConsentRequests(createConsentRequestDtos),
       );
 
-      if (!consentRequests || consentRequests.length === 0) {
-        return this.fail(
-          new Error(`No consent requests created for dataRequestId: ${dataRequestId}`),
-        );
-      }
-
-      return this.navigateToConsentRequest(consentRequests, dataRequestId, redirectUrl);
+      return !consentRequests || consentRequests.length === 0
+        ? this.fail(new Error(`No consent requests created for dataRequestId: ${dataRequestId}`))
+        : this.navigateToConsentRequest(consentRequests, dataRequestId, redirectUrl);
     } catch (error) {
       if (error instanceof ExternalServiceHttpError) {
         return this.router.createUrlTree([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR]);

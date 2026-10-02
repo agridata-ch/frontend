@@ -51,10 +51,9 @@ export class HeaderWidgetComponent {
       locale: this.i18nService.lang(),
     }),
     loader: ({ params }) => {
-      if (!params.isAuthenticated) {
-        return this.strapiService.fetchCmsPages(params.locale);
-      }
-      return Promise.resolve(null);
+      return params.isAuthenticated
+        ? Promise.resolve(null)
+        : this.strapiService.fetchCmsPages(params.locale);
     },
   });
 
@@ -73,10 +72,7 @@ export class HeaderWidgetComponent {
 
   readonly currentCmsPageSlug = computed(() => {
     const url = this.stateService.currentRoute();
-    if (url?.startsWith('/cms/')) {
-      return url.replace('/cms/', '');
-    }
-    return null;
+    return url?.startsWith('/cms/') ? url.replace('/cms/', '') : null;
   });
 
   readonly isAuthenticated = computed(() => this.authService.isAuthenticated());

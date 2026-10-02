@@ -86,11 +86,9 @@ export class DataRequestDetailsContractComponent {
 
   // Computed
   protected readonly dataRequestContract = computed<ContractRevisionDto | null>(() => {
-    if (this.contractResource.isLoading() || this.contractResource.error()) {
-      return null;
-    }
-
-    return this.contractResource.value() ?? null;
+    return this.contractResource.isLoading() || this.contractResource.error()
+      ? null
+      : (this.contractResource.value() ?? null);
   });
 
   protected readonly canSealContract = computed(() => {

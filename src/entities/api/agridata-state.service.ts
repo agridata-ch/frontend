@@ -80,10 +80,7 @@ export class AgridataStateService {
 
   readonly currentRouteWithoutQueryParams = computed(() => {
     const route = this.currentRoute();
-    if (!route) {
-      return undefined;
-    }
-    return route.split('?')[0];
+    return route ? route.split('?')[0] : undefined;
   });
 
   // Effects
@@ -183,7 +180,7 @@ export class AgridataStateService {
   }
   private shouldShowCookieBanner(): boolean {
     const showBanner = localStorage.getItem('showCookieBanner');
-    return showBanner === null ? true : showBanner === 'true';
+    return showBanner === null || showBanner === 'true';
   }
 
   /**
@@ -200,14 +197,12 @@ export class AgridataStateService {
     if (route.startsWith(`/${ROUTE_PATHS.ADMIN_PATH}`)) return 'ADMIN';
     if (route.startsWith(`/${ROUTE_PATHS.SUPPORT_PATH}`)) {
       if (this.authService.isSupporter()) return 'SUPPORT';
-      if (this.authService.isAdmin()) return 'ADMIN';
-      return undefined;
+      return this.authService.isAdmin() ? 'ADMIN' : undefined;
     }
     if (route.startsWith(`/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`)) {
       if (this.authService.isProducer()) return 'PRODUCER';
       if (this.authService.isAdmin()) return 'ADMIN';
-      if (this.authService.isSupporter()) return 'SUPPORT';
-      return undefined;
+      return this.authService.isSupporter() ? 'SUPPORT' : undefined;
     }
     if (!route.startsWith(`/${ROUTE_PATHS.DATA_PRODUCTS_PATH}`)) return undefined;
     return this.authService.isAdmin() ? 'ADMIN' : 'PROVIDER';

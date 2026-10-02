@@ -1,5 +1,5 @@
 import { Component, computed, inject, input } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -28,7 +28,6 @@ import { ButtonVariants } from './../../../shared/ui/button/button.model';
     CardComponent,
     FontAwesomeModule,
     I18nPipe,
-    RouterLink,
     ButtonComponent,
   ],
   templateUrl: './news-article-card.component.html',

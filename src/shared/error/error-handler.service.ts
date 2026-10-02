@@ -229,10 +229,9 @@ export class ErrorHandlerService implements OnDestroy {
   ): TranslationItem | undefined {
     if (!url) return undefined;
     const path = this.extractApiPath(url);
-    if (path) {
-      return { i18n: 'errors.backend.path', i18nParameter: { path: path, method: method ?? '' } };
-    }
-    return undefined;
+    return path
+      ? { i18n: 'errors.backend.path', i18nParameter: { path: path, method: method ?? '' } }
+      : undefined;
   }
 
   private getActiveQueueId(): string {

@@ -185,16 +185,15 @@ export class DataProductDetailFormComponent {
 
     const dataProduct = this.dataProductResource.value();
     if (!dataProduct?.stateCode) return '';
-    if (this.isViewMode()) return this.i18nService.useObjectTranslation(dataProduct.name);
-
-    return this.i18nService.translate('data-products.detailPanel.titleUpdate');
+    return this.isViewMode()
+      ? this.i18nService.useObjectTranslation(dataProduct.name)
+      : this.i18nService.translate('data-products.detailPanel.titleUpdate');
   });
 
   protected readonly dataProductResource = resource({
     params: () => {
       const id = this.currentDataProductId();
-      if (!id) return undefined;
-      return { id, actingRole: this.stateService.actingRole() };
+      return id ? { id, actingRole: this.stateService.actingRole() } : undefined;
     },
     loader: async ({ params }): Promise<DataProductDto | undefined> => {
       return this.dataProductService.getDataProductById(params.id, params.actingRole);

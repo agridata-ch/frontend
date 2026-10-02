@@ -148,10 +148,9 @@ export class ConsentRequestDetailsComponent {
       uid: this.agridataStateService.activeUid(),
     }),
     loader: ({ params }) => {
-      if (!params?.id || !params.uid) {
-        return Promise.resolve(undefined);
-      }
-      return this.consentRequestService.fetchConsentRequestAggregation(params.id, params.uid);
+      return !params?.id || !params.uid
+        ? Promise.resolve(undefined)
+        : this.consentRequestService.fetchConsentRequestAggregation(params.id, params.uid);
     },
   });
   protected readonly formattedLastStateChangeDate = computed(() =>

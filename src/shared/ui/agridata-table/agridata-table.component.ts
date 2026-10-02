@@ -160,8 +160,7 @@ export class AgridataTableComponent<T> {
 
   protected getRowActions(row: T): ActionDTO[] {
     const actionFunctions = this.tableMetadata().rowMenuActions;
-    if (!actionFunctions) return [];
-    return actionFunctions(row);
+    return actionFunctions ? actionFunctions(row) : [];
   }
 
   protected handleSearchInput(searchTerm: string): void {

@@ -200,10 +200,9 @@ export class ConsentRequestTableComponent {
   });
 
   getTranslatedStateValue(stateCode?: ConsentRequestAggregationStateEnum) {
-    if (!stateCode) {
-      return '';
-    }
-    return this.i18nService.translate(`consent-request.dataRequest.stateCode.${stateCode}`);
+    return stateCode
+      ? this.i18nService.translate(`consent-request.dataRequest.stateCode.${stateCode}`)
+      : '';
   }
 
   setStateCodeFilter(state: string | null) {
@@ -265,8 +264,7 @@ export class ConsentRequestTableComponent {
   getBadgeVariant = getAggregationBadgeVariant;
 
   getTranslation(key: TranslationDto | undefined) {
-    if (!key) return '';
-    return this.i18nService.useObjectTranslation(key);
+    return key ? this.i18nService.useObjectTranslation(key) : '';
   }
 
   getElementLoadingSignal(id: string): WritableSignal<boolean> {
@@ -279,8 +277,7 @@ export class ConsentRequestTableComponent {
   }
 
   getI18nTranslation(key: string | undefined) {
-    if (!key) return '';
-    return this.i18nService.translate(key);
+    return key ? this.i18nService.translate(key) : '';
   }
 
   protected readonly ButtonVariants = ButtonVariants;

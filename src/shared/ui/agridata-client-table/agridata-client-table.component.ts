@@ -93,10 +93,7 @@ export class AgridataClientTableComponent<T> {
 
   private applySearch(data: Array<T>, searchTerm: string | undefined): Array<T> {
     const searchFn = this.tableMetadata().searchFn;
-    if (!searchFn || !searchTerm) {
-      return data;
-    }
-    return searchFn(data, searchTerm);
+    return !searchFn || !searchTerm ? data : searchFn(data, searchTerm);
   }
 
   private applySorting(data: Array<T>, sortParams: Array<string> | undefined): T[] {

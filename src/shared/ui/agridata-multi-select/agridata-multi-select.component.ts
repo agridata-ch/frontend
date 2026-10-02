@@ -117,16 +117,16 @@ export class AgridataMultiSelectComponent {
   protected readonly filteredOptions = computed(() => {
     const activeOptions = this.options().filter((option) => !option.deprecated);
     const term = this.searchTerm().toLowerCase().trim();
-    if (!term) return activeOptions;
-
-    return activeOptions.filter((option) => option.label.toLowerCase().includes(term));
+    return term
+      ? activeOptions.filter((option) => option.label.toLowerCase().includes(term))
+      : activeOptions;
   });
 
   protected readonly filteredAllOptions = computed<MultiSelectOption[]>(() => {
     const term = this.searchTerm().toLowerCase().trim();
-    if (!term) return this.allOptions();
-
-    return this.allOptions().filter((option) => option.label.toLowerCase().includes(term));
+    return term
+      ? this.allOptions().filter((option) => option.label.toLowerCase().includes(term))
+      : this.allOptions();
   });
 
   protected readonly hasFilteredResults = computed<boolean>(() => {
@@ -151,9 +151,9 @@ export class AgridataMultiSelectComponent {
   protected getFilteredCategoryOptions(category: MultiSelectCategory): MultiSelectOption[] {
     const activeOptions = category.options.filter((option) => !option.deprecated);
     const term = this.searchTerm().toLowerCase().trim();
-    if (!term) return activeOptions;
-
-    return activeOptions.filter((option) => option.label.toLowerCase().includes(term));
+    return term
+      ? activeOptions.filter((option) => option.label.toLowerCase().includes(term))
+      : activeOptions;
   }
 
   protected handleClickOutside(): void {
@@ -175,9 +175,7 @@ export class AgridataMultiSelectComponent {
     if (this.disabled()) return true;
 
     const activeLabel = this.activeCategoryLabel();
-    if (activeLabel === null) return false;
-
-    return category.categoryLabel !== activeLabel;
+    return activeLabel !== null && category.categoryLabel !== activeLabel;
   }
 
   protected onOptionToggle(value: string | number, event: Event): void {

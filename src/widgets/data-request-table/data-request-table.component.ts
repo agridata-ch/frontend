@@ -97,8 +97,7 @@ export class DataRequestTableComponent {
 
   protected readonly requestToDeleteTitle = computed(() => {
     const request = this.requestToDelete();
-    if (!request) return '';
-    return this.i18nService.useObjectTranslation(request.title);
+    return request ? this.i18nService.useObjectTranslation(request.title) : '';
   });
 
   protected readonly dataRequestsTableMetaData = computed<ClientTableMetadata<DataRequestDto>>(
@@ -190,16 +189,11 @@ export class DataRequestTableComponent {
     if (request.stateCode === DataRequestStateEnum.InReview) {
       return [details, retreat];
     }
-    if (request.stateCode === DataRequestStateEnum.Draft) {
-      return [details, deleteAction];
-    }
-
-    return [details];
+    return request.stateCode === DataRequestStateEnum.Draft ? [details, deleteAction] : [details];
   };
 
   protected getStatusTranslation(value?: string) {
-    if (!value) return '';
-    return this.i18nService.translate(`data-request.stateCode.${value}`);
+    return value ? this.i18nService.translate(`data-request.stateCode.${value}`) : '';
   }
 
   protected newRequest = () => {

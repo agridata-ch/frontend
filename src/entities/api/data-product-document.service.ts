@@ -63,8 +63,9 @@ export class DataProductDocumentService {
       await this.delay(this.pollIntervalMs, abortSignal);
     }
     // Aborted (panel closed): return a non-terminal state; the caller ignores results after abort.
-    if (abortSignal?.aborted) return DocumentScanStatusEnum.PendingScan;
-    return DocumentScanStatusEnum.ScanFailed;
+    return abortSignal?.aborted
+      ? DocumentScanStatusEnum.PendingScan
+      : DocumentScanStatusEnum.ScanFailed;
   }
 
   async deleteDocument(

@@ -190,9 +190,9 @@ export class AuthService {
   }
 
   private shouldSkipAuthorizedUids(): boolean {
-    if (!this.isAuthenticated()) return true;
-    if (this.isProducer()) return false;
-
-    return !(this.isSupporter() && this.isImpersonating());
+    return (
+      !this.isAuthenticated() ||
+      (!this.isProducer() && !(this.isSupporter() && this.isImpersonating()))
+    );
   }
 }

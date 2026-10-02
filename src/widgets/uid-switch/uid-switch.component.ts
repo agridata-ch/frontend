@@ -34,10 +34,7 @@ export class UidSwitchComponent {
   readonly sortedUids = computed(() => this.authService.userUids().sort(this.sortAlphabetically));
   readonly activeUid = computed(() => {
     const selectedUid = this.selectedUid();
-    if (selectedUid) {
-      return selectedUid;
-    }
-    return this.agridataStateService.activeUid();
+    return selectedUid || this.agridataStateService.activeUid();
   });
 
   readonly UidSwitchVariant = UidSwitchVariant;
@@ -48,10 +45,7 @@ export class UidSwitchComponent {
     if (!uidA?.name) {
       return 1; // Place undefined UIDs at the end
     }
-    if (!uidB?.name) {
-      return -1;
-    }
-    return uidA.name.toLowerCase().localeCompare(uidB.name.toLowerCase());
+    return uidB?.name ? uidA.name.toLowerCase().localeCompare(uidB.name.toLowerCase()) : -1;
   }
 
   selectUid(uid: string | undefined) {

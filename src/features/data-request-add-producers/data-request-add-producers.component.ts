@@ -110,8 +110,7 @@ export class DataRequestAddProducersComponent {
   protected readonly lookupResource = resource({
     params: () => {
       const uid = this.searchedUid();
-      if (!uid) return undefined;
-      return { id: this.dataRequest().id, uid };
+      return uid ? { id: this.dataRequest().id, uid } : undefined;
     },
     loader: async ({ params }) => {
       const [burs, existing] = await Promise.all([

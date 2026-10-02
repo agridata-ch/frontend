@@ -21,10 +21,7 @@ export class SupporterOverlayComponent {
 
   protected userName = computed(() => {
     const user = this.authService.userInfo();
-    if (!user) {
-      return '';
-    }
-    return [user.givenName, user.familyName].filter(Boolean).join(' ');
+    return user ? [user.givenName, user.familyName].filter(Boolean).join(' ') : '';
   });
 
   isImpersonating(): boolean {

@@ -103,10 +103,9 @@ export class DataRequestDetailsComponent {
   });
 
   readonly dataRequest = computed(() => {
-    if (this.dataRequestResource.isLoading() || this.dataRequestResource.error()) {
-      return null;
-    }
-    return this.dataRequestResource.value();
+    return this.dataRequestResource.isLoading() || this.dataRequestResource.error()
+      ? null
+      : this.dataRequestResource.value();
   });
 
   protected readonly tabs = computed<Tab[]>(() => [

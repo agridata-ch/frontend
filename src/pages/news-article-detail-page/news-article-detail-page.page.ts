@@ -81,8 +81,9 @@ export class NewsArticleDetailPage {
 
   // Computed Signals
   protected readonly article = computed(() => {
-    if (this.articleResource.error()) return undefined;
-    return (this.articleResource.value() as NewsArticlesResponse | undefined)?.data?.[0];
+    return this.articleResource.error()
+      ? undefined
+      : (this.articleResource.value() as NewsArticlesResponse | undefined)?.data?.[0];
   });
 
   // Effects
