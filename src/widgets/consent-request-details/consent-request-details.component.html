@@ -11,11 +11,17 @@
     <span class="text-agridata-tertiary-text text-sm font-normal">
       {{ t('requestDate', { date: formattedRequestDate() }) }}
     </span>
-    <app-agridata-badge
-      [text]="badgeText().key | i18n: badgeText().params"
-      [size]="badgeSize.MD"
-      [variant]="badgeVariant()"
-    />
+    <span
+      [appTooltip]="badge().tooltip"
+      [attr.tabindex]="badge().tooltip ? 0 : null"
+      [attr.aria-label]="badge().tooltip || null"
+    >
+      <app-agridata-badge
+        [text]="badge().key | i18n"
+        [size]="badgeSize.MD"
+        [variant]="badgeVariant()"
+      />
+    </span>
   </div>
   <app-error-outlet></app-error-outlet>
   <div class="overflow-y-auto flex flex-col gap-6 grow pb-10" appScrollFade>
@@ -49,14 +55,13 @@
             {{ t('actions.cancelEditMode') }}
           </app-agridata-button>
           <app-agridata-button
-            [variant]="ButtonVariants.PrimaryAccept"
-            [disabled]="noBurGranted() || agridataStateService.isImpersonating()"
-            [disabledInfo]="t('actions.saveDisabledInfo')"
+            [variant]="noBurGranted() ? ButtonVariants.PrimaryReject : ButtonVariants.PrimaryAccept"
+            [disabled]="agridataStateService.isImpersonating()"
             [loading]="showSaveLoading()"
             (handleClick)="saveBurDecisions()"
             [additionalClass]="'w-full'"
           >
-            {{ t('actions.saveAndAccept') }}
+            {{ noBurGranted() ? t('actions.saveAndReject') : t('actions.saveAndAccept') }}
           </app-agridata-button>
         } @else {
           <app-agridata-button
@@ -80,7 +85,7 @@
         }
       </div>
       <span class="w-full flex justify-center text-agridata-tertiary-text text-sm">
-        {{ noBurGranted() ? t('footerInformationNoBur') : t('footerInformation') }}
+        {{ t('footerInformation') }}
       </span>
     }
   </div>

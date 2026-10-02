@@ -48,7 +48,8 @@
         "reject": "Ablehnen",
         "cancelEditMode": "Abbrechen",
         "saveAndAccept": "Speichern und Zustimmen",
-        "saveDisabledInfo": "Mindestens eine Zustimmung erforderlich"
+        "saveDisabledInfo": "Mindestens eine Zustimmung erforderlich",
+        "saveAndReject": "Speichern und ablehnen"
       },
       "stateCode": {
         "GRANTED": "Zugestimmt am {{ date }}",
@@ -70,16 +71,19 @@
       },
       "decisions": {
         "title": "Betriebs- und Standortübersicht",
-        "description": "Diese Anfrage betrifft Ihr Unternehmen (UID) und die dazugehörigen Standorte (BUR). Die Zustimmung gilt immer für das Unternehmen. Grundsätzlich stimmen Sie den angefragten Standorten zu, über „Standorte bearbeiten“ können Sie einzelne Standorte von der Anfrage ausschliessen.",
+        "description": {
+          "noBur": "Diese Anfrage betrifft Ihr Unternehmen (UID). Die Zustimmung gilt für das gesamte Unternehmen auf Betriebsebene. Da diese Anfrage nicht standortspezifisch ist, werden keine einzelnen Betriebsstätten (BUR) aufgeführt.",
+          "singleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und den dazugehörigen Standort (BUR). Die Zustimmung gilt für das Unternehmen sowie den Standort.",
+          "multipleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und die dazugehörigen Standorte (BUR). Die Zustimmung für das Unternehmen gilt immer. Grundsätzlich stimmen Sie den angefragten Standorten zu, über „Standorte bearbeiten“ können Sie einzelne Standorte von der Anfrage ausschliessen."
+        },
         "uidGroupTitle": "Mein angefragter Betrieb",
-        "uid": "Unternehmens-Identifikation (UID): {{ uid }}",
+        "uid": "Unternehmens-Identifikation (UID)",
         "bur": {
-          "title": "Betriebsstättennummer (BUR): {{ bur }}",
+          "title": "Betriebsstättennummer (BUR)",
           "enabled": "Ausgewählt",
           "disabled": "Ausgeschlossen"
         },
         "edit": "Zustimmung pro Standort ändern",
-        "cancel": "Abbrechen",
         "burGroupTitle": "Meine angefragten Standorte",
         "nonProducerInfo": "Hier sehen die Datenproduzenten ihre anfragten Standorte.",
         "missingBurInfo": "Fehlt ein Standort? Melden Sie sich direkt bei {{ consumer }}, damit diese den Standort anfragen und Sie die Zustimmung geben können."
@@ -655,7 +659,7 @@
         "title": "Neue Datenanfragen aus \"Meine Agrardatenfreigaben (MAF)\" jetzt verfügbar"
       },
       "tvd": {
-        "title": "Neue Datenanfragen aus \"TVD / Identitas\" jetzt verfügbar"
+        "title": "Neue Datenanfragen aus \"Tierverkehrsdatenbank (TVD)\" jetzt verfügbar"
       },
       "common": {
         "intro": "Ihre Zustimmung für folgende Datenanfragen wurden übernommen.",

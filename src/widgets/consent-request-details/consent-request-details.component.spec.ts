@@ -35,7 +35,8 @@ import {
   MockLocation,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
-import { ToastService } from '@/shared/toast';
+import { ToastService, ToastType } from '@/shared/toast';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 import { DataRequestContentComponent } from '@/widgets/data-request-content';
 
@@ -583,6 +584,34 @@ describe('ConsentRequestDetailsComponent', () => {
     );
   });
 
+  describe('state badge', () => {
+    it('shows the state without a date and moves the date into the tooltip', async () => {
+      consentRequestService.fetchConsentRequestAggregation.mockResolvedValue({
+        ...(mockConsentRequestAggregations[0] as ConsentRequestAggregationDto),
+        stateCode: ConsentRequestAggregationStateEnum.Granted,
+        lastStateChangeDate: '2026-05-01T10:00:00',
+      });
+      componentRef.setInput('aggregationId', '1');
+      await fixture.whenStable();
+
+      expect(component['badge']()).toEqual({
+        key: 'consent-request.dataRequest.stateCode.GRANTED',
+        tooltip: 'consent-request.details.stateCode.GRANTED',
+      });
+    });
+
+    it('has no tooltip for an opened request', async () => {
+      consentRequestService.fetchConsentRequestAggregation.mockResolvedValue({
+        ...(mockConsentRequestAggregations[0] as ConsentRequestAggregationDto),
+        stateCode: ConsentRequestAggregationStateEnum.Opened,
+      });
+      componentRef.setInput('aggregationId', '1');
+      await fixture.whenStable();
+
+      expect(component['badge']().tooltip).toBe('');
+    });
+  });
+
   describe('per-BUR decisions (edit mode)', () => {
     beforeEach(async () => {
       // dr-4 has a granted+declined+opened mix, one global child (id '6') and two BUR children.
@@ -663,6 +692,68 @@ describe('ConsentRequestDetailsComponent', () => {
 
       expect(errorService.handleError).toHaveBeenCalled();
       expect(component['decisionStore'].editMode()).toBe(true);
+    });
+
+    it('shows the GRANTED toast after a save that keeps at least one BUR granted', async () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'bur-1', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Granted },
+        { id: 'bur-2', dataProducerBur: '2', stateCode: ConsentRequestStateEnum.Granted },
+      ]);
+      component['decisionStore'].startEdit();
+      component['decisionStore'].setDecision('bur-1', false);
+
+      await component['saveBurDecisions']();
+
+      expect(toastService.show).toHaveBeenCalledWith(
+        'consent-request.toast.title.GRANTED',
+        expect.any(String),
+        ToastType.Success,
+        expect.objectContaining({ callback: expect.any(Function) }),
+      );
+    });
+
+    it('shows the DECLINED toast after a save that declines every BUR', async () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'bur-1', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Granted },
+      ]);
+      component['decisionStore'].startEdit();
+      component['decisionStore'].setDecision('bur-1', false);
+
+      await component['saveBurDecisions']();
+
+      expect(toastService.show).toHaveBeenCalledWith(
+        'consent-request.toast.title.DECLINED',
+        expect.any(String),
+        ToastType.Error,
+        expect.objectContaining({ callback: expect.any(Function) }),
+      );
+    });
+
+    it('shows no toast when nothing changed', async () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'bur', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Granted },
+      ]);
+      component['decisionStore'].startEdit();
+
+      await component['saveBurDecisions']();
+
+      expect(toastService.show).not.toHaveBeenCalled();
+    });
+
+    it('turns the save button into an enabled reject action when every BUR is declined', () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'bur-1', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Granted },
+      ]);
+      component['decisionStore'].startEdit();
+      component['decisionStore'].setDecision('bur-1', false);
+      fixture.detectChanges();
+
+      const saveButton = fixture.debugElement
+        .queryAll(By.directive(ButtonComponent))
+        .find((button) => button.componentInstance.variant() === ButtonVariants.PrimaryReject);
+
+      expect(saveButton?.nativeElement.textContent).toContain('actions.saveAndReject');
+      expect(saveButton?.componentInstance.disabled()).toBe(false);
     });
 
     it('cancelEdit discards staged decisions without calling the service', () => {

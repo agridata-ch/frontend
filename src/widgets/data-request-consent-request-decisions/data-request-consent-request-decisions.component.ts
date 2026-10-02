@@ -1,8 +1,8 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { faEdit, faInfoCircle } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestAggregationStateEnum, ConsentRequestStateEnum } from '@/entities/openapi';
 import {
   ConsentRequestDecisionStore,
   getConsentRequestBadgeVariant,
@@ -21,7 +21,7 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
  * injected store and is submitted by the details panel footer. Outside the details panel (no store)
  * or when the aggregation has no children it shows a non-producer info message.
  *
- * CommentLastReviewed: 2026-08-18
+ * CommentLastReviewed: 2026-10-02
  */
 @Component({
   selector: 'app-data-request-consent-request-decisions',
@@ -42,15 +42,27 @@ export class DataRequestConsentRequestDecisionsComponent {
   protected readonly store = inject(ConsentRequestDecisionStore, { optional: true });
 
   // Inputs
+  readonly burPresent = input<boolean>(false);
   readonly consumerName = input<string>();
 
   // Constants
   protected readonly AlertType = AlertType;
   protected readonly BadgeSize = BadgeSize;
   protected readonly ButtonVariants = ButtonVariants;
+  protected readonly ConsentRequestAggregationStateEnum = ConsentRequestAggregationStateEnum;
   protected readonly getConsentRequestBadgeVariant = getConsentRequestBadgeVariant;
   protected readonly editIcon = faEdit;
   protected readonly infoIcon = faInfoCircle;
+
+  // Computed Signals
+  protected readonly descriptionKey = computed(() => {
+    if (!this.burPresent()) {
+      return 'description.noBur';
+    }
+    return this.store?.burRequests().length === 1
+      ? 'description.singleBur'
+      : 'description.multipleBur';
+  });
 
   protected stateLabelKey(stateCode?: ConsentRequestStateEnum): string {
     return `consent-request.dataRequest.stateCode.${stateCode}`;

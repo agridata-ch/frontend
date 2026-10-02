@@ -2,6 +2,7 @@ export enum ButtonVariants {
   Primary = 'primary',
   PrimaryAccept = 'primary-accept',
   PrimaryCms = 'primary-cms',
+  PrimaryReject = 'primary-reject',
   Secondary = 'secondary',
   SecondaryReject = 'secondary-reject',
   SecondaryCms = 'secondary-cms',

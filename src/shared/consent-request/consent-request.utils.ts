@@ -13,7 +13,7 @@ const AGGREGATION_BADGE_VARIANTS: Record<ConsentRequestAggregationStateEnum, Bad
   [ConsentRequestAggregationStateEnum.Granted]: BadgeVariant.SUCCESS,
   [ConsentRequestAggregationStateEnum.Declined]: BadgeVariant.ERROR,
   [ConsentRequestAggregationStateEnum.PartiallyOpened]: BadgeVariant.WARNING,
-  [ConsentRequestAggregationStateEnum.PartiallyGranted]: BadgeVariant.WARNING,
+  [ConsentRequestAggregationStateEnum.PartiallyGranted]: BadgeVariant.SUCCESS,
   [ConsentRequestAggregationStateEnum.LegallyPermitted]: BadgeVariant.SUCCESS,
 };
 
