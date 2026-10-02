@@ -457,7 +457,8 @@
             "title": "Sites d'exploitation",
             "description": "Sélectionnez dans la liste les sites d'exploitation que vous souhaitez demander.",
             "selectAll": "Tout sélectionner",
-            "burLabel": "Numéro de site d'exploitation (BUR)"
+            "burLabel": "Numéro de site d'exploitation (BUR)",
+            "existing": "Déjà demandé"
           },
           "success": {
             "title": "Producteurs demandés avec succès",
@@ -466,7 +467,8 @@
           "error": {
             "title": "L'ajout de producteurs a échoué",
             "message": "Un problème est survenu lors de l'ajout de sites : {{ error }}"
-          }
+          },
+          "noBurs": "Il n'y a pas d'établissements disponibles pour ce numéro d'identification fiscale"
         },
         "addBurs": "Ajouter des sites d'exploitation"
       }
@@ -1392,5 +1394,17 @@
     "title": "Actualités concernant Agridata",
     "readMore": "Lire la suite",
     "createdAt": "Date de création: {{ date }}"
+  },
+  "admin-agbs": {
+    "table": {
+      "titleValue": "Conditions générales",
+      "version": "Version",
+      "title": "Titre",
+      "validFrom": "Valide depuis",
+      "validTo": "Valide jusqu'à",
+      "enforceConsentFrom": "Blocage à partir de"
+    },
+    "pageTitle": "Gestion des conditions générales",
+    "pageDescription": "Gestion centralisée de votre cadre juridique et gestion des versions pour toutes les interfaces Agridata Nexus."
   }
 }

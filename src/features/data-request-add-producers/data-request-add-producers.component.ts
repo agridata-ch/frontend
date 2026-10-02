@@ -45,11 +45,12 @@ interface ProducerEntry {
 /**
  * Modal for adding producers to a data request. The consumer enters a UID, the modal loads its
  * authorized BURs alongside the consent requests that already exist for that UID, and shows one
- * selectable entry per still-missing producer. When the data request has no BUR products the entry
- * is the UID itself and an "already added" error is shown if it exists. Submitting creates the
- * consent requests for the selected producers, shows a toast and closes the modal.
+ * selectable entry per still-missing producer. When the data request has no BUR products, or the
+ * UID has no BURs (shown as a hint in the BUR list), the entry is the UID itself and is flagged if already added.
+ * Submitting creates the consent requests for the selected producers, shows a toast and closes the
+ * modal.
  *
- * CommentLastReviewed: 2026-10-01
+ * CommentLastReviewed: 2026-10-02
  */
 @Component({
   selector: 'app-data-request-add-producers',
@@ -127,27 +128,38 @@ export class DataRequestAddProducersComponent {
     () => !!this.searchedUid() && !this.lookupResource.isLoading() && !this.lookupResource.error(),
   );
 
+  private readonly burs = computed(() =>
+    this.lookupResource.value().burs.filter((bur): bur is BurDto & { bur: string } => !!bur.bur),
+  );
+
+  protected readonly hasNoBurs = computed(
+    () => this.ready() && !!this.dataRequest().burPresent && this.burs().length === 0,
+  );
+
+  // Without BURs to choose from, the UID itself is the single entry to add.
+  private readonly usesUidEntry = computed(
+    () => !this.dataRequest().burPresent || this.hasNoBurs(),
+  );
+
   protected readonly entries = computed<ProducerEntry[]>(() => {
     if (!this.ready()) return [];
 
     const uid = this.searchedUid()!;
-    const { burs, existing } = this.lookupResource.value();
+    const { existing } = this.lookupResource.value();
 
-    if (!this.dataRequest().burPresent) {
+    if (this.usesUidEntry()) {
       return [{ key: uid, existing: existing.length > 0, stateCode: existing[0]?.stateCode }];
     }
 
-    return burs
-      .filter((bur): bur is BurDto & { bur: string } => !!bur.bur)
-      .map((bur) => {
-        const consent = existing.find((entry) => entry.dataProducerBur === bur.bur);
-        return {
-          key: bur.bur,
-          bur: bur.bur,
-          existing: !!consent,
-          stateCode: consent?.stateCode,
-        };
-      });
+    return this.burs().map((bur) => {
+      const consent = existing.find((entry) => entry.dataProducerBur === bur.bur);
+      return {
+        key: bur.bur,
+        bur: bur.bur,
+        existing: !!consent,
+        stateCode: consent?.stateCode,
+      };
+    });
   });
 
   protected readonly selectableEntries = computed(() =>
@@ -159,12 +171,12 @@ export class DataRequestAddProducersComponent {
     return selectable.length > 0 && selectable.every((entry) => this.selected().has(entry.key));
   });
 
-  // Without BUR products the single UID entry is implicitly selected.
+  // The single UID entry is implicitly selected.
   protected readonly selectedCount = computed(() => {
     const selectable = this.selectableEntries();
-    return this.dataRequest().burPresent
-      ? selectable.filter((entry) => this.selected().has(entry.key)).length
-      : selectable.length;
+    return this.usesUidEntry()
+      ? selectable.length
+      : selectable.filter((entry) => this.selected().has(entry.key)).length;
   });
 
   protected readonly showUidInvalid = computed(
@@ -212,6 +224,8 @@ export class DataRequestAddProducersComponent {
     untracked(() => {
       this.searchValue.set(this.initialUid() ?? '');
       this.selected.set(new Set());
+      // Same UID keeps the params unchanged; force a refetch so newly added producers show up.
+      this.lookupResource.reload();
     });
   });
 
@@ -227,11 +241,11 @@ export class DataRequestAddProducersComponent {
     const uid = this.searchedUid();
     if (!uid || this.isSubmitting()) return;
 
-    const burs = this.dataRequest().burPresent
-      ? this.selectableEntries()
+    const burs = this.usesUidEntry()
+      ? []
+      : this.selectableEntries()
           .filter((entry) => this.isSelected(entry.key))
-          .map((entry) => entry.key)
-      : [];
+          .map((entry) => entry.key);
     const count = this.selectedCount();
     const prefix = 'data-request.details.producer.modal';
 

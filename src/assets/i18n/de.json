@@ -454,10 +454,11 @@
           "uidInvalid": "ungültiges Format",
           "noResults": "die eingegebene UID wurde nicht gefunden",
           "burSection": {
-            "title": "Betriebstätten",
+            "title": "Betriebsstätten",
             "description": "Wählen Sie in der Liste die Betriebsstätten aus, welche Sie anfragen möchten.",
             "selectAll": "Alle auswählen",
-            "burLabel": "Betriebsstättennummer (BUR)"
+            "burLabel": "Betriebsstättennummer (BUR)",
+            "existing": "Bereits angefragt"
           },
           "success": {
             "title": "Produzenten erfolgreich angefragt",
@@ -466,7 +467,8 @@
           "error": {
             "title": "Produzenten hinzufügen fehlgeschlagen",
             "message": "Beim hinzufügen von Betriebstätten ist etwas schief gelaufen: {{ error }}"
-          }
+          },
+          "noBurs": "Für diese UID sind keine Betriebsstätten verfügbar"
         },
         "addBurs": "Betriebstätten hinzufügen"
       }
@@ -1396,7 +1398,13 @@
   "admin-agbs": {
     "table": {
       "titleValue": "Allgemeine Geschäftsbedingungen",
-      "pageTitle": "AGB-Verwaltung"
-    }
+      "version": "Version",
+      "title": "Titel",
+      "validFrom": "Gültig ab",
+      "validTo": "Gültig bis",
+      "enforceConsentFrom": "Sperrung ab"
+    },
+    "pageTitle": "AGB-Verwaltung",
+    "pageDescription": "Zentralisierte Steuerung Ihrer rechtlichen Rahmenbedingungen und Versionierung für alle Agridata Nexus Schnittstellen."
   }
 }
