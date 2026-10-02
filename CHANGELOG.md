@@ -1,3 +1,9 @@
+## [1.22.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.11...v1.22.0-rc.12) (2026-10-02)
+
+### Features
+
+- **deps:** dependency update ([e3bced0](https://github.com/agridata-ch/frontend/commit/e3bced06a6748f82884fd4142179240ff0da869e)), references [DIGIB2-1744](https://github.com/agridata-ch/frontend/issues/-1744)
+
 ## [1.22.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.10...v1.22.0-rc.11) (2026-10-02)
 
 ### Features
