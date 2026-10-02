@@ -206,6 +206,52 @@ describe('DataRequestAddProducersComponent', () => {
     });
   });
 
+  describe('UID without BURs', () => {
+    beforeEach(() => {
+      userService.getAuthorizedBursByUid.mockResolvedValue([]);
+      dataRequestService.getConsentRequestsOfDataRequestAndUid.mockResolvedValue([]);
+    });
+
+    it('should flag the missing BURs and offer the UID itself as the entry', async () => {
+      await createComponent(withBur);
+      await search(UID);
+
+      expect(component['hasNoBurs']()).toBe(true);
+      expect(component['entries']()).toEqual([{ key: UID, existing: false, stateCode: undefined }]);
+      expect(component['selectedCount']()).toBe(1);
+    });
+
+    it('should send the UID with an empty BUR list', async () => {
+      await createComponent(withBur);
+      await search(UID);
+
+      await component['addProducers']();
+
+      expect(dataRequestService.createConsentRequestsForDataRequest).toHaveBeenCalledWith(
+        withBur.id,
+        { uid: UID, burs: [] },
+      );
+    });
+
+    it('should not offer the UID when it was already added', async () => {
+      dataRequestService.getConsentRequestsOfDataRequestAndUid.mockResolvedValue([
+        consent('', ConsentRequestStateEnum.Opened),
+      ]);
+      await createComponent(withBur);
+      await search(UID);
+
+      expect(component['entries']()[0].existing).toBe(true);
+      expect(component['selectedCount']()).toBe(0);
+    });
+
+    it('should not flag missing BURs when the data request has no BUR products', async () => {
+      await createComponent(mockDataRequests[0]);
+      await search(UID);
+
+      expect(component['hasNoBurs']()).toBe(false);
+    });
+  });
+
   describe('opening', () => {
     it('should seed the search field from initialUid and reset state', async () => {
       userService.getAuthorizedBursByUid.mockResolvedValue(burs);
@@ -219,6 +265,22 @@ describe('DataRequestAddProducersComponent', () => {
 
       expect(component['searchValue']()).toBe(UID);
       expect(userService.getAuthorizedBursByUid).toHaveBeenCalledWith(UID);
+    });
+
+    it('should refetch the lookup when reopened with the same UID', async () => {
+      userService.getAuthorizedBursByUid.mockResolvedValue(burs);
+      dataRequestService.getConsentRequestsOfDataRequestAndUid.mockResolvedValue([]);
+      await createComponent(withBur);
+      componentRef.setInput('initialUid', UID);
+
+      for (const open of [true, false, true]) {
+        componentRef.setInput('open', open);
+        fixture.detectChanges();
+        await fixture.whenStable();
+      }
+
+      expect(userService.getAuthorizedBursByUid).toHaveBeenCalledTimes(2);
+      expect(dataRequestService.getConsentRequestsOfDataRequestAndUid).toHaveBeenCalledTimes(2);
     });
   });
 

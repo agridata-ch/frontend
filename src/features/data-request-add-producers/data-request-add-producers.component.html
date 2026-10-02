@@ -4,7 +4,7 @@
   [dataTestId]="'add-producers-modal'"
 >
   <div class="flex flex-col gap-6" *i18n="let t; prefix: 'data-request.details.producer.modal'">
-    <p class="text-sm text-gray-500 whitespace-pre-line">{{ t('description') }}</p>
+    <span class="whitespace-pre-line">{{ t('description') }}</span>
 
     <div class="flex" appViewSection [isViewMode]="isUidViewMode()">
       <div
@@ -14,7 +14,7 @@
       >
         <div class="flex flex-col gap-2 grow">
           <label
-            class="text-sm text-gray-500"
+            class="text-sm"
             for="add-producers-uid"
             [class.text-agridata-secondary-text]="isUidViewMode()"
             [class.text-xs]="isUidViewMode()"
@@ -50,50 +50,49 @@
 
     @if (dataRequest().burPresent && entries().length > 0) {
       <div class="flex flex-col gap-2">
-        <h3 class="font-semibold">{{ t('burSection.title') }}</h3>
-        <p class="text-sm text-gray-500">{{ t('burSection.description') }}</p>
-        <div
-          class="border border-agridata-stroke rounded-md divide-y divide-agridata-stroke overflow-hidden"
-        >
-          <label class="flex items-center gap-3 p-4 cursor-pointer">
-            <input
-              type="checkbox"
-              class="h-4 w-4"
-              [checked]="allSelectableSelected()"
-              [disabled]="selectableEntries().length === 0"
-              (change)="toggleAll()"
-            />
-            <span class="font-medium">{{ t('burSection.selectAll') }}</span>
-          </label>
-          @for (entry of entries(); track entry.key) {
-            <label
-              class="flex items-center gap-3 p-4"
-              [class.cursor-pointer]="!entry.existing"
-              [class.bg-sky-50]="isSelected(entry.key)"
-              [class.opacity-50]="entry.existing"
-            >
+        <span class="font-semibold">{{ t('burSection.title') }}</span>
+        <span>{{ t('burSection.description') }}</span>
+        @if (hasNoBurs()) {
+          <output class="text-agridata-secondary-text">{{ t('noBurs') }}</output>
+        } @else {
+          <div
+            class="border border-agridata-stroke rounded-md divide-y divide-agridata-stroke overflow-hidden"
+          >
+            <label class="flex items-center gap-3 p-4 cursor-pointer">
               <input
                 type="checkbox"
                 class="h-4 w-4"
-                [checked]="isSelected(entry.key)"
-                [disabled]="entry.existing"
-                (change)="toggle(entry.key)"
+                [checked]="allSelectableSelected()"
+                [disabled]="selectableEntries().length === 0"
+                (change)="toggleAll()"
               />
-              <span class="flex flex-col">
-                <span class="text-sm text-gray-500">{{ t('burSection.burLabel') }}</span>
-                <span>{{ entry.bur }}</span>
-              </span>
-              @if (entry.stateCode) {
-                <app-agridata-badge
-                  class="ml-auto shrink-0"
-                  [text]="'consent-request.dataRequest.stateCode.' + entry.stateCode | i18n"
-                  [variant]="getConsentRequestBadgeVariant(entry.stateCode)"
-                  [size]="BadgeSize.SM"
-                />
-              }
+              <span class="text-agridata-primary-600">{{ t('burSection.selectAll') }}</span>
             </label>
-          }
-        </div>
+            @for (entry of entries(); track entry.key) {
+              <label
+                class="flex items-center gap-3 p-4 justify-between"
+                [class.cursor-pointer]="!entry.existing"
+                [class.bg-sky-50]="isSelected(entry.key)"
+                [class.opacity-50]="entry.existing"
+              >
+                <input
+                  type="checkbox"
+                  class="h-4 w-4"
+                  [checked]="isSelected(entry.key)"
+                  [disabled]="entry.existing"
+                  (change)="toggle(entry.key)"
+                />
+                <div class="flex flex-col grow">
+                  <span class="text-gray-700">{{ t('burSection.burLabel') }}</span>
+                  <span>{{ entry.bur }}</span>
+                </div>
+                @if (entry.stateCode) {
+                  <span class="text-sm">{{ t('burSection.existing') }}</span>
+                }
+              </label>
+            }
+          </div>
+        }
       </div>
     }
 

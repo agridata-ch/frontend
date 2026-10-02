@@ -457,7 +457,8 @@
             "title": "Sedi operative",
             "description": "Seleziona dall'elenco le sedi operative che desideri richiedere.",
             "selectAll": "Seleziona tutto",
-            "burLabel": "Numero della sede operativa (BUR)"
+            "burLabel": "Numero della sede operativa (BUR)",
+            "existing": "Già richiesto"
           },
           "success": {
             "title": "Produttori richiesti con successo",
@@ -466,7 +467,8 @@
           "error": {
             "title": "Aggiunta produttori fallita",
             "message": "Qualcosa è andato storto durante l'aggiunta degli stabilimenti: {{ error }}"
-          }
+          },
+          "noBurs": "Per questo UID non sono disponibili sedi operative"
         },
         "addBurs": "Aggiungi sedi operative"
       }
@@ -1392,5 +1394,17 @@
     "title": "Comunicazioni relative ad Agridata",
     "readMore": "Continua a leggere",
     "createdAt": "Data di creazione:  {{ date }}"
+  },
+  "admin-agbs": {
+    "table": {
+      "titleValue": "Termini e condizioni generali",
+      "version": "Versione",
+      "title": "Titolo",
+      "validFrom": "Valido dal",
+      "validTo": "Valido fino al",
+      "enforceConsentFrom": "Blocco dal"
+    },
+    "pageTitle": "Gestione dei Termini e Condizioni",
+    "pageDescription": "Gestione centralizzata del quadro normativo e del controllo delle versioni per tutte le interfacce di Agridata Nexus."
   }
 }
