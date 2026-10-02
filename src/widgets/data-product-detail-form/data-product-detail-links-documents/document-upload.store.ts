@@ -146,14 +146,13 @@ export class DocumentUploadStore {
 
   downloadDocument(item: DocumentUploadItem): Promise<Blob> {
     const dataProductId = this._dataProductId();
-    if (!dataProductId || !item.dto?.id) {
-      return Promise.reject(new Error('Cannot download a document without a data product and id.'));
-    }
-    return this.documentService.downloadDocument(
-      dataProductId,
-      item.dto.id,
-      this.stateService.actingRole(),
-    );
+    return !dataProductId || !item.dto?.id
+      ? Promise.reject(new Error('Cannot download a document without a data product and id.'))
+      : this.documentService.downloadDocument(
+          dataProductId,
+          item.dto.id,
+          this.stateService.actingRole(),
+        );
   }
 
   async loadExisting(dataProductId: string): Promise<void> {

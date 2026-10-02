@@ -198,11 +198,9 @@ export class DataProductsPageComponent {
       },
     };
 
-    if (row.stateCode === DataProductDtoStateCode.Draft) {
-      return [viewDetails, deleteAction];
-    }
-
-    return [viewDetails];
+    return row.stateCode === DataProductDtoStateCode.Draft
+      ? [viewDetails, deleteAction]
+      : [viewDetails];
   };
 
   protected newProduct(): void {

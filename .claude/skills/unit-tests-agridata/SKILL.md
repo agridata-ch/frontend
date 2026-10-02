@@ -10,7 +10,7 @@ This skill helps you write and maintain unit tests for the agridata project. It 
 
 ## Vitest specifics (migrated from Jest)
 
-Tests run on **Vitest** (config: `vitest.config.ts`, setup: `src/test-setup.ts`, jsdom, zoneless via `@analogjs/vitest-angular`). Key differences from Jest:
+Tests run on **Vitest** (config: `vitest.config.mts`, setup: `src/test-setup.ts`, jsdom, zoneless via `@analogjs/vitest-angular`). Key differences from Jest:
 
 - Use `vi`, not `jest`: `vi.fn()`, `vi.spyOn()`, `vi.useFakeTimers()`, `vi.clearAllMocks()`. `vi` is a global (config `globals: true`).
 - Mock/spy method APIs are identical: `.mockReturnValue()`, `.mockResolvedValue()`, `.mockImplementation(fn)`. Note `mockImplementation` **requires** an argument in Vitest — use `.mockImplementation(() => {})` for a no-op.

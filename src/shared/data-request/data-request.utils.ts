@@ -10,8 +10,7 @@ export function getBadgeVariant(stateCode?: string) {
   if (stateCode === DataRequestStateEnum.ToBeReleasedByProvider) return BadgeVariant.WARNING;
   if (stateCode === DataRequestStateEnum.ToBeActivated) return BadgeVariant.WARNING;
   if (stateCode === DataRequestStateEnum.Active) return BadgeVariant.SUCCESS;
-  if (stateCode === DataRequestStateEnum.Paused) return BadgeVariant.WARNING;
-  return BadgeVariant.DEFAULT;
+  return stateCode === DataRequestStateEnum.Paused ? BadgeVariant.WARNING : BadgeVariant.DEFAULT;
 }
 
 export function getFieldFromLang<K extends keyof DataRequestDto>(

@@ -39,8 +39,7 @@ export class DataProductsDeleteModalComponent {
   protected readonly isOpen = computed(() => this.product() !== null);
   protected readonly productName = computed(() => {
     const product = this.product();
-    if (!product) return '';
-    return this.i18nService.useObjectTranslation(product.name);
+    return product ? this.i18nService.useObjectTranslation(product.name) : '';
   });
 
   protected cancelDelete(): void {

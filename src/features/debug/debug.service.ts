@@ -184,8 +184,9 @@ export class DebugService implements OnDestroy {
         .filter((entry): entry is DebugLogEntry => entry !== null && entry !== undefined)
         .sort((a, b) => {
           try {
-            if (!a?.timestamp || !b?.timestamp) return 0;
-            return b.timestamp.getTime() - a.timestamp.getTime();
+            return !a?.timestamp || !b?.timestamp
+              ? 0
+              : b.timestamp.getTime() - a.timestamp.getTime();
           } catch {
             return 0;
           }

@@ -34,10 +34,7 @@ export class ErrorModal {
 
   dontShowErrors = computed(() => {
     const route = this.stateService.currentRouteWithoutQueryParams();
-    if (!route) {
-      return true;
-    }
-    return this.DONT_SHOW_ERROR_ON_ROUTES.some((r) => route.endsWith(r));
+    return !route || this.DONT_SHOW_ERROR_ON_ROUTES.some((r) => route.endsWith(r));
   });
 
   closeErrors() {

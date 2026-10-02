@@ -26,10 +26,9 @@ export class ProducerUidGuard implements CanActivate {
       const uidDtos = await this.authorizationService.initializeAuthorizedUids();
       return this.validateAndSetUid(route, uidDtos);
     } catch (error) {
-      if (error instanceof ExternalServiceHttpError) {
-        return this.router.createUrlTree([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR]);
-      }
-      return this.processError(error);
+      return error instanceof ExternalServiceHttpError
+        ? this.router.createUrlTree([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR])
+        : this.processError(error);
     }
   }
 
@@ -37,11 +36,9 @@ export class ProducerUidGuard implements CanActivate {
     const userUid = route.paramMap.get('uid') ?? '';
     const authorizedUids = uidDtos.map((uid) => uid.uid);
 
-    if (userUid) {
-      return this.handleProvidedUid(userUid, authorizedUids);
-    }
-
-    return this.handleMissingUid(route, uidDtos);
+    return userUid
+      ? this.handleProvidedUid(userUid, authorizedUids)
+      : this.handleMissingUid(route, uidDtos);
   }
 
   private handleMissingUid(route: ActivatedRouteSnapshot, uidDtos: UidDto[]): UrlTree | boolean {
@@ -62,11 +59,9 @@ export class ProducerUidGuard implements CanActivate {
 
     this.agridataStateService.setActiveUid(defaultUid);
 
-    if (this.isConsentRequestCreatePath(route)) {
-      return true;
-    }
-
-    return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, defaultUid]);
+    return this.isConsentRequestCreatePath(route)
+      ? true
+      : this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, defaultUid]);
   }
 
   private handleProvidedUid(userUid: string, authorizedUids: string[]): UrlTree | boolean {

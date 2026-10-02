@@ -57,10 +57,7 @@ function htmlLengthLimit(limit: number | null): Extension {
               return true;
             }
             const next = getHTMLFromFragment(tr.doc.content, schema).length;
-            if (next <= limit) {
-              return true;
-            }
-            return next <= getHTMLFromFragment(state.doc.content, schema).length;
+            return next <= limit || next <= getHTMLFromFragment(state.doc.content, schema).length;
           },
         }),
       ];

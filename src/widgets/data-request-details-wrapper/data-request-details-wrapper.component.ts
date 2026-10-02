@@ -38,10 +38,7 @@ export class DataRequestDetailsWrapperComponent {
 
   // Computed Signals
   protected readonly dataRequest = computed(() => {
-    if (this.dataRequestsResource.isLoading()) {
-      return undefined;
-    }
-    return this.dataRequestsResource.value();
+    return this.dataRequestsResource.isLoading() ? undefined : this.dataRequestsResource.value();
   });
 
   protected readonly isLoading = computed(() => this.dataRequestsResource.isLoading());
@@ -57,10 +54,9 @@ export class DataRequestDetailsWrapperComponent {
   protected readonly dataRequestsResource = resource({
     params: () => ({ actingRole: this.stateService.actingRole(), id: this.dataRequestId() }),
     loader: ({ params }) => {
-      if (!params?.id || params.id === DATA_REQUEST_NEW_ID) {
-        return Promise.resolve(undefined);
-      }
-      return this.dataRequestService.fetchDataRequest(params.id, params.actingRole);
+      return !params?.id || params.id === DATA_REQUEST_NEW_ID
+        ? Promise.resolve(undefined)
+        : this.dataRequestService.fetchDataRequest(params.id, params.actingRole);
     },
   });
 

@@ -225,11 +225,9 @@ function getTableOrListElement(): HTMLElement {
   if (tableElement && isElementVisible(tableElement)) {
     return tableElement;
   }
-  if (listElement && isElementVisible(listElement)) {
-    return listElement;
-  }
-
-  return tableElement ?? listElement ?? document.body;
+  return listElement && isElementVisible(listElement)
+    ? listElement
+    : (tableElement ?? listElement ?? document.body);
 }
 
 function isElementVisible(element: HTMLElement): boolean {

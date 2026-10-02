@@ -36,11 +36,7 @@ export class AuthorizationGuard implements CanActivate {
       }
 
       const hasRole = requiredRoles.some((role) => userRoles.includes(role));
-      if (!hasRole) {
-        return this.router.parseUrl(ROUTE_PATHS.FORBIDDEN);
-      }
-
-      return true;
+      return hasRole || this.router.parseUrl(ROUTE_PATHS.FORBIDDEN);
     } catch (error) {
       if (route.url.toString().includes(ROUTE_PATHS.ERROR)) {
         return true;

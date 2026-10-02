@@ -119,10 +119,9 @@ export class MasterDataService {
   }
 
   private fetchDataProductsByProviderId(providerId: string): Promise<DataProductDto[]> {
-    if (!providerId) {
-      return Promise.resolve([]);
-    }
-    return firstValueFrom(this.dataProvidersService.getDataProductsByProviderId(providerId));
+    return providerId
+      ? firstValueFrom(this.dataProvidersService.getDataProductsByProviderId(providerId))
+      : Promise.resolve([]);
   }
 
   private fetchDataProviders(): Promise<DataProviderDto[]> {

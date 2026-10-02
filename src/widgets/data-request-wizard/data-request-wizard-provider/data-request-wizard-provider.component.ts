@@ -109,14 +109,12 @@ export class DataRequestWizardProviderComponent extends DataRequestWizardBaseCom
   }
 
   protected override getStepDisabled(stepId: string, stateCode: string | undefined): boolean {
-    if (stepId === FORM_GROUP_NAMES.COMPLETION) {
-      return (
-        stateCode !== DataRequestStateEnum.ToBeReleasedByProvider &&
-        stateCode !== DataRequestStateEnum.ToBeActivated &&
-        stateCode !== DataRequestStateEnum.Active
-      );
-    }
-    return false;
+    return (
+      stepId === FORM_GROUP_NAMES.COMPLETION &&
+      stateCode !== DataRequestStateEnum.ToBeReleasedByProvider &&
+      stateCode !== DataRequestStateEnum.ToBeActivated &&
+      stateCode !== DataRequestStateEnum.Active
+    );
   }
 
   // Protected methods

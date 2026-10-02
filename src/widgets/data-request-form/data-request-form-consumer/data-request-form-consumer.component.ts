@@ -93,10 +93,7 @@ export class DataRequestFormConsumerComponent {
 
   readonly logoPreviewUrl = computed(() => {
     const file = this.logoFile();
-    if (file) {
-      return URL.createObjectURL(file);
-    }
-    return this.dataRequestLogo();
+    return file ? URL.createObjectURL(file) : this.dataRequestLogo();
   });
 
   protected readonly userFullName = computed(() => {

@@ -64,16 +64,14 @@ export class AgbPage {
 
   protected readonly version = computed(() => {
     const response = this.agbPage()?.agbs;
-    if (!response) return '';
-
-    return this.i18nService.translate('agb.page.version', { version: response?.version });
+    return response
+      ? this.i18nService.translate('agb.page.version', { version: response?.version })
+      : '';
   });
 
   protected readonly validFrom = computed(() => {
     const response = this.agbPage()?.agbs;
-    if (!response) return '';
-
-    return formatDate(response?.validFrom);
+    return response ? formatDate(response?.validFrom) : '';
   });
 
   protected readonly footerBlock = computed(() => {

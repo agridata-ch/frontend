@@ -97,10 +97,9 @@ export class ConsentRequestProducerPage {
       uidMissing: this.agridataStateService.uidMissing(),
     }),
     loader: ({ params }) => {
-      if (!params?.uid || params.uidMissing) {
-        return Promise.resolve([]);
-      }
-      return this.consentRequestService.fetchConsentRequests(params.uid);
+      return !params?.uid || params.uidMissing
+        ? Promise.resolve([])
+        : this.consentRequestService.fetchConsentRequests(params.uid);
     },
     defaultValue: [],
   });
@@ -140,8 +139,9 @@ export class ConsentRequestProducerPage {
 
   protected readonly uidMissingWarning = computed(() => {
     const phoneNumber = this.phoneNumber();
-    if (!phoneNumber) return '';
-    return this.i18nService.translate('producer.uidMissingWarning', { phoneNumber });
+    return phoneNumber
+      ? this.i18nService.translate('producer.uidMissingWarning', { phoneNumber })
+      : '';
   });
 
   readonly showTourIntro = computed(() => {

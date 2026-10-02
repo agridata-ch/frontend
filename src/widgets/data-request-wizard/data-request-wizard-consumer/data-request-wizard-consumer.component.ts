@@ -149,18 +149,13 @@ export class DataRequestWizardConsumerComponent extends DataRequestWizardBaseCom
   }
 
   protected override getStepDisabled(stepId: string, stateCode: string | undefined): boolean {
-    if (stepId === FORM_GROUP_NAMES.CONTRACT) {
-      return !stateCode || stateCode === DataRequestStateEnum.Draft;
-    }
-    if (stepId === FORM_GROUP_NAMES.COMPLETION) {
-      return (
-        stateCode !== DataRequestStateEnum.ToBeReleasedByConsumer &&
-        stateCode !== DataRequestStateEnum.ToBeSignedByProvider &&
-        stateCode !== DataRequestStateEnum.ToBeReleasedByProvider &&
-        stateCode !== DataRequestStateEnum.ToBeActivated
-      );
-    }
-    return false;
+    return stepId === FORM_GROUP_NAMES.CONTRACT
+      ? !stateCode || stateCode === DataRequestStateEnum.Draft
+      : stepId === FORM_GROUP_NAMES.COMPLETION &&
+          stateCode !== DataRequestStateEnum.ToBeReleasedByConsumer &&
+          stateCode !== DataRequestStateEnum.ToBeSignedByProvider &&
+          stateCode !== DataRequestStateEnum.ToBeReleasedByProvider &&
+          stateCode !== DataRequestStateEnum.ToBeActivated;
   }
 
   protected override handleClose() {

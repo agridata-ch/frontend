@@ -47,14 +47,9 @@ export class HomeRedirectGuard implements CanActivate {
       return this.router.createUrlTree([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH]);
     }
 
-    if (this.authService.isConsumer()) {
-      return this.router.createUrlTree([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH]);
-    }
-
-    if (this.authService.isDataProvider()) {
-      return this.router.createUrlTree([ROUTE_PATHS.DATA_REQUESTS_PROVIDER_PATH]);
-    }
-
-    return true;
+    return this.authService.isConsumer()
+      ? this.router.createUrlTree([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH])
+      : !this.authService.isDataProvider() ||
+          this.router.createUrlTree([ROUTE_PATHS.DATA_REQUESTS_PROVIDER_PATH]);
   }
 }
