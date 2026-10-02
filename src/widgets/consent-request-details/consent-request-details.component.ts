@@ -36,6 +36,7 @@ import {
 import { ScrollFadeDirective } from '@/shared/scroll-fade';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService } from '@/shared/toast';
+import { TooltipDirective } from '@/shared/tooltip';
 import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
@@ -45,6 +46,13 @@ import { DataRequestContentComponent } from '@/widgets/data-request-content';
 
 type DecisionTarget = { id: string; previousState?: ConsentRequestStateEnum };
 
+const DATED_STATES = new Set<ConsentRequestAggregationStateEnum>([
+  ConsentRequestAggregationStateEnum.Granted,
+  ConsentRequestAggregationStateEnum.PartiallyGranted,
+  ConsentRequestAggregationStateEnum.Declined,
+  ConsentRequestAggregationStateEnum.LegallyPermitted,
+]);
+
 /**
  * Implements the logic for displaying detailed consent request information. It renders metadata
  * such as dates, state, consumer identity, description, purpose, and related products. The
@@ -52,7 +60,7 @@ type DecisionTarget = { id: string; previousState?: ConsentRequestStateEnum };
  * contextual toast notifications. When a valid redirect URI is provided, the component shows
  * a modal with a countdown timer before automatically redirecting the user to the specified URL.
  *
- * CommentLastReviewed: 2026-08-04
+ * CommentLastReviewed: 2026-10-02
  */
 @Component({
   selector: 'app-consent-request-details',
@@ -67,6 +75,7 @@ type DecisionTarget = { id: string; previousState?: ConsentRequestStateEnum };
     ModalComponent,
     ScrollFadeDirective,
     SidepanelComponent,
+    TooltipDirective,
   ],
   providers: [ConsentRequestDecisionStore],
   templateUrl: './consent-request-details.component.html',
@@ -114,25 +123,18 @@ export class ConsentRequestDetailsComponent {
   protected readonly detailsOpened = signal(false);
 
   // Computed Signals
-  protected readonly badgeText = computed(() => {
+  // Badge shows the state only; states with a decision date expose it via the tooltip.
+  protected readonly badge = computed(() => {
     const stateCode = this.request()?.stateCode;
-    const params = { date: this.formattedLastStateChangeDate() };
-    switch (stateCode) {
-      case ConsentRequestAggregationStateEnum.Opened:
-        return { key: 'consent-request.details.stateCode.OPENED' };
-      case ConsentRequestAggregationStateEnum.PartiallyOpened:
-        return { key: 'consent-request.details.stateCode.PARTIALLY_OPENED' };
-      case ConsentRequestAggregationStateEnum.Granted:
-        return { key: 'consent-request.details.stateCode.GRANTED', params };
-      case ConsentRequestAggregationStateEnum.PartiallyGranted:
-        return { key: 'consent-request.details.stateCode.PARTIALLY_GRANTED', params };
-      case ConsentRequestAggregationStateEnum.Declined:
-        return { key: 'consent-request.details.stateCode.DECLINED', params };
-      case ConsentRequestAggregationStateEnum.LegallyPermitted:
-        return { key: 'consent-request.details.stateCode.LEGALLY_PERMITTED', params };
-      default:
-        return { key: 'consent-request.details.stateCode.UNKNOWN' };
+    if (!stateCode) {
+      return { key: 'consent-request.details.stateCode.UNKNOWN', tooltip: '' };
     }
+    const tooltip = DATED_STATES.has(stateCode)
+      ? this.i18nService.translate(`consent-request.details.stateCode.${stateCode}`, {
+          date: this.formattedLastStateChangeDate(),
+        })
+      : '';
+    return { key: `consent-request.dataRequest.stateCode.${stateCode}`, tooltip };
   });
   protected readonly badgeVariant = computed(() =>
     getAggregationBadgeVariant(this.request()?.stateCode),
@@ -295,6 +297,7 @@ export class ConsentRequestDetailsComponent {
     const decisions = this.decisionStore.decisions();
     const grantIds: string[] = [];
     const declineIds: string[] = [];
+    const targets: DecisionTarget[] = [];
 
     for (const request of this.decisionStore.burRequests()) {
       const desired = decisions[request.id]
@@ -302,6 +305,7 @@ export class ConsentRequestDetailsComponent {
         : ConsentRequestStateEnum.Declined;
       if (request.stateCode !== desired) {
         (decisions[request.id] ? grantIds : declineIds).push(request.id);
+        targets.push({ id: request.id, previousState: request.stateCode });
       }
     }
 
@@ -323,6 +327,12 @@ export class ConsentRequestDetailsComponent {
         state: 'per-bur',
         component: 'details',
       });
+      this.showStateChangedFeedback(
+        this.decisionStore.grantedCount() === 0
+          ? ConsentRequestStateEnum.Declined
+          : ConsentRequestStateEnum.Granted,
+        targets,
+      );
       this.decisionStore.cancelEdit();
     }
     this.showSaveLoading.set(false);
@@ -347,17 +357,7 @@ export class ConsentRequestDetailsComponent {
       state: newState,
       component: 'details',
     });
-    this.showRedirect.set(this.shouldRedirect());
-    if (!this.shouldRedirect()) {
-      this.toastService.show(
-        this.i18nService.translate(getToastTitle(newState)),
-        this.i18nService.translate(getToastMessage(newState), {
-          name: this.requestTitle(),
-        }),
-        getToastType(newState),
-        this.prepareRestoreUndoAction(targets),
-      );
-    }
+    this.showStateChangedFeedback(newState, targets);
   }
 
   // Children that would actually change to newState: every BUR child that differs; the single UID
@@ -435,6 +435,24 @@ export class ConsentRequestDetailsComponent {
     this.shouldRedirect.set(false);
     this.showRedirect.set(false);
   };
+
+  // Shows the redirect modal when a redirect is pending, otherwise the state toast with undo.
+  private showStateChangedFeedback(
+    newState: ConsentRequestStateEnum,
+    targets: DecisionTarget[],
+  ): void {
+    this.showRedirect.set(this.shouldRedirect());
+    if (!this.shouldRedirect()) {
+      this.toastService.show(
+        this.i18nService.translate(getToastTitle(newState)),
+        this.i18nService.translate(getToastMessage(newState), {
+          name: this.requestTitle(),
+        }),
+        getToastType(newState),
+        this.prepareRestoreUndoAction(targets),
+      );
+    }
+  }
 
   private startCountdown(): void {
     this.countdownTimer = startCountdown(
