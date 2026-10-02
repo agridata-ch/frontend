@@ -1,3 +1,9 @@
+## [1.22.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.10...v1.22.0-rc.11) (2026-10-02)
+
+### Features
+
+- **public-data-catalog:** add tooltip to public-sector badge ([388c102](https://github.com/agridata-ch/frontend/commit/388c102007df45da7dc06c01cb3affe422c6ec51)), references [DIGIB2-1700](https://github.com/agridata-ch/frontend/issues/-1700)
+
 ## [1.22.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.9...v1.22.0-rc.10) (2026-10-02)
 
 ### Features
