@@ -88,7 +88,6 @@
         "nonProducerInfo": "Hier sehen die Datenproduzenten ihre anfragten Standorte.",
         "missingBurInfo": "Fehlt ein Standort? Melden Sie sich direkt bei {{ consumer }}, damit diese den Standort anfragen und Sie die Zustimmung geben können."
       },
-      "footerInformationNoBur": "Sie haben alle Standorte deaktiviert. Wenn Sie diese Anfrage komplett ablehnen möchten, klicken Sie bitte auf Abbrechen und danach auf den Ablehnen-Button.",
       "noConsentRequired": "Keine Aktion erforderlich. Dieser Datenbezug erfolgt auf öffentlich-rechtlicher Grundlage. Diese Anzeige dient der transparenten Information."
     },
     "toast": {
@@ -1374,7 +1373,8 @@
       "extendedDescription": "Erweiterte Beschreibung",
       "paymentRequired": "Kostenpflichtig durch Anbieter",
       "costs": "Kosten für Datenbezüger",
-      "documents": "Dokumente"
+      "documents": "Dokumente",
+      "publicSectorTooltip": "Für die Bereitstellung dieser Daten gibt es eine öffentlich-rechtliche Grundlage. Die Übertragung wird für Transparenz dargestellt."
     },
     "list": {
       "allLoaded": "Alle Datenprodukte geladen"

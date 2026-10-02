@@ -88,7 +88,6 @@
         "nonProducerInfo": "Ici, les producteurs de données voient leurs sites demandés.",
         "missingBurInfo": "Un site manque ? Contactez directement {{ consumer }} afin qu'ils puissent demander le site et que vous puissiez donner votre consentement."
       },
-      "footerInformationNoBur": "Vous avez désactivé tous les sites. Si vous souhaitez refuser complètement cette demande, veuillez cliquer sur Annuler, puis sur le bouton Refuser.",
       "noConsentRequired": "Aucune action requise. Ce prélèvement de données repose sur une base de droit public. Cet affichage est proposé à titre d'information transparente."
     },
     "toast": {
@@ -1374,7 +1373,8 @@
       "extendedDescription": "Informations complémentaires",
       "paymentRequired": "Frais du fournisseur",
       "costs": "Frais pour les requérants de données",
-      "documents": "Documents"
+      "documents": "Documents",
+      "publicSectorTooltip": "La mise à disposition de ces données repose sur une base de droit public. Le transfert est affiché dans un souci de transparence."
     },
     "list": {
       "allLoaded": "Tous les produits de données chargés"

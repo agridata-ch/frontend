@@ -88,7 +88,6 @@
         "nonProducerInfo": "Qui i produttori di dati vedono le loro sedi richieste.",
         "missingBurInfo": "Manca una sede? Contattate direttamente {{ consumer }} affinché possa richiederla e voi possiate dare il consenso."
       },
-      "footerInformationNoBur": "Avete disattivato tutte le sedi. Se desiderate rifiutare completamente questa richiesta, cliccate su Annulla e poi sul pulsante Rifiuta.",
       "noConsentRequired": "Nessuna azione richiesta. Questo accesso ai dati avviene su una base di diritto pubblico. Questa visualizzazione serve a scopo di informazione trasparente."
     },
     "toast": {
@@ -1374,7 +1373,8 @@
       "extendedDescription": "Ulteriori informazioni",
       "paymentRequired": "Costi del fornitore",
       "costs": "Costi per i richiedenti di dati",
-      "documents": "Documenti"
+      "documents": "Documenti",
+      "publicSectorTooltip": "La messa a disposizione di questi dati si basa su una base di diritto pubblico. Il trasferimento viene mostrato per trasparenza."
     },
     "list": {
       "allLoaded": "Tutti i prodotti dati caricati"
