@@ -1,3 +1,9 @@
+## [1.22.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.9...v1.22.0-rc.10) (2026-10-02)
+
+### Features
+
+- **consent-request:** optimize BUR decision ([9846218](https://github.com/agridata-ch/frontend/commit/9846218ae0214e36cee8f31e223344c45183e2f6)), references [DIGIB2-1666](https://github.com/agridata-ch/frontend/issues/-1666)
+
 ## [1.22.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.8...v1.22.0-rc.9) (2026-10-02)
 
 ### Features
