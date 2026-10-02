@@ -48,7 +48,8 @@
         "reject": "Refuser",
         "cancelEditMode": "Annuler",
         "saveAndAccept": "Enregistrer et Consentir",
-        "saveDisabledInfo": "Au moins un consentement est requis"
+        "saveDisabledInfo": "Au moins un consentement est requis",
+        "saveAndReject": "Enregistrer et refuser"
       },
       "stateCode": {
         "GRANTED": "Accepté le {{ date }}",
@@ -70,21 +71,23 @@
       },
       "decisions": {
         "title": "Aperçu de l'exploitation et des sites",
-        "description": "Cette demande concerne votre entreprise (UID) et les sites associés (BUR). Le consentement s'applique toujours à l'entreprise. En principe, vous consentez aux sites demandés; via «Modifier les sites», vous pouvez exclure des sites individuels de la demande.",
+        "description": {
+          "noBur": "Cette demande concerne votre entreprise (UID). Le consentement s'applique à l'ensemble de l'entreprise au niveau de l'exploitation. Comme cette demande n'est pas spécifique à un site, aucune installation individuelle (BUR) n'est répertoriée.",
+          "singleBur": "Cette demande concerne votre entreprise (UID) et le site associé (BUR). Le consentement s'applique à l'entreprise ainsi qu'au site.",
+          "multipleBur": "Cette demande concerne votre entreprise (UID) et les sites associés (BUR). Le consentement pour l'entreprise est toujours valable. En principe, vous acceptez les sites demandés ; via « Modifier les sites », vous pouvez exclure des sites individuels de la demande."
+        },
         "uidGroupTitle": "Mon entreprise demandée",
-        "uid": "Numéro d'identification de l'entreprise (UID) : {{ uid }}",
+        "uid": "Numéro d'identification de l'entreprise (UID) ",
         "bur": {
-          "title": "Numéro d'établissement (BUR) : {{ bur }}",
+          "title": "Numéro d'établissement (BUR)",
           "enabled": "Sélectionné",
           "disabled": "Exclu"
         },
         "edit": "Modifier le consentement par site",
-        "cancel": "Annuler",
         "burGroupTitle": "Mes sites demandés",
         "nonProducerInfo": "Ici, les producteurs de données voient leurs sites demandés.",
         "missingBurInfo": "Un site manque ? Contactez directement {{ consumer }} afin qu'ils puissent demander le site et que vous puissiez donner votre consentement."
       },
-      "footerInformationNoBur": "Vous avez désactivé tous les sites. Si vous souhaitez refuser complètement cette demande, veuillez cliquer sur Annuler, puis sur le bouton Refuser.",
       "noConsentRequired": "Aucune action requise. Ce prélèvement de données repose sur une base de droit public. Cet affichage est proposé à titre d'information transparente."
     },
     "toast": {
@@ -655,7 +658,7 @@
         "title": "De nouvelles demandes de données issues de \"Mon partage de données agricoles (MAF)\" sont désormais disponibles"
       },
       "tvd": {
-        "title": "De nouvelles demandes de données issues de \"BDTA/ Identitas\" sont désormais disponibles"
+        "title": "Nouvelles demandes de données issues de la « Banque de données sur le trafic des animaux (BDTA) » désormais disponibles"
       },
       "common": {
         "intro": "Votre consentement concernant les demandes de données suivantes a été enregistré.",
@@ -1370,7 +1373,8 @@
       "extendedDescription": "Informations complémentaires",
       "paymentRequired": "Frais du fournisseur",
       "costs": "Frais pour les requérants de données",
-      "documents": "Documents"
+      "documents": "Documents",
+      "publicSectorTooltip": "La mise à disposition de ces données repose sur une base de droit public. Le transfert est affiché dans un souci de transparence."
     },
     "list": {
       "allLoaded": "Tous les produits de données chargés"

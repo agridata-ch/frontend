@@ -48,7 +48,8 @@
         "reject": "Rifiuta",
         "cancelEditMode": "Annulla",
         "saveAndAccept": "Salva e acconsenti",
-        "saveDisabledInfo": "È richiesto almeno un consenso"
+        "saveDisabledInfo": "È richiesto almeno un consenso",
+        "saveAndReject": "Salva e rifiuta"
       },
       "stateCode": {
         "GRANTED": "Acconsentito il {{ date }}",
@@ -66,25 +67,27 @@
       },
       "request": {
         "migratedMaf": "Ripreso da «Mia condivisione dei dati agricoli – MAF»",
-        "migratedTvd": "Ripreso dalla Banca dati sul traffico degli animali (BDTA)"
+        "migratedTvd": "Nuove richieste di dati da «Banca dati sul traffico di animali (BDTA)» ora disponibili"
       },
       "decisions": {
         "title": "Panoramica dell'azienda e delle sedi",
-        "description": "Questa richiesta riguarda la vostra azienda (UID) e le relative sedi (BUR). Il consenso si applica sempre all'azienda. Fondamentalmente, acconsentite alle sedi richieste; tramite “Modifica sedi” potete escludere singole sedi dalla richiesta.",
+        "description": {
+          "noBur": "Questa richiesta riguarda la vostra azienda (UID). Il consenso si applica all'intera azienda a livello operativo. Poiché questa richiesta non è specifica per una sede, non vengono elencate singole sedi operative (BUR).",
+          "singleBur": "Questa richiesta riguarda la vostra azienda (UID) e la relativa sede (BUR). Il consenso si applica all'azienda e alla sede.",
+          "multipleBur": "Questa richiesta riguarda la vostra azienda (UID) e le relative sedi (BUR). Il consenso per l'azienda è sempre valido. In linea di massima, acconsentirete alle sedi richieste, ma potete escludere singole sedi dalla richiesta tramite \"Modifica sedi\"."
+        },
         "uidGroupTitle": "La mia azienda richiesta",
-        "uid": "Identificazione dell'azienda (UID): {{ uid }}",
+        "uid": "Identificazione dell'azienda (UID)",
         "bur": {
-          "title": "Numero di stabile (BUR): {{ bur }}",
+          "title": "Numero di stabile (BUR)",
           "enabled": "Selezionato",
           "disabled": "Escluso"
         },
         "edit": "Modificare il consenso per sede",
-        "cancel": "Annulla",
         "burGroupTitle": "Le mie sedi richieste",
         "nonProducerInfo": "Qui i produttori di dati vedono le loro sedi richieste.",
         "missingBurInfo": "Manca una sede? Contattate direttamente {{ consumer }} affinché possa richiederla e voi possiate dare il consenso."
       },
-      "footerInformationNoBur": "Avete disattivato tutte le sedi. Se desiderate rifiutare completamente questa richiesta, cliccate su Annulla e poi sul pulsante Rifiuta.",
       "noConsentRequired": "Nessuna azione richiesta. Questo accesso ai dati avviene su una base di diritto pubblico. Questa visualizzazione serve a scopo di informazione trasparente."
     },
     "toast": {
@@ -1370,7 +1373,8 @@
       "extendedDescription": "Ulteriori informazioni",
       "paymentRequired": "Costi del fornitore",
       "costs": "Costi per i richiedenti di dati",
-      "documents": "Documenti"
+      "documents": "Documenti",
+      "publicSectorTooltip": "La messa a disposizione di questi dati si basa su una base di diritto pubblico. Il trasferimento viene mostrato per trasparenza."
     },
     "list": {
       "allLoaded": "Tutti i prodotti dati caricati"
