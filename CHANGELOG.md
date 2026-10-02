@@ -1,3 +1,9 @@
+## [1.22.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.8...v1.22.0-rc.9) (2026-10-02)
+
+### Features
+
+- **data-request:** update styling ([9c48292](https://github.com/agridata-ch/frontend/commit/9c48292bab119e5b059772a0f9008a72121107f6)), references [DIGIB2-1708](https://github.com/agridata-ch/frontend/issues/-1708)
+
 ## [1.22.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.7...v1.22.0-rc.8) (2026-10-01)
 
 ### Features
