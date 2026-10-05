@@ -855,6 +855,13 @@
         "description": "Sie sind dabei, den Datenantrag {{ requestName }} zwischen {{ provider }} und {{ consumer }} zu pausieren. Dadurch wird der Datenaustausch zwischen den Beteiligten sofort unterbunden. Diese Aktion kann rückgängig gemacht werden.",
         "confirm": "Ja, Datenantrag pausieren",
         "cancel": "Abbrechen"
+      },
+      "reactivate": "Antrag reaktivieren",
+      "reactivateConfirmation": {
+        "title": "Pausierten Datenantrag reaktivieren?",
+        "description": "Sie sind dabei, den pausierten Datenantrag {{ requestName }} zwischen {{ provider }} und {{ consumer }} zu reaktivieren. Dadurch wird der Datenaustausch zwischen den Beteiligten wieder aufgenommen. Diese Aktion kann rückgängig gemacht werden.",
+        "confirm": "Ja, pausierten Datenantrag reaktivieren",
+        "cancel": "Abbrechen"
       }
     }
   },

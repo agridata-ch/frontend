@@ -172,9 +172,35 @@ describe('AdminDataRequestDetailsComponent', () => {
     expect(reloadSpy).toHaveBeenCalled();
   });
 
+  it('should open and close the reactivate confirmation modal without reactivating when cancelled', () => {
+    expect(component['showReactivateConfirmation']()).toBe(false);
+
+    component['openReactivateConfirmation']();
+    expect(component['showReactivateConfirmation']()).toBe(true);
+
+    component['closeReactivateConfirmation']();
+    expect(component['showReactivateConfirmation']()).toBe(false);
+    expect(dataRequestService.activateDataRequest).not.toHaveBeenCalled();
+  });
+
+  it('should reactivate the request, close the modal and reload details when confirmed', async () => {
+    const reloadSpy = mockDetailsReload();
+    component['openReactivateConfirmation']();
+
+    component['reactivateRequest']();
+
+    expect(component['showReactivateConfirmation']()).toBe(false);
+
+    await flushPromises();
+
+    expect(dataRequestService.activateDataRequest).toHaveBeenCalledWith(dataRequestId, actingRole);
+    expect(reloadSpy).toHaveBeenCalled();
+  });
+
   it.each([
     ['acceptRequest', 'approveDataRequest'],
     ['activateRequest', 'activateDataRequest'],
+    ['reactivateRequest', 'activateDataRequest'],
     ['pauseRequest', 'pauseDataRequest'],
     ['rejectRequest', 'retreatDataRequest'],
   ] as const)('should handle errors when %s fails', async (componentMethod, serviceMethod) => {
@@ -192,6 +218,7 @@ describe('AdminDataRequestDetailsComponent', () => {
   it.each([
     ['acceptRequest', 'approveDataRequest', 'isAccepting'],
     ['activateRequest', 'activateDataRequest', 'isActivating'],
+    ['reactivateRequest', 'activateDataRequest', 'isReactivating'],
     ['pauseRequest', 'pauseDataRequest', 'isPausing'],
     ['rejectRequest', 'retreatDataRequest', 'isRejecting'],
   ] as const)(

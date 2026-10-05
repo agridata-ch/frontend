@@ -13,10 +13,10 @@ import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
 
 /**
  * Admin page for viewing data request details with action buttons.
- * Wraps the reusable details component and provides accept, reject, and activate actions.
+ * Wraps the reusable details component and provides accept, reject, activate, pause, and reactivate actions.
  * The activate action stays disabled until the underlying contract revision is sealed.
  *
- * CommentLastReviewed: 2026-06-25
+ * CommentLastReviewed: 2026-10-01
  */
 @Component({
   selector: 'app-admin-data-request-details',
@@ -45,11 +45,13 @@ export class AdminDataRequestDetailsComponent {
   protected readonly isRejecting = signal(false);
   protected readonly isActivating = signal(false);
   protected readonly isPausing = signal(false);
+  protected readonly isReactivating = signal(false);
   protected readonly showPauseConfirmation = signal(false);
+  protected readonly showReactivateConfirmation = signal(false);
   private readonly refreshListNeeded = signal(false);
 
   protected readonly isActionPending = computed(
-    () => this.isAccepting() || this.isRejecting() || this.isPausing(),
+    () => this.isAccepting() || this.isRejecting() || this.isPausing() || this.isReactivating(),
   );
 
   // View Children
@@ -72,7 +74,7 @@ export class AdminDataRequestDetailsComponent {
     () => this.contractResource.value()?.sealState !== SealAttemptStateEnum.Completed,
   );
 
-  protected readonly pauseDescriptionParams = computed(() => {
+  protected readonly modalDescriptionParams = computed(() => {
     const request = this.detailsComponent()?.dataRequest();
     return {
       requestName: this.i18nService.useObjectTranslation(request?.title),
@@ -135,6 +137,27 @@ export class AdminDataRequestDetailsComponent {
 
   protected handleContractSealed(): void {
     this.contractResource.reload();
+  }
+
+  protected closeReactivateConfirmation(): void {
+    this.showReactivateConfirmation.set(false);
+  }
+
+  protected openReactivateConfirmation(): void {
+    this.showReactivateConfirmation.set(true);
+  }
+
+  protected reactivateRequest(): void {
+    this.closeReactivateConfirmation();
+    this.isReactivating.set(true);
+    this.dataRequestService
+      .activateDataRequest(this.dataRequestId(), this.stateService.actingRole())
+      .then(() => {
+        this.refreshListNeeded.set(true);
+        this.detailsComponent()?.dataRequestResource.reload();
+      })
+      .catch((error) => this.errorService.handleError(error))
+      .finally(() => this.isReactivating.set(false));
   }
 
   protected rejectRequest(): void {

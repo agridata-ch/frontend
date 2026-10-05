@@ -851,9 +851,16 @@
       "activate": "Activer la demande",
       "pause": "Mettre la demande en pause",
       "pauseConfirmation": {
-        "title": "Mettre la demande de données en pause ?",
+        "title": "Mettre la demande de données en pause?",
         "description": "Vous êtes sur le point de mettre en pause la demande de données {{ requestName }} entre {{ provider }} et {{ consumer }}. Cela interrompra immédiatement l’échange de données entre les parties concernées. Cette action peut être annulée.",
         "confirm": "Oui, mettre la demande de données en pause",
+        "cancel": "Annuler"
+      },
+      "reactivate": "Réactiver la demande",
+      "reactivateConfirmation": {
+        "title": "Réactiver la demande de données en pause?",
+        "description": "Vous êtes sur le point de réactiver la demande de données en pause {{ requestName }} entre {{ provider }} et {{ consumer }}. L’échange de données entre les parties concernées reprendra. Cette action peut être annulée.",
+        "confirm": "Oui, réactiver la demande de données en pause",
         "cancel": "Annuler"
       }
     }

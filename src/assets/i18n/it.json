@@ -855,6 +855,13 @@
         "description": "Stai per mettere in pausa la richiesta di dati {{ requestName }} tra {{ provider }} e {{ consumer }}. In questo modo, lo scambio di dati tra le parti coinvolte verrà interrotto immediatamente. Questa azione può essere annullata.",
         "confirm": "Sì, mettere in pausa la richiesta di dati",
         "cancel": "Annulla"
+      },
+      "reactivate": "Riattivare la richiesta",
+      "reactivateConfirmation": {
+        "title": "Riattivare la richiesta di dati in pausa?",
+        "description": "Stai per riattivare la richiesta di dati in pausa {{ requestName }} tra {{ provider }} e {{ consumer }}. Lo scambio di dati tra le parti coinvolte verrà ripreso. Questa azione può essere annullata.",
+        "confirm": "Sì, riattivare la richiesta di dati in pausa",
+        "cancel": "Annulla"
       }
     }
   },
