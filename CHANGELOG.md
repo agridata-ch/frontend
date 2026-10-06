@@ -1,3 +1,9 @@
+## [1.22.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.12...v1.22.0-rc.13) (2026-10-06)
+
+### Features
+
+- **translations:** update text for alerts of migrated data requests ([d79b4bb](https://github.com/agridata-ch/frontend/commit/d79b4bb1010ac3531a2d6f4134a4babe104a84f2)), references [DIGIB2-1444](https://github.com/agridata-ch/frontend/issues/-1444)
+
 ## [1.22.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.11...v1.22.0-rc.12) (2026-10-02)
 
 ### Features
