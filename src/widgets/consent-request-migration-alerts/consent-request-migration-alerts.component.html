@@ -1,7 +1,7 @@
 <ng-container *i18n="let t; prefix: 'producer'">
-  <ng-template #groupsContent let-groups>
+  <ng-template #groupsContent let-groups let-introKey="introKey">
     <div class="grid gap-4 mt-2">
-      <p>{{ t('migrationInfo.common.intro') }}</p>
+      <p>{{ t(introKey) }}</p>
       @for (group of groups; track group.consumerName) {
         <div>
           <p class="font-semibold">
@@ -31,7 +31,10 @@
       (closeAlert)="handleClose(migrationInfo)"
     >
       <ng-container
-        *ngTemplateOutlet="groupsContent; context: { $implicit: migrationInfo.groups }"
+        *ngTemplateOutlet="
+          groupsContent;
+          context: { $implicit: migrationInfo.groups, introKey: migrationInfo.introKey }
+        "
       />
     </app-alert>
   }

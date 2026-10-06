@@ -655,15 +655,16 @@
     "uidMissingWarning": "Zu Ihrer Person oder Unternehmen ist zurzeit noch keine UID vorhanden. Da verschiedene Systeme involviert sind, kann es einige Tage dauern bis wir alle relevanten Angaben haben, damit agridata.ch funktionieren kann. Bitte versuchen sie es in ein paar Tage nochmal. Besteht Ihr Problem weiterhin, melden sie sich bitte beim Support ({{ phoneNumber }}).",
     "migrationInfo": {
       "maf": {
-        "title": "Neue Datenanfragen aus \"Meine Agrardatenfreigaben (MAF)\" jetzt verfügbar"
+        "title": "Neue Datenanfragen aus \"Meine Agrardatenfreigaben (MAF)\" jetzt verfügbar",
+        "intro": "Um Ihnen Zeit und Aufwand zu sparen, haben wir Ihre bisherigen Einstellungen aus Meine Agrardatenfreigaben (MAF) automatisch für Sie zu agridata.ch übertragen."
       },
       "tvd": {
-        "title": "Neue Datenanfragen aus \"Tierverkehrsdatenbank (TVD)\" jetzt verfügbar"
+        "title": "Neue Datenanfragen aus \"Tierverkehrsdatenbank (TVD)\" jetzt verfügbar",
+        "intro": "Um Ihnen Zeit und Aufwand zu sparen, haben wir Ihre bisherigen Einstellungen aus der Tierverkehrsdatenbank (TVD) automatisch für Sie zu agridata.ch übertragen."
       },
       "common": {
-        "intro": "Ihre Zustimmung für folgende Datenanfragen wurden übernommen.",
-        "requestsFromConsumer": "Datenanfrage(n) von {{consumerName}}",
-        "tableHint": "Sie finden die Anfrage in der untenstehenden Tabelle und können bei Bedarf die Zustimmung ändern."
+        "requestsFromConsumer": "Übernommene Anfrage von {{consumerName}}",
+        "tableHint": "Sie müssen nichts weiter tun. Sollten Sie eine Zustimmung nicht mehr wünschen, können Sie diese jederzeit hier auf agridata.ch ändern: Öffnen Sie dazu einfach die entsprechende Datenanfrage in der untenstehenden Tabelle und wählen Sie \"Ablehnen\"."
       }
     }
   },

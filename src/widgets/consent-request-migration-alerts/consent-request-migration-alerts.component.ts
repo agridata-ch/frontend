@@ -14,19 +14,31 @@ interface MigratedRequestGroup {
 interface MigrationSystem {
   id: string;
   flag: 'showStateAsMigratedFromMaf' | 'showStateAsMigratedFromTvd';
+  introKey: string;
   titleKey: string;
 }
 
 interface MigrationInfo {
   id: string;
+  introKey: string;
   titleKey: string;
   requests: ConsentRequestAggregationSummaryDto[];
   groups: MigratedRequestGroup[];
 }
 
 const MIGRATION_SYSTEMS: MigrationSystem[] = [
-  { id: 'maf', flag: 'showStateAsMigratedFromMaf', titleKey: 'migrationInfo.maf.title' },
-  { id: 'tvd', flag: 'showStateAsMigratedFromTvd', titleKey: 'migrationInfo.tvd.title' },
+  {
+    id: 'maf',
+    flag: 'showStateAsMigratedFromMaf',
+    introKey: 'migrationInfo.maf.intro',
+    titleKey: 'migrationInfo.maf.title',
+  },
+  {
+    id: 'tvd',
+    flag: 'showStateAsMigratedFromTvd',
+    introKey: 'migrationInfo.tvd.intro',
+    titleKey: 'migrationInfo.tvd.title',
+  },
 ];
 
 /**
@@ -50,11 +62,11 @@ export class ConsentRequestMigrationAlertsComponent {
 
   protected readonly migrationInfos = computed<MigrationInfo[]>(() => {
     const dismissedIds = this.dismissedMigrationIds();
-    return MIGRATION_SYSTEMS.map(({ id, flag, titleKey }) => {
+    return MIGRATION_SYSTEMS.map(({ id, flag, introKey, titleKey }) => {
       const requests = this.requests().filter(
         (request) => request[flag] && !dismissedIds.has(request.id),
       );
-      return { id, titleKey, requests, groups: this.groupByConsumer(requests) };
+      return { id, introKey, titleKey, requests, groups: this.groupByConsumer(requests) };
     }).filter((migrationInfo) => migrationInfo.requests.length > 0);
   });
 
