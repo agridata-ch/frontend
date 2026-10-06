@@ -655,15 +655,16 @@
     "uidMissingWarning": "Al momento non è ancora presente alcun numero UID relativo alla Sua persona o alla Sua azienda. Poiché sono coinvolti diversi sistemi, potrebbero essere necessari alcuni giorni prima che disponiamo di tutti i dati necessari per il corretto funzionamento di agridata.ch. La preghiamo di riprovare tra qualche giorno. Se il problema persiste, la preghiamo di contattare l'assistenza ({{ phoneNumber }}).",
     "migrationInfo": {
       "maf": {
-        "title": "Sono ora disponibili nuove richieste di dati da “Mia condivisione dei dati agricoli (MAF)”"
+        "title": "Sono ora disponibili nuove richieste di dati da “Mia condivisione dei dati agricoli (MAF)”",
+        "intro": "Per farvi risparmiare tempo e lavoro, abbiamo trasferito automaticamente le impostazioni che avevate precedentemente configurato in Mia condivisione dei dati agricoli (MAF) ad agridata.ch."
       },
       "tvd": {
-        "title": "Nuove richieste di dati da \"BDTA/ Identitas\" sono ora disponibili"
+        "title": "Nuove richieste di dati dalla \"Banca dati sul traffico degli animali (BDTA)\" sono ora disponibili",
+        "intro": "Per farvi risparmiare tempo e lavoro, abbiamo trasferito automaticamente le impostazioni che avevate precedentemente configurato nella Banca dati sul traffico degli animali (BDTA) ad agridata.ch."
       },
       "common": {
-        "intro": "Il Suo consenso alle seguenti richieste di dati è stato registrato.",
-        "requestsFromConsumer": "Richiesta/e di dati da parte di {{consumerName}}",
-        "tableHint": "Troverete la richiesta nella tabella sottostante e, se necessario, potrete modificare il consenso."
+        "requestsFromConsumer": "Richieste trasferite da {{consumerName}}",
+        "tableHint": "Non dovete fare nulla. Se non desiderate più fornire un consenso, potete modificarlo in qualsiasi momento qui su agridata.ch: basta aprire la relativa richiesta di dati nella tabella sottostante e selezionare «Rifiuta»."
       }
     }
   },
