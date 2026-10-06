@@ -15,6 +15,7 @@ import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ConsentRequestAggregationStateEnum, ConsentRequestStateEnum } from '@/entities/openapi';
 import {
   ConsentRequestDecisionStore,
+  ConsentRequestStateBadgeComponent,
   FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM,
   getAggregationBadgeVariant,
   getToastMessage,
@@ -36,22 +37,13 @@ import {
 import { ScrollFadeDirective } from '@/shared/scroll-fade';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService } from '@/shared/toast';
-import { TooltipDirective } from '@/shared/tooltip';
 import { AlertComponent, AlertType } from '@/shared/ui/alert';
-import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal';
 import { startCountdown } from '@/shared/utils/ui.util';
 import { DataRequestContentComponent } from '@/widgets/data-request-content';
 
 type DecisionTarget = { id: string; previousState?: ConsentRequestStateEnum };
-
-const DATED_STATES = new Set<ConsentRequestAggregationStateEnum>([
-  ConsentRequestAggregationStateEnum.Granted,
-  ConsentRequestAggregationStateEnum.PartiallyGranted,
-  ConsentRequestAggregationStateEnum.Declined,
-  ConsentRequestAggregationStateEnum.LegallyPermitted,
-]);
 
 /**
  * Implements the logic for displaying detailed consent request information. It renders metadata
@@ -60,14 +52,14 @@ const DATED_STATES = new Set<ConsentRequestAggregationStateEnum>([
  * contextual toast notifications. When a valid redirect URI is provided, the component shows
  * a modal with a countdown timer before automatically redirecting the user to the specified URL.
  *
- * CommentLastReviewed: 2026-10-02
+ * CommentLastReviewed: 2026-10-06
  */
 @Component({
   selector: 'app-consent-request-details',
   imports: [
-    AgridataBadgeComponent,
     AlertComponent,
     ButtonComponent,
+    ConsentRequestStateBadgeComponent,
     DataRequestContentComponent,
     ErrorOutletComponent,
     I18nDirective,
@@ -75,7 +67,6 @@ const DATED_STATES = new Set<ConsentRequestAggregationStateEnum>([
     ModalComponent,
     ScrollFadeDirective,
     SidepanelComponent,
-    TooltipDirective,
   ],
   providers: [ConsentRequestDecisionStore],
   templateUrl: './consent-request-details.component.html',
@@ -102,7 +93,6 @@ export class ConsentRequestDetailsComponent {
 
   // Constants
   protected readonly AlertType = AlertType;
-  protected readonly badgeSize = BadgeSize;
   protected readonly ButtonVariants = ButtonVariants;
 
   // Timers
@@ -123,19 +113,6 @@ export class ConsentRequestDetailsComponent {
   protected readonly detailsOpened = signal(false);
 
   // Computed Signals
-  // Badge shows the state only; states with a decision date expose it via the tooltip.
-  protected readonly badge = computed(() => {
-    const stateCode = this.request()?.stateCode;
-    if (!stateCode) {
-      return { key: 'consent-request.details.stateCode.UNKNOWN', tooltip: '' };
-    }
-    const tooltip = DATED_STATES.has(stateCode)
-      ? this.i18nService.translate(`consent-request.details.stateCode.${stateCode}`, {
-          date: this.formattedLastStateChangeDate(),
-        })
-      : '';
-    return { key: `consent-request.dataRequest.stateCode.${stateCode}`, tooltip };
-  });
   protected readonly badgeVariant = computed(() =>
     getAggregationBadgeVariant(this.request()?.stateCode),
   );
@@ -153,9 +130,6 @@ export class ConsentRequestDetailsComponent {
         : this.consentRequestService.fetchConsentRequestAggregation(params.id, params.uid);
     },
   });
-  protected readonly formattedLastStateChangeDate = computed(() =>
-    formatDate(this.request()?.lastStateChangeDate),
-  );
   protected readonly formattedRequestDate = computed(() => formatDate(this.request()?.requestDate));
   protected readonly request = createResourceValueComputed(this.consentRequestResource);
   // Disabled when nothing would change to that state (every relevant child already has it);

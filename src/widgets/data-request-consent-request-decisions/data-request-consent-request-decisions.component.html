@@ -20,9 +20,9 @@
                 </span>
               </div>
               @if (store.dataRequestStateCode() !== ConsentRequestAggregationStateEnum.Opened) {
-                <app-agridata-badge
-                  [text]="stateLabelKey(uidRequest.stateCode) | i18n"
-                  [size]="BadgeSize.MD"
+                <app-consent-request-state-badge
+                  [stateCode]="uidRequest.stateCode"
+                  [lastStateChangeDate]="uidRequest.lastStateChangeDate"
                   [variant]="getConsentRequestBadgeVariant(uidRequest.stateCode)"
                 />
               }
@@ -67,9 +67,9 @@
                 } @else if (
                   store.dataRequestStateCode() !== ConsentRequestAggregationStateEnum.Opened
                 ) {
-                  <app-agridata-badge
-                    [text]="stateLabelKey(request.stateCode) | i18n"
-                    [size]="BadgeSize.MD"
+                  <app-consent-request-state-badge
+                    [stateCode]="request.stateCode"
+                    [lastStateChangeDate]="request.lastStateChangeDate"
                     [variant]="getConsentRequestBadgeVariant(request.stateCode)"
                   />
                 }

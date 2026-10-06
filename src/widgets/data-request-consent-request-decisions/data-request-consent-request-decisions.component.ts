@@ -2,16 +2,16 @@ import { Component, computed, inject, input } from '@angular/core';
 import { faEdit, faInfoCircle } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { ConsentRequestAggregationStateEnum, ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestAggregationStateEnum } from '@/entities/openapi';
 import {
   ConsentRequestDecisionStore,
+  ConsentRequestStateBadgeComponent,
   getConsentRequestBadgeVariant,
 } from '@/shared/consent-request';
-import { I18nDirective, I18nPipe } from '@/shared/i18n';
+import { I18nDirective } from '@/shared/i18n';
 import { TooltipDirective } from '@/shared/tooltip';
 import { AgridataToggleComponent } from '@/shared/ui/agridata-toggle';
 import { AlertComponent, AlertType } from '@/shared/ui/alert';
-import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 /**
@@ -21,16 +21,15 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
  * injected store and is submitted by the details panel footer. Outside the details panel (no store)
  * or when the aggregation has no children it shows a non-producer info message.
  *
- * CommentLastReviewed: 2026-10-02
+ * CommentLastReviewed: 2026-10-06
  */
 @Component({
   selector: 'app-data-request-consent-request-decisions',
   imports: [
-    AgridataBadgeComponent,
     AgridataToggleComponent,
     ButtonComponent,
+    ConsentRequestStateBadgeComponent,
     I18nDirective,
-    I18nPipe,
     AlertComponent,
     FontAwesomeModule,
     TooltipDirective,
@@ -47,7 +46,6 @@ export class DataRequestConsentRequestDecisionsComponent {
 
   // Constants
   protected readonly AlertType = AlertType;
-  protected readonly BadgeSize = BadgeSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly ConsentRequestAggregationStateEnum = ConsentRequestAggregationStateEnum;
   protected readonly getConsentRequestBadgeVariant = getConsentRequestBadgeVariant;
@@ -63,8 +61,4 @@ export class DataRequestConsentRequestDecisionsComponent {
       ? 'description.singleBur'
       : 'description.multipleBur';
   });
-
-  protected stateLabelKey(stateCode?: ConsentRequestStateEnum): string {
-    return `consent-request.dataRequest.stateCode.${stateCode}`;
-  }
 }

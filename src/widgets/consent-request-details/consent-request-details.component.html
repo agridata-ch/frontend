@@ -11,17 +11,11 @@
     <span class="text-agridata-tertiary-text text-sm font-normal">
       {{ t('requestDate', { date: formattedRequestDate() }) }}
     </span>
-    <span
-      [appTooltip]="badge().tooltip"
-      [attr.tabindex]="badge().tooltip ? 0 : null"
-      [attr.aria-label]="badge().tooltip || null"
-    >
-      <app-agridata-badge
-        [text]="badge().key | i18n"
-        [size]="badgeSize.MD"
-        [variant]="badgeVariant()"
-      />
-    </span>
+    <app-consent-request-state-badge
+      [stateCode]="request()?.stateCode"
+      [lastStateChangeDate]="request()?.lastStateChangeDate"
+      [variant]="badgeVariant()"
+    />
   </div>
   <app-error-outlet></app-error-outlet>
   <div class="overflow-y-auto flex flex-col gap-6 grow pb-10" appScrollFade>
