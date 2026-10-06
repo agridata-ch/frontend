@@ -17,5 +17,6 @@ export interface StateCountsDto {
     open?: number;
     granted?: number;
     declined?: number;
+    withdrawn?: number;
 }
 

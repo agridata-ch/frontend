@@ -293,23 +293,28 @@ export class ConsentRequestsService extends BaseService {
     }
 
     /**
-     * Update Consent Request State For Current Data Producer
-     * Updates the status of a specific consent request. Only accessible to the data producer assigned to the consent request.
+     * Update Consent Request State
+     * Updates the status of a specific consent request. Withdrawing is only accessible to the data consumer owning the related data request, all other status changes only to the data producer assigned to the consent request.
      * @param id ID of the consent request
      * @param body New status of the consent request
+     * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateConsentRequestStatus(id: string, body: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public updateConsentRequestStatus(id: string, body: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public updateConsentRequestStatus(id: string, body: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public updateConsentRequestStatus(id: string, body: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public updateConsentRequestStatus(id: string, body: string, actingRole?: 'CONSUMER' | 'PRODUCER', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public updateConsentRequestStatus(id: string, body: string, actingRole?: 'CONSUMER' | 'PRODUCER', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public updateConsentRequestStatus(id: string, body: string, actingRole?: 'CONSUMER' | 'PRODUCER', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public updateConsentRequestStatus(id: string, body: string, actingRole?: 'CONSUMER' | 'PRODUCER', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateConsentRequestStatus.');
         }
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling updateConsentRequestStatus.');
         }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>actingRole, 'actingRole');
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -353,6 +358,7 @@ export class ConsentRequestsService extends BaseService {
             {
                 context: localVarHttpContext,
                 body: body,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

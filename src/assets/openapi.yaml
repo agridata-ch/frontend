@@ -621,6 +621,7 @@ components:
       - DECLINED
       - LEGALLY_PERMITTED
       - NOT_CREATED
+      - WITHDRAWN
     ConsentRequestStatusSummaryDto:
       description: "KPI summary of consent requests for a data request, broken down\
         \ by mode (UID/BUR)"
@@ -2348,6 +2349,9 @@ components:
         declined:
           type: integer
           format: int64
+        withdrawn:
+          type: integer
+          format: int64
     TargetTypeCodeEnum:
       type: string
       enum:
@@ -2551,7 +2555,7 @@ components:
     SecurityScheme:
       type: openIdConnect
       description: Authentication
-      openIdConnectUrl: http://localhost:6999/realms/agate/.well-known/openid-configuration
+      openIdConnectUrl: https://idp-rf.agate.ch/auth/realms/agate/.well-known/openid-configuration
 tags:
 - name: Agb Revision
   description: Provides access to Agb revisions.
@@ -2889,8 +2893,10 @@ paths:
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/consent-requests/{id}/status:
     put:
-      description: Updates the status of a specific consent request. Only accessible
-        to the data producer assigned to the consent request.
+      description: "Updates the status of a specific consent request. Withdrawing\
+        \ is only accessible to the data consumer owning the related data request,\
+        \ all other status changes only to the data producer assigned to the consent\
+        \ request."
       operationId: updateConsentRequestStatus
       tags:
       - Consent Requests
@@ -2901,6 +2907,20 @@ paths:
         in: path
         schema:
           $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - CONSUMER
+          - PRODUCER
       requestBody:
         description: New status of the consent request
         content:
@@ -2927,10 +2947,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-      summary: Update Consent Request State For Current Data Producer
+      summary: Update Consent Request State
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset:
       - Mobile App
       - agridata.ch Web App
@@ -5830,9 +5851,7 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
-      x-api-subset:
-      - agridata.ch Web App
-      - Data Consumer
+      x-api-subset: agridata.ch Web App
   /api/user/v1/user-info:
     get:
       description: Retrieves user-info for the currently authenticated user.
@@ -6192,7 +6211,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.20.0-rc.3
+  version: 1.20.0-rc.13
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 
