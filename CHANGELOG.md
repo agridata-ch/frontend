@@ -1,3 +1,9 @@
+## [1.22.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.14...v1.22.0-rc.15) (2026-10-06)
+
+### Features
+
+- **consent-request:** add consent request state badge component and update related usages ([8d12751](https://github.com/agridata-ch/frontend/commit/8d12751494a9881ec6f76f4b3d903eea7bc99479)), references [DIGIB2-1666](https://github.com/agridata-ch/frontend/issues/-1666)
+
 ## [1.22.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.13...v1.22.0-rc.14) (2026-10-06)
 
 ### Features
