@@ -17,7 +17,8 @@ export const ConsentRequestStateEnum = {
     Opened: 'OPENED',
     Declined: 'DECLINED',
     LegallyPermitted: 'LEGALLY_PERMITTED',
-    NotCreated: 'NOT_CREATED'
+    NotCreated: 'NOT_CREATED',
+    Withdrawn: 'WITHDRAWN'
 } as const;
 export type ConsentRequestStateEnum = typeof ConsentRequestStateEnum[keyof typeof ConsentRequestStateEnum];
 

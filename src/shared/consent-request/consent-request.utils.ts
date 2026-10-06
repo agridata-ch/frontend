@@ -28,6 +28,7 @@ const CONSENT_REQUEST_BADGE_VARIANTS: Record<ConsentRequestStateEnum, BadgeVaria
   [ConsentRequestStateEnum.Declined]: BadgeVariant.ERROR,
   [ConsentRequestStateEnum.NotCreated]: BadgeVariant.DEFAULT,
   [ConsentRequestStateEnum.LegallyPermitted]: BadgeVariant.SUCCESS,
+  [ConsentRequestStateEnum.Withdrawn]: BadgeVariant.DEFAULT,
 };
 
 export function getConsentRequestBadgeVariant(stateCode?: ConsentRequestStateEnum) {
