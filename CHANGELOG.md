@@ -1,3 +1,9 @@
+## [1.22.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.13...v1.22.0-rc.14) (2026-10-06)
+
+### Features
+
+- **data-request:** implement data-request reactivation modal ([4dd6618](https://github.com/agridata-ch/frontend/commit/4dd6618d65c3116f879f8da98de33a3b2fba16d6)), references [DIGIB2-1691](https://github.com/agridata-ch/frontend/issues/-1691)
+
 ## [1.22.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.12...v1.22.0-rc.13) (2026-10-06)
 
 ### Features
