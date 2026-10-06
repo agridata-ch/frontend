@@ -22,6 +22,7 @@ import {
 import { environment } from '@/environments/environment';
 import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import {
+  ConsentRequestStateBadgeComponent,
   getAggregationBadgeVariant,
   getToastMessage,
   getToastTitle,
@@ -41,7 +42,7 @@ import {
   ClientTableMetadata,
 } from '@/shared/ui/agridata-client-table';
 import { CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
-import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
+import { BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { ConsentRequestEmptyStateComponent } from '@/widgets/consent-request-empty-state';
@@ -56,13 +57,13 @@ import { ConsentRequestProducerViewDtoDirective } from './consent-request-produc
  * with undo support, and toast notifications. It highlights open requests and integrates avatars
  * and badges for clear presentation.
  *
- * CommentLastReviewed: 2026-05-21
+ * CommentLastReviewed: 2026-10-06
  */
 @Component({
   selector: 'app-consent-request-table',
   imports: [
     ConsentRequestFilterComponent,
-    AgridataBadgeComponent,
+    ConsentRequestStateBadgeComponent,
     ConsentRequestListComponent,
     AgridataClientTableComponent,
     ConsentRequestProducerViewDtoDirective,

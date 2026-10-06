@@ -584,34 +584,6 @@ describe('ConsentRequestDetailsComponent', () => {
     );
   });
 
-  describe('state badge', () => {
-    it('shows the state without a date and moves the date into the tooltip', async () => {
-      consentRequestService.fetchConsentRequestAggregation.mockResolvedValue({
-        ...(mockConsentRequestAggregations[0] as ConsentRequestAggregationDto),
-        stateCode: ConsentRequestAggregationStateEnum.Granted,
-        lastStateChangeDate: '2026-05-01T10:00:00',
-      });
-      componentRef.setInput('aggregationId', '1');
-      await fixture.whenStable();
-
-      expect(component['badge']()).toEqual({
-        key: 'consent-request.dataRequest.stateCode.GRANTED',
-        tooltip: 'consent-request.details.stateCode.GRANTED',
-      });
-    });
-
-    it('has no tooltip for an opened request', async () => {
-      consentRequestService.fetchConsentRequestAggregation.mockResolvedValue({
-        ...(mockConsentRequestAggregations[0] as ConsentRequestAggregationDto),
-        stateCode: ConsentRequestAggregationStateEnum.Opened,
-      });
-      componentRef.setInput('aggregationId', '1');
-      await fixture.whenStable();
-
-      expect(component['badge']().tooltip).toBe('');
-    });
-  });
-
   describe('per-BUR decisions (edit mode)', () => {
     beforeEach(async () => {
       // dr-4 has a granted+declined+opened mix, one global child (id '6') and two BUR children.

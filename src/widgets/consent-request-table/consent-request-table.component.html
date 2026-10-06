@@ -29,9 +29,10 @@
     </span>
   </ng-template>
   <ng-template #consentRequestState [appConsentRequestProducerViewDtoGuard] let-item>
-    <app-agridata-badge
-      [text]="getTranslatedStateValue(item.stateCode)"
-      [variant]="getBadgeVariant(item?.stateCode)"
+    <app-consent-request-state-badge
+      [stateCode]="item.stateCode"
+      [lastStateChangeDate]="item.lastStateChangeDate"
+      [variant]="getBadgeVariant(item.stateCode)"
       [size]="BadgeSize.SM"
     />
   </ng-template>
