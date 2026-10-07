@@ -1,3 +1,10 @@
+## [1.22.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.15...v1.22.0-rc.16) (2026-10-07)
+
+### Features
+
+- **consent-request:** fix failing on WITHDRAW state not part of Record ([3a5995b](https://github.com/agridata-ch/frontend/commit/3a5995ba2c91dd5d29deec399cf6d44e1ee61c2f)), references [DIGIB2-618](https://github.com/agridata-ch/frontend/issues/-618)
+- **consent-request:** make purpose placeholder html tag ([fce2d8b](https://github.com/agridata-ch/frontend/commit/fce2d8b27c413db10edb5785b7ffc6426a43f452)), references [DIGIB2-1735](https://github.com/agridata-ch/frontend/issues/-1735)
+
 ## [1.22.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.14...v1.22.0-rc.15) (2026-10-06)
 
 ### Features
