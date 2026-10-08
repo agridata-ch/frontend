@@ -120,7 +120,7 @@ describe('ConsentRequestTableComponent', () => {
       'warning',
     );
     expect(component.getBadgeVariant(ConsentRequestAggregationStateEnum.PartiallyGranted)).toBe(
-      'warning',
+      'success',
     );
   });
 

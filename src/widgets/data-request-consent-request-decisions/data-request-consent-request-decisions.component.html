@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-4" *i18n="let t; prefix: 'consent-request.details.decisions'">
   <h4>{{ t('title') }}</h4>
-  <span>{{ t('description') }}</span>
+  <span>{{ t(descriptionKey()) }}</span>
 
   @if (store && store.consentRequests().length > 0) {
     <div class="flex flex-col gap-6">
@@ -10,10 +10,22 @@
           <div
             class="border border-agridata-stroke rounded-md divide-y divide-agridata-stroke overflow-hidden"
           >
-            <div class="flex items-center justify-between gap-4 p-4">
-              <span class="text-sm text-agridata-secondary-text">{{
-                t('uid', { uid: uidRequest.dataProducerUid })
-              }}</span>
+            <div class="flex items-center justify-between gap-4 py-3 px-4">
+              <div class="flex flex-col">
+                <span class="text-sm text-agridata-secondary-text">
+                  {{ t('uid') }}
+                </span>
+                <span>
+                  {{ uidRequest.dataProducerUid }}
+                </span>
+              </div>
+              @if (store.dataRequestStateCode() !== ConsentRequestAggregationStateEnum.Opened) {
+                <app-consent-request-state-badge
+                  [stateCode]="uidRequest.stateCode"
+                  [lastStateChangeDate]="uidRequest.lastStateChangeDate"
+                  [variant]="getConsentRequestBadgeVariant(uidRequest.stateCode)"
+                />
+              }
             </div>
           </div>
         </div>
@@ -36,9 +48,14 @@
               <div
                 class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-4"
               >
-                <span class="text-sm text-agridata-secondary-text">{{
-                  t('bur.title', { bur: request.dataProducerBur })
-                }}</span>
+                <div class="flex flex-col">
+                  <span class="text-sm text-agridata-secondary-text">
+                    {{ t('bur.title') }}
+                  </span>
+                  <span>
+                    {{ request.dataProducerBur }}
+                  </span>
+                </div>
                 @if (store.editMode()) {
                   <app-agridata-toggle
                     class="sm:flex-row-reverse"
@@ -47,10 +64,12 @@
                     (checkedChange)="store.setDecision(request.id, $event)"
                     [label]="store.decisions()[request.id] ? t('bur.enabled') : t('bur.disabled')"
                   />
-                } @else {
-                  <app-agridata-badge
-                    [text]="stateLabelKey(request.stateCode) | i18n"
-                    [size]="BadgeSize.MD"
+                } @else if (
+                  store.dataRequestStateCode() !== ConsentRequestAggregationStateEnum.Opened
+                ) {
+                  <app-consent-request-state-badge
+                    [stateCode]="request.stateCode"
+                    [lastStateChangeDate]="request.lastStateChangeDate"
                     [variant]="getConsentRequestBadgeVariant(request.stateCode)"
                   />
                 }
@@ -68,14 +87,6 @@
                 (handleClick)="store.startEdit()"
               >
                 {{ t('edit') }}
-              </app-agridata-button>
-            } @else {
-              <app-agridata-button
-                [variant]="ButtonVariants.Link"
-                [dataTestId]="'consent-request-decisions-cancel-edit'"
-                (handleClick)="store.cancelEdit()"
-              >
-                {{ t('cancel') }}
               </app-agridata-button>
             }
           </div>

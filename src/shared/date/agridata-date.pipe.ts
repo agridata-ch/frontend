@@ -30,10 +30,6 @@ export class AgridataDatePipe implements PipeTransform {
       return format(date, 'dd.MM.yyyy HH:mm:ss.SSS');
     }
 
-    if (formatType === 'middle') {
-      return format(date, 'dd.MM.yyyy HH:mm');
-    }
-
-    return format(date, 'dd.MM.yyyy');
+    return formatType === 'middle' ? format(date, 'dd.MM.yyyy HH:mm') : format(date, 'dd.MM.yyyy');
   }
 }

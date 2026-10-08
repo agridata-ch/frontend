@@ -38,7 +38,77 @@
       >
         {{ t('actions.activate') }}
       </app-agridata-button>
+      } @if (details.dataRequest()?.stateCode === DataRequestStateEnum.Active) {
+      <app-agridata-button
+        class="flex-1"
+        [variant]="ButtonVariants.Primary"
+        [loading]="isPausing()"
+        (handleClick)="openPauseConfirmation()"
+      >
+        {{ t('actions.pause') }}
+      </app-agridata-button>
+      } @if (details.dataRequest()?.stateCode === DataRequestStateEnum.Paused) {
+      <app-agridata-button
+        class="flex-1"
+        [variant]="ButtonVariants.Primary"
+        [loading]="isReactivating()"
+        (handleClick)="openReactivateConfirmation()"
+      >
+        {{ t('actions.reactivate') }}
+      </app-agridata-button>
       }
     </div>
   </app-data-request-details>
+
+  <app-modal
+    [open]="showPauseConfirmation()"
+    [title]="t('actions.pauseConfirmation.title')"
+    [dataTestId]="'pause-request-modal'"
+    (closed)="closePauseConfirmation()"
+  >
+    <div class="flex flex-col gap-6">
+      <span>{{ t('actions.pauseConfirmation.description', modalDescriptionParams()) }}</span>
+      <div class="flex justify-between gap-2">
+        <app-agridata-button
+          [variant]="ButtonVariants.Secondary"
+          (handleClick)="closePauseConfirmation()"
+        >
+          {{ t('actions.pauseConfirmation.cancel') }}
+        </app-agridata-button>
+        <app-agridata-button
+          [variant]="ButtonVariants.Primary"
+          [loading]="isPausing()"
+          (handleClick)="pauseRequest()"
+        >
+          {{ t('actions.pauseConfirmation.confirm') }}
+        </app-agridata-button>
+      </div>
+    </div>
+  </app-modal>
+
+  <app-modal
+    [open]="showReactivateConfirmation()"
+    [title]="t('actions.reactivateConfirmation.title')"
+    [dataTestId]="'reactivate-request-modal'"
+    (closed)="closeReactivateConfirmation()"
+  >
+    <div class="flex flex-col gap-6">
+      <span>{{ t('actions.reactivateConfirmation.description', modalDescriptionParams()) }}</span>
+      <div class="flex justify-between gap-2">
+        <app-agridata-button
+          [variant]="ButtonVariants.Secondary"
+          (handleClick)="closeReactivateConfirmation()"
+        >
+          {{ t('actions.reactivateConfirmation.cancel') }}
+        </app-agridata-button>
+        <app-agridata-button
+          [variant]="ButtonVariants.Primary"
+          [loading]="isReactivating()"
+          (handleClick)="reactivateRequest()"
+        >
+          {{ t('actions.reactivateConfirmation.confirm') }}
+        </app-agridata-button>
+      </div>
+    </div>
+  </app-modal>
 </ng-container>

@@ -297,6 +297,11 @@ export type Block =
   | TimelineCardBlock
   | DataCatalogBlock;
 
+export enum PageLayoutType {
+  DEFAULT = 'default',
+  NEWS_BLOG = 'news-blog',
+}
+
 export interface PageData {
   id: number;
   documentId: string;
@@ -310,6 +315,7 @@ export interface PageData {
   seo: SEO;
   slug: string;
   position: number;
+  layout_type?: PageLayoutType;
 }
 
 export interface StrapiSingleTypeResponse {
@@ -318,6 +324,54 @@ export interface StrapiSingleTypeResponse {
 
 export interface StrapiCollectionTypeResponse {
   data: PageData[];
+}
+
+export interface NewsCategory {
+  id: number;
+  documentId: string;
+  name: string;
+  slug: string;
+}
+
+export interface File {
+  documentId: string;
+  name: string;
+  url: string;
+  mime: string;
+  ext: string;
+}
+
+export interface NewsArticleLocalization {
+  id: number;
+  documentId: string;
+  locale: string;
+  slug: string;
+}
+
+export interface NewsArticle {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  description: string;
+  teaserText: string;
+  endDate: string | null;
+  image: Image;
+  imageAlt: string;
+  category: NewsCategory | null;
+  createdAt: string;
+  locale?: string;
+  attachments?: File[];
+  localizations?: NewsArticleLocalization[];
+  footer?: FooterBlock;
+  blocks?: Block[];
+}
+
+export interface NewsArticlesResponse {
+  data: NewsArticle[];
+  meta: {
+    pagination: { page: number; pageSize: number; pageCount: number; total: number };
+  };
 }
 
 export interface StrapiSingleTypeResponseWithContent {

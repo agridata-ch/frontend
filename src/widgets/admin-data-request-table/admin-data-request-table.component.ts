@@ -121,12 +121,10 @@ export class AdminDataRequestTableComponent {
   );
 
   protected getStatusTranslation(value?: string) {
-    if (!value) return '';
-    return this.i18nService.translate(`data-request.stateCode.${value}`);
+    return value ? this.i18nService.translate(`data-request.stateCode.${value}`) : '';
   }
 
   protected getTranslation(key: TranslationDto | undefined) {
-    if (!key) return '';
-    return this.i18nService.useObjectTranslation(key);
+    return key ? this.i18nService.useObjectTranslation(key) : '';
   }
 }

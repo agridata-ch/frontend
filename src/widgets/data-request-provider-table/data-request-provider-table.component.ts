@@ -156,15 +156,14 @@ export class DataRequestProviderTableComponent {
     const details = {
       icon: this.eyeIcon,
       label: 'data-request.table.tableActions.details',
-      callback: async () => this.tableRowAction.emit(request),
+      callback: () => this.tableRowAction.emit(request),
     };
 
     return [details];
   };
 
   protected getStatusTranslation(value?: string) {
-    if (!value) return '';
-    return this.i18nService.translate(`data-request.stateCode.${value}`);
+    return value ? this.i18nService.translate(`data-request.stateCode.${value}`) : '';
   }
 
   protected newRequest = () => {

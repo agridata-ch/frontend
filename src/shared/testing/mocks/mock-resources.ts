@@ -23,16 +23,9 @@ export class MockResources {
 
     const snapshotSignal: Signal<ResourceSnapshot<T>> = computed(() => {
       const status = statusSignal();
-      if (status === 'error') {
-        return { status, error: errorSignal() ?? new Error('Mock resource error') };
-      }
-      if (status === 'idle') {
-        return { status, value: valueSignal() };
-      }
-      if (status === 'loading' || status === 'reloading') {
-        return { status, value: valueSignal() };
-      }
-      return { status, value: valueSignal() };
+      return status === 'error'
+        ? { status, error: errorSignal() ?? new Error('Mock resource error') }
+        : { status, value: valueSignal() };
     });
 
     return {

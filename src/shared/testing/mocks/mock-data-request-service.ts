@@ -89,14 +89,17 @@ export type MockDataRequestService = Mockify<DataRequestService>;
 export function createMockDataRequestService(): MockDataRequestService {
   return {
     approveDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
+    createConsentRequestsForDataRequest: vi.fn().mockResolvedValue([]),
     createDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
     deleteDataRequest: vi.fn().mockResolvedValue(undefined),
     fetchDataRequest: vi.fn(),
     fetchDataRequests: vi.fn().mockResolvedValue(mockDataRequests),
     fetchProducersMetadata: vi.fn().mockResolvedValue(mockConsentRequestStatusSummary),
     getConsentRequestsOfDataRequest: vi.fn().mockResolvedValue(mockConsentRequestsPage),
+    getConsentRequestsOfDataRequestAndUid: vi.fn().mockResolvedValue(mockConsentRequestsPage.items),
     retreatDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
     activateDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
+    pauseDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
     submitDataRequest: vi.fn().mockResolvedValue(undefined),
     updateDataRequestDetails: vi.fn().mockResolvedValue(undefined),
     updateDataRequestValidRedirectUriRegex: vi.fn().mockResolvedValue(undefined),

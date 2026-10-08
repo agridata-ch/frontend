@@ -79,10 +79,9 @@ export class DataRequestContractSigningComponent {
   readonly contractResource = resource({
     params: () => ({ actingRole: this.stateService.actingRole(), id: this.activeContractId() }),
     loader: ({ params }) => {
-      if (!params?.id) {
-        return Promise.resolve(null);
-      }
-      return this.contractRevisionService.fetchContract(params.id, params.actingRole);
+      return params?.id
+        ? this.contractRevisionService.fetchContract(params.id, params.actingRole)
+        : Promise.resolve(null);
     },
     defaultValue: null,
   });

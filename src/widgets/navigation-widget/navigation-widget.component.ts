@@ -17,6 +17,7 @@ import { I18nService } from '@/shared/i18n';
 import { I18nPipe } from '@/shared/i18n/i18n.pipe';
 import { AuthService } from '@/shared/lib/auth';
 import { MobileNavigationWidgetComponent } from '@/widgets/navigation-widget/mobile-navigation-widget';
+import { NavigationItem } from '@/widgets/navigation-widget/navigation-item.model';
 
 /**
  * Implements the logic for navigation display and interaction. It conditionally renders items
@@ -57,7 +58,7 @@ export class NavigationWidgetComponent {
   readonly navIcon = computed(() => (this.isNavigationOpen() ? faChevronLeft : faChevronRight));
   readonly showNavigation = computed(() => this.authService.isAuthenticated());
   readonly userRoles = computed(() => this.authService.userRoles());
-  readonly navigationItems = computed(() =>
+  readonly navigationItems = computed<NavigationItem[]>(() =>
     [
       this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) &&
         !this.agridataStateService.isImpersonating() && {
@@ -95,7 +96,7 @@ export class NavigationWidgetComponent {
           icon: faUsers,
           route: `/${ROUTE_PATHS.SUPPORT_PATH}`,
         },
-    ].filter(Boolean),
+    ].filter((item): item is NavigationItem => Boolean(item)),
   );
 
   // Effects

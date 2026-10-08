@@ -1,5 +1,7 @@
 import { HttpContextToken, HttpErrorResponse } from '@angular/common/http';
 
+import { ExceptionEnum } from '@/entities/openapi';
+
 // Symbol to mark enhanced errors
 export const METHOD_ENHANCED = Symbol('methodEnhanced');
 
@@ -42,4 +44,19 @@ export function getErrorMethod(error: HttpErrorResponse): string | undefined {
 
 export function hasMethod(error: unknown): error is HttpErrorWithMethod {
   return error instanceof HttpErrorResponse && METHOD_ENHANCED in error;
+}
+
+// True when the backend answered with an EXTERNAL_SERVICE_ERROR, which for a UID lookup means the
+// UID does not exist. Callers can then show inline validation instead of a global error.
+export function isExternalServiceError(error: unknown): boolean {
+  if (!(error instanceof HttpErrorResponse)) {
+    return false;
+  }
+  const body: unknown = error.error;
+  return (
+    body !== null &&
+    typeof body === 'object' &&
+    'type' in body &&
+    body.type === ExceptionEnum.ExternalServiceError
+  );
 }

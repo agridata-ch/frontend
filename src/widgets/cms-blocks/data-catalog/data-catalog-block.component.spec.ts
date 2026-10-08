@@ -304,7 +304,8 @@ describe('DataCatalogBlockComponent', () => {
     fixture.detectChanges();
 
     expect(dataProductService.getPublicProductById).toHaveBeenCalledWith('x');
-    expect(fixture.nativeElement.querySelector('app-modal > div')).not.toBeNull();
+    // The modal portals itself to document.body, so it is no longer in the component subtree.
+    expect(document.body.querySelector('app-modal > div')).not.toBeNull();
     expect(TestBed.inject(Location).path()).toContain('x');
   });
 
@@ -324,14 +325,14 @@ describe('DataCatalogBlockComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    fixture.nativeElement
-      .querySelector('[data-testid="public-data-product-detail-modal-close"]')
+    document.body
+      .querySelector<HTMLElement>('[data-testid="public-data-product-detail-modal-close"]')
       ?.click();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('app-modal > div')).toBeNull();
+    expect(document.body.querySelector('app-modal > div')).toBeNull();
     expect(TestBed.inject(Location).path()).not.toContain('x');
   });
 

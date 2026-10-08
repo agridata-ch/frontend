@@ -78,8 +78,7 @@ describe('UI Utils', () => {
       ) {
         if (this.tagName === 'BUTTON') return triggerRect;
         if (this.dataset['testid'] === 'popover') return popoverRect;
-        if (this.dataset['testid'] === 'scroll-parent') return scrollParentRect;
-        return rect(0, 0);
+        return this.dataset['testid'] === 'scroll-parent' ? scrollParentRect : rect(0, 0);
       });
       Object.defineProperty(globalThis, 'innerHeight', { value: 800, configurable: true });
 

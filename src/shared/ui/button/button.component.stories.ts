@@ -112,6 +112,11 @@ export const PrimaryAccept = textStory('Accept', {
   ariaLabel: 'Accept',
 });
 
+export const PrimaryReject = textStory('Reject', {
+  variant: ButtonVariants.PrimaryReject,
+  ariaLabel: 'Reject',
+});
+
 export const PrimaryCms = textStory('Publish', {
   variant: ButtonVariants.PrimaryCms,
   ariaLabel: 'Publish',

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { faExternalLink } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -15,7 +15,6 @@ import { ViewSectionDirective } from '@/shared/view-section';
   selector: 'app-agridata-links-list',
   imports: [FontAwesomeModule, ViewSectionDirective],
   templateUrl: './agridata-links-list.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AgridataLinksListComponent {
   // Constants

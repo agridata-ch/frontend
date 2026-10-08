@@ -294,7 +294,10 @@ export abstract class DataRequestWizardBaseComponent {
         if (control) {
           firstValueFrom(this.translateService.selectTranslate(field.i18nDefaultValue)).then(
             (value) => {
-              setControlValue(formGroup, field.name, value, true);
+              const placeholderStartValue = field.name.startsWith('purpose.')
+                ? `<p>${value}</p>`
+                : value;
+              setControlValue(formGroup, field.name, placeholderStartValue, true);
             },
           );
         }

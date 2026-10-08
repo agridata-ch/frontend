@@ -37,7 +37,10 @@
     [lang]="lang()"
   />
 
-  <app-data-request-consent-request-decisions [consumerName]="consumerDisplayName()" />
+  <app-data-request-consent-request-decisions
+    [burPresent]="dataRequest().burPresent"
+    [consumerName]="consumerDisplayName()"
+  />
 
   <app-data-request-privacy-infos
     [consumerName]="consumerDisplayName()"

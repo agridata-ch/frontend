@@ -8,6 +8,7 @@ import {
   TemplateRef,
   viewChild,
 } from '@angular/core';
+import { faPlus } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 
 import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -18,12 +19,15 @@ import {
   PageResponseDto,
   ResourceQueryDto,
 } from '@/entities/openapi';
+import { DataRequestAddProducersComponent } from '@/features/data-request-add-producers';
 import { getConsentRequestBadgeVariant } from '@/shared/consent-request';
+import { UID_REGEX } from '@/shared/constants/constants';
 import { formatDate } from '@/shared/date';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import {
+  ActionDTO,
   AgridataTableComponent,
   CellRendererTypes,
   ColumnDefinition,
@@ -31,6 +35,7 @@ import {
   TableMetadata,
 } from '@/shared/ui/agridata-table';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { EmptyStateComponent } from '@/shared/ui/empty-state';
 
 import { ConsentRequestFundamentalViewDtoDirective } from './consent-request-fundamental-view-dto.directive';
@@ -48,7 +53,9 @@ import { DataRequestDetailsProducersMetadataComponent } from './data-request-det
   imports: [
     AgridataTableComponent,
     AgridataBadgeComponent,
+    ButtonComponent,
     ConsentRequestFundamentalViewDtoDirective,
+    DataRequestAddProducersComponent,
     I18nDirective,
     EmptyStateComponent,
     DataRequestDetailsProducersMetadataComponent,
@@ -64,7 +71,10 @@ export class DataRequestDetailsProducersComponent {
 
   // Constants
   protected readonly BadgeSize = BadgeSize;
+  protected readonly ButtonVariants = ButtonVariants;
+  protected readonly addIcon = faPlus;
   protected readonly getConsentRequestBadgeVariant = getConsentRequestBadgeVariant;
+  private readonly ADD_BURS_ACTION = 'data-request.details.producer.addBurs';
   private readonly UID_HEADER = 'data-request.uid';
   private readonly BUR_HEADER = 'data-request.bur';
   private readonly LAST_CHANGED_HEADER = 'data-request.lastChanged';
@@ -75,6 +85,8 @@ export class DataRequestDetailsProducersComponent {
 
   // Signals
   protected readonly resourceQueryDto = signal<ResourceQueryDto | undefined>(undefined);
+  protected readonly addProducersOpen = signal(false);
+  protected readonly prefillUid = signal<string | undefined>(undefined);
   private readonly stateTemplate =
     viewChild<TemplateRef<{ $implicit: ConsentRequestFundamentalViewDto }>>('stateTemplate');
 
@@ -146,6 +158,8 @@ export class DataRequestDetailsProducersComponent {
             },
           },
         ],
+        // Adding more BURs for a UID only makes sense when the data request has BUR products.
+        rowMenuActions: this.hasBurProducts() ? this.getRowActions : undefined,
       };
     },
   );
@@ -156,8 +170,31 @@ export class DataRequestDetailsProducersComponent {
     this.errorService,
   );
 
-  protected getStateTranslation(stateCode?: ConsentRequestStateEnum): string {
-    if (!stateCode) return '';
-    return this.i18nService.translate(`consent-request.dataRequest.stateCode.${stateCode}`);
+  protected openAddModal(): void {
+    // Seed the modal from the table search when the term is a UID, so a "not found" search flows
+    // straight into adding that producer.
+    const searchTerm = this.resourceQueryDto()?.searchTerm ?? '';
+    this.prefillUid.set(UID_REGEX.test(searchTerm) ? searchTerm : undefined);
+    this.addProducersOpen.set(true);
   }
+
+  protected getStateTranslation(stateCode?: ConsentRequestStateEnum): string {
+    return stateCode
+      ? this.i18nService.translate(`consent-request.dataRequest.stateCode.${stateCode}`)
+      : '';
+  }
+
+  private readonly getRowActions = (item?: ConsentRequestFundamentalViewDto): ActionDTO[] => {
+    if (!item?.dataProducerUid) return [];
+    return [
+      {
+        icon: this.addIcon,
+        label: this.ADD_BURS_ACTION,
+        callback: () => {
+          this.prefillUid.set(item.dataProducerUid);
+          this.addProducersOpen.set(true);
+        },
+      },
+    ];
+  };
 }

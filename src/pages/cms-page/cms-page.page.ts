@@ -5,7 +5,7 @@ import { faArrowRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
-import { CmsService, StrapiSingleTypeResponse } from '@/entities/cms';
+import { CmsService, PageLayoutType, StrapiSingleTypeResponse } from '@/entities/cms';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
@@ -14,6 +14,7 @@ import { TitleService } from '@/shared/lib/title.service';
 import { SeoService } from '@/shared/seo/seo.service';
 import { BlockRendererComponent, HeroBlockComponent } from '@/widgets/cms-blocks';
 import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
+import { NewsBlogComponent } from '@/widgets/news-blog';
 
 /**
  * Fetches content blocks from the CMS and renders them dynamically using the CMS block renderer
@@ -32,6 +33,7 @@ import { CmsFooterBlockComponent } from '@/widgets/cms-blocks/cms-footer-block';
     ErrorOutletComponent,
     I18nPipe,
     FontAwesomeModule,
+    NewsBlogComponent,
   ],
   templateUrl: './cms-page.page.html',
 })
@@ -40,9 +42,13 @@ export class CmsPage {
   private readonly i18nService = inject(I18nService);
   private readonly router = inject(Router);
   private readonly errorService = inject(ErrorHandlerService);
-  protected readonly breadcrumbIcon = faArrowRight;
   private readonly titleService = inject(TitleService);
   private readonly seoService = inject(SeoService);
+
+  // Constants
+  protected readonly breadcrumbIcon = faArrowRight;
+  protected readonly faSpinnerThird = faSpinnerThird;
+  protected readonly PageLayoutType = PageLayoutType;
 
   // binds to the route parameter :slug
   readonly slug = input<string>('');
@@ -79,6 +85,11 @@ export class CmsPage {
     return response.data.seo;
   });
 
+  protected readonly layoutType = computed(() => {
+    const response = this.cmsPageResource.value() as StrapiSingleTypeResponse;
+    return response.data.layout_type ?? PageLayoutType.DEFAULT;
+  });
+
   protected readonly errorEffect = effect(() => {
     const error = this.cmsPageResource.error();
     if (error) {
@@ -100,5 +111,4 @@ export class CmsPage {
     const seo = this.seoBlock();
     this.seoService.updateSeo(seo);
   });
-  protected readonly faSpinnerThird = faSpinnerThird;
 }

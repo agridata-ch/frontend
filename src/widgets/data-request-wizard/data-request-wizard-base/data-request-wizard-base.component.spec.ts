@@ -346,6 +346,21 @@ describe('DataRequestWizardBaseComponent', () => {
     });
   });
 
+  describe('default values', () => {
+    it.each(['de', 'fr', 'it'])('should prefill purpose.%s placeholder as HTML', (lang) => {
+      const value = component['form'].get(`${FORM_GROUP_NAMES.REQUEST}.purpose.${lang}`)?.value;
+
+      expect(value).toMatch(/^<p>.+<\/p>$/);
+    });
+
+    it.each(['title', 'description'])('should prefill %s placeholder as plain text', (field) => {
+      const value = component['form'].get(`${FORM_GROUP_NAMES.REQUEST}.${field}.de`)?.value;
+
+      expect(value).toBeTruthy();
+      expect(value).not.toContain('<p>');
+    });
+  });
+
   describe('updateFormSteps', () => {
     it('should populate formControlSteps from formsModel', () => {
       const steps = component['formControlSteps']();

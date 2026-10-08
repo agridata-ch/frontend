@@ -5,6 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { DataRequestStateEnum } from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
@@ -37,26 +38,25 @@ export class DataRequestDetailsWrapperComponent {
 
   // Computed Signals
   protected readonly dataRequest = computed(() => {
-    if (this.dataRequestsResource.isLoading()) {
-      return undefined;
-    }
-    return this.dataRequestsResource.value();
+    return this.dataRequestsResource.isLoading() ? undefined : this.dataRequestsResource.value();
   });
 
   protected readonly isLoading = computed(() => this.dataRequestsResource.isLoading());
 
-  protected readonly shouldShowActiveComponent = computed(
-    () => this.dataRequest()?.stateCode === 'ACTIVE',
-  );
+  protected readonly shouldShowActiveComponent = computed(() => {
+    const stateCode = this.dataRequest()?.stateCode as DataRequestStateEnum;
+    return (
+      [DataRequestStateEnum.Active, DataRequestStateEnum.Paused] as DataRequestStateEnum[]
+    ).includes(stateCode);
+  });
 
   // Resources
   protected readonly dataRequestsResource = resource({
     params: () => ({ actingRole: this.stateService.actingRole(), id: this.dataRequestId() }),
     loader: ({ params }) => {
-      if (!params?.id || params.id === DATA_REQUEST_NEW_ID) {
-        return Promise.resolve(undefined);
-      }
-      return this.dataRequestService.fetchDataRequest(params.id, params.actingRole);
+      return !params?.id || params.id === DATA_REQUEST_NEW_ID
+        ? Promise.resolve(undefined)
+        : this.dataRequestService.fetchDataRequest(params.id, params.actingRole);
     },
   });
 

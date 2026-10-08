@@ -146,10 +146,8 @@ export class FormControlComponent {
 
     // For specific known controls, provide hardcoded values
     // This allows us to display character count without complex validator inspection
-    if (this.controlType() === ControlTypes.TEXT_AREA && this.id() === 'contactFormMessage') {
-      return 500;
-    }
-
-    return null;
+    return this.controlType() === ControlTypes.TEXT_AREA && this.id() === 'contactFormMessage'
+      ? 500
+      : null;
   }
 }

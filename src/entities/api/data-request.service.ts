@@ -6,7 +6,9 @@ import { ActingRole } from '@/shared/constants/constants';
 import { asPageResponse, PageResponseDto } from '@/shared/lib/api.helper';
 
 import {
+  ConsentRequestCreatedDto,
   ConsentRequestFundamentalViewDto,
+  CreateConsentRequestsForUidDto,
   DataRequestDto,
   DataRequestStateEnum,
   DataRequestUpdateDto,
@@ -66,6 +68,20 @@ export class DataRequestService {
         .pipe(map((response) => asPageResponse(response))),
     );
   };
+
+  getConsentRequestsOfDataRequestAndUid(
+    id: string,
+    uid: string,
+  ): Promise<ConsentRequestFundamentalViewDto[]> {
+    return firstValueFrom(this.apiService.getConsentRequestsOfDataRequestAndUid(id, uid));
+  }
+
+  createConsentRequestsForDataRequest(
+    id: string,
+    dto: CreateConsentRequestsForUidDto,
+  ): Promise<ConsentRequestCreatedDto[]> {
+    return firstValueFrom(this.apiService.createConsentRequestsForDataRequest(id, dto));
+  }
 
   async createDataRequest(dataRequest: DataRequestUpdateDto): Promise<DataRequestDto> {
     return firstValueFrom(this.apiService.createDataRequestDraft(dataRequest));
@@ -128,6 +144,16 @@ export class DataRequestService {
       this.apiService.setDataRequestStatus(
         dataRequestId,
         JSON.stringify(DataRequestStateEnum.Active),
+        actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined,
+      ),
+    );
+  }
+
+  async pauseDataRequest(dataRequestId: string, actingRole?: ActingRole) {
+    return firstValueFrom(
+      this.apiService.setDataRequestStatus(
+        dataRequestId,
+        JSON.stringify(DataRequestStateEnum.Paused),
         actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined,
       ),
     );

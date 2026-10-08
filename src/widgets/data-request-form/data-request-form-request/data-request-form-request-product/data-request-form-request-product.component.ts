@@ -72,10 +72,9 @@ export class DataRequestFormRequestProductComponent {
 
   protected readonly dataProducts = computed(() => {
     const providerId = this.selectedProviderId();
-    if (!providerId || this.productsLoading()) {
-      return [];
-    }
-    return this.metaDataService.getProductsForProvider(providerId);
+    return !providerId || this.productsLoading()
+      ? []
+      : this.metaDataService.getProductsForProvider(providerId);
   });
 
   private readonly categoriesMap = computed(() =>
@@ -94,10 +93,9 @@ export class DataRequestFormRequestProductComponent {
       label,
       value,
     }));
-    if (categories.length <= 1) {
-      return categories;
-    }
-    return [{ label: this.allSystemsLabel(), value: null }, ...categories];
+    return categories.length <= 1
+      ? categories
+      : [{ label: this.allSystemsLabel(), value: null }, ...categories];
   });
 
   protected readonly productsGrouped = computed<MultiSelectCategory[]>(() => {

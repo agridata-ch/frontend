@@ -78,10 +78,9 @@ export class DataRequestCompletionComponent {
       id: this.dataRequest().currentContractRevisionId,
     }),
     loader: ({ params }) => {
-      if (!params?.id) {
-        return Promise.resolve(null);
-      }
-      return this.contractRevisionService.fetchContract(params.id, params.actingRole);
+      return params?.id
+        ? this.contractRevisionService.fetchContract(params.id, params.actingRole)
+        : Promise.resolve(null);
     },
     defaultValue: null,
   });
@@ -89,20 +88,16 @@ export class DataRequestCompletionComponent {
   // Computed Signals
   protected readonly allDataProducts = computed(() => {
     const providerId = this.dataRequest()?.dataProviderId;
-    if (!providerId) {
-      return [];
-    }
-    return this.metaDataService.getProductsForProvider(providerId);
+    return providerId ? this.metaDataService.getProductsForProvider(providerId) : [];
   });
 
   protected readonly contract = createResourceValueComputed(this.contractResource);
 
   protected readonly dataProvider = computed(() => {
     const providerId = this.dataRequest()?.dataProviderId;
-    if (!providerId) {
-      return null;
-    }
-    return this.metaDataService.dataProviders().find((provider) => provider.id === providerId);
+    return providerId
+      ? this.metaDataService.dataProviders().find((provider) => provider.id === providerId)
+      : null;
   });
 
   protected readonly dataRequestProducts = computed(() => {
@@ -134,7 +129,6 @@ export class DataRequestCompletionComponent {
 
   // Methods
   protected getStatusTranslation(value?: string) {
-    if (!value) return '';
-    return this.i18nService.translate(`data-request.stateCode.${value}`);
+    return value ? this.i18nService.translate(`data-request.stateCode.${value}`) : '';
   }
 }

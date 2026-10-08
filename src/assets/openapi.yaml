@@ -85,8 +85,22 @@ components:
           - 2025-05-19
         showStateAsMigrated:
           type: boolean
-          description: Indicates whether the aggregated state originates from migrated
-            consent requests
+          description: "Indicates whether the aggregated state originates from migrated\
+            \ consent requests. Only considers MAF migrations. Deprecated: use showStateAsMigratedFromMaf\
+            \ instead."
+          deprecated: true
+          examples:
+          - true
+        showStateAsMigratedFromMaf:
+          type: boolean
+          description: Indicates whether the aggregated state originates from consent
+            requests migrated from MAF
+          examples:
+          - true
+        showStateAsMigratedFromTvd:
+          type: boolean
+          description: Indicates whether the aggregated state originates from consent
+            requests migrated from Identitas (TVD)
           examples:
           - true
         lastStateChangeDate:
@@ -140,8 +154,22 @@ components:
           - 2025-05-19
         showStateAsMigrated:
           type: boolean
-          description: Indicates whether the aggregated state originates from migrated
-            consent requests
+          description: "Indicates whether the aggregated state originates from migrated\
+            \ consent requests. Only considers MAF migrations. Deprecated: use showStateAsMigratedFromMaf\
+            \ instead."
+          deprecated: true
+          examples:
+          - true
+        showStateAsMigratedFromMaf:
+          type: boolean
+          description: Indicates whether the aggregated state originates from consent
+            requests migrated from MAF
+          examples:
+          - true
+        showStateAsMigratedFromTvd:
+          type: boolean
+          description: Indicates whether the aggregated state originates from consent
+            requests migrated from Identitas (TVD)
           examples:
           - true
         lastStateChangeDate:
@@ -341,6 +369,7 @@ components:
           - 2025-05-19
         dataRequest:
           description: Details of the underlying data request
+          deprecated: true
           type: object
           required:
           - id
@@ -409,6 +438,7 @@ components:
               - TO_BE_RELEASED_BY_PROVIDER
               - TO_BE_ACTIVATED
               - ACTIVE
+              - PAUSED
               description: State of the data request
             dataConsumerLegalName:
               type: string
@@ -533,7 +563,19 @@ components:
           - GRANTED
         showStateAsMigrated:
           type: boolean
-          description: If the state should be shown as migrated
+          description: "If the state should be shown as migrated. Only considers MAF\
+            \ migrations. Deprecated: use showStateAsMigratedFromMaf instead."
+          deprecated: true
+          examples:
+          - true
+        showStateAsMigratedFromMaf:
+          type: boolean
+          description: If the state should be shown as migrated from MAF
+          examples:
+          - true
+        showStateAsMigratedFromTvd:
+          type: boolean
+          description: If the state should be shown as migrated from Identitas (TVD)
           examples:
           - true
         lastStateChangeDate:
@@ -579,6 +621,7 @@ components:
       - DECLINED
       - LEGALLY_PERMITTED
       - NOT_CREATED
+      - WITHDRAWN
     ConsentRequestStatusSummaryDto:
       description: "KPI summary of consent requests for a data request, broken down\
         \ by mode (UID/BUR)"
@@ -703,6 +746,30 @@ components:
           $ref: "#/components/schemas/UUID"
         uid:
           type: string
+    CreateConsentRequestsForUidDto:
+      description: Data transfer object used to create consent requests for a data
+        producer UID and optionally its BURs
+      type: object
+      required:
+      - uid
+      - burs
+      properties:
+        uid:
+          type: string
+          description: UID of the data producer
+          examples:
+          - CHE101000001
+          pattern: "^(?:CHE|ZZZ)\\d{9}$"
+        burs:
+          type: array
+          items:
+            type: string
+            pattern: "^A\\d{8}$"
+          description: "BURs of the data producer. Required, but may be empty. Every\
+            \ BUR must belong to the UID in AGIS."
+          examples:
+          - - A12345678
+            - A12345679
     DataProductDescriptionDto:
       type: object
       properties:
@@ -1182,6 +1249,7 @@ components:
           - TO_BE_RELEASED_BY_PROVIDER
           - TO_BE_ACTIVATED
           - ACTIVE
+          - PAUSED
           description: State of the data request
         dataConsumerLegalName:
           type: string
@@ -1299,6 +1367,7 @@ components:
       - TO_BE_RELEASED_BY_PROVIDER
       - TO_BE_ACTIVATED
       - ACTIVE
+      - PAUSED
     DataRequestSummaryDto:
       type: object
       description: Reduced data transfer object representing a data request
@@ -1422,6 +1491,7 @@ components:
       - advantages
     DataRequestV1Dto:
       description: Details of the underlying data request
+      deprecated: true
       type: object
       required:
       - id
@@ -1490,6 +1560,7 @@ components:
           - TO_BE_RELEASED_BY_PROVIDER
           - TO_BE_ACTIVATED
           - ACTIVE
+          - PAUSED
           description: State of the data request
         dataConsumerLegalName:
           type: string
@@ -1682,6 +1753,7 @@ components:
       enum:
       - GENERIC
       - UID_MISSING
+      - UID_CLAIM_MISSING
       - EXTERNAL_SERVICE_ERROR
       - CONSENT_NOT_GRANTED
       - OTP_INVALID
@@ -2277,6 +2349,9 @@ components:
         declined:
           type: integer
           format: int64
+        withdrawn:
+          type: integer
+          format: int64
     TargetTypeCodeEnum:
       type: string
       enum:
@@ -2480,7 +2555,7 @@ components:
     SecurityScheme:
       type: openIdConnect
       description: Authentication
-      openIdConnectUrl: http://localhost:6999/realms/agate/.well-known/openid-configuration
+      openIdConnectUrl: https://idp-rf.agate.ch/auth/realms/agate/.well-known/openid-configuration
 tags:
 - name: Agb Revision
   description: Provides access to Agb revisions.
@@ -2818,8 +2893,10 @@ paths:
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/consent-requests/{id}/status:
     put:
-      description: Updates the status of a specific consent request. Only accessible
-        to the data producer assigned to the consent request.
+      description: "Updates the status of a specific consent request. Withdrawing\
+        \ is only accessible to the data consumer owning the related data request,\
+        \ all other status changes only to the data producer assigned to the consent\
+        \ request."
       operationId: updateConsentRequestStatus
       tags:
       - Consent Requests
@@ -2830,6 +2907,20 @@ paths:
         in: path
         schema:
           $ref: "#/components/schemas/UUID"
+      - name: actingRole
+        in: query
+        required: false
+        description: "Selects the role in which the authenticated user acts for this\
+          \ request. Optional: if the authenticated user holds exactly one of the\
+          \ allowed roles, the value is auto-resolved. Returns 400 if the value is\
+          \ unknown, not allowed for this endpoint, or omitted while the user holds\
+          \ multiple matching roles. Returns 403 if the user does not hold the role\
+          \ specified in the parameter."
+        schema:
+          type: string
+          enum:
+          - CONSUMER
+          - PRODUCER
       requestBody:
         description: New status of the consent request
         content:
@@ -2856,10 +2947,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
-      summary: Update Consent Request State For Current Data Producer
+      summary: Update Consent Request State
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Einwilliger
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset:
       - Mobile App
       - agridata.ch Web App
@@ -3485,7 +3577,7 @@ paths:
           minimum: 1
           default: 100
       - description: Field names to sort by. Ascending by default; prefix with - for
-          descending. Defaults to -modifiedAt.
+          descending. Defaults to -lastModifiedDateTime.
         name: sortBy
         in: query
         schema:
@@ -3537,6 +3629,62 @@ paths:
       x-api-subset:
       - agridata.ch Web App
       - Data Provider
+    post:
+      description: "Creates the consent requests of a single data producer UID for\
+        \ a data request. A UID-based consent request is created if it does not exist\
+        \ yet. BURs may only be provided if the data request contains at least one\
+        \ BUR-based data product. When BURs are provided, they are validated against\
+        \ the UID's BURs in AGIS and a BUR-based consent request is created for each\
+        \ of them. Accessible to the consumer who owns the data request."
+      operationId: createConsentRequestsForDataRequest
+      tags:
+      - Data Requests
+      parameters:
+      - description: The UUID of the data request
+        example: 3da3a459-d3c2-48af-b8d0-02bc95146468
+        name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConsentRequestsForUidDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConsentRequestCreatedDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Create Consent Requests For Data Request
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/consent-requests/status-summary:
     get:
       description: "Retrieves KPI counts (total/open/granted/declined) of consent\
@@ -3751,6 +3899,60 @@ paths:
         - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Datenanbieter
         - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+  /api/agreement/v1/data-requests/{id}/uids/{uid}/consent-requests:
+    get:
+      description: Retrieves the UID- and BUR-based consent requests of a specific
+        data request for a single producer UID. Accessible to the consumer who owns
+        the data request.
+      operationId: getConsentRequestsOfDataRequestAndUid
+      tags:
+      - Data Requests
+      parameters:
+      - description: The UUID of the data request
+        example: 3da3a459-d3c2-48af-b8d0-02bc95146468
+        name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      - description: The UID of the data producer
+        example: CHE123456789
+        name: uid
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: "^(?:CHE|ZZZ)\\d{9}$"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ConsentRequestFundamentalViewDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Consent Requests Of Data Request And Uid
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/valid-redirect-uri-regex:
     put:
@@ -5606,10 +5808,10 @@ paths:
       - SecurityScheme:
         - agridata.ch.Agridata_Support
       x-api-subset: agridata.ch Web App
-  /api/user/v1/uid/{uid}/authorized-burs:
+  /api/user/v1/uids/{uid}/authorized-burs:
     get:
-      description: Retrieves all BURs authorized for the given UID. Only accessible
-        to admin users.
+      description: Retrieves all BURs authorized for the given UID. Accessible to
+        consumers and admin users.
       operationId: getAuthorizedBursByUid
       tags:
       - Users
@@ -5647,6 +5849,7 @@ paths:
       summary: Get Authorized Burs By Uid
       security:
       - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
         - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/user/v1/user-info:
@@ -6008,7 +6211,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.18.0-rc.4
+  version: 1.20.0-rc.13
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

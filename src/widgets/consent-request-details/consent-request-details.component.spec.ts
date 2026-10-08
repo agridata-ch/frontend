@@ -35,7 +35,8 @@ import {
   MockLocation,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
-import { ToastService } from '@/shared/toast';
+import { ToastService, ToastType } from '@/shared/toast';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 import { DataRequestContentComponent } from '@/widgets/data-request-content';
 
@@ -663,6 +664,68 @@ describe('ConsentRequestDetailsComponent', () => {
 
       expect(errorService.handleError).toHaveBeenCalled();
       expect(component['decisionStore'].editMode()).toBe(true);
+    });
+
+    it('shows the GRANTED toast after a save that keeps at least one BUR granted', async () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'bur-1', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Granted },
+        { id: 'bur-2', dataProducerBur: '2', stateCode: ConsentRequestStateEnum.Granted },
+      ]);
+      component['decisionStore'].startEdit();
+      component['decisionStore'].setDecision('bur-1', false);
+
+      await component['saveBurDecisions']();
+
+      expect(toastService.show).toHaveBeenCalledWith(
+        'consent-request.toast.title.GRANTED',
+        expect.any(String),
+        ToastType.Success,
+        expect.objectContaining({ callback: expect.any(Function) }),
+      );
+    });
+
+    it('shows the DECLINED toast after a save that declines every BUR', async () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'bur-1', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Granted },
+      ]);
+      component['decisionStore'].startEdit();
+      component['decisionStore'].setDecision('bur-1', false);
+
+      await component['saveBurDecisions']();
+
+      expect(toastService.show).toHaveBeenCalledWith(
+        'consent-request.toast.title.DECLINED',
+        expect.any(String),
+        ToastType.Error,
+        expect.objectContaining({ callback: expect.any(Function) }),
+      );
+    });
+
+    it('shows no toast when nothing changed', async () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'bur', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Granted },
+      ]);
+      component['decisionStore'].startEdit();
+
+      await component['saveBurDecisions']();
+
+      expect(toastService.show).not.toHaveBeenCalled();
+    });
+
+    it('turns the save button into an enabled reject action when every BUR is declined', () => {
+      component['decisionStore'].consentRequests.set([
+        { id: 'bur-1', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Granted },
+      ]);
+      component['decisionStore'].startEdit();
+      component['decisionStore'].setDecision('bur-1', false);
+      fixture.detectChanges();
+
+      const saveButton = fixture.debugElement
+        .queryAll(By.directive(ButtonComponent))
+        .find((button) => button.componentInstance.variant() === ButtonVariants.PrimaryReject);
+
+      expect(saveButton?.nativeElement.textContent).toContain('actions.saveAndReject');
+      expect(saveButton?.componentInstance.disabled()).toBe(false);
     });
 
     it('cancelEdit discards staged decisions without calling the service', () => {

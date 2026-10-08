@@ -53,6 +53,30 @@
   cursor: not-allowed;
 }
 
+.agridata-button.agridata-button-primary-reject {
+  color: white;
+  border-color: var(--color-red-600);
+  background-color: var(--color-red-600);
+  outline-color: var(--color-red-200);
+}
+
+.agridata-button.agridata-button-primary-reject:hover {
+  background-color: var(--color-red-700);
+  border-color: var(--color-red-700);
+}
+
+.agridata-button.agridata-button-primary-reject:focus {
+  background-color: var(--color-red-700);
+  border-color: var(--color-red-700);
+  outline-style: solid;
+}
+
+.agridata-button.agridata-button-primary-reject[aria-disabled='true'] {
+  background-color: var(--color-gray-200);
+  border-color: var(--color-gray-200);
+  cursor: not-allowed;
+}
+
 .agridata-button.agridata-button-primary-cms {
   color: var(--color-agridata-primary-600);
   border-color: var(--color-white);

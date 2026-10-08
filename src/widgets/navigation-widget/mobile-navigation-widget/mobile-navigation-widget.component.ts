@@ -11,6 +11,7 @@ import { AuthService } from '@/shared/lib/auth';
 import { AgridataAvatarComponent, AvatarSize } from '@/shared/ui/agridata-avatar';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ContactSupportInfoComponent } from '@/widgets/contact-support-info';
+import { NavigationItem } from '@/widgets/navigation-widget/navigation-item.model';
 import { UidSwitchComponent, UidSwitchVariant } from '@/widgets/uid-switch';
 
 /**
@@ -38,6 +39,7 @@ export class MobileNavigationWidgetComponent {
   readonly agridataStateService = inject(AgridataStateService);
 
   readonly cmsPages = input<PageData[]>([]);
+  readonly navigationItems = input<NavigationItem[]>([]);
 
   readonly isNavigationOpen = signal(false);
 

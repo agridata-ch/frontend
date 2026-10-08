@@ -44,6 +44,32 @@ describe('DataRequestConsentRequestDecisionsComponent', () => {
     expect(fixture.debugElement.query(By.directive(AlertComponent))).toBeTruthy();
   });
 
+  describe('description', () => {
+    it('uses the no-BUR text when the data request has no BUR', async () => {
+      await setup(true);
+
+      expect(component['descriptionKey']()).toBe('description.noBur');
+    });
+
+    it('uses the single-BUR text when exactly one BUR is requested', async () => {
+      await setup(true);
+      fixture.componentRef.setInput('burPresent', true);
+
+      expect(component['descriptionKey']()).toBe('description.singleBur');
+    });
+
+    it('uses the multiple-BUR text when several BURs are requested', async () => {
+      await setup(true);
+      fixture.componentRef.setInput('burPresent', true);
+      store.consentRequests.set([
+        { id: 'bur-1', dataProducerBur: '1', stateCode: ConsentRequestStateEnum.Opened },
+        { id: 'bur-2', dataProducerBur: '2', stateCode: ConsentRequestStateEnum.Opened },
+      ]);
+
+      expect(component['descriptionKey']()).toBe('description.multipleBur');
+    });
+  });
+
   it('shows an edit button while not editing and enters edit mode on click', async () => {
     await setup(true);
 
@@ -76,7 +102,7 @@ describe('DataRequestConsentRequestDecisionsComponent', () => {
     expect(store.decisions()['bur-1']).toBe(false);
   });
 
-  it('replaces the edit button with a cancel button in edit mode', async () => {
+  it('hides the edit button in edit mode', async () => {
     await setup(true);
     store.startEdit();
     fixture.detectChanges();
@@ -84,8 +110,5 @@ describe('DataRequestConsentRequestDecisionsComponent', () => {
     expect(
       fixture.debugElement.query(By.css('[data-testid="consent-request-decisions-edit"]')),
     ).toBeNull();
-    expect(
-      fixture.debugElement.query(By.css('[data-testid="consent-request-decisions-cancel-edit"]')),
-    ).toBeTruthy();
   });
 });

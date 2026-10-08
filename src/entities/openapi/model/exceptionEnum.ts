@@ -12,6 +12,7 @@
 export const ExceptionEnum = {
     Generic: 'GENERIC',
     UidMissing: 'UID_MISSING',
+    UidClaimMissing: 'UID_CLAIM_MISSING',
     ExternalServiceError: 'EXTERNAL_SERVICE_ERROR',
     ConsentNotGranted: 'CONSENT_NOT_GRANTED',
     OtpInvalid: 'OTP_INVALID',

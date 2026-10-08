@@ -13,7 +13,7 @@ const AGGREGATION_BADGE_VARIANTS: Record<ConsentRequestAggregationStateEnum, Bad
   [ConsentRequestAggregationStateEnum.Granted]: BadgeVariant.SUCCESS,
   [ConsentRequestAggregationStateEnum.Declined]: BadgeVariant.ERROR,
   [ConsentRequestAggregationStateEnum.PartiallyOpened]: BadgeVariant.WARNING,
-  [ConsentRequestAggregationStateEnum.PartiallyGranted]: BadgeVariant.WARNING,
+  [ConsentRequestAggregationStateEnum.PartiallyGranted]: BadgeVariant.SUCCESS,
   [ConsentRequestAggregationStateEnum.LegallyPermitted]: BadgeVariant.SUCCESS,
 };
 
@@ -28,6 +28,7 @@ const CONSENT_REQUEST_BADGE_VARIANTS: Record<ConsentRequestStateEnum, BadgeVaria
   [ConsentRequestStateEnum.Declined]: BadgeVariant.ERROR,
   [ConsentRequestStateEnum.NotCreated]: BadgeVariant.DEFAULT,
   [ConsentRequestStateEnum.LegallyPermitted]: BadgeVariant.SUCCESS,
+  [ConsentRequestStateEnum.Withdrawn]: BadgeVariant.DEFAULT,
 };
 
 export function getConsentRequestBadgeVariant(stateCode?: ConsentRequestStateEnum) {
@@ -225,11 +226,9 @@ function getTableOrListElement(): HTMLElement {
   if (tableElement && isElementVisible(tableElement)) {
     return tableElement;
   }
-  if (listElement && isElementVisible(listElement)) {
-    return listElement;
-  }
-
-  return tableElement ?? listElement ?? document.body;
+  return listElement && isElementVisible(listElement)
+    ? listElement
+    : (tableElement ?? listElement ?? document.body);
 }
 
 function isElementVisible(element: HTMLElement): boolean {

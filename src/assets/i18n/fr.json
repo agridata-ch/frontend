@@ -48,7 +48,8 @@
         "reject": "Refuser",
         "cancelEditMode": "Annuler",
         "saveAndAccept": "Enregistrer et Consentir",
-        "saveDisabledInfo": "Au moins un consentement est requis"
+        "saveDisabledInfo": "Au moins un consentement est requis",
+        "saveAndReject": "Enregistrer et refuser"
       },
       "stateCode": {
         "GRANTED": "Accepté le {{ date }}",
@@ -65,25 +66,28 @@
         "title": "Vue détaillée"
       },
       "request": {
-        "migrated": "Repris de Mon partage de données agricoles - MAF"
+        "migratedMaf": "Repris de Mon partage de données agricoles - MAF",
+        "migratedTvd": "Repris de la Banque de données sur le trafic des animaux (BDTA)"
       },
       "decisions": {
         "title": "Aperçu de l'exploitation et des sites",
-        "description": "Cette demande concerne votre entreprise (UID) et les sites associés (BUR). Le consentement s'applique toujours à l'entreprise. En principe, vous consentez aux sites demandés; via «Modifier les sites», vous pouvez exclure des sites individuels de la demande.",
+        "description": {
+          "noBur": "Cette demande concerne votre entreprise (UID). Le consentement s'applique à l'ensemble de l'entreprise au niveau de l'exploitation. Comme cette demande n'est pas spécifique à un site, aucune installation individuelle (BUR) n'est répertoriée.",
+          "singleBur": "Cette demande concerne votre entreprise (UID) et le site associé (BUR). Le consentement s'applique à l'entreprise ainsi qu'au site.",
+          "multipleBur": "Cette demande concerne votre entreprise (UID) et les sites associés (BUR). Le consentement pour l'entreprise est toujours valable. En principe, vous acceptez les sites demandés ; via « Modifier les sites », vous pouvez exclure des sites individuels de la demande."
+        },
         "uidGroupTitle": "Mon entreprise demandée",
-        "uid": "Numéro d'identification de l'entreprise (UID) : {{ uid }}",
+        "uid": "Numéro d'identification de l'entreprise (UID) ",
         "bur": {
-          "title": "Numéro d'établissement (BUR) : {{ bur }}",
+          "title": "Numéro d'établissement (BUR)",
           "enabled": "Sélectionné",
           "disabled": "Exclu"
         },
         "edit": "Modifier le consentement par site",
-        "cancel": "Annuler",
         "burGroupTitle": "Mes sites demandés",
         "nonProducerInfo": "Ici, les producteurs de données voient leurs sites demandés.",
         "missingBurInfo": "Un site manque ? Contactez directement {{ consumer }} afin qu'ils puissent demander le site et que vous puissiez donner votre consentement."
       },
-      "footerInformationNoBur": "Vous avez désactivé tous les sites. Si vous souhaitez refuser complètement cette demande, veuillez cliquer sur Annuler, puis sur le bouton Refuser.",
       "noConsentRequired": "Aucune action requise. Ce prélèvement de données repose sur une base de droit public. Cet affichage est proposé à titre d'information transparente."
     },
     "toast": {
@@ -373,7 +377,8 @@
       "TO_BE_RELEASED_BY_CONSUMER": "Conclusion ouverte au destinataire",
       "TO_BE_SIGNED_BY_PROVIDER": "Fournisseur de signature ouvert",
       "TO_BE_RELEASED_BY_PROVIDER": "Conclusion ouverte à fournisseur",
-      "TO_BE_ACTIVATED": "Activation en cours"
+      "TO_BE_ACTIVATED": "Activation en cours",
+      "PAUSED": "En attente"
     },
     "table": {
       "tableActions": {
@@ -440,7 +445,35 @@
           "declined": "Rejeté",
           "uid": "UID",
           "bur": "BUR"
-        }
+        },
+        "addButton": "Demander un producteur",
+        "modal": {
+          "title": "Demander un producteur",
+          "description": "Pour inclure de nouvelles exploitations dans la demande, vous devez interroger les producteurs via leur UID. Ensuite, vous pouvez choisir parmi la liste des sites d'exploitation. Vous pouvez également gérer la demande via l'API.",
+          "uidLabel": "UID",
+          "uidPlaceholder": "CHE000000000",
+          "cancel": "Annuler",
+          "confirm": "Ajouter {{ count }} demande(s)",
+          "uidInvalid": "format invalide",
+          "noResults": "l'UID saisi n'a pas été trouvé",
+          "burSection": {
+            "title": "Sites d'exploitation",
+            "description": "Sélectionnez dans la liste les sites d'exploitation que vous souhaitez demander.",
+            "selectAll": "Tout sélectionner",
+            "burLabel": "Numéro de site d'exploitation (BUR)",
+            "existing": "Déjà demandé"
+          },
+          "success": {
+            "title": "Producteurs demandés avec succès",
+            "message": "{{ count }} sites ont été demandés avec succès"
+          },
+          "error": {
+            "title": "L'ajout de producteurs a échoué",
+            "message": "Un problème est survenu lors de l'ajout de sites : {{ error }}"
+          },
+          "noBurs": "Il n'y a pas d'établissements disponibles pour ce numéro d'identification fiscale"
+        },
+        "addBurs": "Ajouter des sites d'exploitation"
       }
     },
     "invitationLink": {
@@ -619,11 +652,21 @@
       "description": "Merci d'avoir choisi\u2028Vous serez redirigé automatiquement dans {{ count }} secondes.",
       "redirectNow": "Retour direct"
     },
+    "uidMissingWarning": "Aucun numéro d'identification fiscale (UID) n'est encore enregistré pour vous ou votre entreprise. Étant donné que plusieurs systèmes sont impliqués, cela peut prendre quelques jours avant que nous disposions de toutes les informations nécessaires au bon fonctionnement d'agridata.ch. Veuillez réessayer dans quelques jours. Si le problème persiste, veuillez contacter le service d'assistance ({{ phoneNumber }}).",
     "migrationInfo": {
-      "title": "La demande de données de {{ consumerName }} est désormais disponible ici.",
-      "description": "Votre approbation pour la demande de données {{name}} a été repris de « Mon partage de données agricoles (MAF) ».\nVous trouverez la demande dans le tableau ci-dessous et pouvez modifier votre approbation si nécessaire."
-    },
-    "uidMissingWarning": "Aucun numéro d'identification fiscale (UID) n'est encore enregistré pour vous ou votre entreprise. Étant donné que plusieurs systèmes sont impliqués, cela peut prendre quelques jours avant que nous disposions de toutes les informations nécessaires au bon fonctionnement d'agridata.ch. Veuillez réessayer dans quelques jours. Si le problème persiste, veuillez contacter le service d'assistance ({{ phoneNumber }})."
+      "maf": {
+        "title": "De nouvelles demandes de données issues de \"Mon partage de données agricoles (MAF)\" sont désormais disponibles",
+        "intro": "Afin de vous faire gagner du temps et de vous éviter des démarches, nous avons automatiquement transféré vos anciens paramètres de Mon partage de données agricoles (MAF) vers agridata.ch."
+      },
+      "tvd": {
+        "title": "Nouvelles demandes de données issues de la \"Banque de données sur le trafic des animaux (BDTA)\" désormais disponibles",
+        "intro": "Afin de vous faire gagner du temps et de vous éviter des démarches, nous avons automatiquement transféré vos anciens paramètres de la Banque de données sur le trafic des animaux (BDTA) vers agridata.ch."
+      },
+      "common": {
+        "requestsFromConsumer": "Demandes transférées de {{consumerName}}",
+        "tableHint": "Vous n’avez rien d’autre à faire. Si vous ne souhaitez plus donner votre accord pour une demande, vous pouvez le modifier à tout moment ici sur agridata.ch : ouvrez simplement la demande de données correspondante dans le tableau ci-dessous et sélectionnez « Refuser »."
+      }
+    }
   },
   "header": {
     "helpAndSupport": {
@@ -774,6 +817,10 @@
   "common": {
     "ariaLabel": {
       "close": "Fermer"
+    },
+    "alert": {
+      "showLess": "Afficher moins",
+      "showMore": "Afficher plus"
     }
   },
   "footer": {
@@ -801,7 +848,21 @@
     "actions": {
       "accept": "Valider la demande",
       "reject": "Rejeter la demande",
-      "activate": "Activer la demande"
+      "activate": "Activer la demande",
+      "pause": "Mettre la demande en pause",
+      "pauseConfirmation": {
+        "title": "Mettre la demande de données en pause?",
+        "description": "Vous êtes sur le point de mettre en pause la demande de données {{ requestName }} entre {{ provider }} et {{ consumer }}. Cela interrompra immédiatement l’échange de données entre les parties concernées. Cette action peut être annulée.",
+        "confirm": "Oui, mettre la demande de données en pause",
+        "cancel": "Annuler"
+      },
+      "reactivate": "Réactiver la demande",
+      "reactivateConfirmation": {
+        "title": "Réactiver la demande de données en pause?",
+        "description": "Vous êtes sur le point de réactiver la demande de données en pause {{ requestName }} entre {{ provider }} et {{ consumer }}. L’échange de données entre les parties concernées reprendra. Cette action peut être annulée.",
+        "confirm": "Oui, réactiver la demande de données en pause",
+        "cancel": "Annuler"
+      }
     }
   },
   "support-info": {
@@ -1320,7 +1381,8 @@
       "extendedDescription": "Informations complémentaires",
       "paymentRequired": "Frais du fournisseur",
       "costs": "Frais pour les requérants de données",
-      "documents": "Documents"
+      "documents": "Documents",
+      "publicSectorTooltip": "La mise à disposition de ces données repose sur une base de droit public. Le transfert est affiché dans un souci de transparence."
     },
     "list": {
       "allLoaded": "Tous les produits de données chargés"
@@ -1339,5 +1401,22 @@
   },
   "agridata-contact-card": {
     "foreignBadge": "Requérant international de données"
+  },
+  "news": {
+    "title": "Actualités concernant Agridata",
+    "readMore": "Lire la suite",
+    "createdAt": "Date de création: {{ date }}"
+  },
+  "admin-agbs": {
+    "table": {
+      "titleValue": "Conditions générales",
+      "version": "Version",
+      "title": "Titre",
+      "validFrom": "Valide depuis",
+      "validTo": "Valide jusqu'à",
+      "enforceConsentFrom": "Blocage à partir de"
+    },
+    "pageTitle": "Gestion des conditions générales",
+    "pageDescription": "Gestion centralisée de votre cadre juridique et gestion des versions pour toutes les interfaces Agridata Nexus."
   }
 }

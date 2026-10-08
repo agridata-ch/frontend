@@ -48,7 +48,8 @@
         "reject": "Ablehnen",
         "cancelEditMode": "Abbrechen",
         "saveAndAccept": "Speichern und Zustimmen",
-        "saveDisabledInfo": "Mindestens eine Zustimmung erforderlich"
+        "saveDisabledInfo": "Mindestens eine Zustimmung erforderlich",
+        "saveAndReject": "Speichern und ablehnen"
       },
       "stateCode": {
         "GRANTED": "Zugestimmt am {{ date }}",
@@ -65,25 +66,28 @@
         "title": "Detailansicht"
       },
       "request": {
-        "migrated": "Übernommen aus Meine Agrardatenfreigabe - MAF"
+        "migratedMaf": "Übernommen aus Meine Agrardatenfreigabe - MAF",
+        "migratedTvd": "Übernommen aus der Tierverkehrsdatenbank (TVD)"
       },
       "decisions": {
         "title": "Betriebs- und Standortübersicht",
-        "description": "Diese Anfrage betrifft Ihr Unternehmen (UID) und die dazugehörigen Standorte (BUR). Die Zustimmung gilt immer für das Unternehmen. Grundsätzlich stimmen Sie den angefragten Standorten zu, über „Standorte bearbeiten“ können Sie einzelne Standorte von der Anfrage ausschliessen.",
+        "description": {
+          "noBur": "Diese Anfrage betrifft Ihr Unternehmen (UID). Die Zustimmung gilt für das gesamte Unternehmen auf Betriebsebene. Da diese Anfrage nicht standortspezifisch ist, werden keine einzelnen Betriebsstätten (BUR) aufgeführt.",
+          "singleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und den dazugehörigen Standort (BUR). Die Zustimmung gilt für das Unternehmen sowie den Standort.",
+          "multipleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und die dazugehörigen Standorte (BUR). Die Zustimmung für das Unternehmen gilt immer. Grundsätzlich stimmen Sie den angefragten Standorten zu, über „Standorte bearbeiten“ können Sie einzelne Standorte von der Anfrage ausschliessen."
+        },
         "uidGroupTitle": "Mein angefragter Betrieb",
-        "uid": "Unternehmens-Identifikation (UID): {{ uid }}",
+        "uid": "Unternehmens-Identifikation (UID)",
         "bur": {
-          "title": "Betriebsstättennummer (BUR): {{ bur }}",
+          "title": "Betriebsstättennummer (BUR)",
           "enabled": "Ausgewählt",
           "disabled": "Ausgeschlossen"
         },
         "edit": "Zustimmung pro Standort ändern",
-        "cancel": "Abbrechen",
         "burGroupTitle": "Meine angefragten Standorte",
         "nonProducerInfo": "Hier sehen die Datenproduzenten ihre anfragten Standorte.",
         "missingBurInfo": "Fehlt ein Standort? Melden Sie sich direkt bei {{ consumer }}, damit diese den Standort anfragen und Sie die Zustimmung geben können."
       },
-      "footerInformationNoBur": "Sie haben alle Standorte deaktiviert. Wenn Sie diese Anfrage komplett ablehnen möchten, klicken Sie bitte auf Abbrechen und danach auf den Ablehnen-Button.",
       "noConsentRequired": "Keine Aktion erforderlich. Dieser Datenbezug erfolgt auf öffentlich-rechtlicher Grundlage. Diese Anzeige dient der transparenten Information."
     },
     "toast": {
@@ -373,7 +377,8 @@
       "TO_BE_RELEASED_BY_CONSUMER": "Abschluss Bezüger offen",
       "TO_BE_SIGNED_BY_PROVIDER": "Unterzeichnung Anbieter offen",
       "TO_BE_RELEASED_BY_PROVIDER": "Abschluss Anbieter offen",
-      "TO_BE_ACTIVATED": "Aktivierung offen"
+      "TO_BE_ACTIVATED": "Aktivierung offen",
+      "PAUSED": "Pausiert"
     },
     "table": {
       "tableActions": {
@@ -440,7 +445,35 @@
           "declined": "Abgelehnt",
           "uid": "UID",
           "bur": "BUR"
-        }
+        },
+        "addButton": "Produzent anfragen",
+        "modal": {
+          "title": "Produzent anfragen",
+          "description": "Um neue Betriebe in den Antrag aufzunehmen, müssen Sie die Produzent:innen über ihre UID anfragen. Anschliessend können Sie aus der Liste der Betriebsstätten wählen. \nSie können die Anfrage auch über die API steuern.",
+          "uidLabel": "UID",
+          "uidPlaceholder": "CHE000000000",
+          "cancel": "Abbrechen",
+          "confirm": "{{ count }} Anfrage(n) hinzufügen",
+          "uidInvalid": "ungültiges Format",
+          "noResults": "die eingegebene UID wurde nicht gefunden",
+          "burSection": {
+            "title": "Betriebsstätten",
+            "description": "Wählen Sie in der Liste die Betriebsstätten aus, welche Sie anfragen möchten.",
+            "selectAll": "Alle auswählen",
+            "burLabel": "Betriebsstättennummer (BUR)",
+            "existing": "Bereits angefragt"
+          },
+          "success": {
+            "title": "Produzenten erfolgreich angefragt",
+            "message": "{{ count }} Betriebstätten wurden erfolgreich angefragt"
+          },
+          "error": {
+            "title": "Produzenten hinzufügen fehlgeschlagen",
+            "message": "Beim hinzufügen von Betriebstätten ist etwas schief gelaufen: {{ error }}"
+          },
+          "noBurs": "Für diese UID sind keine Betriebsstätten verfügbar"
+        },
+        "addBurs": "Betriebstätten hinzufügen"
       }
     },
     "invitationLink": {
@@ -619,11 +652,21 @@
       "description": "Besten Dank für Ihre Entscheidung,\u2028Sie werden in {{ count }} Sekunden automatisch zurück geleitet.",
       "redirectNow": "Direkt zurück"
     },
+    "uidMissingWarning": "Zu Ihrer Person oder Unternehmen ist zurzeit noch keine UID vorhanden. Da verschiedene Systeme involviert sind, kann es einige Tage dauern bis wir alle relevanten Angaben haben, damit agridata.ch funktionieren kann. Bitte versuchen sie es in ein paar Tage nochmal. Besteht Ihr Problem weiterhin, melden sie sich bitte beim Support ({{ phoneNumber }}).",
     "migrationInfo": {
-      "title": "Die Datenanfrage von {{ consumerName }} ist jetzt hier verfügbar",
-      "description": "Ihre Zustimmung für die Datenanfrage {{name}} wurde aus “Meine Agrardatenfreigaben (MAF)” übernommen.\nSie finden die Anfrage in der untenstehenden Tabelle und können bei Bedarf die Zustimmung ändern."
-    },
-    "uidMissingWarning": "Zu Ihrer Person oder Unternehmen ist zurzeit noch keine UID vorhanden. Da verschiedene Systeme involviert sind, kann es einige Tage dauern bis wir alle relevanten Angaben haben, damit agridata.ch funktionieren kann. Bitte versuchen sie es in ein paar Tage nochmal. Besteht Ihr Problem weiterhin, melden sie sich bitte beim Support ({{ phoneNumber }})."
+      "maf": {
+        "title": "Neue Datenanfragen aus \"Meine Agrardatenfreigaben (MAF)\" jetzt verfügbar",
+        "intro": "Um Ihnen Zeit und Aufwand zu sparen, haben wir Ihre bisherigen Einstellungen aus Meine Agrardatenfreigaben (MAF) automatisch für Sie zu agridata.ch übertragen."
+      },
+      "tvd": {
+        "title": "Neue Datenanfragen aus \"Tierverkehrsdatenbank (TVD)\" jetzt verfügbar",
+        "intro": "Um Ihnen Zeit und Aufwand zu sparen, haben wir Ihre bisherigen Einstellungen aus der Tierverkehrsdatenbank (TVD) automatisch für Sie zu agridata.ch übertragen."
+      },
+      "common": {
+        "requestsFromConsumer": "Übernommene Anfrage von {{consumerName}}",
+        "tableHint": "Sie müssen nichts weiter tun. Sollten Sie eine Zustimmung nicht mehr wünschen, können Sie diese jederzeit hier auf agridata.ch ändern: Öffnen Sie dazu einfach die entsprechende Datenanfrage in der untenstehenden Tabelle und wählen Sie \"Ablehnen\"."
+      }
+    }
   },
   "header": {
     "helpAndSupport": {
@@ -774,6 +817,10 @@
   "common": {
     "ariaLabel": {
       "close": "Schliessen"
+    },
+    "alert": {
+      "showLess": "Weniger anzeigen",
+      "showMore": "Mehr anzeigen"
     }
   },
   "footer": {
@@ -801,7 +848,21 @@
     "actions": {
       "accept": "Antrag freigeben",
       "reject": "Antrag ablehnen",
-      "activate": "Antrag aktivieren"
+      "activate": "Antrag aktivieren",
+      "pause": "Antrag pausieren",
+      "pauseConfirmation": {
+        "title": "Datenantrag pausieren?",
+        "description": "Sie sind dabei, den Datenantrag {{ requestName }} zwischen {{ provider }} und {{ consumer }} zu pausieren. Dadurch wird der Datenaustausch zwischen den Beteiligten sofort unterbunden. Diese Aktion kann rückgängig gemacht werden.",
+        "confirm": "Ja, Datenantrag pausieren",
+        "cancel": "Abbrechen"
+      },
+      "reactivate": "Antrag reaktivieren",
+      "reactivateConfirmation": {
+        "title": "Pausierten Datenantrag reaktivieren?",
+        "description": "Sie sind dabei, den pausierten Datenantrag {{ requestName }} zwischen {{ provider }} und {{ consumer }} zu reaktivieren. Dadurch wird der Datenaustausch zwischen den Beteiligten wieder aufgenommen. Diese Aktion kann rückgängig gemacht werden.",
+        "confirm": "Ja, pausierten Datenantrag reaktivieren",
+        "cancel": "Abbrechen"
+      }
     }
   },
   "support-info": {
@@ -1320,7 +1381,8 @@
       "extendedDescription": "Erweiterte Beschreibung",
       "paymentRequired": "Kostenpflichtig durch Anbieter",
       "costs": "Kosten für Datenbezüger",
-      "documents": "Dokumente"
+      "documents": "Dokumente",
+      "publicSectorTooltip": "Für die Bereitstellung dieser Daten gibt es eine öffentlich-rechtliche Grundlage. Die Übertragung wird für Transparenz dargestellt."
     },
     "list": {
       "allLoaded": "Alle Datenprodukte geladen"
@@ -1339,5 +1401,22 @@
   },
   "agridata-contact-card": {
     "foreignBadge": "Internationaler Datenbezüger"
+  },
+  "news": {
+    "title": "Mitteilungen rund um Agridata",
+    "readMore": "Weiter lesen",
+    "createdAt": "Erstellt am:  {{ date }}"
+  },
+  "admin-agbs": {
+    "table": {
+      "titleValue": "Allgemeine Geschäftsbedingungen",
+      "version": "Version",
+      "title": "Titel",
+      "validFrom": "Gültig ab",
+      "validTo": "Gültig bis",
+      "enforceConsentFrom": "Sperrung ab"
+    },
+    "pageTitle": "AGB-Verwaltung",
+    "pageDescription": "Zentralisierte Steuerung Ihrer rechtlichen Rahmenbedingungen und Versionierung für alle Agridata Nexus Schnittstellen."
   }
 }

@@ -42,8 +42,6 @@ export class LinkedTextComponent {
     if (explicit) return explicit;
 
     const { urlSchema, linkText } = this.parts();
-    if (urlSchema && linkText) return `${urlSchema}:${linkText}`;
-
-    return null;
+    return urlSchema && linkText ? `${urlSchema}:${linkText}` : null;
   });
 }

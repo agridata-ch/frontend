@@ -48,7 +48,8 @@
         "reject": "Rifiuta",
         "cancelEditMode": "Annulla",
         "saveAndAccept": "Salva e acconsenti",
-        "saveDisabledInfo": "È richiesto almeno un consenso"
+        "saveDisabledInfo": "È richiesto almeno un consenso",
+        "saveAndReject": "Salva e rifiuta"
       },
       "stateCode": {
         "GRANTED": "Acconsentito il {{ date }}",
@@ -65,25 +66,28 @@
         "title": "Visualizzazione dettagliata"
       },
       "request": {
-        "migrated": "Ripreso da «Mia condivisione dei dati agricoli – MAF»"
+        "migratedMaf": "Ripreso da «Mia condivisione dei dati agricoli – MAF»",
+        "migratedTvd": "Nuove richieste di dati da «Banca dati sul traffico di animali (BDTA)» ora disponibili"
       },
       "decisions": {
         "title": "Panoramica dell'azienda e delle sedi",
-        "description": "Questa richiesta riguarda la vostra azienda (UID) e le relative sedi (BUR). Il consenso si applica sempre all'azienda. Fondamentalmente, acconsentite alle sedi richieste; tramite “Modifica sedi” potete escludere singole sedi dalla richiesta.",
+        "description": {
+          "noBur": "Questa richiesta riguarda la vostra azienda (UID). Il consenso si applica all'intera azienda a livello operativo. Poiché questa richiesta non è specifica per una sede, non vengono elencate singole sedi operative (BUR).",
+          "singleBur": "Questa richiesta riguarda la vostra azienda (UID) e la relativa sede (BUR). Il consenso si applica all'azienda e alla sede.",
+          "multipleBur": "Questa richiesta riguarda la vostra azienda (UID) e le relative sedi (BUR). Il consenso per l'azienda è sempre valido. In linea di massima, acconsentirete alle sedi richieste, ma potete escludere singole sedi dalla richiesta tramite \"Modifica sedi\"."
+        },
         "uidGroupTitle": "La mia azienda richiesta",
-        "uid": "Identificazione dell'azienda (UID): {{ uid }}",
+        "uid": "Identificazione dell'azienda (UID)",
         "bur": {
-          "title": "Numero di stabile (BUR): {{ bur }}",
+          "title": "Numero di stabile (BUR)",
           "enabled": "Selezionato",
           "disabled": "Escluso"
         },
         "edit": "Modificare il consenso per sede",
-        "cancel": "Annulla",
         "burGroupTitle": "Le mie sedi richieste",
         "nonProducerInfo": "Qui i produttori di dati vedono le loro sedi richieste.",
         "missingBurInfo": "Manca una sede? Contattate direttamente {{ consumer }} affinché possa richiederla e voi possiate dare il consenso."
       },
-      "footerInformationNoBur": "Avete disattivato tutte le sedi. Se desiderate rifiutare completamente questa richiesta, cliccate su Annulla e poi sul pulsante Rifiuta.",
       "noConsentRequired": "Nessuna azione richiesta. Questo accesso ai dati avviene su una base di diritto pubblico. Questa visualizzazione serve a scopo di informazione trasparente."
     },
     "toast": {
@@ -373,7 +377,8 @@
       "TO_BE_RELEASED_BY_CONSUMER": "Conclusione a discrezione del destinatario",
       "TO_BE_SIGNED_BY_PROVIDER": "Fornitore di firma digitale aperta",
       "TO_BE_RELEASED_BY_PROVIDER": "Conclusione aperta al fornitore",
-      "TO_BE_ACTIVATED": "Attivazione in sospeso"
+      "TO_BE_ACTIVATED": "Attivazione in sospeso",
+      "PAUSED": "In pausa"
     },
     "table": {
       "tableActions": {
@@ -440,7 +445,35 @@
           "declined": "Rifiutato",
           "uid": "UID",
           "bur": "BUR"
-        }
+        },
+        "addButton": "Richiedi produttore",
+        "modal": {
+          "title": "Richiedi produttore",
+          "description": "Per includere nuove aziende nella richiesta, è necessario interrogare i produttori tramite la loro UID. Successivamente, è possibile selezionare dall'elenco delle sedi operative. È possibile controllare la richiesta anche tramite l'API.",
+          "uidLabel": "UID",
+          "uidPlaceholder": "CHE000000000",
+          "cancel": "Annulla",
+          "confirm": "Aggiungi {{ count }} richiesta(e)",
+          "uidInvalid": "formato non valido",
+          "noResults": "l'UID inserito non è stato trovato",
+          "burSection": {
+            "title": "Sedi operative",
+            "description": "Seleziona dall'elenco le sedi operative che desideri richiedere.",
+            "selectAll": "Seleziona tutto",
+            "burLabel": "Numero della sede operativa (BUR)",
+            "existing": "Già richiesto"
+          },
+          "success": {
+            "title": "Produttori richiesti con successo",
+            "message": "{{ count }} Stabilimenti sono stati richiesti con successo"
+          },
+          "error": {
+            "title": "Aggiunta produttori fallita",
+            "message": "Qualcosa è andato storto durante l'aggiunta degli stabilimenti: {{ error }}"
+          },
+          "noBurs": "Per questo UID non sono disponibili sedi operative"
+        },
+        "addBurs": "Aggiungi sedi operative"
       }
     },
     "invitationLink": {
@@ -619,11 +652,21 @@
       "description": "Grazie per aver scelto il nostro serviziodi aver effettuato la tua scelta. Verrai reindirizzato automaticamente tra {{ count }} secondi.",
       "redirectNow": "Direttamente indietro"
     },
+    "uidMissingWarning": "Al momento non è ancora presente alcun numero UID relativo alla Sua persona o alla Sua azienda. Poiché sono coinvolti diversi sistemi, potrebbero essere necessari alcuni giorni prima che disponiamo di tutti i dati necessari per il corretto funzionamento di agridata.ch. La preghiamo di riprovare tra qualche giorno. Se il problema persiste, la preghiamo di contattare l'assistenza ({{ phoneNumber }}).",
     "migrationInfo": {
-      "title": "La richiesta di dati di {{ consumerName }} è ora disponibile qui",
-      "description": "Il tuo consenso alla richiesta di dati {{name}} è stato ripreso da “Mia condivisione dei dati agricoli (MAF)”. Puoi trovare la richiesta nella tabella sottostante e, se necessario, modificare il consenso."
-    },
-    "uidMissingWarning": "Al momento non è ancora presente alcun numero UID relativo alla Sua persona o alla Sua azienda. Poiché sono coinvolti diversi sistemi, potrebbero essere necessari alcuni giorni prima che disponiamo di tutti i dati necessari per il corretto funzionamento di agridata.ch. La preghiamo di riprovare tra qualche giorno. Se il problema persiste, la preghiamo di contattare l'assistenza ({{ phoneNumber }})."
+      "maf": {
+        "title": "Sono ora disponibili nuove richieste di dati da “Mia condivisione dei dati agricoli (MAF)”",
+        "intro": "Per farvi risparmiare tempo e lavoro, abbiamo trasferito automaticamente le impostazioni che avevate precedentemente configurato in Mia condivisione dei dati agricoli (MAF) ad agridata.ch."
+      },
+      "tvd": {
+        "title": "Nuove richieste di dati dalla \"Banca dati sul traffico degli animali (BDTA)\" sono ora disponibili",
+        "intro": "Per farvi risparmiare tempo e lavoro, abbiamo trasferito automaticamente le impostazioni che avevate precedentemente configurato nella Banca dati sul traffico degli animali (BDTA) ad agridata.ch."
+      },
+      "common": {
+        "requestsFromConsumer": "Richieste trasferite da {{consumerName}}",
+        "tableHint": "Non dovete fare nulla. Se non desiderate più fornire un consenso, potete modificarlo in qualsiasi momento qui su agridata.ch: basta aprire la relativa richiesta di dati nella tabella sottostante e selezionare «Rifiuta»."
+      }
+    }
   },
   "header": {
     "helpAndSupport": {
@@ -774,6 +817,10 @@
   "common": {
     "ariaLabel": {
       "close": "Chiudi"
+    },
+    "alert": {
+      "showLess": "Mostra meno",
+      "showMore": "Mostra altro"
     }
   },
   "footer": {
@@ -801,7 +848,21 @@
     "actions": {
       "accept": "Approvare la richiesta",
       "reject": "Respingere la richiesta",
-      "activate": "Attiva richiesta"
+      "activate": "Attiva richiesta",
+      "pause": "Mettere in pausa la richiesta",
+      "pauseConfirmation": {
+        "title": "Mettere in pausa la richiesta di dati?",
+        "description": "Stai per mettere in pausa la richiesta di dati {{ requestName }} tra {{ provider }} e {{ consumer }}. In questo modo, lo scambio di dati tra le parti coinvolte verrà interrotto immediatamente. Questa azione può essere annullata.",
+        "confirm": "Sì, mettere in pausa la richiesta di dati",
+        "cancel": "Annulla"
+      },
+      "reactivate": "Riattivare la richiesta",
+      "reactivateConfirmation": {
+        "title": "Riattivare la richiesta di dati in pausa?",
+        "description": "Stai per riattivare la richiesta di dati in pausa {{ requestName }} tra {{ provider }} e {{ consumer }}. Lo scambio di dati tra le parti coinvolte verrà ripreso. Questa azione può essere annullata.",
+        "confirm": "Sì, riattivare la richiesta di dati in pausa",
+        "cancel": "Annulla"
+      }
     }
   },
   "support-info": {
@@ -1320,7 +1381,8 @@
       "extendedDescription": "Ulteriori informazioni",
       "paymentRequired": "Costi del fornitore",
       "costs": "Costi per i richiedenti di dati",
-      "documents": "Documenti"
+      "documents": "Documenti",
+      "publicSectorTooltip": "La messa a disposizione di questi dati si basa su una base di diritto pubblico. Il trasferimento viene mostrato per trasparenza."
     },
     "list": {
       "allLoaded": "Tutti i prodotti dati caricati"
@@ -1339,5 +1401,22 @@
   },
   "agridata-contact-card": {
     "foreignBadge": "Richiedente internazionale di dati"
+  },
+  "news": {
+    "title": "Comunicazioni relative ad Agridata",
+    "readMore": "Continua a leggere",
+    "createdAt": "Data di creazione:  {{ date }}"
+  },
+  "admin-agbs": {
+    "table": {
+      "titleValue": "Termini e condizioni generali",
+      "version": "Versione",
+      "title": "Titolo",
+      "validFrom": "Valido dal",
+      "validTo": "Valido fino al",
+      "enforceConsentFrom": "Blocco dal"
+    },
+    "pageTitle": "Gestione dei Termini e Condizioni",
+    "pageDescription": "Gestione centralizzata del quadro normativo e del controllo delle versioni per tutte le interfacce di Agridata Nexus."
   }
 }

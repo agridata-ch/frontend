@@ -34,6 +34,7 @@ export class ButtonComponent {
   disabled = input(false, { transform: booleanAttribute });
   tabindex = input<number>(0);
   ariaLabel = input<string>('');
+  ariaExpanded = input<boolean>();
   selected = input(false, { transform: booleanAttribute });
   loading = input(false, { transform: booleanAttribute });
   success = input(false, { transform: booleanAttribute });
