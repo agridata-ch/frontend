@@ -1,3 +1,25 @@
+## [1.22.0](https://github.com/agridata-ch/frontend/compare/v1.21.0...v1.22.0) (2026-10-08)
+
+### Features
+
+- **consent-request:** add consent request state badge component and update related usages ([8d12751](https://github.com/agridata-ch/frontend/commit/8d12751494a9881ec6f76f4b3d903eea7bc99479)), references [DIGIB2-1666](https://github.com/agridata-ch/frontend/issues/-1666)
+- **consent-request:** fix failing on WITHDRAW state not part of Record ([3a5995b](https://github.com/agridata-ch/frontend/commit/3a5995ba2c91dd5d29deec399cf6d44e1ee61c2f)), references [DIGIB2-618](https://github.com/agridata-ch/frontend/issues/-618)
+- **consent-request:** make purpose placeholder html tag ([fce2d8b](https://github.com/agridata-ch/frontend/commit/fce2d8b27c413db10edb5785b7ffc6426a43f452)), references [DIGIB2-1735](https://github.com/agridata-ch/frontend/issues/-1735)
+- **consent-request:** optimize BUR decision ([9846218](https://github.com/agridata-ch/frontend/commit/9846218ae0214e36cee8f31e223344c45183e2f6)), references [DIGIB2-1666](https://github.com/agridata-ch/frontend/issues/-1666)
+- **data-request:** implement add producer modal ([249642a](https://github.com/agridata-ch/frontend/commit/249642a0291aac6260979c1e92a87e79a7cccd3d)), references [DIGIB2-1223](https://github.com/agridata-ch/frontend/issues/-1223)
+- **data-request:** implement add producers ([34a1aa6](https://github.com/agridata-ch/frontend/commit/34a1aa688e79bc1aeb3379cffbc91b2bd516e5d4)), references [DIGIB2-1708](https://github.com/agridata-ch/frontend/issues/-1708)
+- **data-request:** implement data-request reactivation modal ([4dd6618](https://github.com/agridata-ch/frontend/commit/4dd6618d65c3116f879f8da98de33a3b2fba16d6)), references [DIGIB2-1691](https://github.com/agridata-ch/frontend/issues/-1691)
+- **data-request:** implement pause confirmation modal ([8a46b9a](https://github.com/agridata-ch/frontend/commit/8a46b9a549c2cf6a8911b5c4cdaa68a914ec9928)), references [DIGIB2-1689](https://github.com/agridata-ch/frontend/issues/-1689)
+- **data-request:** update styling ([9c48292](https://github.com/agridata-ch/frontend/commit/9c48292bab119e5b059772a0f9008a72121107f6)), references [DIGIB2-1708](https://github.com/agridata-ch/frontend/issues/-1708)
+- **deps:** dependency update ([e3bced0](https://github.com/agridata-ch/frontend/commit/e3bced06a6748f82884fd4142179240ff0da869e)), references [DIGIB2-1744](https://github.com/agridata-ch/frontend/issues/-1744)
+- **docu:** update publiccode.yml for open source catalog ([8bd5717](https://github.com/agridata-ch/frontend/commit/8bd5717a4b1d45325d136a30f788bfeaa8f71dd1))
+- **news-article:** update card, improve image on detail ([9df0ca7](https://github.com/agridata-ch/frontend/commit/9df0ca7374c5dd9bf2696e02fe021337a8b3dbbd)), references [DIGIB2-1568](https://github.com/agridata-ch/frontend/issues/-1568)
+- **news-blog:** add detail site ([ebc901f](https://github.com/agridata-ch/frontend/commit/ebc901f6dbffaae5f834d04d8339c891ee075469)), references [DIGIB2-1568](https://github.com/agridata-ch/frontend/issues/-1568)
+- **news-blog:** add news-blog cms site ([635983f](https://github.com/agridata-ch/frontend/commit/635983f05a76c5625734e383dc9e58c48d6f4d0f)), references [DIGIB2-1552](https://github.com/agridata-ch/frontend/issues/-1552)
+- **producer-page:** add expandable alerts and update migrated request alert styling ([3c4e476](https://github.com/agridata-ch/frontend/commit/3c4e476e2385b7b313570578357682e77119a2bb)), references [DIGIB2-1444](https://github.com/agridata-ch/frontend/issues/-1444)
+- **public-data-catalog:** add tooltip to public-sector badge ([388c102](https://github.com/agridata-ch/frontend/commit/388c102007df45da7dc06c01cb3affe422c6ec51)), references [DIGIB2-1700](https://github.com/agridata-ch/frontend/issues/-1700)
+- **translations:** update text for alerts of migrated data requests ([d79b4bb](https://github.com/agridata-ch/frontend/commit/d79b4bb1010ac3531a2d6f4134a4babe104a84f2)), references [DIGIB2-1444](https://github.com/agridata-ch/frontend/issues/-1444)
+
 ## [1.22.0-rc.16](https://github.com/agridata-ch/frontend/compare/v1.22.0-rc.15...v1.22.0-rc.16) (2026-10-07)
 
 ### Features
