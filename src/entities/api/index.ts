@@ -7,3 +7,4 @@ export * from './contract-revision.service';
 export * from './agb.service';
 export * from './data-product.service';
 export * from './data-providers.service';
+export * from './data-product-sources.service';

@@ -1,8 +1,8 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import type { Mocked } from 'vitest';
 
-import { DataProductDocumentService } from '@/entities/api/data-product-document.service';
-import { DataProductService } from '@/entities/api/data-product.service';
+import { DataProductSource } from '@/entities/api';
 import {
   DataProductDocumentMetadataDto,
   DocumentScanStatusEnum,
@@ -10,17 +10,10 @@ import {
 } from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
-import {
-  createMockDataProductDocumentService,
-  createMockDataProductService,
-  createMockErrorHandlerService,
-  createMockI18nService,
-  MockDataProductDocumentService,
-  MockDataProductService,
-} from '@/shared/testing/mocks';
+import { createMockErrorHandlerService, createMockI18nService } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
-import { PublicDataProductDetailComponent } from './public-data-product-detail.component';
+import { DataProductDetailComponent } from './data-product-detail.component';
 
 const doc = (id: string): DataProductDocumentMetadataDto => ({
   id,
@@ -38,39 +31,51 @@ const product = (): PublicDataProductDto => ({
   links: [{ displayText: 'Link', url: 'https://example.test' }],
 });
 
-describe('PublicDataProductDetailComponent', () => {
-  let fixture: ComponentFixture<PublicDataProductDetailComponent>;
-  let component: PublicDataProductDetailComponent;
-  let componentRef: ComponentRef<PublicDataProductDetailComponent>;
-  let dataProductService: MockDataProductService;
-  let documentService: MockDataProductDocumentService;
+describe('DataProductDetailComponent', () => {
+  let fixture: ComponentFixture<DataProductDetailComponent>;
+  let component: DataProductDetailComponent;
+  let componentRef: ComponentRef<DataProductDetailComponent>;
+  let source: Mocked<DataProductSource>;
 
   beforeEach(async () => {
     URL.createObjectURL = vi.fn().mockReturnValue('blob:mock');
     URL.revokeObjectURL = vi.fn();
 
-    dataProductService = createMockDataProductService();
-    dataProductService.getPublicProductById.mockResolvedValue(product());
-    documentService = createMockDataProductDocumentService();
+    source = {
+      downloadDocument: vi.fn().mockResolvedValue(new Blob()),
+      getProduct: vi.fn().mockResolvedValue(product()),
+      listDocuments: vi.fn().mockResolvedValue([]),
+    };
 
     await TestBed.configureTestingModule({
-      imports: [PublicDataProductDetailComponent, createTranslocoTestingModule()],
+      imports: [DataProductDetailComponent, createTranslocoTestingModule()],
       providers: [
-        { provide: DataProductService, useValue: dataProductService },
-        { provide: DataProductDocumentService, useValue: documentService },
         { provide: ErrorHandlerService, useValue: createMockErrorHandlerService() },
         { provide: I18nService, useValue: createMockI18nService() },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PublicDataProductDetailComponent);
+    fixture = TestBed.createComponent(DataProductDetailComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
+    componentRef.setInput('source', source);
   });
 
   it('should create', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  describe('handleNameLoaded', () => {
+    it('emits the translated product name once the product is loaded', async () => {
+      const names: string[] = [];
+      component.handleNameLoaded.subscribe((name) => names.push(name));
+      componentRef.setInput('productId', 'product-1');
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(names.at(-1)).toBe('Produkt');
+    });
   });
 
   describe('documents', () => {
@@ -83,15 +88,14 @@ describe('PublicDataProductDetailComponent', () => {
     });
 
     it('exposes and renders the loaded document metadata', async () => {
-      documentService.listDocumentsPublic.mockResolvedValue([doc('doc-1'), doc('doc-2')]);
+      source.listDocuments.mockResolvedValue([doc('doc-1'), doc('doc-2')]);
       componentRef.setInput('productId', 'product-1');
       fixture.detectChanges();
       await fixture.whenStable();
       fixture.detectChanges();
 
       expect(component['documents']()).toHaveLength(2);
-      // The modal portals its content to document.body, outside the component subtree.
-      expect(document.body.querySelectorAll('app-agridata-file-download')).toHaveLength(2);
+      expect(fixture.nativeElement.querySelectorAll('app-agridata-file-download')).toHaveLength(2);
     });
   });
 
@@ -105,7 +109,7 @@ describe('PublicDataProductDetailComponent', () => {
     });
 
     it('is false when the product has no links', async () => {
-      dataProductService.getPublicProductById.mockResolvedValue({ ...product(), links: [] });
+      source.getProduct.mockResolvedValue({ ...product(), links: [] });
       componentRef.setInput('productId', 'product-1');
       fixture.detectChanges();
       await fixture.whenStable();
@@ -115,7 +119,7 @@ describe('PublicDataProductDetailComponent', () => {
   });
 
   describe('handleDownload', () => {
-    it('downloads the document through the public endpoint', async () => {
+    it('downloads the document through the source', async () => {
       componentRef.setInput('productId', 'product-1');
       fixture.detectChanges();
       await fixture.whenStable();
@@ -123,7 +127,7 @@ describe('PublicDataProductDetailComponent', () => {
       component['handleDownload'](doc('doc-1'));
       await fixture.whenStable();
 
-      expect(documentService.downloadDocumentPublic).toHaveBeenCalledWith('product-1', 'doc-1');
+      expect(source.downloadDocument).toHaveBeenCalledWith('product-1', 'doc-1');
     });
 
     it('does nothing when there is no product id', () => {
@@ -131,12 +135,12 @@ describe('PublicDataProductDetailComponent', () => {
 
       component['handleDownload'](doc('doc-1'));
 
-      expect(documentService.downloadDocumentPublic).not.toHaveBeenCalled();
+      expect(source.downloadDocument).not.toHaveBeenCalled();
     });
   });
 
   describe('handleOpen', () => {
-    it('opens the document through the public endpoint', async () => {
+    it('opens the document through the source', async () => {
       const openSpy = vi.spyOn(globalThis, 'open').mockImplementation(() => null);
       componentRef.setInput('productId', 'product-1');
       fixture.detectChanges();
@@ -145,7 +149,7 @@ describe('PublicDataProductDetailComponent', () => {
       component['handleOpen'](doc('doc-1'));
       await fixture.whenStable();
 
-      expect(documentService.downloadDocumentPublic).toHaveBeenCalledWith('product-1', 'doc-1');
+      expect(source.downloadDocument).toHaveBeenCalledWith('product-1', 'doc-1');
       openSpy.mockRestore();
     });
 
@@ -154,7 +158,7 @@ describe('PublicDataProductDetailComponent', () => {
 
       component['handleOpen'](doc('doc-1'));
 
-      expect(documentService.downloadDocumentPublic).not.toHaveBeenCalled();
+      expect(source.downloadDocument).not.toHaveBeenCalled();
     });
   });
 });
