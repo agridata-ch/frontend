@@ -125,12 +125,14 @@ describe('DataRequestProductsAccordionComponent', () => {
       expect(content).toContain('Produkt 2');
     });
 
-    it('should link to the public data product information', () => {
+    it('should open the product details when clicking more infos', () => {
       componentRef.setInput('products', mockProducts);
       fixture.detectChanges();
 
-      const link = fixture.debugElement.nativeElement.querySelector('a');
-      expect(link.getAttribute('href')).toBe(component.getProductDataLink(mockProducts[0].id));
+      const buttons = fixture.debugElement.nativeElement.querySelectorAll('button');
+      buttons[2].click();
+
+      expect(component['selectedProductId']()).toBe(mockProducts[1].id);
     });
   });
 });

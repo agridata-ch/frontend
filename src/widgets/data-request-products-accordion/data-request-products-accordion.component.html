@@ -14,15 +14,28 @@
           <span class="text-agridata-primary-text whitespace-pre-line">
             {{ getFieldFromLang(product, 'description') }}
           </span>
-          <a
-            [href]="getProductDataLink(product.id)"
-            target="_blank"
-            class="text-agridata-primary-600 hover:underline cursor-pointer"
+          <button
+            type="button"
+            class="self-start text-agridata-primary-600 hover:underline cursor-pointer"
+            (click)="selectedProductId.set(product.id)"
           >
             {{ t('moreInfos') }}
-          </a>
+          </button>
         </div>
       }
     </div>
   </app-agridata-accordion>
+  <app-modal
+    [open]="!!selectedProductId()"
+    [title]="detailTitle()"
+    dataTestId="data-product-detail-modal"
+    (closed)="selectedProductId.set(undefined)"
+  >
+    <app-data-product-detail
+      [productId]="selectedProductId()"
+      [source]="sources.internalSource"
+      (handleNameLoaded)="detailTitle.set($event)"
+      (handleLoadFailed)="selectedProductId.set(undefined)"
+    />
+  </app-modal>
 </div>
