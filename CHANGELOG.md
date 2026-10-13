@@ -1,3 +1,9 @@
+## [1.23.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.22.0...v1.23.0-rc.1) (2026-10-13)
+
+### Features
+
+- **consent-request:** update decision description for legally permitted ([05ecca6](https://github.com/agridata-ch/frontend/commit/05ecca6806cc62d567d35c1132423cd53d2a5935)), references [DIGIB2-1748](https://github.com/agridata-ch/frontend/issues/-1748)
+
 ## [1.22.0](https://github.com/agridata-ch/frontend/compare/v1.21.0...v1.22.0) (2026-10-08)
 
 ### Features
