@@ -72,9 +72,16 @@
       "decisions": {
         "title": "Panoramica dell'azienda e delle sedi",
         "description": {
-          "noBur": "Questa richiesta riguarda la vostra azienda (UID). Il consenso si applica all'intera azienda a livello operativo. Poiché questa richiesta non è specifica per una sede, non vengono elencate singole sedi operative (BUR).",
-          "singleBur": "Questa richiesta riguarda la vostra azienda (UID) e la relativa sede (BUR). Il consenso si applica all'azienda e alla sede.",
-          "multipleBur": "Questa richiesta riguarda la vostra azienda (UID) e le relative sedi (BUR). Il consenso per l'azienda è sempre valido. In linea di massima, acconsentirete alle sedi richieste, ma potete escludere singole sedi dalla richiesta tramite \"Modifica sedi\"."
+          "consentRequired": {
+            "noBur": "Questa richiesta riguarda la vostra azienda (UID). Il consenso si applica all'intera azienda a livello operativo. Poiché questa richiesta non è specifica per una sede, non vengono elencate singole sedi operative (BUR).",
+            "singleBur": "Questa richiesta riguarda la vostra azienda (UID) e la relativa sede (BUR). Il consenso si applica all'azienda e alla sede.",
+            "multipleBur": "Questa richiesta riguarda la vostra azienda (UID) e le relative sedi (BUR). Il consenso per l'azienda è sempre valido. In linea di massima, acconsentirete alle sedi richieste, ma potete escludere singole sedi dalla richiesta tramite \"Modifica sedi\"."
+          },
+          "legallyPermitted": {
+            "noBur": "Questa richiesta riguarda la sua impresa (IDI). Su base di diritto pubblico, l'utilizzo si applica all'intera impresa a livello aziendale. Poiché questa richiesta non è specifica per una sede, non viene elencata alcuna stabilimento (RSI).",
+            "singleBur": "Questa richiesta riguarda la sua impresa (IDI) e la relativa sede (RSI). Su base di diritto pubblico, l'utilizzo comprende l'impresa e la sede.",
+            "multipleBur": "Questa richiesta riguarda la sua impresa (IDI) e le relative sedi (RSI). Su base di diritto pubblico, l'utilizzo comprende l'impresa e tutte le sedi elencate di seguito."
+          }
         },
         "uidGroupTitle": "La mia azienda richiesta",
         "uid": "Identificazione dell'azienda (UID)",

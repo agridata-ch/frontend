@@ -1,7 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ConsentRequestProducerViewV2Dto, ConsentRequestStateEnum } from '@/entities/openapi';
+import {
+  ConsentRequestAggregationStateEnum,
+  ConsentRequestProducerViewV2Dto,
+  ConsentRequestStateEnum,
+} from '@/entities/openapi';
 import { ConsentRequestDecisionStore } from '@/shared/consent-request';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { AgridataToggleComponent } from '@/shared/ui/agridata-toggle';
@@ -48,14 +52,14 @@ describe('DataRequestConsentRequestDecisionsComponent', () => {
     it('uses the no-BUR text when the data request has no BUR', async () => {
       await setup(true);
 
-      expect(component['descriptionKey']()).toBe('description.noBur');
+      expect(component['descriptionKey']()).toBe('description.consentRequired.noBur');
     });
 
     it('uses the single-BUR text when exactly one BUR is requested', async () => {
       await setup(true);
       fixture.componentRef.setInput('burPresent', true);
 
-      expect(component['descriptionKey']()).toBe('description.singleBur');
+      expect(component['descriptionKey']()).toBe('description.consentRequired.singleBur');
     });
 
     it('uses the multiple-BUR text when several BURs are requested', async () => {
@@ -66,7 +70,42 @@ describe('DataRequestConsentRequestDecisionsComponent', () => {
         { id: 'bur-2', dataProducerBur: '2', stateCode: ConsentRequestStateEnum.Opened },
       ]);
 
-      expect(component['descriptionKey']()).toBe('description.multipleBur');
+      expect(component['descriptionKey']()).toBe('description.consentRequired.multipleBur');
+    });
+
+    describe('when legally permitted', () => {
+      beforeEach(async () => {
+        await setup(true);
+        store.dataRequestStateCode.set(ConsentRequestAggregationStateEnum.LegallyPermitted);
+      });
+
+      it('uses the no-BUR public-law text when the data request has no BUR', () => {
+        expect(component['descriptionKey']()).toBe('description.legallyPermitted.noBur');
+      });
+
+      it('uses the single-BUR public-law text when exactly one BUR is requested', () => {
+        fixture.componentRef.setInput('burPresent', true);
+
+        expect(component['descriptionKey']()).toBe('description.legallyPermitted.singleBur');
+      });
+
+      it('uses the multiple-BUR public-law text when several BURs are requested', () => {
+        fixture.componentRef.setInput('burPresent', true);
+        store.consentRequests.set([
+          {
+            id: 'bur-1',
+            dataProducerBur: '1',
+            stateCode: ConsentRequestStateEnum.LegallyPermitted,
+          },
+          {
+            id: 'bur-2',
+            dataProducerBur: '2',
+            stateCode: ConsentRequestStateEnum.LegallyPermitted,
+          },
+        ]);
+
+        expect(component['descriptionKey']()).toBe('description.legallyPermitted.multipleBur');
+      });
     });
   });
 

@@ -72,9 +72,16 @@
       "decisions": {
         "title": "Aperçu de l'exploitation et des sites",
         "description": {
-          "noBur": "Cette demande concerne votre entreprise (UID). Le consentement s'applique à l'ensemble de l'entreprise au niveau de l'exploitation. Comme cette demande n'est pas spécifique à un site, aucune installation individuelle (BUR) n'est répertoriée.",
-          "singleBur": "Cette demande concerne votre entreprise (UID) et le site associé (BUR). Le consentement s'applique à l'entreprise ainsi qu'au site.",
-          "multipleBur": "Cette demande concerne votre entreprise (UID) et les sites associés (BUR). Le consentement pour l'entreprise est toujours valable. En principe, vous acceptez les sites demandés ; via « Modifier les sites », vous pouvez exclure des sites individuels de la demande."
+          "consentRequired": {
+            "noBur": "Cette demande concerne votre entreprise (UID). Le consentement s'applique à l'ensemble de l'entreprise au niveau de l'exploitation. Comme cette demande n'est pas spécifique à un site, aucune installation individuelle (BUR) n'est répertoriée.",
+            "singleBur": "Cette demande concerne votre entreprise (UID) et le site associé (BUR). Le consentement s'applique à l'entreprise ainsi qu'au site.",
+            "multipleBur": "Cette demande concerne votre entreprise (UID) et les sites associés (BUR). Le consentement pour l'entreprise est toujours valable. En principe, vous acceptez les sites demandés ; via « Modifier les sites », vous pouvez exclure des sites individuels de la demande."
+          },
+          "legallyPermitted": {
+            "noBur": "Cette demande concerne votre entreprise (IDE). Sur une base de droit public, l'utilisation s'applique à l'ensemble de l'entreprise au niveau de l'exploitation. Cette demande n'étant pas spécifique à un site, aucun établissement (REE) n'est mentionné.",
+            "singleBur": "Cette demande concerne votre entreprise (IDE) et le site correspondant (REE). Sur une base de droit public, l'utilisation englobe l'entreprise ainsi que le site.",
+            "multipleBur": "Cette demande concerne votre entreprise (IDE) et les sites correspondants (REE). Sur une base de droit public, l'utilisation englobe l'entreprise ainsi que tous les sites énumérés ci-dessous."
+          }
         },
         "uidGroupTitle": "Mon entreprise demandée",
         "uid": "Numéro d'identification de l'entreprise (UID) ",
