@@ -20,10 +20,7 @@ import {
   ConsentRequestStateEnum,
   DataRequestDto,
 } from '@/entities/openapi';
-import {
-  getAggregationBadgeVariant,
-  getConsentRequestBadgeVariant,
-} from '@/shared/consent-request';
+import { getAggregationBadgeVariant } from '@/shared/consent-request';
 import { UID_REGEX } from '@/shared/constants/constants';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { isExternalServiceError } from '@/shared/error/http-error-method';
@@ -76,7 +73,6 @@ export class DataRequestAddProducersComponent {
   // Constants
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly BadgeSize = BadgeSize;
-  protected readonly getConsentRequestBadgeVariant = getConsentRequestBadgeVariant;
 
   // Input properties
   readonly dataRequest = input.required<DataRequestDto>();

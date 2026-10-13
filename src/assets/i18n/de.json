@@ -121,7 +121,8 @@
         "DECLINED": "Abgelehnt",
         "PARTIALLY_OPENED": "Teilweise Offen",
         "PARTIALLY_GRANTED": "Teilweise Zugestimmt",
-        "LEGALLY_PERMITTED": "Öffentlich-rechtlich"
+        "LEGALLY_PERMITTED": "Öffentlich-rechtlich",
+        "WITHDRAWN": "Beendet"
       }
     },
     "emptyState": {
@@ -451,7 +452,8 @@
           "granted": "Zugestimmt",
           "declined": "Abgelehnt",
           "uid": "UID",
-          "bur": "BUR"
+          "bur": "BUR",
+          "withdrawn": "Beendet"
         },
         "addButton": "Produzent anfragen",
         "modal": {
@@ -476,11 +478,31 @@
           },
           "error": {
             "title": "Produzenten hinzufügen fehlgeschlagen",
-            "message": "Beim hinzufügen von Betriebstätten ist etwas schief gelaufen: {{ error }}"
+            "message": "Beim Hinzufügen von Betriebstätten ist etwas schief gelaufen: {{ error }}"
           },
-          "noBurs": "Für diese UID sind keine Betriebsstätten verfügbar"
+          "noBurs": "Für diese UID sind keine Betriebsstätten verfügbar",
+          "withdraw": {
+            "burSection": {
+              "noRequest": "Keine Anfrage vorhanden",
+              "description": "Wählen Sie in der Liste die Betriebsstätten aus, für welche Sie die Anfragen entfernen möchten."
+            },
+            "title": "Anfrage(n) beenden",
+            "description": "Um Anträge zu beenden, können Sie den gesamten Antrag über die UID beenden. Dadurch werden auch alle zugehörigen Betriebsstätten beendet. Alternativ können Sie den Antrag für einzelne Betriebsstätten aus der Liste beenden.\nSie können die Anträge auch über die API steuern.",
+            "confirmPartial": "{{ count }} Anfrage(n) beenden",
+            "confirmComplete": "Gesamte Anfrage beenden",
+            "success": {
+              "title": "Anfrage(n) erfolgreich beendet",
+              "messagePartial": "{{ count }} Anfrage(n) wurden erfolgreich beendet",
+              "messageComplete": "Gesamte Anfrage erfolgreich beendet"
+            },
+            "error": {
+              "title": "Anfrage beenden fehlgeschlagen",
+              "message": "Beim Beenden der Anfrage(n) ist etwas schief gelaufen: {{ error }}"
+            }
+          }
         },
-        "addBurs": "Betriebstätten hinzufügen"
+        "addBurs": "Betriebstätten hinzufügen",
+        "withdrawRequest": "Anfrage beenden"
       }
     },
     "invitationLink": {

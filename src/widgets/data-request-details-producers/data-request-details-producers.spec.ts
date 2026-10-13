@@ -92,6 +92,22 @@ describe('DataRequestDetailsProducersComponent', () => {
     });
   });
 
+  describe('reload', () => {
+    it('should reload producers and metadata', async () => {
+      await fixture.whenStable();
+      dataRequestService.getConsentRequestsOfDataRequest.mockClear();
+      dataRequestService.fetchProducersMetadata.mockClear();
+
+      component['reloadAll']();
+      await fixture.whenStable();
+
+      expect(dataRequestService.getConsentRequestsOfDataRequest).toHaveBeenCalled();
+      expect(dataRequestService.fetchProducersMetadata).toHaveBeenCalledWith(
+        mockDataRequests[0].id,
+      );
+    });
+  });
+
   describe('table metadata', () => {
     it('should default-sort by UID ascending', () => {
       const uidColumn = component['tableMetadata']().columns.find(
@@ -113,6 +129,39 @@ describe('DataRequestDetailsProducersComponent', () => {
       const sortFields = component['tableMetadata']().columns.map((col) => col.sortField);
 
       expect(sortFields).toEqual(['dataProducerUid', 'lastModifiedDateTime', 'stateCode']);
+    });
+  });
+
+  describe('row actions', () => {
+    const getActions = (stateCode?: ConsentRequestStateEnum) =>
+      component['tableMetadata']().rowMenuActions?.({
+        id: 'cr-1',
+        dataRequestId: mockDataRequests[0].id,
+        dataProducerUid: 'CHE123456789',
+        stateCode,
+      }) ?? [];
+
+    it.each([
+      ConsentRequestStateEnum.Granted,
+      ConsentRequestStateEnum.Opened,
+      ConsentRequestStateEnum.Declined,
+    ])('should offer the withdraw action for state %s', (stateCode) => {
+      expect(getActions(stateCode).map((action) => action.label)).toContain(
+        'data-request.details.producer.withdrawRequest',
+      );
+    });
+
+    it('should not offer the withdraw action for other states', () => {
+      expect(getActions(ConsentRequestStateEnum.Withdrawn)).toHaveLength(0);
+    });
+
+    it('should open the withdraw modal for the selected consent request', () => {
+      const [withdraw] = getActions(ConsentRequestStateEnum.Granted);
+
+      withdraw.callback();
+
+      expect(component['withdrawOpen']()).toBe(true);
+      expect(component['withdrawTarget']()?.id).toBe('cr-1');
     });
   });
 

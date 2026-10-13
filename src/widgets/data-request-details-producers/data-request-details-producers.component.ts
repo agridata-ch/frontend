@@ -8,7 +8,7 @@ import {
   TemplateRef,
   viewChild,
 } from '@angular/core';
-import { faPlus } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faCircleMinus, faPlus } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 
 import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -20,6 +20,10 @@ import {
   ResourceQueryDto,
 } from '@/entities/openapi';
 import { DataRequestAddProducersComponent } from '@/features/data-request-add-producers';
+import {
+  DataRequestWithdrawRequestComponent,
+  WITHDRAWABLE_CONSENT_STATES,
+} from '@/features/data-request-withdraw-request';
 import { getConsentRequestBadgeVariant } from '@/shared/consent-request';
 import { UID_REGEX } from '@/shared/constants/constants';
 import { formatDate } from '@/shared/date';
@@ -56,6 +60,7 @@ import { DataRequestDetailsProducersMetadataComponent } from './data-request-det
     ButtonComponent,
     ConsentRequestFundamentalViewDtoDirective,
     DataRequestAddProducersComponent,
+    DataRequestWithdrawRequestComponent,
     I18nDirective,
     EmptyStateComponent,
     DataRequestDetailsProducersMetadataComponent,
@@ -73,8 +78,10 @@ export class DataRequestDetailsProducersComponent {
   protected readonly BadgeSize = BadgeSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly addIcon = faPlus;
+  protected readonly withdrawIcon = faCircleMinus;
   protected readonly getConsentRequestBadgeVariant = getConsentRequestBadgeVariant;
   private readonly ADD_BURS_ACTION = 'data-request.details.producer.addBurs';
+  private readonly WITHDRAW_ACTION = 'data-request.details.producer.withdrawRequest';
   private readonly UID_HEADER = 'data-request.uid';
   private readonly BUR_HEADER = 'data-request.bur';
   private readonly LAST_CHANGED_HEADER = 'data-request.lastChanged';
@@ -87,6 +94,11 @@ export class DataRequestDetailsProducersComponent {
   protected readonly resourceQueryDto = signal<ResourceQueryDto | undefined>(undefined);
   protected readonly addProducersOpen = signal(false);
   protected readonly prefillUid = signal<string | undefined>(undefined);
+  protected readonly withdrawOpen = signal(false);
+  protected readonly withdrawTarget = signal<ConsentRequestFundamentalViewDto | undefined>(
+    undefined,
+  );
+  private readonly metadataComponent = viewChild(DataRequestDetailsProducersMetadataComponent);
   private readonly stateTemplate =
     viewChild<TemplateRef<{ $implicit: ConsentRequestFundamentalViewDto }>>('stateTemplate');
 
@@ -158,8 +170,7 @@ export class DataRequestDetailsProducersComponent {
             },
           },
         ],
-        // Adding more BURs for a UID only makes sense when the data request has BUR products.
-        rowMenuActions: this.hasBurProducts() ? this.getRowActions : undefined,
+        rowMenuActions: this.getRowActions,
       };
     },
   );
@@ -184,17 +195,38 @@ export class DataRequestDetailsProducersComponent {
       : '';
   }
 
+  protected reloadAll(): void {
+    this.producersResource.reload();
+    this.metadataComponent()?.reload();
+  }
+
   private readonly getRowActions = (item?: ConsentRequestFundamentalViewDto): ActionDTO[] => {
-    if (!item?.dataProducerUid) return [];
-    return [
-      {
+    if (!item) return [];
+
+    const actions: ActionDTO[] = [];
+    // Adding more BURs for a UID only makes sense when the data request has BUR products.
+    if (this.hasBurProducts() && item.dataProducerUid) {
+      actions.push({
         icon: this.addIcon,
         label: this.ADD_BURS_ACTION,
         callback: () => {
           this.prefillUid.set(item.dataProducerUid);
           this.addProducersOpen.set(true);
         },
-      },
-    ];
+      });
+    }
+
+    if (item.stateCode && WITHDRAWABLE_CONSENT_STATES.includes(item.stateCode)) {
+      actions.push({
+        icon: this.withdrawIcon,
+        label: this.WITHDRAW_ACTION,
+        callback: () => {
+          this.withdrawTarget.set(item);
+          this.withdrawOpen.set(true);
+        },
+      });
+    }
+
+    return actions;
   };
 }

@@ -121,7 +121,8 @@
         "DECLINED": "Rifiutato",
         "PARTIALLY_OPENED": "Parzialmente aperto",
         "PARTIALLY_GRANTED": "Parzialmente approvato",
-        "LEGALLY_PERMITTED": "Di diritto pubblico"
+        "LEGALLY_PERMITTED": "Di diritto pubblico",
+        "WITHDRAWN": "Terminata"
       }
     },
     "emptyState": {
@@ -451,7 +452,8 @@
           "granted": "Approvato",
           "declined": "Rifiutato",
           "uid": "UID",
-          "bur": "BUR"
+          "bur": "BUR",
+          "withdrawn": "Terminata"
         },
         "addButton": "Richiedi produttore",
         "modal": {
@@ -478,9 +480,29 @@
             "title": "Aggiunta produttori fallita",
             "message": "Qualcosa è andato storto durante l'aggiunta degli stabilimenti: {{ error }}"
           },
-          "noBurs": "Per questo UID non sono disponibili sedi operative"
+          "noBurs": "Per questo UID non sono disponibili sedi operative",
+          "withdraw": {
+            "burSection": {
+              "noRequest": "Nessuna richiesta disponibile",
+              "description": "Selezionate dall’elenco le sedi operative per le quali desiderate rimuovere le richieste."
+            },
+            "title": "Terminare la/e richiesta/e",
+            "description": "Per terminare le richieste, è possibile terminare la richiesta completa tramite l’UID. In questo modo verranno terminate anche tutte le sedi operative associate. In alternativa, è possibile terminare la richiesta per singole sedi operative selezionandole dall’elenco.\nÈ inoltre possibile gestire le richieste tramite l’API.",
+            "confirmPartial": "{{ count }} richiesta/e da terminare",
+            "confirmComplete": "Terminare l’intera richiesta",
+            "success": {
+              "title": "Richiesta/e terminata/e con successo",
+              "messagePartial": "{{ count }} richiesta/e terminata/e con successo",
+              "messageComplete": "Richiesta completa terminata con successo"
+            },
+            "error": {
+              "title": "Errore durante la terminazione della richiesta",
+              "message": "Si è verificato un errore durante il tentativo di terminare la/e richiesta/e: {{ error }}"
+            }
+          }
         },
-        "addBurs": "Aggiungi sedi operative"
+        "addBurs": "Aggiungi sedi operative",
+        "withdrawRequest": "Terminare la richiesta"
       }
     },
     "invitationLink": {

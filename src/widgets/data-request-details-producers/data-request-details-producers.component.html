@@ -40,6 +40,14 @@
     [dataRequest]="dataRequest()"
     [(open)]="addProducersOpen"
     [initialUid]="prefillUid()"
-    (reloadProducers)="producersResource.reload()"
+    (reloadProducers)="reloadAll()"
   />
+  @if (withdrawTarget(); as target) {
+    <app-data-request-withdraw-request
+      [consentRequest]="target"
+      [dataRequest]="dataRequest()"
+      [(open)]="withdrawOpen"
+      (handleWithdrawn)="reloadAll()"
+    />
+  }
 </div>
