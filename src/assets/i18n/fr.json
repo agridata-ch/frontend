@@ -121,7 +121,8 @@
         "DECLINED": "Refusé",
         "PARTIALLY_OPENED": "Partiellement ouvert",
         "PARTIALLY_GRANTED": "Partiellement approuvé",
-        "LEGALLY_PERMITTED": "De droit public"
+        "LEGALLY_PERMITTED": "De droit public",
+        "WITHDRAWN": "Terminé"
       }
     },
     "emptyState": {
@@ -451,7 +452,8 @@
           "granted": "Approuvé",
           "declined": "Rejeté",
           "uid": "UID",
-          "bur": "BUR"
+          "bur": "BUR",
+          "withdrawn": "Terminé"
         },
         "addButton": "Demander un producteur",
         "modal": {
@@ -478,9 +480,29 @@
             "title": "L'ajout de producteurs a échoué",
             "message": "Un problème est survenu lors de l'ajout de sites : {{ error }}"
           },
-          "noBurs": "Il n'y a pas d'établissements disponibles pour ce numéro d'identification fiscale"
+          "noBurs": "Il n'y a pas d'établissements disponibles pour ce numéro d'identification fiscale",
+          "withdraw": {
+            "burSection": {
+              "noRequest": "Aucune requête disponible",
+              "description": "Sélectionnez dans la liste les sites d’exploitation pour lesquels vous souhaitez supprimer les requêtes."
+            },
+            "title": "Terminer la/les requête(s)",
+            "description": "Pour terminer les demandes, vous pouvez terminer la demande complète à l’aide de l’UID. Toutes les unités d’exploitation associées seront alors également terminées. Vous pouvez également terminer la demande pour certaines unités d’exploitation en les sélectionnant dans la liste.\nVous pouvez également gérer les demandes via l’API.",
+            "confirmPartial": "{{ count }} requête(s) à terminer",
+            "confirmComplete": "Terminer la requête complète",
+            "success": {
+              "title": "Requête(s) terminée(s) avec succès",
+              "messagePartial": "{{ count }} requête(s) terminée(s) avec succès",
+              "messageComplete": "Requête complète terminée avec succès"
+            },
+            "error": {
+              "title": "Échec de la clôture de la requête",
+              "message": "Une erreur s’est produite lors de la tentative de clôture de la/des requête(s) : {{ error }}"
+            }
+          }
         },
-        "addBurs": "Ajouter des sites d'exploitation"
+        "addBurs": "Ajouter des sites d'exploitation",
+        "withdrawRequest": "Terminer la requête"
       }
     },
     "invitationLink": {

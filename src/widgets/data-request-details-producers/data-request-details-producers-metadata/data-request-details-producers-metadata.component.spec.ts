@@ -65,6 +65,16 @@ describe('DataRequestDetailsProducersMetadataComponent', () => {
       expect(dataRequestService.fetchProducersMetadata).toHaveBeenCalledWith('1');
     });
 
+    it('should refetch the metadata on reload', async () => {
+      await fixture.whenStable();
+      dataRequestService.fetchProducersMetadata.mockClear();
+
+      component.reload();
+      await fixture.whenStable();
+
+      expect(dataRequestService.fetchProducersMetadata).toHaveBeenCalledWith('1');
+    });
+
     it('should not fetch when no id is provided', async () => {
       dataRequestService.fetchProducersMetadata.mockClear();
 
@@ -95,7 +105,13 @@ describe('DataRequestDetailsProducersMetadataComponent', () => {
 
       const columns = component['columns']();
 
-      expect(columns.map((c) => c.labelKey)).toEqual(['total', 'open', 'granted', 'declined']);
+      expect(columns.map((c) => c.labelKey)).toEqual([
+        'total',
+        'open',
+        'granted',
+        'declined',
+        'withdrawn',
+      ]);
       // 1562 -> "1'562": grouped, not the raw number (separator char varies by ICU build).
       expect(columns[0].uid).toMatch(/1.562/);
       expect(columns[0].uid).not.toBe('1562');

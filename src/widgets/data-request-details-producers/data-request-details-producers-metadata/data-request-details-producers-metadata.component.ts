@@ -44,7 +44,7 @@ export class DataRequestDetailsProducersMetadataComponent {
 
   protected readonly columns = computed<MetadataColumn[]>(() => {
     const summary = this.metadataResource.value();
-    const states = ['total', 'open', 'granted', 'declined'] as const;
+    const states = ['total', 'open', 'granted', 'declined', 'withdrawn'] as const;
     return states.map((state) => ({
       labelKey: state,
       uid: this.format(summary?.uid?.[state]),
@@ -57,6 +57,10 @@ export class DataRequestDetailsProducersMetadataComponent {
     this.metadataResource,
     this.errorService,
   );
+
+  reload(): void {
+    this.metadataResource.reload();
+  }
 
   private format(value?: number): string {
     return (value ?? 0).toLocaleString('de-CH');
