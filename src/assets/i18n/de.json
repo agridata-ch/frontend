@@ -72,9 +72,16 @@
       "decisions": {
         "title": "Betriebs- und Standortübersicht",
         "description": {
-          "noBur": "Diese Anfrage betrifft Ihr Unternehmen (UID). Die Zustimmung gilt für das gesamte Unternehmen auf Betriebsebene. Da diese Anfrage nicht standortspezifisch ist, werden keine einzelnen Betriebsstätten (BUR) aufgeführt.",
-          "singleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und den dazugehörigen Standort (BUR). Die Zustimmung gilt für das Unternehmen sowie den Standort.",
-          "multipleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und die dazugehörigen Standorte (BUR). Die Zustimmung für das Unternehmen gilt immer. Grundsätzlich stimmen Sie den angefragten Standorten zu, über „Standorte bearbeiten“ können Sie einzelne Standorte von der Anfrage ausschliessen."
+          "consentRequired": {
+            "noBur": "Diese Anfrage betrifft Ihr Unternehmen (UID). Die Zustimmung gilt für das gesamte Unternehmen auf Betriebsebene. Da diese Anfrage nicht standortspezifisch ist, werden keine einzelnen Betriebsstätten (BUR) aufgeführt.",
+            "singleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und den dazugehörigen Standort (BUR). Die Zustimmung gilt für das Unternehmen sowie den Standort.",
+            "multipleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und die dazugehörigen Standorte (BUR). Die Zustimmung für das Unternehmen gilt immer. Grundsätzlich stimmen Sie den angefragten Standorten zu, über „Standorte bearbeiten“ können Sie einzelne Standorte von der Anfrage ausschliessen."
+          },
+          "legallyPermitted": {
+            "noBur": "Diese Anfrage betrifft Ihr Unternehmen (UID). Auf öffentlich-rechtlicher Grundlage gilt die Nutzung für das gesamte Unternehmen auf Betriebsebene. Da diese Anfrage nicht standortspezifisch ist, werden keine einzelnen Betriebsstätten (BUR) aufgeführt.",
+            "singleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und den dazugehörigen Standort (BUR). Auf öffentlich-rechtlicher Grundlage umfasst die Nutzung das Unternehmen sowie den Standort.",
+            "multipleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und die dazugehörigen Standorte (BUR). Auf öffentlich-rechtlicher Grundlage umfasst die Nutzung das Unternehmen sowie alle unten aufgeführten Standorte."
+          }
         },
         "uidGroupTitle": "Mein angefragter Betrieb",
         "uid": "Unternehmens-Identifikation (UID)",
