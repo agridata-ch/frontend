@@ -1,3 +1,9 @@
+## [1.23.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.23.0-rc.1...v1.23.0-rc.2) (2026-10-13)
+
+### Features
+
+- **consent-request:** make product details into a modal instead of new tab link ([58d806a](https://github.com/agridata-ch/frontend/commit/58d806a9c4ced1aedcad52dbc905209d71b77744)), references [DIGIB2-1751](https://github.com/agridata-ch/frontend/issues/-1751)
+
 ## [1.23.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.22.0...v1.23.0-rc.1) (2026-10-13)
 
 ### Features
