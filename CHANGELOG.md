@@ -1,3 +1,9 @@
+## [1.23.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.23.0-rc.3...v1.23.0-rc.4) (2026-10-14)
+
+### Features
+
+- **agbs:** add AGB revision overview for admin ([1ca4f1e](https://github.com/agridata-ch/frontend/commit/1ca4f1eca7fadd5604d568a85918e1072e653c2f)), references [DIGIB2-1520](https://github.com/agridata-ch/frontend/issues/-1520)
+
 ## [1.23.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.23.0-rc.2...v1.23.0-rc.3) (2026-10-14)
 
 ### Features
