@@ -1,3 +1,9 @@
+## [1.23.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.23.0-rc.2...v1.23.0-rc.3) (2026-10-14)
+
+### Features
+
+- **data-request:** add withdraw request modal ([e9da747](https://github.com/agridata-ch/frontend/commit/e9da7477abde3dd9d8cdf11cd3a08a299fade8f6)), references [DIGIB2-618](https://github.com/agridata-ch/frontend/issues/-618)
+
 ## [1.23.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.23.0-rc.1...v1.23.0-rc.2) (2026-10-13)
 
 ### Features
