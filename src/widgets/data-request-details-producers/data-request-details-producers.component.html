@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-10 py-4" *i18n="let t; prefix: 'data-request.details.producer'">
-  <app-data-request-details-producers-metadata [dataRequestId]="dataRequest().id" />
+  <app-data-request-details-producers-metadata [dataRequest]="dataRequest()" />
   <app-agridata-table
     class="block"
     [dataProvider]="producersResource"
