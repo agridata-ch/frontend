@@ -1,3 +1,9 @@
+## [1.23.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.23.0-rc.4...v1.23.0-rc.5) (2026-10-19)
+
+### Features
+
+- **data-request-privacy:** show contract link ([6468fde](https://github.com/agridata-ch/frontend/commit/6468fde9bf01163bec33f271895c4194b0dbc536)), references [DIGIB2-1749](https://github.com/agridata-ch/frontend/issues/-1749)
+
 ## [1.23.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.23.0-rc.3...v1.23.0-rc.4) (2026-10-14)
 
 ### Features
