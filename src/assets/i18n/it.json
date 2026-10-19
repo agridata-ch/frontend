@@ -453,7 +453,15 @@
           "declined": "Rifiutato",
           "uid": "UID",
           "bur": "BUR",
-          "withdrawn": "Terminata"
+          "withdrawn": "Terminata",
+          "export": {
+            "label": "Esporta come CSV",
+            "error": {
+              "title": "Esportazione fallita",
+              "limitExceeded": "L'esportazione contiene più di 100'000 voci. Attualmente il sistema non supporta questa operazione. Si prega di contattare il supporto",
+              "capacityExhausted": "Il sistema è attualmente sovraccarico. Si prega di riprovare più tardi"
+            }
+          }
         },
         "addButton": "Richiedi produttore",
         "modal": {
@@ -1447,5 +1455,14 @@
       "enforceConsentFrom": "Blocco dal"
     },
     "pageTitle": "Gestione dei Termini e Condizioni"
+  },
+  "data-request.details": {
+    "producer": {
+      "metadata": {
+        "export": {
+          "fileName": "Esportazione del produttore-{{ humanFriendlyId }}"
+        }
+      }
+    }
   }
 }

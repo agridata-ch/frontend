@@ -459,8 +459,7 @@
             "error": {
               "title": "Exportieren schiefgelaufen",
               "limitExceeded": "Der Export beinhaltet mehr als 100'000 Einträge. Dies wird aktuell vom System nicht unterstützt. Bitte melden Sie sich beim Support",
-              "capacityExhausted": "Das System ist aktuell überlastet. Bitte versuchen Sie es später erneut",
-              "generic": "Etwas ist schiefgelaufen. Melden Sie sich beim Support\n{{ error }}"
+              "capacityExhausted": "Das System ist aktuell überlastet. Bitte versuchen Sie es später erneut"
             }
           }
         },

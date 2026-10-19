@@ -453,7 +453,15 @@
           "declined": "Rejeté",
           "uid": "UID",
           "bur": "BUR",
-          "withdrawn": "Terminé"
+          "withdrawn": "Terminé",
+          "export": {
+            "label": "Exporter en CSV",
+            "error": {
+              "title": "Échec de l'exportation",
+              "limitExceeded": "L'exportation contient plus de 100 000 entrées. Cela n'est actuellement pas pris en charge par le système. Veuillez contacter le support.",
+              "capacityExhausted": "Le système est actuellement surchargé. Veuillez réessayer plus tard."
+            }
+          }
         },
         "addButton": "Demander un producteur",
         "modal": {
@@ -1447,5 +1455,14 @@
       "enforceConsentFrom": "Blocage à partir de"
     },
     "pageTitle": "Gestion des conditions générales"
+  },
+  "data-request.details": {
+    "producer": {
+      "metadata": {
+        "export": {
+          "fileName": "Export producteur-{{ humanFriendlyId }}"
+        }
+      }
+    }
   }
 }
