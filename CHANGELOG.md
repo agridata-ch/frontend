@@ -1,3 +1,9 @@
+## [1.23.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.23.0-rc.6...v1.23.0-rc.7) (2026-10-19)
+
+### Bug Fixes
+
+- **translations:** add missing translations ([91fe372](https://github.com/agridata-ch/frontend/commit/91fe3723ca4ee5f59901df492301c62fc94dd372))
+
 ## [1.23.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.23.0-rc.5...v1.23.0-rc.6) (2026-10-19)
 
 ### Features
