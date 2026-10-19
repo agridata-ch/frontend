@@ -1,3 +1,9 @@
+## [1.23.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.23.0-rc.5...v1.23.0-rc.6) (2026-10-19)
+
+### Features
+
+- **producer-export:** add producer metadata export ([d03e34f](https://github.com/agridata-ch/frontend/commit/d03e34f6a74c5c00764c916846fc5f995fd45fc9)), references [DIGIB2-546](https://github.com/agridata-ch/frontend/issues/-546)
+
 ## [1.23.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.23.0-rc.4...v1.23.0-rc.5) (2026-10-19)
 
 ### Features
