@@ -1,3 +1,18 @@
+## [1.23.0](https://github.com/agridata-ch/frontend/compare/v1.22.0...v1.23.0) (2026-10-19)
+
+### Features
+
+- **agbs:** add AGB revision overview for admin ([1ca4f1e](https://github.com/agridata-ch/frontend/commit/1ca4f1eca7fadd5604d568a85918e1072e653c2f)), references [DIGIB2-1520](https://github.com/agridata-ch/frontend/issues/-1520)
+- **consent-request:** make product details into a modal instead of new tab link ([58d806a](https://github.com/agridata-ch/frontend/commit/58d806a9c4ced1aedcad52dbc905209d71b77744)), references [DIGIB2-1751](https://github.com/agridata-ch/frontend/issues/-1751)
+- **consent-request:** update decision description for legally permitted ([05ecca6](https://github.com/agridata-ch/frontend/commit/05ecca6806cc62d567d35c1132423cd53d2a5935)), references [DIGIB2-1748](https://github.com/agridata-ch/frontend/issues/-1748)
+- **data-request-privacy:** show contract link ([6468fde](https://github.com/agridata-ch/frontend/commit/6468fde9bf01163bec33f271895c4194b0dbc536)), references [DIGIB2-1749](https://github.com/agridata-ch/frontend/issues/-1749)
+- **data-request:** add withdraw request modal ([e9da747](https://github.com/agridata-ch/frontend/commit/e9da7477abde3dd9d8cdf11cd3a08a299fade8f6)), references [DIGIB2-618](https://github.com/agridata-ch/frontend/issues/-618)
+- **producer-export:** add producer metadata export ([d03e34f](https://github.com/agridata-ch/frontend/commit/d03e34f6a74c5c00764c916846fc5f995fd45fc9)), references [DIGIB2-546](https://github.com/agridata-ch/frontend/issues/-546)
+
+### Bug Fixes
+
+- **translations:** add missing translations ([91fe372](https://github.com/agridata-ch/frontend/commit/91fe3723ca4ee5f59901df492301c62fc94dd372))
+
 ## [1.23.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.23.0-rc.6...v1.23.0-rc.7) (2026-10-19)
 
 ### Bug Fixes
