@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-10 py-4" *i18n="let t; prefix: 'data-request.details.producer'">
-  <app-data-request-details-producers-metadata [dataRequestId]="dataRequest().id" />
+  <app-data-request-details-producers-metadata [dataRequest]="dataRequest()" />
   <app-agridata-table
     class="block"
     [dataProvider]="producersResource"
@@ -40,6 +40,14 @@
     [dataRequest]="dataRequest()"
     [(open)]="addProducersOpen"
     [initialUid]="prefillUid()"
-    (reloadProducers)="producersResource.reload()"
+    (reloadProducers)="reloadAll()"
   />
+  @if (withdrawTarget(); as target) {
+    <app-data-request-withdraw-request
+      [consentRequest]="target"
+      [dataRequest]="dataRequest()"
+      [(open)]="withdrawOpen"
+      (handleWithdrawn)="reloadAll()"
+    />
+  }
 </div>

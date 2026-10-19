@@ -72,9 +72,16 @@
       "decisions": {
         "title": "Aperçu de l'exploitation et des sites",
         "description": {
-          "noBur": "Cette demande concerne votre entreprise (UID). Le consentement s'applique à l'ensemble de l'entreprise au niveau de l'exploitation. Comme cette demande n'est pas spécifique à un site, aucune installation individuelle (BUR) n'est répertoriée.",
-          "singleBur": "Cette demande concerne votre entreprise (UID) et le site associé (BUR). Le consentement s'applique à l'entreprise ainsi qu'au site.",
-          "multipleBur": "Cette demande concerne votre entreprise (UID) et les sites associés (BUR). Le consentement pour l'entreprise est toujours valable. En principe, vous acceptez les sites demandés ; via « Modifier les sites », vous pouvez exclure des sites individuels de la demande."
+          "consentRequired": {
+            "noBur": "Cette demande concerne votre entreprise (UID). Le consentement s'applique à l'ensemble de l'entreprise au niveau de l'exploitation. Comme cette demande n'est pas spécifique à un site, aucune installation individuelle (BUR) n'est répertoriée.",
+            "singleBur": "Cette demande concerne votre entreprise (UID) et le site associé (BUR). Le consentement s'applique à l'entreprise ainsi qu'au site.",
+            "multipleBur": "Cette demande concerne votre entreprise (UID) et les sites associés (BUR). Le consentement pour l'entreprise est toujours valable. En principe, vous acceptez les sites demandés ; via « Modifier les sites », vous pouvez exclure des sites individuels de la demande."
+          },
+          "legallyPermitted": {
+            "noBur": "Cette demande concerne votre entreprise (IDE). Sur une base de droit public, l'utilisation s'applique à l'ensemble de l'entreprise au niveau de l'exploitation. Cette demande n'étant pas spécifique à un site, aucun établissement (REE) n'est mentionné.",
+            "singleBur": "Cette demande concerne votre entreprise (IDE) et le site correspondant (REE). Sur une base de droit public, l'utilisation englobe l'entreprise ainsi que le site.",
+            "multipleBur": "Cette demande concerne votre entreprise (IDE) et les sites correspondants (REE). Sur une base de droit public, l'utilisation englobe l'entreprise ainsi que tous les sites énumérés ci-dessous."
+          }
         },
         "uidGroupTitle": "Mon entreprise demandée",
         "uid": "Numéro d'identification de l'entreprise (UID) ",
@@ -114,7 +121,8 @@
         "DECLINED": "Refusé",
         "PARTIALLY_OPENED": "Partiellement ouvert",
         "PARTIALLY_GRANTED": "Partiellement approuvé",
-        "LEGALLY_PERMITTED": "De droit public"
+        "LEGALLY_PERMITTED": "De droit public",
+        "WITHDRAWN": "Terminé"
       }
     },
     "emptyState": {
@@ -444,7 +452,16 @@
           "granted": "Approuvé",
           "declined": "Rejeté",
           "uid": "UID",
-          "bur": "BUR"
+          "bur": "BUR",
+          "withdrawn": "Terminé",
+          "export": {
+            "label": "Exporter en CSV",
+            "error": {
+              "title": "Échec de l'exportation",
+              "limitExceeded": "L'exportation contient plus de 100 000 entrées. Cela n'est actuellement pas pris en charge par le système. Veuillez contacter le support.",
+              "capacityExhausted": "Le système est actuellement surchargé. Veuillez réessayer plus tard."
+            }
+          }
         },
         "addButton": "Demander un producteur",
         "modal": {
@@ -471,9 +488,29 @@
             "title": "L'ajout de producteurs a échoué",
             "message": "Un problème est survenu lors de l'ajout de sites : {{ error }}"
           },
-          "noBurs": "Il n'y a pas d'établissements disponibles pour ce numéro d'identification fiscale"
+          "noBurs": "Il n'y a pas d'établissements disponibles pour ce numéro d'identification fiscale",
+          "withdraw": {
+            "burSection": {
+              "noRequest": "Aucune requête disponible",
+              "description": "Sélectionnez dans la liste les sites d’exploitation pour lesquels vous souhaitez supprimer les requêtes."
+            },
+            "title": "Terminer la/les requête(s)",
+            "description": "Pour terminer les demandes, vous pouvez terminer la demande complète à l’aide de l’UID. Toutes les unités d’exploitation associées seront alors également terminées. Vous pouvez également terminer la demande pour certaines unités d’exploitation en les sélectionnant dans la liste.\nVous pouvez également gérer les demandes via l’API.",
+            "confirmPartial": "{{ count }} requête(s) à terminer",
+            "confirmComplete": "Terminer la requête complète",
+            "success": {
+              "title": "Requête(s) terminée(s) avec succès",
+              "messagePartial": "{{ count }} requête(s) terminée(s) avec succès",
+              "messageComplete": "Requête complète terminée avec succès"
+            },
+            "error": {
+              "title": "Échec de la clôture de la requête",
+              "message": "Une erreur s’est produite lors de la tentative de clôture de la/des requête(s) : {{ error }}"
+            }
+          }
         },
-        "addBurs": "Ajouter des sites d'exploitation"
+        "addBurs": "Ajouter des sites d'exploitation",
+        "withdrawRequest": "Terminer la requête"
       }
     },
     "invitationLink": {
@@ -615,7 +652,8 @@
       "foreignConsumerAlert": {
         "title": "Requérant international de données",
         "message": "Le destinataire est établi à l'étranger ({{city}}, {{country}}). Le transfert des données est protégé par le contrat d'échange de données selon les normes suisses en matière de protection des données."
-      }
+      },
+      "viewContract": "Consulter le contrat"
     },
     "uid": "UID",
     "bur": "BUR",
@@ -1416,7 +1454,15 @@
       "validTo": "Valide jusqu'à",
       "enforceConsentFrom": "Blocage à partir de"
     },
-    "pageTitle": "Gestion des conditions générales",
-    "pageDescription": "Gestion centralisée de votre cadre juridique et gestion des versions pour toutes les interfaces Agridata Nexus."
+    "pageTitle": "Gestion des conditions générales"
+  },
+  "data-request.details": {
+    "producer": {
+      "metadata": {
+        "export": {
+          "fileName": "Export producteur-{{ humanFriendlyId }}"
+        }
+      }
+    }
   }
 }

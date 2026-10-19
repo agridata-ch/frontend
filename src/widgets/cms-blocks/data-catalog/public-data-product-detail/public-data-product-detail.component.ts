@@ -1,128 +1,26 @@
-import { Component, computed, effect, inject, input, output, resource } from '@angular/core';
-import { faCircleChf, faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
-import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Component, inject, input, output, signal } from '@angular/core';
 
-import { DataProductDocumentService, DataProductService } from '@/entities/api';
-import { DataProductDocumentMetadataDto } from '@/entities/openapi';
-import { ErrorHandlerService } from '@/shared/error/error-handler.service';
-import { I18nDirective, I18nService } from '@/shared/i18n';
-import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
-import { createDocumentDownloadHandler } from '@/shared/lib/document-download.helper';
-import { TooltipDirective } from '@/shared/tooltip';
-import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
-import { AgridataFileDownloadComponent } from '@/shared/ui/file-download';
-import { AgridataLinksListComponent } from '@/shared/ui/links-list';
+import { DataProductSourcesService } from '@/entities/api';
 import { ModalComponent } from '@/shared/ui/modal';
+import { DataProductDetailComponent } from '@/widgets/data-product-detail';
 
 /**
- * Read-only modal for a single public data product. Given a product id it fetches the product and
- * renders every field; emits a close request. The block only tells it which id is
- * selected — all detail loading lives here.
+ * Modal around the data product details for the public data catalog. The block only tells it which
+ * id is selected; loading and rendering live in `app-data-product-detail`.
  *
- * CommentLastReviewed: 2026-09-02
+ * CommentLastReviewed: 2026-10-12
  */
 @Component({
   selector: 'app-public-data-product-detail',
-  imports: [
-    AgridataBadgeComponent,
-    AgridataFileDownloadComponent,
-    AgridataLinksListComponent,
-    FontAwesomeModule,
-    I18nDirective,
-    ModalComponent,
-    TooltipDirective,
-  ],
+  imports: [DataProductDetailComponent, ModalComponent],
   templateUrl: './public-data-product-detail.component.html',
 })
 export class PublicDataProductDetailComponent {
-  // Injects
-  private readonly dataProductService = inject(DataProductService);
-  private readonly documentService = inject(DataProductDocumentService);
-  private readonly errorService = inject(ErrorHandlerService);
-  private readonly i18nService = inject(I18nService);
+  protected readonly sources = inject(DataProductSourcesService);
 
-  // Constants
-  protected readonly BadgeSize = BadgeSize;
-  protected readonly BadgeVariant = BadgeVariant;
-  protected readonly faSpinnerThird = faSpinnerThird;
-  protected readonly publicSectorIcon = faShieldCheck;
-  protected readonly chfCircleIcon = faCircleChf;
-
-  // Input properties
   readonly productId = input<string | undefined>(undefined);
 
-  // Output properties
   readonly handleClose = output<void>();
 
-  // Resources
-  protected readonly productResource = resource({
-    params: () => ({ id: this.productId() }),
-    loader: ({ params }) =>
-      params.id
-        ? this.dataProductService.getPublicProductById(params.id)
-        : Promise.resolve(undefined),
-  });
-
-  protected readonly documentsResource = resource({
-    params: () => ({ id: this.productId() }),
-    loader: ({ params }) =>
-      params.id ? this.documentService.listDocumentsPublic(params.id) : Promise.resolve(undefined),
-  });
-
-  // Signals
-  protected readonly downloads = createDocumentDownloadHandler(this.errorService);
-
-  // Computed signals
-  protected readonly open = computed(() => !!this.productId());
-  protected readonly loading = computed(() => this.productResource.isLoading());
-  protected readonly product = computed(() => this.productResource.value());
-  protected readonly name = computed(() =>
-    this.i18nService.useObjectTranslation(this.product()?.name),
-  );
-  protected readonly description = computed(() =>
-    this.i18nService.useObjectTranslation(this.product()?.description),
-  );
-  protected readonly extendedDescription = computed(() =>
-    this.i18nService.useObjectTranslation(this.product()?.extendedDescription),
-  );
-  protected readonly paymentRequired = computed(() => this.product()?.paymentRequired ?? false);
-  protected readonly pricingBasis = computed(() =>
-    this.i18nService.useObjectTranslation(this.product()?.pricingBasis),
-  );
-  protected readonly providerName = computed(() =>
-    this.i18nService.useObjectTranslation(this.product()?.dataSourceSystem?.dataProvider.name),
-  );
-  protected readonly sourceSystemName = computed(() =>
-    this.i18nService.useObjectTranslation(this.product()?.dataSourceSystem?.name),
-  );
-
-  // Effects
-  private readonly productErrorEffect = createResourceErrorHandlerEffect(
-    this.productResource,
-    this.errorService,
-  );
-  // A failed load surfaces a global error toast (above); close the modal so it doesn't linger empty.
-  private readonly closeOnErrorEffect = effect(() => {
-    if (this.productResource.error()) this.handleClose.emit();
-  });
-
-  // Computed
-  protected readonly hasLinks = computed(() => !!this.product()?.links?.length);
-  protected readonly documents = computed(() => this.documentsResource.value() ?? []);
-
-  // Methods
-  protected handleDownload(doc: DataProductDocumentMetadataDto): void {
-    const id = this.productId();
-    if (!id) return;
-    this.downloads.download(doc.id, doc.fileName, () =>
-      this.documentService.downloadDocumentPublic(id, doc.id),
-    );
-  }
-
-  protected handleOpen(doc: DataProductDocumentMetadataDto): void {
-    const id = this.productId();
-    if (!id) return;
-    this.downloads.open(doc.id, () => this.documentService.downloadDocumentPublic(id, doc.id));
-  }
+  protected readonly title = signal('');
 }

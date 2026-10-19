@@ -1,0 +1,115 @@
+<ng-container *i18n="let t; prefix: 'data-catalog'">
+  @if (loading()) {
+    <fa-icon
+      animation="spin"
+      [icon]="faSpinnerThird"
+      size="3x"
+      class="flex items-center justify-center py-10"
+    />
+  } @else if (product(); as product) {
+    <div class="flex flex-col gap-8 text-left">
+      <div class="flex flex-col sm:flex-row gap-8 sm:gap-2">
+        <div class="flex flex-wrap gap-2">
+          @if (providerName()) {
+            <app-agridata-badge
+              [text]="providerName()"
+              [variant]="BadgeVariant.DARK"
+              [size]="BadgeSize.SM"
+            />
+          }
+          @if (sourceSystemName()) {
+            <app-agridata-badge
+              [text]="sourceSystemName()"
+              [variant]="BadgeVariant.DARK"
+              [size]="BadgeSize.SM"
+            />
+          }
+        </div>
+
+        @if (product.deprecatedSince || !product.consentRequired || product.paymentRequired) {
+          <div class="flex flex-wrap gap-2">
+            @if (product.deprecatedSince) {
+              <app-agridata-badge
+                [text]="t('product.deprecated.text')"
+                [variant]="BadgeVariant.WARNING"
+                [size]="BadgeSize.SM"
+                [appTooltip]="t('product.deprecated.tooltip')"
+              />
+            }
+            @if (!product.consentRequired) {
+              <app-agridata-badge
+                [icon]="publicSectorIcon"
+                [text]="t('product.publicSector')"
+                [variant]="BadgeVariant.DEFAULT"
+                [size]="BadgeSize.SM"
+                [appTooltip]="t('product.publicSectorTooltip')"
+              />
+            }
+            @if (product.paymentRequired) {
+              <app-agridata-badge
+                [icon]="chfCircleIcon"
+                [text]="t('product.paymentRequired')"
+                [variant]="BadgeVariant.DEFAULT"
+                [size]="BadgeSize.SM"
+              />
+            }
+          </div>
+        }
+      </div>
+
+      @if (description()) {
+        <section class="flex flex-col gap-6">
+          <h4>{{ t('product.description') }}</h4>
+          <p class="whitespace-pre-line">
+            {{ description() }}
+          </p>
+        </section>
+      }
+
+      @if (hasLinks() || documents().length) {
+        <section class="flex flex-col sm:flex-row gap-8">
+          @if (hasLinks()) {
+            <div class="flex flex-1 flex-col gap-6">
+              <h4>{{ t('product.links') }}</h4>
+              <app-agridata-links-list [links]="product.links ?? []" />
+            </div>
+          }
+          @if (documents().length) {
+            <div class="flex flex-1 flex-col gap-6">
+              <h4>{{ t('product.documents') }}</h4>
+              <ul
+                class="flex flex-col rounded-lg border border-agridata-stroke divide-y divide-agridata-stroke"
+              >
+                @for (doc of documents(); track doc.id) {
+                  <li class="p-3">
+                    <app-agridata-file-download
+                      [fileName]="doc.fileName"
+                      [sizeBytes]="doc.sizeBytes"
+                      [downloadable]="true"
+                      [isOpening]="downloads.isOpening(doc.id)"
+                      [isDownloading]="downloads.isDownloading(doc.id)"
+                      (handleOpen)="handleOpen(doc)"
+                      (handleDownload)="handleDownload(doc)"
+                    />
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        </section>
+      }
+      @if (extendedDescription()) {
+        <section class="flex flex-col gap-6">
+          <h4>{{ t('product.extendedDescription') }}</h4>
+          <p [innerHTML]="extendedDescription()" class="whitespace-pre-line rich-text-content"></p>
+        </section>
+      }
+      @if (paymentRequired() && pricingBasis()) {
+        <section class="flex flex-col gap-6">
+          <h4>{{ t('product.costs') }}</h4>
+          <p [innerHTML]="pricingBasis()" class="whitespace-pre-line rich-text-content"></p>
+        </section>
+      }
+    </div>
+  }
+</ng-container>

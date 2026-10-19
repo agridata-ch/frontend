@@ -72,9 +72,16 @@
       "decisions": {
         "title": "Betriebs- und Standortübersicht",
         "description": {
-          "noBur": "Diese Anfrage betrifft Ihr Unternehmen (UID). Die Zustimmung gilt für das gesamte Unternehmen auf Betriebsebene. Da diese Anfrage nicht standortspezifisch ist, werden keine einzelnen Betriebsstätten (BUR) aufgeführt.",
-          "singleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und den dazugehörigen Standort (BUR). Die Zustimmung gilt für das Unternehmen sowie den Standort.",
-          "multipleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und die dazugehörigen Standorte (BUR). Die Zustimmung für das Unternehmen gilt immer. Grundsätzlich stimmen Sie den angefragten Standorten zu, über „Standorte bearbeiten“ können Sie einzelne Standorte von der Anfrage ausschliessen."
+          "consentRequired": {
+            "noBur": "Diese Anfrage betrifft Ihr Unternehmen (UID). Die Zustimmung gilt für das gesamte Unternehmen auf Betriebsebene. Da diese Anfrage nicht standortspezifisch ist, werden keine einzelnen Betriebsstätten (BUR) aufgeführt.",
+            "singleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und den dazugehörigen Standort (BUR). Die Zustimmung gilt für das Unternehmen sowie den Standort.",
+            "multipleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und die dazugehörigen Standorte (BUR). Die Zustimmung für das Unternehmen gilt immer. Grundsätzlich stimmen Sie den angefragten Standorten zu, über „Standorte bearbeiten“ können Sie einzelne Standorte von der Anfrage ausschliessen."
+          },
+          "legallyPermitted": {
+            "noBur": "Diese Anfrage betrifft Ihr Unternehmen (UID). Auf öffentlich-rechtlicher Grundlage gilt die Nutzung für das gesamte Unternehmen auf Betriebsebene. Da diese Anfrage nicht standortspezifisch ist, werden keine einzelnen Betriebsstätten (BUR) aufgeführt.",
+            "singleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und den dazugehörigen Standort (BUR). Auf öffentlich-rechtlicher Grundlage umfasst die Nutzung das Unternehmen sowie den Standort.",
+            "multipleBur": "Diese Anfrage betrifft Ihr Unternehmen (UID) und die dazugehörigen Standorte (BUR). Auf öffentlich-rechtlicher Grundlage umfasst die Nutzung das Unternehmen sowie alle unten aufgeführten Standorte."
+          }
         },
         "uidGroupTitle": "Mein angefragter Betrieb",
         "uid": "Unternehmens-Identifikation (UID)",
@@ -114,7 +121,8 @@
         "DECLINED": "Abgelehnt",
         "PARTIALLY_OPENED": "Teilweise Offen",
         "PARTIALLY_GRANTED": "Teilweise Zugestimmt",
-        "LEGALLY_PERMITTED": "Öffentlich-rechtlich"
+        "LEGALLY_PERMITTED": "Öffentlich-rechtlich",
+        "WITHDRAWN": "Beendet"
       }
     },
     "emptyState": {
@@ -444,7 +452,16 @@
           "granted": "Zugestimmt",
           "declined": "Abgelehnt",
           "uid": "UID",
-          "bur": "BUR"
+          "bur": "BUR",
+          "withdrawn": "Beendet",
+          "export": {
+            "label": "Export als CSV",
+            "error": {
+              "title": "Exportieren schiefgelaufen",
+              "limitExceeded": "Der Export beinhaltet mehr als 100'000 Einträge. Dies wird aktuell vom System nicht unterstützt. Bitte melden Sie sich beim Support",
+              "capacityExhausted": "Das System ist aktuell überlastet. Bitte versuchen Sie es später erneut"
+            }
+          }
         },
         "addButton": "Produzent anfragen",
         "modal": {
@@ -469,11 +486,31 @@
           },
           "error": {
             "title": "Produzenten hinzufügen fehlgeschlagen",
-            "message": "Beim hinzufügen von Betriebstätten ist etwas schief gelaufen: {{ error }}"
+            "message": "Beim Hinzufügen von Betriebstätten ist etwas schief gelaufen: {{ error }}"
           },
-          "noBurs": "Für diese UID sind keine Betriebsstätten verfügbar"
+          "noBurs": "Für diese UID sind keine Betriebsstätten verfügbar",
+          "withdraw": {
+            "burSection": {
+              "noRequest": "Keine Anfrage vorhanden",
+              "description": "Wählen Sie in der Liste die Betriebsstätten aus, für welche Sie die Anfragen entfernen möchten."
+            },
+            "title": "Anfrage(n) beenden",
+            "description": "Um Anträge zu beenden, können Sie den gesamten Antrag über die UID beenden. Dadurch werden auch alle zugehörigen Betriebsstätten beendet. Alternativ können Sie den Antrag für einzelne Betriebsstätten aus der Liste beenden.\nSie können die Anträge auch über die API steuern.",
+            "confirmPartial": "{{ count }} Anfrage(n) beenden",
+            "confirmComplete": "Gesamte Anfrage beenden",
+            "success": {
+              "title": "Anfrage(n) erfolgreich beendet",
+              "messagePartial": "{{ count }} Anfrage(n) wurden erfolgreich beendet",
+              "messageComplete": "Gesamte Anfrage erfolgreich beendet"
+            },
+            "error": {
+              "title": "Anfrage beenden fehlgeschlagen",
+              "message": "Beim Beenden der Anfrage(n) ist etwas schief gelaufen: {{ error }}"
+            }
+          }
         },
-        "addBurs": "Betriebstätten hinzufügen"
+        "addBurs": "Betriebstätten hinzufügen",
+        "withdrawRequest": "Anfrage beenden"
       }
     },
     "invitationLink": {
@@ -615,7 +652,8 @@
       "foreignConsumerAlert": {
         "title": "Internationaler Datenbezüger",
         "message": "Der Empfänger hat seinen Sitz im Ausland ({{city}}, {{country}}). Die Datenübermittlung ist durch den Datenaustauschvertrag nach Schweizer Datenschutzstandard geschützt."
-      }
+      },
+      "viewContract": "Vertrag einsehen"
     },
     "uid": "UID",
     "bur": "BUR",
@@ -1416,7 +1454,15 @@
       "validTo": "Gültig bis",
       "enforceConsentFrom": "Sperrung ab"
     },
-    "pageTitle": "AGB-Verwaltung",
-    "pageDescription": "Zentralisierte Steuerung Ihrer rechtlichen Rahmenbedingungen und Versionierung für alle Agridata Nexus Schnittstellen."
+    "pageTitle": "AGB-Verwaltung"
+  },
+  "data-request.details": {
+    "producer": {
+      "metadata": {
+        "export": {
+          "fileName": "Produzenten-Export-{{ humanFriendlyId }}"
+        }
+      }
+    }
   }
 }

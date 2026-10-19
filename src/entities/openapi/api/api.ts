@@ -1,5 +1,9 @@
 export * from './agbRevision.service';
 import { AgbRevisionService } from './agbRevision.service';
+export * from './agbRevisionAdmin.service';
+import { AgbRevisionAdminService } from './agbRevisionAdmin.service';
+export * from './bURRegisterSearch.service';
+import { BURRegisterSearchService } from './bURRegisterSearch.service';
 export * from './consentRequestAggregations.service';
 import { ConsentRequestAggregationsService } from './consentRequestAggregations.service';
 export * from './consentRequests.service';
@@ -32,4 +36,4 @@ export * from './uIDRegisterSearch.service';
 import { UIDRegisterSearchService } from './uIDRegisterSearch.service';
 export * from './users.service';
 import { UsersService } from './users.service';
-export const APIS = [AgbRevisionService, ConsentRequestAggregationsService, ConsentRequestsService, ContractRevisionsService, DataProductsService, DataProvidersService, DataRequestsService, DataTransferService, HealthService, InfoResourceService, NotificationsService, PublicDataProductsService, PublicDataProvidersService, PublicDataSourceSystemsService, TestDataService, UIDRegisterSearchService, UsersService];
+export const APIS = [AgbRevisionService, AgbRevisionAdminService, BURRegisterSearchService, ConsentRequestAggregationsService, ConsentRequestsService, ContractRevisionsService, DataProductsService, DataProvidersService, DataRequestsService, DataTransferService, HealthService, InfoResourceService, NotificationsService, PublicDataProductsService, PublicDataProvidersService, PublicDataSourceSystemsService, TestDataService, UIDRegisterSearchService, UsersService];

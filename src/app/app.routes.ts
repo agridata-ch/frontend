@@ -5,6 +5,7 @@ import { CreateConsentRequestGuard } from '@/app/guards/create-consent-request.g
 import { HomeRedirectGuard } from '@/app/guards/home-redirect.guard';
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { DefaultLayoutComponent, FullWidthLayoutComponent } from '@/app/layout';
+import { AdminAgbsPageComponent } from '@/pages/admin-agbs-page';
 import { AdminPage } from '@/pages/admin-page';
 import { AgbPage } from '@/pages/agb-page';
 import { CmsPage } from '@/pages/cms-page';
@@ -238,6 +239,20 @@ export const routes: Routes = [
             component: AdminDataRequestDetailsComponent,
           },
         ],
+      },
+    ],
+  },
+  {
+    // admin agbs routes
+    path: ROUTE_PATHS.ADMIN_AGBS_PATH,
+    title: 'admin-agbs.pageTitle',
+    component: DefaultLayoutComponent,
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
+    data: { roles: [USER_ROLES.AGRIDATA_ADMIN] },
+    children: [
+      {
+        path: '',
+        component: AdminAgbsPageComponent,
       },
     ],
   },

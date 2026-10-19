@@ -110,16 +110,16 @@ export class ContractRevisionsService extends BaseService {
 
     /**
      * Get Contract Revision Pdf
-     * Returns the pdf of the contract revision
+     * Returns the pdf of the contract revision. Data producers can only access the current contract revision of a data request for which they have a consent request aggregation.
      * @param id 
      * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getContractRevisionPdf(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'ADMIN', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public getContractRevisionPdf(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'ADMIN', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public getContractRevisionPdf(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'ADMIN', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public getContractRevisionPdf(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'ADMIN', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getContractRevisionPdf(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public getContractRevisionPdf(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public getContractRevisionPdf(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public getContractRevisionPdf(id: string, actingRole?: 'CONSUMER' | 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/pdf' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getContractRevisionPdf.');
         }

@@ -54,11 +54,13 @@ export class DataRequestConsentRequestDecisionsComponent {
 
   // Computed Signals
   protected readonly descriptionKey = computed(() => {
+    const group =
+      this.store && !this.store.canEdit()
+        ? 'description.legallyPermitted'
+        : 'description.consentRequired';
     if (!this.burPresent()) {
-      return 'description.noBur';
+      return `${group}.noBur`;
     }
-    return this.store?.burRequests().length === 1
-      ? 'description.singleBur'
-      : 'description.multipleBur';
+    return this.store?.burRequests().length === 1 ? `${group}.singleBur` : `${group}.multipleBur`;
   });
 }

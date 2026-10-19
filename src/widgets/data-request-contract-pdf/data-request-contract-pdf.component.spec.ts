@@ -97,25 +97,28 @@ describe('DataRequestContractPdfComponent', () => {
       expect(errorHandlerService.handleError).toHaveBeenCalledWith(testError);
     });
 
-    it('should not call service when already loading', () => {
-      component['isLoadingOpen'].set(true);
+    it('should fetch only once while already loading', () => {
       component['handleOpenPdf']();
-      expect(contractRevisionService.getContractRevisionPdf).not.toHaveBeenCalled();
+      component['handleOpenPdf']();
+      expect(contractRevisionService.getContractRevisionPdf).toHaveBeenCalledTimes(1);
     });
 
-    it('should reset isLoadingOpen after fetch completes', async () => {
+    it('should reset the opening state after fetch completes', async () => {
+      const openSpy = vi.spyOn(globalThis, 'open').mockImplementation(() => null);
+      URL.createObjectURL = vi.fn().mockReturnValue('blob:mock');
       component['handleOpenPdf']();
-      expect(component['isLoadingOpen']()).toBe(true);
+      expect(component['downloads'].isOpening(CONTRACT_REVISION_ID)).toBe(true);
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
-      expect(component['isLoadingOpen']()).toBe(false);
+      expect(component['downloads'].isOpening(CONTRACT_REVISION_ID)).toBe(false);
+      openSpy.mockRestore();
     });
 
-    it('should reset isLoadingOpen after fetch failure', async () => {
+    it('should reset the opening state after fetch failure', async () => {
       contractRevisionService.getContractRevisionPdf.mockRejectedValueOnce(new Error('failed'));
       component['handleOpenPdf']();
-      expect(component['isLoadingOpen']()).toBe(true);
+      expect(component['downloads'].isOpening(CONTRACT_REVISION_ID)).toBe(true);
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
-      expect(component['isLoadingOpen']()).toBe(false);
+      expect(component['downloads'].isOpening(CONTRACT_REVISION_ID)).toBe(false);
     });
   });
 
@@ -161,13 +164,13 @@ describe('DataRequestContractPdfComponent', () => {
       expect(errorHandlerService.handleError).toHaveBeenCalledWith(testError);
     });
 
-    it('should not call service when already loading', () => {
-      component['isLoadingDownload'].set(true);
+    it('should fetch only once while already loading', () => {
       component['handleDownloadPdf']();
-      expect(contractRevisionService.getContractRevisionPdf).not.toHaveBeenCalled();
+      component['handleDownloadPdf']();
+      expect(contractRevisionService.getContractRevisionPdf).toHaveBeenCalledTimes(1);
     });
 
-    it('should reset isLoadingDownload after fetch completes', async () => {
+    it('should reset the downloading state after fetch completes', async () => {
       const mockAnchor = { href: '', download: '', click: vi.fn(), remove: vi.fn() };
       const createElementSpy = vi
         .spyOn(document, 'createElement')
@@ -179,20 +182,20 @@ describe('DataRequestContractPdfComponent', () => {
       URL.revokeObjectURL = vi.fn();
 
       component['handleDownloadPdf']();
-      expect(component['isLoadingDownload']()).toBe(true);
+      expect(component['downloads'].isDownloading(CONTRACT_REVISION_ID)).toBe(true);
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
-      expect(component['isLoadingDownload']()).toBe(false);
+      expect(component['downloads'].isDownloading(CONTRACT_REVISION_ID)).toBe(false);
 
       createElementSpy.mockRestore();
       appendChildSpy.mockRestore();
     });
 
-    it('should reset isLoadingDownload after fetch failure', async () => {
+    it('should reset the downloading state after fetch failure', async () => {
       contractRevisionService.getContractRevisionPdf.mockRejectedValueOnce(new Error('failed'));
       component['handleDownloadPdf']();
-      expect(component['isLoadingDownload']()).toBe(true);
+      expect(component['downloads'].isDownloading(CONTRACT_REVISION_ID)).toBe(true);
       await new Promise<void>((resolve) => setTimeout(resolve, 0));
-      expect(component['isLoadingDownload']()).toBe(false);
+      expect(component['downloads'].isDownloading(CONTRACT_REVISION_ID)).toBe(false);
     });
   });
 });

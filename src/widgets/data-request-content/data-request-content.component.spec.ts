@@ -2,6 +2,8 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { ContractRevisionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import {
   DataProductDto,
@@ -9,8 +11,12 @@ import {
   DataRequestDto,
   DataRequestStateEnum,
 } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import {
+  createMockAgridataStateService,
+  createMockContractRevisionService,
+  createMockErrorHandlerService,
   createMockI18nService,
   createMockMasterDataService,
   MockMasterDataService,
@@ -43,6 +49,9 @@ describe('DataRequestContentComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestContentComponent],
       providers: [
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
+        { provide: ContractRevisionService, useValue: createMockContractRevisionService() },
+        { provide: ErrorHandlerService, useValue: createMockErrorHandlerService() },
         { provide: I18nService, useValue: createMockI18nService() },
         { provide: MasterDataService, useValue: masterDataService },
       ],
@@ -92,6 +101,17 @@ describe('DataRequestContentComponent', () => {
     const privacyInfos = fixture.debugElement.query(By.directive(DataRequestPrivacyInfosComponent));
     expect(privacyInfos.componentInstance.dataConsumerCity()).toBe('Berlin');
     expect(privacyInfos.componentInstance.dataConsumerCountry()).toBe('DE');
+  });
+
+  it('should pass the current contract revision on to the privacy infos', () => {
+    componentRef.setInput('dataRequest', {
+      ...mockDataRequest,
+      currentContractRevisionId: 'cr-1',
+    });
+    fixture.detectChanges();
+
+    const privacyInfos = fixture.debugElement.query(By.directive(DataRequestPrivacyInfosComponent));
+    expect(privacyInfos.componentInstance.contractRevisionId()).toBe('cr-1');
   });
 
   describe('products', () => {

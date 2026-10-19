@@ -337,16 +337,16 @@ export class DataProductsService extends BaseService {
 
     /**
      * Get Data Product
-     * Retrieves a single data product. Acessible to users with the provider and admin role
+     * Retrieves a single data product. Accessible to users with the provider and admin role. Producers and support users can only retrieve active data products.
      * @param id 
      * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getDataProduct(id: string, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<DataProductDto>;
-    public getDataProduct(id: string, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DataProductDto>>;
-    public getDataProduct(id: string, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DataProductDto>>;
-    public getDataProduct(id: string, actingRole?: 'PROVIDER' | 'ADMIN', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getDataProduct(id: string, actingRole?: 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<DataProductDto>;
+    public getDataProduct(id: string, actingRole?: 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DataProductDto>>;
+    public getDataProduct(id: string, actingRole?: 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DataProductDto>>;
+    public getDataProduct(id: string, actingRole?: 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getDataProduct.');
         }
@@ -400,17 +400,17 @@ export class DataProductsService extends BaseService {
 
     /**
      * Get Data Product Document
-     * Downloads the content of a data product document. Accessible to the owning provider and admins.
+     * Downloads the content of a data product document. Accessible to the owning provider and admins. Producers and support users can only download available documents of active data products.
      * @param documentId 
      * @param id 
      * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getDataProductDocument(documentId: string, id: string, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Blob>;
-    public getDataProductDocument(documentId: string, id: string, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Blob>>;
-    public getDataProductDocument(documentId: string, id: string, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Blob>>;
-    public getDataProductDocument(documentId: string, id: string, actingRole?: 'PROVIDER' | 'ADMIN', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getDataProductDocument(documentId: string, id: string, actingRole?: 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Blob>;
+    public getDataProductDocument(documentId: string, id: string, actingRole?: 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Blob>>;
+    public getDataProductDocument(documentId: string, id: string, actingRole?: 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Blob>>;
+    public getDataProductDocument(documentId: string, id: string, actingRole?: 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (documentId === null || documentId === undefined) {
             throw new Error('Required parameter documentId was null or undefined when calling getDataProductDocument.');
         }
@@ -527,16 +527,16 @@ export class DataProductsService extends BaseService {
 
     /**
      * Get Data Product Documents Metadata
-     * Retrieves metadata for all documents of a data product. Accessible to the owning provider and admins.
+     * Retrieves metadata for all documents of a data product. Accessible to the owning provider and admins. Producers and support users only see available documents of active data products.
      * @param id 
      * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getDataProductDocumentsMetadata(id: string, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<DataProductDocumentMetadataDto>>;
-    public getDataProductDocumentsMetadata(id: string, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<DataProductDocumentMetadataDto>>>;
-    public getDataProductDocumentsMetadata(id: string, actingRole?: 'PROVIDER' | 'ADMIN', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<DataProductDocumentMetadataDto>>>;
-    public getDataProductDocumentsMetadata(id: string, actingRole?: 'PROVIDER' | 'ADMIN', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getDataProductDocumentsMetadata(id: string, actingRole?: 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<DataProductDocumentMetadataDto>>;
+    public getDataProductDocumentsMetadata(id: string, actingRole?: 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<DataProductDocumentMetadataDto>>>;
+    public getDataProductDocumentsMetadata(id: string, actingRole?: 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<DataProductDocumentMetadataDto>>>;
+    public getDataProductDocumentsMetadata(id: string, actingRole?: 'PROVIDER' | 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling getDataProductDocumentsMetadata.');
         }

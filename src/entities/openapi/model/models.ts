@@ -1,6 +1,9 @@
 export * from './agbRevisionDto';
+export * from './agbRevisionOverviewDto';
 export * from './agbTextDto';
 export * from './burDto';
+export * from './burRegisterAddressDto';
+export * from './burRegisterOrganisationDto';
 export * from './consentRequestAggregationDto';
 export * from './consentRequestAggregationStateEnum';
 export * from './consentRequestAggregationSummaryDto';
@@ -59,6 +62,7 @@ export * from './linkDto';
 export * from './markAsReadRequestDto';
 export * from './otpChallengeDto';
 export * from './pageResponseDto';
+export * from './pageResponseDtoAgbRevisionOverviewDto';
 export * from './pageResponseDtoConsentRequestFundamentalViewDto';
 export * from './pageResponseDtoDataProductDto';
 export * from './pageResponseDtoInboxEntryDto';

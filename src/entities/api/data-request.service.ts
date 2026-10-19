@@ -43,6 +43,21 @@ export class DataRequestService {
     );
   }
 
+  // The backend sends a UTF-8 BOM so Excel detects the encoding; text decoding strips it, so re-add it.
+  exportConsentRequests(dataRequestId: string, actingRole?: ActingRole): Promise<Blob> {
+    return firstValueFrom(
+      this.apiService
+        .exportConsentRequestsOfDataRequest(
+          dataRequestId,
+          actingRole as 'CONSUMER' | 'ADMIN' | undefined,
+          undefined,
+          undefined,
+          { httpHeaderAccept: 'text/csv' },
+        )
+        .pipe(map((csv: string) => new Blob(['\uFEFF', csv], { type: 'text/csv;charset=utf-8' }))),
+    );
+  }
+
   fetchProducersMetadata(dataRequestId: string) {
     return firstValueFrom(
       this.apiService.getConsentRequestStatusSummaryOfDataRequest(dataRequestId),

@@ -1,0 +1,93 @@
+<app-modal
+  [(open)]="open"
+  [title]="'data-request.details.producer.modal.withdraw.title' | i18n"
+  [dataTestId]="'withdraw-data-request-modal'"
+>
+  <div class="flex flex-col gap-6" *i18n="let t; prefix: 'data-request.details.producer.modal'">
+    <span class="whitespace-pre-line">{{ t('withdraw.description') }}</span>
+
+    <div class="flex" appViewSection [isViewMode]="true">
+      <div class="flex justify-between items-center py-3 pr-5">
+        <div class="flex flex-col gap-2 grow">
+          <span class="text-xs text-agridata-secondary-text pl-5">{{ t('uidLabel') }}</span>
+          <span class="pl-5">{{ consentRequest().dataProducerUid }}</span>
+        </div>
+        @if (consentRequest().stateCode; as stateCode) {
+          <app-agridata-badge
+            [text]="'consent-request.dataRequest.stateCode.' + stateCode | i18n"
+            [variant]="getConsentRequestBadgeVariant(stateCode)"
+            [size]="BadgeSize.SM"
+          />
+        }
+      </div>
+    </div>
+
+    @if (showBurSection()) {
+      <div class="flex flex-col gap-2">
+        <span class="font-semibold">{{ t('burSection.title') }}</span>
+        <span>{{ t('withdraw.burSection.description') }}</span>
+        <div
+          class="border border-agridata-stroke rounded-md divide-y divide-agridata-stroke overflow-hidden"
+        >
+          <label class="flex items-center gap-3 p-4 cursor-pointer">
+            <input
+              type="checkbox"
+              class="h-4 w-4"
+              [checked]="isComplete()"
+              [disabled]="withdrawableCount() === 0"
+              (change)="toggleAll()"
+            />
+            <span class="text-agridata-primary-600">{{ t('burSection.selectAll') }}</span>
+          </label>
+          @for (entry of entries(); track entry.bur) {
+            <label
+              class="flex items-center gap-3 p-4 justify-between"
+              [class.cursor-pointer]="entry.withdrawable"
+              [class.bg-sky-50]="isSelected(entry.bur)"
+              [class.opacity-50]="!entry.withdrawable"
+            >
+              <input
+                type="checkbox"
+                class="h-4 w-4"
+                [checked]="isSelected(entry.bur)"
+                [disabled]="!entry.withdrawable"
+                (change)="toggle(entry.bur)"
+              />
+              <div class="flex flex-col grow">
+                <span class="text-gray-700">{{ t('burSection.burLabel') }}</span>
+                <span>{{ entry.bur }}</span>
+              </div>
+              @if (entry.consentRequest?.stateCode; as entryState) {
+                <app-agridata-badge
+                  [text]="'consent-request.dataRequest.stateCode.' + entryState | i18n"
+                  [variant]="getConsentRequestBadgeVariant(entryState)"
+                  [size]="BadgeSize.SM"
+                />
+              } @else {
+                <span class="text-sm">{{ t('withdraw.burSection.noRequest') }}</span>
+              }
+            </label>
+          }
+        </div>
+      </div>
+    }
+
+    <div class="flex justify-end gap-2">
+      <app-agridata-button [variant]="ButtonVariants.Secondary" (handleClick)="open.set(false)">
+        {{ t('cancel') }}
+      </app-agridata-button>
+      <app-agridata-button
+        [variant]="isComplete() ? ButtonVariants.PrimaryReject : ButtonVariants.Primary"
+        [disabled]="selectedCount() === 0 || isSubmitting()"
+        [loading]="isSubmitting()"
+        (handleClick)="withdraw()"
+      >
+        {{
+          isComplete()
+            ? t('withdraw.confirmComplete')
+            : t('withdraw.confirmPartial', { count: selectedCount() })
+        }}
+      </app-agridata-button>
+    </div>
+  </div>
+</app-modal>
