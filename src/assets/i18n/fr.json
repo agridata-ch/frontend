@@ -644,7 +644,8 @@
       "foreignConsumerAlert": {
         "title": "Requérant international de données",
         "message": "Le destinataire est établi à l'étranger ({{city}}, {{country}}). Le transfert des données est protégé par le contrat d'échange de données selon les normes suisses en matière de protection des données."
-      }
+      },
+      "viewContract": "Consulter le contrat"
     },
     "uid": "UID",
     "bur": "BUR",

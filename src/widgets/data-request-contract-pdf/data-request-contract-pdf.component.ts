@@ -1,12 +1,12 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 
 import { ContractRevisionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto } from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
+import { createDocumentDownloadHandler } from '@/shared/lib/document-download.helper';
 import { AgridataFileDownloadComponent } from '@/shared/ui/file-download';
-import { downloadBlob, openBlobInNewTab } from '@/shared/utils';
 
 /**
  * Component for displaying and handling interactions with a contract PDF related to a data request.
@@ -14,7 +14,7 @@ import { downloadBlob, openBlobInNewTab } from '@/shared/utils';
  * The component fetches the PDF blob from the ContractRevisionService using
  * the provided contract revision ID and creates a URL for viewing or downloading the PDF.
  *
- * CommentLastReviewed: 2026-04-20
+ * CommentLastReviewed: 2026-10-19
  */
 @Component({
   selector: 'app-data-request-contract-pdf',
@@ -28,13 +28,12 @@ export class DataRequestContractPdfComponent {
   private readonly i18nService = inject(I18nService);
   private readonly stateService = inject(AgridataStateService);
 
+  // Constants
+  protected readonly downloads = createDocumentDownloadHandler(this.errorHandler);
+
   // Inputs
   readonly dataRequest = input.required<DataRequestDto>();
   readonly contractRevisionId = input.required<string>();
-
-  // Signals
-  protected readonly isLoadingOpen = signal(false);
-  protected readonly isLoadingDownload = signal(false);
 
   // Computed
   protected readonly fileName = computed(() => {
@@ -45,41 +44,18 @@ export class DataRequestContractPdfComponent {
   });
 
   // Methods
-  protected handleOpenPdf(): void {
-    if (this.isLoadingOpen()) {
-      return;
-    }
-
-    this.isLoadingOpen.set(true);
-    this.contractRevisionService
-      .getContractRevisionPdf(this.contractRevisionId(), this.stateService.actingRole())
-      .then((pdfBlob) => {
-        openBlobInNewTab(pdfBlob);
-      })
-      .catch((error) => {
-        this.errorHandler.handleError(error);
-      })
-      .finally(() => {
-        this.isLoadingOpen.set(false);
-      });
+  protected handleDownloadPdf(): void {
+    this.downloads.download(this.contractRevisionId(), this.fileName(), () => this.fetchPdf());
   }
 
-  protected handleDownloadPdf(): void {
-    if (this.isLoadingDownload()) {
-      return;
-    }
+  protected handleOpenPdf(): void {
+    this.downloads.open(this.contractRevisionId(), () => this.fetchPdf());
+  }
 
-    this.isLoadingDownload.set(true);
-    this.contractRevisionService
-      .getContractRevisionPdf(this.contractRevisionId(), this.stateService.actingRole())
-      .then((pdfBlob) => {
-        downloadBlob(pdfBlob, this.fileName());
-      })
-      .catch((error) => {
-        this.errorHandler.handleError(error);
-      })
-      .finally(() => {
-        this.isLoadingDownload.set(false);
-      });
+  private fetchPdf(): Promise<Blob> {
+    return this.contractRevisionService.getContractRevisionPdf(
+      this.contractRevisionId(),
+      this.stateService.actingRole(),
+    );
   }
 }

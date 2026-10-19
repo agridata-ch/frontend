@@ -253,6 +253,70 @@ export class DataRequestsService extends BaseService {
     }
 
     /**
+     * Export Consent Requests Of Data Request
+     * Exports the consent requests of a data request as CSV (semicolon-separated, UTF-8 with BOM) with the columns uid, bur, requestDate, lastChangeDate and stateCode. Consent requests of terminated UID/BUR relations are excluded. Exports of more than 100000 consent requests are rejected with status 400 and type EXPORT_LIMIT_EXCEEDED. If too many exports run concurrently, the export is rejected with status 503, type EXPORT_CAPACITY_EXHAUSTED and a Retry-After header. Accessible to the consumer who owns the data request and to admin users. Only active and paused data requests can be exported, otherwise the export is rejected with status 400. Draft data requests are not found for admin users.
+     * @param id 
+     * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public exportConsentRequestsOfDataRequest(id: string, actingRole?: 'CONSUMER' | 'ADMIN', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/csv' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public exportConsentRequestsOfDataRequest(id: string, actingRole?: 'CONSUMER' | 'ADMIN', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/csv' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public exportConsentRequestsOfDataRequest(id: string, actingRole?: 'CONSUMER' | 'ADMIN', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/csv' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public exportConsentRequestsOfDataRequest(id: string, actingRole?: 'CONSUMER' | 'ADMIN', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/csv' | 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling exportConsentRequestsOfDataRequest.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>actingRole, 'actingRole');
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (SecurityScheme) required
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'text/csv',
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/agreement/v1/data-requests/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}/consent-requests/export`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<any>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Get Consent Request Status Summary Of Data Request
      * Retrieves KPI counts (total/open/granted/declined) of consent requests for a data request, broken down by UID/BUR mode. Accessible to the consumer who owns the data request.
      * @param id 

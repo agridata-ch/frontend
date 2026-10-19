@@ -2,10 +2,16 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { ContractRevisionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import {
+  createMockAgridataStateService,
+  createMockContractRevisionService,
+  createMockErrorHandlerService,
   createMockI18nService,
   createMockMasterDataService,
   MockMasterDataService,
@@ -27,6 +33,9 @@ describe('DataRequestPreviewComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DataRequestPreviewComponent],
       providers: [
+        { provide: AgridataStateService, useValue: createMockAgridataStateService() },
+        { provide: ContractRevisionService, useValue: createMockContractRevisionService() },
+        { provide: ErrorHandlerService, useValue: createMockErrorHandlerService() },
         { provide: I18nService, useValue: createMockI18nService() },
         { provide: MasterDataService, useValue: masterDataService },
       ],

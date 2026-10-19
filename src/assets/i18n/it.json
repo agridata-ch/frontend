@@ -644,7 +644,8 @@
       "foreignConsumerAlert": {
         "title": "Richiedente internazionale di dati",
         "message": "Il destinatario ha sede all'estero ({{city}}, {{country}}). Il trasferimento dei dati è protetto dal contratto di scambio di dati secondo lo standard svizzero in materia di protezione dei dati."
-      }
+      },
+      "viewContract": "Visualizza il contratto"
     },
     "uid": "UID",
     "bur": "BUR",
