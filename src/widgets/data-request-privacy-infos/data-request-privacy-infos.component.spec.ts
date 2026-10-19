@@ -2,8 +2,21 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { ContractRevisionService } from '@/entities/api';
+import { AgridataStateService } from '@/entities/api/agridata-state.service';
+import { ACTING_ROLES } from '@/shared/constants/constants';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
+import {
+  createMockAgridataStateService,
+  createMockContractRevisionService,
+  createMockErrorHandlerService,
+  MockAgridataStateService,
+  MockContractRevisionService,
+  MockErrorHandlerService,
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { AlertComponent } from '@/shared/ui/alert';
+import { ButtonComponent } from '@/shared/ui/button';
 
 import { DataRequestPrivacyInfosComponent } from './data-request-privacy-infos.component';
 
@@ -11,8 +24,18 @@ describe('DataRequestPrivacyInfosComponent', () => {
   let component: DataRequestPrivacyInfosComponent;
   let componentRef: ComponentRef<DataRequestPrivacyInfosComponent>;
   let fixture: ComponentFixture<DataRequestPrivacyInfosComponent>;
+  let contractRevisionService: MockContractRevisionService;
+  let errorHandlerService: MockErrorHandlerService;
+  let stateService: MockAgridataStateService;
+
+  const CONTRACT_REVISION_ID = 'cr-1';
+  const flushPromises = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
 
   beforeEach(async () => {
+    contractRevisionService = createMockContractRevisionService();
+    errorHandlerService = createMockErrorHandlerService();
+    stateService = createMockAgridataStateService();
+
     await TestBed.configureTestingModule({
       imports: [
         DataRequestPrivacyInfosComponent,
@@ -28,6 +51,11 @@ describe('DataRequestPrivacyInfosComponent', () => {
             },
           },
         }),
+      ],
+      providers: [
+        { provide: AgridataStateService, useValue: stateService },
+        { provide: ContractRevisionService, useValue: contractRevisionService },
+        { provide: ErrorHandlerService, useValue: errorHandlerService },
       ],
     }).compileComponents();
 
@@ -85,6 +113,64 @@ describe('DataRequestPrivacyInfosComponent', () => {
       expect(alert).not.toBeNull();
       expect(alert.nativeElement.textContent).toContain('Berlin');
       expect(alert.nativeElement.textContent).toContain('Deutschland');
+    });
+  });
+
+  describe('contract link', () => {
+    const contractButton = () => fixture.debugElement.query(By.directive(ButtonComponent));
+
+    it('should not render without a contract revision', () => {
+      expect(contractButton()).toBeNull();
+    });
+
+    describe('with a contract revision', () => {
+      beforeEach(() => {
+        componentRef.setInput('contractRevisionId', CONTRACT_REVISION_ID);
+        fixture.detectChanges();
+      });
+
+      it('should render the link', () => {
+        expect(contractButton()).not.toBeNull();
+      });
+
+      it('should fetch the PDF for the acting role and open it in a new tab on click', async () => {
+        const mockUrl = 'blob:http://localhost/mock-pdf';
+        URL.createObjectURL = vi.fn().mockReturnValue(mockUrl);
+        URL.revokeObjectURL = vi.fn();
+        const openSpy = vi.spyOn(globalThis, 'open').mockImplementation(() => null);
+        stateService.__testSignals.actingRole.set(ACTING_ROLES.PRODUCER);
+
+        contractButton().triggerEventHandler('handleClick', null);
+        expect(component['downloads'].isOpening(CONTRACT_REVISION_ID)).toBe(true);
+        await flushPromises();
+
+        expect(contractRevisionService.getContractRevisionPdf).toHaveBeenCalledWith(
+          CONTRACT_REVISION_ID,
+          ACTING_ROLES.PRODUCER,
+        );
+        expect(openSpy).toHaveBeenCalledWith(mockUrl, '_blank', 'noopener');
+        expect(component['downloads'].isOpening(CONTRACT_REVISION_ID)).toBe(false);
+
+        openSpy.mockRestore();
+      });
+
+      it('should report fetch errors and reset the loading state', async () => {
+        const testError = new Error('PDF fetch failed');
+        contractRevisionService.getContractRevisionPdf.mockRejectedValueOnce(testError);
+
+        contractButton().triggerEventHandler('handleClick', null);
+        await flushPromises();
+
+        expect(errorHandlerService.handleError).toHaveBeenCalledWith(testError);
+        expect(component['downloads'].isOpening(CONTRACT_REVISION_ID)).toBe(false);
+      });
+
+      it('should fetch only once on a second click while loading', () => {
+        contractButton().triggerEventHandler('handleClick', null);
+        contractButton().triggerEventHandler('handleClick', null);
+
+        expect(contractRevisionService.getContractRevisionPdf).toHaveBeenCalledTimes(1);
+      });
     });
   });
 });

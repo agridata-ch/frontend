@@ -70,7 +70,7 @@ export class ContractRevisionService {
     return firstValueFrom(
       this.apiService.getContractRevisionPdf(
         contractRevisionId,
-        actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | undefined,
+        actingRole as 'CONSUMER' | 'PROVIDER' | 'ADMIN' | 'PRODUCER' | 'SUPPORT' | undefined,
         undefined,
         undefined,
         {

@@ -4,8 +4,8 @@
     <app-agridata-file-download
       [fileName]="fileName()"
       [downloadable]="true"
-      [isOpening]="isLoadingOpen()"
-      [isDownloading]="isLoadingDownload()"
+      [isOpening]="downloads.isOpening(contractRevisionId())"
+      [isDownloading]="downloads.isDownloading(contractRevisionId())"
       [downloadLabel]="t('download')"
       (handleOpen)="handleOpenPdf()"
       (handleDownload)="handleDownloadPdf()"

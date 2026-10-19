@@ -17,4 +17,18 @@
     [i18nFormat]="t('description', { consumer: consumerName(), provider: providerName() })"
   >
   </span>
+  @if (contractRevisionId(); as revisionId) {
+    <app-agridata-button
+      [variant]="ButtonVariants.IconLink"
+      [icon]="faExternalLink"
+      [iconPosition]="IconPosition.Right"
+      [loading]="downloads.isOpening(revisionId)"
+      [disabled]="downloads.isOpening(revisionId)"
+      (handleClick)="handleOpenPdf(revisionId)"
+    >
+      <span class="text-md">
+        {{ t('viewContract') }}
+      </span>
+    </app-agridata-button>
+  }
 </div>

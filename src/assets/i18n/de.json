@@ -644,7 +644,8 @@
       "foreignConsumerAlert": {
         "title": "Internationaler Datenbezüger",
         "message": "Der Empfänger hat seinen Sitz im Ausland ({{city}}, {{country}}). Die Datenübermittlung ist durch den Datenaustauschvertrag nach Schweizer Datenschutzstandard geschützt."
-      }
+      },
+      "viewContract": "Vertrag einsehen"
     },
     "uid": "UID",
     "bur": "BUR",
