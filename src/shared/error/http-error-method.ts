@@ -49,14 +49,28 @@ export function hasMethod(error: unknown): error is HttpErrorWithMethod {
 // True when the backend answered with an EXTERNAL_SERVICE_ERROR, which for a UID lookup means the
 // UID does not exist. Callers can then show inline validation instead of a global error.
 export function isExternalServiceError(error: unknown): boolean {
+  return getBackendErrorType(error) === ExceptionEnum.ExternalServiceError;
+}
+
+// Returns the backend exception type of an HTTP error. Non-JSON requests (e.g. a CSV export with
+// responseType 'text') deliver the error body as a raw JSON string, so it is parsed first.
+export function getBackendErrorType(error: unknown): ExceptionEnum | undefined {
   if (!(error instanceof HttpErrorResponse)) {
-    return false;
+    return undefined;
   }
-  const body: unknown = error.error;
-  return (
-    body !== null &&
-    typeof body === 'object' &&
-    'type' in body &&
-    body.type === ExceptionEnum.ExternalServiceError
-  );
+  const body = parseErrorBody(error.error);
+  return body !== null && typeof body === 'object' && 'type' in body
+    ? Object.values(ExceptionEnum).find((type) => type === body.type)
+    : undefined;
+}
+
+function parseErrorBody(body: unknown): unknown {
+  if (typeof body !== 'string') {
+    return body;
+  }
+  try {
+    return JSON.parse(body);
+  } catch {
+    return undefined;
+  }
 }

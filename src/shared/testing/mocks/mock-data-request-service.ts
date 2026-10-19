@@ -94,6 +94,7 @@ export function createMockDataRequestService(): MockDataRequestService {
     deleteDataRequest: vi.fn().mockResolvedValue(undefined),
     fetchDataRequest: vi.fn(),
     fetchDataRequests: vi.fn().mockResolvedValue(mockDataRequests),
+    exportConsentRequests: vi.fn().mockResolvedValue(new Blob(['uid;bur'], { type: 'text/csv' })),
     fetchProducersMetadata: vi.fn().mockResolvedValue(mockConsentRequestStatusSummary),
     getConsentRequestsOfDataRequest: vi.fn().mockResolvedValue(mockConsentRequestsPage),
     getConsentRequestsOfDataRequestAndUid: vi.fn().mockResolvedValue(mockConsentRequestsPage.items),

@@ -453,7 +453,16 @@
           "declined": "Abgelehnt",
           "uid": "UID",
           "bur": "BUR",
-          "withdrawn": "Beendet"
+          "withdrawn": "Beendet",
+          "export": {
+            "label": "Export als CSV",
+            "error": {
+              "title": "Exportieren schiefgelaufen",
+              "limitExceeded": "Der Export beinhaltet mehr als 100'000 Einträge. Dies wird aktuell vom System nicht unterstützt. Bitte melden Sie sich beim Support",
+              "capacityExhausted": "Das System ist aktuell überlastet. Bitte versuchen Sie es später erneut",
+              "generic": "Etwas ist schiefgelaufen. Melden Sie sich beim Support\n{{ error }}"
+            }
+          }
         },
         "addButton": "Produzent anfragen",
         "modal": {
@@ -1447,5 +1456,14 @@
       "enforceConsentFrom": "Sperrung ab"
     },
     "pageTitle": "AGB-Verwaltung"
+  },
+  "data-request.details": {
+    "producer": {
+      "metadata": {
+        "export": {
+          "fileName": "Produzenten-Export-{{ humanFriendlyId }}"
+        }
+      }
+    }
   }
 }
