@@ -1260,7 +1260,11 @@
     },
     "markAllAsRead": "Marquer toutes les notifications comme lues",
     "markAsRead": "Marquer comme lu",
-    "markAsUnread": "Marquer comme non lu"
+    "markAsUnread": "Marquer comme non lu",
+    "empty": {
+      "title": "Aucune notification",
+      "message": "Dès que vous recevrez de nouvelles notifications, elles s'afficheront ici."
+    }
   },
   "onboardingForm": {
     "uid": {

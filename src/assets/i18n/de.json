@@ -1260,7 +1260,11 @@
     },
     "markAllAsRead": "Alle Benachrichtigungen als gelesen markieren",
     "markAsRead": "Als gelesen markieren",
-    "markAsUnread": "Als ungelesen markieren"
+    "markAsUnread": "Als ungelesen markieren",
+    "empty": {
+      "title": "Keine Benachrichtigungen",
+      "message": "Sobald Sie neue Benachrichtigungen erhalten, werden sie hier angezeigt."
+    }
   },
   "onboardingForm": {
     "uid": {
