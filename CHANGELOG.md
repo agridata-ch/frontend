@@ -1,3 +1,9 @@
+## [1.23.1-rc.1](https://github.com/agridata-ch/frontend/compare/v1.23.0...v1.23.1-rc.1) (2026-10-20)
+
+### Bug Fixes
+
+- **modal:** add break word for title so the close icon is visible ([da72936](https://github.com/agridata-ch/frontend/commit/da7293633e80ef9c86078ebb276fd87c97524abd))
+
 ## [1.23.0](https://github.com/agridata-ch/frontend/compare/v1.22.0...v1.23.0) (2026-10-19)
 
 ### Features
