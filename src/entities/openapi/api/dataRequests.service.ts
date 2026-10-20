@@ -707,7 +707,7 @@ export class DataRequestsService extends BaseService {
 
     /**
      * Set Data Request Status
-     * sets status of data request. Only accessible to the consumer who owns the data request and to admins. Only specific transitions are allowed.
+     * sets status of data request. Only accessible to the consumer who owns the data request, to the provider it is assigned to and to admins. Only specific transitions are allowed.
      * @param id 
      * @param body 
      * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.

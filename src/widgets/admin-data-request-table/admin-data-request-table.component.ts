@@ -10,13 +10,17 @@ import {
 } from '@angular/core';
 
 import { DataRequestDto, TranslationDto } from '@/entities/openapi';
-import { DataRequestDtoDirective, getBadgeVariant } from '@/shared/data-request';
+import {
+  DataRequestDtoDirective,
+  getStateTranslation,
+  DataRequestStateBadgeComponent,
+} from '@/shared/data-request';
 import { I18nService } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table';
 import { ClientTableMetadata } from '@/shared/ui/agridata-client-table/client-table-model';
 import { CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
-import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
+import { BadgeSize } from '@/shared/ui/badge';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 
 /**
@@ -30,8 +34,8 @@ import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
   selector: 'app-admin-data-request-table',
   templateUrl: './admin-data-request-table.component.html',
   imports: [
+    DataRequestStateBadgeComponent,
     AgridataClientTableComponent,
-    AgridataBadgeComponent,
     DataRequestDtoDirective,
     AgridataContactCardComponent,
   ],
@@ -51,7 +55,6 @@ export class AdminDataRequestTableComponent {
   protected readonly BadgeSize = BadgeSize;
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
-  protected readonly getBadgeVariant = getBadgeVariant;
 
   private readonly dataRequestConsumerTemplate =
     viewChild<TemplateRef<{ $implicit: DataRequestDto }>>('dataRequestConsumer');
@@ -111,7 +114,8 @@ export class AdminDataRequestTableComponent {
             },
             cellCssClasses: 'whitespace-nowrap',
             sortable: true,
-            sortValueFn: (item) => this.getStatusTranslation(item?.stateCode),
+            sortValueFn: (item) =>
+              getStateTranslation(this.i18nService, item?.stateCode, item?.terminationPeriodUntil),
           },
         ],
         showRowActionButton: true,
@@ -119,10 +123,6 @@ export class AdminDataRequestTableComponent {
       };
     },
   );
-
-  protected getStatusTranslation(value?: string) {
-    return value ? this.i18nService.translate(`data-request.stateCode.${value}`) : '';
-  }
 
   protected getTranslation(key: TranslationDto | undefined) {
     return key ? this.i18nService.useObjectTranslation(key) : '';

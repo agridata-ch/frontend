@@ -101,6 +101,7 @@ export function createMockDataRequestService(): MockDataRequestService {
     retreatDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
     activateDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
     pauseDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
+    terminateDataRequest: vi.fn().mockResolvedValue(mockDataRequests[0]),
     submitDataRequest: vi.fn().mockResolvedValue(undefined),
     updateDataRequestDetails: vi.fn().mockResolvedValue(undefined),
     updateDataRequestValidRedirectUriRegex: vi.fn().mockResolvedValue(undefined),

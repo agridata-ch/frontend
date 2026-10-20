@@ -3,12 +3,12 @@ import { faCopy } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
-import { getBadgeVariant } from '@/shared/data-request';
+import { DataRequestStateBadgeComponent } from '@/shared/data-request';
 import { formatDate } from '@/shared/date';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AnchorRect, TooltipBubbleService, TooltipDirective } from '@/shared/tooltip';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
-import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
+import { BadgeSize } from '@/shared/ui/badge';
 import { copyToClipboard } from '@/shared/utils';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';
@@ -22,7 +22,7 @@ import { DataRequestRedirectUriComponent } from '@/widgets/data-request-redirect
 @Component({
   selector: 'app-data-request-details-request',
   imports: [
-    AgridataBadgeComponent,
+    DataRequestStateBadgeComponent,
     DataRequestContactComponent,
     FontAwesomeModule,
     I18nDirective,
@@ -43,7 +43,6 @@ export class DataRequestDetailsRequestComponent {
   protected readonly BadgeSize = BadgeSize;
   protected readonly DataRequestStateEnum = DataRequestStateEnum;
   protected readonly faCopy = faCopy;
-  protected readonly getBadgeVariant = getBadgeVariant;
 
   // Input properties
   readonly dataRequest = input.required<DataRequestDto>();
@@ -63,10 +62,6 @@ export class DataRequestDetailsRequestComponent {
   protected readonly invitationLink = computed(() => {
     return `${globalThis.location.origin}/consent-requests/create/${this.dataRequest().id}`;
   });
-
-  protected getStatusTranslation(value?: string) {
-    return value ? this.i18nService.translate(`data-request.stateCode.${value}`) : '';
-  }
 
   protected async handleCopy(event: MouseEvent, trigger: HTMLElement): Promise<void> {
     let key = 'invitationLink.copied';

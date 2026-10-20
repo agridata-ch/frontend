@@ -16,11 +16,7 @@
       >{{ t('addButton') }}</app-agridata-button
     >
     <ng-template #stateTemplate [appConsentRequestFundamentalViewDtoGuard] let-item>
-      <app-agridata-badge
-        [text]="getStateTranslation(item.stateCode)"
-        [variant]="getConsentRequestBadgeVariant(item.stateCode)"
-        [size]="BadgeSize.SM"
-      />
+      <app-consent-request-state-badge [stateCode]="item.stateCode" [size]="BadgeSize.SM" />
     </ng-template>
   </app-agridata-table>
   <ng-template #emptyStateTemplate>

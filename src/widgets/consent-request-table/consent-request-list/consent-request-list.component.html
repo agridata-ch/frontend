@@ -19,10 +19,9 @@
         <span class="text-agridata-primary-text font-normal">
           {{ formatRequestDate(request) }}
         </span>
-        <app-agridata-badge
-          [text]="t(`dataRequest.stateCode.${request.stateCode}`)"
-          [size]="BadgeSize.MD"
-          [variant]="getBadgeVariant(request)"
+        <app-consent-request-state-badge
+          [stateCode]="request.stateCode"
+          [lastStateChangeDate]="request.lastStateChangeDate"
         />
       </div>
       <div class="flex justify-between">

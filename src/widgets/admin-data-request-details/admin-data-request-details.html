@@ -8,55 +8,54 @@
     #details
   >
     <div footer class="flex gap-2 justify-between pt-4">
-      <div class="flex gap-2">
-        <app-agridata-button
-          class="flex-1"
-          [variant]="ButtonVariants.PrimaryAccept"
-          [loading]="isAccepting()"
-          [disabled]="isActionPending() || details.dataRequest()?.stateCode !== DataRequestStateEnum.InReview"
-          (handleClick)="acceptRequest()"
-        >
-          {{ t('actions.accept') }}
-        </app-agridata-button>
-        <app-agridata-button
-          class="flex-1"
-          [variant]="ButtonVariants.SecondaryReject"
-          [loading]="isRejecting()"
-          [disabled]="isActionPending() || details.dataRequest()?.stateCode !== DataRequestStateEnum.InReview"
-          (handleClick)="rejectRequest()"
-        >
-          {{ t('actions.reject') }}
-        </app-agridata-button>
-      </div>
-      @if (details.dataRequest()?.stateCode === DataRequestStateEnum.ToBeActivated) {
+      @if (details.dataRequest()?.stateCode === DataRequestStateEnum.Active) {
       <app-agridata-button
-        class="flex-1"
-        [disabled]="contractNotSealed()"
-        [variant]="ButtonVariants.PrimaryAccept"
-        [loading]="isActivating()"
-        (handleClick)="activateRequest()"
-      >
-        {{ t('actions.activate') }}
-      </app-agridata-button>
-      } @if (details.dataRequest()?.stateCode === DataRequestStateEnum.Active) {
-      <app-agridata-button
-        class="flex-1"
-        [variant]="ButtonVariants.Primary"
+        [variant]="ButtonVariants.Tertiary"
+        [icon]="faCirclePause"
         [loading]="isPausing()"
         (handleClick)="openPauseConfirmation()"
       >
         {{ t('actions.pause') }}
       </app-agridata-button>
-      } @if (details.dataRequest()?.stateCode === DataRequestStateEnum.Paused) {
-      <app-agridata-button
-        class="flex-1"
-        [variant]="ButtonVariants.Primary"
-        [loading]="isReactivating()"
-        (handleClick)="openReactivateConfirmation()"
-      >
-        {{ t('actions.reactivate') }}
-      </app-agridata-button>
       }
+      <div class="flex gap-2">
+        @if (details.dataRequest()?.stateCode === DataRequestStateEnum.InReview) {
+        <app-agridata-button
+          [variant]="ButtonVariants.PrimaryAccept"
+          [loading]="isAccepting()"
+          [disabled]="isActionPending()"
+          (handleClick)="acceptRequest()"
+        >
+          {{ t('actions.accept') }}
+        </app-agridata-button>
+        <app-agridata-button
+          [variant]="ButtonVariants.SecondaryReject"
+          [loading]="isRejecting()"
+          [disabled]="isActionPending()"
+          (handleClick)="rejectRequest()"
+        >
+          {{ t('actions.reject') }}
+        </app-agridata-button>
+        } @if (details.dataRequest()?.stateCode === DataRequestStateEnum.ToBeActivated) {
+        <app-agridata-button
+          [disabled]="contractNotSealed()"
+          [variant]="ButtonVariants.PrimaryAccept"
+          [loading]="isActivating()"
+          (handleClick)="activateRequest()"
+        >
+          {{ t('actions.activate') }}
+        </app-agridata-button>
+        } @if (details.dataRequest()?.stateCode === DataRequestStateEnum.Paused) {
+        <app-agridata-button
+          [variant]="ButtonVariants.Primary"
+          [icon]="faCirclePlay"
+          [loading]="isReactivating()"
+          (handleClick)="openReactivateConfirmation()"
+        >
+          {{ t('actions.reactivate') }}
+        </app-agridata-button>
+        }
+      </div>
     </div>
   </app-data-request-details>
 

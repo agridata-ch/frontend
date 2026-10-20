@@ -1,8 +1,51 @@
 @if (shouldShowActiveComponent()) {
-  <app-data-request-details
-    [dataRequestId]="dataRequestId()"
-    (closeSidepanel)="handleSidepanelClose()"
-  />
+  <ng-container *i18n="let t; prefix: 'data-request.details'">
+    <app-data-request-details
+      [dataRequestId]="dataRequestId()"
+      (closeSidepanel)="handleSidepanelClose()"
+    >
+      @if (showTerminateButton()) {
+        <div footer class="flex pt-4">
+          <app-agridata-button
+            [variant]="ButtonVariants.Tertiary"
+            [icon]="faCircleStop"
+            [disabled]="!canTerminate()"
+            [loading]="isTerminating()"
+            (handleClick)="openTerminateConfirmation()"
+          >
+            {{ t('actions.terminate') }}
+          </app-agridata-button>
+        </div>
+      }
+    </app-data-request-details>
+
+    <app-modal
+      [open]="showTerminateConfirmation()"
+      [title]="t('terminateConfirmation.title')"
+      [dataTestId]="'terminate-request-modal'"
+      (closed)="closeTerminateConfirmation()"
+    >
+      <div class="flex flex-col gap-6">
+        <span class="whitespace-pre-line">{{
+          t('terminateConfirmation.description', modalDescriptionParams())
+        }}</span>
+        <div class="flex justify-between gap-2">
+          <app-agridata-button
+            [variant]="ButtonVariants.Secondary"
+            (handleClick)="closeTerminateConfirmation()"
+          >
+            {{ t('terminateConfirmation.cancel') }}
+          </app-agridata-button>
+          <app-agridata-button
+            [variant]="ButtonVariants.Primary"
+            (handleClick)="terminateRequest()"
+          >
+            {{ t('terminateConfirmation.confirm') }}
+          </app-agridata-button>
+        </div>
+      </div>
+    </app-modal>
+  </ng-container>
 } @else {
   <app-data-request-wizard
     [initialDataRequest]="dataRequest()"

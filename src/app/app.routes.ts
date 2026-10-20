@@ -32,7 +32,6 @@ import { AdminDataRequestDetailsComponent } from '@/widgets/admin-data-request-d
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 import { DataProductDetailFormComponent } from '@/widgets/data-product-detail-form';
 import { DataRequestDetailsWrapperComponent } from '@/widgets/data-request-details-wrapper';
-import { ProviderDataRequestDetailsComponent } from '@/widgets/provider-data-request-details';
 
 import { LoginAuthGuard } from './guards/login.guard';
 
@@ -214,7 +213,7 @@ export const routes: Routes = [
           {
             path: `:dataRequestId`,
             title: 'provider.sidePanelTitle',
-            component: ProviderDataRequestDetailsComponent,
+            component: DataRequestDetailsWrapperComponent,
           },
         ],
       },

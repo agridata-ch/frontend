@@ -15,7 +15,6 @@ import {
   MockToastService,
 } from '@/shared/testing/mocks';
 import { ToastService, ToastType } from '@/shared/toast';
-import { BadgeVariant } from '@/shared/ui/badge';
 
 import { DataRequestTableComponent } from './data-request-table.component';
 
@@ -89,31 +88,6 @@ describe('DataRequestTableComponent', () => {
     expect(actions).toEqual([]);
   });
 
-  it('should get translated state value', () => {
-    const i18nServiceSpy = vi.spyOn(mockI18nService, 'translate');
-
-    component['getStatusTranslation'](DataRequestStateEnum.Draft);
-
-    expect(i18nServiceSpy).toHaveBeenCalledWith('data-request.stateCode.DRAFT');
-  });
-
-  it('should handle undefined state value', () => {
-    expect(component['getStatusTranslation'](undefined)).toBe('');
-  });
-
-  it('getBadgeVariant returns correct BadgeVariant for each state', () => {
-    expect(component['getBadgeVariant'](DataRequestStateEnum.Draft)).toBe(BadgeVariant.INFO);
-    expect(component['getBadgeVariant'](DataRequestStateEnum.InReview)).toBe(BadgeVariant.INFO);
-    expect(component['getBadgeVariant'](DataRequestStateEnum.ToBeSignedByConsumer)).toBe(
-      BadgeVariant.WARNING,
-    );
-    expect(component['getBadgeVariant'](DataRequestStateEnum.ToBeReleasedByConsumer)).toBe(
-      BadgeVariant.WARNING,
-    );
-    expect(component['getBadgeVariant'](DataRequestStateEnum.Active)).toBe(BadgeVariant.SUCCESS);
-    expect(component['getBadgeVariant'](undefined)).toBe(BadgeVariant.DEFAULT);
-  });
-
   it('retreat callback should call service and reload data', async () => {
     const inReviewRequest = mockDataRequests.find(
       (r) => r.stateCode === DataRequestStateEnum.InReview,
@@ -176,6 +150,7 @@ describe('DataRequestTableComponent', () => {
       expect(result).toBe('Translated State');
       expect(mockI18nService.translate).toHaveBeenCalledWith(
         expect.stringContaining('data-request.stateCode.'),
+        { date: undefined },
       );
     }
   });

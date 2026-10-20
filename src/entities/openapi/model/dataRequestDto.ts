@@ -50,6 +50,7 @@ export interface DataRequestDto {
      */
     products?: Array<string>;
     stateCode: ConsentRequestProducerViewDtoDataRequestStateCode;
+    terminationPeriodUntil?: string;
     /**
      * LegalName of the data consumer taken from the uid register
      */

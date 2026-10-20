@@ -33,7 +33,15 @@
         "consent": "Zustimmen",
         "decline": "Ablehnen"
       },
-      "error": "Fehler beim Aktualisieren des Antrags."
+      "error": "Fehler beim Aktualisieren des Antrags.",
+      "columns": {
+        "dataRequest": {
+          "title": "Datenanfrage",
+          "state": "Status",
+          "consumerName": "Datenbezüger",
+          "date": "Anfragedatum"
+        }
+      }
     },
     "filter": {
       "ALL": "Alle",
@@ -50,15 +58,6 @@
         "saveAndAccept": "Speichern und Zustimmen",
         "saveDisabledInfo": "Mindestens eine Zustimmung erforderlich",
         "saveAndReject": "Speichern und ablehnen"
-      },
-      "stateCode": {
-        "GRANTED": "Zugestimmt am {{ date }}",
-        "DECLINED": "Abgelehnt am {{ date }}",
-        "OPENED": "Offen",
-        "UNKNOWN": "Unbekannt",
-        "PARTIALLY_GRANTED": "Teilweise Zugestimmt",
-        "PARTIALLY_OPENED": "Teilweise Offen",
-        "LEGALLY_PERMITTED": "Öffentlich-rechtlich"
       },
       "footerInformation": "Sie können Ihre Entscheidung später jederzeit hier ändern. Daten können nur übermittelt werden, wenn eine aktive Zustimmung vorliegt.",
       "requestDate": "Anfrage vom {{ date }}",
@@ -97,6 +96,24 @@
       },
       "noConsentRequired": "Keine Aktion erforderlich. Dieser Datenbezug erfolgt auf öffentlich-rechtlicher Grundlage. Diese Anzeige dient der transparenten Information."
     },
+    "stateCode": {
+      "tooltip": {
+        "GRANTED": "Zugestimmt am {{ date }}",
+        "DECLINED": "Abgelehnt am {{ date }}",
+        "OPENED": "Offen",
+        "PARTIALLY_GRANTED": "Teilweise Zugestimmt",
+        "PARTIALLY_OPENED": "Teilweise Offen",
+        "LEGALLY_PERMITTED": "Öffentlich-rechtlich"
+      },
+      "UNKNOWN": "Unbekannt",
+      "OPENED": "Offen",
+      "GRANTED": "Zugestimmt",
+      "DECLINED": "Abgelehnt",
+      "PARTIALLY_OPENED": "Teilweise Offen",
+      "PARTIALLY_GRANTED": "Teilweise Zugestimmt",
+      "LEGALLY_PERMITTED": "Öffentlich-rechtlich",
+      "WITHDRAWN": "Beendet"
+    },
     "toast": {
       "title": {
         "GRANTED": "Zustimmung erteilt",
@@ -109,21 +126,6 @@
         "DEFAULT": "Die Anfrage wurde aktualisiert."
       },
       "undo": "Aktion rückgängig machen"
-    },
-    "dataRequest": {
-      "title": "Datenanfrage",
-      "state": "Status",
-      "consumerName": "Datenbezüger",
-      "date": "Anfragedatum",
-      "stateCode": {
-        "OPENED": "Offen",
-        "GRANTED": "Zugestimmt",
-        "DECLINED": "Abgelehnt",
-        "PARTIALLY_OPENED": "Teilweise Offen",
-        "PARTIALLY_GRANTED": "Teilweise Zugestimmt",
-        "LEGALLY_PERMITTED": "Öffentlich-rechtlich",
-        "WITHDRAWN": "Beendet"
-      }
     },
     "emptyState": {
       "title": "Keine Anfragen vorhanden",
@@ -386,7 +388,9 @@
       "TO_BE_SIGNED_BY_PROVIDER": "Unterzeichnung Anbieter offen",
       "TO_BE_RELEASED_BY_PROVIDER": "Abschluss Anbieter offen",
       "TO_BE_ACTIVATED": "Aktivierung offen",
-      "PAUSED": "Pausiert"
+      "PAUSED": "Pausiert",
+      "TERMINATION_PENDING": "Kündigungsfrist bis {{date}}",
+      "TERMINATED": "Beendet"
     },
     "table": {
       "tableActions": {
@@ -455,6 +459,7 @@
           "bur": "BUR",
           "withdrawn": "Beendet",
           "export": {
+            "fileName": "Produzenten-Export-{{ humanFriendlyId }}",
             "label": "Export als CSV",
             "error": {
               "title": "Exportieren schiefgelaufen",
@@ -511,6 +516,19 @@
         },
         "addBurs": "Betriebstätten hinzufügen",
         "withdrawRequest": "Anfrage beenden"
+      },
+      "actions": {
+        "terminate": "Datenantrag kündigen"
+      },
+      "terminateConfirmation": {
+        "title": "Datenantrag kündigen?",
+        "description": "Sie sind dabei, die Datenübermittlung {{ requestName }} zwischen {{ provider }} und {{ consumer }} ordentlich zu kündigen. Die Kündigungsfrist beträgt drei Monate.\n\nSind Sie sicher, dass Sie den Vertrag unwiederruflich kündigen möchten?",
+        "cancel": "Abbrechen",
+        "confirm": "Ja, Datenantrag kündigen",
+        "success": {
+          "title": "Datenantrag gekündigt",
+          "message": "Die Kündigung tritt nach der Kündigungsfrist in Kraft. Letzter gültiger Tag: {{date}}"
+        }
       }
     },
     "invitationLink": {
@@ -1459,14 +1477,5 @@
       "enforceConsentFrom": "Sperrung ab"
     },
     "pageTitle": "AGB-Verwaltung"
-  },
-  "data-request.details": {
-    "producer": {
-      "metadata": {
-        "export": {
-          "fileName": "Produzenten-Export-{{ humanFriendlyId }}"
-        }
-      }
-    }
   }
 }

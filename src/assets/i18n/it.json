@@ -33,7 +33,15 @@
         "consent": "Acconsenti",
         "decline": "Rifiuta"
       },
-      "error": "Errore durante l'aggiornamento della richiesta."
+      "error": "Errore durante l'aggiornamento della richiesta.",
+      "columns": {
+        "dataRequest": {
+          "title": "Richiesta di dati",
+          "state": "Stato",
+          "consumerName": "Richiedente",
+          "date": "Data della richiesta"
+        }
+      }
     },
     "filter": {
       "ALL": "Tutti",
@@ -50,15 +58,6 @@
         "saveAndAccept": "Salva e acconsenti",
         "saveDisabledInfo": "È richiesto almeno un consenso",
         "saveAndReject": "Salva e rifiuta"
-      },
-      "stateCode": {
-        "GRANTED": "Acconsentito il {{ date }}",
-        "DECLINED": "Rifiutato il {{ date }}",
-        "OPENED": "Aperto",
-        "UNKNOWN": "Sconosciuto",
-        "PARTIALLY_GRANTED": "Parzialmente approvato",
-        "PARTIALLY_OPENED": "Parzialmente aperto",
-        "LEGALLY_PERMITTED": "Di diritto pubblico"
       },
       "footerInformation": "Potrà modificare la sua scelta in qualsiasi momento qui. I dati possono essere trasmessi solo in presenza di un consenso attivo.",
       "requestDate": "Richiesta del {{ date }}",
@@ -97,6 +96,24 @@
       },
       "noConsentRequired": "Nessuna azione richiesta. Questo accesso ai dati avviene su una base di diritto pubblico. Questa visualizzazione serve a scopo di informazione trasparente."
     },
+    "stateCode": {
+      "tooltip": {
+        "GRANTED": "Acconsentito il {{ date }}",
+        "DECLINED": "Rifiutato il {{ date }}",
+        "OPENED": "Aperto",
+        "PARTIALLY_GRANTED": "Parzialmente approvato",
+        "PARTIALLY_OPENED": "Parzialmente aperto",
+        "LEGALLY_PERMITTED": "Di diritto pubblico"
+      },
+      "UNKNOWN": "Sconosciuto",
+      "OPENED": "Aperto",
+      "GRANTED": "Acconsentito",
+      "DECLINED": "Rifiutato",
+      "PARTIALLY_OPENED": "Parzialmente aperto",
+      "PARTIALLY_GRANTED": "Parzialmente approvato",
+      "LEGALLY_PERMITTED": "Di diritto pubblico",
+      "WITHDRAWN": "Terminata"
+    },
     "toast": {
       "title": {
         "GRANTED": "Consenso concesso",
@@ -109,21 +126,6 @@
         "DEFAULT": "La richiesta è stata aggiornata."
       },
       "undo": "Annulla l'azione"
-    },
-    "dataRequest": {
-      "title": "Richiesta di dati",
-      "state": "Stato",
-      "consumerName": "Richiedente",
-      "date": "Data della richiesta",
-      "stateCode": {
-        "OPENED": "Aperto",
-        "GRANTED": "Acconsentito",
-        "DECLINED": "Rifiutato",
-        "PARTIALLY_OPENED": "Parzialmente aperto",
-        "PARTIALLY_GRANTED": "Parzialmente approvato",
-        "LEGALLY_PERMITTED": "Di diritto pubblico",
-        "WITHDRAWN": "Terminata"
-      }
     },
     "emptyState": {
       "title": "Nessuna richiesta disponibile",
@@ -386,7 +388,9 @@
       "TO_BE_SIGNED_BY_PROVIDER": "Fornitore di firma digitale aperta",
       "TO_BE_RELEASED_BY_PROVIDER": "Conclusione aperta al fornitore",
       "TO_BE_ACTIVATED": "Attivazione in sospeso",
-      "PAUSED": "In pausa"
+      "PAUSED": "In pausa",
+      "TERMINATION_PENDING": "Preavviso fino al {{date}}",
+      "TERMINATED": "\tTerminata"
     },
     "table": {
       "tableActions": {
@@ -455,6 +459,7 @@
           "bur": "BUR",
           "withdrawn": "Terminata",
           "export": {
+            "fileName": "Esportazione del produttore-{{ humanFriendlyId }}",
             "label": "Esporta come CSV",
             "error": {
               "title": "Esportazione fallita",
@@ -511,6 +516,19 @@
         },
         "addBurs": "Aggiungi sedi operative",
         "withdrawRequest": "Terminare la richiesta"
+      },
+      "actions": {
+        "terminate": "Disdire la richiesta di dati"
+      },
+      "terminateConfirmation": {
+        "title": "Disdire la richiesta di dati?",
+        "description": "Stai per disdire in modo regolare lo scambio di dati {{ requestName }} tra {{ provider }} e {{ consumer }}. Il termine di disdetta è di tre mesi.\n\nSei sicuro di voler continuare?",
+        "cancel": "Annulla",
+        "confirm": "Sì, disdire la richiesta di dati",
+        "success": {
+          "title": "Richiesta di dati disdetta",
+          "message": "La disdetta prende effetto al termine del periodo di disdetta. Ultimo giorno valido: {{date}}"
+        }
       }
     },
     "invitationLink": {
@@ -1459,14 +1477,5 @@
       "enforceConsentFrom": "Blocco dal"
     },
     "pageTitle": "Gestione dei Termini e Condizioni"
-  },
-  "data-request.details": {
-    "producer": {
-      "metadata": {
-        "export": {
-          "fileName": "Esportazione del produttore-{{ humanFriendlyId }}"
-        }
-      }
-    }
   }
 }

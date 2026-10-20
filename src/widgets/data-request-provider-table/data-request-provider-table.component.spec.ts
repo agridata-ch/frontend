@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import type { Mocked } from 'vitest';
 
 import { DataRequestService } from '@/entities/api';
-import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import { DataRequestDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import {
   MockResources,
@@ -12,7 +12,6 @@ import {
   createMockDataRequestService,
   MockDataRequestService,
 } from '@/shared/testing/mocks';
-import { BadgeVariant } from '@/shared/ui/badge';
 
 import { DataRequestProviderTableComponent } from './data-request-provider-table.component';
 
@@ -67,31 +66,6 @@ describe('DataRequestProviderTableComponent', () => {
     expect(actions).toEqual([]);
   });
 
-  it('should get translated state value', () => {
-    const i18nServiceSpy = vi.spyOn(mockI18nService, 'translate');
-
-    component['getStatusTranslation'](DataRequestStateEnum.Draft);
-
-    expect(i18nServiceSpy).toHaveBeenCalledWith('data-request.stateCode.DRAFT');
-  });
-
-  it('should handle undefined state value', () => {
-    expect(component['getStatusTranslation'](undefined)).toBe('');
-  });
-
-  it('getBadgeVariant returns correct BadgeVariant for each state', () => {
-    expect(component['getBadgeVariant'](DataRequestStateEnum.Draft)).toBe(BadgeVariant.INFO);
-    expect(component['getBadgeVariant'](DataRequestStateEnum.InReview)).toBe(BadgeVariant.INFO);
-    expect(component['getBadgeVariant'](DataRequestStateEnum.ToBeSignedByConsumer)).toBe(
-      BadgeVariant.WARNING,
-    );
-    expect(component['getBadgeVariant'](DataRequestStateEnum.ToBeReleasedByConsumer)).toBe(
-      BadgeVariant.WARNING,
-    );
-    expect(component['getBadgeVariant'](DataRequestStateEnum.Active)).toBe(BadgeVariant.SUCCESS);
-    expect(component['getBadgeVariant'](undefined)).toBe(BadgeVariant.DEFAULT);
-  });
-
   it('should emit action when row action is triggered', () => {
     const emitSpy = vi.spyOn(component.tableRowAction, 'emit');
     const request = mockDataRequests[0];
@@ -140,6 +114,7 @@ describe('DataRequestProviderTableComponent', () => {
       expect(result).toBe('Translated State');
       expect(mockI18nService.translate).toHaveBeenCalledWith(
         expect.stringContaining('data-request.stateCode.'),
+        { date: undefined },
       );
     }
   });

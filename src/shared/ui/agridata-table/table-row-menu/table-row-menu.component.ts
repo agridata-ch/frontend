@@ -8,14 +8,13 @@ import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import { I18nPipe } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
-export interface ActionDTO {
+export interface ActionDto {
   icon?: IconDefinition;
   label: string;
   callback: () => void | Promise<void>;
-  isDisabled?: boolean;
 }
 
-interface ActionWithLoadingSignal extends ActionDTO {
+interface ActionWithLoadingSignal extends ActionDto {
   loading: WritableSignal<boolean>;
 }
 /**
@@ -23,7 +22,7 @@ interface ActionWithLoadingSignal extends ActionDTO {
  * dynamically renders primary and secondary actions with icons and integrates with click-outside
  * handling to manage dropdowns.
  *
- * CommentLastReviewed: 2025-12-02
+ * CommentLastReviewed: 2026-10-20
  */
 @Component({
   selector: 'app-table-row-menu',
@@ -38,7 +37,7 @@ interface ActionWithLoadingSignal extends ActionDTO {
 })
 export class TableRowMenuComponent {
   // Inputs
-  public readonly actions = input<ActionDTO[]>([]);
+  public readonly actions = input<ActionDto[]>([]);
   public readonly dataTestId = input<string | undefined>();
 
   // Signals

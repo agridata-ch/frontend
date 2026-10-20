@@ -8,6 +8,7 @@ import { ToastType } from '@/shared/toast';
 
 import {
   buildConsentRequestTourSteps,
+  getConsentStateTranslation,
   getToastMessage,
   getToastTitle,
   getToastType,
@@ -407,5 +408,21 @@ describe('moveNextWhenReady (via onNextClick)', () => {
 
     // Restore element so afterEach cleanup doesn't throw
     document.body.appendChild(accordion);
+  });
+});
+
+describe('getConsentStateTranslation()', () => {
+  const i18nService = createMockI18nService() as unknown as I18nService;
+
+  it('falls back to the unknown label without a state code', () => {
+    getConsentStateTranslation(i18nService);
+
+    expect(i18nService.translate).toHaveBeenCalledWith('consent-request.stateCode.UNKNOWN');
+  });
+
+  it('translates the consent state label key', () => {
+    getConsentStateTranslation(i18nService, ConsentRequestStateEnum.Opened);
+
+    expect(i18nService.translate).toHaveBeenCalledWith('consent-request.stateCode.OPENED');
   });
 });

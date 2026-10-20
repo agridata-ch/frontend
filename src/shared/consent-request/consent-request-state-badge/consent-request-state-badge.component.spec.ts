@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConsentRequestAggregationStateEnum, ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestStateBadgeComponent } from '@/shared/consent-request';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
-
-import { ConsentRequestStateBadgeComponent } from './consent-request-state-badge.component';
+import { BadgeVariant } from '@/shared/ui/badge';
 
 describe('ConsentRequestStateBadgeComponent', () => {
   let fixture: ComponentFixture<ConsentRequestStateBadgeComponent>;
@@ -24,11 +24,11 @@ describe('ConsentRequestStateBadgeComponent', () => {
   it('uses the state label key', () => {
     fixture.componentRef.setInput('stateCode', ConsentRequestStateEnum.Opened);
 
-    expect(component['labelKey']()).toBe('consent-request.dataRequest.stateCode.OPENED');
+    expect(component['text']()).toBe('consent-request.stateCode.OPENED');
   });
 
   it('falls back to the unknown label without a state', () => {
-    expect(component['labelKey']()).toBe('consent-request.details.stateCode.UNKNOWN');
+    expect(component['text']()).toBe('consent-request.stateCode.UNKNOWN');
   });
 
   it.each([
@@ -40,7 +40,7 @@ describe('ConsentRequestStateBadgeComponent', () => {
     fixture.componentRef.setInput('stateCode', stateCode);
     fixture.componentRef.setInput('lastStateChangeDate', '2026-10-01T10:00:00Z');
 
-    expect(component['tooltip']()).toContain(`consent-request.details.stateCode.${stateCode}`);
+    expect(component['tooltip']()).toContain(`consent-request.stateCode.tooltip.${stateCode}`);
   });
 
   it.each([
@@ -52,6 +52,18 @@ describe('ConsentRequestStateBadgeComponent', () => {
     fixture.componentRef.setInput('lastStateChangeDate', '2026-10-01T10:00:00Z');
 
     expect(component['tooltip']()).toBe('');
+  });
+
+  it('shows no tooltip for a dated state without a date', () => {
+    fixture.componentRef.setInput('stateCode', ConsentRequestStateEnum.Granted);
+
+    expect(component['tooltip']()).toBe('');
+  });
+
+  it('derives the variant from the state code', () => {
+    fixture.componentRef.setInput('stateCode', ConsentRequestStateEnum.Granted);
+
+    expect(component['variant']()).toBe(BadgeVariant.SUCCESS);
   });
 
   describe('accessibility attributes', () => {

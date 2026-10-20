@@ -33,7 +33,15 @@
         "consent": "Approuver",
         "decline": "Refuser"
       },
-      "error": "Erreur lors de la mise à jour de la demande."
+      "error": "Erreur lors de la mise à jour de la demande.",
+      "columns": {
+        "dataRequest": {
+          "title": "Demande de données",
+          "state": "Statut",
+          "consumerName": "Requérant de données",
+          "date": "Date de la demande"
+        }
+      }
     },
     "filter": {
       "ALL": "Tous",
@@ -50,15 +58,6 @@
         "saveAndAccept": "Enregistrer et Consentir",
         "saveDisabledInfo": "Au moins un consentement est requis",
         "saveAndReject": "Enregistrer et refuser"
-      },
-      "stateCode": {
-        "GRANTED": "Accepté le {{ date }}",
-        "DECLINED": "Refusé le {{ date }}",
-        "OPENED": "Ouvert",
-        "UNKNOWN": "Inconnu",
-        "PARTIALLY_GRANTED": "Partiellement approuvé",
-        "PARTIALLY_OPENED": "Partiellement ouvert",
-        "LEGALLY_PERMITTED": "De droit public"
       },
       "footerInformation": "Vous pouvez modifier votre choix à tout moment ici. Les données ne peuvent être transmises qu'en cas de consentement explicite.",
       "requestDate": "Demande du {{ date }}",
@@ -97,6 +96,24 @@
       },
       "noConsentRequired": "Aucune action requise. Ce prélèvement de données repose sur une base de droit public. Cet affichage est proposé à titre d'information transparente."
     },
+    "stateCode": {
+      "tooltip": {
+        "GRANTED": "Accepté le {{ date }}",
+        "DECLINED": "Refusé le {{ date }}",
+        "OPENED": "Ouvert",
+        "PARTIALLY_GRANTED": "Partiellement approuvé",
+        "PARTIALLY_OPENED": "Partiellement ouvert",
+        "LEGALLY_PERMITTED": "De droit public"
+      },
+      "UNKNOWN": "Inconnu",
+      "OPENED": "Ouvert",
+      "GRANTED": "Accordé",
+      "DECLINED": "Refusé",
+      "PARTIALLY_OPENED": "Partiellement ouvert",
+      "PARTIALLY_GRANTED": "Partiellement approuvé",
+      "LEGALLY_PERMITTED": "De droit public",
+      "WITHDRAWN": "Terminé"
+    },
     "toast": {
       "title": {
         "GRANTED": "Approbation accordé",
@@ -109,21 +126,6 @@
         "DEFAULT": "La demande a été mise à jour."
       },
       "undo": "Annuler l'action"
-    },
-    "dataRequest": {
-      "title": "Demande de données",
-      "state": "Statut",
-      "consumerName": "Requérant de données",
-      "date": "Date de la demande",
-      "stateCode": {
-        "OPENED": "Ouvert",
-        "GRANTED": "Accordé",
-        "DECLINED": "Refusé",
-        "PARTIALLY_OPENED": "Partiellement ouvert",
-        "PARTIALLY_GRANTED": "Partiellement approuvé",
-        "LEGALLY_PERMITTED": "De droit public",
-        "WITHDRAWN": "Terminé"
-      }
     },
     "emptyState": {
       "title": "Aucune demande disponible",
@@ -386,7 +388,9 @@
       "TO_BE_SIGNED_BY_PROVIDER": "Fournisseur de signature ouvert",
       "TO_BE_RELEASED_BY_PROVIDER": "Conclusion ouverte à fournisseur",
       "TO_BE_ACTIVATED": "Activation en cours",
-      "PAUSED": "En attente"
+      "PAUSED": "En attente",
+      "TERMINATION_PENDING": "Préavis jusqu’au {{date}}",
+      "TERMINATED": "Terminé"
     },
     "table": {
       "tableActions": {
@@ -455,6 +459,7 @@
           "bur": "BUR",
           "withdrawn": "Terminé",
           "export": {
+            "fileName": "Export producteur-{{ humanFriendlyId }}",
             "label": "Exporter en CSV",
             "error": {
               "title": "Échec de l'exportation",
@@ -511,6 +516,19 @@
         },
         "addBurs": "Ajouter des sites d'exploitation",
         "withdrawRequest": "Terminer la requête"
+      },
+      "actions": {
+        "terminate": "Résilier la demande de données"
+      },
+      "terminateConfirmation": {
+        "title": "Résilier la demande de données?",
+        "description": "Vous êtes sur le point de résilier dans les règles l’échange de données {{ requestName }} entre {{ provider }} et {{ consumer }}. Le délai de résiliation est de trois mois.\n\nÊtes-vous sûr de vouloir continuer?",
+        "cancel": "Annuler",
+        "confirm": "Oui, résilier la demande de données",
+        "success": {
+          "title": "Demande de données résiliée",
+          "message": "La résiliation prend effet à l’issue du délai de résiliation. Dernier jour valable: {{date}}"
+        }
       }
     },
     "invitationLink": {
@@ -1459,14 +1477,5 @@
       "enforceConsentFrom": "Blocage à partir de"
     },
     "pageTitle": "Gestion des conditions générales"
-  },
-  "data-request.details": {
-    "producer": {
-      "metadata": {
-        "export": {
-          "fileName": "Export producteur-{{ humanFriendlyId }}"
-        }
-      }
-    }
   }
 }

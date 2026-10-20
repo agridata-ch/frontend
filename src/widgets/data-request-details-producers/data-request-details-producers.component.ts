@@ -14,7 +14,6 @@ import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
   ConsentRequestFundamentalViewDto,
-  ConsentRequestStateEnum,
   DataRequestDto,
   PageResponseDto,
   ResourceQueryDto,
@@ -24,21 +23,21 @@ import {
   DataRequestWithdrawRequestComponent,
   WITHDRAWABLE_CONSENT_STATES,
 } from '@/features/data-request-withdraw-request';
-import { getConsentRequestBadgeVariant } from '@/shared/consent-request';
+import { ConsentRequestStateBadgeComponent } from '@/shared/consent-request';
 import { UID_REGEX } from '@/shared/constants/constants';
 import { formatDate } from '@/shared/date';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import {
-  ActionDTO,
+  ActionDto,
   AgridataTableComponent,
   CellRendererTypes,
   ColumnDefinition,
   SortDirections,
   TableMetadata,
 } from '@/shared/ui/agridata-table';
-import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
+import { BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { EmptyStateComponent } from '@/shared/ui/empty-state';
 
@@ -56,7 +55,7 @@ import { DataRequestDetailsProducersMetadataComponent } from './data-request-det
   selector: 'app-data-request-details-producers',
   imports: [
     AgridataTableComponent,
-    AgridataBadgeComponent,
+    ConsentRequestStateBadgeComponent,
     ButtonComponent,
     ConsentRequestFundamentalViewDtoDirective,
     DataRequestAddProducersComponent,
@@ -79,7 +78,6 @@ export class DataRequestDetailsProducersComponent {
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly addIcon = faPlus;
   protected readonly withdrawIcon = faCircleMinus;
-  protected readonly getConsentRequestBadgeVariant = getConsentRequestBadgeVariant;
   private readonly ADD_BURS_ACTION = 'data-request.details.producer.addBurs';
   private readonly WITHDRAW_ACTION = 'data-request.details.producer.withdrawRequest';
   private readonly UID_HEADER = 'data-request.uid';
@@ -189,21 +187,15 @@ export class DataRequestDetailsProducersComponent {
     this.addProducersOpen.set(true);
   }
 
-  protected getStateTranslation(stateCode?: ConsentRequestStateEnum): string {
-    return stateCode
-      ? this.i18nService.translate(`consent-request.dataRequest.stateCode.${stateCode}`)
-      : '';
-  }
-
   protected reloadAll(): void {
     this.producersResource.reload();
     this.metadataComponent()?.reload();
   }
 
-  private readonly getRowActions = (item?: ConsentRequestFundamentalViewDto): ActionDTO[] => {
+  private readonly getRowActions = (item?: ConsentRequestFundamentalViewDto): ActionDto[] => {
     if (!item) return [];
 
-    const actions: ActionDTO[] = [];
+    const actions: ActionDto[] = [];
     // Adding more BURs for a UID only makes sense when the data request has BUR products.
     if (this.hasBurProducts() && item.dataProducerUid) {
       actions.push({

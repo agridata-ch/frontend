@@ -21,7 +21,9 @@ export const ConsentRequestProducerViewDtoDataRequestStateCode = {
     ToBeReleasedByProvider: 'TO_BE_RELEASED_BY_PROVIDER',
     ToBeActivated: 'TO_BE_ACTIVATED',
     Active: 'ACTIVE',
-    Paused: 'PAUSED'
+    Paused: 'PAUSED',
+    TerminationPending: 'TERMINATION_PENDING',
+    Terminated: 'TERMINATED'
 } as const;
 export type ConsentRequestProducerViewDtoDataRequestStateCode = typeof ConsentRequestProducerViewDtoDataRequestStateCode[keyof typeof ConsentRequestProducerViewDtoDataRequestStateCode];
 

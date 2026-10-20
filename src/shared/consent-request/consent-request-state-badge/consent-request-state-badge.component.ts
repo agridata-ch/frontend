@@ -1,11 +1,13 @@
 import { Component, computed, inject, input } from '@angular/core';
 
 import { ConsentRequestAggregationStateEnum, ConsentRequestStateEnum } from '@/entities/openapi';
+import { getConsentStateTranslation } from '@/shared/consent-request/consent-request.utils';
 import { formatDate } from '@/shared/date';
-import { I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
 import { TooltipDirective } from '@/shared/tooltip';
-import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
+import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
+
+import { getConsentStateBadgeVariant } from './consent-request-state-badge.model';
 
 /** States that carry a decision date, shown in the tooltip. */
 const DATED_STATES = new Set<string>([
@@ -17,15 +19,15 @@ const DATED_STATES = new Set<string>([
 
 /**
  * Badge showing the state of a consent request or consent-request aggregation. States that carry a
- * decision date (granted, partially granted, declined, legally permitted) get a tooltip.
+ * decision date (granted, partially granted, declined, legally permitted) get a tooltip when a date is passed.
  *
  * CommentLastReviewed: 2026-10-06
  */
 @Component({
   selector: 'app-consent-request-state-badge',
-  imports: [AgridataBadgeComponent, I18nPipe, TooltipDirective],
+  imports: [AgridataBadgeComponent, TooltipDirective],
   templateUrl: './consent-request-state-badge.component.html',
-  host: { class: 'inline-flex' },
+  host: { class: 'contents' },
 })
 export class ConsentRequestStateBadgeComponent {
   // Injects
@@ -35,21 +37,18 @@ export class ConsentRequestStateBadgeComponent {
   readonly lastStateChangeDate = input<string>();
   readonly size = input<BadgeSize>(BadgeSize.MD);
   readonly stateCode = input<ConsentRequestStateEnum | ConsentRequestAggregationStateEnum>();
-  readonly variant = input<BadgeVariant>(BadgeVariant.DEFAULT);
 
   // Computed Signals
-  protected readonly labelKey = computed(() => {
-    const stateCode = this.stateCode();
-    return stateCode
-      ? `consent-request.dataRequest.stateCode.${stateCode}`
-      : 'consent-request.details.stateCode.UNKNOWN';
-  });
+  protected readonly text = computed(() =>
+    getConsentStateTranslation(this.i18nService, this.stateCode()),
+  );
+  protected readonly variant = computed(() => getConsentStateBadgeVariant(this.stateCode()));
   protected readonly tooltip = computed(() => {
     const stateCode = this.stateCode();
-    if (!stateCode || !DATED_STATES.has(stateCode)) {
+    if (!stateCode || !DATED_STATES.has(stateCode) || !this.lastStateChangeDate()) {
       return '';
     }
-    return this.i18nService.translate(`consent-request.details.stateCode.${stateCode}`, {
+    return this.i18nService.translate(`consent-request.stateCode.tooltip.${stateCode}`, {
       date: formatDate(this.lastStateChangeDate()),
     });
   });
