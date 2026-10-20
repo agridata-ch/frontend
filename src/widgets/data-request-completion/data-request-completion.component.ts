@@ -7,7 +7,7 @@ import { ContractRevisionService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
-import { getBadgeVariant } from '@/shared/data-request';
+import { DataRequestStateBadgeComponent } from '@/shared/data-request';
 import { formatDate } from '@/shared/date';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceValueComputed } from '@/shared/lib/api.helper';
@@ -15,7 +15,7 @@ import { AuthService } from '@/shared/lib/auth';
 import { contractAgbUrl } from '@/shared/lib/cms';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AlertComponent, AlertType } from '@/shared/ui/alert';
-import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
+import { BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants, HrefTarget } from '@/shared/ui/button';
 import { DataRequestContractPdfComponent } from '@/widgets/data-request-contract-pdf';
 
@@ -31,8 +31,8 @@ import { DataRequestCompletionSigningStatusComponent } from './data-request-comp
 @Component({
   selector: 'app-data-request-completion',
   imports: [
+    DataRequestStateBadgeComponent,
     I18nDirective,
-    AgridataBadgeComponent,
     AlertComponent,
     ButtonComponent,
     FontAwesomeModule,
@@ -58,7 +58,6 @@ export class DataRequestCompletionComponent {
   protected readonly HrefTarget = HrefTarget;
   protected readonly agbButtonIcon = faArrowUpRightFromSquare;
   protected readonly contractAgbUrl = contractAgbUrl;
-  protected readonly getBadgeVariant = getBadgeVariant;
   protected readonly faSpinnerThird = faSpinnerThird;
   protected readonly releaseContractTranslation = this.i18nService.translateSignal(
     'data-request.wizard.releaseContract',
@@ -126,9 +125,4 @@ export class DataRequestCompletionComponent {
   protected readonly shouldBeReleasedByProvider = computed(
     () => this.dataRequest().stateCode === DataRequestStateEnum.ToBeReleasedByProvider,
   );
-
-  // Methods
-  protected getStatusTranslation(value?: string) {
-    return value ? this.i18nService.translate(`data-request.stateCode.${value}`) : '';
-  }
 }

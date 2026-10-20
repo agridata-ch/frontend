@@ -23,7 +23,6 @@
                 <app-consent-request-state-badge
                   [stateCode]="uidRequest.stateCode"
                   [lastStateChangeDate]="uidRequest.lastStateChangeDate"
-                  [variant]="getConsentRequestBadgeVariant(uidRequest.stateCode)"
                 />
               }
             </div>
@@ -70,7 +69,6 @@
                   <app-consent-request-state-badge
                     [stateCode]="request.stateCode"
                     [lastStateChangeDate]="request.lastStateChangeDate"
-                    [variant]="getConsentRequestBadgeVariant(request.stateCode)"
                   />
                 }
               </div>

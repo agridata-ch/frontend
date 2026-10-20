@@ -13,11 +13,7 @@
           <span class="pl-5">{{ consentRequest().dataProducerUid }}</span>
         </div>
         @if (consentRequest().stateCode; as stateCode) {
-          <app-agridata-badge
-            [text]="'consent-request.dataRequest.stateCode.' + stateCode | i18n"
-            [variant]="getConsentRequestBadgeVariant(stateCode)"
-            [size]="BadgeSize.SM"
-          />
+          <app-consent-request-state-badge [stateCode]="stateCode" [size]="BadgeSize.SM" />
         }
       </div>
     </div>
@@ -58,11 +54,7 @@
                 <span>{{ entry.bur }}</span>
               </div>
               @if (entry.consentRequest?.stateCode; as entryState) {
-                <app-agridata-badge
-                  [text]="'consent-request.dataRequest.stateCode.' + entryState | i18n"
-                  [variant]="getConsentRequestBadgeVariant(entryState)"
-                  [size]="BadgeSize.SM"
-                />
+                <app-consent-request-state-badge [stateCode]="entryState" [size]="BadgeSize.SM" />
               } @else {
                 <span class="text-sm">{{ t('withdraw.burSection.noRequest') }}</span>
               }

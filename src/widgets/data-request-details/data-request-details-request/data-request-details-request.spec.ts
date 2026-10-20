@@ -143,16 +143,4 @@ describe('DataRequestDetailsRequestComponent', () => {
       expect(component['copyFeedbackKey']()).toBe('');
     });
   });
-
-  describe('getStatusTranslation', () => {
-    it('should return translated status for valid stateCode', () => {
-      const result = component['getStatusTranslation'](DataRequestStateEnum.Draft);
-      expect(result).toBeDefined();
-    });
-
-    it('should return empty string for undefined stateCode', () => {
-      const result = component['getStatusTranslation']();
-      expect(result).toBe('');
-    });
-  });
 });

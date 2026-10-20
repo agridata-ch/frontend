@@ -29,9 +29,9 @@
         <span class="text-agridata-tertiary-text text-sm">
           {{ t('state') }}
         </span>
-        <app-agridata-badge
-          [text]="getStatusTranslation(dataRequest().stateCode)"
-          [variant]="getBadgeVariant(dataRequest().stateCode)"
+        <app-data-request-state-badge
+          [stateCode]="dataRequest().stateCode"
+          [terminationPeriodUntil]="dataRequest().terminationPeriodUntil"
           [size]="BadgeSize.SM"
         />
       </div>

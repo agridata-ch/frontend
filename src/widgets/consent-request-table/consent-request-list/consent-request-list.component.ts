@@ -3,11 +3,14 @@ import { faChevronRight } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ConsentRequestAggregationSummaryDto, ConsentRequestStateEnum } from '@/entities/openapi';
-import { getAggregationBadgeVariant, isOpenAggregationState } from '@/shared/consent-request';
+import {
+  ConsentRequestStateBadgeComponent,
+  isOpenAggregationState,
+} from '@/shared/consent-request';
 import { formatDate } from '@/shared/date';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
-import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
+import { BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { ConsentRequestEmptyStateComponent } from '@/widgets/consent-request-empty-state/consent-request-empty-state.component';
@@ -22,7 +25,7 @@ import { ConsentRequestEmptyStateComponent } from '@/widgets/consent-request-emp
   imports: [
     FontAwesomeModule,
     ButtonComponent,
-    AgridataBadgeComponent,
+    ConsentRequestStateBadgeComponent,
     I18nDirective,
     AgridataContactCardComponent,
     ConsentRequestEmptyStateComponent,
@@ -60,10 +63,6 @@ export class ConsentRequestListComponent {
 
   formatRequestDate(request: ConsentRequestAggregationSummaryDto) {
     return formatDate(request?.requestDate);
-  }
-
-  getBadgeVariant(request: ConsentRequestAggregationSummaryDto) {
-    return getAggregationBadgeVariant(request?.stateCode);
   }
 
   acceptRequest(event: Event, request: ConsentRequestAggregationSummaryDto) {

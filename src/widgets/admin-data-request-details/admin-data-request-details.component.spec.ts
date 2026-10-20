@@ -61,7 +61,7 @@ describe('AdminDataRequestDetailsComponent', () => {
     dataRequestService = createMockDataRequestService();
     errorService = createMockErrorHandlerService();
     stateService = createMockAgridataStateService();
-    router = { navigate: vi.fn() };
+    router = { navigate: vi.fn().mockResolvedValue(true) };
 
     stateService.__testSignals.actingRole.set(actingRole);
 

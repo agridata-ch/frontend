@@ -15,7 +15,6 @@ import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import {
   ConsentRequestAggregationSummaryDto,
-  ConsentRequestAggregationStateEnum,
   ConsentRequestStateEnum,
   TranslationDto,
 } from '@/entities/openapi';
@@ -23,13 +22,13 @@ import { environment } from '@/environments/environment';
 import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import {
   ConsentRequestStateBadgeComponent,
-  getAggregationBadgeVariant,
   getToastMessage,
   getToastTitle,
   getToastType,
   getUndoAction,
   isOpenAggregationState,
   matchesAggregationStateFilter,
+  getConsentStateTranslation,
 } from '@/shared/consent-request';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nPipe } from '@/shared/i18n';
@@ -111,10 +110,11 @@ export class ConsentRequestTableComponent {
   protected readonly AvatarSkin = AvatarSkin;
   protected readonly appBaseUrl = environment.appBaseUrl;
 
-  protected readonly dataRequestTitleHeader = 'consent-request.dataRequest.title';
-  protected readonly dataRequestStateHeader = 'consent-request.dataRequest.state';
-  protected readonly dataRequestConsumerHeader = 'consent-request.dataRequest.consumerName';
-  protected readonly dataRequestDateHeader = 'consent-request.dataRequest.date';
+  protected readonly dataRequestTitleHeader = 'consent-request.table.columns.dataRequest.title';
+  protected readonly dataRequestStateHeader = 'consent-request.table.columns.dataRequest.state';
+  protected readonly dataRequestConsumerHeader =
+    'consent-request.table.columns.dataRequest.consumerName';
+  protected readonly dataRequestDateHeader = 'consent-request.table.columns.dataRequest.date';
 
   protected readonly stateCodeFilter = signal<string | null>(null);
   protected readonly showAcceptedLoading = signal(false);
@@ -178,7 +178,7 @@ export class ConsentRequestTableComponent {
           },
           sortable: true,
           sortValueFn: (item: ConsentRequestAggregationSummaryDto) =>
-            this.getTranslatedStateValue(item.stateCode),
+            getConsentStateTranslation(this.i18nService, item.stateCode),
         },
         {
           name: '',
@@ -199,12 +199,6 @@ export class ConsentRequestTableComponent {
         data.filter((item) => this.getTranslation(item.dataRequest?.title).includes(searchTerm)),
     };
   });
-
-  getTranslatedStateValue(stateCode?: ConsentRequestAggregationStateEnum) {
-    return stateCode
-      ? this.i18nService.translate(`consent-request.dataRequest.stateCode.${stateCode}`)
-      : '';
-  }
 
   setStateCodeFilter(state: string | null) {
     this.stateCodeFilter.set(state);
@@ -261,8 +255,6 @@ export class ConsentRequestTableComponent {
         });
     });
   }
-
-  getBadgeVariant = getAggregationBadgeVariant;
 
   getTranslation(key: TranslationDto | undefined) {
     return key ? this.i18nService.useObjectTranslation(key) : '';

@@ -20,14 +20,14 @@ import {
   ConsentRequestStateEnum,
   DataRequestDto,
 } from '@/entities/openapi';
-import { getAggregationBadgeVariant } from '@/shared/consent-request';
+import { ConsentRequestStateBadgeComponent } from '@/shared/consent-request';
 import { UID_REGEX } from '@/shared/constants/constants';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { isExternalServiceError } from '@/shared/error/http-error-method';
 import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
 import { ToastService, ToastType } from '@/shared/toast';
 import { AgridataInputComponent } from '@/shared/ui/agridata-input';
-import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
+import { BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal';
 import { ViewSectionDirective } from '@/shared/view-section';
@@ -54,7 +54,7 @@ interface ProducerEntry {
   imports: [
     ModalComponent,
     AgridataInputComponent,
-    AgridataBadgeComponent,
+    ConsentRequestStateBadgeComponent,
     ButtonComponent,
     I18nDirective,
     I18nPipe,
@@ -209,8 +209,6 @@ export class DataRequestAddProducersComponent {
       ? ConsentRequestAggregationStateEnum.PartiallyOpened
       : ConsentRequestAggregationStateEnum.PartiallyGranted;
   });
-
-  protected readonly badgeVariant = computed(() => getAggregationBadgeVariant(this.badgeState()));
 
   // Effects
   // Reset the field and selection each time the modal opens, seeding the UID from a row action.

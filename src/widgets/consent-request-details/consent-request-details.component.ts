@@ -17,7 +17,6 @@ import {
   ConsentRequestDecisionStore,
   ConsentRequestStateBadgeComponent,
   FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM,
-  getAggregationBadgeVariant,
   getToastMessage,
   getToastTitle,
   getToastType,
@@ -113,9 +112,6 @@ export class ConsentRequestDetailsComponent {
   protected readonly detailsOpened = signal(false);
 
   // Computed Signals
-  protected readonly badgeVariant = computed(() =>
-    getAggregationBadgeVariant(this.request()?.stateCode),
-  );
   protected readonly noConsentRequired = computed(
     () => this.request()?.stateCode === ConsentRequestAggregationStateEnum.LegallyPermitted,
   );

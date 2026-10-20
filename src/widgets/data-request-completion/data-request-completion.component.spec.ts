@@ -145,15 +145,4 @@ describe('DataRequestCompletionComponent', () => {
       expect(result?.length).toBeGreaterThan(0);
     });
   });
-
-  describe('getStatusTranslation', () => {
-    it('should return translated status code', () => {
-      component['getStatusTranslation']('ToBeSigned');
-      expect(i18nService.translate).toHaveBeenCalledWith('data-request.stateCode.ToBeSigned');
-    });
-
-    it('should return empty string when value is undefined', () => {
-      expect(component['getStatusTranslation']()).toBe('');
-    });
-  });
 });

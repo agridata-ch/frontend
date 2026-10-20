@@ -23,7 +23,7 @@ import { TableCellComponent } from '@/shared/ui/agridata-table/table-cell/table-
 import { TableHeaderCellComponent } from '@/shared/ui/agridata-table/table-header-cell/table-header-cell.component';
 import { TablePaginationComponent } from '@/shared/ui/agridata-table/table-pagination/table-pagination.component';
 import {
-  ActionDTO,
+  ActionDto,
   TableRowMenuComponent,
 } from '@/shared/ui/agridata-table/table-row-menu/table-row-menu.component';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
@@ -158,7 +158,7 @@ export class AgridataTableComponent<T> {
     return this.tableMetadata().highlightClickedRowFn?.(row) ?? false;
   }
 
-  protected getRowActions(row: T): ActionDTO[] {
+  protected getRowActions(row: T): ActionDto[] {
     const actionFunctions = this.tableMetadata().rowMenuActions;
     return actionFunctions ? actionFunctions(row) : [];
   }

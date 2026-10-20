@@ -6,7 +6,6 @@ import { ConsentRequestAggregationStateEnum } from '@/entities/openapi';
 import {
   ConsentRequestDecisionStore,
   ConsentRequestStateBadgeComponent,
-  getConsentRequestBadgeVariant,
 } from '@/shared/consent-request';
 import { I18nDirective } from '@/shared/i18n';
 import { TooltipDirective } from '@/shared/tooltip';
@@ -48,7 +47,6 @@ export class DataRequestConsentRequestDecisionsComponent {
   protected readonly AlertType = AlertType;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly ConsentRequestAggregationStateEnum = ConsentRequestAggregationStateEnum;
-  protected readonly getConsentRequestBadgeVariant = getConsentRequestBadgeVariant;
   protected readonly editIcon = faEdit;
   protected readonly infoIcon = faInfoCircle;
 

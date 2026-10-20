@@ -1,10 +1,12 @@
 import { Component, computed, inject, input, resource, signal, viewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { faCirclePause, faCirclePlay } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
 
 import { ContractRevisionService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestStateEnum, SealAttemptStateEnum } from '@/entities/openapi';
+import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/shared/data-request';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
@@ -16,7 +18,7 @@ import { DataRequestDetailsComponent } from '@/widgets/data-request-details';
  * Wraps the reusable details component and provides accept, reject, activate, pause, and reactivate actions.
  * The activate action stays disabled until the underlying contract revision is sealed.
  *
- * CommentLastReviewed: 2026-10-01
+ * CommentLastReviewed: 2026-10-20
  */
 @Component({
   selector: 'app-admin-data-request-details',
@@ -39,6 +41,8 @@ export class AdminDataRequestDetailsComponent {
   // Constants
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly DataRequestStateEnum = DataRequestStateEnum;
+  protected readonly faCirclePause = faCirclePause;
+  protected readonly faCirclePlay = faCirclePlay;
 
   // Signals
   protected readonly isAccepting = signal(false);
@@ -129,9 +133,9 @@ export class AdminDataRequestDetailsComponent {
   }
 
   protected handleClose(): void {
-    this.router.navigate(['..'], {
+    void this.router.navigate(['..'], {
       relativeTo: this.route,
-      state: { refresh: this.refreshListNeeded() },
+      state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: this.refreshListNeeded() },
     });
   }
 

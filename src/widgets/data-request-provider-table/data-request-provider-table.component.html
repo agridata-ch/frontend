@@ -19,9 +19,9 @@
     </span>
   </ng-template>
   <ng-template #dataRequestState [appDataRequestDtoGuard] let-item>
-    <app-agridata-badge
-      [text]="getStatusTranslation(item?.stateCode)"
-      [variant]="getBadgeVariant(item?.stateCode)"
+    <app-data-request-state-badge
+      [stateCode]="item?.stateCode"
+      [terminationPeriodUntil]="item?.terminationPeriodUntil"
       [size]="BadgeSize.SM"
     />
   </ng-template>

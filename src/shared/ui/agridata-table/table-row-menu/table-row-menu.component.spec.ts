@@ -8,7 +8,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ButtonComponent } from '@/shared/ui/button';
 
-import { ActionDTO, TableRowMenuComponent } from './table-row-menu.component';
+import { ActionDto, TableRowMenuComponent } from './table-row-menu.component';
 
 describe('TableActionsComponent', () => {
   let fixture: ComponentFixture<TableRowMenuComponent>;
@@ -59,7 +59,7 @@ describe('TableActionsComponent', () => {
       .fn()
       .mockImplementation(() => new Promise<void>((res) => setTimeout(res, 0)));
 
-    const action: ActionDTO = {
+    const action: ActionDto = {
       icon: faPenToSquare,
       label: 'test.action',
       callback: actionCallback,

@@ -39,11 +39,7 @@
           }
         </div>
         @if (badgeState()) {
-          <app-agridata-badge
-            [text]="'consent-request.dataRequest.stateCode.' + badgeState() | i18n"
-            [variant]="badgeVariant()"
-            [size]="BadgeSize.SM"
-          />
+          <app-consent-request-state-badge [stateCode]="badgeState()" [size]="BadgeSize.SM" />
         }
       </div>
     </div>
