@@ -1260,7 +1260,11 @@
     },
     "markAllAsRead": "Contrassegna tutte le notifiche come lette",
     "markAsRead": "Segna come letto",
-    "markAsUnread": "Contrassegna come non letto"
+    "markAsUnread": "Contrassegna come non letto",
+    "empty": {
+      "title": "Nessuna notifica",
+      "message": "Non appena riceverai nuove notifiche, verranno visualizzate qui."
+    }
   },
   "onboardingForm": {
     "uid": {

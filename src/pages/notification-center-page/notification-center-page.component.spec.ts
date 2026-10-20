@@ -110,6 +110,22 @@ describe('NotificationCenterPageComponent - component behavior', () => {
     });
   });
 
+  describe('showMarkAllAsRead', () => {
+    it('should be true when notifications are loaded', async () => {
+      await fixture.whenStable();
+
+      expect(component['showMarkAllAsRead']()).toBe(true);
+    });
+
+    it('should be false once loaded without notifications', async () => {
+      notificationService.fetchNotifications.mockResolvedValue({ ...mockResponse, items: [] });
+      component.fetchNotificationsResource.reload();
+      await fixture.whenStable();
+
+      expect(component['showMarkAllAsRead']()).toBe(false);
+    });
+  });
+
   describe('tableMetaData computed signal', () => {
     it('should produce 4 columns', () => {
       const metadata = component['tableMetaData']();
