@@ -1,3 +1,9 @@
+## [1.24.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.23.1...v1.24.0-rc.1) (2026-10-20)
+
+### Features
+
+- **notification:** add empty state ([d3a666d](https://github.com/agridata-ch/frontend/commit/d3a666db527fbf332cda64cf982e9143c2260b1b)), references [DIGIB2-1750](https://github.com/agridata-ch/frontend/issues/-1750)
+
 ## [1.23.1](https://github.com/agridata-ch/frontend/compare/v1.23.0...v1.23.1) (2026-10-20)
 
 ### Bug Fixes
