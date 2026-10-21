@@ -1,3 +1,9 @@
+## [1.24.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.1...v1.24.0-rc.2) (2026-10-21)
+
+### Features
+
+- **data-request:** add terminating data request ([514b492](https://github.com/agridata-ch/frontend/commit/514b492501a2742fc3bc511ed76323441b0856d2)), references [DIGIB2-329](https://github.com/agridata-ch/frontend/issues/-329)
+
 ## [1.24.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.23.1...v1.24.0-rc.1) (2026-10-20)
 
 ### Features
