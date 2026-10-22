@@ -12,6 +12,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { I18nPipe } from '@/shared/i18n';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { lockPageScroll } from '@/shared/utils';
 
 /**
  * Implements the logic and structure for the sliding panel. It supports a configurable title, width,
@@ -20,7 +21,7 @@ import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
  * panel for flexibility: use the `[subtitle]` slot for the header subtitle and the default slot for
  * the body.
  *
- * CommentLastReviewed: 2026-07-30
+ * CommentLastReviewed: 2026-10-22
  */
 @Component({
   selector: 'app-sidepanel',
@@ -47,10 +48,7 @@ export class SidepanelComponent {
     // Additionally, we want to prevent background scrolling when the sidepanel is open so that's why we add overflow hidden.
     if (this.isOpen()) {
       this.sidepanelContent()?.nativeElement.focus();
-      document.documentElement.style.overflow = 'hidden';
-      onCleanup(() => {
-        document.documentElement.style.overflow = '';
-      });
+      onCleanup(lockPageScroll(document));
     }
   });
 
