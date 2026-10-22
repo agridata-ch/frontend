@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
-import { UidRegisterService } from '@/entities/api/uid-register.service';
+import { BurRegisterService } from '@/entities/api';
 import { DataRequestConsumerDisplayNameDto, DataRequestDto } from '@/entities/openapi';
 import { COUNTRIES } from '@/shared/constants/constants';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
@@ -29,10 +29,10 @@ import { availableLangs } from '../../../../transloco.config';
 
 /**
  * Implements the logic for filling consumer information such as name, UID, address, and contact
- * details. It integrates authentication data, UID registry lookups, and country lists. It supports
+ * details. It integrates authentication data, BUR register lookups, and country lists. It supports
  * uploading a consumer logo and patches missing information into the form dynamically.
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2026-10-22
  */
 @Component({
   selector: 'app-data-request-form-consumer',
@@ -49,7 +49,7 @@ import { availableLangs } from '../../../../transloco.config';
 export class DataRequestFormConsumerComponent {
   readonly i18nService = inject(I18nService);
   readonly authService = inject(AuthService);
-  readonly uidSearchService = inject(UidRegisterService);
+  readonly burRegisterService = inject(BurRegisterService);
   readonly errorService = inject(ErrorHandlerService);
 
   readonly form = input<FormGroup>();
@@ -66,13 +66,13 @@ export class DataRequestFormConsumerComponent {
   readonly AvatarSkin = AvatarSkin;
   readonly availableLangs = availableLangs;
   readonly getFormControl = getFormControl;
-  // The UID register is only queried for a new data request; afterwards the backend provides the values.
-  readonly uidInfoResource = resource({
+  // The BUR register is only queried for a new data request; afterwards the backend provides the values.
+  readonly burInfoResource = resource({
     params: () => this.isNewRequest() || undefined,
-    loader: () => this.uidSearchService.fetchUidInfosOfCurrentUser(),
+    loader: () => this.burRegisterService.fetchBurInfosOfCurrentUser(),
   });
-  private readonly uidInfoResourceErrorHandler = createResourceErrorHandlerEffect(
-    this.uidInfoResource,
+  private readonly burInfoResourceErrorHandler = createResourceErrorHandlerEffect(
+    this.burInfoResource,
     this.errorService,
   );
   readonly userInfo = this.authService.userInfo;
@@ -105,21 +105,21 @@ export class DataRequestFormConsumerComponent {
   });
 
   readonly updateFormEffect = effect(async () => {
-    if (this.uidInfoResource.isLoading()) return;
+    if (this.burInfoResource.isLoading()) return;
 
-    const uidSearchResult = this.uidInfoResource.error() ? null : this.uidInfoResource.value();
+    const burSearchResult = this.burInfoResource.error() ? null : this.burInfoResource.value();
     const currentUserData = this.userInfo();
     const userFullName = this.userFullName();
     const request = this.dataRequest();
 
-    // Always proceed with available data - either from UID resource or user data
+    // Always proceed with available data - either from BUR resource or user data
     // Skip only if we already have the correct legal name
-    if (uidSearchResult?.legalName === userFullName && !this.uidInfoResource.error()) return;
+    if (burSearchResult?.legalName === userFullName && !this.burInfoResource.error()) return;
 
     const newUserData = {
       ...currentUserData,
-      uid: request?.dataConsumerUid || uidSearchResult?.uid || currentUserData?.uid,
-      name: request?.dataConsumerLegalName || uidSearchResult?.legalName || userFullName,
+      uid: request?.dataConsumerUid || burSearchResult?.uid || currentUserData?.uid,
+      name: request?.dataConsumerLegalName || burSearchResult?.legalName || userFullName,
     };
 
     this.consumerUid.set(newUserData.uid);
@@ -134,7 +134,7 @@ export class DataRequestFormConsumerComponent {
       value && typeof value === 'object' ? Object.values(value).some(Boolean) : Boolean(value),
     );
     if (!hasAnyValue) {
-      // The UID register has a single legal name, so prefill it into every language.
+      // The BUR register has a single legal name, so prefill it into every language.
       this.form()?.patchValue({
         consumer: {
           dataConsumerDisplayName: {
@@ -142,10 +142,10 @@ export class DataRequestFormConsumerComponent {
             fr: newUserData.name,
             it: newUserData.name,
           },
-          dataConsumerCity: uidSearchResult?.address?.city,
-          dataConsumerZip: uidSearchResult?.address?.zip,
-          dataConsumerStreet: uidSearchResult?.address?.street,
-          dataConsumerCountry: uidSearchResult?.address?.country,
+          dataConsumerCity: burSearchResult?.address?.city,
+          dataConsumerZip: burSearchResult?.address?.zip,
+          dataConsumerStreet: burSearchResult?.address?.street,
+          dataConsumerCountry: burSearchResult?.address?.country,
         },
       });
     }

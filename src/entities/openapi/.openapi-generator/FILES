@@ -20,12 +20,13 @@ api/publicDataProducts.service.ts
 api/publicDataProviders.service.ts
 api/publicDataSourceSystems.service.ts
 api/testData.service.ts
-api/uIDRegisterSearch.service.ts
 api/users.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/agbAcceptanceOverviewDto.ts
+model/agbAcceptanceStatusEnum.ts
 model/agbRevisionDto.ts
 model/agbRevisionOverviewDto.ts
 model/agbTextDto.ts
@@ -91,6 +92,7 @@ model/markAsReadRequestDto.ts
 model/models.ts
 model/otpChallengeDto.ts
 model/pageResponseDto.ts
+model/pageResponseDtoAgbAcceptanceOverviewDto.ts
 model/pageResponseDtoAgbRevisionOverviewDto.ts
 model/pageResponseDtoConsentRequestFundamentalViewDto.ts
 model/pageResponseDtoDataProductDto.ts
@@ -112,8 +114,6 @@ model/stateCountsDto.ts
 model/targetTypeCodeEnum.ts
 model/translationDto.ts
 model/uidDto.ts
-model/uidRegisterAddressDto.ts
-model/uidRegisterOrganisationDto.ts
 model/userInfoDto.ts
 model/userPreferencesDto.ts
 model/verifyOtpRequestDto.ts
