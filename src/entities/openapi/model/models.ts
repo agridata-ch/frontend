@@ -86,8 +86,6 @@ export * from './stateCountsDto';
 export * from './targetTypeCodeEnum';
 export * from './translationDto';
 export * from './uidDto';
-export * from './uidRegisterAddressDto';
-export * from './uidRegisterOrganisationDto';
 export * from './userInfoDto';
 export * from './userPreferencesDto';
 export * from './verifyOtpRequestDto';

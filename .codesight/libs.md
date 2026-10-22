@@ -12,7 +12,7 @@
 - `src/entities/api/data-request.service.ts` — class DataRequestService
 - `src/entities/api/master-data.service.ts` — class MasterDataService
 - `src/entities/api/notification.service.ts` — class NotificationService
-- `src/entities/api/uid-register.service.ts` — class UidRegisterService
+- `entities/api/bur-register.service.ts` — class BurRegisterService
 - `src/entities/api/user.service.ts` — class UserService
 - `src/entities/cms/cms.service.ts` — class CmsService
 - `src/entities/openapi/api/agbRevision.service.ts` — class AgbRevisionService
@@ -156,7 +156,7 @@
   - type MockTitleServiceSignals
   - type MockTitleService
 - `src/shared/testing/mocks/mock-toast-service.ts` — function createMockToastService: () => MockToastService, type MockToastService
-- `src/shared/testing/mocks/mock-uid-register-service.ts` — function createMockUidRegisterService: () => MockUidRegisterService, type MockUidRegisterService
+- `shared/testing/mocks/mock-bur-register-service.ts` — function createMockBurRegisterService: () => MockBurRegisterService, type MockBurRegisterService
 - `src/shared/testing/mocks/mock-user-service.ts`
   - function createMockUserService: () => MockUserService
   - type MockUserService

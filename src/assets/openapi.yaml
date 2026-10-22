@@ -547,7 +547,7 @@ components:
               description: State of the data request
             dataConsumerLegalName:
               type: string
-              description: LegalName of the data consumer taken from the uid register
+              description: LegalName of the data consumer taken from BurWeb
               examples:
               - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
               maxLength: 255
@@ -763,7 +763,7 @@ components:
           - 0D74F63F-9491-4B9B-80BA-0CA43A1A3A6F
         dataConsumerName:
           type: string
-          description: LegalName of the data consumer taken from the uid register
+          description: LegalName of the data consumer taken from BurWeb
           examples:
           - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
         dataConsumerCity:
@@ -1371,7 +1371,7 @@ components:
           - 2027-01-13
         dataConsumerLegalName:
           type: string
-          description: LegalName of the data consumer taken from the uid register
+          description: LegalName of the data consumer taken from BurWeb
           examples:
           - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
           maxLength: 255
@@ -1686,7 +1686,7 @@ components:
           description: State of the data request
         dataConsumerLegalName:
           type: string
-          description: LegalName of the data consumer taken from the uid register
+          description: LegalName of the data consumer taken from BurWeb
           examples:
           - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
           maxLength: 255
@@ -2688,28 +2688,6 @@ components:
           type: string
         legalFormCode:
           $ref: "#/components/schemas/LegalFormEnum"
-    UidRegisterAddressDto:
-      type: object
-      properties:
-        street:
-          type: string
-        zip:
-          type: string
-        city:
-          type: string
-        country:
-          type: string
-    UidRegisterOrganisationDto:
-      type: object
-      properties:
-        name:
-          type: string
-        legalName:
-          type: string
-        uid:
-          type: string
-        address:
-          $ref: "#/components/schemas/UidRegisterAddressDto"
     UserInfoDto:
       description: "Represents basic user information, such as name, contact details,\
         \ and address."
@@ -2900,9 +2878,6 @@ tags:
 - name: Public Data Source Systems
   description: Endpoints for public data source systems
 - name: Test Data
-- name: UID Register Search
-  description: Provides access to organisation details retrieved from the official
-    UID register.
 - name: Users
   description: "Provides access to UIDs and BURs authorized for specific data producers,\
     \ based on their ktIdP or UID."
@@ -5978,85 +5953,6 @@ paths:
       summary: Reset Test Data
       security:
       - SecurityScheme: []
-      x-api-subset: agridata.ch Web App
-  /api/uid-register/v1/search:
-    get:
-      description: Retrieves organisation details from the UID register for the UID
-        associated with the currently authenticated consumer. Only accessible to users
-        with the consumer role.
-      operationId: getByUidOfCurrentUser
-      tags:
-      - UID Register Search
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UidRegisterOrganisationDto"
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-        "500":
-          description: "Internal server error: unexpected error"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-        "404":
-          description: The resource or element was not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-      summary: Get By Uid Of Current User
-      security:
-      - SecurityScheme:
-        - agridata.ch.Agridata_Datenbezueger
-      x-api-subset: agridata.ch Web App
-  /api/uid-register/v1/search/{uid}:
-    get:
-      description: Retrieves organisation details from the UID register using the
-        specified UID. Accessible to users with the admin role.
-      operationId: getByUid
-      tags:
-      - UID Register Search
-      parameters:
-      - description: UID of the organisation without CHE prefix
-        example: 101708094
-        required: true
-        name: uid
-        in: path
-        schema:
-          type: integer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UidRegisterOrganisationDto"
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-        "500":
-          description: "Internal server error: unexpected error"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-        "404":
-          description: The resource or element was not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-      summary: Get By Uid
-      security:
-      - SecurityScheme:
-        - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/user/v1/admin/agb-revisions:
     get:
