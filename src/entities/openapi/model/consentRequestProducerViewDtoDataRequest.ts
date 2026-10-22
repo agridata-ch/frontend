@@ -50,7 +50,7 @@ export interface ConsentRequestProducerViewDtoDataRequest {
     products?: Array<string>;
     stateCode: ConsentRequestProducerViewDtoDataRequestStateCode;
     /**
-     * LegalName of the data consumer taken from the uid register
+     * LegalName of the data consumer taken from BurWeb
      */
     dataConsumerLegalName?: string;
     /**

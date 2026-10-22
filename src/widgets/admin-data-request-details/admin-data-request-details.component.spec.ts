@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import type { Mock, MockInstance } from 'vitest';
 
-import { ContractRevisionService, DataRequestService, UidRegisterService } from '@/entities/api';
+import { BurRegisterService, ContractRevisionService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestDto } from '@/entities/openapi';
@@ -16,12 +16,12 @@ import {
   createMockActivatedRoute,
   createMockAgridataStateService,
   createMockAuthService,
+  createMockBurRegisterService,
   createMockContractRevisionService,
   createMockDataRequestService,
   createMockErrorHandlerService,
   createMockI18nService,
   createMockMasterDataService,
-  createMockUidRegisterService,
   mockDataRequests,
   MockAgridataStateService,
   MockDataRequestService,
@@ -77,7 +77,7 @@ describe('AdminDataRequestDetailsComponent', () => {
         { provide: I18nService, useValue: createMockI18nService() },
         { provide: MasterDataService, useValue: createMockMasterDataService() },
         { provide: Router, useValue: router },
-        { provide: UidRegisterService, useValue: createMockUidRegisterService() },
+        { provide: BurRegisterService, useValue: createMockBurRegisterService() },
       ],
     }).compileComponents();
 

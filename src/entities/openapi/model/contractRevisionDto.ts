@@ -17,7 +17,7 @@ export interface ContractRevisionDto {
     id: string;
     dataRequestId: string;
     /**
-     * LegalName of the data consumer taken from the uid register
+     * LegalName of the data consumer taken from BurWeb
      */
     dataConsumerName: string;
     /**
