@@ -185,8 +185,8 @@ export class AuthService {
 
   private resolveUidActingRole(): ActingRole {
     if (this.isImpersonating()) return 'SUPPORT';
-    if (this.isProducer()) return 'PRODUCER';
-    return undefined as unknown as ActingRole; // Let API default to consumer role if not producer/support
+    // Let API default to consumer role if not producer/support
+    return this.isProducer() ? 'PRODUCER' : (undefined as unknown as ActingRole);
   }
 
   private shouldSkipAuthorizedUids(): boolean {
