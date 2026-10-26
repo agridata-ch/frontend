@@ -1,3 +1,13 @@
+## [1.24.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.2...v1.24.0-rc.3) (2026-10-26)
+
+### Features
+
+- **deps:** dependency update ([fa2193d](https://github.com/agridata-ch/frontend/commit/fa2193d6425917897341f4ab3f108e51a1362290)), references [DIGIB2-1807](https://github.com/agridata-ch/frontend/issues/-1807)
+
+### Bug Fixes
+
+- **modal:** fix multiple scrollbars ([614823f](https://github.com/agridata-ch/frontend/commit/614823ff7d661db8bb17a8c29bc5baeb00fc6aa7)), references [DIGIB2-1737](https://github.com/agridata-ch/frontend/issues/-1737)
+
 ## [1.24.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.1...v1.24.0-rc.2) (2026-10-21)
 
 ### Features
