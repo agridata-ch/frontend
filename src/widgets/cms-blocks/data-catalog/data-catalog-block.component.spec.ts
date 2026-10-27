@@ -5,7 +5,11 @@ import { provideRouter } from '@angular/router';
 import { DataProductDocumentService } from '@/entities/api/data-product-document.service';
 import { DataProductService } from '@/entities/api/data-product.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { DataProviderDto, DataSourceSystemDto, PublicDataProductDto } from '@/entities/openapi';
+import {
+  DataProviderDto,
+  DataSourceSystemDto,
+  PublicDataProductSummaryDto,
+} from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import {
@@ -41,10 +45,10 @@ class MockIntersectionObserver {
   }
 }
 
-const product = (id: string): PublicDataProductDto => ({
+const product = (id: string): PublicDataProductSummaryDto => ({
   paymentRequired: false,
   id,
-  stateCode: 'ACTIVE' as PublicDataProductDto['stateCode'],
+  stateCode: 'ACTIVE' as PublicDataProductSummaryDto['stateCode'],
   consentRequired: false,
   name: { de: `Produkt ${id}` },
 });
@@ -167,7 +171,7 @@ describe('DataCatalogBlockComponent', () => {
 
   it('should show skeleton cards while the first page is loading', async () => {
     let resolvePage!: (value: {
-      items: PublicDataProductDto[];
+      items: PublicDataProductSummaryDto[];
       totalItems: number;
       totalPages: number;
       currentPage: number;
@@ -295,7 +299,10 @@ describe('DataCatalogBlockComponent', () => {
       currentPage: 0,
       pageSize: 10,
     });
-    dataProductService.getPublicProductById.mockResolvedValue(product('x'));
+    dataProductService.getPublicProductById.mockResolvedValue({
+      ...product('x'),
+      dataSourceSystem: undefined,
+    });
 
     await init();
     fixture.nativeElement.querySelector('app-data-product-card button')?.click();
@@ -317,7 +324,10 @@ describe('DataCatalogBlockComponent', () => {
       currentPage: 0,
       pageSize: 10,
     });
-    dataProductService.getPublicProductById.mockResolvedValue(product('x'));
+    dataProductService.getPublicProductById.mockResolvedValue({
+      ...product('x'),
+      dataSourceSystem: undefined,
+    });
 
     await init();
     fixture.nativeElement.querySelector('app-data-product-card button')?.click();

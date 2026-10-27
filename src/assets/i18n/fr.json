@@ -1442,7 +1442,12 @@
       "paymentRequired": "Frais du fournisseur",
       "costs": "Frais pour les requérants de données",
       "documents": "Documents",
-      "publicSectorTooltip": "La mise à disposition de ces données repose sur une base de droit public. Le transfert est affiché dans un souci de transparence."
+      "publicSectorTooltip": "La mise à disposition de ces données repose sur une base de droit public. Le transfert est affiché dans un souci de transparence.",
+      "technical": {
+        "pathTemplate": "Modèle de chemin URL ",
+        "requestTemplate": "Template du Request-Body",
+        "flowCode": "Le mode de transfert"
+      }
     },
     "list": {
       "allLoaded": "Tous les produits de données chargés"
@@ -1463,7 +1468,7 @@
     "foreignBadge": "Requérant international de données"
   },
   "news": {
-    "title": "Actualités concernant Agridata",
+    "title": "Actualités concernant agridata.ch",
     "readMore": "Lire la suite",
     "createdAt": "Date de création: {{ date }}"
   },
