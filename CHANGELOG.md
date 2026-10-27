@@ -1,3 +1,10 @@
+## [1.24.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.3...v1.24.0-rc.4) (2026-10-27)
+
+### Features
+
+- **data-request:** do UID register lookup based on data request existence ([5743297](https://github.com/agridata-ch/frontend/commit/574329707c4efbf5fc494d840f324ec90252f843))
+- **public-data-product:** add technical tabs in details ([9374b42](https://github.com/agridata-ch/frontend/commit/9374b42e54798e1d51c8a86a8a1fc8bf38f583c0)), references [DIGIB2-1717](https://github.com/agridata-ch/frontend/issues/-1717)
+
 ## [1.24.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.2...v1.24.0-rc.3) (2026-10-26)
 
 ### Features
