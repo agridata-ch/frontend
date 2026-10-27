@@ -1,4 +1,13 @@
-import { Component, computed, effect, inject, input, output, resource } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  linkedSignal,
+  output,
+  resource,
+} from '@angular/core';
 import { faCircleChf, faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -10,18 +19,25 @@ import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { createDocumentDownloadHandler } from '@/shared/lib/document-download.helper';
 import { TooltipDirective } from '@/shared/tooltip';
+import { AgridataTabsComponent, Tab } from '@/shared/ui/agridata-tabs';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
 import { AgridataFileDownloadComponent } from '@/shared/ui/file-download';
 import { AgridataLinksListComponent } from '@/shared/ui/links-list';
 
+enum DetailTab {
+  GENERAL = 'general',
+  TECHNICAL = 'technical',
+}
+
 /**
- * Read-only details of a single data product (badges, description, links, documents, costs). Given
- * a product id it loads the product and its documents through the `source` the host hands over
+ * Read-only details of a single data product (badges, description, links, documents, costs) and,
+ * on a second tab, its technical request templates. Given a product id it loads the product and its documents through the `source` the host hands over
  * (public or authenticated). Hosts wrap it (modal, page) and own the open/close state.
  * `handleNameLoaded` hands the product name to the host for its title and `handleLoadFailed` lets
- * the host close on error. Translations come from the `data-catalog` keys.
+ * the host close on error. Translations come from the `data-catalog` keys, tab labels from the shared
+ * `data-products.detailForm.tab` keys.
  *
- * CommentLastReviewed: 2026-10-13
+ * CommentLastReviewed: 2026-10-27
  */
 @Component({
   selector: 'app-data-product-detail',
@@ -29,6 +45,7 @@ import { AgridataLinksListComponent } from '@/shared/ui/links-list';
     AgridataBadgeComponent,
     AgridataFileDownloadComponent,
     AgridataLinksListComponent,
+    AgridataTabsComponent,
     FontAwesomeModule,
     I18nDirective,
     TooltipDirective,
@@ -43,6 +60,7 @@ export class DataProductDetailComponent {
   // Constants
   protected readonly BadgeSize = BadgeSize;
   protected readonly BadgeVariant = BadgeVariant;
+  protected readonly DetailTab = DetailTab;
   protected readonly faSpinnerThird = faSpinnerThird;
   protected readonly publicSectorIcon = faShieldCheck;
   protected readonly chfCircleIcon = faCircleChf;
@@ -75,6 +93,11 @@ export class DataProductDetailComponent {
 
   // Signals
   protected readonly downloads = createDocumentDownloadHandler(this.errorService);
+  // Every newly selected product starts on the general tab.
+  protected readonly activeTabId = linkedSignal<string>(() => {
+    this.productId();
+    return DetailTab.GENERAL;
+  });
 
   // Computed signals
   protected readonly loading = computed(() => this.productResource.isLoading());
@@ -98,6 +121,20 @@ export class DataProductDetailComponent {
   protected readonly sourceSystemName = computed(() =>
     this.i18nService.useObjectTranslation(this.product()?.dataSourceSystem?.name),
   );
+  protected readonly tabs = computed<Tab[]>(() => {
+    // translate() isn't reactive; reading lang re-translates the labels on a language switch.
+    this.i18nService.lang();
+    return [
+      {
+        id: DetailTab.GENERAL,
+        label: this.i18nService.translate('data-products.detailForm.tab.generalInfo'),
+      },
+      {
+        id: DetailTab.TECHNICAL,
+        label: this.i18nService.translate('data-products.detailForm.tab.technicalFields'),
+      },
+    ];
+  });
 
   // Effects
   private readonly productErrorEffect = createResourceErrorHandlerEffect(

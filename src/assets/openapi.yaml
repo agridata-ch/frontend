@@ -489,6 +489,8 @@ components:
               - TO_BE_ACTIVATED
               - ACTIVE
               - PAUSED
+              - TERMINATION_PENDING
+              - TERMINATED
               description: State of the data request
             dataConsumerLegalName:
               type: string
@@ -1300,7 +1302,17 @@ components:
           - TO_BE_ACTIVATED
           - ACTIVE
           - PAUSED
+          - TERMINATION_PENDING
+          - TERMINATED
           description: State of the data request
+        terminationPeriodUntil:
+          $ref: "#/components/schemas/LocalDate"
+          description: Last day on which a terminated data request is still valid
+            (inclusive end of the notice period). Only set once the data request has
+            been terminated
+          type: string
+          examples:
+          - 2027-01-13
         dataConsumerLegalName:
           type: string
           description: LegalName of the data consumer taken from the uid register
@@ -1418,6 +1430,8 @@ components:
       - TO_BE_ACTIVATED
       - ACTIVE
       - PAUSED
+      - TERMINATION_PENDING
+      - TERMINATED
     DataRequestSummaryDto:
       type: object
       description: Reduced data transfer object representing a data request
@@ -1611,6 +1625,8 @@ components:
           - TO_BE_ACTIVATED
           - ACTIVE
           - PAUSED
+          - TERMINATION_PENDING
+          - TERMINATED
           description: State of the data request
         dataConsumerLegalName:
           type: string
@@ -2175,7 +2191,7 @@ components:
           description: Number of items per page.
           examples:
           - 10
-    PageResponseDtoPublicDataProductDto:
+    PageResponseDtoPublicDataProductSummaryDto:
       description: Generic paginated response wrapper.
       type: object
       required:
@@ -2188,7 +2204,7 @@ components:
         items:
           type: array
           items:
-            $ref: "#/components/schemas/PublicDataProductDto"
+            $ref: "#/components/schemas/PublicDataProductSummaryDto"
           description: List of items on the current page.
         totalItems:
           type: integer
@@ -2338,6 +2354,107 @@ components:
           $ref: "#/components/schemas/TranslationDto"
           description: "Legal basis for the pricing of this data product, if payment\
             \ is required"
+          type: object
+        restClientPathTemplate:
+          type: string
+          description: Path template for the request
+          examples:
+          - "/farm-data/uid/{{uid}}"
+        restClientRequestTemplate:
+          type: string
+          description: Body template for the request
+          examples:
+          - |-
+            {
+              "surveyYear": "{{year}}",
+              "ids": {
+                "ber": "{{bur}}"
+              },
+              "dataTypes": {
+                "structureType": ["animalData"]
+              }
+            }
+    PublicDataProductSummaryDto:
+      type: object
+      required:
+      - id
+      - stateCode
+      - consentRequired
+      - paymentRequired
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the product
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+        dataSourceSystem:
+          $ref: "#/components/schemas/PublicDataSourceSystemSummaryDto"
+          description: Data source system from which this product originates
+          type: object
+        name:
+          $ref: "#/components/schemas/TranslationDto"
+          description: Localized name of the product
+          type: object
+        description:
+          $ref: "#/components/schemas/TranslationDto"
+          description: Description of the product
+          type: object
+        deprecatedSince:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Timestamp indicating when the product was marked as deprecated.
+          type: string
+          examples:
+          - 2026-03-06T00:00:00
+        stateCode:
+          type:
+          - string
+          - object
+          enum:
+          - DRAFT
+          - ACTIVE
+          description: State of the data product
+          examples:
+          - ACTIVE
+        consentRequired:
+          type: boolean
+          description: If a consent is required for this data product
+          examples:
+          - true
+        paymentRequired:
+          type: boolean
+          description: If a payment is required for this data product
+          examples:
+          - true
+    PublicDataProviderSummaryDto:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the provider
+          type: string
+        name:
+          $ref: "#/components/schemas/TranslationDto"
+          description: Display name of the provider
+          type: object
+    PublicDataSourceSystemSummaryDto:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the source
+          type: string
+        name:
+          $ref: "#/components/schemas/TranslationDto"
+          description: Display name of the data source
+          type: object
+        dataProvider:
+          $ref: "#/components/schemas/PublicDataProviderSummaryDto"
+          description: Reference to the data provider
           type: object
     ResourceQueryDto:
       type: object
@@ -4006,8 +4123,9 @@ paths:
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/status:
     put:
-      description: sets status of data request. Only accessible to the consumer who
-        owns the data request and to admins. Only specific transitions are allowed.
+      description: "sets status of data request. Only accessible to the consumer who\
+        \ owns the data request, to the provider it is assigned to and to admins.\
+        \ Only specific transitions are allowed."
       operationId: setDataRequestStatus
       tags:
       - Data Requests
@@ -6288,7 +6406,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PageResponseDtoPublicDataProductDto"
+                $ref: "#/components/schemas/PageResponseDtoPublicDataProductSummaryDto"
         "500":
           description: "Internal server error: unexpected error"
           content:
@@ -6364,7 +6482,8 @@ paths:
       x-api-subset: agridata.ch Web App
   /public/api/products/v2/{id}:
     get:
-      description: Retrieves a single publicly available data product. Publicly accessible.
+      description: "Retrieves a single publicly available data product, including\
+        \ its technical information. Publicly accessible."
       operationId: getPublicDataProduct
       tags:
       - Public Data Products
@@ -6552,7 +6671,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.21.0-rc.9
+  version: 1.22.0-rc.1
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

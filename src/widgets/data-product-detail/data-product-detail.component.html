@@ -57,58 +57,92 @@
         }
       </div>
 
-      @if (description()) {
-        <section class="flex flex-col gap-6">
-          <h4>{{ t('product.description') }}</h4>
-          <p class="whitespace-pre-line">
-            {{ description() }}
-          </p>
-        </section>
-      }
+      <app-agridata-tabs [tabs]="tabs()" [(activeTabId)]="activeTabId" />
 
-      @if (hasLinks() || documents().length) {
-        <section class="flex flex-col sm:flex-row gap-8">
-          @if (hasLinks()) {
-            <div class="flex flex-1 flex-col gap-6">
-              <h4>{{ t('product.links') }}</h4>
-              <app-agridata-links-list [links]="product.links ?? []" />
-            </div>
-          }
-          @if (documents().length) {
-            <div class="flex flex-1 flex-col gap-6">
-              <h4>{{ t('product.documents') }}</h4>
-              <ul
-                class="flex flex-col rounded-lg border border-agridata-stroke divide-y divide-agridata-stroke"
-              >
-                @for (doc of documents(); track doc.id) {
-                  <li class="p-3">
-                    <app-agridata-file-download
-                      [fileName]="doc.fileName"
-                      [sizeBytes]="doc.sizeBytes"
-                      [downloadable]="true"
-                      [isOpening]="downloads.isOpening(doc.id)"
-                      [isDownloading]="downloads.isDownloading(doc.id)"
-                      (handleOpen)="handleOpen(doc)"
-                      (handleDownload)="handleDownload(doc)"
-                    />
-                  </li>
-                }
-              </ul>
-            </div>
-          }
-        </section>
-      }
-      @if (extendedDescription()) {
+      @if (activeTabId() === DetailTab.TECHNICAL) {
         <section class="flex flex-col gap-6">
-          <h4>{{ t('product.extendedDescription') }}</h4>
-          <p [innerHTML]="extendedDescription()" class="whitespace-pre-line rich-text-content"></p>
+          <h4>{{ t('product.technical.productId') }}</h4>
+          <p>{{ product.id }}</p>
         </section>
-      }
-      @if (paymentRequired() && pricingBasis()) {
-        <section class="flex flex-col gap-6">
-          <h4>{{ t('product.costs') }}</h4>
-          <p [innerHTML]="pricingBasis()" class="whitespace-pre-line rich-text-content"></p>
-        </section>
+        @if (product.flowCode) {
+          <section class="flex flex-col gap-6">
+            <h4>{{ t('product.technical.flowCode') }}</h4>
+            <p>{{ product.flowCode }}</p>
+          </section>
+        }
+        @if (product.restClientPathTemplate) {
+          <section class="flex flex-col gap-6">
+            <h4>{{ t('product.technical.pathTemplate') }}</h4>
+            <pre class="whitespace-pre-wrap wrap-break-words">{{
+              product.restClientPathTemplate
+            }}</pre>
+          </section>
+        }
+        @if (product.restClientRequestTemplate) {
+          <section class="flex flex-col gap-6">
+            <h4>{{ t('product.technical.requestTemplate') }}</h4>
+            <pre class="whitespace-pre-wrap wrap-break-words">{{
+              product.restClientRequestTemplate
+            }}</pre>
+          </section>
+        }
+      } @else {
+        @if (description()) {
+          <section class="flex flex-col gap-6">
+            <h4>{{ t('product.description') }}</h4>
+            <p class="whitespace-pre-line">
+              {{ description() }}
+            </p>
+          </section>
+        }
+
+        @if (hasLinks() || documents().length) {
+          <section class="flex flex-col sm:flex-row gap-8">
+            @if (hasLinks()) {
+              <div class="flex flex-1 flex-col gap-6">
+                <h4>{{ t('product.links') }}</h4>
+                <app-agridata-links-list [links]="product.links ?? []" />
+              </div>
+            }
+            @if (documents().length) {
+              <div class="flex flex-1 flex-col gap-6">
+                <h4>{{ t('product.documents') }}</h4>
+                <ul
+                  class="flex flex-col rounded-lg border border-agridata-stroke divide-y divide-agridata-stroke"
+                >
+                  @for (doc of documents(); track doc.id) {
+                    <li class="p-3">
+                      <app-agridata-file-download
+                        [fileName]="doc.fileName"
+                        [sizeBytes]="doc.sizeBytes"
+                        [downloadable]="true"
+                        [isOpening]="downloads.isOpening(doc.id)"
+                        [isDownloading]="downloads.isDownloading(doc.id)"
+                        (handleOpen)="handleOpen(doc)"
+                        (handleDownload)="handleDownload(doc)"
+                      />
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+          </section>
+        }
+        @if (extendedDescription()) {
+          <section class="flex flex-col gap-6">
+            <h4>{{ t('product.extendedDescription') }}</h4>
+            <p
+              [innerHTML]="extendedDescription()"
+              class="whitespace-pre-line rich-text-content"
+            ></p>
+          </section>
+        }
+        @if (paymentRequired() && pricingBasis()) {
+          <section class="flex flex-col gap-6">
+            <h4>{{ t('product.costs') }}</h4>
+            <p [innerHTML]="pricingBasis()" class="whitespace-pre-line rich-text-content"></p>
+          </section>
+        }
       }
     </div>
   }

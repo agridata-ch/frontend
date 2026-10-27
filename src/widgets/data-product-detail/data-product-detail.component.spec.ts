@@ -6,11 +6,16 @@ import { DataProductSource } from '@/entities/api';
 import {
   DataProductDocumentMetadataDto,
   DocumentScanStatusEnum,
+  FlowCodeEnum,
   PublicDataProductDto,
 } from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
-import { createMockErrorHandlerService, createMockI18nService } from '@/shared/testing/mocks';
+import {
+  createMockErrorHandlerService,
+  createMockI18nService,
+  MockI18nService,
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { DataProductDetailComponent } from './data-product-detail.component';
@@ -36,6 +41,7 @@ describe('DataProductDetailComponent', () => {
   let component: DataProductDetailComponent;
   let componentRef: ComponentRef<DataProductDetailComponent>;
   let source: Mocked<DataProductSource>;
+  let i18nService: MockI18nService;
 
   beforeEach(async () => {
     URL.createObjectURL = vi.fn().mockReturnValue('blob:mock');
@@ -47,11 +53,13 @@ describe('DataProductDetailComponent', () => {
       listDocuments: vi.fn().mockResolvedValue([]),
     };
 
+    i18nService = createMockI18nService();
+
     await TestBed.configureTestingModule({
       imports: [DataProductDetailComponent, createTranslocoTestingModule()],
       providers: [
         { provide: ErrorHandlerService, useValue: createMockErrorHandlerService() },
-        { provide: I18nService, useValue: createMockI18nService() },
+        { provide: I18nService, useValue: i18nService },
       ],
     }).compileComponents();
 
@@ -159,6 +167,73 @@ describe('DataProductDetailComponent', () => {
       component['handleOpen'](doc('doc-1'));
 
       expect(source.downloadDocument).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('tabs', () => {
+    const load = async (id = 'product-1'): Promise<void> => {
+      componentRef.setInput('productId', id);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+    };
+
+    const openTechnicalTab = (): string => {
+      const technicalTab: HTMLButtonElement =
+        fixture.nativeElement.querySelectorAll('[role="tab"]')[1];
+      technicalTab.click();
+      fixture.detectChanges();
+      return fixture.nativeElement.textContent;
+    };
+
+    it('shows the id, flow code and templates on the technical tab', async () => {
+      source.getProduct.mockResolvedValue({
+        ...product(),
+        flowCode: FlowCodeEnum.BurBasedPreValidation,
+        restClientPathTemplate: '/api/{{bur}}',
+        restClientRequestTemplate: '{ "a": 1 }',
+      });
+      await load();
+
+      const text = openTechnicalTab();
+
+      expect(text).toContain('product-1');
+      expect(text).toContain(FlowCodeEnum.BurBasedPreValidation);
+      expect(text).toContain('/api/{{bur}}');
+      expect(text).toContain('{ "a": 1 }');
+      expect(fixture.nativeElement.querySelector('app-agridata-links-list')).toBeNull();
+    });
+
+    it('shows only the id when the optional technical fields are missing', async () => {
+      await load();
+
+      const text = openTechnicalTab();
+
+      expect(text).toContain('product.technical.productId');
+      expect(text).not.toContain('product.technical.flowCode');
+      expect(text).not.toContain('product.technical.pathTemplate');
+      expect(text).not.toContain('product.technical.requestTemplate');
+    });
+
+    it('resets to the general tab when another product is selected', async () => {
+      await load();
+      component['activeTabId'].set('technical');
+
+      await load('product-2');
+
+      expect(component['activeTabId']()).toBe('general');
+    });
+
+    it('re-translates the tab labels when the language changes', async () => {
+      i18nService.translate.mockImplementation((key: string) => `${i18nService.lang()}:${key}`);
+      await load();
+
+      i18nService.setActiveLang('fr');
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.textContent).toContain(
+        'fr:data-products.detailForm.tab.technicalFields',
+      );
     });
   });
 });

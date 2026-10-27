@@ -1442,7 +1442,13 @@
       "paymentRequired": "Kostenpflichtig durch Anbieter",
       "costs": "Kosten für Datenbezüger",
       "documents": "Dokumente",
-      "publicSectorTooltip": "Für die Bereitstellung dieser Daten gibt es eine öffentlich-rechtliche Grundlage. Die Übertragung wird für Transparenz dargestellt."
+      "publicSectorTooltip": "Für die Bereitstellung dieser Daten gibt es eine öffentlich-rechtliche Grundlage. Die Übertragung wird für Transparenz dargestellt.",
+      "technical": {
+        "pathTemplate": "URL-Pfad-Template",
+        "requestTemplate": "Request-Body Template",
+        "productId": "Produkt ID",
+        "flowCode": "Übertragungsmodus"
+      }
     },
     "list": {
       "allLoaded": "Alle Datenprodukte geladen"
@@ -1463,7 +1469,7 @@
     "foreignBadge": "Internationaler Datenbezüger"
   },
   "news": {
-    "title": "Mitteilungen rund um Agridata",
+    "title": "Mitteilungen rund um agridata.ch",
     "readMore": "Weiter lesen",
     "createdAt": "Erstellt am:  {{ date }}"
   },

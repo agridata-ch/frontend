@@ -95,10 +95,13 @@ model/pageResponseDtoAgbRevisionOverviewDto.ts
 model/pageResponseDtoConsentRequestFundamentalViewDto.ts
 model/pageResponseDtoDataProductDto.ts
 model/pageResponseDtoInboxEntryDto.ts
-model/pageResponseDtoPublicDataProductDto.ts
+model/pageResponseDtoPublicDataProductSummaryDto.ts
 model/pageResponseDtoUserInfoDto.ts
 model/producerIdentifier.ts
 model/publicDataProductDto.ts
+model/publicDataProductSummaryDto.ts
+model/publicDataProviderSummaryDto.ts
+model/publicDataSourceSystemSummaryDto.ts
 model/resourceQueryDto.ts
 model/restClientDto.ts
 model/restClientMethodCodeEnum.ts

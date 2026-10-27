@@ -1,16 +1,16 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PublicDataProductDto } from '@/entities/openapi';
+import { PublicDataProductSummaryDto } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
 
 import { DataProductCardComponent } from './data-product-card.component';
 
-const mockProduct: PublicDataProductDto = {
+const mockProduct: PublicDataProductSummaryDto = {
   paymentRequired: false,
   id: 'product-1',
-  stateCode: 'ACTIVE' as PublicDataProductDto['stateCode'],
+  stateCode: 'ACTIVE' as PublicDataProductSummaryDto['stateCode'],
   consentRequired: false,
   name: { de: 'Produktname' },
   description: { de: 'Produktbeschreibung' },
@@ -18,7 +18,6 @@ const mockProduct: PublicDataProductDto = {
     id: 'system-1',
     name: { de: 'Quellsystem' },
     dataProvider: { id: 'provider-1' },
-    legalBasis: { de: 'Rechtsgrundlage' },
   },
 };
 
