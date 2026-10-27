@@ -11,7 +11,7 @@ import {
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { UidRegisterService } from '@/entities/api/uid-register.service';
-import { DataRequestConsumerDisplayNameDto } from '@/entities/openapi';
+import { DataRequestConsumerDisplayNameDto, DataRequestDto } from '@/entities/openapi';
 import { COUNTRIES } from '@/shared/constants/constants';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
@@ -55,6 +55,8 @@ export class DataRequestFormConsumerComponent {
   readonly form = input<FormGroup>();
   readonly formDisabled = input<boolean>(false);
   readonly dataRequestLogo = input<string>();
+  readonly dataRequest = input<DataRequestDto>();
+  readonly isNewRequest = input<boolean>(false);
 
   readonly saveLogo = output<File>();
 
@@ -64,7 +66,9 @@ export class DataRequestFormConsumerComponent {
   readonly AvatarSkin = AvatarSkin;
   readonly availableLangs = availableLangs;
   readonly getFormControl = getFormControl;
+  // The UID register is only queried for a new data request; afterwards the backend provides the values.
   readonly uidInfoResource = resource({
+    params: () => this.isNewRequest() || undefined,
     loader: () => this.uidSearchService.fetchUidInfosOfCurrentUser(),
   });
   private readonly uidInfoResourceErrorHandler = createResourceErrorHandlerEffect(
@@ -106,6 +110,7 @@ export class DataRequestFormConsumerComponent {
     const uidSearchResult = this.uidInfoResource.error() ? null : this.uidInfoResource.value();
     const currentUserData = this.userInfo();
     const userFullName = this.userFullName();
+    const request = this.dataRequest();
 
     // Always proceed with available data - either from UID resource or user data
     // Skip only if we already have the correct legal name
@@ -113,8 +118,8 @@ export class DataRequestFormConsumerComponent {
 
     const newUserData = {
       ...currentUserData,
-      uid: uidSearchResult?.uid || currentUserData?.uid,
-      name: uidSearchResult?.legalName || userFullName,
+      uid: request?.dataConsumerUid || uidSearchResult?.uid || currentUserData?.uid,
+      name: request?.dataConsumerLegalName || uidSearchResult?.legalName || userFullName,
     };
 
     this.consumerUid.set(newUserData.uid);
