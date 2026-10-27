@@ -20,6 +20,8 @@
             <app-data-request-form-consumer
               [form]="form"
               (saveLogo)="handleSaveLogo($event)"
+              [dataRequest]="dataRequest()"
+              [isNewRequest]="!currentDataRequestId()"
               [dataRequestLogo]="dataRequest()?.dataConsumerLogoBase64"
               [formDisabled]="formDisabled()"
             />

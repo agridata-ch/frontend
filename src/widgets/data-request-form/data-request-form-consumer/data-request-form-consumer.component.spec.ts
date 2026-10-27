@@ -17,6 +17,7 @@ import {
   MockAuthService,
   createMockErrorHandlerService,
   MockErrorHandlerService,
+  mockDataRequests,
 } from '@/shared/testing/mocks';
 
 import { DataRequestFormConsumerComponent } from './data-request-form-consumer.component';
@@ -71,6 +72,7 @@ describe('DataRequestFormConsumerComponent', () => {
     componentRef = fixture.componentRef;
     form = createTestFormGroup();
     componentRef.setInput('form', form);
+    componentRef.setInput('isNewRequest', true);
     fixture.detectChanges();
   });
 
@@ -106,11 +108,58 @@ describe('DataRequestFormConsumerComponent', () => {
 
     // Set the form input before triggering change detection
     errorFixture.componentRef.setInput('form', createTestFormGroup());
+    errorFixture.componentRef.setInput('isNewRequest', true);
 
     errorFixture.detectChanges();
     await errorFixture.whenStable();
 
     expect(errorService.handleError).toHaveBeenCalledWith(testError);
+  });
+
+  describe('UID register lookup', () => {
+    const backendRequest = {
+      ...mockDataRequests[0],
+      dataConsumerLegalName: 'Backend AG',
+      dataConsumerUid: 'CHE-123.456.789',
+    };
+
+    function createExistingRequestFixture() {
+      (uidService.fetchUidInfosOfCurrentUser as Mock).mockClear();
+      const existingFixture = TestBed.createComponent(DataRequestFormConsumerComponent);
+      existingFixture.componentRef.setInput('form', createTestFormGroup());
+      existingFixture.componentRef.setInput('isNewRequest', false);
+      return existingFixture;
+    }
+
+    it('should query the UID register for a new data request', async () => {
+      await fixture.whenStable();
+
+      expect(uidService.fetchUidInfosOfCurrentUser).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not query the UID register for an existing data request and use its values', async () => {
+      const existingFixture = createExistingRequestFixture();
+      existingFixture.componentRef.setInput('dataRequest', backendRequest);
+      existingFixture.detectChanges();
+      await existingFixture.whenStable();
+      const existingComponent = existingFixture.componentInstance;
+
+      expect(uidService.fetchUidInfosOfCurrentUser).not.toHaveBeenCalled();
+      expect(existingComponent.consumerName()).toBe('Backend AG');
+      expect(existingComponent.consumerUid()).toBe('CHE-123.456.789');
+    });
+
+    it('should not query the UID register when the data request arrives after first render', async () => {
+      const existingFixture = createExistingRequestFixture();
+      existingFixture.detectChanges();
+      await existingFixture.whenStable();
+
+      existingFixture.componentRef.setInput('dataRequest', backendRequest);
+      existingFixture.detectChanges();
+      await existingFixture.whenStable();
+
+      expect(uidService.fetchUidInfosOfCurrentUser).not.toHaveBeenCalled();
+    });
   });
 
   describe('onFileSelected', () => {
@@ -172,6 +221,7 @@ describe('MockUidRegisterService not available', () => {
     componentRef = fixture.componentRef;
     form = createTestFormGroup();
     componentRef.setInput('form', form);
+    componentRef.setInput('isNewRequest', true);
     fixture.detectChanges();
   });
 
