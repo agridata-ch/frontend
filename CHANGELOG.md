@@ -1,3 +1,13 @@
+## [1.24.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.4...v1.24.0-rc.5) (2026-10-28)
+
+### Features
+
+- **deps:** update dependency node to v26 ([7e7c028](https://github.com/agridata-ch/frontend/commit/7e7c028ef4517b363267cacf0703aaea7400ce2c))
+
+### Bug Fixes
+
+- **wysiwyg:** remove alphabetic ordered list attribute ([2f27005](https://github.com/agridata-ch/frontend/commit/2f27005ee0e6d1767ebdeecc24ac03fe88496507)), references [DIGIB2-1766](https://github.com/agridata-ch/frontend/issues/-1766)
+
 ## [1.24.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.3...v1.24.0-rc.4) (2026-10-27)
 
 ### Features
