@@ -23,6 +23,7 @@ import {
 } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { Editor, Extension, getHTMLFromFragment } from '@tiptap/core';
+import { OrderedList } from '@tiptap/extension-list';
 import { Placeholder } from '@tiptap/extensions';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { StarterKit } from '@tiptap/starter-kit';
@@ -249,7 +250,9 @@ export class AgridataWysiwygComponent {
           horizontalRule: false,
           link: false,
           strike: false,
+          orderedList: false,
         }),
+        OrderedList.extend({ addAttributes: () => ({}) }),
         htmlLengthLimit(this.maxCharacters()),
         Placeholder.configure({ placeholder: this.placeholder() }),
       ],
