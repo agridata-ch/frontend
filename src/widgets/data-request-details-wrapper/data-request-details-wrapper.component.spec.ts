@@ -2,7 +2,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
-import { ContractRevisionService, DataRequestService, UidRegisterService } from '@/entities/api';
+import { BurRegisterService, ContractRevisionService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataRequestStateEnum } from '@/entities/openapi';
@@ -13,6 +13,7 @@ import { AuthService } from '@/shared/lib/auth';
 import {
   createMockAgridataStateService,
   createMockAuthService,
+  createMockBurRegisterService,
   createMockContractRevisionService,
   createMockDataRequestService,
   createMockErrorHandlerService,
@@ -51,7 +52,7 @@ describe('DataRequestDetailsWrapperComponent', () => {
         { provide: I18nService, useValue: createMockI18nService() },
         { provide: ToastService, useValue: toastService },
         { provide: MasterDataService, useValue: createMockMasterDataService() },
-        { provide: UidRegisterService, useValue: createMockI18nService() },
+        { provide: BurRegisterService, useValue: createMockBurRegisterService() },
         provideRouter(
           [
             {

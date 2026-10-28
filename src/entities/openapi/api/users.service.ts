@@ -21,6 +21,8 @@ import { BurDto } from '../model/burDto';
 // @ts-ignore
 import { ExceptionDto } from '../model/exceptionDto';
 // @ts-ignore
+import { PageResponseDtoAgbAcceptanceOverviewDto } from '../model/pageResponseDtoAgbAcceptanceOverviewDto';
+// @ts-ignore
 import { PageResponseDtoUserInfoDto } from '../model/pageResponseDtoUserInfoDto';
 // @ts-ignore
 import { UidDto } from '../model/uidDto';
@@ -92,6 +94,80 @@ export class UsersService extends BaseService {
         return this.httpClient.request<any>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get Agb Acceptances
+     * Returns the AGB acceptance state of all users who accepted the AGB at least once. The search term is matched against the UID (stored without separators, e.g. CHE123456789). Supports the filter \&#39;status\&#39; (ACCEPTED, TRANSITION_PERIOD, PENDING), pagination and sorting on \&#39;givenName\&#39;, \&#39;familyName\&#39;, \&#39;email\&#39;, \&#39;uid\&#39; and \&#39;lastAcceptedAgbDate\&#39; (default: uid,familyName).
+     * @param filter 
+     * @param language 
+     * @param page 
+     * @param searchTerm 
+     * @param size 
+     * @param sortBy 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAgbAcceptances(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageResponseDtoAgbAcceptanceOverviewDto>;
+    public getAgbAcceptances(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageResponseDtoAgbAcceptanceOverviewDto>>;
+    public getAgbAcceptances(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageResponseDtoAgbAcceptanceOverviewDto>>;
+    public getAgbAcceptances(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>filter, 'filter');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>language, 'language');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>page, 'page');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>searchTerm, 'searchTerm');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>size, 'size');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>sortBy, 'sortBy');
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (SecurityScheme) required
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/user/v1/agb-acceptances`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<PageResponseDtoAgbAcceptanceOverviewDto>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

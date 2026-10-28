@@ -52,7 +52,7 @@ export interface DataRequestDto {
     stateCode: ConsentRequestProducerViewDtoDataRequestStateCode;
     terminationPeriodUntil?: string;
     /**
-     * LegalName of the data consumer taken from the uid register
+     * LegalName of the data consumer taken from BurWeb
      */
     dataConsumerLegalName?: string;
     /**

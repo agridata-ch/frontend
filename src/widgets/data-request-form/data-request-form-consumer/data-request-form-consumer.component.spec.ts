@@ -3,21 +3,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import type { Mock } from 'vitest';
 
-import { UidRegisterService } from '@/entities/api/uid-register.service';
+import { BurRegisterService } from '@/entities/api';
 import { COUNTRIES } from '@/shared/constants/constants';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
-  createMockI18nService,
-  createMockUidRegisterService,
-  MockI18nService,
-  MockUidRegisterService,
   createMockAuthService,
-  MockAuthService,
+  createMockBurRegisterService,
   createMockErrorHandlerService,
-  MockErrorHandlerService,
+  createMockI18nService,
+  MockAuthService,
+  MockBurRegisterService,
   mockDataRequests,
+  MockErrorHandlerService,
+  MockI18nService,
 } from '@/shared/testing/mocks';
 
 import { DataRequestFormConsumerComponent } from './data-request-form-consumer.component';
@@ -49,12 +49,12 @@ describe('DataRequestFormConsumerComponent', () => {
   let componentRef: ComponentRef<DataRequestFormConsumerComponent>;
   let form: FormGroup;
   let errorService: MockErrorHandlerService;
-  let uidService: MockUidRegisterService;
+  let burService: MockBurRegisterService;
   let authService: MockAuthService;
   let i18nService: MockI18nService;
   beforeEach(async () => {
     errorService = createMockErrorHandlerService();
-    uidService = createMockUidRegisterService();
+    burService = createMockBurRegisterService();
     authService = createMockAuthService();
     i18nService = createMockI18nService();
     await TestBed.configureTestingModule({
@@ -62,7 +62,7 @@ describe('DataRequestFormConsumerComponent', () => {
       providers: [
         { provide: I18nService, useValue: i18nService },
         { provide: AuthService, useValue: authService },
-        { provide: UidRegisterService, useValue: uidService },
+        { provide: BurRegisterService, useValue: burService },
         { provide: ErrorHandlerService, useValue: errorService },
       ],
     }).compileComponents();
@@ -96,12 +96,12 @@ describe('DataRequestFormConsumerComponent', () => {
     expect(swiss?.label).toBe('Suisse');
   });
 
-  it('should handle errors from fetchUidInfosOfCurrentUser and send them to errorService', async () => {
-    const testError = new Error('Test error from fetchUidInfosOfCurrentUser');
+  it('should handle errors from fetchBurInfosOfCurrentUser and send them to errorService', async () => {
+    const testError = new Error('Test error from fetchBurInfosOfCurrentUser');
 
     // Reset and configure the mock to reject before creating the new fixture
-    (uidService.fetchUidInfosOfCurrentUser as Mock).mockReset();
-    (uidService.fetchUidInfosOfCurrentUser as Mock).mockRejectedValueOnce(testError);
+    (burService.fetchBurInfosOfCurrentUser as Mock).mockReset();
+    (burService.fetchBurInfosOfCurrentUser as Mock).mockRejectedValueOnce(testError);
 
     // Create a new fixture with the mocked error
     const errorFixture = TestBed.createComponent(DataRequestFormConsumerComponent);
@@ -116,7 +116,31 @@ describe('DataRequestFormConsumerComponent', () => {
     expect(errorService.handleError).toHaveBeenCalledWith(testError);
   });
 
-  describe('UID register lookup', () => {
+  it('should prefill the form with the organisation from the BUR register', async () => {
+    (burService.fetchBurInfosOfCurrentUser as Mock).mockResolvedValueOnce({
+      legalName: 'Muster AG',
+      uid: 'CHE123456789',
+      address: { street: 'Hauptstrasse 1', zip: '3000', city: 'Bern', country: COUNTRIES.CH },
+    });
+
+    const burFixture = TestBed.createComponent(DataRequestFormConsumerComponent);
+    const burForm = createTestFormGroup();
+    burFixture.componentRef.setInput('form', burForm);
+    burFixture.componentRef.setInput('isNewRequest', true);
+    burFixture.detectChanges();
+    await burFixture.whenStable();
+
+    expect(burForm.get('consumer')?.value).toMatchObject({
+      dataConsumerDisplayName: { de: 'Muster AG', fr: 'Muster AG', it: 'Muster AG' },
+      dataConsumerStreet: 'Hauptstrasse 1',
+      dataConsumerZip: '3000',
+      dataConsumerCity: 'Bern',
+      dataConsumerCountry: COUNTRIES.CH,
+    });
+    expect(burFixture.componentInstance.consumerUid()).toBe('CHE123456789');
+  });
+
+  describe('BUR register lookup', () => {
     const backendRequest = {
       ...mockDataRequests[0],
       dataConsumerLegalName: 'Backend AG',
@@ -124,32 +148,32 @@ describe('DataRequestFormConsumerComponent', () => {
     };
 
     function createExistingRequestFixture() {
-      (uidService.fetchUidInfosOfCurrentUser as Mock).mockClear();
+      (burService.fetchBurInfosOfCurrentUser as Mock).mockClear();
       const existingFixture = TestBed.createComponent(DataRequestFormConsumerComponent);
       existingFixture.componentRef.setInput('form', createTestFormGroup());
       existingFixture.componentRef.setInput('isNewRequest', false);
       return existingFixture;
     }
 
-    it('should query the UID register for a new data request', async () => {
+    it('should query the BUR register for a new data request', async () => {
       await fixture.whenStable();
 
-      expect(uidService.fetchUidInfosOfCurrentUser).toHaveBeenCalledTimes(1);
+      expect(burService.fetchBurInfosOfCurrentUser).toHaveBeenCalledTimes(1);
     });
 
-    it('should not query the UID register for an existing data request and use its values', async () => {
+    it('should not query the BUR register for an existing data request and use its values', async () => {
       const existingFixture = createExistingRequestFixture();
       existingFixture.componentRef.setInput('dataRequest', backendRequest);
       existingFixture.detectChanges();
       await existingFixture.whenStable();
       const existingComponent = existingFixture.componentInstance;
 
-      expect(uidService.fetchUidInfosOfCurrentUser).not.toHaveBeenCalled();
+      expect(burService.fetchBurInfosOfCurrentUser).not.toHaveBeenCalled();
       expect(existingComponent.consumerName()).toBe('Backend AG');
       expect(existingComponent.consumerUid()).toBe('CHE-123.456.789');
     });
 
-    it('should not query the UID register when the data request arrives after first render', async () => {
+    it('should not query the BUR register when the data request arrives after first render', async () => {
       const existingFixture = createExistingRequestFixture();
       existingFixture.detectChanges();
       await existingFixture.whenStable();
@@ -158,7 +182,7 @@ describe('DataRequestFormConsumerComponent', () => {
       existingFixture.detectChanges();
       await existingFixture.whenStable();
 
-      expect(uidService.fetchUidInfosOfCurrentUser).not.toHaveBeenCalled();
+      expect(burService.fetchBurInfosOfCurrentUser).not.toHaveBeenCalled();
     });
   });
 
@@ -198,7 +222,7 @@ describe('DataRequestFormConsumerComponent', () => {
   });
 });
 
-describe('MockUidRegisterService not available', () => {
+describe('MockBurRegisterService not available', () => {
   let fixture: ComponentFixture<DataRequestFormConsumerComponent>;
   let component: DataRequestFormConsumerComponent;
   let componentRef: ComponentRef<DataRequestFormConsumerComponent>;
@@ -212,7 +236,7 @@ describe('MockUidRegisterService not available', () => {
       providers: [
         { provide: I18nService, useValue: createMockI18nService() },
         { provide: AuthService, useValue: authService },
-        { provide: UidRegisterService, useValue: createMockUidRegisterService() },
+        { provide: BurRegisterService, useValue: createMockBurRegisterService() },
       ],
     }).compileComponents();
 
@@ -225,7 +249,7 @@ describe('MockUidRegisterService not available', () => {
     fixture.detectChanges();
   });
 
-  it('should handle missing UidRegisterService gracefully', () => {
+  it('should handle missing BurRegisterService gracefully', () => {
     expect(component).toBeTruthy();
   });
 });
