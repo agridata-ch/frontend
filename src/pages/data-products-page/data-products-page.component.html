@@ -1,19 +1,17 @@
 <ng-container *i18n="let t; prefix: 'data-products'">
-  <div class="flex justify-between">
-    <div class="flex gap-3 items-center mb-8">
+  <div class="flex justify-between items-center mb-8">
+    <div class="flex gap-3 items-center">
       <fa-icon [icon]="faLayerGroup" size="2xl" />
       <h1>{{ t('pageTitle') }}</h1>
     </div>
-    <div>
-      <app-agridata-button
-        [variant]="ButtonVariants.Primary"
-        (handleClick)="newProduct()"
-        (keydown.enter)="newProduct()"
-      >
-        <fa-icon [icon]="buttonIcon" class="mr-2" />
-        <span>{{ t('createNew') }}</span>
-      </app-agridata-button>
-    </div>
+    <app-agridata-button
+      [variant]="ButtonVariants.Primary"
+      (handleClick)="newProduct()"
+      (keydown.enter)="newProduct()"
+    >
+      <fa-icon [icon]="buttonIcon" class="mr-2" />
+      <span>{{ t('createNew') }}</span>
+    </app-agridata-button>
   </div>
   <app-error-outlet></app-error-outlet>
   <router-outlet />

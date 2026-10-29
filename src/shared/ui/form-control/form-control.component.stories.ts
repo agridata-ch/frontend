@@ -192,6 +192,30 @@ export const DigitInput: Story = {
   },
 };
 
+export const DateInput: Story = {
+  render: (args) => ({
+    props: { ...args, control: new FormControl('') },
+    template: `
+      <div class="w-1/4 min-w-72">
+        <app-form-control
+          [control]="control"
+          [controlType]="controlType"
+          [label]="label"
+          [id]="id"
+          [helperText]="helperText"
+          [placeholder]="placeholder"
+        />
+      </div>
+    `,
+  }),
+  args: {
+    controlType: ControlTypes.DATE,
+    label: 'Valid from',
+    placeholder: 'TT.MM.JJJJ',
+    helperText: 'Pick a date or type it as dd.mm.yyyy.',
+  },
+};
+
 export const Disabled: Story = {
   render: (args) => ({
     props: { ...args, control: new FormControl('Some value') },

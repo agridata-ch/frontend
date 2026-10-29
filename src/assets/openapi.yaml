@@ -55,6 +55,33 @@ components:
       - ACCEPTED
       - TRANSITION_PERIOD
       - PENDING
+    AgbRevisionCreateDto:
+      description: Data transfer object for publishing a new agb revision
+      type: object
+      required:
+      - version
+      - agbText
+      properties:
+        version:
+          type: string
+          description: Version of the agb revision as dot separated numbers. Must
+            be unique and newer than the current version
+          examples:
+          - "1.5"
+          pattern: "^\\d{1,9}(\\.\\d{1,9}){1,9}$"
+          maxLength: 20
+        enforceConsentFrom:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: "Date and time from which users must have accepted the agb\
+            \ revision. Must not be before today; a time earlier today is replaced\
+            \ with now. If null, no acceptance is required."
+          type: string
+          examples:
+          - 2026-12-01T00:00:00
+        agbText:
+          $ref: "#/components/schemas/AgbTextDto"
+          description: Text of the agb revision in all languages
+          type: object
     AgbRevisionDto:
       description: Data transfer object representing an agb revision
       type: object
@@ -74,6 +101,11 @@ components:
           $ref: "#/components/schemas/LocalDateTime"
           description: Date and time from which the agb revision is valid
           type: string
+        validTo:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Date and time until which the agb revision is valid. Null for
+            the currently active revision
+          type: string
         enforceConsentFrom:
           $ref: "#/components/schemas/LocalDateTime"
           description: Date and time from which the agb revision enforces consent
@@ -82,7 +114,7 @@ components:
           $ref: "#/components/schemas/AgbTextDto"
           description: Data transfer object representing an agb text
           type: object
-    AgbRevisionOverviewDto:
+    AgbRevisionSummaryDto:
       description: Overview of an agb revision without the agb text
       type: object
       properties:
@@ -112,21 +144,28 @@ components:
           type: string
     AgbTextDto:
       type: object
+      required:
+      - de
+      - fr
+      - it
       properties:
         de:
           type: string
           examples:
           - <h1>AGB</h2>
+          pattern: \S
           maxLength: 50000
         fr:
           type: string
           examples:
           - <h1>CG</h2>
+          pattern: \S
           maxLength: 50000
         it:
           type: string
           examples:
           - <h1>CG</h2>
+          pattern: \S
           maxLength: 50000
     BurDto:
       description: Data transfer object representing a bur
@@ -1885,6 +1924,8 @@ components:
       - DATA_PROVIDER_ERROR
       - EXPORT_LIMIT_EXCEEDED
       - EXPORT_CAPACITY_EXHAUSTED
+      - AGB_VERSION_ALREADY_EXISTS
+      - AGB_VERSION_NOT_NEWER
       - MAINTENANCE
     FarmTypeEnum:
       type: string
@@ -2130,7 +2171,7 @@ components:
           description: Number of items per page.
           examples:
           - 10
-    PageResponseDtoAgbRevisionOverviewDto:
+    PageResponseDtoAgbRevisionSummaryDto:
       description: Generic paginated response wrapper.
       type: object
       required:
@@ -2143,7 +2184,7 @@ components:
         items:
           type: array
           items:
-            $ref: "#/components/schemas/AgbRevisionOverviewDto"
+            $ref: "#/components/schemas/AgbRevisionSummaryDto"
           description: List of items on the current page.
         totalItems:
           type: integer
@@ -2837,7 +2878,7 @@ components:
     SecurityScheme:
       type: openIdConnect
       description: Authentication
-      openIdConnectUrl: http://localhost:6999/realms/agate/.well-known/openid-configuration
+      openIdConnectUrl: https://idp-rf.agate.ch/auth/realms/agate/.well-known/openid-configuration
 tags:
 - name: Agb Revision
   description: Provides access to Agb revisions.
@@ -3454,14 +3495,18 @@ paths:
       tags:
       - Contract Revisions
       parameters:
-      - name: id
-        in: path
+      - description: ID of the contract revision
+        example: 979ABA0B-8C00-4B4F-9621-77C086AD2333
         required: true
+        name: id
+        in: path
         schema:
           $ref: "#/components/schemas/UUID"
-      - name: slotCode
-        in: path
+      - description: Code for identifying the slot for the signature
+        example: DATA_CONSUMER_01
         required: true
+        name: slotCode
+        in: path
         schema:
           $ref: "#/components/schemas/SignatureSlotCodeEnum"
       - name: actingRole
@@ -3514,19 +3559,25 @@ paths:
       tags:
       - Contract Revisions
       parameters:
-      - name: challengeId
-        in: path
+      - description: ID of the challenge that should be verified
+        example: D74D4C75-4F08-4050-B98C-7259EBABEEC5
         required: true
+        name: challengeId
+        in: path
         schema:
           $ref: "#/components/schemas/UUID"
-      - name: id
-        in: path
+      - description: ID of the contract revision
+        example: 98EC39D2-E78C-4C48-A58B-E1B251A44A61
         required: true
+        name: id
+        in: path
         schema:
           $ref: "#/components/schemas/UUID"
-      - name: slotCode
-        in: path
+      - description: Code for identifying the slot for the signature
+        example: DATA_CONSUMER_01
         required: true
+        name: slotCode
+        in: path
         schema:
           $ref: "#/components/schemas/SignatureSlotCodeEnum"
       - name: actingRole
@@ -5328,8 +5379,9 @@ paths:
         - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
     patch:
-      description: "Partially updates an existing ACTIVE data product. Each provided\
-        \ field is validated against the data product's current state and the caller's\
+      description: "Partially updates an existing DRAFT or ACTIVE data product. Omitted\
+        \ fields are left untouched, an explicit null clears the field. Each provided\
+        \ field is checked against the data product's current state and the caller's\
         \ role. If any field cannot be updated, the entire request is rejected and\
         \ no changes are applied."
       operationId: patchDataProduct
@@ -5956,8 +6008,9 @@ paths:
       x-api-subset: agridata.ch Web App
   /api/user/v1/admin/agb-revisions:
     get:
-      description: "Returns all Agb revisions. Supports pagination and sorting on\
-        \ 'version', 'validFrom', 'validTo' and 'enforceConsentFrom' (default: -validFrom)."
+      description: "Returns listing summaries of all Agb revisions. Supports pagination\
+        \ and sorting on 'version', 'validFrom', 'validTo' and 'enforceConsentFrom'\
+        \ (default: -validFrom)."
       operationId: getAllAgbRevisions
       tags:
       - Agb Revision Admin
@@ -6011,7 +6064,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PageResponseDtoAgbRevisionOverviewDto"
+                $ref: "#/components/schemas/PageResponseDtoAgbRevisionSummaryDto"
         "401":
           description: Not Authorized
         "403":
@@ -6029,6 +6082,89 @@ paths:
               schema:
                 $ref: "#/components/schemas/ExceptionDto"
       summary: Get All Agb Revisions
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+    post:
+      description: "Publishes a new Agb revision. It is valid from now and ends the\
+        \ currently active revision. If 'enforceConsentFrom' is set, it is applied\
+        \ to all data providers and data consumers with a later or no date. Fails\
+        \ if the version already exists."
+      operationId: createAgbRevision
+      tags:
+      - Agb Revision Admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AgbRevisionCreateDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Create Agb Revision
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+  /api/user/v1/admin/agb-revisions/{id}:
+    get:
+      description: Returns a single Agb revision.
+      operationId: getAgbRevision
+      tags:
+      - Agb Revision Admin
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgbRevisionDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Agb Revision
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Admin
@@ -6226,6 +6362,49 @@ paths:
       x-api-subset:
       - agridata.ch Web App
       - Mobile App
+  /api/user/v1/burs/{bur}/uid:
+    get:
+      description: Retrieves the UID that owns the given BUR. Accessible to consumers.
+      operationId: getUidByBur
+      tags:
+      - Users
+      parameters:
+      - description: BUR of the producer
+        example: A12345678
+        required: true
+        name: bur
+        in: path
+        schema:
+          type: string
+          pattern: "^[A-Za-z0-9]{8,9}$"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UidDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Uid By Bur
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: agridata.ch Web App
   /api/user/v1/preferences:
     put:
       description: updates preferences for the currently authenticated user.
@@ -6751,7 +6930,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.22.0-rc.8
+  version: 1.23.0-rc.3
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

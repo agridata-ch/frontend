@@ -1,0 +1,86 @@
+<div class="flex items-center justify-between pb-2">
+  <span class="font-medium capitalize" aria-live="polite">{{ monthLabel() }}</span>
+  <div class="flex items-center gap-1">
+    <button
+      type="button"
+      class="rounded-md px-2 py-1 text-sm font-medium text-agridata-primary-600 focus-visible:outline-2 outline-agridata-primary-700 enabled:hover:bg-agridata-primary-50 disabled:cursor-not-allowed disabled:text-gray-300"
+      [disabled]="isTodayDisabled()"
+      (click)="goToToday()"
+    >
+      {{ 'datepicker.today' | i18n }}
+    </button>
+    <app-agridata-button
+      [variant]="ButtonVariants.Icon"
+      [size]="ButtonSize.MD"
+      [icon]="chevronLeft"
+      [ariaLabel]="'datepicker.ariaLabel.previousMonth' | i18n"
+      [disabled]="isPrevMonthDisabled()"
+      (handleClick)="showMonth(-1)"
+    />
+    <app-agridata-button
+      [variant]="ButtonVariants.Icon"
+      [size]="ButtonSize.MD"
+      [icon]="chevronRight"
+      [ariaLabel]="'datepicker.ariaLabel.nextMonth' | i18n"
+      [disabled]="isNextMonthDisabled()"
+      (handleClick)="showMonth(1)"
+    />
+  </div>
+</div>
+
+<table
+  class="w-full table-fixed border-separate border-spacing-1 text-center"
+  [attr.aria-label]="monthLabel()"
+>
+  <thead>
+    <tr>
+      @for (weekday of weekdays(); track $index) {
+        <th
+          scope="col"
+          class="text-xs font-normal text-agridata-tertiary-text py-1"
+          [attr.aria-label]="weekday.full"
+        >
+          {{ weekday.short }}
+        </th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @for (week of weeks(); track week[0].iso) {
+      <tr>
+        @for (day of week; track day.iso) {
+          <td class="p-0">
+            @if (day.inMonth) {
+              <button
+                type="button"
+                class="size-9 rounded-md text-sm focus-visible:outline-2 outline-agridata-primary-700"
+                [attr.aria-pressed]="day.isSelected"
+                [attr.data-date]="day.iso"
+                [attr.aria-label]="day.label"
+                [attr.aria-current]="day.isToday ? 'date' : null"
+                [attr.tabindex]="day.iso === focusableIso() ? 0 : -1"
+                [class]="
+                  day.isSelected
+                    ? 'bg-agridata-primary-600 text-white hover:bg-agridata-primary-700'
+                    : 'enabled:hover:bg-agridata-primary-50'
+                "
+                [class.border]="day.isToday && !day.isSelected"
+                [class.border-agridata-primary-600]="day.isToday && !day.isSelected"
+                [class.text-agridata-primary-600]="day.isToday && !day.isSelected && !day.disabled"
+                [class.font-medium]="day.isToday"
+                [class.text-gray-300]="day.disabled"
+                [class.cursor-not-allowed]="day.disabled"
+                [disabled]="day.disabled"
+                (click)="handleSelect.emit(day.iso)"
+                (focus)="focusedIso.set(day.iso)"
+                (keydown)="handleDayKeydown($event, day)"
+              >
+                {{ day.number }}
+              </button>
+            }
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
+</table>

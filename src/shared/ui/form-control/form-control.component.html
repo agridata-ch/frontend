@@ -28,6 +28,19 @@
         [isViewMode]="isViewMode()"
       />
     }
+    @if (controlType() === ControlTypes.DATE) {
+      <app-agridata-datepicker
+        [class]="inputClass()"
+        [control]="control()"
+        [describedBy]="messageId()"
+        [id]="id()"
+        [min]="min()"
+        [placeholder]="placeholder()"
+        [hasError]="hasError()"
+        [disabled]="isDisabled()"
+        [isViewMode]="isViewMode()"
+      />
+    }
     @if (controlType() === ControlTypes.SELECT) {
       <app-agridata-select
         [control]="control()"
@@ -54,6 +67,7 @@
       @if (isWysiwyg()) {
         @defer (on immediate) {
           <app-agridata-wysiwyg
+            [allowHeadings]="allowHeadings()"
             [control]="control()"
             [id]="id()!"
             [placeholder]="placeholder()"
@@ -109,7 +123,11 @@
       />
     }
     @if (!isViewMode()) {
-      <span class="min-h-[1.5em] block text-gray-700" [class.text-red-500]="hasError()">
+      <span
+        class="min-h-[1.5em] block text-gray-700"
+        [attr.id]="messageId()"
+        [class.text-red-500]="hasError()"
+      >
         @if (hasError()) {
           <span class="text-sm">{{ errorMessage() }}</span>
         } @else if (helperText()) {
