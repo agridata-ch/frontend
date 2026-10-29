@@ -28,6 +28,7 @@ import { SlaPage } from '@/pages/sla-page';
 import { SupporterPageComponent } from '@/pages/supporter-page/';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
+import { AdminAgbFormComponent } from '@/widgets/admin-agb-form';
 import { AdminDataRequestDetailsComponent } from '@/widgets/admin-data-request-details';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 import { DataProductDetailFormComponent } from '@/widgets/data-product-detail-form';
@@ -252,6 +253,7 @@ export const routes: Routes = [
       {
         path: '',
         component: AdminAgbsPageComponent,
+        children: [{ path: ':agbId', component: AdminAgbFormComponent }],
       },
     ],
   },

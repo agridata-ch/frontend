@@ -1,0 +1,153 @@
+<ng-container *i18n="let t; prefix: 'admin-agbs'">
+  <app-sidepanel
+    [isOpen]="isOpen()"
+    [title]="sidepanelTitle()"
+    [maxWidth]="'1024px'"
+    [dataTestId]="'agb-form-sidepanel'"
+    (closeSidepanel)="closeSidepanel()"
+  >
+    <app-error-outlet />
+    @if (fetchAgbRevisionResource.isLoading()) {
+      <fa-icon
+        animation="spin"
+        [icon]="faSpinnerThird"
+        size="3x"
+        class="absolute flex items-center justify-center inset-0"
+      />
+    } @else {
+      <div class="flex flex-col gap-6 overflow-y-auto grow pb-6" appScrollFade>
+        <div class="flex flex-col gap-4">
+          <h4 class="text-agridata-primary-text">
+            {{ t('version.heading') }}
+          </h4>
+          <div appViewSection [isViewMode]="isViewMode()">
+            <app-form-control
+              [control]="getControl('version')"
+              [id]="'agb-version'"
+              [label]="t('table.version')"
+              [placeholder]="t('versionPlaceholder')"
+              [isViewMode]="isViewMode()"
+              [class.py-3]="isViewMode()"
+              [class.px-4]="isViewMode()"
+            />
+          </div>
+        </div>
+        <!--todo: improve design -->
+        <div class="flex flex-col gap-4" [class.pb-8]="!isViewMode() && !hasEnforceConsentDate()">
+          <h4 class="text-agridata-primary-text">
+            {{ t('date.heading') }}
+          </h4>
+          @if (isViewMode()) {
+            <div class="grid grid-cols-2 gap-4">
+              <div appViewSection [isViewMode]="true">
+                <app-form-control
+                  [control]="getControl('validFrom')"
+                  [id]="'agb-valid-from'"
+                  [label]="t('table.validFrom')"
+                  [isViewMode]="true"
+                  class="py-3 px-4"
+                />
+              </div>
+              <div appViewSection [isViewMode]="true">
+                <app-form-control
+                  [control]="getControl('validTo')"
+                  [id]="'agb-valid-to'"
+                  [label]="t('table.validTo')"
+                  [isViewMode]="true"
+                  class="py-3 px-4"
+                />
+              </div>
+            </div>
+          } @else {
+            <app-agridata-toggle
+              [(checked)]="hasEnforceConsentDate"
+              [label]="t('hasEnforceConsentDate')"
+            />
+          }
+          @if (isViewMode() || hasEnforceConsentDate()) {
+            @if (!isViewMode()) {
+              <app-alert [type]="AlertType.INFO" [message]="t('enforceConsentDateInfo')" />
+            }
+            <div appViewSection [isViewMode]="isViewMode()">
+              <app-form-control
+                [control]="getControl('enforceConsentFrom')"
+                [id]="'agb-enforce-consent-from'"
+                [label]="t('table.enforceConsentFrom')"
+                [isViewMode]="isViewMode()"
+                [class.py-3]="isViewMode()"
+                [class.px-4]="isViewMode()"
+                [type]="isViewMode() ? 'text' : 'date'"
+                [min]="today"
+              />
+            </div>
+          }
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <h4 class="text-agridata-primary-text">
+            {{ t('agbText.heading') }}
+          </h4>
+
+          @for (lang of availableLangs; track lang) {
+            <div appViewSection [isViewMode]="isViewMode()">
+              <app-form-control
+                [control]="getControl('agbText.' + lang)"
+                [controlType]="ControlTypes.TEXT_AREA"
+                [id]="'agb-text-' + lang"
+                [label]="t(`agbText.${lang}.label`)"
+                [placeholder]="t(`agbText.${lang}.placeholder`)"
+                [isViewMode]="isViewMode()"
+                [class.py-3]="isViewMode()"
+                [class.px-4]="isViewMode()"
+                allowHeadings
+                isWysiwyg
+              />
+            </div>
+          }
+        </div>
+      </div>
+
+      @if (!isViewMode()) {
+        <div class="flex justify-between">
+          <app-agridata-button [variant]="ButtonVariants.Tertiary" (handleClick)="closeSidepanel()">
+            {{ t('cancel') }}
+          </app-agridata-button>
+          <app-agridata-button
+            [variant]="ButtonVariants.Primary"
+            (handleClick)="openPublishConfirm()"
+          >
+            {{ t('publish') }}
+          </app-agridata-button>
+        </div>
+
+        <app-modal
+          [(open)]="isPublishConfirmOpen"
+          [title]="t('create.confirm.title')"
+          [dataTestId]="'publish-agb-modal'"
+        >
+          <div class="flex flex-col gap-6 text-center">
+            <span class="whitespace-pre-line">
+              {{ t('create.confirm.description', { version: form.controls.version.value }) }}
+            </span>
+            <div class="flex justify-between gap-2">
+              <app-agridata-button
+                [variant]="ButtonVariants.Secondary"
+                [disabled]="isPublishing()"
+                (handleClick)="isPublishConfirmOpen.set(false)"
+              >
+                {{ t('create.confirm.cancel') }}
+              </app-agridata-button>
+              <app-agridata-button
+                [variant]="ButtonVariants.Primary"
+                [loading]="isPublishing()"
+                (handleClick)="confirmPublish()"
+              >
+                {{ t('create.confirm.confirm') }}
+              </app-agridata-button>
+            </div>
+          </div>
+        </app-modal>
+      }
+    }
+  </app-sidepanel>
+</ng-container>

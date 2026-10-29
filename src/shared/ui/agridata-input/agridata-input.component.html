@@ -40,6 +40,7 @@
       [class.pl-15]="inputPrefix()"
       [class.cursor-not-allowed]="disabled() && !isViewMode()"
       [attr.maxlength]="maxCharacters()"
+      [attr.min]="min()"
       [attr.aria-label]="
         inputPrefix() ? inputPrefix() + '-' + (placeholder() || '') : placeholder()
       "

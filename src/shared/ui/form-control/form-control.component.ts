@@ -74,9 +74,11 @@ export class FormControlComponent {
   readonly placeholder = input<string>('');
   readonly radioOptions = input<readonly AgridataRadioGroupOption[]>([]);
   readonly length = input<number>(1);
+  readonly min = input<string | null>(null);
   readonly singleCategorySelection = input<boolean>(false);
-  readonly type = input<'text' | 'number'>('text');
+  readonly type = input<'text' | 'number' | 'date'>('text');
   readonly isViewMode = input(false, { transform: booleanAttribute });
+  readonly allowHeadings = input(false, { transform: booleanAttribute });
   readonly isWysiwyg = input(false, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
   readonly showEditButton = input(false, { transform: booleanAttribute });

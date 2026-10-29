@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter, Router } from '@angular/router';
+import type { MockInstance } from 'vitest';
 
 import { AgbService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
-import { AgbRevisionOverviewDto } from '@/entities/openapi';
+import { AgbRevisionSummaryDto } from '@/entities/openapi';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import {
   createMockAgbService,
@@ -12,6 +15,7 @@ import {
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { CellRendererTypes } from '@/shared/ui/agridata-table';
+import { AGB_NEW_ID } from '@/widgets/admin-agb-form';
 
 import { AdminAgbsPageComponent } from './admin-agbs-page.component';
 
@@ -19,8 +23,9 @@ describe('AdminAgbsPageComponent', () => {
   let fixture: ComponentFixture<AdminAgbsPageComponent>;
   let component: AdminAgbsPageComponent;
   let agbService: MockAgbService;
+  let navigateSpy: MockInstance<Router['navigate']>;
 
-  const revision: AgbRevisionOverviewDto = { id: 'agb-1', version: '1.0.0' };
+  const revision: AgbRevisionSummaryDto = { id: 'agb-1', version: '1.0.0' };
 
   beforeEach(async () => {
     agbService = createMockAgbService();
@@ -35,12 +40,14 @@ describe('AdminAgbsPageComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AdminAgbsPageComponent, createTranslocoTestingModule()],
       providers: [
+        provideRouter([]),
         { provide: AgbService, useValue: agbService },
         { provide: AgridataStateService, useValue: createMockAgridataStateService() },
         { provide: ErrorHandlerService, useValue: createMockErrorHandlerService() },
       ],
     }).compileComponents();
 
+    navigateSpy = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
     fixture = TestBed.createComponent(AdminAgbsPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -73,8 +80,25 @@ describe('AdminAgbsPageComponent', () => {
     }
   });
 
+  describe('navigation', () => {
+    it('should navigate to the details when the row action is used', () => {
+      const metadata = component['agbRevisionsTableMetaData']();
+
+      expect(metadata.showRowActionButton).toBe(true);
+      metadata.rowAction?.(revision);
+
+      expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.ADMIN_AGBS_PATH, revision.id]);
+    });
+
+    it('should navigate to the create form when the create button is used', () => {
+      component['openCreate']();
+
+      expect(navigateSpy).toHaveBeenCalledWith([ROUTE_PATHS.ADMIN_AGBS_PATH, AGB_NEW_ID]);
+    });
+  });
+
   it('should show a dash for missing dates', () => {
-    const emptyRevision: AgbRevisionOverviewDto = { ...revision, validTo: undefined };
+    const emptyRevision: AgbRevisionSummaryDto = { ...revision, validTo: undefined };
     const validTo = component['agbRevisionsTableMetaData']().columns[3].renderer;
 
     if (validTo.type === CellRendererTypes.FUNCTION) {
@@ -83,7 +107,7 @@ describe('AdminAgbsPageComponent', () => {
   });
 
   it('should pass the date fields of a row to the table for formatting', () => {
-    const datedRevision: AgbRevisionOverviewDto = {
+    const datedRevision: AgbRevisionSummaryDto = {
       ...revision,
       validFrom: '2026-01-01T00:00:00Z',
       validTo: '2026-12-31T00:00:00Z',

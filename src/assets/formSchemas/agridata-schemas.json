@@ -356,5 +356,40 @@
       "consentRequired",
       "paymentRequired"
     ]
+  },
+  "CreateAgbRevisionDto": {
+    "type": "object",
+    "properties": {
+      "version": {
+        "type": "string",
+        "minLength": 0,
+        "maxLength": 20,
+        "pattern": "^\\d{1,9}(\\.\\d{1,9}){1,9}$"
+      },
+      "enforceConsentFrom": {
+        "type": "object"
+      },
+      "agbText": {
+        "type": "object",
+        "properties": {
+          "de": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 50000
+          },
+          "fr": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 50000
+          },
+          "it": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 50000
+          }
+        }
+      }
+    },
+    "required": ["agbText"]
   }
 }

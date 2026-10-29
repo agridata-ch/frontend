@@ -4,8 +4,9 @@ import { firstValueFrom, map } from 'rxjs';
 import {
   AgbRevisionAdminService,
   AgbRevisionDto,
-  AgbRevisionOverviewDto,
   AgbRevisionService,
+  AgbRevisionSummaryDto,
+  CreateAgbRevisionDto,
   ResourceQueryDto,
   UsersService,
 } from '@/entities/openapi';
@@ -32,13 +33,21 @@ export class AgbService {
     await firstValueFrom(this.usersService.acceptAgb(agbRevisionId));
   }
 
+  async createAgbRevision(dto: CreateAgbRevisionDto): Promise<void> {
+    await firstValueFrom(this.agbRevisionAdminService.createAgbRevision(dto));
+  }
+
+  fetchAgbRevision(id: string): Promise<AgbRevisionDto> {
+    return firstValueFrom(this.agbRevisionAdminService.getAgbRevision(id));
+  }
+
   fetchAgbs(): Promise<AgbRevisionDto> {
     return firstValueFrom(this.agbRevisionService.getCurrentAgbRevision());
   }
 
   fetchAllAgbRevisions(
     queryDto: ResourceQueryDto,
-  ): Promise<PageResponseDto<AgbRevisionOverviewDto>> {
+  ): Promise<PageResponseDto<AgbRevisionSummaryDto>> {
     return firstValueFrom(
       this.agbRevisionAdminService
         .getAllAgbRevisions(

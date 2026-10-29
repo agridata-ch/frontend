@@ -26,8 +26,10 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/agbAcceptanceOverviewDto.ts
+model/agbAcceptanceStatusEnum.ts
 model/agbRevisionDto.ts
-model/agbRevisionOverviewDto.ts
+model/agbRevisionSummaryDto.ts
 model/agbTextDto.ts
 model/burDto.ts
 model/burRegisterAddressDto.ts
@@ -48,6 +50,7 @@ model/consentRequestStateEnum.ts
 model/consentRequestStatusSummaryDto.ts
 model/contractRevisionDto.ts
 model/contractRevisionSignatureDto.ts
+model/createAgbRevisionDto.ts
 model/createConsentRequestDto.ts
 model/createConsentRequestsForUidDto.ts
 model/dataProductDescriptionDto.ts
@@ -91,7 +94,8 @@ model/markAsReadRequestDto.ts
 model/models.ts
 model/otpChallengeDto.ts
 model/pageResponseDto.ts
-model/pageResponseDtoAgbRevisionOverviewDto.ts
+model/pageResponseDtoAgbAcceptanceOverviewDto.ts
+model/pageResponseDtoAgbRevisionSummaryDto.ts
 model/pageResponseDtoConsentRequestFundamentalViewDto.ts
 model/pageResponseDtoDataProductDto.ts
 model/pageResponseDtoInboxEntryDto.ts

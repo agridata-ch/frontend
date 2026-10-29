@@ -31,7 +31,12 @@
         [appTooltip]="t(button.label)"
         (click)="button.action()"
       >
-        <fa-icon [icon]="button.icon" />
+        <!--todo: adjust when icons defined -->
+        @if (button.icon) {
+          <fa-icon [icon]="button.icon" />
+        } @else {
+          <span class="text-sm font-semibold">{{ button.text }}</span>
+        }
       </button>
     </ng-template>
 
@@ -44,6 +49,13 @@
           <ng-container *ngTemplateOutlet="toolbarButton; context: { $implicit: button, t: t }" />
         }
       </div>
+      @if (allowHeadings()) {
+        <div class="flex gap-1 px-1">
+          @for (button of headingButtons; track button.label) {
+            <ng-container *ngTemplateOutlet="toolbarButton; context: { $implicit: button, t: t }" />
+          }
+        </div>
+      }
       <button
         type="button"
         class="flex h-8 w-8 items-center justify-center rounded hover:bg-agridata-primary-text hover:text-white"

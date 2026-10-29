@@ -193,6 +193,97 @@ describe('AgridataWysiwygComponent', () => {
     });
   });
 
+  describe('headings', () => {
+    const headingButton = (text: string) =>
+      Array.from<HTMLButtonElement>(fixture.nativeElement.querySelectorAll('fieldset button')).find(
+        (button) => button.textContent?.trim() === text,
+      );
+
+    it('should offer no heading buttons by default', () => {
+      expect(headingButton('H1')).toBeUndefined();
+      expect(headingButton('H2')).toBeUndefined();
+      expect(headingButton('H3')).toBeUndefined();
+    });
+
+    describe('when allowed', () => {
+      beforeEach(() => {
+        componentRef.setInput('allowHeadings', true);
+        fixture.detectChanges();
+      });
+
+      it.each([1, 2, 3] as const)('should turn the selection into an h%s', (level) => {
+        const editor = component['editor'];
+        editor?.commands.setContent('<p>abc</p>');
+        editor?.commands.selectAll();
+
+        component['toggleHeading'](level);
+
+        expect(control.value).toContain(`<h${level}>abc</h${level}>`);
+      });
+
+      it('should toggle the heading off again', () => {
+        const editor = component['editor'];
+        editor?.commands.setContent('<h2>abc</h2>');
+        editor?.commands.setTextSelection(2);
+
+        component['toggleHeading'](2);
+
+        expect(editor?.getHTML()).toContain('<p>abc</p>');
+      });
+
+      it('should apply a heading when its toolbar button is clicked', () => {
+        const editor = component['editor'];
+        editor?.commands.setContent('<p>abc</p>');
+        editor?.commands.selectAll();
+
+        headingButton('H2')?.click();
+
+        expect(control.value).toContain('<h2>abc</h2>');
+      });
+
+      it('should mark the active heading level', () => {
+        component['editor']?.commands.setContent('<h3>abc</h3>');
+
+        expect(component['isHeading3']()).toBe(true);
+        expect(component['isHeading1']()).toBe(false);
+      });
+
+      it('should preserve stored h1-h3 headings', () => {
+        const editor = component['editor'];
+        editor?.commands.setContent('<h1>one</h1><h2>two</h2><h3>three</h3>');
+
+        expect(editor?.getHTML()).toContain('<h1>one</h1><h2>two</h2><h3>three</h3>');
+      });
+
+      it('should collapse unsupported heading levels to a paragraph', () => {
+        const editor = component['editor'];
+        editor?.commands.setContent('<h4>four</h4>');
+
+        expect(editor?.getHTML()).toContain('<p>four</p>');
+      });
+
+      it('should reset a heading to a paragraph', () => {
+        const editor = component['editor'];
+        editor?.commands.setContent('<h1>abc</h1>');
+        editor?.commands.setTextSelection(2);
+
+        component['resetFormat']();
+
+        expect(editor?.getHTML()).toContain('<p>abc</p>');
+        expect(editor?.getHTML()).not.toContain('<h1>');
+      });
+    });
+
+    it('should recreate the editor when allowHeadings changes', () => {
+      const initialEditor = component['editor'];
+
+      componentRef.setInput('allowHeadings', true);
+      fixture.detectChanges();
+
+      expect(component['editor']).not.toBe(initialEditor);
+    });
+  });
+
   describe('unsupported formatting', () => {
     it.each([
       ['<h1>Heading</h1>', 'Heading'],

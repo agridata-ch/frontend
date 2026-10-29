@@ -32,9 +32,13 @@ import { I18nDirective } from '@/shared/i18n';
 import { FormControlWithMessages } from '@/shared/lib/form.helper';
 import { TooltipDirective } from '@/shared/tooltip';
 
-/** A single toolbar toggle button: its icon, i18n label key, active-state signal and command. */
+/**
+ * A single toolbar toggle button: its icon (or short text when the icon kit has none), i18n label
+ * key, active-state signal and command.
+ */
 interface ToolbarButton {
-  readonly icon: typeof faBold;
+  readonly icon?: typeof faBold;
+  readonly text?: string; // todo: adjust when icons defined
   readonly label: string;
   readonly isActive?: Signal<boolean>;
   readonly action: () => void;
@@ -85,17 +89,18 @@ function minVisibleTextLength(min: number): ValidatorFn {
  * supports error and disabled states, and a read-only view mode that renders the stored HTML. It emits
  * blur events for external handling.
  *
- * The TipTap schema is restricted to the supported formatting only. Any unsupported node (heading,
- * blockquote, code block, horizontal rule) or mark (inline code, strike, link) that arrives via paste
- * or from previously stored HTML is coerced to a plain paragraph / stripped to plain text on parse, so
- * unsupported formatting can never be saved.
+ * The TipTap schema is restricted to the supported formatting only. Any unsupported node (blockquote,
+ * code block, horizontal rule) or mark (inline code, strike, link) that arrives via paste or from
+ * previously stored HTML is coerced to a plain paragraph / stripped to plain text on parse, so
+ * unsupported formatting can never be saved. Headings (H1-H3) are opt-in via `allowHeadings`; without
+ * it they are coerced to paragraphs as well.
  *
  * Security: view mode renders the stored HTML via [innerHTML], which Angular's built-in DomSanitizer
  * sanitizes automatically (the value is a plain string, never SafeHtml). This guards our own rendering
  * only; server-side sanitization remains the authoritative boundary since the API can be written
  * directly, bypassing the editor.
  *
- * CommentLastReviewed: 2026-08-27
+ * CommentLastReviewed: 2026-10-29
  */
 @Component({
   selector: 'app-agridata-wysiwyg',
@@ -114,6 +119,7 @@ export class AgridataWysiwygComponent {
   protected readonly faTextSlash = faTextSlash;
 
   // Input properties
+  readonly allowHeadings = input<boolean>(false);
   readonly control = input<FormControlWithMessages>();
   readonly id = input<string>('');
   readonly placeholder = input<string>('');
@@ -127,6 +133,7 @@ export class AgridataWysiwygComponent {
   protected readonly editorHost = viewChild<ElementRef<HTMLElement>>('editorHost');
 
   private editor?: Editor;
+  private editorAllowHeadings?: boolean;
   private editorCleanup?: () => void;
   private editorElement?: HTMLElement;
   private editorControl?: FormControlWithMessages;
@@ -143,6 +150,31 @@ export class AgridataWysiwygComponent {
   protected readonly isUnderline = computed(() => this.isActive('underline'));
   protected readonly isBulletList = computed(() => this.isActive('bulletList'));
   protected readonly isOrderedList = computed(() => this.isActive('orderedList'));
+  protected readonly isHeading1 = computed(() => this.isActive('heading', { level: 1 }));
+  protected readonly isHeading2 = computed(() => this.isActive('heading', { level: 2 }));
+  protected readonly isHeading3 = computed(() => this.isActive('heading', { level: 3 }));
+
+  // todo: adjust when icons defined
+  protected readonly headingButtons: readonly ToolbarButton[] = [
+    {
+      text: 'H1',
+      label: 'heading1',
+      isActive: this.isHeading1,
+      action: () => this.toggleHeading(1),
+    },
+    {
+      text: 'H2',
+      label: 'heading2',
+      isActive: this.isHeading2,
+      action: () => this.toggleHeading(2),
+    },
+    {
+      text: 'H3',
+      label: 'heading3',
+      isActive: this.isHeading3,
+      action: () => this.toggleHeading(3),
+    },
+  ];
 
   protected readonly toolbarButtons: readonly ToolbarButton[] = [
     { icon: faBold, label: 'bold', isActive: this.isBold, action: () => this.toggleBold() },
@@ -176,11 +208,13 @@ export class AgridataWysiwygComponent {
   // it deliberately does not force a remount.
   private readonly initEditorEffect = effect(() => {
     const element = this.editorHost()?.nativeElement;
+    const allowHeadings = this.allowHeadings();
     const control = this.control();
     const placeholder = this.placeholder();
     const maxCharacters = this.maxCharacters();
     if (
       element === this.editorElement &&
+      allowHeadings === this.editorAllowHeadings &&
       control === this.editorControl &&
       placeholder === this.editorPlaceholder &&
       maxCharacters === this.editorMaxCharacters
@@ -192,6 +226,7 @@ export class AgridataWysiwygComponent {
       this.createEditor(element);
     }
     this.editorElement = element;
+    this.editorAllowHeadings = allowHeadings;
     this.editorControl = control;
     this.editorPlaceholder = placeholder;
     this.editorMaxCharacters = maxCharacters;
@@ -214,6 +249,10 @@ export class AgridataWysiwygComponent {
 
   protected toggleBulletList(): void {
     this.editor?.chain().focus().toggleBulletList().run();
+  }
+
+  protected toggleHeading(level: 1 | 2 | 3): void {
+    this.editor?.chain().focus().toggleHeading({ level }).run();
   }
 
   protected toggleItalic(): void {
@@ -246,7 +285,7 @@ export class AgridataWysiwygComponent {
           blockquote: false,
           code: false,
           codeBlock: false,
-          heading: false,
+          heading: this.allowHeadings() ? { levels: [1, 2, 3] } : false,
           horizontalRule: false,
           link: false,
           strike: false,

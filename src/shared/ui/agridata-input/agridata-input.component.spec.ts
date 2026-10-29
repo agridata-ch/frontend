@@ -65,5 +65,13 @@ describe('AgridataInputComponent', () => {
 
       expect(getInput().readOnly).toBe(true);
     });
+
+    it('should set the min attribute for a date input', () => {
+      componentRef.setInput('type', 'date');
+      componentRef.setInput('min', '2026-10-29');
+      fixture.detectChanges();
+
+      expect(getInput().min).toBe('2026-10-29');
+    });
   });
 });

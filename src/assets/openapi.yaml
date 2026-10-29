@@ -2,6 +2,59 @@
 openapi: 3.1.0
 components:
   schemas:
+    AgbAcceptanceOverviewDto:
+      description: AGB acceptance state of a user
+      type: object
+      properties:
+        userId:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier assigned by Agridata to a user (UUID format).
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        givenName:
+          type: string
+          description: User's first name.
+          examples:
+          - Anna
+        familyName:
+          type: string
+          description: User's last name.
+          examples:
+          - Muster
+        email:
+          type: string
+          description: Email address of the user
+          examples:
+          - anna.muster@example.com
+        uid:
+          type: string
+          description: UID of the company the user belongs to.
+          examples:
+          - CHE123456789
+        lastAcceptedAgbDate:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Date and time when the user last accepted the AGB.
+          type: string
+          examples:
+          - 2026-07-20T14:35:00
+        lastAcceptedAgbVersion:
+          type: string
+          description: Version of the AGB revision the user last accepted.
+          examples:
+          - "1.4"
+        status:
+          $ref: "#/components/schemas/AgbAcceptanceStatusEnum"
+          description: "AGB acceptance status: ACCEPTED if no acceptance is pending,\
+            \ TRANSITION_PERIOD while the acceptance deadline lies in the future,\
+            \ PENDING once it has passed."
+          type: string
+    AgbAcceptanceStatusEnum:
+      type: string
+      enum:
+      - ACCEPTED
+      - TRANSITION_PERIOD
+      - PENDING
     AgbRevisionDto:
       description: Data transfer object representing an agb revision
       type: object
@@ -21,6 +74,11 @@ components:
           $ref: "#/components/schemas/LocalDateTime"
           description: Date and time from which the agb revision is valid
           type: string
+        validTo:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Date and time until which the agb revision is valid. Null for
+            the currently active revision
+          type: string
         enforceConsentFrom:
           $ref: "#/components/schemas/LocalDateTime"
           description: Date and time from which the agb revision enforces consent
@@ -29,7 +87,7 @@ components:
           $ref: "#/components/schemas/AgbTextDto"
           description: Data transfer object representing an agb text
           type: object
-    AgbRevisionOverviewDto:
+    AgbRevisionSummaryDto:
       description: Overview of an agb revision without the agb text
       type: object
       properties:
@@ -788,6 +846,33 @@ components:
           type: string
           examples:
           - 2026-03-19T12:00:00
+    CreateAgbRevisionDto:
+      description: Data transfer object for publishing a new agb revision
+      type: object
+      required:
+      - version
+      - agbText
+      properties:
+        version:
+          type: string
+          description: Version of the agb revision as dot separated numbers. Must
+            be unique and newer than the current version
+          examples:
+          - "1.5"
+          pattern: "^\\d{1,9}(\\.\\d{1,9}){1,9}$"
+          maxLength: 20
+        enforceConsentFrom:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: "Date and time from which users must have accepted the agb\
+            \ revision. Must not be before today; a time earlier today is replaced\
+            \ with now. If null, no acceptance is required."
+          type: string
+          examples:
+          - 2026-12-01T00:00:00
+        agbText:
+          $ref: "#/components/schemas/AgbTextDto"
+          description: Text of the agb revision in all languages
+          type: object
     CreateConsentRequestDto:
       type: object
       required:
@@ -1155,6 +1240,9 @@ components:
       type: object
       description: Health status of a single data source system
       properties:
+        systemCode:
+          type: string
+          description: Code identifying the data source system
         providerName:
           $ref: "#/components/schemas/TranslationDto"
           description: Name of the data provider operating the system
@@ -1829,6 +1917,8 @@ components:
       - DATA_PROVIDER_ERROR
       - EXPORT_LIMIT_EXCEEDED
       - EXPORT_CAPACITY_EXHAUSTED
+      - AGB_VERSION_ALREADY_EXISTS
+      - AGB_VERSION_NOT_NEWER
       - MAINTENANCE
     FarmTypeEnum:
       type: string
@@ -2035,7 +2125,7 @@ components:
           description: Number of items per page.
           examples:
           - 10
-    PageResponseDtoAgbRevisionOverviewDto:
+    PageResponseDtoAgbAcceptanceOverviewDto:
       description: Generic paginated response wrapper.
       type: object
       required:
@@ -2048,7 +2138,46 @@ components:
         items:
           type: array
           items:
-            $ref: "#/components/schemas/AgbRevisionOverviewDto"
+            $ref: "#/components/schemas/AgbAcceptanceOverviewDto"
+          description: List of items on the current page.
+        totalItems:
+          type: integer
+          format: int64
+          description: Total number of items across all pages.
+          examples:
+          - 42
+        totalPages:
+          type: integer
+          format: int32
+          description: Total number of pages available.
+          examples:
+          - 5
+        currentPage:
+          type: integer
+          format: int32
+          description: Current page number (0-based ).
+          examples:
+          - 1
+        pageSize:
+          type: integer
+          format: int32
+          description: Number of items per page.
+          examples:
+          - 10
+    PageResponseDtoAgbRevisionSummaryDto:
+      description: Generic paginated response wrapper.
+      type: object
+      required:
+      - items
+      - totalItems
+      - totalPages
+      - currentPage
+      - pageSize
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgbRevisionSummaryDto"
           description: List of items on the current page.
         totalItems:
           type: integer
@@ -2478,6 +2607,7 @@ components:
             with - for descending
         searchTerm:
           type: string
+          maxLength: 100
           description: string to search for in the resource
         columnFilters:
           type: array
@@ -4621,6 +4751,7 @@ paths:
       - name: searchTerm
         in: query
         schema:
+          maxLength: 100
           description: string to search for in the resource
           type: string
       - name: size
@@ -5071,6 +5202,7 @@ paths:
       - name: searchTerm
         in: query
         schema:
+          maxLength: 100
           description: string to search for in the resource
           type: string
       - name: size
@@ -5962,8 +6094,9 @@ paths:
       x-api-subset: agridata.ch Web App
   /api/user/v1/admin/agb-revisions:
     get:
-      description: "Returns all Agb revisions. Supports pagination and sorting on\
-        \ 'version', 'validFrom', 'validTo' and 'enforceConsentFrom' (default: -validFrom)."
+      description: "Returns listing summaries of all Agb revisions. Supports pagination\
+        \ and sorting on 'version', 'validFrom', 'validTo' and 'enforceConsentFrom'\
+        \ (default: -validFrom)."
       operationId: getAllAgbRevisions
       tags:
       - Agb Revision Admin
@@ -5993,6 +6126,7 @@ paths:
       - name: searchTerm
         in: query
         schema:
+          maxLength: 100
           description: string to search for in the resource
           type: string
       - name: size
@@ -6016,7 +6150,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PageResponseDtoAgbRevisionOverviewDto"
+                $ref: "#/components/schemas/PageResponseDtoAgbRevisionSummaryDto"
         "401":
           description: Not Authorized
         "403":
@@ -6037,6 +6171,172 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+    post:
+      description: "Publishes a new Agb revision. It is valid from now and ends the\
+        \ currently active revision. If 'enforceConsentFrom' is set, it is applied\
+        \ to all data providers and data consumers with a later or no date. Fails\
+        \ if the version already exists."
+      operationId: createAgbRevision
+      tags:
+      - Agb Revision Admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAgbRevisionDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: {}
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "400":
+          description: Bad Request
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Create Agb Revision
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+  /api/user/v1/admin/agb-revisions/{id}:
+    get:
+      description: Returns a single Agb revision.
+      operationId: getAgbRevision
+      tags:
+      - Agb Revision Admin
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgbRevisionDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Agb Revision
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+  /api/user/v1/agb-acceptances:
+    get:
+      description: "Returns the AGB acceptance state of all users who accepted the\
+        \ AGB at least once. The search term is matched against the UID (stored without\
+        \ separators, e.g. CHE123456789). Supports the filter 'status' (ACCEPTED,\
+        \ TRANSITION_PERIOD, PENDING), pagination and sorting on 'givenName', 'familyName',\
+        \ 'email', 'uid' and 'lastAcceptedAgbDate' (default: uid,familyName)."
+      operationId: getAgbAcceptances
+      tags:
+      - Users
+      parameters:
+      - name: filter
+        in: query
+        schema:
+          description: "Column filters in the form '<column>:<value>[,<value>]', multiple\
+            \ filters separated by ';'. Values of the same column are combined with\
+            \ OR, filters on different columns with AND. Duplicate values are ignored.\
+            \ The filterable columns are documented per endpoint."
+          type: object
+      - name: language
+        in: query
+        schema:
+          description: language code for multilingual fields. Must be supported by
+            application.
+          type: string
+      - name: page
+        in: query
+        schema:
+          description: page number
+          format: int32
+          type: integer
+          minimum: 0
+          default: 0
+      - name: searchTerm
+        in: query
+        schema:
+          maxLength: 100
+          description: string to search for in the resource
+          type: string
+      - name: size
+        in: query
+        schema:
+          description: page size
+          format: int32
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+      - name: sortBy
+        in: query
+        schema:
+          description: List of field names to sort by. Default is ascending prefix
+            with - for descending
+          type: object
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageResponseDtoAgbAcceptanceOverviewDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Agb Acceptances
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Support
       x-api-subset: agridata.ch Web App
   /api/user/v1/agb-revisions/{agb-revision-id}/accept:
     post:
@@ -6222,6 +6522,7 @@ paths:
       - name: searchTerm
         in: query
         schema:
+          maxLength: 100
           description: string to search for in the resource
           type: string
       - name: size
@@ -6383,6 +6684,7 @@ paths:
       - name: searchTerm
         in: query
         schema:
+          maxLength: 100
           description: string to search for in the resource
           type: string
       - name: size
@@ -6671,7 +6973,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.22.0-rc.1
+  version: 1.22.0-rc.9
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

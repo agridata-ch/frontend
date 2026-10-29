@@ -1,12 +1,25 @@
 <ng-container *i18n="let t; prefix: 'admin-agbs'">
-  <h2 class="page-title">
-    <fa-icon [icon]="faGavel" class="mr-3" />
-    {{ t('pageTitle') }}
-  </h2>
+  <div class="flex justify-between">
+    <h2 class="page-title">
+      <fa-icon [icon]="faGavel" class="mr-3" />
+      {{ t('pageTitle') }}
+    </h2>
+    <div>
+      <app-agridata-button
+        [variant]="ButtonVariants.Primary"
+        (handleClick)="openCreate()"
+        (keydown.enter)="openCreate()"
+      >
+        <fa-icon [icon]="faPlus" class="mr-2" />
+        <span>{{ t('createNewVersion') }}</span>
+      </app-agridata-button>
+    </div>
+  </div>
   <app-error-outlet></app-error-outlet>
   <app-agridata-table
     [dataProvider]="fetchAgbRevisionsResource"
     [tableMetadata]="agbRevisionsTableMetaData()"
     [(queryParameters)]="resourceQueryDto"
   ></app-agridata-table>
+  <router-outlet (deactivate)="fetchAgbRevisionsResource.reload()"></router-outlet>
 </ng-container>
