@@ -20,6 +20,7 @@ export interface AgbRevisionDto {
      */
     version?: string;
     validFrom?: string;
+    validTo?: string;
     enforceConsentFrom?: string;
     /**
      * Data transfer object representing an agb text

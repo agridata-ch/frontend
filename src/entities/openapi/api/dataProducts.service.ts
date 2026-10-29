@@ -720,7 +720,7 @@ export class DataProductsService extends BaseService {
 
     /**
      * Patch Data Product
-     * Partially updates an existing ACTIVE data product. Each provided field is validated against the data product\&#39;s current state and the caller\&#39;s role. If any field cannot be updated, the entire request is rejected and no changes are applied.
+     * Partially updates an existing DRAFT or ACTIVE data product. Omitted fields are left untouched, an explicit null clears the field. Each provided field is checked against the data product\&#39;s current state and the caller\&#39;s role. If any field cannot be updated, the entire request is rejected and no changes are applied.
      * @param id 
      * @param dataProductUpdateDto 
      * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.

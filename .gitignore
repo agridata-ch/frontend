@@ -49,3 +49,5 @@ storybook-static
 
 #ai
 .codesight/wiki/log.md
+
+.playwright-mcp/

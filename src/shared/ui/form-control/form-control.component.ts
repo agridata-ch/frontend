@@ -14,6 +14,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { I18nPipe } from '@/shared/i18n';
 import { FormControlWithMessages, getErrorMessage } from '@/shared/lib/form.helper';
 import { TooltipDirective } from '@/shared/tooltip';
+import { AgridataDatepickerComponent } from '@/shared/ui/agridata-datepicker';
 import { AgridataDigitInputComponent } from '@/shared/ui/agridata-digit-input';
 import { AgridataInputComponent } from '@/shared/ui/agridata-input';
 import {
@@ -50,6 +51,7 @@ import { ControlTypes } from './form-control.model';
     AgridataTextareaComponent,
     AgridataSelectComponent,
     AgridataInputComponent,
+    AgridataDatepickerComponent,
     AgridataDigitInputComponent,
     AgridataWysiwygComponent,
     ButtonComponent,
@@ -67,6 +69,7 @@ export class FormControlComponent {
   readonly disabledInfo = input<string>('');
   readonly helperText = input<string>('');
   readonly id = input<string>();
+  readonly inputClass = input<string>('');
   readonly inputPrefix = input<string>('');
   readonly label = input<string>();
   readonly options = input<MultiSelectOption[]>([]);
@@ -74,9 +77,11 @@ export class FormControlComponent {
   readonly placeholder = input<string>('');
   readonly radioOptions = input<readonly AgridataRadioGroupOption[]>([]);
   readonly length = input<number>(1);
+  readonly min = input<string | null>(null);
   readonly singleCategorySelection = input<boolean>(false);
   readonly type = input<'text' | 'number'>('text');
   readonly isViewMode = input(false, { transform: booleanAttribute });
+  readonly allowHeadings = input(false, { transform: booleanAttribute });
   readonly isWysiwyg = input(false, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
   readonly showEditButton = input(false, { transform: booleanAttribute });
@@ -101,6 +106,9 @@ export class FormControlComponent {
   // control.disable() then greys and blocks every field type (incl. the custom select, which has no
   // ControlValueAccessor). The [disabled] input still works for pure UI gates that don't disable the control.
   protected readonly isDisabled = computed(() => this.disabled() || this.controlDisabled());
+
+  // Lets a field reference the error/helper text through aria-describedby.
+  protected readonly messageId = computed(() => (this.id() ? `${this.id()}-message` : undefined));
 
   // Surface the reason a field is locked, like app-agridata-button's disabledInfo. View mode is not a
   // lock, so it deliberately does not trigger this.
