@@ -1,4 +1,5 @@
 export enum ControlTypes {
+  DATE = 'date',
   INPUT = 'input',
   DIGIT_INPUT = 'digit-input',
   SELECT = 'select',

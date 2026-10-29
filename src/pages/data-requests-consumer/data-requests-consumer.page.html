@@ -1,21 +1,19 @@
 <ng-container *i18n="let t; prefix: 'consumer'">
-  <div class="flex justify-between">
-    <div class="flex gap-3 items-center mb-8">
+  <div class="flex justify-between items-center mb-8">
+    <div class="flex gap-3 items-center">
       <fa-icon [icon]="icon" size="2xl" />
       <h1>{{ t('pageTitle') }}</h1>
     </div>
-    <div>
-      <app-agridata-button
-        (handleClick)="newRequest()"
-        (keydown.enter)="newRequest()"
-        [disabled]="isButtonDisabled()"
-        [variant]="ButtonVariants.Primary"
-        [disabledInfo]="t('draftLimitReached')"
-      >
-        <fa-icon [icon]="buttonIcon" class="mr-2" />
-        <span>{{ t('createNewDataRequest') }}</span>
-      </app-agridata-button>
-    </div>
+    <app-agridata-button
+      (handleClick)="newRequest()"
+      (keydown.enter)="newRequest()"
+      [disabled]="isButtonDisabled()"
+      [variant]="ButtonVariants.Primary"
+      [disabledInfo]="t('draftLimitReached')"
+    >
+      <fa-icon [icon]="buttonIcon" class="mr-2" />
+      <span>{{ t('createNewDataRequest') }}</span>
+    </app-agridata-button>
   </div>
   <app-error-outlet></app-error-outlet>
   <router-outlet></router-outlet>
@@ -25,4 +23,3 @@
     (tableRowAction)="navigateToRequest($event)"
   ></app-data-request-table>
 </ng-container>
-<div class="flex justify-end"></div>

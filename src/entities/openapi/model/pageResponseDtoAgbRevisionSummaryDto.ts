@@ -7,17 +7,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AgbRevisionOverviewDto } from './agbRevisionOverviewDto';
+import { AgbRevisionSummaryDto } from './agbRevisionSummaryDto';
 
 
 /**
  * Generic paginated response wrapper.
  */
-export interface PageResponseDtoAgbRevisionOverviewDto { 
+export interface PageResponseDtoAgbRevisionSummaryDto { 
     /**
      * List of items on the current page.
      */
-    items: Array<AgbRevisionOverviewDto>;
+    items: Array<AgbRevisionSummaryDto>;
     /**
      * Total number of items across all pages.
      */

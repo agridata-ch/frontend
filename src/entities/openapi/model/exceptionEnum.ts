@@ -22,6 +22,8 @@ export const ExceptionEnum = {
     DataProviderError: 'DATA_PROVIDER_ERROR',
     ExportLimitExceeded: 'EXPORT_LIMIT_EXCEEDED',
     ExportCapacityExhausted: 'EXPORT_CAPACITY_EXHAUSTED',
+    AgbVersionAlreadyExists: 'AGB_VERSION_ALREADY_EXISTS',
+    AgbVersionNotNewer: 'AGB_VERSION_NOT_NEWER',
     Maintenance: 'MAINTENANCE'
 } as const;
 export type ExceptionEnum = typeof ExceptionEnum[keyof typeof ExceptionEnum];

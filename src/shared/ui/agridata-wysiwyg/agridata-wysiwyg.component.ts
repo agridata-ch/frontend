@@ -1,20 +1,23 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
   Component,
-  DestroyRef,
-  ElementRef,
-  Signal,
   computed,
+  DestroyRef,
   effect,
+  ElementRef,
   inject,
   input,
   output,
+  Signal,
   signal,
   viewChild,
 } from '@angular/core';
 import { ValidatorFn } from '@angular/forms';
 import {
   faBold,
+  faH1,
+  faH2,
+  faH3,
   faItalic,
   faList,
   faListOl,
@@ -81,21 +84,23 @@ function minVisibleTextLength(min: number): ValidatorFn {
 
 /**
  * Implements a simple headless WYSIWYG rich-text editor based on TipTap. It binds to a reactive form
- * control, offers a minimal toolbar (bold, italic, underline, bullet + numbered lists, reset format),
+ * control, offers a minimal toolbar in divided groups (bold/italic/underline; bullet + numbered lists;
+ * optional headings H1-H3; reset format),
  * supports error and disabled states, and a read-only view mode that renders the stored HTML. It emits
  * blur events for external handling.
  *
- * The TipTap schema is restricted to the supported formatting only. Any unsupported node (heading,
- * blockquote, code block, horizontal rule) or mark (inline code, strike, link) that arrives via paste
- * or from previously stored HTML is coerced to a plain paragraph / stripped to plain text on parse, so
- * unsupported formatting can never be saved.
+ * The TipTap schema is restricted to the supported formatting only. Any unsupported node (blockquote,
+ * code block, horizontal rule) or mark (inline code, strike, link) that arrives via paste or from
+ * previously stored HTML is coerced to a plain paragraph / stripped to plain text on parse, so
+ * unsupported formatting can never be saved. Headings (H1-H3) are opt-in via `allowHeadings`; without
+ * it they are coerced to paragraphs as well.
  *
  * Security: view mode renders the stored HTML via [innerHTML], which Angular's built-in DomSanitizer
  * sanitizes automatically (the value is a plain string, never SafeHtml). This guards our own rendering
  * only; server-side sanitization remains the authoritative boundary since the API can be written
  * directly, bypassing the editor.
  *
- * CommentLastReviewed: 2026-08-27
+ * CommentLastReviewed: 2026-11-04
  */
 @Component({
   selector: 'app-agridata-wysiwyg',
@@ -112,8 +117,10 @@ export class AgridataWysiwygComponent {
   protected readonly faList = faList;
   protected readonly faListOl = faListOl;
   protected readonly faTextSlash = faTextSlash;
+  private readonly HEADING_ICONS = { 1: faH1, 2: faH2, 3: faH3 } as const;
 
   // Input properties
+  readonly allowHeadings = input<boolean>(false);
   readonly control = input<FormControlWithMessages>();
   readonly id = input<string>('');
   readonly placeholder = input<string>('');
@@ -127,6 +134,7 @@ export class AgridataWysiwygComponent {
   protected readonly editorHost = viewChild<ElementRef<HTMLElement>>('editorHost');
 
   private editor?: Editor;
+  private editorAllowHeadings?: boolean;
   private editorCleanup?: () => void;
   private editorElement?: HTMLElement;
   private editorControl?: FormControlWithMessages;
@@ -144,7 +152,7 @@ export class AgridataWysiwygComponent {
   protected readonly isBulletList = computed(() => this.isActive('bulletList'));
   protected readonly isOrderedList = computed(() => this.isActive('orderedList'));
 
-  protected readonly toolbarButtons: readonly ToolbarButton[] = [
+  protected readonly formatButtons: readonly ToolbarButton[] = [
     { icon: faBold, label: 'bold', isActive: this.isBold, action: () => this.toggleBold() },
     { icon: faItalic, label: 'italic', isActive: this.isItalic, action: () => this.toggleItalic() },
     {
@@ -153,6 +161,9 @@ export class AgridataWysiwygComponent {
       isActive: this.isUnderline,
       action: () => this.toggleUnderline(),
     },
+  ];
+
+  protected readonly listButtons: readonly ToolbarButton[] = [
     {
       icon: faList,
       label: 'bulletList',
@@ -167,6 +178,15 @@ export class AgridataWysiwygComponent {
     },
   ];
 
+  protected readonly headingButtons: readonly ToolbarButton[] = ([1, 2, 3] as const).map(
+    (level) => ({
+      icon: this.HEADING_ICONS[level],
+      label: `heading${level}`,
+      isActive: computed(() => this.isActive('heading', { level })),
+      action: () => this.toggleHeading(level),
+    }),
+  );
+
   // Effects
   // The #editorHost lives in the edit-mode branch and inside @defer / @switch blocks, so Angular can
   // swap it for a fresh element (view<->edit toggle, step change) without the effect ever observing a
@@ -176,11 +196,13 @@ export class AgridataWysiwygComponent {
   // it deliberately does not force a remount.
   private readonly initEditorEffect = effect(() => {
     const element = this.editorHost()?.nativeElement;
+    const allowHeadings = this.allowHeadings();
     const control = this.control();
     const placeholder = this.placeholder();
     const maxCharacters = this.maxCharacters();
     if (
       element === this.editorElement &&
+      allowHeadings === this.editorAllowHeadings &&
       control === this.editorControl &&
       placeholder === this.editorPlaceholder &&
       maxCharacters === this.editorMaxCharacters
@@ -192,6 +214,7 @@ export class AgridataWysiwygComponent {
       this.createEditor(element);
     }
     this.editorElement = element;
+    this.editorAllowHeadings = allowHeadings;
     this.editorControl = control;
     this.editorPlaceholder = placeholder;
     this.editorMaxCharacters = maxCharacters;
@@ -214,6 +237,10 @@ export class AgridataWysiwygComponent {
 
   protected toggleBulletList(): void {
     this.editor?.chain().focus().toggleBulletList().run();
+  }
+
+  protected toggleHeading(level: 1 | 2 | 3): void {
+    this.editor?.chain().focus().toggleHeading({ level }).run();
   }
 
   protected toggleItalic(): void {
@@ -246,7 +273,7 @@ export class AgridataWysiwygComponent {
           blockquote: false,
           code: false,
           codeBlock: false,
-          heading: false,
+          heading: this.allowHeadings() ? { levels: [1, 2, 3] } : false,
           horizontalRule: false,
           link: false,
           strike: false,
