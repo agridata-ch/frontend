@@ -1,3 +1,9 @@
+## [1.24.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.5...v1.24.0-rc.6) (2026-10-29)
+
+### Features
+
+- **agb-acceptance:** add agb-acceptance page ([c4e63ea](https://github.com/agridata-ch/frontend/commit/c4e63ea77bcf760de438708b16bd200ad8e473ad)), references [DIGIB2-1531](https://github.com/agridata-ch/frontend/issues/-1531)
+
 ## [1.24.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.4...v1.24.0-rc.5) (2026-10-28)
 
 ### Features
