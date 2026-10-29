@@ -47,13 +47,13 @@ describe('TableCellComponent', () => {
     });
 
     it('should handle number values', () => {
-      expect(component['formatCellValue'](42)).toBe(42);
-      expect(component['formatCellValue'](3.14)).toBe(3.14);
+      expect(component['formatCellValue'](42)).toBe('42');
+      expect(component['formatCellValue'](3.14)).toBe('3.14');
     });
 
     it('should handle boolean values', () => {
-      expect(component['formatCellValue'](true)).toBe(true);
-      expect(component['formatCellValue'](false)).toBe(false);
+      expect(component['formatCellValue'](true)).toBe('true');
+      expect(component['formatCellValue'](false)).toBe('false');
     });
 
     it('should handle Date objects', () => {
@@ -67,6 +67,10 @@ describe('TableCellComponent', () => {
 
     it('should handle regular strings', () => {
       expect(component['formatCellValue']('test')).toBe('test');
+    });
+
+    it.each(['10', '2026', '1.4'])('should not treat numeric string %s as a date', (value) => {
+      expect(component['formatCellValue'](value)).toBe(value);
     });
   });
 

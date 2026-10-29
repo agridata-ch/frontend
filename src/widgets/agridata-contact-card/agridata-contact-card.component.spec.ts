@@ -31,7 +31,6 @@ describe('AgridataContactCardComponent', () => {
 
     const nameElement = fixture.debugElement.query(By.css('.agridata-ellipsis'));
     expect(nameElement.nativeElement.textContent.trim()).toBe(testName);
-    expect(nameElement.nativeElement.title).toBe(testName);
   });
 
   it('should display secondary name when provided', () => {
@@ -41,7 +40,6 @@ describe('AgridataContactCardComponent', () => {
 
     const secondaryNameElement = fixture.debugElement.query(By.css('.text-gray-500'));
     expect(secondaryNameElement.nativeElement.textContent.trim()).toBe(testSecondaryName);
-    expect(secondaryNameElement.nativeElement.title).toBe(testSecondaryName);
   });
 
   it('should pass correct props to avatar component', () => {

@@ -1,0 +1,54 @@
+<ng-container *i18n="let t; prefix: 'agb-acceptances'">
+  <ng-template #emptyStateTemplate>
+    <!-- block wrapper: app-empty-state has h-full, which would otherwise fill <main> and scroll -->
+    <div>
+      <app-empty-state [title]="t('empty.title')" [message]="t('empty.message')">
+        <fa-icon
+          emptyStateIcon
+          size="3x"
+          class="text-agridata-secondary-text"
+          [icon]="faFileSignature"
+        />
+      </app-empty-state>
+    </div>
+  </ng-template>
+
+  <h2 class="page-title">
+    <fa-icon [icon]="faFileSignature" class="mr-3" />
+    {{ t('pageTitle') }}
+  </h2>
+  <app-error-outlet></app-error-outlet>
+
+  <app-agridata-table
+    [dataProvider]="agbAcceptancesResource"
+    [emptyStateTemplate]="emptyStateTemplate"
+    [tableMetadata]="tableMetadata()"
+    [(queryParameters)]="resourceQueryDto"
+    [columnFilters]="columnFilters()"
+    [enableSearch]="true"
+    [searchPlaceholder]="t('searchPlaceholder')"
+  >
+    <app-filter-buttons
+      tableToolbar
+      [options]="STATUS_FILTER_OPTIONS"
+      [(selectedValue)]="statusFilter"
+    />
+    <ng-template #nameTemplate [appAgbAcceptanceOverviewDtoGuard] let-item>
+      <app-agridata-contact-card
+        [name]="formatFullName(item)"
+        [size]="AvatarSize.MEDIUM"
+        [skin]="AvatarSkin.COLOR"
+      />
+    </ng-template>
+
+    <ng-template #statusTemplate [appAgbAcceptanceOverviewDtoGuard] let-item>
+      @if (item.status; as status) {
+        <app-agridata-badge
+          [text]="t('state.' + status)"
+          [variant]="STATUS_BADGE_VARIANTS[status]"
+          [size]="BadgeSize.SM"
+        />
+      }
+    </ng-template>
+  </app-agridata-table>
+</ng-container>

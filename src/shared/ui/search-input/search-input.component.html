@@ -1,7 +1,7 @@
 <div class="relative flex items-center" *i18n="let t; prefix: 'input.search'">
   <app-agridata-input
     [(value)]="value"
-    [placeholder]="t('placeholder')"
+    [placeholder]="placeholder() ?? t('placeholder')"
     [inputPrefixIcon]="magnifyingGlassIcon"
     [suffixTemplate]="suffixTemplate"
     class="w-full"

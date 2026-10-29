@@ -30,6 +30,7 @@ import {
   TableMetadata,
 } from '@/shared/ui/agridata-table';
 import { ButtonComponent } from '@/shared/ui/button';
+import { formatFullName } from '@/shared/utils';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card/';
 
 /**
@@ -138,7 +139,7 @@ export class SupporterPageComponent {
   );
 
   protected getName(item: UserInfoDto) {
-    return [item.givenName, item.familyName].filter(Boolean).join(' ');
+    return formatFullName(item);
   }
 
   protected getAddress(item: UserInfoDto) {

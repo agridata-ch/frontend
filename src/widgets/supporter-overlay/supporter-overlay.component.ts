@@ -4,6 +4,7 @@ import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { AGATE_LOGIN_ID_IMPERSONATION_HEADER } from '@/shared/constants/constants';
 import { I18nPipe } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
+import { formatFullName } from '@/shared/utils';
 
 /**
  * Implements a site-wide overlay component while using support mode
@@ -19,10 +20,7 @@ export class SupporterOverlayComponent {
   private readonly agridataStateService = inject(AgridataStateService);
   private readonly authService = inject(AuthService);
 
-  protected userName = computed(() => {
-    const user = this.authService.userInfo();
-    return user ? [user.givenName, user.familyName].filter(Boolean).join(' ') : '';
-  });
+  protected userName = computed(() => formatFullName(this.authService.userInfo()));
 
   isImpersonating(): boolean {
     return this.agridataStateService.isImpersonating();

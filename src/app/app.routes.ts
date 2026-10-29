@@ -7,6 +7,7 @@ import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { DefaultLayoutComponent, FullWidthLayoutComponent } from '@/app/layout';
 import { AdminAgbsPageComponent } from '@/pages/admin-agbs-page';
 import { AdminPage } from '@/pages/admin-page';
+import { AgbAcceptancesPageComponent } from '@/pages/agb-acceptances-page';
 import { AgbPage } from '@/pages/agb-page';
 import { CmsPage } from '@/pages/cms-page';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
@@ -252,6 +253,20 @@ export const routes: Routes = [
       {
         path: '',
         component: AdminAgbsPageComponent,
+      },
+    ],
+  },
+  {
+    // agb acceptances overview routes
+    path: ROUTE_PATHS.AGB_ACCEPTANCES_PATH,
+    title: 'agb-acceptances.pageTitle',
+    component: DefaultLayoutComponent,
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
+    data: { roles: [USER_ROLES.AGRIDATA_ADMIN, USER_ROLES.AGRIDATA_SUPPORTER] },
+    children: [
+      {
+        path: '',
+        component: AgbAcceptancesPageComponent,
       },
     ],
   },
