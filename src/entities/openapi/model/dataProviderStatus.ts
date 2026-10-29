@@ -16,6 +16,10 @@ import { TranslationDto } from './translationDto';
  */
 export interface DataProviderStatus { 
     /**
+     * Code identifying the data source system
+     */
+    systemCode?: string;
+    /**
      * Name of the data provider operating the system
      */
     providerName?: TranslationDto;

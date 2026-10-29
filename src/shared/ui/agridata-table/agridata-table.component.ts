@@ -5,6 +5,7 @@ import {
   effect,
   inject,
   input,
+  linkedSignal,
   model,
   ResourceRef,
   signal,
@@ -82,13 +83,19 @@ export class AgridataTableComponent<T> {
   readonly dataProvider = input.required<ResourceRef<PageResponseDto<T> | undefined>>();
   readonly enableSearch = input<boolean>(false);
   readonly emptyStateTemplate = input<TemplateRef<unknown>>();
+  readonly searchPlaceholder = input<string>();
+  readonly columnFilters = input<string[]>();
 
   // Model properties
   readonly queryParameters = model<ResourceQueryDto>();
 
   // Signals
   protected readonly searchTerm = signal<string>('');
-  protected readonly nextPageIndex = signal<number>(0);
+  // Resets to the first page whenever the column filters change
+  protected readonly nextPageIndex = linkedSignal<string[] | undefined, number>({
+    source: this.columnFilters,
+    computation: () => 0,
+  });
   protected readonly nextPageSize = signal<number>(PAGE_SIZES[0]);
 
   // Computed signals
@@ -116,6 +123,7 @@ export class AgridataTableComponent<T> {
       page: this.nextPageIndex(),
       size: this.nextPageSize(),
       searchTerm: this.searchTerm(),
+      columnFilters: this.columnFilters(),
       sortParams: this.buildSortParameters(),
       language: this.i18nService.lang(),
     });

@@ -11,7 +11,7 @@
     "pageInfo": "Page {{ current }} sur {{ total }}",
     "previousPage": "page précédente",
     "nextPage": "page suivante",
-    "noData": "aucune donnée disponible",
+    "noData": "Aucune donnée disponible",
     "loading": "Chargement des données",
     "pageSelector": "Entrées par page",
     "header": {
@@ -314,7 +314,7 @@
       },
       "contract": {
         "inReviewAlert": {
-          "title": "Lien d'invitationVotre demande de données a été soumise et est en cours de vérification manuelle par agridata.ch.",
+          "title": "Votre demande de données a été soumise et est en cours de vérification manuelle par agridata.ch.",
           "description": "Vous serez informé dès que la vérification sera terminée et que le contrat sera mis en ligne."
         },
         "inReviewBox": {
@@ -705,7 +705,7 @@
     "pageTitle": "Demandes",
     "redirect": {
       "headline": "C'est fait !",
-      "description": "Merci d'avoir choisi\u2028Vous serez redirigé automatiquement dans {{ count }} secondes.",
+      "description": "Merci d'avoir choisi.\u2028Vous serez redirigé automatiquement dans {{ count }} secondes.",
       "redirectNow": "Retour direct"
     },
     "uidMissingWarning": "Aucun numéro d'identification fiscale (UID) n'est encore enregistré pour vous ou votre entreprise. Étant donné que plusieurs systèmes sont impliqués, cela peut prendre quelques jours avant que nous disposions de toutes les informations nécessaires au bon fonctionnement d'agridata.ch. Veuillez réessayer dans quelques jours. Si le problème persiste, veuillez contacter le service d'assistance ({{ phoneNumber }}).",
@@ -889,7 +889,7 @@
     "bannerText": "Pour améliorer notre offre, nous souhaitons utiliser Google Analytics. Des données d’utilisation peuvent être transmises à Google et y être traitées. Vous pouvez refuser cette analyse et continuer à utiliser le site sans aucune restriction. Vous trouverez de plus amples informations dans notre",
     "acceptCookies": "Autoriser",
     "declineCookies": "Refuser",
-    "privacyPolicyLinkText": "déclaration de confidentialité"
+    "privacyPolicyLinkText": "Déclaration de confidentialité"
   },
   "newYearBanner": {
     "wishMessage": "L'équipe d'agridata.ch vous souhaite une bonne année!",
@@ -958,7 +958,7 @@
         "description": "Vous voulez savoir exactement quelles informations sont transmises ? Cliquez simplement sur « Données transmises par ...: »."
       },
       "consentRequestConsent": {
-        "title": "prendre une décision",
+        "title": "Prendre une décision",
         "description": "Utilisez les boutons pour choisir : Vert pour accepter, Rouge pour refuser. Vous gardez toujours le contrôle total et pouvez modifier votre choix ultérieurement."
       },
       "dataRequestPurpose": {
@@ -1446,6 +1446,7 @@
       "technical": {
         "pathTemplate": "Modèle de chemin URL ",
         "requestTemplate": "Template du Request-Body",
+        "productId": "Référence produit",
         "flowCode": "Le mode de transfert"
       }
     },
@@ -1482,5 +1483,29 @@
       "enforceConsentFrom": "Blocage à partir de"
     },
     "pageTitle": "Gestion des conditions générales"
+  },
+  "agb-acceptances": {
+    "pageTitle": "Consentements d'utilisateurs",
+    "searchPlaceholder": "Recherche par UID",
+    "table": {
+      "name": "Nom",
+      "email": "Email",
+      "uid": "UID",
+      "lastAccepted": "Dernièrement accepté",
+      "acceptedVersion": "Version acceptée",
+      "state": "Statut"
+    },
+    "state": {
+      "ACCEPTED": "Accepté",
+      "TRANSITION_PERIOD": "En période de transition",
+      "PENDING": "Ouvert"
+    },
+    "filter": {
+      "all": "Tous"
+    },
+    "empty": {
+      "title": "Aucun enregistrement disponible",
+      "message": "Aucun enregistrement trouvé, modifiez la recherche/les filtres pour obtenir des résultats"
+    }
   }
 }

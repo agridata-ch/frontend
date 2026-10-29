@@ -11,7 +11,7 @@
     "pageInfo": "Seite {{ current }} von {{ total }}",
     "previousPage": "vorherige Seite",
     "nextPage": "nächste Seite",
-    "noData": "keine Daten vorhanden",
+    "noData": "Keine Daten vorhanden",
     "loading": "Daten werden geladen",
     "pageSelector": "Einträge pro Seite",
     "header": {
@@ -476,8 +476,8 @@
           "uidPlaceholder": "CHE000000000",
           "cancel": "Abbrechen",
           "confirm": "{{ count }} Anfrage(n) hinzufügen",
-          "uidInvalid": "ungültiges Format",
-          "noResults": "die eingegebene UID wurde nicht gefunden",
+          "uidInvalid": "Ungültiges Format",
+          "noResults": "Die eingegebene UID wurde nicht gefunden",
           "burSection": {
             "title": "Betriebsstätten",
             "description": "Wählen Sie in der Liste die Betriebsstätten aus, welche Sie anfragen möchten.",
@@ -644,7 +644,7 @@
       },
       "waitingForProviderRelease": {
         "title": "Antrag zur Genehmigung bereit",
-        "message": "Mit einem Klick auf “{{ releaseContract }}” geben Sie den Vertrag seitens Ihrer Organisation frei. Der Vertrag wird nun versiegelt und anschliessend aktiviert. Sobald der Antrag aktiv ist, können die Datenproduzenten (Landwirte, Tierhalter, etc.) eine Datenanfrage erhalten und ihre Zustimmung geben. Zudem können die Datenbezüger mit dem Bezug der Daten starten, sofern Zustimmungen der Datenproduzenten vorliegen."
+        "message": "Mit einem Klick auf “{{ releaseContract }}” geben Sie den Vertrag seitens Ihrer Organisation frei. Der Vertrag wird versiegelt und anschliessend aktiviert. Sobald der Antrag aktiv ist, können die Datenproduzenten (Landwirte, Tierhalter, etc.) eine Datenanfrage erhalten und ihre Zustimmung geben. Zudem können die Datenbezüger mit dem Bezug der Daten starten, sofern Zustimmungen der Datenproduzenten vorliegen."
       }
     },
     "contractSignaturePolicy": {
@@ -659,7 +659,7 @@
         }
       },
       "title": "Unterschriftenregelung",
-      "subtitle": "Wählen Sie, die Unterschriftenregelung gemäss den Vorgaben von {{ company }}."
+      "subtitle": "Wählen Sie die Unterschriftenregelung gemäss den Vorgaben von {{ company }}."
     },
     "advantages": {
       "heading": "Meine Vorteile"
@@ -708,7 +708,7 @@
       "description": "Besten Dank für Ihre Entscheidung,\u2028Sie werden in {{ count }} Sekunden automatisch zurück geleitet.",
       "redirectNow": "Direkt zurück"
     },
-    "uidMissingWarning": "Zu Ihrer Person oder Unternehmen ist zurzeit noch keine UID vorhanden. Da verschiedene Systeme involviert sind, kann es einige Tage dauern bis wir alle relevanten Angaben haben, damit agridata.ch funktionieren kann. Bitte versuchen sie es in ein paar Tage nochmal. Besteht Ihr Problem weiterhin, melden sie sich bitte beim Support ({{ phoneNumber }}).",
+    "uidMissingWarning": "Zu Ihrer Person oder Unternehmen ist zurzeit noch keine UID vorhanden. Da verschiedene Systeme involviert sind, kann es einige Tage dauern bis wir alle relevanten Angaben haben, damit agridata.ch funktionieren kann. Bitte versuchen Sie es in ein paar Tagen nochmal. Besteht Ihr Problem weiterhin, melden Sie sich bitte beim Support ({{ phoneNumber }}).",
     "migrationInfo": {
       "maf": {
         "title": "Neue Datenanfragen aus \"Meine Agrardatenfreigaben (MAF)\" jetzt verfügbar",
@@ -976,9 +976,9 @@
       "remindLater": "Später erinnern",
       "accept": "Bestätigen",
       "blockingInfo": "Die Übergangsfrist für die neuen AGB ist am {{enforceConsentFrom}} abgelaufen. Um [agridata.ch] weiterhin zu nutzen, ist deine Bestätigung notwendig.",
-      "updatedInfo": "Wir haben unsere Allgemeinen Geschäftsbedingungen (AGB) aktualisiert. Bitte lies die neuen Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein. Die Zustimmung zu den aktualisierten Bedingungen kannst du über die untenstehende Auswahl erteilen.",
-      "generalInfo": "Um [agridata.ch] verwenden zu können, müssen die Allgemeinen Geschäftsbedingungen (AGB) gelesen und akzeptiert werden. Bitte lies die Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein. Die Zustimmung zu den Bedingungen kannst du über die untenstehende Auswahl erteilen.",
-      "deadlineInfo": "Wir haben unsere Allgemeinen Geschäftsbedingungen (AGB) aktualisiert. Bitte lies die neuen Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein und stimme diesen bis zum {{enforceConsentFrom}} zu. Die Zustimmung zu den aktualisierten Bedingungen kannst du über die untenstehende Auswahl erteilen."
+      "updatedInfo": "Wir haben unsere Allgemeinen Geschäftsbedingungen (AGB) aktualisiert. Bitte lesen Sie die neuen Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein. Die Zustimmung zu den aktualisierten Bedingungen können Sie über die untenstehende Auswahl erteilen.",
+      "generalInfo": "Um [agridata.ch] verwenden zu können, müssen die Allgemeinen Geschäftsbedingungen (AGB) gelesen und akzeptiert werden. Bitte lesen Sie die Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein. Die Zustimmung zu den Bedingungen können Sie über die untenstehende Auswahl erteilen.",
+      "deadlineInfo": "Wir haben unsere Allgemeinen Geschäftsbedingungen (AGB) aktualisiert. Bitte lesen Sie die neuen Bedingungen sorgfältig durch, um über die Änderungen informiert zu sein und stimmen Sie diesen bis zum {{enforceConsentFrom}} zu. Die Zustimmung zu den aktualisierten Bedingungen können Sie über die untenstehende Auswahl erteilen."
     },
     "page": {
       "version": "Version {{ version }}"
@@ -1037,7 +1037,7 @@
       "titleUpdate": "Datenprodukt bearbeiten",
       "publishConfirmation": {
         "title": "Datenprodukt publizieren?",
-        "description": "Mit dem Publizieren wird dieses Datenprodukt auf agridata.ch live geschaltet. \nBitte beachten Sie:\n\n**Öffentlicher Katalog:** Das Produkt ist ab sofort für alle Datenbezüger sichtbar.\n**Datenantrag:** Datenbezüger können direkt einen digitalen Antrag für diese Daten stellen.\n**Produzenten-Zustimmung:** Name und Beschreibung werden eins zu eins den Landwirten und Tierhaltern angezeigt, wenn sie ihre Zustimmung zur Datenanfrage erteilen. Bitte achten Sie auf eine einfache und verständliche Sprache.",
+        "description": "Mit dem Publizieren wird dieses Datenprodukt auf agridata.ch live geschaltet. \nBitte beachten Sie:\n\n**Öffentlicher Katalog:** Das Produkt ist ab sofort für alle Datenbezüger sichtbar.\n**Datenantrag:** Datenbezüger können direkt einen digitalen Antrag für diese Daten stellen.\n**Produzenten-Zustimmung:** Name und Beschreibung werden eins zu eins den Landwirten und Tierhaltern angezeigt, wenn sie Ihre Zustimmung zur Datenanfrage erteilen. Bitte achten Sie auf eine einfache und verständliche Sprache.",
         "cancel": "Abbrechen",
         "publish": "Ja, publizieren"
       }
@@ -1155,7 +1155,7 @@
       "documents": {
         "title": "Dokumente",
         "dropzone": {
-          "label": "Klicke oder ziehe mittels Drag & Drop die Datei hinein",
+          "label": "Klicken oder ziehen Sie mittels Drag & Drop die Datei hinein",
           "hint": "Erlaubte Formate: PDF, max. 10 MB, bis zu 5 Dateien"
         },
         "maxFilesReached": "Maximale Anzahl Dateien erreicht",
@@ -1181,7 +1181,7 @@
         "empty": "Keine Dokumente vorhanden.",
         "notReady": {
           "title": "Dokumente noch nicht bereit",
-          "message": "Ein Dokument wurde abgelehnt oder konnte nicht verarbeitet werden. Bitte entferne es und versuche es erneut."
+          "message": "Ein Dokument wurde abgelehnt oder konnte nicht verarbeitet werden. Bitte entferne Sie es und versuchen Sie es erneut."
         }
       },
       "dataSourceSystemId": {
@@ -1483,5 +1483,29 @@
       "enforceConsentFrom": "Sperrung ab"
     },
     "pageTitle": "AGB-Verwaltung"
+  },
+  "agb-acceptances": {
+    "pageTitle": "Nutzer-Zustimmungen",
+    "searchPlaceholder": "Suche nach UID",
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "uid": "UID",
+      "lastAccepted": "Zuletzt akzeptiert",
+      "acceptedVersion": "akzeptierte Version",
+      "state": "Status"
+    },
+    "state": {
+      "ACCEPTED": "Akzeptiert",
+      "TRANSITION_PERIOD": "In Übergangsfrist",
+      "PENDING": "Offen"
+    },
+    "filter": {
+      "all": "Alle"
+    },
+    "empty": {
+      "title": "Keine Einträge vorhanden",
+      "message": "Keine Einträge gefunden, ändern Sie die Suche/Filter um Ergebnisse zu erhalten"
+    }
   }
 }

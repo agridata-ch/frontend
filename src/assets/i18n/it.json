@@ -1446,6 +1446,7 @@
       "technical": {
         "pathTemplate": "Template percorso URL",
         "requestTemplate": "Template del Request-Body",
+        "productId": "ID prodotto",
         "flowCode": "Modalità di trasferimento"
       }
     },
@@ -1482,5 +1483,29 @@
       "enforceConsentFrom": "Blocco dal"
     },
     "pageTitle": "Gestione dei Termini e Condizioni"
+  },
+  "agb-acceptances": {
+    "pageTitle": "Consensi degli utenti",
+    "searchPlaceholder": "Cerca per UID",
+    "table": {
+      "name": "Nome",
+      "email": "Email",
+      "uid": "UID",
+      "lastAccepted": "Ultima accettazione",
+      "acceptedVersion": "Versione accettata",
+      "state": "Stato"
+    },
+    "state": {
+      "ACCEPTED": "Accettato",
+      "TRANSITION_PERIOD": "In periodo di transizione",
+      "PENDING": "Aperto"
+    },
+    "filter": {
+      "all": "Tutti"
+    },
+    "empty": {
+      "title": "Nessuna voce disponibile",
+      "message": "Nessuna voce trovata, modifica la ricerca/i filtri per ottenere risultati"
+    }
   }
 }

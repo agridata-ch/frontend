@@ -1,3 +1,5 @@
+export * from './agbAcceptanceOverviewDto';
+export * from './agbAcceptanceStatusEnum';
 export * from './agbRevisionDto';
 export * from './agbRevisionOverviewDto';
 export * from './agbTextDto';
@@ -62,6 +64,7 @@ export * from './linkDto';
 export * from './markAsReadRequestDto';
 export * from './otpChallengeDto';
 export * from './pageResponseDto';
+export * from './pageResponseDtoAgbAcceptanceOverviewDto';
 export * from './pageResponseDtoAgbRevisionOverviewDto';
 export * from './pageResponseDtoConsentRequestFundamentalViewDto';
 export * from './pageResponseDtoDataProductDto';

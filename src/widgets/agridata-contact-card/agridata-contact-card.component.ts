@@ -2,6 +2,7 @@ import { Component, input } from '@angular/core';
 import { faGlobe } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 
 import { I18nPipe } from '@/shared/i18n';
+import { TooltipDirective } from '@/shared/tooltip';
 import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
 
@@ -12,7 +13,7 @@ import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
  */
 @Component({
   selector: 'app-agridata-contact-card',
-  imports: [AgridataAvatarComponent, AgridataBadgeComponent, I18nPipe],
+  imports: [AgridataAvatarComponent, AgridataBadgeComponent, I18nPipe, TooltipDirective],
   templateUrl: './agridata-contact-card.component.html',
 })
 export class AgridataContactCardComponent {

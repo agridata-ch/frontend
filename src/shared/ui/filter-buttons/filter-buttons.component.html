@@ -1,0 +1,21 @@
+<div class="flex gap-4 flex-wrap">
+  @for (option of options(); track option.value) {
+    <app-agridata-button
+      [variant]="ButtonVariants.Filter"
+      (handleClick)="handleClick(option.value)"
+      [selected]="selectedValue() === option.value"
+      [ariaPressed]="selectedValue() === option.value"
+    >
+      <span>
+        {{ option.label | i18n }}
+        @if (option.count !== undefined) {
+          <span
+            class="text-agridata-secondary-text bg-agridata-content-gray size-3 rounded-full px-2"
+          >
+            {{ option.count }}
+          </span>
+        }
+      </span>
+    </app-agridata-button>
+  }
+</div>
