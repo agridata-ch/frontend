@@ -22,6 +22,7 @@
         [placeholder]="placeholder()"
         (handleBlur)="handleBlur.emit()"
         [maxCharacters]="getMaxCharacters()"
+        [min]="min()"
         [hasError]="hasError()"
         [inputPrefix]="inputPrefix()"
         [disabled]="isDisabled()"
@@ -54,6 +55,7 @@
       @if (isWysiwyg()) {
         @defer (on immediate) {
           <app-agridata-wysiwyg
+            [allowHeadings]="allowHeadings()"
             [control]="control()"
             [id]="id()!"
             [placeholder]="placeholder()"

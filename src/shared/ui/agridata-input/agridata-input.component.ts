@@ -21,9 +21,10 @@ import { FormControlWithMessages } from '@/shared/lib/form.helper';
 export class AgridataInputComponent {
   readonly id = input<string>();
   readonly control = input<FormControlWithMessages>();
-  readonly type = input<'text' | 'number'>('text');
+  readonly type = input<'text' | 'number' | 'date'>('text');
   readonly placeholder = input<string>('');
   readonly maxCharacters = input<number | null>(1000);
+  readonly min = input<string | null>(null);
   readonly hasError = input<boolean>(false);
   readonly inputPrefix = input<string>('');
   readonly inputPrefixIcon = input<IconDefinition>();
