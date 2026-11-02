@@ -360,6 +360,7 @@ export interface NewsArticle {
   imageAlt: string;
   category: NewsCategory | null;
   createdAt: string;
+  publishedAt: string;
   locale?: string;
   attachments?: File[];
   localizations?: NewsArticleLocalization[];

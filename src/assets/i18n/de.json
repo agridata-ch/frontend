@@ -1471,7 +1471,7 @@
   "news": {
     "title": "Mitteilungen rund um agridata.ch",
     "readMore": "Weiter lesen",
-    "createdAt": "Erstellt am:  {{ date }}"
+    "publishedAt": "Publiziert am:  {{ date }}"
   },
   "admin-agbs": {
     "table": {
