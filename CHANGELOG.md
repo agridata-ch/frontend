@@ -1,3 +1,9 @@
+## [1.24.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.6...v1.24.0-rc.7) (2026-11-02)
+
+### Features
+
+- **news-article:** use publishedAt instead of createdAt ([113c3f9](https://github.com/agridata-ch/frontend/commit/113c3f9fc0c81ae1064e5ea5b586d427a81ebf18)), references [DIGIB2-1817](https://github.com/agridata-ch/frontend/issues/-1817)
+
 ## [1.24.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.5...v1.24.0-rc.6) (2026-10-29)
 
 ### Features
