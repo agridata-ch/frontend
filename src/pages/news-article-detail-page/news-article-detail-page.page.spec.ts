@@ -33,6 +33,7 @@ const article = (overrides: Partial<NewsArticle> = {}): NewsArticle => ({
   imageAlt: 'Titelbild',
   category: { id: 5, documentId: 'cat-1', name: 'Wetter', slug: 'wetter' },
   createdAt: '2026-01-01',
+  publishedAt: '2026-01-01',
   locale: 'de',
   localizations: [{ id: 2, documentId: 'news-1', locale: 'fr', slug: 'premier-article' }],
   ...overrides,

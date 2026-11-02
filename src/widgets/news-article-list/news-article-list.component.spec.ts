@@ -37,6 +37,7 @@ const article = (id: number): NewsArticle => ({
   imageAlt: 'Alt',
   category: null,
   createdAt: '2026-01-01',
+  publishedAt: '2026-01-01',
 });
 
 const page = (articles: NewsArticle[], pageCount: number, total: number): NewsArticlesResponse => ({
