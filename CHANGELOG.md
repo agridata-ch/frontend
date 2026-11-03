@@ -1,3 +1,9 @@
+## [1.24.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.9...v1.24.0-rc.10) (2026-11-03)
+
+### Features
+
+- **deps:** update dependencies ([165f7de](https://github.com/agridata-ch/frontend/commit/165f7dee7a8a046042658df0b1b7d60f4de79839)), references [DIGIB2-1813](https://github.com/agridata-ch/frontend/issues/-1813)
+
 ## [1.24.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.8...v1.24.0-rc.9) (2026-11-03)
 
 ### Features
