@@ -1,3 +1,9 @@
+## [1.24.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.8...v1.24.0-rc.9) (2026-11-03)
+
+### Features
+
+- **bur-register:** replace UID register with BUR register service and update usages ([d0873d8](https://github.com/agridata-ch/frontend/commit/d0873d8dc608b15cc1865446da40ae4a835b8790)), references [DIGIB2-621](https://github.com/agridata-ch/frontend/issues/-621)
+
 ## [1.24.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.7...v1.24.0-rc.8) (2026-11-03)
 
 ### Features
