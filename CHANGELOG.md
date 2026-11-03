@@ -1,3 +1,9 @@
+## [1.24.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.10...v1.24.0-rc.11) (2026-11-03)
+
+### Features
+
+- **deps:** set node version to use ([9b99894](https://github.com/agridata-ch/frontend/commit/9b99894aeaf135b857a679b7d7abd1892d1f6e4b))
+
 ## [1.24.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.9...v1.24.0-rc.10) (2026-11-03)
 
 ### Features
