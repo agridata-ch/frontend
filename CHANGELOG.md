@@ -1,3 +1,9 @@
+## [1.24.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.7...v1.24.0-rc.8) (2026-11-03)
+
+### Features
+
+- **data-catalog-detail:** update styling of technical tab ([f27743b](https://github.com/agridata-ch/frontend/commit/f27743b00d9d3ffd8e00c151aeb4644c2d4a5dc2)), references [DIGIB2-1717](https://github.com/agridata-ch/frontend/issues/-1717)
+
 ## [1.24.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.6...v1.24.0-rc.7) (2026-11-02)
 
 ### Features
