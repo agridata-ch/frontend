@@ -45,7 +45,7 @@
           #copyButton
           type="button"
           class="group cursor-pointer h-fit flex gap-1 text-left font-medium"
-          (click)="handleCopy($event, copyButton)"
+          (click)="copyFeedback.copy(invitationLink(), $event, copyButton)"
         >
           {{ invitationLink() }}
           <span class="sr-only">{{ t('invitationLink.copyToClipboard') }}</span>
@@ -58,9 +58,7 @@
         </button>
       </div>
       <output class="sr-only">
-        @if (copyFeedbackKey(); as key) {
-          {{ t(key) }}
-        }
+        {{ copyFeedback.message() }}
       </output>
     }
   </div>

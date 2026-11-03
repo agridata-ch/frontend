@@ -72,9 +72,9 @@
         "title": "Aperçu de l'exploitation et des sites",
         "description": {
           "consentRequired": {
-            "noBur": "Cette demande concerne votre entreprise (UID). Le consentement s'applique à l'ensemble de l'entreprise au niveau de l'exploitation. Comme cette demande n'est pas spécifique à un site, aucune installation individuelle (BUR) n'est répertoriée.",
-            "singleBur": "Cette demande concerne votre entreprise (UID) et le site associé (BUR). Le consentement s'applique à l'entreprise ainsi qu'au site.",
-            "multipleBur": "Cette demande concerne votre entreprise (UID) et les sites associés (BUR). Le consentement pour l'entreprise est toujours valable. En principe, vous acceptez les sites demandés ; via « Modifier les sites », vous pouvez exclure des sites individuels de la demande."
+            "noBur": "Cette demande concerne votre entreprise (IDE). Le consentement s'applique à l'ensemble de l'entreprise au niveau de l'exploitation. Comme cette demande n'est pas spécifique à un site, aucune installation individuelle (BUR) n'est répertoriée.",
+            "singleBur": "Cette demande concerne votre entreprise (IDE) et le site associé (BUR). Le consentement s'applique à l'entreprise ainsi qu'au site.",
+            "multipleBur": "Cette demande concerne votre entreprise (IDE) et les sites associés (BUR). Le consentement pour l'entreprise est toujours valable. En principe, vous acceptez les sites demandés ; via « Modifier les sites », vous pouvez exclure des sites individuels de la demande."
           },
           "legallyPermitted": {
             "noBur": "Cette demande concerne votre entreprise (IDE). Sur une base de droit public, l'utilisation s'applique à l'ensemble de l'entreprise au niveau de l'exploitation. Cette demande n'étant pas spécifique à un site, aucun établissement (REE) n'est mentionné.",
@@ -83,7 +83,7 @@
           }
         },
         "uidGroupTitle": "Mon entreprise demandée",
-        "uid": "Numéro d'identification de l'entreprise (UID) ",
+        "uid": "Numéro d'identification de l'entreprise (IDE) ",
         "bur": {
           "title": "Numéro d'établissement (BUR)",
           "enabled": "Sélectionné",
@@ -242,7 +242,7 @@
           "placeholder": "Nom"
         },
         "uid": {
-          "label": "UID",
+          "label": "IDE",
           "placeholder": "CHEXXXXXXXXX",
           "prefix": "CHE"
         },
@@ -455,7 +455,7 @@
           "open": "Ouvert",
           "granted": "Approuvé",
           "declined": "Rejeté",
-          "uid": "UID",
+          "uid": "IDE",
           "bur": "BUR",
           "withdrawn": "Terminé",
           "export": {
@@ -471,13 +471,13 @@
         "addButton": "Demander un producteur",
         "modal": {
           "title": "Demander un producteur",
-          "description": "Pour inclure de nouvelles exploitations dans la demande, vous devez interroger les producteurs via leur UID. Ensuite, vous pouvez choisir parmi la liste des sites d'exploitation. Vous pouvez également gérer la demande via l'API.",
-          "uidLabel": "UID",
+          "description": "Pour inclure de nouvelles exploitations dans la demande, vous devez interroger les producteurs via leur IDE. Ensuite, vous pouvez choisir parmi la liste des sites d'exploitation. Vous pouvez également gérer la demande via l'API.",
+          "uidLabel": "IDE",
           "uidPlaceholder": "CHE000000000",
           "cancel": "Annuler",
           "confirm": "Ajouter {{ count }} demande(s)",
           "uidInvalid": "format invalide",
-          "noResults": "l'UID saisi n'a pas été trouvé",
+          "noResults": "l'IDE saisi n'a pas été trouvé",
           "burSection": {
             "title": "Sites d'exploitation",
             "description": "Sélectionnez dans la liste les sites d'exploitation que vous souhaitez demander.",
@@ -500,7 +500,7 @@
               "description": "Sélectionnez dans la liste les sites d’exploitation pour lesquels vous souhaitez supprimer les requêtes."
             },
             "title": "Terminer la/les requête(s)",
-            "description": "Pour terminer les demandes, vous pouvez terminer la demande complète à l’aide de l’UID. Toutes les unités d’exploitation associées seront alors également terminées. Vous pouvez également terminer la demande pour certaines unités d’exploitation en les sélectionnant dans la liste.\nVous pouvez également gérer les demandes via l’API.",
+            "description": "Pour terminer les demandes, vous pouvez terminer la demande complète à l’aide de l’IDE. Toutes les unités d’exploitation associées seront alors également terminées. Vous pouvez également terminer la demande pour certaines unités d’exploitation en les sélectionnant dans la liste.\nVous pouvez également gérer les demandes via l’API.",
             "confirmPartial": "{{ count }} requête(s) à terminer",
             "confirmComplete": "Terminer la requête complète",
             "success": {
@@ -673,7 +673,7 @@
       },
       "viewContract": "Consulter le contrat"
     },
-    "uid": "UID",
+    "uid": "IDE",
     "bur": "BUR",
     "lastChanged": "Modifié le"
   },
@@ -708,7 +708,7 @@
       "description": "Merci d'avoir choisi.\u2028Vous serez redirigé automatiquement dans {{ count }} secondes.",
       "redirectNow": "Retour direct"
     },
-    "uidMissingWarning": "Aucun numéro d'identification fiscale (UID) n'est encore enregistré pour vous ou votre entreprise. Étant donné que plusieurs systèmes sont impliqués, cela peut prendre quelques jours avant que nous disposions de toutes les informations nécessaires au bon fonctionnement d'agridata.ch. Veuillez réessayer dans quelques jours. Si le problème persiste, veuillez contacter le service d'assistance ({{ phoneNumber }}).",
+    "uidMissingWarning": "Aucun numéro d'identification fiscale (IDE) n'est encore enregistré pour vous ou votre entreprise. Étant donné que plusieurs systèmes sont impliqués, cela peut prendre quelques jours avant que nous disposions de toutes les informations nécessaires au bon fonctionnement d'agridata.ch. Veuillez réessayer dans quelques jours. Si le problème persiste, veuillez contacter le service d'assistance ({{ phoneNumber }}).",
     "migrationInfo": {
       "maf": {
         "title": "De nouvelles demandes de données issues de \"Mon partage de données agricoles (MAF)\" sont désormais disponibles",
@@ -1447,7 +1447,14 @@
         "pathTemplate": "Modèle de chemin URL ",
         "requestTemplate": "Template du Request-Body",
         "productId": "Référence produit",
-        "flowCode": "Le mode de transfert"
+        "flowCode": "Le mode de transfert",
+        "copy": "Copier",
+        "copied": "Valeur copiée",
+        "productIdTooltip": "Numéro unique permettant d'identifier le produit de données.",
+        "flowCodeTooltip": "Définit quand et comment vérifier si les consentements nécessaires à la transmission du produit de données sont présents.",
+        "pathTemplateTooltip": "Indique comment l'adresse doit être structurée pour que les utilisateurs de données puissent interroger le produit de données via l'API.",
+        "requestTemplateTooltip": "Modèle qui définit comment le contenu (corps) de la requête envoyée par l'utilisateur de données au fournisseur de données doit être structuré.",
+        "copyFailed": "Échec de la copie"
       }
     },
     "list": {
@@ -1486,11 +1493,11 @@
   },
   "agb-acceptances": {
     "pageTitle": "Consentements d'utilisateurs",
-    "searchPlaceholder": "Recherche par UID",
+    "searchPlaceholder": "Recherche par IDE",
     "table": {
       "name": "Nom",
       "email": "Email",
-      "uid": "UID",
+      "uid": "IDE",
       "lastAccepted": "Dernièrement accepté",
       "acceptedVersion": "Version acceptée",
       "state": "Statut"

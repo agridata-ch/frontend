@@ -109,6 +109,69 @@ export async function copyToClipboard(text: string): Promise<void> {
 }
 
 /**
+ * Indents a JSON or XML request template for display. Anything that doesn't look like either is
+ * returned unchanged.
+ *
+ * CommentLastReviewed: 2026-11-02
+ *
+ * @param value The raw template, may contain `{{placeholders}}`
+ * @returns The indented template
+ */
+export function formatTemplate(value: string): string {
+  const trimmed = value.trim();
+  if (trimmed.startsWith('<')) return formatXml(trimmed);
+  return /^[{[]/.test(trimmed) ? formatJson(trimmed) : value;
+}
+
+/**
+ * Token-based JSON indentation instead of JSON.parse: templates contain unquoted placeholders
+ * (`"pageSize":{{pageSize}}`), which aren't valid JSON. Strings and placeholders are kept as is.
+ */
+function formatJson(json: string): string {
+  const tokens = json.match(/"(?:\\.|[^"\\])*"|\{\{[^{}]*\}\}|[{}[\],:]|[^\s"{}[\],:]+/g) ?? [];
+  let depth = 0;
+  const newline = (): string => '\n' + '  '.repeat(depth);
+  const formatted = tokens
+    .map((token) => {
+      switch (token) {
+        case '{':
+        case '[':
+          depth++;
+          return token + newline();
+        case '}':
+        case ']':
+          depth = Math.max(depth - 1, 0);
+          return newline() + token;
+        case ',':
+          return token + newline();
+        case ':':
+          return ': ';
+        default:
+          return token;
+      }
+    })
+    .join('');
+  // Collapse empty objects/arrays back onto one line.
+  return formatted.replaceAll(/([{[])\n\s*([}\]])/g, '$1$2');
+}
+
+// ponytail: line-based indentation, no XML parser; mixed content/CDATA stay as they are.
+function formatXml(xml: string): string {
+  let depth = 0;
+  return xml
+    .replaceAll(/>\s*</g, '>\n<')
+    .split('\n')
+    .map((line) => {
+      if (line.startsWith('</')) depth = Math.max(depth - 1, 0);
+      const indented = '  '.repeat(depth) + line;
+      const opensTag = /^<[^/?!]/.test(line) && !line.endsWith('/>') && !line.includes('</');
+      if (opensTag) depth++;
+      return indented;
+    })
+    .join('\n');
+}
+
+/**
  * Starts a countdown that decrements the given signal by 1 every second until it reaches 0.
  * Clears any previously running countdown timer before starting a new one.
  *

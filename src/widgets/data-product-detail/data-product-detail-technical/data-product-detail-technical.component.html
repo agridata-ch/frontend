@@ -1,0 +1,39 @@
+<ng-container *i18n="let t; prefix: 'data-catalog.product.technical'">
+  <div appViewSection isViewMode>
+    @for (field of fields(); track field.key) {
+      <div class="flex items-center justify-between gap-4 px-4 py-3">
+        <div class="flex flex-col gap-1 min-w-0">
+          <span class="flex items-center gap-1 text-xs text-agridata-secondary-text">
+            {{ t(field.key) }}
+            <fa-icon
+              class="flex cursor-help text-agridata-primary-600"
+              [icon]="infoIcon"
+              size="xl"
+              [appTooltip]="t(field.key + 'Tooltip')"
+            />
+            <span class="sr-only">{{ t(field.key + 'Tooltip') }}</span>
+          </span>
+          @if (field.multiline) {
+            <pre class="whitespace-pre-wrap wrap-break-word">{{ field.value }}</pre>
+          } @else {
+            <span class="break-all">{{ field.value }}</span>
+          }
+        </div>
+        <button
+          #copyButton
+          type="button"
+          class="flex shrink-0 cursor-pointer items-center gap-1 text-agridata-primary-600 hover:underline"
+          [attr.data-testid]="'copy-' + field.key"
+          (click)="copyFeedback.copy(field.value, $event, copyButton)"
+        >
+          <fa-icon [icon]="faCopy" />
+          {{ t('copy') }}
+          <span class="sr-only">{{ t(field.key) }}</span>
+        </button>
+      </div>
+    }
+  </div>
+  <output class="sr-only">
+    {{ copyFeedback.message() }}
+  </output>
+</ng-container>
