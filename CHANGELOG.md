@@ -1,3 +1,9 @@
+## [1.24.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.11...v1.24.0-rc.12) (2026-11-03)
+
+### Features
+
+- **state-service:** remove unused localStorage save ([30356c6](https://github.com/agridata-ch/frontend/commit/30356c63e2c99dfd726c47ded5bfd6de234dbf6c)), references [DIGIB2-1050](https://github.com/agridata-ch/frontend/issues/-1050)
+
 ## [1.24.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.10...v1.24.0-rc.11) (2026-11-03)
 
 ### Features
