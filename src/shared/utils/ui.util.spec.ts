@@ -6,6 +6,7 @@ import {
   calculateVerticalPlacement,
   copyToClipboard,
   createOpenAboveSignal,
+  formatTemplate,
   VerticalPlacement,
 } from './ui.util';
 
@@ -163,6 +164,44 @@ describe('UI Utils', () => {
       writeTextMock.mockRejectedValueOnce(testError);
 
       await expect(copyToClipboard('test')).rejects.toThrow('Clipboard access denied');
+    });
+  });
+
+  describe('formatTemplate', () => {
+    it.each([
+      ['compact JSON', '{"a":{"b":"{{uid}}"}}', '{\n  "a": {\n    "b": "{{uid}}"\n  }\n}'],
+      [
+        'compact XML',
+        '<?xml version="1.0"?><root><item id="1">{{uid}}</item><empty/></root>',
+        '<?xml version="1.0"?>\n<root>\n  <item id="1">{{uid}}</item>\n  <empty/>\n</root>',
+      ],
+      [
+        'JSON with unquoted placeholders',
+        '{"unitIdentifiers":[{"unitIdentifier":"{{bur}}","type":"BurId"}],"inspectionDomainIds":["01.2"],"pageOffset":{{pageOffset}},"pageSize":{{pageSize}}}',
+        [
+          '{',
+          '  "unitIdentifiers": [',
+          '    {',
+          '      "unitIdentifier": "{{bur}}",',
+          '      "type": "BurId"',
+          '    }',
+          '  ],',
+          '  "inspectionDomainIds": [',
+          '    "01.2"',
+          '  ],',
+          '  "pageOffset": {{pageOffset}},',
+          '  "pageSize": {{pageSize}}',
+          '}',
+        ].join('\n'),
+      ],
+      [
+        'JSON strings with structural characters and empty containers',
+        '{"a":"x, {y}: \\"z\\"","b":{},"c":[]}',
+        '{\n  "a": "x, {y}: \\"z\\"",\n  "b": {},\n  "c": []\n}',
+      ],
+      ['plain text', 'POST /path', 'POST /path'],
+    ])('formats %s', (_label, template, expected) => {
+      expect(formatTemplate(template)).toBe(expected);
     });
   });
 });

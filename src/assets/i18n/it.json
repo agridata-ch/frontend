@@ -72,9 +72,9 @@
         "title": "Panoramica dell'azienda e delle sedi",
         "description": {
           "consentRequired": {
-            "noBur": "Questa richiesta riguarda la vostra azienda (UID). Il consenso si applica all'intera azienda a livello operativo. Poiché questa richiesta non è specifica per una sede, non vengono elencate singole sedi operative (BUR).",
-            "singleBur": "Questa richiesta riguarda la vostra azienda (UID) e la relativa sede (BUR). Il consenso si applica all'azienda e alla sede.",
-            "multipleBur": "Questa richiesta riguarda la vostra azienda (UID) e le relative sedi (BUR). Il consenso per l'azienda è sempre valido. In linea di massima, acconsentirete alle sedi richieste, ma potete escludere singole sedi dalla richiesta tramite \"Modifica sedi\"."
+            "noBur": "Questa richiesta riguarda la vostra azienda (IDI). Il consenso si applica all'intera azienda a livello operativo. Poiché questa richiesta non è specifica per una sede, non vengono elencate singole sedi operative (BUR).",
+            "singleBur": "Questa richiesta riguarda la vostra azienda (IDI) e la relativa sede (BUR). Il consenso si applica all'azienda e alla sede.",
+            "multipleBur": "Questa richiesta riguarda la vostra azienda (IDI) e le relative sedi (BUR). Il consenso per l'azienda è sempre valido. In linea di massima, acconsentirete alle sedi richieste, ma potete escludere singole sedi dalla richiesta tramite \"Modifica sedi\"."
           },
           "legallyPermitted": {
             "noBur": "Questa richiesta riguarda la sua impresa (IDI). Su base di diritto pubblico, l'utilizzo si applica all'intera impresa a livello aziendale. Poiché questa richiesta non è specifica per una sede, non viene elencata alcuna stabilimento (RSI).",
@@ -83,7 +83,7 @@
           }
         },
         "uidGroupTitle": "La mia azienda richiesta",
-        "uid": "Identificazione dell'azienda (UID)",
+        "uid": "Identificazione dell'azienda (IDI)",
         "bur": {
           "title": "Numero di stabile (BUR)",
           "enabled": "Selezionato",
@@ -242,7 +242,7 @@
           "placeholder": "Nome"
         },
         "uid": {
-          "label": "UID",
+          "label": "IDI",
           "placeholder": "CHEXXXXXXXXX",
           "prefix": "CHE"
         },
@@ -455,7 +455,7 @@
           "open": "Aperto",
           "granted": "Approvato",
           "declined": "Rifiutato",
-          "uid": "UID",
+          "uid": "IDI",
           "bur": "BUR",
           "withdrawn": "Terminata",
           "export": {
@@ -471,13 +471,13 @@
         "addButton": "Richiedi produttore",
         "modal": {
           "title": "Richiedi produttore",
-          "description": "Per includere nuove aziende nella richiesta, è necessario interrogare i produttori tramite la loro UID. Successivamente, è possibile selezionare dall'elenco delle sedi operative. È possibile controllare la richiesta anche tramite l'API.",
-          "uidLabel": "UID",
+          "description": "Per includere nuove aziende nella richiesta, è necessario interrogare i produttori tramite la loro IDI. Successivamente, è possibile selezionare dall'elenco delle sedi operative. È possibile controllare la richiesta anche tramite l'API.",
+          "uidLabel": "IDI",
           "uidPlaceholder": "CHE000000000",
           "cancel": "Annulla",
           "confirm": "Aggiungi {{ count }} richiesta(e)",
           "uidInvalid": "formato non valido",
-          "noResults": "l'UID inserito non è stato trovato",
+          "noResults": "l'IDI inserito non è stato trovato",
           "burSection": {
             "title": "Sedi operative",
             "description": "Seleziona dall'elenco le sedi operative che desideri richiedere.",
@@ -493,14 +493,14 @@
             "title": "Aggiunta produttori fallita",
             "message": "Qualcosa è andato storto durante l'aggiunta degli stabilimenti: {{ error }}"
           },
-          "noBurs": "Per questo UID non sono disponibili sedi operative",
+          "noBurs": "Per questo IDI non sono disponibili sedi operative",
           "withdraw": {
             "burSection": {
               "noRequest": "Nessuna richiesta disponibile",
               "description": "Selezionate dall’elenco le sedi operative per le quali desiderate rimuovere le richieste."
             },
             "title": "Terminare la/e richiesta/e",
-            "description": "Per terminare le richieste, è possibile terminare la richiesta completa tramite l’UID. In questo modo verranno terminate anche tutte le sedi operative associate. In alternativa, è possibile terminare la richiesta per singole sedi operative selezionandole dall’elenco.\nÈ inoltre possibile gestire le richieste tramite l’API.",
+            "description": "Per terminare le richieste, è possibile terminare la richiesta completa tramite l’IDI. In questo modo verranno terminate anche tutte le sedi operative associate. In alternativa, è possibile terminare la richiesta per singole sedi operative selezionandole dall’elenco.\nÈ inoltre possibile gestire le richieste tramite l’API.",
             "confirmPartial": "{{ count }} richiesta/e da terminare",
             "confirmComplete": "Terminare l’intera richiesta",
             "success": {
@@ -673,7 +673,7 @@
       },
       "viewContract": "Visualizza il contratto"
     },
-    "uid": "UID",
+    "uid": "IDI",
     "bur": "BUR",
     "lastChanged": "Modificato il"
   },
@@ -708,7 +708,7 @@
       "description": "Grazie per aver scelto il nostro serviziodi aver effettuato la tua scelta. Verrai reindirizzato automaticamente tra {{ count }} secondi.",
       "redirectNow": "Direttamente indietro"
     },
-    "uidMissingWarning": "Al momento non è ancora presente alcun numero UID relativo alla Sua persona o alla Sua azienda. Poiché sono coinvolti diversi sistemi, potrebbero essere necessari alcuni giorni prima che disponiamo di tutti i dati necessari per il corretto funzionamento di agridata.ch. La preghiamo di riprovare tra qualche giorno. Se il problema persiste, la preghiamo di contattare l'assistenza ({{ phoneNumber }}).",
+    "uidMissingWarning": "Al momento non è ancora presente alcun numero IDI relativo alla Sua persona o alla Sua azienda. Poiché sono coinvolti diversi sistemi, potrebbero essere necessari alcuni giorni prima che disponiamo di tutti i dati necessari per il corretto funzionamento di agridata.ch. La preghiamo di riprovare tra qualche giorno. Se il problema persiste, la preghiamo di contattare l'assistenza ({{ phoneNumber }}).",
     "migrationInfo": {
       "maf": {
         "title": "Sono ora disponibili nuove richieste di dati da “Mia condivisione dei dati agricoli (MAF)”",
@@ -1447,7 +1447,14 @@
         "pathTemplate": "Template percorso URL",
         "requestTemplate": "Template del Request-Body",
         "productId": "ID prodotto",
-        "flowCode": "Modalità di trasferimento"
+        "flowCode": "Modalità di trasferimento",
+        "copy": "Copia",
+        "copied": "Valore copiato",
+        "productIdTooltip": "Numero univoco con cui è possibile identificare il prodotto dati.",
+        "flowCodeTooltip": "Definisce quando e come viene verificato se sono presenti i consensi necessari per la trasmissione del prodotto dati.",
+        "pathTemplateTooltip": "Specifica come deve essere strutturato l'indirizzo tramite il quale gli acquirenti di dati interrogano il prodotto dati dall'API.",
+        "requestTemplateTooltip": "Modello che definisce come deve essere strutturato il contenuto (body) della richiesta che il fruitore dei dati invia al fornitore dei dati.",
+        "copyFailed": "Copiatura non riuscita"
       }
     },
     "list": {
@@ -1486,11 +1493,11 @@
   },
   "agb-acceptances": {
     "pageTitle": "Consensi degli utenti",
-    "searchPlaceholder": "Cerca per UID",
+    "searchPlaceholder": "Cerca per IDI",
     "table": {
       "name": "Nome",
       "email": "Email",
-      "uid": "UID",
+      "uid": "IDI",
       "lastAccepted": "Ultima accettazione",
       "acceptedVersion": "Versione accettata",
       "state": "Stato"

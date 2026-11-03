@@ -1447,7 +1447,14 @@
         "pathTemplate": "URL-Pfad-Template",
         "requestTemplate": "Request-Body Template",
         "productId": "Produkt ID",
-        "flowCode": "Übertragungsmodus"
+        "flowCode": "Übertragungsmodus",
+        "copy": "Kopieren",
+        "copied": "Wert kopiert",
+        "productIdTooltip": "Eindeutige Nummer, mit der sich das Datenprodukt identifizieren lässt.",
+        "flowCodeTooltip": "Legt fest, wann und wie geprüft wird, ob die nötigen Zustimmungen für die Übertragung des Datenprodukts vorliegen.",
+        "pathTemplateTooltip": "Gibt an, wie die Adresse aufgebaut sein muss, über die Datenbezüger das Datenprodukt bei der API abfragen.",
+        "requestTemplateTooltip": "Vorlage, die festlegt, wie der Inhalt (Body) der Anfrage aufgebaut sein muss, die der Datenbezüger an den Datenanbieter sendet.",
+        "copyFailed": "Kopieren fehlgeschlagen"
       }
     },
     "list": {

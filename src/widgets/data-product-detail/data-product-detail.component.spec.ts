@@ -6,7 +6,6 @@ import { DataProductSource } from '@/entities/api';
 import {
   DataProductDocumentMetadataDto,
   DocumentScanStatusEnum,
-  FlowCodeEnum,
   PublicDataProductDto,
 } from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
@@ -107,69 +106,6 @@ describe('DataProductDetailComponent', () => {
     });
   });
 
-  describe('hasLinks', () => {
-    it('is true when the product has links', async () => {
-      componentRef.setInput('productId', 'product-1');
-      fixture.detectChanges();
-      await fixture.whenStable();
-
-      expect(component['hasLinks']()).toBe(true);
-    });
-
-    it('is false when the product has no links', async () => {
-      source.getProduct.mockResolvedValue({ ...product(), links: [] });
-      componentRef.setInput('productId', 'product-1');
-      fixture.detectChanges();
-      await fixture.whenStable();
-
-      expect(component['hasLinks']()).toBe(false);
-    });
-  });
-
-  describe('handleDownload', () => {
-    it('downloads the document through the source', async () => {
-      componentRef.setInput('productId', 'product-1');
-      fixture.detectChanges();
-      await fixture.whenStable();
-
-      component['handleDownload'](doc('doc-1'));
-      await fixture.whenStable();
-
-      expect(source.downloadDocument).toHaveBeenCalledWith('product-1', 'doc-1');
-    });
-
-    it('does nothing when there is no product id', () => {
-      fixture.detectChanges();
-
-      component['handleDownload'](doc('doc-1'));
-
-      expect(source.downloadDocument).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('handleOpen', () => {
-    it('opens the document through the source', async () => {
-      const openSpy = vi.spyOn(globalThis, 'open').mockImplementation(() => null);
-      componentRef.setInput('productId', 'product-1');
-      fixture.detectChanges();
-      await fixture.whenStable();
-
-      component['handleOpen'](doc('doc-1'));
-      await fixture.whenStable();
-
-      expect(source.downloadDocument).toHaveBeenCalledWith('product-1', 'doc-1');
-      openSpy.mockRestore();
-    });
-
-    it('does nothing when there is no product id', () => {
-      fixture.detectChanges();
-
-      component['handleOpen'](doc('doc-1'));
-
-      expect(source.downloadDocument).not.toHaveBeenCalled();
-    });
-  });
-
   describe('tabs', () => {
     const load = async (id = 'product-1'): Promise<void> => {
       componentRef.setInput('productId', id);
@@ -178,41 +114,22 @@ describe('DataProductDetailComponent', () => {
       fixture.detectChanges();
     };
 
-    const openTechnicalTab = (): string => {
+    const openTechnicalTab = (): void => {
       const technicalTab: HTMLButtonElement =
         fixture.nativeElement.querySelectorAll('[role="tab"]')[1];
       technicalTab.click();
       fixture.detectChanges();
-      return fixture.nativeElement.textContent;
     };
 
-    it('shows the id, flow code and templates on the technical tab', async () => {
-      source.getProduct.mockResolvedValue({
-        ...product(),
-        flowCode: FlowCodeEnum.BurBasedPreValidation,
-        restClientPathTemplate: '/api/{{bur}}',
-        restClientRequestTemplate: '{ "a": 1 }',
-      });
+    it('switches to the technical tab content', async () => {
       await load();
 
-      const text = openTechnicalTab();
+      openTechnicalTab();
 
-      expect(text).toContain('product-1');
-      expect(text).toContain(FlowCodeEnum.BurBasedPreValidation);
-      expect(text).toContain('/api/{{bur}}');
-      expect(text).toContain('{ "a": 1 }');
-      expect(fixture.nativeElement.querySelector('app-agridata-links-list')).toBeNull();
-    });
-
-    it('shows only the id when the optional technical fields are missing', async () => {
-      await load();
-
-      const text = openTechnicalTab();
-
-      expect(text).toContain('product.technical.productId');
-      expect(text).not.toContain('product.technical.flowCode');
-      expect(text).not.toContain('product.technical.pathTemplate');
-      expect(text).not.toContain('product.technical.requestTemplate');
+      expect(
+        fixture.nativeElement.querySelector('app-data-product-detail-technical'),
+      ).not.toBeNull();
+      expect(fixture.nativeElement.querySelector('app-data-product-detail-general')).toBeNull();
     });
 
     it('resets to the general tab when another product is selected', async () => {

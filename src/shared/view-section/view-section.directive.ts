@@ -1,10 +1,10 @@
-import { Directive, input } from '@angular/core';
+import { booleanAttribute, Directive, input } from '@angular/core';
 
 /**
  * Applies the view-mode container styling (border + dividers) to the host element.
  * Classes are added in view mode and removed in edit mode.
  *
- * CommentLastReviewed: 2026-06-16
+ * CommentLastReviewed: 2026-11-03
  */
 @Directive({
   selector: '[appViewSection]',
@@ -17,5 +17,5 @@ import { Directive, input } from '@angular/core';
   },
 })
 export class ViewSectionDirective {
-  readonly isViewMode = input.required<boolean>();
+  readonly isViewMode = input(false, { transform: booleanAttribute });
 }
