@@ -24,3 +24,8 @@ export enum HrefTarget {
   Self = '_self',
   Blank = '_blank',
 }
+
+export enum ButtonSize {
+  LG = 'lg',
+  MD = 'md',
+}

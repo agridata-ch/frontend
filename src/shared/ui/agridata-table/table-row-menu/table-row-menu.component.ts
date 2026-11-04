@@ -6,7 +6,7 @@ import { FontAwesomeModule, IconDefinition } from '@fortawesome/angular-fontawes
 import { ClickOutsideDirective } from '@/shared/click-outside/click-outside.directive';
 import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import { I18nPipe } from '@/shared/i18n';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 
 export interface ActionDto {
   icon?: IconDefinition;
@@ -44,6 +44,7 @@ export class TableRowMenuComponent {
   protected readonly isOpen = signal(false);
 
   // Constants
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly iconEllipsis = faEllipsisVertical;
   protected faSpinnerThird = faSpinnerThird;

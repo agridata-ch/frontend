@@ -42,7 +42,7 @@ import {
 } from '@/shared/ui/agridata-client-table';
 import { CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
 import { BadgeSize } from '@/shared/ui/badge';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { ConsentRequestEmptyStateComponent } from '@/widgets/consent-request-empty-state';
 import { ConsentRequestFilterComponent } from '@/widgets/consent-request-table/consent-request-filter';
@@ -273,6 +273,7 @@ export class ConsentRequestTableComponent {
     return key ? this.i18nService.translate(key) : '';
   }
 
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly ConsentRequestStateEnum = ConsentRequestStateEnum;
   protected readonly isOpenAggregationState = isOpenAggregationState;

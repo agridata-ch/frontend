@@ -1,4 +1,7 @@
-<div class="flex flex-col gap-4" *i18n="let t; prefix: 'data-request.privacy'; lang: lang()">
+<div
+  class="flex flex-col gap-4 items-start"
+  *i18n="let t; prefix: 'data-request.privacy'; lang: lang()"
+>
   <h4>{{ t('title') }}</h4>
   @if (isForeignConsumer()) {
     <app-alert
@@ -19,6 +22,7 @@
   </span>
   @if (contractRevisionId(); as revisionId) {
     <app-agridata-button
+      [size]="ButtonSize.MD"
       [variant]="ButtonVariants.IconLink"
       [icon]="faExternalLink"
       [iconPosition]="IconPosition.Right"

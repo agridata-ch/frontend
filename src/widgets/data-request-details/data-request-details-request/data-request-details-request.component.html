@@ -42,10 +42,9 @@
           {{ t('invitationLink.label') }}
         </span>
         <button
-          #copyButton
           type="button"
           class="group cursor-pointer h-fit flex gap-1 text-left font-medium"
-          (click)="copyFeedback.copy(invitationLink(), $event, copyButton)"
+          (click)="copyFeedback.copy(invitationLink(), $event)"
         >
           {{ invitationLink() }}
           <span class="sr-only">{{ t('invitationLink.copyToClipboard') }}</span>

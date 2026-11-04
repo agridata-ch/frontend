@@ -54,6 +54,7 @@
           [length]="6"
         />
         <app-agridata-button
+          [size]="ButtonSize.MD"
           [variant]="ButtonVariants.PrimaryAccept"
           (handleClick)="handleVerifySigning($event)"
           [disabled]="isVerifyDisabled()"
@@ -62,6 +63,7 @@
         </app-agridata-button>
         <div class="flex flex-col text-center">
           <app-agridata-button
+            [size]="ButtonSize.MD"
             [variant]="ButtonVariants.Tertiary"
             (handleClick)="handleResendOtp()"
             [disabled]="isResendDisabled()"
@@ -94,7 +96,11 @@
     <span>
       {{ t('signingHint') }}
     </span>
-    <app-agridata-button [disabled]="!hasMobileNumber()" (handleClick)="handleStartSigning()">
+    <app-agridata-button
+      [disabled]="!hasMobileNumber()"
+      (handleClick)="handleStartSigning()"
+      [size]="ButtonSize.MD"
+    >
       {{ t('signingButton') }}
     </app-agridata-button>
   }

@@ -78,8 +78,9 @@
       [contract]="contractRevision"
       [dataRequestStateCode]="dataRequest().stateCode"
     />
-    <div class="flex py-3 px-4 border border-agridata-stroke rounded-lg">
+    <div class="flex py-0.75 px-4 border border-agridata-stroke rounded-lg">
       <app-agridata-button
+        [size]="ButtonSize.MD"
         [variant]="ButtonVariants.Link"
         [href]="contractAgbUrl()"
         [target]="HrefTarget.Blank"

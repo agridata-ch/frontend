@@ -6,6 +6,7 @@ import { PublicDataProductDto } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createCopyFeedback } from '@/shared/lib/copy-feedback.helper';
 import { TooltipBubbleService, TooltipDirective } from '@/shared/tooltip';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 import { formatTemplate } from '@/shared/utils';
 import { ViewSectionDirective } from '@/shared/view-section';
 
@@ -19,11 +20,17 @@ interface TechnicalField {
  * Technical tab of the data product detail: id, flow code and request templates, each with an
  * info tooltip and a copy-to-clipboard action. Optional fields the product doesn't set are hidden.
  *
- * CommentLastReviewed: 2026-11-02
+ * CommentLastReviewed: 2026-11-04
  */
 @Component({
   selector: 'app-data-product-detail-technical',
-  imports: [FontAwesomeModule, I18nDirective, TooltipDirective, ViewSectionDirective],
+  imports: [
+    ButtonComponent,
+    FontAwesomeModule,
+    I18nDirective,
+    TooltipDirective,
+    ViewSectionDirective,
+  ],
   templateUrl: './data-product-detail-technical.component.html',
 })
 export class DataProductDetailTechnicalComponent {
@@ -32,6 +39,8 @@ export class DataProductDetailTechnicalComponent {
   private readonly i18nService = inject(I18nService);
 
   // Constants
+  protected readonly ButtonSize = ButtonSize;
+  protected readonly ButtonVariants = ButtonVariants;
   protected readonly faCopy = faCopy;
   protected readonly infoIcon = faCircleInfo;
 

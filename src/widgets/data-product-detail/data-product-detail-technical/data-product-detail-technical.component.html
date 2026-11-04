@@ -19,17 +19,17 @@
             <span class="break-all">{{ field.value }}</span>
           }
         </div>
-        <button
-          #copyButton
-          type="button"
-          class="flex shrink-0 cursor-pointer items-center gap-1 text-agridata-primary-600 hover:underline"
-          [attr.data-testid]="'copy-' + field.key"
-          (click)="copyFeedback.copy(field.value, $event, copyButton)"
+        <app-agridata-button
+          [size]="ButtonSize.MD"
+          [variant]="ButtonVariants.IconLink"
+          [icon]="faCopy"
+          additionalClass="shrink-0"
+          [dataTestId]="'copy-' + field.key"
+          (handleClick)="copyFeedback.copy(field.value, $event)"
         >
-          <fa-icon [icon]="faCopy" />
           {{ t('copy') }}
           <span class="sr-only">{{ t(field.key) }}</span>
-        </button>
+        </app-agridata-button>
       </div>
     }
   </div>

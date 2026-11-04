@@ -9,7 +9,7 @@ import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
 import { I18nPipe } from '@/shared/i18n';
 import { generateMediaUrl } from '@/shared/lib/cms';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
-import { ButtonComponent } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize } from '@/shared/ui/button';
 import { CardComponent } from '@/shared/ui/card';
 
 import { ButtonVariants } from './../../../shared/ui/button/button.model';
@@ -39,6 +39,7 @@ export class NewsArticleCardComponent {
   // Constants
   protected readonly BadgeSize = BadgeSize;
   protected readonly BadgeVariant = BadgeVariant;
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly readMoreIcon = faArrowRight;
   protected readonly ROUTES_PATHS = ROUTE_PATHS;

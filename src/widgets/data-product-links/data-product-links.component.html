@@ -24,22 +24,23 @@
             [disabled]="isViewMode"
             class="lg:w-1/2"
           />
-
-          <div>
-            <app-agridata-button
-              [variant]="ButtonVariants.IconLinkReject"
-              [icon]="faTrashCan"
-              (handleClick)="removeLink($index)"
-            >
-              {{ t('links.action.remove') }}
-            </app-agridata-button>
-          </div>
+          <!-- mb-1 optically centers the button with the input -->
+          <app-agridata-button
+            [size]="ButtonSize.MD"
+            [variant]="ButtonVariants.IconLinkReject"
+            [icon]="faTrashCan"
+            (handleClick)="removeLink($index)"
+            additionalClass="mb-1"
+          >
+            {{ t('links.action.remove') }}
+          </app-agridata-button>
         </div>
       </div>
     }
 
     <div>
       <app-agridata-button
+        [size]="ButtonSize.MD"
         [variant]="ButtonVariants.IconLink"
         (handleClick)="addLink()"
         [icon]="faAdd"

@@ -38,7 +38,7 @@ import {
   TableMetadata,
 } from '@/shared/ui/agridata-table';
 import { BadgeSize } from '@/shared/ui/badge';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 import { EmptyStateComponent } from '@/shared/ui/empty-state';
 
 import { ConsentRequestFundamentalViewDtoDirective } from './consent-request-fundamental-view-dto.directive';
@@ -75,6 +75,7 @@ export class DataRequestDetailsProducersComponent {
 
   // Constants
   protected readonly BadgeSize = BadgeSize;
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly addIcon = faPlus;
   protected readonly withdrawIcon = faCircleMinus;

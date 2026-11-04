@@ -22,7 +22,7 @@
     [appTooltip]="tooltipText()"
     (click)="onButtonClick($event)"
     (keydown.enter)="onButtonClick($event)"
-    [class]="`relative agridata-button agridata-button-${variant()} ${selected() ? 'selected' : ''} ${additionalClass()}`"
+    [class]="`relative agridata-button agridata-button-${variant()} agridata-button-${size()} ${selected() ? 'selected' : ''} ${additionalClass()}`"
     [class.success]="showSuccess()"
   >
     @if (isIconLink()) {
@@ -60,7 +60,7 @@
     [attr.data-testid]="dataTestId()"
     [rel]="'noopener noreferrer'"
     [appTooltip]="tooltipText()"
-    [class]="`agridata-button agridata-button-${variant()} ${selected() ? 'selected' : ''} ${additionalClass()}`"
+    [class]="`agridata-button agridata-button-${variant()} agridata-button-${size()} ${selected() ? 'selected' : ''} ${additionalClass()}`"
   >
     <ng-container [ngTemplateOutlet]="content"></ng-container>
   </a>

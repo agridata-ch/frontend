@@ -54,6 +54,7 @@
         <app-agridata-button
           additionalClass="max-md:self-start"
           [ariaLabel]="'common.ariaLabel.close' | i18n"
+          [size]="ButtonSize.MD"
           [variant]="ButtonVariants.Icon"
           [dataTestId]="dataTestId() ? dataTestId() + '-close' : undefined"
           (handleClick)="closeAlert.emit(true)"

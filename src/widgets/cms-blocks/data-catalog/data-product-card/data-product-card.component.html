@@ -49,6 +49,7 @@
   </div>
   <div cardFooter class="flex justify-end">
     <app-agridata-button
+      [size]="ButtonSize.MD"
       [variant]="ButtonVariants.Secondary"
       (handleClick)="handleShowDetails.emit(product().id)"
     >
