@@ -104,10 +104,7 @@
     (closed)="cancelPublish()"
   >
     <div class="flex flex-col gap-4">
-      <span
-        class="whitespace-pre-line text-center"
-        [i18nFormat]="t('publishConfirmation.description')"
-      ></span>
+      <span class="whitespace-pre-line" [i18nFormat]="t('publishConfirmation.description')"></span>
       <div class="flex justify-between gap-2">
         <app-agridata-button [variant]="ButtonVariants.Secondary" (handleClick)="cancelPublish()">
           {{ t('publishConfirmation.cancel') }}

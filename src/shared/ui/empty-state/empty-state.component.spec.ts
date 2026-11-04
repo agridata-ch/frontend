@@ -24,7 +24,7 @@ describe('EmptyStateComponent', () => {
     fixture.componentRef.setInput('title', 'Test Title');
     fixture.detectChanges();
 
-    const heading = fixture.debugElement.query(By.css('h5'));
+    const heading = fixture.debugElement.query(By.css('h4'));
     expect(heading).toBeTruthy();
     expect(heading.nativeElement.textContent.trim()).toBe('Test Title');
   });
@@ -43,7 +43,7 @@ describe('EmptyStateComponent', () => {
     fixture.componentRef.setInput('message', 'Empty State Message');
     fixture.detectChanges();
 
-    const heading = fixture.debugElement.query(By.css('h5'));
+    const heading = fixture.debugElement.query(By.css('h4'));
     const paragraph = fixture.debugElement.query(By.css('p'));
 
     expect(heading.nativeElement.textContent.trim()).toBe('Empty State Title');
