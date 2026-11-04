@@ -1,3 +1,9 @@
+## [1.24.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.12...v1.24.0-rc.13) (2026-11-04)
+
+### Features
+
+- **button:** add md button size ([4efa3eb](https://github.com/agridata-ch/frontend/commit/4efa3eba494bcc6fdd7ba2ad48b15912cced935b)), references [DIGIB2-1772](https://github.com/agridata-ch/frontend/issues/-1772)
+
 ## [1.24.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.11...v1.24.0-rc.12) (2026-11-03)
 
 ### Features
