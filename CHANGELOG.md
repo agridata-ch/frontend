@@ -1,3 +1,9 @@
+## [1.24.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.13...v1.24.0-rc.14) (2026-11-04)
+
+### Bug Fixes
+
+- **notifications:** mark as read on open ([22b258a](https://github.com/agridata-ch/frontend/commit/22b258abbceda77a85fbd6a08634a652d68a086a)), references [DIGIB2-1595](https://github.com/agridata-ch/frontend/issues/-1595)
+
 ## [1.24.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.12...v1.24.0-rc.13) (2026-11-04)
 
 ### Features
