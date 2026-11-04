@@ -37,7 +37,7 @@ import { EmptyStateComponent } from '@/shared/ui/empty-state';
 /**
  * Displays all notifications in a server-side paginated table with mark-as-read actions.
  *
- * CommentLastReviewed: 2026-05-28
+ * CommentLastReviewed: 2026-11-04
  */
 @Component({
   selector: 'app-notification-center-page',
@@ -131,8 +131,9 @@ export class NotificationCenterPageComponent {
     ],
     showRowActionButton: true,
     rowAction: (item) => {
+      if (!item.isRead) void this.handleToggleReadStatus(item);
       const route = getNotificationRoute(item, this.authService);
-      if (route) this.router.navigateByUrl(route);
+      if (route) void this.router.navigateByUrl(route);
     },
   }));
 
@@ -157,7 +158,7 @@ export class NotificationCenterPageComponent {
   // Methods
   protected handleMarkAllAsRead = () => {
     this.isLoadingMarkAllAsRead.set(true);
-    markAllAsRead(
+    void markAllAsRead(
       this.fetchNotificationsResource.value()?.items ?? [],
       this.notificationService,
       this.toastService,

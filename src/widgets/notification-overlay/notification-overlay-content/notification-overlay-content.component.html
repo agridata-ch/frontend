@@ -9,7 +9,6 @@
         <app-agridata-button
           [variant]="ButtonVariants.Tertiary"
           (handleClick)="navigateToNotifications()"
-          [icon]="faLink"
           [iconPosition]="IconPosition.Right"
         >
           {{ t('showAll') }}
@@ -23,38 +22,37 @@
         appScrollFade
       >
         @for (notification of notifications(); track notification.id) {
-          <a
-            class="flex gap-4 px-3 py-3 pr-1 justify-between hover:bg-agridata-content-gray cursor-pointer"
-            [routerLink]="notificationRoutes().get(notification.id!)"
-          >
-            <div class="flex flex-col gap-1">
-              <span class="text-sm font-semibold">
+          <div class="flex gap-4 pr-1 justify-between hover:bg-agridata-content-gray">
+            <a
+              class="flex flex-col gap-1 grow px-3 py-3 cursor-pointer"
+              [routerLink]="notificationRoutes().get(notification.id!)"
+              (click)="handleOpenNotification(notification)"
+              [class.font-semibold]="!notification.isRead"
+            >
+              <span class="text-sm">
                 {{ i18nService.useObjectTranslation(notification.title) }}
               </span>
-              <span
-                class="text-sm font-semibold text-agridata-primary-600 agridata-ellipsis-multiline"
-              >
+              <span class="text-sm text-agridata-primary-600 agridata-ellipsis-multiline">
                 {{ i18nService.useObjectTranslation(notification.text) }}
               </span>
               <span class="text-xs text-agridata-tertiary-text">
                 {{ notification.createdAt | agridataDate: 'middle' }}
               </span>
-            </div>
-            <div class="flex grow items-center justify-end">
-              <div
-                click-stop-propagation
-                class="flex items-center justify-center border border-transparent transition-all duration-300 rounded-full w-10 h-10 hover:border-gray-400"
+            </a>
+            <div class="flex items-center">
+              <button
+                type="button"
+                class="flex items-center justify-center border border-transparent transition-all duration-300 rounded-full w-10 h-10 hover:border-gray-400 cursor-pointer"
+                [attr.aria-label]="notification.isRead ? t('markAsUnread') : t('markAsRead')"
                 (click)="handleToggleReadStatus(notification)"
-                (keydown)="handleToggleReadStatus(notification)"
-                [title]="notification.isRead ? t('markAsUnread') : t('markAsRead')"
               >
-                <div
+                <span
                   class="w-2 h-2 rounded-full border-2 border-agridata-brand-green"
                   [class.bg-agridata-brand-green]="!notification.isRead"
-                ></div>
-              </div>
+                ></span>
+              </button>
             </div>
-          </a>
+          </div>
         }
       </div>
       <app-agridata-button
@@ -70,8 +68,6 @@
       <app-agridata-button
         [variant]="ButtonVariants.Tertiary"
         (handleClick)="navigateToNotifications()"
-        [icon]="faLink"
-        [iconPosition]="IconPosition.Right"
       >
         {{ t('showAll') }}
       </app-agridata-button>

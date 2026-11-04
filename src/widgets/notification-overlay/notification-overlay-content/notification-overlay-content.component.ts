@@ -1,12 +1,11 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { faExternalLink, faEye } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faEye } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { faMailbox } from '@awesome.me/kit-0b6d1ed528/icons/duotone/light';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { NotificationService } from '@/entities/api/notification.service';
 import { InboxEntryDto } from '@/entities/openapi';
-import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AgridataDatePipe } from '@/shared/date/agridata-date.pipe';
 import { I18nDirective, I18nService } from '@/shared/i18n';
@@ -19,7 +18,7 @@ import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/butto
 /**
  * Component for displaying the content of the notification overlay, including a list of notifications with their details.
  *
- * CommentLastReviewed: 2026-05-06
+ * CommentLastReviewed: 2026-11-04
  */
 @Component({
   selector: 'app-notification-overlay-content',
@@ -30,7 +29,6 @@ import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/butto
     FontAwesomeModule,
     ScrollFadeDirective,
     RouterLink,
-    ClickStopPropagationDirective,
   ],
   templateUrl: './notification-overlay-content.component.html',
 })
@@ -49,7 +47,6 @@ export class NotificationOverlayContentComponent {
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly faEye = faEye;
   protected readonly faMailbox = faMailbox;
-  protected readonly faLink = faExternalLink;
   protected readonly IconPosition = IconPosition;
 
   // Signals
@@ -64,6 +61,10 @@ export class NotificationOverlayContentComponent {
   );
 
   // Methods
+  protected readonly handleOpenNotification = (notification: InboxEntryDto) => {
+    if (!notification.isRead) void this.handleToggleReadStatus(notification);
+  };
+
   protected readonly handleToggleReadStatus = (notification: InboxEntryDto) =>
     toggleReadStatus(notification, this.notificationService, this.toastService, this.i18nService);
 

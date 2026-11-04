@@ -24,34 +24,40 @@
     [(queryParameters)]="resourceQueryDto"
   >
     <ng-template #titleTemplate let-item>
-      <span class="agridata-ellipsis-multiline">
+      <span class="agridata-ellipsis-multiline" [class.font-semibold]="!item.isRead">
         {{ i18nService.useObjectTranslation(item.title) }}
       </span>
     </ng-template>
 
     <ng-template #textTemplate let-item>
-      <span class="text-sm font-semibold text-agridata-primary-600 agridata-ellipsis-multiline">
+      <span
+        class="text-sm text-agridata-primary-600 agridata-ellipsis-multiline"
+        [class.font-semibold]="!item.isRead"
+      >
         {{ i18nService.useObjectTranslation(item.text) }}
       </span>
     </ng-template>
 
     <ng-template #dateTemplate let-item>
-      {{ item.createdAt | agridataDate: 'middle' }}
+      <span [class.font-semibold]="!item.isRead">{{
+        item.createdAt | agridataDate: 'middle'
+      }}</span>
     </ng-template>
 
     <ng-template #actionTemplate let-item>
-      <div
+      <button
+        type="button"
         click-stop-propagation
-        class="flex items-center justify-center border border-transparent transition-all duration-300 rounded-full w-10 h-10 hover:border-gray-400"
+        class="flex items-center justify-center border border-transparent transition-all duration-300 rounded-full w-10 h-10 hover:border-gray-400 cursor-pointer"
+        [attr.aria-label]="item.isRead ? t('markAsUnread') : t('markAsRead')"
         (click)="handleToggleReadStatus(item)"
-        (keydown)="handleToggleReadStatus(item)"
-        [title]="item.isRead ? t('markAsUnread') : t('markAsRead')"
+        (keydown.enter)="$event.stopPropagation()"
       >
-        <div
+        <span
           class="w-2 h-2 rounded-full border-2 border-agridata-brand-green"
           [class.bg-agridata-brand-green]="!item.isRead"
-        ></div>
-      </div>
+        ></span>
+      </button>
     </ng-template>
 
     <ng-template #emptyStateTemplate>
