@@ -1,7 +1,7 @@
 import { Component, input, model } from '@angular/core';
 
 import { I18nPipe } from '@/shared/i18n';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 
 export interface FilterOption {
   label: string;
@@ -22,6 +22,7 @@ export interface FilterOption {
 })
 export class FilterButtonsComponent {
   // Constants
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
 
   // Input properties

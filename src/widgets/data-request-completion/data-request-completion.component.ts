@@ -16,7 +16,7 @@ import { contractAgbUrl } from '@/shared/lib/cms';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { BadgeSize } from '@/shared/ui/badge';
-import { ButtonComponent, ButtonVariants, HrefTarget } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants, HrefTarget } from '@/shared/ui/button';
 import { DataRequestContractPdfComponent } from '@/widgets/data-request-contract-pdf';
 
 import { DataRequestCompletionSigningStatusComponent } from './data-request-completion-signing-status';
@@ -54,6 +54,7 @@ export class DataRequestCompletionComponent {
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
   protected readonly BadgeSize = BadgeSize;
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly HrefTarget = HrefTarget;
   protected readonly agbButtonIcon = faArrowUpRightFromSquare;

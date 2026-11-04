@@ -7,7 +7,7 @@ import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nFormatDirective, I18nService } from '@/shared/i18n';
 import { createDocumentDownloadHandler } from '@/shared/lib/document-download.helper';
 import { AlertComponent, AlertType } from '@/shared/ui/alert';
-import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/button';
+import { ButtonComponent, ButtonVariants, IconPosition, ButtonSize } from '@/shared/ui/button';
 
 /**
  * Displays the privacy information of a data-request. It renders a static title and a description
@@ -29,6 +29,7 @@ export class DataRequestPrivacyInfosComponent {
 
   // Constants
   protected readonly AlertType = AlertType;
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly faExternalLink = faExternalLink;
   protected readonly IconPosition = IconPosition;

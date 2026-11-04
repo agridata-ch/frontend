@@ -34,7 +34,7 @@ describe('createCopyFeedback', () => {
   });
 
   it('copies the value and shows the success message at the cursor', async () => {
-    await copyFeedback.copy('value', pointerClick(), document.createElement('button'));
+    await copyFeedback.copy('value', pointerClick());
 
     expect(writeText).toHaveBeenCalledWith('value');
     expect(copyFeedback.message()).toBe('prefix.copied');
@@ -53,10 +53,18 @@ describe('createCopyFeedback', () => {
     });
   });
 
-  it('anchors the bubble to the trigger on keyboard activation', async () => {
+  it.each([
+    ['a keyboard click', new MouseEvent('click', { detail: 0 })],
+    ['an Enter keydown', new KeyboardEvent('keydown', { key: 'Enter' })],
+  ])('anchors the bubble to the trigger on %s', async (_label, event) => {
     const button = document.createElement('button');
+    let copied: Promise<void> = Promise.resolve();
+    button.addEventListener(event.type, (dispatched) => {
+      copied = copyFeedback.copy('value', dispatched);
+    });
 
-    await copyFeedback.copy('value', new MouseEvent('click', { detail: 0 }), button);
+    button.dispatchEvent(event);
+    await copied;
 
     expect(showTransient.mock.calls[0][1]()).toEqual(button.getBoundingClientRect());
   });
@@ -64,13 +72,13 @@ describe('createCopyFeedback', () => {
   it('shows the failure message when the clipboard write rejects', async () => {
     writeText.mockRejectedValue(new Error('denied'));
 
-    await copyFeedback.copy('value', pointerClick(), document.createElement('button'));
+    await copyFeedback.copy('value', pointerClick());
 
     expect(copyFeedback.message()).toBe('prefix.copyFailed');
   });
 
   it('clears the message when the bubble hides', async () => {
-    await copyFeedback.copy('value', pointerClick(), document.createElement('button'));
+    await copyFeedback.copy('value', pointerClick());
 
     showTransient.mock.calls[0][3]();
 
@@ -82,8 +90,8 @@ describe('createCopyFeedback', () => {
     showTransient.mockImplementation(() => showTransient.mock.calls.at(-2)?.[3]());
     writeText.mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('denied'));
 
-    await copyFeedback.copy('first', pointerClick(), document.createElement('button'));
-    await copyFeedback.copy('second', pointerClick(), document.createElement('button'));
+    await copyFeedback.copy('first', pointerClick());
+    await copyFeedback.copy('second', pointerClick());
 
     expect(copyFeedback.message()).toBe('prefix.copyFailed');
   });

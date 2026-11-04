@@ -121,6 +121,7 @@
   @if (!isDisabled() && showEditButton()) {
     @if (isViewMode()) {
       <app-agridata-button
+        [size]="ButtonSize.MD"
         [variant]="ButtonVariants.IconLink"
         (handleClick)="editAction.emit()"
         additionalClass="h-fit"

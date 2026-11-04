@@ -16,6 +16,7 @@
         </h5>
         @if ($index > 0 && !formDisabled()) {
           <app-agridata-button
+            [size]="ButtonSize.MD"
             [variant]="ButtonVariants.Tertiary"
             (handleClick)="removeAdvantage($index)"
           >
@@ -46,6 +47,7 @@
   <div>
     @if (!formDisabled()) {
       <app-agridata-button
+        [size]="ButtonSize.MD"
         [variant]="ButtonVariants.IconLink"
         (handleClick)="addAdvantage()"
         [icon]="faAdd"

@@ -79,6 +79,7 @@
           <div class="flex grow w-full justify-end flex-col gap-2 items-end">
             @if (!store.editMode()) {
               <app-agridata-button
+                [size]="ButtonSize.MD"
                 [variant]="ButtonVariants.IconLink"
                 [icon]="editIcon"
                 [dataTestId]="'consent-request-decisions-edit'"

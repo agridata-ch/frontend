@@ -1,6 +1,7 @@
 <div class="flex gap-4 flex-wrap">
   @for (option of options(); track option.value) {
     <app-agridata-button
+      [size]="ButtonSize.MD"
       [variant]="ButtonVariants.Filter"
       (handleClick)="handleClick(option.value)"
       [selected]="selectedValue() === option.value"

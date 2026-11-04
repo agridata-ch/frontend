@@ -6,7 +6,7 @@ import { I18nDirective } from '@/shared/i18n';
 import { MultiSelectOption } from '@/shared/ui/agridata-multi-select';
 import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
 import { PAGE_SIZES } from '@/shared/ui/agridata-table';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 
 /**
  * Renders a pagination component, allowing the user to navigate between the pages and select the number of items / page
@@ -33,6 +33,7 @@ export class TablePaginationComponent {
   });
   protected readonly faChevronLeft = faChevronLeft;
   protected readonly faChevronRight = faChevronRight;
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
 
   protected navigateToPreviousPage(): void {

@@ -11,7 +11,7 @@ import { faClose } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { I18nPipe } from '@/shared/i18n';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 import { lockPageScroll } from '@/shared/utils';
 
 /**
@@ -38,6 +38,7 @@ export class SidepanelComponent {
 
   readonly closeSidepanel = output<void>();
 
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly closeIcon = faClose;
   protected readonly sidepanelContent = viewChild<ElementRef>('sidepanelContent');

@@ -19,7 +19,7 @@ import { createFormControl, getFormControl } from '@/shared/lib/form.helper';
 import { ToastService, ToastType } from '@/shared/toast';
 import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { AgridataBadgeComponent } from '@/shared/ui/badge';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonVariants, ButtonSize } from '@/shared/ui/button';
 import { ControlTypes, FormControlComponent } from '@/shared/ui/form-control';
 import { startCountdown } from '@/shared/utils';
 import {
@@ -102,6 +102,7 @@ export class ContractSignatureInputComponent {
 
   // Constants
   protected readonly AlertType = AlertType;
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly ControlTypes = ControlTypes;
 

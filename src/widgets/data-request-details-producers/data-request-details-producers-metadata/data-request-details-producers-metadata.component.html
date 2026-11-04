@@ -5,6 +5,7 @@
   <div class="flex items-center justify-between gap-4">
     <h4>{{ t('title') }}</h4>
     <app-agridata-button
+      [size]="ButtonSize.MD"
       [variant]="ButtonVariants.IconLink"
       [icon]="faDownload"
       [loading]="isExporting()"

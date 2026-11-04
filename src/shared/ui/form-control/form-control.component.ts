@@ -28,7 +28,7 @@ import {
 import { AgridataSelectComponent } from '@/shared/ui/agridata-select';
 import { AgridataTextareaComponent } from '@/shared/ui/agridata-textarea';
 import { AgridataWysiwygComponent } from '@/shared/ui/agridata-wysiwyg';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 
 import { ControlTypes } from './form-control.model';
 
@@ -86,9 +86,10 @@ export class FormControlComponent {
   readonly saveAction = output<void>();
   readonly cancelAction = output<void>();
 
-  readonly ControlTypes = ControlTypes;
-  readonly ButtonVariants = ButtonVariants;
-  readonly editIcon = faEdit;
+  protected readonly ControlTypes = ControlTypes;
+  protected readonly ButtonSize = ButtonSize;
+  protected readonly ButtonVariants = ButtonVariants;
+  protected readonly editIcon = faEdit;
 
   // Signals
   protected readonly hasError = signal(false);

@@ -11,7 +11,7 @@ import { formatDate } from '@/shared/date';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { BadgeSize } from '@/shared/ui/badge';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { ConsentRequestEmptyStateComponent } from '@/widgets/consent-request-empty-state/consent-request-empty-state.component';
 
@@ -45,6 +45,7 @@ export class ConsentRequestListComponent {
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
   protected readonly faChevronRight = faChevronRight;
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly BadgeSize = BadgeSize;
   protected readonly isOpenAggregationState = isOpenAggregationState;

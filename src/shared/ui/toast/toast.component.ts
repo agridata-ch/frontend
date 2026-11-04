@@ -4,7 +4,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { I18nPipe } from '@/shared/i18n';
 import { Toast, ToastService, ToastState, ToastType } from '@/shared/toast';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 
 /**
  * Provides the presentation and interaction logic for toast notifications. It subscribes to the
@@ -26,6 +26,7 @@ export class ToastComponent {
   readonly toasts = this.toastService.toasts;
   readonly ToastState = ToastState;
   readonly ToastType = ToastType;
+  readonly ButtonSize = ButtonSize;
   readonly ButtonVariants = ButtonVariants;
 
   constructor() {

@@ -5,7 +5,7 @@ import { PublicDataProductSummaryDto } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { TooltipDirective } from '@/shared/tooltip';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 import { CardComponent } from '@/shared/ui/card';
 
 /**
@@ -32,6 +32,7 @@ export class DataProductCardComponent {
   // Constants
   protected readonly BadgeSize = BadgeSize;
   protected readonly BadgeVariant = BadgeVariant;
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly publicSectorIcon = faShieldCheck;
   protected readonly chfCircleIcon = faCircleChf;

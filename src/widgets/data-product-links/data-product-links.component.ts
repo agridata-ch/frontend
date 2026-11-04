@@ -12,7 +12,7 @@ import {
 } from '@/shared/forms/cross-field.validators';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { getFormArray, getFormControl, getFormControlWithMessages } from '@/shared/lib/form.helper';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 import { FormControlComponent } from '@/shared/ui/form-control';
 import { AgridataLinksListComponent } from '@/shared/ui/links-list';
 
@@ -45,6 +45,7 @@ export class DataProductLinksComponent {
   private readonly i18n = inject(I18nService);
 
   // Constants
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly getFormControl = getFormControl;
   protected readonly faAdd = faAdd;
