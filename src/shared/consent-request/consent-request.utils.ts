@@ -84,12 +84,23 @@ export function buildConsentRequestTourSteps(
   return [
     {
       element: () => getTableOrListElement(),
+      // driver.js only scrolls when the element isn't fully visible and then centers it, which
+      // leaves no room for the popover on mobile. Scrolling minimally first makes driver skip it.
+      // The scroll margin keeps a buffer so subpixel rounding at the viewport edge doesn't make
+      // driver consider the element cut off.
+      onHighlightStarted: (element) => {
+        if (!(element instanceof HTMLElement)) return;
+        element.style.scrollMargin = '16px';
+        element.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+      },
       popover: {
         description: i18nService.translate(
           'product-tour.consentRequestsTour.consentRequests.description',
         ),
         title: i18nService.translate('product-tour.consentRequestsTour.consentRequests.title'),
         onNextClick: (_element, _step, opts) => {
+          // Hide this popover while the side panel opens; driver renders the next one in moveNext
+          if (opts.state.popover) opts.state.popover.wrapper.style.display = 'none';
           const element = getTableOrListElement();
           element?.click();
           moveNextWhenReady(
@@ -142,7 +153,7 @@ function moveNextWhenReady(
       const element = document.querySelector(selector);
       if (!element) return;
       ref.destroy();
-      waitForStablePosition(element).then(() => moveNext());
+      void waitForStablePosition(element).then(() => moveNext());
     },
     { injector },
   );

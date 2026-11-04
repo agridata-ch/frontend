@@ -154,7 +154,7 @@ describe('Toast Utilities', () => {
       const clickSpy = vi.spyOn(mockElement, 'click');
 
       const moveNext = vi.fn();
-      const opts = { driver: { moveNext } } as unknown as Parameters<
+      const opts = { driver: { moveNext }, state: {} } as unknown as Parameters<
         NonNullable<NonNullable<(typeof steps)[0]['popover']>['onNextClick']>
       >[2];
 
@@ -162,6 +162,50 @@ describe('Toast Utilities', () => {
 
       expect(clickSpy).toHaveBeenCalled();
       mockElement.remove();
+    });
+
+    it('should hide the current popover in onNextClick of first step', () => {
+      const injector = TestBed.inject(EnvironmentInjector);
+      const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
+      const wrapper = document.createElement('div');
+
+      const opts = {
+        driver: { moveNext: vi.fn() },
+        state: { popover: { wrapper } },
+      } as unknown as Parameters<
+        NonNullable<NonNullable<(typeof steps)[0]['popover']>['onNextClick']>
+      >[2];
+
+      steps[0].popover?.onNextClick?.(document.body, null as never, opts);
+
+      expect(wrapper.style.display).toBe('none');
+    });
+
+    it('should scroll the first step element minimally into view with a scroll margin', () => {
+      const injector = TestBed.inject(EnvironmentInjector);
+      const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
+      const element = document.createElement('div');
+      element.scrollIntoView = vi.fn();
+
+      steps[0].onHighlightStarted?.(element, steps[0], null as never);
+
+      expect(element.style.scrollMargin).toBe('16px');
+      expect(element.scrollIntoView).toHaveBeenCalledWith({
+        block: 'nearest',
+        behavior: 'instant',
+      });
+    });
+
+    it('should not scroll in onHighlightStarted when the element is not an HTMLElement', () => {
+      const injector = TestBed.inject(EnvironmentInjector);
+      const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.scrollIntoView = vi.fn();
+
+      steps[0].onHighlightStarted?.(svg, steps[0], null as never);
+      steps[0].onHighlightStarted?.(undefined, steps[0], null as never);
+
+      expect(svg.scrollIntoView).not.toHaveBeenCalled();
     });
 
     it('should resolve table element when both table and list elements exist and table is visible', () => {
@@ -274,7 +318,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
 
     const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
     const moveNext = vi.fn();
-    const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
+    const opts = { driver: { moveNext }, state: {} } as unknown as OnNextClickOpts;
 
     steps[0].popover?.onNextClick?.(accordion, null as never, opts);
     const { flushRaf } = installRafQueue();
@@ -308,7 +352,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
 
     const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
     const moveNext = vi.fn();
-    const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
+    const opts = { driver: { moveNext }, state: {} } as unknown as OnNextClickOpts;
 
     steps[0].popover?.onNextClick?.(accordion, null as never, opts);
     const { flushRaf } = installRafQueue();
@@ -338,7 +382,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
 
     const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
     const moveNext = vi.fn();
-    const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
+    const opts = { driver: { moveNext }, state: {} } as unknown as OnNextClickOpts;
 
     steps[0].popover?.onNextClick?.(accordion, null as never, opts);
     const { flushRaf } = installRafQueue();
@@ -372,7 +416,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
 
     const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
     const moveNext = vi.fn();
-    const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
+    const opts = { driver: { moveNext }, state: {} } as unknown as OnNextClickOpts;
 
     steps[0].popover?.onNextClick?.(accordion, null as never, opts);
     const { flushRaf } = installRafQueue();
@@ -394,7 +438,7 @@ describe('moveNextWhenReady (via onNextClick)', () => {
 
     const steps = buildConsentRequestTourSteps(i18nService as unknown as I18nService, injector);
     const moveNext = vi.fn();
-    const opts = { driver: { moveNext } } as unknown as OnNextClickOpts;
+    const opts = { driver: { moveNext }, state: {} } as unknown as OnNextClickOpts;
 
     steps[0].popover?.onNextClick?.(document.body, null as never, opts);
 

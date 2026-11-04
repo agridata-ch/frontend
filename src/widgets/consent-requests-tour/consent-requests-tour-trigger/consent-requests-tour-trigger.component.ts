@@ -1,22 +1,20 @@
 import { Component, EnvironmentInjector, inject, output } from '@angular/core';
 import { faArrowProgress } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DriveStep } from 'driver.js';
 
 import { buildConsentRequestTourSteps } from '@/shared/consent-request';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { ProductTourService } from '@/shared/product-tour/product-tour.service';
-import { ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 
 /**
- * A button that triggers a driver.js guided tour when handleClick.
- * Accepts tour steps as input.
+ * A button that starts the consent requests driver.js guided tour when clicked.
  *
- * CommentLastReviewed: 2026-02-25
+ * CommentLastReviewed: 2026-11-04
  */
 @Component({
   selector: 'app-consent-requests-tour-trigger',
-  imports: [FontAwesomeModule, I18nDirective],
+  imports: [ButtonComponent, I18nDirective],
   templateUrl: './consent-requests-tour-trigger.component.html',
 })
 export class ConsentRequestsTourTriggerComponent {
