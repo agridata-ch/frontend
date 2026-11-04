@@ -1,3 +1,9 @@
+## [1.24.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.14...v1.24.0-rc.15) (2026-11-04)
+
+### Bug Fixes
+
+- **font-sizes:** fix font-sizes ([db7862a](https://github.com/agridata-ch/frontend/commit/db7862a6f3ee12562964075624a55f9042a4ddee)), references [DIGIB2-1811](https://github.com/agridata-ch/frontend/issues/-1811)
+
 ## [1.24.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.13...v1.24.0-rc.14) (2026-11-04)
 
 ### Bug Fixes
