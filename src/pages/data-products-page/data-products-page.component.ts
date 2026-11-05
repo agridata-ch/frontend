@@ -37,6 +37,7 @@ import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.c
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { AuthService } from '@/shared/lib/auth';
+import { TooltipDirective } from '@/shared/tooltip';
 import {
   ActionDto,
   AgridataTableComponent,
@@ -71,6 +72,7 @@ import { DataProductsDeleteModalComponent } from './data-products-delete-modal';
     FaIconComponent,
     I18nDirective,
     RouterOutlet,
+    TooltipDirective,
   ],
   templateUrl: './data-products-page.component.html',
 })

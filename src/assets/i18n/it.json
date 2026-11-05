@@ -14,12 +14,6 @@
     "noData": "Nessun dato disponibile",
     "loading": "Caricamento dati in corso",
     "pageSelector": "Voci per pagina",
-    "header": {
-      "ariaLabels": {
-        "sort": "Ordina per: {{ sortBy }}",
-        "rowActionColumnTitle": "Azioni Colonna"
-      }
-    },
     "ariaLabels": {
       "actions": "Azioni",
       "rowAction": "Apri record"

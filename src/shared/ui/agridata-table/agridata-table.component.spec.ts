@@ -5,6 +5,10 @@ import { By } from '@angular/platform-browser';
 import { ResourceQueryDto } from '@/entities/openapi';
 import { PageResponseDto } from '@/shared/lib/api.helper';
 import { MockResources } from '@/shared/testing/mocks';
+import {
+  ActionDto,
+  TableRowMenuComponent,
+} from '@/shared/ui/agridata-table/table-row-menu/table-row-menu.component';
 
 import { AgridataTableComponent } from './agridata-table.component';
 import {
@@ -127,7 +131,7 @@ describe('AgridataTableComponent', () => {
     });
 
     it('should render table with correct number of columns', () => {
-      const headerCells = fixture.debugElement.queryAll(By.css('app-table-header-cell'));
+      const headerCells = fixture.debugElement.queryAll(By.css('th[app-table-header-cell]'));
       expect(headerCells).toHaveLength(3);
     });
 
@@ -137,7 +141,7 @@ describe('AgridataTableComponent', () => {
     });
 
     it('should render table cells for each column', () => {
-      const cells = fixture.debugElement.queryAll(By.css('app-table-cell'));
+      const cells = fixture.debugElement.queryAll(By.css('td[app-table-cell]'));
       expect(cells).toHaveLength(9); // 3 rows × 3 columns
     });
 
@@ -196,28 +200,95 @@ describe('AgridataTableComponent', () => {
       expect(tableElement).toBeTruthy();
     });
 
-    it('should render row menu when provided', () => {
-      const metadataWithActions = {
-        ...mockTableMetadata,
-        rowMenuActions: () => [
-          {
-            label: 'Edit',
-            onClick: () => {},
-            icon: 'edit',
-          },
-        ],
-      };
-
-      fixture.componentRef.setInput('tableMetadata', metadataWithActions);
+    it('should not render actions column when no actions are provided', () => {
       fixture.detectChanges();
 
-      const actionCells = fixture.debugElement.queryAll(By.css('app-table-row-menu'));
-      expect(actionCells).toHaveLength(3);
+      expect(fixture.debugElement.queryAll(By.css('th'))).toHaveLength(
+        mockTableMetadata.columns.length,
+      );
+    });
+  });
+
+  describe('Row Actions Cell', () => {
+    const details: ActionDto = { label: 'details', callback: () => {} };
+    const remove: ActionDto = { label: 'delete', callback: () => {} };
+
+    const render = (metadata: Partial<TableMetadata<TestUser>>) => {
+      fixture.componentRef.setInput('tableMetadata', { ...mockTableMetadata, ...metadata });
+      fixture.detectChanges();
+      return {
+        chevrons: fixture.debugElement.queryAll(By.css('[data-testid^="row-action-"]')),
+        menus: fixture.debugElement.queryAll(By.directive(TableRowMenuComponent)),
+      };
+    };
+
+    it('should show the chevron when rowAction is set and there are no menu actions', () => {
+      const { chevrons, menus } = render({ rowAction: vi.fn() });
+
+      expect(chevrons).toHaveLength(3);
+      expect(menus).toHaveLength(0);
     });
 
-    it('should not render actions column when actions are not provided', () => {
-      const actionCells = fixture.debugElement.queryAll(By.css('app-table-actions'));
-      expect(actionCells).toHaveLength(0);
+    it('should show the chevron when details is the only menu action', () => {
+      const { chevrons, menus } = render({ rowAction: vi.fn(), rowMenuActions: () => [details] });
+
+      expect(chevrons).toHaveLength(3);
+      expect(menus).toHaveLength(0);
+    });
+
+    it('should show the menu when there are two or more actions', () => {
+      const { chevrons, menus } = render({
+        rowAction: vi.fn(),
+        rowMenuActions: () => [details, remove],
+      });
+
+      expect(chevrons).toHaveLength(0);
+      expect(menus).toHaveLength(3);
+    });
+
+    it('should show the menu for a single action when there is no rowAction', () => {
+      const { chevrons, menus } = render({ rowMenuActions: () => [remove] });
+
+      expect(chevrons).toHaveLength(0);
+      expect(menus).toHaveLength(3);
+    });
+
+    it('should render nothing when there is no rowAction and no actions', () => {
+      const { chevrons, menus } = render({ rowMenuActions: () => [] });
+
+      expect(chevrons).toHaveLength(0);
+      expect(menus).toHaveLength(0);
+    });
+
+    it('should decide per row in the same table', () => {
+      const { chevrons, menus } = render({
+        rowAction: vi.fn(),
+        rowMenuActions: (row) => (row?.id === '1' ? [details, remove] : [details]),
+      });
+
+      expect(chevrons).toHaveLength(2);
+      expect(menus).toHaveLength(1);
+    });
+
+    it('should call rowAction with the row when the chevron is clicked', () => {
+      const rowAction = vi.fn();
+      const { chevrons } = render({ rowAction });
+
+      chevrons[1].nativeElement.click();
+
+      expect(rowAction).toHaveBeenCalledWith(mockUsers[1]);
+    });
+
+    it('should trigger the row action once from Enter on the chevron', () => {
+      const rowAction = vi.fn();
+      const { chevrons } = render({ rowAction });
+
+      chevrons[0].nativeElement.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),
+      );
+
+      expect(rowAction).toHaveBeenCalledTimes(1);
+      expect(rowAction).toHaveBeenCalledWith(mockUsers[0]);
     });
   });
 

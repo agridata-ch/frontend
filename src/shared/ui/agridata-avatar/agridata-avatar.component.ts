@@ -1,6 +1,6 @@
 import { Component, effect, input, signal } from '@angular/core';
 
-import { AvatarSize, AvatarSkin, BG_COLORS } from './agridata-avatar.model';
+import { AvatarSize, AvatarSkin, RANDOM_COLOR_CLASSES } from './agridata-avatar.model';
 
 /**
  * Implements the logic and rendering for avatars. It accepts name, image URL, size, and skin as
@@ -50,7 +50,7 @@ export class AgridataAvatarComponent {
   }
 
   randomBg(): string {
-    const idx = this.hash32(this.name() ?? '') % BG_COLORS.length;
-    return BG_COLORS[idx];
+    const idx = this.hash32(this.name() ?? '') % RANDOM_COLOR_CLASSES.length;
+    return RANDOM_COLOR_CLASSES[idx];
   }
 }

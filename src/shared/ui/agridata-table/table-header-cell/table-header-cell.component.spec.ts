@@ -88,6 +88,43 @@ describe('TableHeaderCellComponent', () => {
     });
   });
 
+  describe('accessibility', () => {
+    const column = (sortable: boolean): ColumnDefinition<any> => ({
+      name: 'test.column',
+      sortable,
+      renderer: { type: CellRendererTypes.FUNCTION, cellRenderFn: () => '' },
+    });
+    const host = (): HTMLElement => fixture.nativeElement;
+
+    it.each([
+      [SortDirections.ASC, 'ascending'],
+      [SortDirections.DESC, 'descending'],
+    ])('should set aria-sort for %s', (direction, expected) => {
+      fixture.componentRef.setInput('columnDefinition', column(true));
+      fixture.componentRef.setInput('sortDirection', direction);
+      fixture.detectChanges();
+
+      expect(host().getAttribute('aria-sort')).toBe(expected);
+    });
+
+    it('should not set aria-sort when unsorted', () => {
+      fixture.componentRef.setInput('columnDefinition', column(true));
+      fixture.detectChanges();
+
+      expect(host().hasAttribute('aria-sort')).toBe(false);
+    });
+
+    it('should be focusable only when sortable', () => {
+      fixture.componentRef.setInput('columnDefinition', column(true));
+      fixture.detectChanges();
+      expect(host().getAttribute('tabindex')).toBe('0');
+
+      fixture.componentRef.setInput('columnDefinition', column(false));
+      fixture.detectChanges();
+      expect(host().hasAttribute('tabindex')).toBe(false);
+    });
+  });
+
   describe('rendering', () => {
     it('should display column name', () => {
       fixture.componentRef.setInput('columnDefinition', {
@@ -99,7 +136,7 @@ describe('TableHeaderCellComponent', () => {
       });
       fixture.detectChanges();
 
-      const headerText = fixture.nativeElement.querySelector('th span').textContent;
+      const headerText = fixture.nativeElement.querySelector('span').textContent;
       expect(headerText).toContain('test.column');
     });
 
@@ -114,7 +151,7 @@ describe('TableHeaderCellComponent', () => {
       });
       fixture.detectChanges();
 
-      const header = fixture.nativeElement.querySelector('th');
+      const header: HTMLElement = fixture.nativeElement;
       expect(header.classList.contains('custom-header-class')).toBeTruthy();
     });
   });

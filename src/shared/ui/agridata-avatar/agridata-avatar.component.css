@@ -3,7 +3,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 1px solid var(--color-agridata-stroke);
+  border-width: 1px;
+  border-style: solid;
   overflow: hidden;
   line-height: 1;
 }

@@ -35,6 +35,7 @@ import { I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
 import { AnalyticsService } from '@/shared/lib/analytics.service';
 import { ToastService } from '@/shared/toast';
+import { TooltipDirective } from '@/shared/tooltip';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import {
   AgridataClientTableComponent,
@@ -71,6 +72,7 @@ import { ConsentRequestProducerViewDtoDirective } from './consent-request-produc
     ClickStopPropagationDirective,
     I18nPipe,
     ConsentRequestEmptyStateComponent,
+    TooltipDirective,
   ],
   templateUrl: './consent-request-table.component.html',
 })
@@ -192,7 +194,6 @@ export class ConsentRequestTableComponent {
         },
       ],
       rowAction: this.openDetails,
-      showRowActionButton: true,
       highlightFn: (item) => isOpenAggregationState(item.stateCode),
       highlightClickedRowFn: (item) => item.id === this.aggregationId(),
       searchFn: (data, searchTerm) =>
