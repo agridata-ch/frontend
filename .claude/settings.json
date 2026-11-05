@@ -7,8 +7,32 @@
       "Bash(npm run test:coverage)",
       "Read(~/.zshrc)"
     ],
-    "deny": ["Read(./.env.*)"],
+    "deny": ["Read(./.env.*)", "Bash(git commit:*)", "Bash(git push:*)"],
     "defaultMode": "plan"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | grep -qE 'src/entities/openapi/|src/assets/(i18n/)?(de|fr|it)\\.json$' && { echo 'Generated file, do not edit. Regenerate with npm run api:sync:dev / api:sync:local (openapi) or npm run i18n:sync (translations); return new i18n keys for PoEditor instead.' >&2; exit 2; } || exit 0"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); case \"$f\" in */src/entities/openapi/*) ;; *.ts|*.html|*.css|*.json) cd \"$CLAUDE_PROJECT_DIR\" && npx --no prettier --write \"$f\" >/dev/null 2>&1 ;; esac; exit 0"
+          }
+        ]
+      }
+    ]
   },
   "enabledPlugins": {
     "ti8m-improvement-claude-md@ti8m-claude-code-marketplace": true,
