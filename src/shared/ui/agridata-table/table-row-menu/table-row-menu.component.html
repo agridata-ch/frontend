@@ -21,14 +21,19 @@
             <button
               type="button"
               click-stop-propagation
-              class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 min-w-25 flex flex-row items-center w-full"
+              class="px-3 py-2 text-sm min-w-25 flex flex-row items-center w-full min-h-10 gap-2"
+              [class]="
+                action.variant === ActionVariant.ERROR
+                  ? 'text-red-600 hover:bg-red-100'
+                  : 'text-gray-700 hover:bg-gray-100'
+              "
               (click)="handleActionClick(action)"
             >
               @if (action.loading()) {
-                <fa-icon animation="spin" [icon]="faSpinnerThird"></fa-icon>
+                <fa-icon animation="spin" [icon]="faSpinnerThird" />
               } @else {
                 @if (action.icon) {
-                  <fa-icon [icon]="action.icon" class="mr-2" />
+                  <fa-icon [icon]="action.icon" />
                 }
                 {{ action.label | i18n }}
               }
