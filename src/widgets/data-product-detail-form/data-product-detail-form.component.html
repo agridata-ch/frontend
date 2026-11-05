@@ -56,7 +56,7 @@
 
         <div class="flex justify-between">
           @if (isViewMode()) {
-            <app-agridata-button (handleClick)="enterEditMode()">
+            <app-agridata-button (handleClick)="enterEditMode()" additionalClass="ml-auto">
               {{ t('edit') }}
             </app-agridata-button>
           } @else if (isEditMode()) {
