@@ -29,7 +29,8 @@ import {
   SortDirections,
   TableMetadata,
 } from '@/shared/ui/agridata-table';
-import { ButtonComponent } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize } from '@/shared/ui/button';
+import { formatFullName } from '@/shared/utils';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card/';
 
 /**
@@ -66,6 +67,7 @@ export class SupporterPageComponent {
   protected readonly TITLE_ICON = faUsers;
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
+  protected readonly ButtonSize = ButtonSize;
 
   protected readonly faArrowUpRightFromSquare = faArrowUpRightFromSquare;
 
@@ -138,7 +140,7 @@ export class SupporterPageComponent {
   );
 
   protected getName(item: UserInfoDto) {
-    return [item.givenName, item.familyName].filter(Boolean).join(' ');
+    return formatFullName(item);
   }
 
   protected getAddress(item: UserInfoDto) {

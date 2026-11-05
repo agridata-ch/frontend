@@ -158,14 +158,12 @@ export class ErrorHandlerService implements OnDestroy {
   }
 
   private removeOldErrors(): void {
-    this.allErrors.update((errors) => {
-      if (errors.length <= 10) {
-        return errors;
-      }
-
-      // Sort by timestamp (newest first) and keep only the last 10
-      return [...errors].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()).slice(0, 10);
-    });
+    // Sort by timestamp (newest first) and keep only the last 10
+    this.allErrors.update((errors) =>
+      errors.length <= 10
+        ? errors
+        : [...errors].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()).slice(0, 10),
+    );
   }
 
   private addError(error: ErrorDto): void {

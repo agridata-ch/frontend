@@ -26,6 +26,7 @@ import { DataRequestUpdateDto } from '@/assets/formSchemas/agridata-schemas.json
 import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/shared/data-request';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
@@ -173,7 +174,7 @@ export abstract class DataRequestWizardBaseComponent {
 
   protected handleClose() {
     this.router.navigate([this.listRoutePath], {
-      state: { forceReload: this.refreshListNeeded() },
+      state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: this.refreshListNeeded() },
     });
   }
 

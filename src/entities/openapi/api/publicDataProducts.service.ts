@@ -21,7 +21,7 @@ import { DataProductDocumentMetadataDto } from '../model/dataProductDocumentMeta
 // @ts-ignore
 import { ExceptionDto } from '../model/exceptionDto';
 // @ts-ignore
-import { PageResponseDtoPublicDataProductDto } from '../model/pageResponseDtoPublicDataProductDto';
+import { PageResponseDtoPublicDataProductSummaryDto } from '../model/pageResponseDtoPublicDataProductSummaryDto';
 // @ts-ignore
 import { PublicDataProductDto } from '../model/publicDataProductDto';
 
@@ -43,7 +43,7 @@ export class PublicDataProductsService extends BaseService {
 
     /**
      * Get Public Data Product
-     * Retrieves a single publicly available data product. Publicly accessible.
+     * Retrieves a single publicly available data product, including its technical information. Publicly accessible.
      * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -212,9 +212,9 @@ export class PublicDataProductsService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageResponseDtoPublicDataProductDto>;
-    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageResponseDtoPublicDataProductDto>>;
-    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageResponseDtoPublicDataProductDto>>;
+    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<PageResponseDtoPublicDataProductSummaryDto>;
+    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PageResponseDtoPublicDataProductSummaryDto>>;
+    public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PageResponseDtoPublicDataProductSummaryDto>>;
     public getPublicDataProductsPaginated(filter?: object, language?: string, page?: number, searchTerm?: string, size?: number, sortBy?: object, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -258,7 +258,7 @@ export class PublicDataProductsService extends BaseService {
 
         let localVarPath = `/public/api/products/v2`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<PageResponseDtoPublicDataProductDto>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<PageResponseDtoPublicDataProductSummaryDto>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

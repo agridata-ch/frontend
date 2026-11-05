@@ -25,10 +25,11 @@
     <h1>{{ article.title }}</h1>
 
     <div class="flex items-center gap-3">
+      @if (article.publishedAt; as publishedDate) {
       <span class="text-sm text-agridata-tertiary-text leading-tight">
-        {{ t('createdAt', { date: article.createdAt | agridataDate }) }}</span
-      >
-      @if (article.category; as category) {
+        {{ t('publishedAt', { date: publishedDate | agridataDate }) }}
+      </span>
+      } @if (article.category; as category) {
       <app-agridata-badge
         [text]="category.name"
         [variant]="BadgeVariant.DARK"

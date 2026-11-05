@@ -19,7 +19,6 @@ import {
 } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 
-export const DISMISSED_MIGRATIONS_KEY = 'dismissedMigrationAlerts';
 const BACKEND_INFO_ROUTE_BLACKLIST = ['/', `/${ROUTE_PATHS.MAINTENANCE}`];
 
 /**
@@ -93,14 +92,6 @@ export class AgridataStateService {
           dismissedMigratedIds: [],
         },
       );
-      // todo remove migration from local storage after some time DIGIB2-1050
-      const previousStoredUids = localStorage.getItem(DISMISSED_MIGRATIONS_KEY);
-      if (previousStoredUids) {
-        if (Array.isArray(JSON.parse(previousStoredUids))) {
-          this.addConfirmedMigratedUids(JSON.parse(previousStoredUids) as string[]);
-        }
-        localStorage.removeItem(DISMISSED_MIGRATIONS_KEY);
-      }
     }
   });
 

@@ -1,3 +1,102 @@
+## [1.24.0-rc.15](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.14...v1.24.0-rc.15) (2026-11-04)
+
+### Bug Fixes
+
+- **font-sizes:** fix font-sizes ([db7862a](https://github.com/agridata-ch/frontend/commit/db7862a6f3ee12562964075624a55f9042a4ddee)), references [DIGIB2-1811](https://github.com/agridata-ch/frontend/issues/-1811)
+
+## [1.24.0-rc.14](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.13...v1.24.0-rc.14) (2026-11-04)
+
+### Bug Fixes
+
+- **notifications:** mark as read on open ([22b258a](https://github.com/agridata-ch/frontend/commit/22b258abbceda77a85fbd6a08634a652d68a086a)), references [DIGIB2-1595](https://github.com/agridata-ch/frontend/issues/-1595)
+
+## [1.24.0-rc.13](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.12...v1.24.0-rc.13) (2026-11-04)
+
+### Features
+
+- **button:** add md button size ([4efa3eb](https://github.com/agridata-ch/frontend/commit/4efa3eba494bcc6fdd7ba2ad48b15912cced935b)), references [DIGIB2-1772](https://github.com/agridata-ch/frontend/issues/-1772)
+
+## [1.24.0-rc.12](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.11...v1.24.0-rc.12) (2026-11-03)
+
+### Features
+
+- **state-service:** remove unused localStorage save ([30356c6](https://github.com/agridata-ch/frontend/commit/30356c63e2c99dfd726c47ded5bfd6de234dbf6c)), references [DIGIB2-1050](https://github.com/agridata-ch/frontend/issues/-1050)
+
+## [1.24.0-rc.11](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.10...v1.24.0-rc.11) (2026-11-03)
+
+### Features
+
+- **deps:** set node version to use ([9b99894](https://github.com/agridata-ch/frontend/commit/9b99894aeaf135b857a679b7d7abd1892d1f6e4b))
+
+## [1.24.0-rc.10](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.9...v1.24.0-rc.10) (2026-11-03)
+
+### Features
+
+- **deps:** update dependencies ([165f7de](https://github.com/agridata-ch/frontend/commit/165f7dee7a8a046042658df0b1b7d60f4de79839)), references [DIGIB2-1813](https://github.com/agridata-ch/frontend/issues/-1813)
+
+## [1.24.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.8...v1.24.0-rc.9) (2026-11-03)
+
+### Features
+
+- **bur-register:** replace UID register with BUR register service and update usages ([d0873d8](https://github.com/agridata-ch/frontend/commit/d0873d8dc608b15cc1865446da40ae4a835b8790)), references [DIGIB2-621](https://github.com/agridata-ch/frontend/issues/-621)
+
+## [1.24.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.7...v1.24.0-rc.8) (2026-11-03)
+
+### Features
+
+- **data-catalog-detail:** update styling of technical tab ([f27743b](https://github.com/agridata-ch/frontend/commit/f27743b00d9d3ffd8e00c151aeb4644c2d4a5dc2)), references [DIGIB2-1717](https://github.com/agridata-ch/frontend/issues/-1717)
+
+## [1.24.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.6...v1.24.0-rc.7) (2026-11-02)
+
+### Features
+
+- **news-article:** use publishedAt instead of createdAt ([113c3f9](https://github.com/agridata-ch/frontend/commit/113c3f9fc0c81ae1064e5ea5b586d427a81ebf18)), references [DIGIB2-1817](https://github.com/agridata-ch/frontend/issues/-1817)
+
+## [1.24.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.5...v1.24.0-rc.6) (2026-10-29)
+
+### Features
+
+- **agb-acceptance:** add agb-acceptance page ([c4e63ea](https://github.com/agridata-ch/frontend/commit/c4e63ea77bcf760de438708b16bd200ad8e473ad)), references [DIGIB2-1531](https://github.com/agridata-ch/frontend/issues/-1531)
+
+## [1.24.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.4...v1.24.0-rc.5) (2026-10-28)
+
+### Features
+
+- **deps:** update dependency node to v26 ([7e7c028](https://github.com/agridata-ch/frontend/commit/7e7c028ef4517b363267cacf0703aaea7400ce2c))
+
+### Bug Fixes
+
+- **wysiwyg:** remove alphabetic ordered list attribute ([2f27005](https://github.com/agridata-ch/frontend/commit/2f27005ee0e6d1767ebdeecc24ac03fe88496507)), references [DIGIB2-1766](https://github.com/agridata-ch/frontend/issues/-1766)
+
+## [1.24.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.3...v1.24.0-rc.4) (2026-10-27)
+
+### Features
+
+- **data-request:** do UID register lookup based on data request existence ([5743297](https://github.com/agridata-ch/frontend/commit/574329707c4efbf5fc494d840f324ec90252f843))
+- **public-data-product:** add technical tabs in details ([9374b42](https://github.com/agridata-ch/frontend/commit/9374b42e54798e1d51c8a86a8a1fc8bf38f583c0)), references [DIGIB2-1717](https://github.com/agridata-ch/frontend/issues/-1717)
+
+## [1.24.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.2...v1.24.0-rc.3) (2026-10-26)
+
+### Features
+
+- **deps:** dependency update ([fa2193d](https://github.com/agridata-ch/frontend/commit/fa2193d6425917897341f4ab3f108e51a1362290)), references [DIGIB2-1807](https://github.com/agridata-ch/frontend/issues/-1807)
+
+### Bug Fixes
+
+- **modal:** fix multiple scrollbars ([614823f](https://github.com/agridata-ch/frontend/commit/614823ff7d661db8bb17a8c29bc5baeb00fc6aa7)), references [DIGIB2-1737](https://github.com/agridata-ch/frontend/issues/-1737)
+
+## [1.24.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.24.0-rc.1...v1.24.0-rc.2) (2026-10-21)
+
+### Features
+
+- **data-request:** add terminating data request ([514b492](https://github.com/agridata-ch/frontend/commit/514b492501a2742fc3bc511ed76323441b0856d2)), references [DIGIB2-329](https://github.com/agridata-ch/frontend/issues/-329)
+
+## [1.24.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.23.1...v1.24.0-rc.1) (2026-10-20)
+
+### Features
+
+- **notification:** add empty state ([d3a666d](https://github.com/agridata-ch/frontend/commit/d3a666db527fbf332cda64cf982e9143c2260b1b)), references [DIGIB2-1750](https://github.com/agridata-ch/frontend/issues/-1750)
+
 ## [1.23.1](https://github.com/agridata-ch/frontend/compare/v1.23.0...v1.23.1) (2026-10-20)
 
 ### Bug Fixes

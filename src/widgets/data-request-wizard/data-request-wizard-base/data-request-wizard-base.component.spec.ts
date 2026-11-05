@@ -6,6 +6,7 @@ import { provideRouter, Router } from '@angular/router';
 import { DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
+import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/shared/data-request';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
@@ -186,24 +187,24 @@ describe('DataRequestWizardBaseComponent', () => {
   });
 
   describe('handleClose', () => {
-    it('should navigate to listRoutePath with forceReload false by default', () => {
+    it('should navigate to listRoutePath with the reload flag false by default', () => {
       const navigateSpy = vi.spyOn(router, 'navigate');
 
       component['handleClose']();
 
       expect(navigateSpy).toHaveBeenCalledWith(['data-requests'], {
-        state: { forceReload: false },
+        state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: false },
       });
     });
 
-    it('should navigate with forceReload true when refreshListNeeded is set', () => {
+    it('should navigate with the reload flag true when refreshListNeeded is set', () => {
       const navigateSpy = vi.spyOn(router, 'navigate');
       component['refreshListNeeded'].set(true);
 
       component['handleClose']();
 
       expect(navigateSpy).toHaveBeenCalledWith(['data-requests'], {
-        state: { forceReload: true },
+        state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: true },
       });
     });
   });

@@ -60,6 +60,11 @@ Dependency direction: `app` → `pages` → `widgets` → `features` → `entiti
 - No `any` type
 - No type casting — use proper types or type guards instead
 
+## Sonar Check
+
+After editing `.ts`/`.html` files, call `mcp__ide__getDiagnostics` for each changed file
+and fix every SonarQube finding before reporting done. If the IDE isn't connected, say so.
+
 ## Code Style
 
 - Strive for simplicity and clean code

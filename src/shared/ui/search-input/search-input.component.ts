@@ -37,6 +37,7 @@ export class SearchInputComponent implements OnDestroy {
   readonly minSearchLength = input(3);
   readonly debounceTime = input(300);
   readonly isLoading = input<boolean>(false);
+  readonly placeholder = input<string>();
 
   protected readonly faSpinnerThird = faSpinnerThird;
 

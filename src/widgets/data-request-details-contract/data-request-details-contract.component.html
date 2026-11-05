@@ -24,6 +24,7 @@
           </span>
           <div class="flex justify-end">
             <app-agridata-button
+              [size]="ButtonSize.MD"
               [variant]="ButtonVariants.PrimaryAccept"
               [loading]="isSealing()"
               [success]="sealSucceeded()"

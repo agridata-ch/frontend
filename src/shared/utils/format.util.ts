@@ -12,3 +12,12 @@ export function formatBytes(bytes: number): string {
     ? `${(bytes / 1024).toFixed(0)}kB`
     : `${(bytes / (1024 * 1024)).toFixed(2)}MB`;
 }
+
+/**
+ * Joins given and family name with a space, skipping missing parts.
+ *
+ * CommentLastReviewed: 2026-10-29
+ */
+export function formatFullName(person?: { givenName?: string; familyName?: string }): string {
+  return [person?.givenName, person?.familyName].filter(Boolean).join(' ');
+}

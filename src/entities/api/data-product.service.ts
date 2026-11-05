@@ -5,7 +5,7 @@ import {
   DataProductDto,
   DataProductsService,
   DataProductUpdateDto,
-  PageResponseDtoPublicDataProductDto,
+  PageResponseDtoPublicDataProductSummaryDto,
   PublicDataProductDto,
   PublicDataProductsService,
   ResourceQueryDto,
@@ -111,7 +111,7 @@ export class DataProductService {
 
   getPublicProducts = (
     queryDto: ResourceQueryDto,
-  ): Promise<PageResponseDtoPublicDataProductDto> => {
+  ): Promise<PageResponseDtoPublicDataProductSummaryDto> => {
     return firstValueFrom(
       this.publicApiService
         .getPublicDataProductsPaginated(

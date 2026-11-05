@@ -10,6 +10,7 @@ import {
   AGATE_LOGIN_ID_IMPERSONATION_HEADER,
   USER_ROLES,
 } from '@/shared/constants/constants';
+import { formatFullName } from '@/shared/utils';
 
 /**
  * Manages authentication state, user profile data, and role extraction from user info. Provides login,
@@ -84,8 +85,7 @@ export class AuthService {
   }
 
   getUserFullName(): string {
-    const info = this.userInfo();
-    return [info?.givenName, info?.familyName].filter(Boolean).join(' ');
+    return formatFullName(this.userInfo());
   }
 
   getUserId(): string | undefined {
@@ -185,8 +185,8 @@ export class AuthService {
 
   private resolveUidActingRole(): ActingRole {
     if (this.isImpersonating()) return 'SUPPORT';
-    if (this.isProducer()) return 'PRODUCER';
-    return undefined as unknown as ActingRole; // Let API default to consumer role if not producer/support
+    // Let API default to consumer role if not producer/support
+    return this.isProducer() ? 'PRODUCER' : (undefined as unknown as ActingRole);
   }
 
   private shouldSkipAuthorizedUids(): boolean {

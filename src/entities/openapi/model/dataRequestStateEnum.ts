@@ -18,7 +18,9 @@ export const DataRequestStateEnum = {
     ToBeReleasedByProvider: 'TO_BE_RELEASED_BY_PROVIDER',
     ToBeActivated: 'TO_BE_ACTIVATED',
     Active: 'ACTIVE',
-    Paused: 'PAUSED'
+    Paused: 'PAUSED',
+    TerminationPending: 'TERMINATION_PENDING',
+    Terminated: 'TERMINATED'
 } as const;
 export type DataRequestStateEnum = typeof DataRequestStateEnum[keyof typeof DataRequestStateEnum];
 

@@ -7,7 +7,8 @@
     @case (CellRendererTypes.FUNCTION) {
       <span
         class="agridata-ellipsis w-auto"
-        [title]="formatCellValue(renderer.cellRenderFn(row()))"
+        [appTooltip]="formatCellValue(renderer.cellRenderFn(row()))"
+        [tooltipShowDelay]="600"
       >
         {{ formatCellValue(renderer.cellRenderFn(row())) }}
       </span>

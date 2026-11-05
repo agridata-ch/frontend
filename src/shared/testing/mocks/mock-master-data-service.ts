@@ -35,12 +35,10 @@ export function createMockMasterDataService(): MockMasterDataService {
   const userPreferences = signal(undefined);
 
   const getProductsForProvider = vi.fn((providerId: string) => {
-    // First try the new productsByProvider map
-    if (providerId && productsByProvider().has(providerId)) {
-      return productsByProvider().get(providerId) ?? [];
-    }
-    // Fallback to legacy dataProducts signal for backwards compatibility
-    return dataProducts();
+    // Try the new productsByProvider map, fall back to legacy dataProducts signal for backwards compatibility
+    return providerId && productsByProvider().has(providerId)
+      ? (productsByProvider().get(providerId) ?? [])
+      : dataProducts();
   });
 
   const providerName = vi.fn((providerId: string | undefined, lang?: string) => {

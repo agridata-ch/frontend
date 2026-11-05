@@ -1,4 +1,4 @@
-import { formatBytes } from './format.util';
+import { formatBytes, formatFullName } from './format.util';
 
 describe('formatBytes', () => {
   it('formats bytes below 1024 as B', () => {
@@ -11,5 +11,17 @@ describe('formatBytes', () => {
 
   it('formats bytes at or above 1MB as MB', () => {
     expect(formatBytes(2 * 1024 * 1024)).toBe('2.00MB');
+  });
+});
+
+describe('formatFullName', () => {
+  it.each([
+    [{ givenName: 'John', familyName: 'Doe' }, 'John Doe'],
+    [{ givenName: 'John' }, 'John'],
+    [{ familyName: 'Doe' }, 'Doe'],
+    [{}, ''],
+    [undefined, ''],
+  ])('formats %o as "%s"', (person, expected) => {
+    expect(formatFullName(person)).toBe(expected);
   });
 });

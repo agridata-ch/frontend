@@ -1,13 +1,19 @@
 <div class="flex items-center gap-2">
   <app-agridata-avatar [imageUrl]="imageUrl()" [name]="name()" [size]="size()" [skin]="skin()" />
   <div class="flex flex-col justify-center leading-[130%]">
-    @if (name()) {
-      <div class="agridata-ellipsis font-medium" [title]="name()">{{ name() }}</div>
+    @if (name(); as name) {
+      <div class="agridata-ellipsis font-medium" [appTooltip]="name" [tooltipShowDelay]="600">
+        {{ name }}
+      </div>
     }
-    @if (secondaryName()) {
+    @if (secondaryName(); as secondaryName) {
       <div class="flex items-center gap-2">
-        <div class="agridata-ellipsis text-gray-500 text-sm" [title]="secondaryName()">
-          {{ secondaryName() }}
+        <div
+          class="agridata-ellipsis text-gray-500 text-sm"
+          [appTooltip]="secondaryName"
+          [tooltipShowDelay]="600"
+        >
+          {{ secondaryName }}
         </div>
         @if (showForeignBadge()) {
           <app-agridata-badge

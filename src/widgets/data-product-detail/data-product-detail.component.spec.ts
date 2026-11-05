@@ -10,7 +10,11 @@ import {
 } from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
-import { createMockErrorHandlerService, createMockI18nService } from '@/shared/testing/mocks';
+import {
+  createMockErrorHandlerService,
+  createMockI18nService,
+  MockI18nService,
+} from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { DataProductDetailComponent } from './data-product-detail.component';
@@ -36,6 +40,7 @@ describe('DataProductDetailComponent', () => {
   let component: DataProductDetailComponent;
   let componentRef: ComponentRef<DataProductDetailComponent>;
   let source: Mocked<DataProductSource>;
+  let i18nService: MockI18nService;
 
   beforeEach(async () => {
     URL.createObjectURL = vi.fn().mockReturnValue('blob:mock');
@@ -47,11 +52,13 @@ describe('DataProductDetailComponent', () => {
       listDocuments: vi.fn().mockResolvedValue([]),
     };
 
+    i18nService = createMockI18nService();
+
     await TestBed.configureTestingModule({
       imports: [DataProductDetailComponent, createTranslocoTestingModule()],
       providers: [
         { provide: ErrorHandlerService, useValue: createMockErrorHandlerService() },
-        { provide: I18nService, useValue: createMockI18nService() },
+        { provide: I18nService, useValue: i18nService },
       ],
     }).compileComponents();
 
@@ -99,66 +106,51 @@ describe('DataProductDetailComponent', () => {
     });
   });
 
-  describe('hasLinks', () => {
-    it('is true when the product has links', async () => {
-      componentRef.setInput('productId', 'product-1');
+  describe('tabs', () => {
+    const load = async (id = 'product-1'): Promise<void> => {
+      componentRef.setInput('productId', id);
       fixture.detectChanges();
       await fixture.whenStable();
+      fixture.detectChanges();
+    };
 
-      expect(component['hasLinks']()).toBe(true);
+    const openTechnicalTab = (): void => {
+      const technicalTab: HTMLButtonElement =
+        fixture.nativeElement.querySelectorAll('[role="tab"]')[1];
+      technicalTab.click();
+      fixture.detectChanges();
+    };
+
+    it('switches to the technical tab content', async () => {
+      await load();
+
+      openTechnicalTab();
+
+      expect(
+        fixture.nativeElement.querySelector('app-data-product-detail-technical'),
+      ).not.toBeNull();
+      expect(fixture.nativeElement.querySelector('app-data-product-detail-general')).toBeNull();
     });
 
-    it('is false when the product has no links', async () => {
-      source.getProduct.mockResolvedValue({ ...product(), links: [] });
-      componentRef.setInput('productId', 'product-1');
-      fixture.detectChanges();
-      await fixture.whenStable();
+    it('resets to the general tab when another product is selected', async () => {
+      await load();
+      component['activeTabId'].set('technical');
 
-      expect(component['hasLinks']()).toBe(false);
-    });
-  });
+      await load('product-2');
 
-  describe('handleDownload', () => {
-    it('downloads the document through the source', async () => {
-      componentRef.setInput('productId', 'product-1');
-      fixture.detectChanges();
-      await fixture.whenStable();
-
-      component['handleDownload'](doc('doc-1'));
-      await fixture.whenStable();
-
-      expect(source.downloadDocument).toHaveBeenCalledWith('product-1', 'doc-1');
+      expect(component['activeTabId']()).toBe('general');
     });
 
-    it('does nothing when there is no product id', () => {
+    it('re-translates the tab labels when the language changes', async () => {
+      i18nService.translate.mockImplementation((key: string) => `${i18nService.lang()}:${key}`);
+      await load();
+
+      i18nService.setActiveLang('fr');
       fixture.detectChanges();
 
-      component['handleDownload'](doc('doc-1'));
-
-      expect(source.downloadDocument).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('handleOpen', () => {
-    it('opens the document through the source', async () => {
-      const openSpy = vi.spyOn(globalThis, 'open').mockImplementation(() => null);
-      componentRef.setInput('productId', 'product-1');
-      fixture.detectChanges();
-      await fixture.whenStable();
-
-      component['handleOpen'](doc('doc-1'));
-      await fixture.whenStable();
-
-      expect(source.downloadDocument).toHaveBeenCalledWith('product-1', 'doc-1');
-      openSpy.mockRestore();
-    });
-
-    it('does nothing when there is no product id', () => {
-      fixture.detectChanges();
-
-      component['handleOpen'](doc('doc-1'));
-
-      expect(source.downloadDocument).not.toHaveBeenCalled();
+      expect(fixture.nativeElement.textContent).toContain(
+        'fr:data-products.detailForm.tab.technicalFields',
+      );
     });
   });
 });

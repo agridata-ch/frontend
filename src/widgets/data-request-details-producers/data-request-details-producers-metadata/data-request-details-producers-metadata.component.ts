@@ -10,7 +10,7 @@ import { getBackendErrorType } from '@/shared/error/http-error-method';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { ToastService, ToastType } from '@/shared/toast';
-import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/button';
+import { ButtonComponent, ButtonVariants, IconPosition, ButtonSize } from '@/shared/ui/button';
 import { downloadBlob } from '@/shared/utils';
 
 const EXPORT_I18N_PREFIX = 'data-request.details.producer.metadata.export';
@@ -43,6 +43,7 @@ export class DataRequestDetailsProducersMetadataComponent {
   private readonly toastService = inject(ToastService);
 
   // Constants
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly faDownload = faDownload;
   protected readonly IconPosition = IconPosition;

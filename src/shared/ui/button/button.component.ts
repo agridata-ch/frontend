@@ -6,7 +6,7 @@ import { FaIconComponent, IconDefinition } from '@fortawesome/angular-fontawesom
 
 import { TooltipDirective } from '@/shared/tooltip';
 
-import { ButtonVariants, HrefTarget, IconPosition } from './button.model';
+import { ButtonSize, ButtonVariants, HrefTarget, IconPosition } from './button.model';
 
 /**
  * Implements the button’s logic. It defines inputs for type, variant, disabled state, tabindex,
@@ -17,8 +17,9 @@ import { ButtonVariants, HrefTarget, IconPosition } from './button.model';
  * The optional `success` input renders a transient green success state with a drawn checkmark and
  * keeps the button disabled. The parent owns when success shows and for how long — the button holds
  * no timer.
+ * The `size` input switches between the default LG size and the compact MD size (40px height).
  *
- * CommentLastReviewed: 2026-06-25
+ * CommentLastReviewed: 2026-11-03
  */
 @Component({
   selector: 'app-agridata-button',
@@ -30,11 +31,13 @@ import { ButtonVariants, HrefTarget, IconPosition } from './button.model';
 export class ButtonComponent {
   // Input properties
   variant = input<ButtonVariants>(ButtonVariants.Primary);
+  size = input<ButtonSize>(ButtonSize.LG);
   type = input<'button' | 'submit' | 'reset'>('button');
   disabled = input(false, { transform: booleanAttribute });
   tabindex = input<number>(0);
   ariaLabel = input<string>('');
   ariaExpanded = input<boolean>();
+  ariaPressed = input<boolean>();
   selected = input(false, { transform: booleanAttribute });
   loading = input(false, { transform: booleanAttribute });
   success = input(false, { transform: booleanAttribute });

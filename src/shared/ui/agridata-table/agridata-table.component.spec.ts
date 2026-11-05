@@ -540,6 +540,24 @@ describe('AgridataTableComponent', () => {
 
         component['handleSearchInput']('test');
       }));
+
+    it('should pass column filters into the query params', () => {
+      fixture.componentRef.setInput('columnFilters', ['status:ACCEPTED']);
+      fixture.detectChanges();
+
+      expect(component.queryParameters()?.columnFilters).toEqual(['status:ACCEPTED']);
+    });
+
+    it('should reset page to 0 when column filters change', () => {
+      fixture.detectChanges();
+      component['nextPageIndex'].set(3);
+
+      fixture.componentRef.setInput('columnFilters', ['status:PENDING']);
+      fixture.detectChanges();
+
+      expect(component['nextPageIndex']()).toBe(0);
+      expect(component.queryParameters()?.page).toBe(0);
+    });
   });
 
   describe('Accessibility', () => {

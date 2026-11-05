@@ -5,6 +5,7 @@
       <app-search-input
         (handleInput)="handleSearchInput($event)"
         [isLoading]="dataProvider().isLoading()"
+        [placeholder]="searchPlaceholder()"
       >
       </app-search-input>
     </div>

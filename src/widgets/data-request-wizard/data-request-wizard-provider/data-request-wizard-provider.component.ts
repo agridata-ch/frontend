@@ -4,7 +4,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM } from '@/shared/data-request';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective } from '@/shared/i18n';
 import { SidepanelComponent } from '@/shared/sidepanel';
@@ -118,12 +117,6 @@ export class DataRequestWizardProviderComponent extends DataRequestWizardBaseCom
   }
 
   // Protected methods
-  protected override handleClose() {
-    this.router.navigate([this.listRoutePath], {
-      state: { [FORCE_RELOAD_DATA_REQUESTS_STATE_PARAM]: this.refreshListNeeded() },
-    });
-  }
-
   protected async handleReleaseContract() {
     const dataRequestId = this.currentDataRequestId();
     if (!dataRequestId || !this.canReleaseContract()) return;

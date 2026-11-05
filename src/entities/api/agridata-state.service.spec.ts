@@ -15,7 +15,7 @@ import {
   MockUserService,
 } from '@/shared/testing/mocks';
 
-import { AgridataStateService, DISMISSED_MIGRATIONS_KEY } from './agridata-state.service';
+import { AgridataStateService } from './agridata-state.service';
 
 const createMockBackendVersionService = () =>
   ({
@@ -50,10 +50,6 @@ describe('AgridataStateService', () => {
     });
 
     service = TestBed.inject(AgridataStateService);
-  });
-
-  afterEach(() => {
-    localStorage.removeItem(DISMISSED_MIGRATIONS_KEY);
   });
 
   it('initializes user preferences when auth userInfo is available', () => {

@@ -110,6 +110,22 @@ describe('NotificationCenterPageComponent - component behavior', () => {
     });
   });
 
+  describe('showMarkAllAsRead', () => {
+    it('should be true when notifications are loaded', async () => {
+      await fixture.whenStable();
+
+      expect(component['showMarkAllAsRead']()).toBe(true);
+    });
+
+    it('should be false once loaded without notifications', async () => {
+      notificationService.fetchNotifications.mockResolvedValue({ ...mockResponse, items: [] });
+      component.fetchNotificationsResource.reload();
+      await fixture.whenStable();
+
+      expect(component['showMarkAllAsRead']()).toBe(false);
+    });
+  });
+
   describe('tableMetaData computed signal', () => {
     it('should produce 4 columns', () => {
       const metadata = component['tableMetaData']();
@@ -275,6 +291,49 @@ describe('NotificationCenterPageComponent - component behavior', () => {
       component['tableMetaData']().rowAction!(notification);
 
       expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('rowAction mark as read', () => {
+    it('should mark an unread notification as read when opened', () => {
+      component['tableMetaData']().rowAction!(mockInboxEntries[0]);
+
+      expect(notificationService.toggleReadStatus).toHaveBeenCalledWith(mockInboxEntries[0]);
+    });
+
+    it('should not toggle an already read notification when opened', () => {
+      component['tableMetaData']().rowAction!(mockInboxEntries[1]);
+
+      expect(notificationService.toggleReadStatus).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('read toggle button in table row', () => {
+    const getToggleButton = async (): Promise<HTMLButtonElement> => {
+      authService.__testSignals.isConsumer.set(true);
+      await fixture.whenStable();
+      fixture.detectChanges();
+      return fixture.nativeElement.querySelector(
+        'button[aria-label="notificationCenter.markAsRead"]',
+      );
+    };
+
+    it('should toggle read status without triggering the row action on click', async () => {
+      const toggleButton = await getToggleButton();
+
+      toggleButton.click();
+
+      expect(notificationService.toggleReadStatus).toHaveBeenCalledTimes(1);
+      expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
+    });
+
+    it('should not trigger the row action on enter', async () => {
+      const toggleButton = await getToggleButton();
+
+      toggleButton.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+
+      expect(mockRouter.navigateByUrl).not.toHaveBeenCalled();
+      expect(notificationService.toggleReadStatus).not.toHaveBeenCalled();
     });
   });
 

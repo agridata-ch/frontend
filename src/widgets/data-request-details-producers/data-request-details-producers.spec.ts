@@ -164,18 +164,4 @@ describe('DataRequestDetailsProducersComponent', () => {
       expect(component['withdrawTarget']()?.id).toBe('cr-1');
     });
   });
-
-  describe('state translation', () => {
-    it('should translate a known state code with the existing consent-request key', () => {
-      component['getStateTranslation'](ConsentRequestStateEnum.Opened);
-
-      expect(mockI18nService.translate).toHaveBeenCalledWith(
-        `consent-request.dataRequest.stateCode.${ConsentRequestStateEnum.Opened}`,
-      );
-    });
-
-    it('should return an empty string for an undefined state code', () => {
-      expect(component['getStateTranslation'](undefined)).toBe('');
-    });
-  });
 });

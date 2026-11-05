@@ -23,7 +23,6 @@
                 <app-consent-request-state-badge
                   [stateCode]="uidRequest.stateCode"
                   [lastStateChangeDate]="uidRequest.lastStateChangeDate"
-                  [variant]="getConsentRequestBadgeVariant(uidRequest.stateCode)"
                 />
               }
             </div>
@@ -70,7 +69,6 @@
                   <app-consent-request-state-badge
                     [stateCode]="request.stateCode"
                     [lastStateChangeDate]="request.lastStateChangeDate"
-                    [variant]="getConsentRequestBadgeVariant(request.stateCode)"
                   />
                 }
               </div>
@@ -81,6 +79,7 @@
           <div class="flex grow w-full justify-end flex-col gap-2 items-end">
             @if (!store.editMode()) {
               <app-agridata-button
+                [size]="ButtonSize.MD"
                 [variant]="ButtonVariants.IconLink"
                 [icon]="editIcon"
                 [dataTestId]="'consent-request-decisions-edit'"

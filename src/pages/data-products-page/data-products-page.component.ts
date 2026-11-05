@@ -38,7 +38,7 @@ import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { AuthService } from '@/shared/lib/auth';
 import {
-  ActionDTO,
+  ActionDto,
   AgridataTableComponent,
   CellRendererTypes,
   ColumnDefinition,
@@ -179,10 +179,10 @@ export class DataProductsPageComponent {
     this.errorService,
   );
 
-  readonly getRowMenuActions = (row?: DataProductDto): ActionDTO[] => {
+  readonly getRowMenuActions = (row?: DataProductDto): ActionDto[] => {
     if (!row) return [];
 
-    const viewDetails: ActionDTO = {
+    const viewDetails: ActionDto = {
       label: 'data-products.table.actions.viewDetails',
       icon: this.faEye,
       callback: () => {
@@ -190,7 +190,7 @@ export class DataProductsPageComponent {
         this.router.navigate([ROUTE_PATHS.DATA_PRODUCTS_PATH, row.id]);
       },
     };
-    const deleteAction: ActionDTO = {
+    const deleteAction: ActionDto = {
       label: 'data-products.table.actions.delete',
       icon: this.faTrashCan,
       callback: () => {

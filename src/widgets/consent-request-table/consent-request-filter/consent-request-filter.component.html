@@ -1,21 +1,4 @@
-<div class="mb-4 flex gap-4 flex-wrap">
-  @for (filter of filterOptions; track filter) {
-    <!-- normally you don't use ! for classes but here it's neccessary because of tailwind and angular -->
-    <app-agridata-button
-      [variant]="ButtonVariants.Filter"
-      (handleClick)="handleClick(filter.value)"
-      [selected]="isSelected(filter.value)"
-    >
-      <span>
-        {{ filter.label | i18n }}
-        @if (isOpenAggregationState(filter.value)) {
-          <span
-            class="text-agridata-secondary-text bg-agridata-content-gray size-3 rounded-full px-2"
-          >
-            {{ totalOpenRequests() }}
-          </span>
-        }
-      </span>
-    </app-agridata-button>
-  }
-</div>
+<app-filter-buttons
+  [options]="filterOptions()"
+  (selectedValueChange)="handleFilterChange.emit($event)"
+/>

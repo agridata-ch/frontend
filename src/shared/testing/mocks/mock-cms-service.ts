@@ -336,6 +336,7 @@ export const mockNewsArticlesResponse: NewsArticlesResponse = {
       imageAlt: 'Titelbild',
       category: { id: 5, documentId: 'cat-1', name: 'Wetter', slug: 'wetter' },
       createdAt: '2026-09-01',
+      publishedAt: '2026-09-01',
     },
   ],
   meta: { pagination: { page: 1, pageSize: 9, pageCount: 1, total: 1 } },

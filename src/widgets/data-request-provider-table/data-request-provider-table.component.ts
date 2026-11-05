@@ -16,12 +16,16 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DataRequestService } from '@/entities/api';
 import { DataRequestDto } from '@/entities/openapi';
 import { ROUTE_PATHS } from '@/shared/constants/constants';
-import { DataRequestDtoDirective, getBadgeVariant } from '@/shared/data-request';
+import {
+  DataRequestDtoDirective,
+  getStateTranslation,
+  DataRequestStateBadgeComponent,
+} from '@/shared/data-request';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table';
 import { ClientTableMetadata } from '@/shared/ui/agridata-client-table/client-table-model';
-import { ActionDTO, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
-import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
+import { ActionDto, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
+import { BadgeSize } from '@/shared/ui/badge';
 import { ButtonVariants } from '@/shared/ui/button';
 import { EmptyStateComponent } from '@/shared/ui/empty-state';
 import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-wizard';
@@ -38,8 +42,8 @@ import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-wizard';
   selector: 'app-data-request-provider-table',
   templateUrl: './data-request-provider-table.component.html',
   imports: [
+    DataRequestStateBadgeComponent,
     AgridataClientTableComponent,
-    AgridataBadgeComponent,
     DataRequestDtoDirective,
     I18nDirective,
     EmptyStateComponent,
@@ -66,7 +70,6 @@ export class DataRequestProviderTableComponent {
   protected readonly retreatIcon = faRotateLeft;
   protected readonly BadgeSize = BadgeSize;
   protected readonly ButtonVariants = ButtonVariants;
-  protected readonly getBadgeVariant = getBadgeVariant;
   protected readonly folderIcon = faFolderOpen;
   protected readonly addIcon = faAdd;
 
@@ -141,7 +144,8 @@ export class DataRequestProviderTableComponent {
             },
             cellCssClasses: 'whitespace-nowrap',
             sortable: true,
-            sortValueFn: (item) => (item ? this.getStatusTranslation(item?.stateCode) : ''),
+            sortValueFn: (item) =>
+              getStateTranslation(this.i18nService, item?.stateCode, item?.terminationPeriodUntil),
           },
         ],
         rowMenuActions: this.getFilteredActions,
@@ -150,7 +154,7 @@ export class DataRequestProviderTableComponent {
     },
   );
 
-  getFilteredActions = (request?: DataRequestDto): ActionDTO[] => {
+  getFilteredActions = (request?: DataRequestDto): ActionDto[] => {
     if (!request) return [];
 
     const details = {
@@ -161,10 +165,6 @@ export class DataRequestProviderTableComponent {
 
     return [details];
   };
-
-  protected getStatusTranslation(value?: string) {
-    return value ? this.i18nService.translate(`data-request.stateCode.${value}`) : '';
-  }
 
   protected newRequest = () => {
     this.router.navigate([ROUTE_PATHS.DATA_REQUESTS_CONSUMER_PATH, DATA_REQUEST_NEW_ID]).then();

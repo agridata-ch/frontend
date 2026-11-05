@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { faBell, faEye } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
+import { faMailbox } from '@awesome.me/kit-0b6d1ed528/icons/duotone/light';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { NotificationService } from '@/entities/api/notification.service';
@@ -31,11 +32,12 @@ import {
   TableMetadata,
 } from '@/shared/ui/agridata-table';
 import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/button';
+import { EmptyStateComponent } from '@/shared/ui/empty-state';
 
 /**
  * Displays all notifications in a server-side paginated table with mark-as-read actions.
  *
- * CommentLastReviewed: 2026-05-28
+ * CommentLastReviewed: 2026-11-04
  */
 @Component({
   selector: 'app-notification-center-page',
@@ -43,6 +45,7 @@ import { ButtonComponent, ButtonVariants, IconPosition } from '@/shared/ui/butto
     AgridataTableComponent,
     AgridataDatePipe,
     ButtonComponent,
+    EmptyStateComponent,
     ErrorOutletComponent,
     FontAwesomeModule,
     I18nDirective,
@@ -68,6 +71,7 @@ export class NotificationCenterPageComponent {
   protected readonly IconPosition = IconPosition;
   protected readonly faBell = faBell;
   protected readonly faEye = faEye;
+  protected readonly faMailbox = faMailbox;
 
   // Signals
   readonly resourceQueryDto = signal<ResourceQueryDto | undefined>(undefined);
@@ -84,6 +88,12 @@ export class NotificationCenterPageComponent {
     viewChild<TemplateRef<{ $implicit: InboxEntryDto }>>('actionTemplate');
 
   // Computed
+  protected readonly showMarkAllAsRead = computed(
+    () =>
+      this.fetchNotificationsResource.isLoading() ||
+      (this.fetchNotificationsResource.value().items?.length ?? 0) > 0,
+  );
+
   protected readonly tableMetaData = computed<TableMetadata<InboxEntryDto>>(() => ({
     idColumn: 'id',
     columns: [
@@ -121,8 +131,9 @@ export class NotificationCenterPageComponent {
     ],
     showRowActionButton: true,
     rowAction: (item) => {
+      if (!item.isRead) void this.handleToggleReadStatus(item);
       const route = getNotificationRoute(item, this.authService);
-      if (route) this.router.navigateByUrl(route);
+      if (route) void this.router.navigateByUrl(route);
     },
   }));
 
@@ -147,7 +158,7 @@ export class NotificationCenterPageComponent {
   // Methods
   protected handleMarkAllAsRead = () => {
     this.isLoadingMarkAllAsRead.set(true);
-    markAllAsRead(
+    void markAllAsRead(
       this.fetchNotificationsResource.value()?.items ?? [],
       this.notificationService,
       this.toastService,

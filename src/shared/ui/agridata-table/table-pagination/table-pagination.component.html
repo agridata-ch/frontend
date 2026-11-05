@@ -16,6 +16,7 @@
     <app-agridata-button
       [ariaLabel]="t('previousPage')"
       [disabled]="!canNavigateToPrevious()"
+      [size]="ButtonSize.MD"
       [variant]="ButtonVariants.Icon"
       (handleClick)="navigateToPreviousPage()"
     >
@@ -32,6 +33,7 @@
     </span>
     <app-agridata-button
       [disabled]="!canNavigateToNext()"
+      [size]="ButtonSize.MD"
       [variant]="ButtonVariants.Icon"
       [ariaLabel]="t('nextPage')"
       (handleClick)="navigateToNextPage()"

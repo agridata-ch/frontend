@@ -3,36 +3,12 @@ import { DriveStep } from 'driver.js';
 
 import { ConsentRequestAggregationStateEnum, ConsentRequestStateEnum } from '@/entities/openapi';
 import { ToastType } from '@/shared/toast';
-import { BadgeVariant } from '@/shared/ui/badge';
 
 import { I18nService } from '../i18n';
 
-/** Exhaustive by type, a new aggregation state fails to compile until it gets a variant. */
-const AGGREGATION_BADGE_VARIANTS: Record<ConsentRequestAggregationStateEnum, BadgeVariant> = {
-  [ConsentRequestAggregationStateEnum.Opened]: BadgeVariant.INFO,
-  [ConsentRequestAggregationStateEnum.Granted]: BadgeVariant.SUCCESS,
-  [ConsentRequestAggregationStateEnum.Declined]: BadgeVariant.ERROR,
-  [ConsentRequestAggregationStateEnum.PartiallyOpened]: BadgeVariant.WARNING,
-  [ConsentRequestAggregationStateEnum.PartiallyGranted]: BadgeVariant.SUCCESS,
-  [ConsentRequestAggregationStateEnum.LegallyPermitted]: BadgeVariant.SUCCESS,
-};
-
-export function getAggregationBadgeVariant(stateCode?: ConsentRequestAggregationStateEnum) {
-  return stateCode ? AGGREGATION_BADGE_VARIANTS[stateCode] : BadgeVariant.DEFAULT;
-}
-
-/** Exhaustive by type, a new consent-request state fails to compile until it gets a variant. */
-const CONSENT_REQUEST_BADGE_VARIANTS: Record<ConsentRequestStateEnum, BadgeVariant> = {
-  [ConsentRequestStateEnum.Opened]: BadgeVariant.INFO,
-  [ConsentRequestStateEnum.Granted]: BadgeVariant.SUCCESS,
-  [ConsentRequestStateEnum.Declined]: BadgeVariant.ERROR,
-  [ConsentRequestStateEnum.NotCreated]: BadgeVariant.DEFAULT,
-  [ConsentRequestStateEnum.LegallyPermitted]: BadgeVariant.SUCCESS,
-  [ConsentRequestStateEnum.Withdrawn]: BadgeVariant.DEFAULT,
-};
-
-export function getConsentRequestBadgeVariant(stateCode?: ConsentRequestStateEnum) {
-  return stateCode ? CONSENT_REQUEST_BADGE_VARIANTS[stateCode] : BadgeVariant.DEFAULT;
+/** Translates a consent state label; a missing state falls back to the UNKNOWN label. */
+export function getConsentStateTranslation(i18nService: I18nService, stateCode?: string): string {
+  return i18nService.translate(`consent-request.stateCode.${stateCode ?? 'UNKNOWN'}`);
 }
 
 /**
@@ -108,12 +84,23 @@ export function buildConsentRequestTourSteps(
   return [
     {
       element: () => getTableOrListElement(),
+      // driver.js only scrolls when the element isn't fully visible and then centers it, which
+      // leaves no room for the popover on mobile. Scrolling minimally first makes driver skip it.
+      // The scroll margin keeps a buffer so subpixel rounding at the viewport edge doesn't make
+      // driver consider the element cut off.
+      onHighlightStarted: (element) => {
+        if (!(element instanceof HTMLElement)) return;
+        element.style.scrollMargin = '16px';
+        element.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+      },
       popover: {
         description: i18nService.translate(
           'product-tour.consentRequestsTour.consentRequests.description',
         ),
         title: i18nService.translate('product-tour.consentRequestsTour.consentRequests.title'),
         onNextClick: (_element, _step, opts) => {
+          // Hide this popover while the side panel opens; driver renders the next one in moveNext
+          if (opts.state.popover) opts.state.popover.wrapper.style.display = 'none';
           const element = getTableOrListElement();
           element?.click();
           moveNextWhenReady(
@@ -166,7 +153,7 @@ function moveNextWhenReady(
       const element = document.querySelector(selector);
       if (!element) return;
       ref.destroy();
-      waitForStablePosition(element).then(() => moveNext());
+      void waitForStablePosition(element).then(() => moveNext());
     },
     { injector },
   );

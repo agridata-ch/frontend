@@ -4,6 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import {
+  AgbAcceptanceOverviewDto,
   BurDto,
   ResourceQueryDto,
   UserInfoDto,
@@ -28,6 +29,23 @@ import {
 @Service()
 export class UserService {
   private readonly apiService = inject(UsersService);
+
+  getAgbAcceptances = (
+    queryDto: ResourceQueryDto,
+  ): Promise<PageResponseDto<AgbAcceptanceOverviewDto>> => {
+    return firstValueFrom(
+      this.apiService
+        .getAgbAcceptances(
+          columnFiltersToObject(queryDto.columnFilters),
+          queryDto.language,
+          queryDto.page,
+          queryDto.searchTerm,
+          queryDto.size,
+          arrayToObjectSortParams(queryDto.sortParams, 'sortBy'),
+        )
+        .pipe(map((response) => asPageResponse(response))),
+    );
+  };
 
   getAuthorizedBursByUid(uid: string): Promise<BurDto[]> {
     return firstValueFrom(this.apiService.getAuthorizedBursByUid(uid));

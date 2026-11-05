@@ -17,12 +17,12 @@ import {
   ConsentRequestStateEnum,
   DataRequestDto,
 } from '@/entities/openapi';
-import { getConsentRequestBadgeVariant } from '@/shared/consent-request';
+import { ConsentRequestStateBadgeComponent } from '@/shared/consent-request';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { ToastService, ToastType } from '@/shared/toast';
-import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
+import { BadgeSize } from '@/shared/ui/badge';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal';
 import { ViewSectionDirective } from '@/shared/view-section';
@@ -52,7 +52,7 @@ interface BurEntry {
 @Component({
   selector: 'app-data-request-withdraw-request',
   imports: [
-    AgridataBadgeComponent,
+    ConsentRequestStateBadgeComponent,
     ButtonComponent,
     I18nDirective,
     I18nPipe,
@@ -73,7 +73,6 @@ export class DataRequestWithdrawRequestComponent {
   // Constants
   protected readonly BadgeSize = BadgeSize;
   protected readonly ButtonVariants = ButtonVariants;
-  protected readonly getConsentRequestBadgeVariant = getConsentRequestBadgeVariant;
 
   // Input properties
   readonly consentRequest = input.required<ConsentRequestFundamentalViewDto>();

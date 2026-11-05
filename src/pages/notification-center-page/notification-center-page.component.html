@@ -4,50 +4,73 @@
       <fa-icon [icon]="faBell" class="mr-3" />
       {{ t('pageTitle') }}
     </h2>
-    <app-agridata-button
-      [variant]="ButtonVariants.IconLink"
-      (handleClick)="handleMarkAllAsRead()"
-      [icon]="faEye"
-      [iconPosition]="IconPosition.Left"
-      [loading]="isLoadingMarkAllAsRead()"
-    >
-      {{ t('markAllAsRead') }}
-    </app-agridata-button>
+    @if (showMarkAllAsRead()) {
+      <app-agridata-button
+        [variant]="ButtonVariants.IconLink"
+        (handleClick)="handleMarkAllAsRead()"
+        [icon]="faEye"
+        [iconPosition]="IconPosition.Left"
+        [loading]="isLoadingMarkAllAsRead()"
+      >
+        {{ t('markAllAsRead') }}
+      </app-agridata-button>
+    }
   </div>
   <app-error-outlet></app-error-outlet>
   <app-agridata-table
     [dataProvider]="fetchNotificationsResource"
+    [emptyStateTemplate]="emptyStateTemplate"
     [tableMetadata]="tableMetaData()"
     [(queryParameters)]="resourceQueryDto"
   >
     <ng-template #titleTemplate let-item>
-      <span class="agridata-ellipsis-multiline">
+      <span class="agridata-ellipsis-multiline" [class.font-semibold]="!item.isRead">
         {{ i18nService.useObjectTranslation(item.title) }}
       </span>
     </ng-template>
 
     <ng-template #textTemplate let-item>
-      <span class="text-sm font-semibold text-agridata-primary-600 agridata-ellipsis-multiline">
+      <span
+        class="text-sm text-agridata-primary-600 agridata-ellipsis-multiline"
+        [class.font-semibold]="!item.isRead"
+      >
         {{ i18nService.useObjectTranslation(item.text) }}
       </span>
     </ng-template>
 
     <ng-template #dateTemplate let-item>
-      {{ item.createdAt | agridataDate: 'middle' }}
+      <span [class.font-semibold]="!item.isRead">{{
+        item.createdAt | agridataDate: 'middle'
+      }}</span>
     </ng-template>
 
     <ng-template #actionTemplate let-item>
-      <div
+      <button
+        type="button"
         click-stop-propagation
-        class="flex items-center justify-center border border-transparent transition-all duration-300 rounded-full w-10 h-10 hover:border-gray-400"
+        class="flex items-center justify-center border border-transparent transition-all duration-300 rounded-full w-10 h-10 hover:border-gray-400 cursor-pointer"
+        [attr.aria-label]="item.isRead ? t('markAsUnread') : t('markAsRead')"
         (click)="handleToggleReadStatus(item)"
-        (keydown)="handleToggleReadStatus(item)"
-        [title]="item.isRead ? t('markAsUnread') : t('markAsRead')"
+        (keydown.enter)="$event.stopPropagation()"
       >
-        <div
+        <span
           class="w-2 h-2 rounded-full border-2 border-agridata-brand-green"
           [class.bg-agridata-brand-green]="!item.isRead"
-        ></div>
+        ></span>
+      </button>
+    </ng-template>
+
+    <ng-template #emptyStateTemplate>
+      <!-- block wrapper: app-empty-state has h-full, which would otherwise fill <main> and scroll -->
+      <div>
+        <app-empty-state [title]="t('empty.title')" [message]="t('empty.message')">
+          <fa-icon
+            emptyStateIcon
+            size="3x"
+            [icon]="faMailbox"
+            class="text-agridata-secondary-text"
+          />
+        </app-empty-state>
       </div>
     </ng-template>
   </app-agridata-table>

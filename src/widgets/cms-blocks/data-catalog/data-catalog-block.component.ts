@@ -5,7 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { DataProductService } from '@/entities/api';
 import { MasterDataService } from '@/entities/api/master-data.service';
-import { DataProviderDto, DataSourceSystemDto, PublicDataProductDto } from '@/entities/openapi';
+import {
+  DataProviderDto,
+  DataSourceSystemDto,
+  PublicDataProductSummaryDto,
+} from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { InfiniteScrollComponent } from '@/shared/infinite-scroll';
@@ -57,7 +61,7 @@ export class DataCatalogBlockComponent {
   private readonly PAGE_SIZE = 10;
 
   // Signals
-  protected readonly products = signal<PublicDataProductDto[]>([]);
+  protected readonly products = signal<PublicDataProductSummaryDto[]>([]);
   protected readonly loading = signal(false);
   protected readonly loaded = signal(false);
   protected readonly totalItems = signal(0);

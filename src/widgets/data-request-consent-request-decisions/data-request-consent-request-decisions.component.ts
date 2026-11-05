@@ -6,13 +6,12 @@ import { ConsentRequestAggregationStateEnum } from '@/entities/openapi';
 import {
   ConsentRequestDecisionStore,
   ConsentRequestStateBadgeComponent,
-  getConsentRequestBadgeVariant,
 } from '@/shared/consent-request';
 import { I18nDirective } from '@/shared/i18n';
 import { TooltipDirective } from '@/shared/tooltip';
 import { AgridataToggleComponent } from '@/shared/ui/agridata-toggle';
 import { AlertComponent, AlertType } from '@/shared/ui/alert';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 
 /**
  * Lists a consent-request aggregation's children split into a BUR-based group and a UID-based group.
@@ -46,9 +45,9 @@ export class DataRequestConsentRequestDecisionsComponent {
 
   // Constants
   protected readonly AlertType = AlertType;
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly ConsentRequestAggregationStateEnum = ConsentRequestAggregationStateEnum;
-  protected readonly getConsentRequestBadgeVariant = getConsentRequestBadgeVariant;
   protected readonly editIcon = faEdit;
   protected readonly infoIcon = faInfoCircle;
 

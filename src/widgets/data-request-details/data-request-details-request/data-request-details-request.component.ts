@@ -1,15 +1,15 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { faCopy } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DataRequestDto, DataRequestStateEnum } from '@/entities/openapi';
-import { getBadgeVariant } from '@/shared/data-request';
+import { DataRequestStateBadgeComponent } from '@/shared/data-request';
 import { formatDate } from '@/shared/date';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { AnchorRect, TooltipBubbleService, TooltipDirective } from '@/shared/tooltip';
+import { createCopyFeedback } from '@/shared/lib/copy-feedback.helper';
+import { TooltipBubbleService, TooltipDirective } from '@/shared/tooltip';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
-import { AgridataBadgeComponent, BadgeSize } from '@/shared/ui/badge';
-import { copyToClipboard } from '@/shared/utils';
+import { BadgeSize } from '@/shared/ui/badge';
 import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
 import { DataRequestContactComponent } from '@/widgets/data-request-contact';
 import { DataRequestRedirectUriComponent } from '@/widgets/data-request-redirect-uri';
@@ -22,7 +22,7 @@ import { DataRequestRedirectUriComponent } from '@/widgets/data-request-redirect
 @Component({
   selector: 'app-data-request-details-request',
   imports: [
-    AgridataBadgeComponent,
+    DataRequestStateBadgeComponent,
     DataRequestContactComponent,
     FontAwesomeModule,
     I18nDirective,
@@ -43,15 +43,17 @@ export class DataRequestDetailsRequestComponent {
   protected readonly BadgeSize = BadgeSize;
   protected readonly DataRequestStateEnum = DataRequestStateEnum;
   protected readonly faCopy = faCopy;
-  protected readonly getBadgeVariant = getBadgeVariant;
 
   // Input properties
   readonly dataRequest = input.required<DataRequestDto>();
   readonly isRedirectUriRegexEditable = input(false);
 
   // Signals
-  /** Translation key of the copy result, mirrored into the live region while the bubble is up. */
-  protected readonly copyFeedbackKey = signal('');
+  protected readonly copyFeedback = createCopyFeedback(
+    this.bubbleService,
+    this.i18nService,
+    'data-request.invitationLink',
+  );
 
   // Computed signals
   protected readonly consumerDisplayName = computed(() =>
@@ -63,31 +65,4 @@ export class DataRequestDetailsRequestComponent {
   protected readonly invitationLink = computed(() => {
     return `${globalThis.location.origin}/consent-requests/create/${this.dataRequest().id}`;
   });
-
-  protected getStatusTranslation(value?: string) {
-    return value ? this.i18nService.translate(`data-request.stateCode.${value}`) : '';
-  }
-
-  protected async handleCopy(event: MouseEvent, trigger: HTMLElement): Promise<void> {
-    let key = 'invitationLink.copied';
-    try {
-      await copyToClipboard(this.invitationLink());
-    } catch {
-      key = 'invitationLink.copyFailed';
-    }
-
-    // Keyboard activation reports no pointer position (detail === 0) - anchor to the button instead.
-    const anchor: AnchorRect =
-      event.detail === 0
-        ? trigger.getBoundingClientRect()
-        : { top: event.clientY, bottom: event.clientY, left: event.clientX, width: 0, height: 0 };
-
-    this.copyFeedbackKey.set(key);
-    this.bubbleService.showTransient(
-      this.i18nService.translate(`data-request.${key}`),
-      () => anchor,
-      1500,
-      () => this.copyFeedbackKey.set(''),
-    );
-  }
 }

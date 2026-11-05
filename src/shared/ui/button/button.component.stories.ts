@@ -9,11 +9,12 @@ import { FaIconComponent, IconDefinition } from '@fortawesome/angular-fontawesom
 import { moduleMetadata, Meta, StoryObj } from '@storybook/angular';
 
 import { ButtonComponent } from './button.component';
-import { ButtonVariants, HrefTarget, IconPosition } from './button.model';
+import { ButtonSize, ButtonVariants, HrefTarget, IconPosition } from './button.model';
 
 const sharedTemplate = (content: string): string => `
   <app-agridata-button
     [variant]="variant"
+    [size]="size"
     [type]="type"
     [disabled]="disabled"
     [tabindex]="tabindex"
@@ -57,6 +58,7 @@ const iconLinkStory = (
     template: `
       <app-agridata-button
         [variant]="variant"
+        [size]="size"
         [disabled]="disabled"
         [loading]="loading"
         [icon]="icon"
@@ -77,6 +79,10 @@ const meta: Meta<ButtonComponent> = {
       control: 'select',
       options: ['left', 'right'],
     },
+    size: {
+      control: 'select',
+      options: Object.values(ButtonSize),
+    },
     target: {
       control: 'select',
       options: Object.values(HrefTarget),
@@ -95,6 +101,7 @@ const meta: Meta<ButtonComponent> = {
     href: '',
     loading: false,
     selected: false,
+    size: ButtonSize.LG,
     success: false,
     tabindex: 0,
     target: HrefTarget.Self,
@@ -106,6 +113,12 @@ export default meta;
 type Story = StoryObj<ButtonComponent>;
 
 export const Primary = textStory('Save', { variant: ButtonVariants.Primary, ariaLabel: 'Save' });
+
+export const PrimaryMd = textStory('Save', {
+  variant: ButtonVariants.Primary,
+  size: ButtonSize.MD,
+  ariaLabel: 'Save',
+});
 
 export const PrimaryAccept = textStory('Accept', {
   variant: ButtonVariants.PrimaryAccept,

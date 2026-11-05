@@ -23,7 +23,7 @@ import {
 import { ACTING_ROLES } from '@/shared/constants/constants';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective } from '@/shared/i18n';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonVariants, ButtonSize } from '@/shared/ui/button';
 
 import { DataRequestCompletionSigningStatusComponent } from '../data-request-completion/data-request-completion-signing-status';
 import { DataRequestContractPdfComponent } from '../data-request-contract-pdf';
@@ -54,6 +54,7 @@ export class DataRequestDetailsContractComponent {
   private readonly stateService = inject(AgridataStateService);
 
   // Constants
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly faSpinnerThird = faSpinnerThird;
   private readonly successFeedbackMs = 1500;

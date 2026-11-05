@@ -33,7 +33,15 @@
         "consent": "Acconsenti",
         "decline": "Rifiuta"
       },
-      "error": "Errore durante l'aggiornamento della richiesta."
+      "error": "Errore durante l'aggiornamento della richiesta.",
+      "columns": {
+        "dataRequest": {
+          "title": "Richiesta di dati",
+          "state": "Stato",
+          "consumerName": "Richiedente",
+          "date": "Data della richiesta"
+        }
+      }
     },
     "filter": {
       "ALL": "Tutti",
@@ -51,15 +59,6 @@
         "saveDisabledInfo": "È richiesto almeno un consenso",
         "saveAndReject": "Salva e rifiuta"
       },
-      "stateCode": {
-        "GRANTED": "Acconsentito il {{ date }}",
-        "DECLINED": "Rifiutato il {{ date }}",
-        "OPENED": "Aperto",
-        "UNKNOWN": "Sconosciuto",
-        "PARTIALLY_GRANTED": "Parzialmente approvato",
-        "PARTIALLY_OPENED": "Parzialmente aperto",
-        "LEGALLY_PERMITTED": "Di diritto pubblico"
-      },
       "footerInformation": "Potrà modificare la sua scelta in qualsiasi momento qui. I dati possono essere trasmessi solo in presenza di un consenso attivo.",
       "requestDate": "Richiesta del {{ date }}",
       "sidepanel": {
@@ -73,9 +72,9 @@
         "title": "Panoramica dell'azienda e delle sedi",
         "description": {
           "consentRequired": {
-            "noBur": "Questa richiesta riguarda la vostra azienda (UID). Il consenso si applica all'intera azienda a livello operativo. Poiché questa richiesta non è specifica per una sede, non vengono elencate singole sedi operative (BUR).",
-            "singleBur": "Questa richiesta riguarda la vostra azienda (UID) e la relativa sede (BUR). Il consenso si applica all'azienda e alla sede.",
-            "multipleBur": "Questa richiesta riguarda la vostra azienda (UID) e le relative sedi (BUR). Il consenso per l'azienda è sempre valido. In linea di massima, acconsentirete alle sedi richieste, ma potete escludere singole sedi dalla richiesta tramite \"Modifica sedi\"."
+            "noBur": "Questa richiesta riguarda la vostra azienda (IDI). Il consenso si applica all'intera azienda a livello operativo. Poiché questa richiesta non è specifica per una sede, non vengono elencate singole sedi operative (BUR).",
+            "singleBur": "Questa richiesta riguarda la vostra azienda (IDI) e la relativa sede (BUR). Il consenso si applica all'azienda e alla sede.",
+            "multipleBur": "Questa richiesta riguarda la vostra azienda (IDI) e le relative sedi (BUR). Il consenso per l'azienda è sempre valido. In linea di massima, acconsentirete alle sedi richieste, ma potete escludere singole sedi dalla richiesta tramite \"Modifica sedi\"."
           },
           "legallyPermitted": {
             "noBur": "Questa richiesta riguarda la sua impresa (IDI). Su base di diritto pubblico, l'utilizzo si applica all'intera impresa a livello aziendale. Poiché questa richiesta non è specifica per una sede, non viene elencata alcuna stabilimento (RSI).",
@@ -84,7 +83,7 @@
           }
         },
         "uidGroupTitle": "La mia azienda richiesta",
-        "uid": "Identificazione dell'azienda (UID)",
+        "uid": "Identificazione dell'azienda (IDI)",
         "bur": {
           "title": "Numero di stabile (BUR)",
           "enabled": "Selezionato",
@@ -96,6 +95,24 @@
         "missingBurInfo": "Manca una sede? Contattate direttamente {{ consumer }} affinché possa richiederla e voi possiate dare il consenso."
       },
       "noConsentRequired": "Nessuna azione richiesta. Questo accesso ai dati avviene su una base di diritto pubblico. Questa visualizzazione serve a scopo di informazione trasparente."
+    },
+    "stateCode": {
+      "tooltip": {
+        "GRANTED": "Acconsentito il {{ date }}",
+        "DECLINED": "Rifiutato il {{ date }}",
+        "OPENED": "Aperto",
+        "PARTIALLY_GRANTED": "Parzialmente approvato",
+        "PARTIALLY_OPENED": "Parzialmente aperto",
+        "LEGALLY_PERMITTED": "Di diritto pubblico"
+      },
+      "UNKNOWN": "Sconosciuto",
+      "OPENED": "Aperto",
+      "GRANTED": "Acconsentito",
+      "DECLINED": "Rifiutato",
+      "PARTIALLY_OPENED": "Parzialmente aperto",
+      "PARTIALLY_GRANTED": "Parzialmente approvato",
+      "LEGALLY_PERMITTED": "Di diritto pubblico",
+      "WITHDRAWN": "Terminata"
     },
     "toast": {
       "title": {
@@ -109,21 +126,6 @@
         "DEFAULT": "La richiesta è stata aggiornata."
       },
       "undo": "Annulla l'azione"
-    },
-    "dataRequest": {
-      "title": "Richiesta di dati",
-      "state": "Stato",
-      "consumerName": "Richiedente",
-      "date": "Data della richiesta",
-      "stateCode": {
-        "OPENED": "Aperto",
-        "GRANTED": "Acconsentito",
-        "DECLINED": "Rifiutato",
-        "PARTIALLY_OPENED": "Parzialmente aperto",
-        "PARTIALLY_GRANTED": "Parzialmente approvato",
-        "LEGALLY_PERMITTED": "Di diritto pubblico",
-        "WITHDRAWN": "Terminata"
-      }
     },
     "emptyState": {
       "title": "Nessuna richiesta disponibile",
@@ -240,7 +242,7 @@
           "placeholder": "Nome"
         },
         "uid": {
-          "label": "UID",
+          "label": "IDI",
           "placeholder": "CHEXXXXXXXXX",
           "prefix": "CHE"
         },
@@ -386,7 +388,9 @@
       "TO_BE_SIGNED_BY_PROVIDER": "Fornitore di firma digitale aperta",
       "TO_BE_RELEASED_BY_PROVIDER": "Conclusione aperta al fornitore",
       "TO_BE_ACTIVATED": "Attivazione in sospeso",
-      "PAUSED": "In pausa"
+      "PAUSED": "In pausa",
+      "TERMINATION_PENDING": "Preavviso fino al {{date}}",
+      "TERMINATED": "\tTerminata"
     },
     "table": {
       "tableActions": {
@@ -451,10 +455,11 @@
           "open": "Aperto",
           "granted": "Approvato",
           "declined": "Rifiutato",
-          "uid": "UID",
+          "uid": "IDI",
           "bur": "BUR",
           "withdrawn": "Terminata",
           "export": {
+            "fileName": "Esportazione del produttore-{{ humanFriendlyId }}",
             "label": "Esporta come CSV",
             "error": {
               "title": "Esportazione fallita",
@@ -466,13 +471,13 @@
         "addButton": "Richiedi produttore",
         "modal": {
           "title": "Richiedi produttore",
-          "description": "Per includere nuove aziende nella richiesta, è necessario interrogare i produttori tramite la loro UID. Successivamente, è possibile selezionare dall'elenco delle sedi operative. È possibile controllare la richiesta anche tramite l'API.",
-          "uidLabel": "UID",
+          "description": "Per includere nuove aziende nella richiesta, è necessario interrogare i produttori tramite la loro IDI. Successivamente, è possibile selezionare dall'elenco delle sedi operative. È possibile controllare la richiesta anche tramite l'API.",
+          "uidLabel": "IDI",
           "uidPlaceholder": "CHE000000000",
           "cancel": "Annulla",
           "confirm": "Aggiungi {{ count }} richiesta(e)",
           "uidInvalid": "formato non valido",
-          "noResults": "l'UID inserito non è stato trovato",
+          "noResults": "l'IDI inserito non è stato trovato",
           "burSection": {
             "title": "Sedi operative",
             "description": "Seleziona dall'elenco le sedi operative che desideri richiedere.",
@@ -488,14 +493,14 @@
             "title": "Aggiunta produttori fallita",
             "message": "Qualcosa è andato storto durante l'aggiunta degli stabilimenti: {{ error }}"
           },
-          "noBurs": "Per questo UID non sono disponibili sedi operative",
+          "noBurs": "Per questo IDI non sono disponibili sedi operative",
           "withdraw": {
             "burSection": {
               "noRequest": "Nessuna richiesta disponibile",
               "description": "Selezionate dall’elenco le sedi operative per le quali desiderate rimuovere le richieste."
             },
             "title": "Terminare la/e richiesta/e",
-            "description": "Per terminare le richieste, è possibile terminare la richiesta completa tramite l’UID. In questo modo verranno terminate anche tutte le sedi operative associate. In alternativa, è possibile terminare la richiesta per singole sedi operative selezionandole dall’elenco.\nÈ inoltre possibile gestire le richieste tramite l’API.",
+            "description": "Per terminare le richieste, è possibile terminare la richiesta completa tramite l’IDI. In questo modo verranno terminate anche tutte le sedi operative associate. In alternativa, è possibile terminare la richiesta per singole sedi operative selezionandole dall’elenco.\nÈ inoltre possibile gestire le richieste tramite l’API.",
             "confirmPartial": "{{ count }} richiesta/e da terminare",
             "confirmComplete": "Terminare l’intera richiesta",
             "success": {
@@ -511,6 +516,19 @@
         },
         "addBurs": "Aggiungi sedi operative",
         "withdrawRequest": "Terminare la richiesta"
+      },
+      "actions": {
+        "terminate": "Disdire la richiesta di dati"
+      },
+      "terminateConfirmation": {
+        "title": "Disdire la richiesta di dati?",
+        "description": "Stai per disdire in modo regolare lo scambio di dati {{ requestName }} tra {{ provider }} e {{ consumer }}. Il termine di disdetta è di tre mesi.\n\nSei sicuro di voler continuare?",
+        "cancel": "Annulla",
+        "confirm": "Sì, disdire la richiesta di dati",
+        "success": {
+          "title": "Richiesta di dati disdetta",
+          "message": "La disdetta prende effetto al termine del periodo di disdetta. Ultimo giorno valido: {{date}}"
+        }
       }
     },
     "invitationLink": {
@@ -655,7 +673,7 @@
       },
       "viewContract": "Visualizza il contratto"
     },
-    "uid": "UID",
+    "uid": "IDI",
     "bur": "BUR",
     "lastChanged": "Modificato il"
   },
@@ -690,7 +708,7 @@
       "description": "Grazie per aver scelto il nostro serviziodi aver effettuato la tua scelta. Verrai reindirizzato automaticamente tra {{ count }} secondi.",
       "redirectNow": "Direttamente indietro"
     },
-    "uidMissingWarning": "Al momento non è ancora presente alcun numero UID relativo alla Sua persona o alla Sua azienda. Poiché sono coinvolti diversi sistemi, potrebbero essere necessari alcuni giorni prima che disponiamo di tutti i dati necessari per il corretto funzionamento di agridata.ch. La preghiamo di riprovare tra qualche giorno. Se il problema persiste, la preghiamo di contattare l'assistenza ({{ phoneNumber }}).",
+    "uidMissingWarning": "Al momento non è ancora presente alcun numero IDI relativo alla Sua persona o alla Sua azienda. Poiché sono coinvolti diversi sistemi, potrebbero essere necessari alcuni giorni prima che disponiamo di tutti i dati necessari per il corretto funzionamento di agridata.ch. La preghiamo di riprovare tra qualche giorno. Se il problema persiste, la preghiamo di contattare l'assistenza ({{ phoneNumber }}).",
     "migrationInfo": {
       "maf": {
         "title": "Sono ora disponibili nuove richieste di dati da “Mia condivisione dei dati agricoli (MAF)”",
@@ -1260,7 +1278,11 @@
     },
     "markAllAsRead": "Contrassegna tutte le notifiche come lette",
     "markAsRead": "Segna come letto",
-    "markAsUnread": "Contrassegna come non letto"
+    "markAsUnread": "Contrassegna come non letto",
+    "empty": {
+      "title": "Nessuna notifica",
+      "message": "Non appena riceverai nuove notifiche, verranno visualizzate qui."
+    }
   },
   "onboardingForm": {
     "uid": {
@@ -1420,7 +1442,20 @@
       "paymentRequired": "Costi del fornitore",
       "costs": "Costi per i richiedenti di dati",
       "documents": "Documenti",
-      "publicSectorTooltip": "La messa a disposizione di questi dati si basa su una base di diritto pubblico. Il trasferimento viene mostrato per trasparenza."
+      "publicSectorTooltip": "La messa a disposizione di questi dati si basa su una base di diritto pubblico. Il trasferimento viene mostrato per trasparenza.",
+      "technical": {
+        "pathTemplate": "Template percorso URL",
+        "requestTemplate": "Template del Request-Body",
+        "productId": "ID prodotto",
+        "flowCode": "Modalità di trasferimento",
+        "copy": "Copia",
+        "copied": "Valore copiato",
+        "productIdTooltip": "Numero univoco con cui è possibile identificare il prodotto dati.",
+        "flowCodeTooltip": "Definisce quando e come viene verificato se sono presenti i consensi necessari per la trasmissione del prodotto dati.",
+        "pathTemplateTooltip": "Specifica come deve essere strutturato l'indirizzo tramite il quale gli acquirenti di dati interrogano il prodotto dati dall'API.",
+        "requestTemplateTooltip": "Modello che definisce come deve essere strutturato il contenuto (body) della richiesta che il fruitore dei dati invia al fornitore dei dati.",
+        "copyFailed": "Copiatura non riuscita"
+      }
     },
     "list": {
       "allLoaded": "Tutti i prodotti dati caricati"
@@ -1441,9 +1476,9 @@
     "foreignBadge": "Richiedente internazionale di dati"
   },
   "news": {
-    "title": "Comunicazioni relative ad Agridata",
+    "title": "Comunicazioni relative ad agridata.ch",
     "readMore": "Continua a leggere",
-    "createdAt": "Data di creazione:  {{ date }}"
+    "publishedAt": "Pubblicato il:  {{ date }}"
   },
   "admin-agbs": {
     "table": {
@@ -1456,13 +1491,28 @@
     },
     "pageTitle": "Gestione dei Termini e Condizioni"
   },
-  "data-request.details": {
-    "producer": {
-      "metadata": {
-        "export": {
-          "fileName": "Esportazione del produttore-{{ humanFriendlyId }}"
-        }
-      }
+  "agb-acceptances": {
+    "pageTitle": "Consensi degli utenti",
+    "searchPlaceholder": "Cerca per IDI",
+    "table": {
+      "name": "Nome",
+      "email": "Email",
+      "uid": "IDI",
+      "lastAccepted": "Ultima accettazione",
+      "acceptedVersion": "Versione accettata",
+      "state": "Stato"
+    },
+    "state": {
+      "ACCEPTED": "Accettato",
+      "TRANSITION_PERIOD": "In periodo di transizione",
+      "PENDING": "Aperto"
+    },
+    "filter": {
+      "all": "Tutti"
+    },
+    "empty": {
+      "title": "Nessuna voce disponibile",
+      "message": "Nessuna voce trovata, modifica la ricerca/i filtri per ottenere risultati"
     }
   }
 }

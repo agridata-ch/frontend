@@ -54,6 +54,14 @@ export interface PublicDataProductDto {
      * Legal basis for the pricing of this data product, if payment is required
      */
     pricingBasis?: TranslationDto;
+    /**
+     * Path template for the request
+     */
+    restClientPathTemplate?: string;
+    /**
+     * Body template for the request
+     */
+    restClientRequestTemplate?: string;
 }
 export namespace PublicDataProductDto {
 }

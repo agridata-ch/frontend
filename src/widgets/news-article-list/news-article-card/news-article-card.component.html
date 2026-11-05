@@ -6,10 +6,10 @@
   (handleClick)="routeToDetail(article().slug)"
 >
   <div cardTags class="flex items-center justify-between gap-2">
-    @if (article().createdAt; as creationDate) {
-      <span class="text-sm text-agridata-tertiary-text leading-tight">{{
-        creationDate | agridataDate
-      }}</span>
+    @if (article().publishedAt; as publishedDate) {
+      <span class="text-sm text-agridata-tertiary-text leading-tight">
+        {{ publishedDate | agridataDate }}
+      </span>
     }
     @if (article().category; as category) {
       <app-agridata-badge
@@ -22,6 +22,7 @@
 
   <div cardFooter class="flex justify-end">
     <app-agridata-button
+      [size]="ButtonSize.MD"
       [variant]="ButtonVariants.Secondary"
       (handleClick)="routeToDetail(article().slug)"
     >

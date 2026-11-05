@@ -7,12 +7,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TranslationDto } from './translationDto';
 
 
-export interface UidRegisterAddressDto { 
-    street?: string;
-    zip?: string;
-    city?: string;
-    country?: string;
+export interface PublicDataProviderSummaryDto { 
+    id: string;
+    /**
+     * Display name of the provider
+     */
+    name?: TranslationDto;
 }
 

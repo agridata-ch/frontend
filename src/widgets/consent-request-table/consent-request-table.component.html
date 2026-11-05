@@ -1,4 +1,5 @@
 <app-consent-request-filter
+  class="block mb-6"
   (handleFilterChange)="setStateCodeFilter($event)"
   [requests]="consentRequestAggregations()"
 />
@@ -32,7 +33,6 @@
     <app-consent-request-state-badge
       [stateCode]="item.stateCode"
       [lastStateChangeDate]="item.lastStateChangeDate"
-      [variant]="getBadgeVariant(item.stateCode)"
       [size]="BadgeSize.SM"
     />
   </ng-template>
@@ -40,6 +40,7 @@
     @if (isOpenAggregationState(item.stateCode)) {
       <app-agridata-button
         click-stop-propagation
+        [size]="ButtonSize.MD"
         [variant]="ButtonVariants.PrimaryAccept"
         [disabled]="acceptConsentActionDisabled()"
         [loading]="getElementLoadingSignal(item.id)()"

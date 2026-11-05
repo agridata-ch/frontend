@@ -11,6 +11,7 @@ import {
   MockProductTourService,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
+import { ButtonComponent } from '@/shared/ui/button';
 
 import { ConsentRequestsTourTriggerComponent } from './consent-requests-tour-trigger.component';
 
@@ -53,16 +54,9 @@ describe('ConsentRequestsTourTriggerComponent', () => {
     expect(productTourService.start).toHaveBeenCalledWith(expect.any(Array));
   });
 
-  it('should start the tour when the trigger link is clicked', () => {
-    const link = fixture.debugElement.query(By.css('a'));
-    link.triggerEventHandler('click', null);
-
-    expect(productTourService.start).toHaveBeenCalledTimes(1);
-  });
-
-  it('should start the tour on keydown.enter', () => {
-    const link = fixture.debugElement.query(By.css('a'));
-    link.triggerEventHandler('keydown.enter', null);
+  it('should start the tour when the trigger button is clicked', () => {
+    const button = fixture.debugElement.query(By.directive(ButtonComponent));
+    button.triggerEventHandler('handleClick', null);
 
     expect(productTourService.start).toHaveBeenCalledTimes(1);
   });

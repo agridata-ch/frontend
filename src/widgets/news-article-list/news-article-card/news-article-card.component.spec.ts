@@ -41,7 +41,8 @@ const baseArticle: NewsArticle = {
   },
   imageAlt: 'Titelbild',
   category: { id: 5, documentId: 'cat-1', name: 'Wetter', slug: 'wetter' },
-  createdAt: '2026-12-31',
+  createdAt: '2026-01-01',
+  publishedAt: '2026-12-31',
 };
 
 describe('NewsArticleCardComponent', () => {
@@ -97,12 +98,12 @@ describe('NewsArticleCardComponent', () => {
     expect(fixture.debugElement.query(By.directive(AgridataBadgeComponent))).toBeNull();
   });
 
-  it('renders the creation date formatted as dd.MM.yyyy', () => {
+  it('renders the publication date formatted as dd.MM.yyyy', () => {
     expect(fixture.nativeElement.textContent).toContain('31.12.2026');
   });
 
-  it('renders no creation date when it is empty', () => {
-    componentRef.setInput('article', { ...baseArticle, createdAt: '' });
+  it('renders no publication date when it is empty', () => {
+    componentRef.setInput('article', { ...baseArticle, publishedAt: '' });
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).not.toContain('31.12.2026');

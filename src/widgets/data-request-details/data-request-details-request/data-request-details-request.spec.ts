@@ -85,74 +85,13 @@ describe('DataRequestDetailsRequestComponent', () => {
       vi.useRealTimers();
     });
 
-    function copy() {
-      const event = new MouseEvent('click', { clientX: 500, clientY: 300, detail: 1 });
-      return component['handleCopy'](event, document.createElement('button'));
-    }
-
-    it('should copy the invitation link when the copy icon is clicked', () => {
+    it('should copy the invitation link with the invitation link messages', async () => {
       const icon = fixture.nativeElement.querySelector('[data-testid="copy-invitation-link"]');
       icon.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      await vi.runAllTimersAsync();
 
       expect(writeText).toHaveBeenCalledWith(component['invitationLink']());
-    });
-
-    it('should show a bubble at the cursor after a successful copy', async () => {
-      await copy();
-
-      expect(component['copyFeedbackKey']()).toBe('invitationLink.copied');
-      expect(showTransient).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.any(Function),
-        1500,
-        expect.any(Function),
-      );
-      expect(showTransient.mock.calls[0][1]()).toEqual({
-        top: 300,
-        bottom: 300,
-        left: 500,
-        width: 0,
-        height: 0,
-      });
-    });
-
-    it('should anchor the bubble to the button when activated by keyboard', async () => {
-      const event = new MouseEvent('click', { detail: 0 });
-      const button = document.createElement('button');
-
-      await component['handleCopy'](event, button);
-
-      expect(showTransient.mock.calls[0][1]()).toEqual(button.getBoundingClientRect());
-    });
-
-    it('should show the failure feedback when the clipboard write rejects', async () => {
-      writeText.mockRejectedValue(new Error('permission denied'));
-
-      await copy();
-
-      expect(component['copyFeedbackKey']()).toBe('invitationLink.copyFailed');
-    });
-
-    it('should clear the live region when the bubble hides', async () => {
-      await copy();
-      expect(component['copyFeedbackKey']()).toBe('invitationLink.copied');
-
-      // The service owns the timer, so replay the onHide it was handed.
-      showTransient.mock.calls[0][3]();
-
-      expect(component['copyFeedbackKey']()).toBe('');
-    });
-  });
-
-  describe('getStatusTranslation', () => {
-    it('should return translated status for valid stateCode', () => {
-      const result = component['getStatusTranslation'](DataRequestStateEnum.Draft);
-      expect(result).toBeDefined();
-    });
-
-    it('should return empty string for undefined stateCode', () => {
-      const result = component['getStatusTranslation']();
-      expect(result).toBe('');
+      expect(component['copyFeedback'].message()).toBe('data-request.invitationLink.copied');
     });
   });
 });

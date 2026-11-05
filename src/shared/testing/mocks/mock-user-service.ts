@@ -15,6 +15,9 @@ export const mockUserService = {
 export function createMockUserService(): MockUserService {
   return {
     updateUserPreferences: vi.fn().mockResolvedValue(Promise.resolve()),
+    getAgbAcceptances: vi
+      .fn()
+      .mockReturnValue(Promise.resolve({ items: [], totalItems: 0, totalPages: 1, page: 0 })),
     getUserInfo: vi.fn().mockReturnValue(Promise.resolve({} as UserInfoDto)),
     getAuthorizedBursByUid: vi.fn().mockReturnValue(Promise.resolve([])),
     getAuthorizedUids: vi.fn().mockReturnValue(Promise.resolve([{ uid: '123' } as UidDto])),

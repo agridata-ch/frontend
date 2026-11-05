@@ -29,9 +29,9 @@
         <span class="text-agridata-tertiary-text text-sm">
           {{ t('state') }}
         </span>
-        <app-agridata-badge
-          [text]="getStatusTranslation(dataRequest().stateCode)"
-          [variant]="getBadgeVariant(dataRequest().stateCode)"
+        <app-data-request-state-badge
+          [stateCode]="dataRequest().stateCode"
+          [terminationPeriodUntil]="dataRequest().terminationPeriodUntil"
           [size]="BadgeSize.SM"
         />
       </div>
@@ -42,10 +42,9 @@
           {{ t('invitationLink.label') }}
         </span>
         <button
-          #copyButton
           type="button"
           class="group cursor-pointer h-fit flex gap-1 text-left font-medium"
-          (click)="handleCopy($event, copyButton)"
+          (click)="copyFeedback.copy(invitationLink(), $event)"
         >
           {{ invitationLink() }}
           <span class="sr-only">{{ t('invitationLink.copyToClipboard') }}</span>
@@ -58,9 +57,7 @@
         </button>
       </div>
       <output class="sr-only">
-        @if (copyFeedbackKey(); as key) {
-          {{ t(key) }}
-        }
+        {{ copyFeedback.message() }}
       </output>
     }
   </div>

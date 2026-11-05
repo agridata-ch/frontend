@@ -2,6 +2,59 @@
 openapi: 3.1.0
 components:
   schemas:
+    AgbAcceptanceOverviewDto:
+      description: AGB acceptance state of a user
+      type: object
+      properties:
+        userId:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier assigned by Agridata to a user (UUID format).
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        givenName:
+          type: string
+          description: User's first name.
+          examples:
+          - Anna
+        familyName:
+          type: string
+          description: User's last name.
+          examples:
+          - Muster
+        email:
+          type: string
+          description: Email address of the user
+          examples:
+          - anna.muster@example.com
+        uid:
+          type: string
+          description: UID of the company the user belongs to.
+          examples:
+          - CHE123456789
+        lastAcceptedAgbDate:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Date and time when the user last accepted the AGB.
+          type: string
+          examples:
+          - 2026-07-20T14:35:00
+        lastAcceptedAgbVersion:
+          type: string
+          description: Version of the AGB revision the user last accepted.
+          examples:
+          - "1.4"
+        status:
+          $ref: "#/components/schemas/AgbAcceptanceStatusEnum"
+          description: "AGB acceptance status: ACCEPTED if no acceptance is pending,\
+            \ TRANSITION_PERIOD while the acceptance deadline lies in the future,\
+            \ PENDING once it has passed."
+          type: string
+    AgbAcceptanceStatusEnum:
+      type: string
+      enum:
+      - ACCEPTED
+      - TRANSITION_PERIOD
+      - PENDING
     AgbRevisionDto:
       description: Data transfer object representing an agb revision
       type: object
@@ -489,10 +542,12 @@ components:
               - TO_BE_ACTIVATED
               - ACTIVE
               - PAUSED
+              - TERMINATION_PENDING
+              - TERMINATED
               description: State of the data request
             dataConsumerLegalName:
               type: string
-              description: LegalName of the data consumer taken from the uid register
+              description: LegalName of the data consumer taken from BurWeb
               examples:
               - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
               maxLength: 255
@@ -708,7 +763,7 @@ components:
           - 0D74F63F-9491-4B9B-80BA-0CA43A1A3A6F
         dataConsumerName:
           type: string
-          description: LegalName of the data consumer taken from the uid register
+          description: LegalName of the data consumer taken from BurWeb
           examples:
           - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
         dataConsumerCity:
@@ -1153,6 +1208,9 @@ components:
       type: object
       description: Health status of a single data source system
       properties:
+        systemCode:
+          type: string
+          description: Code identifying the data source system
         providerName:
           $ref: "#/components/schemas/TranslationDto"
           description: Name of the data provider operating the system
@@ -1300,10 +1358,20 @@ components:
           - TO_BE_ACTIVATED
           - ACTIVE
           - PAUSED
+          - TERMINATION_PENDING
+          - TERMINATED
           description: State of the data request
+        terminationPeriodUntil:
+          $ref: "#/components/schemas/LocalDate"
+          description: Last day on which a terminated data request is still valid
+            (inclusive end of the notice period). Only set once the data request has
+            been terminated
+          type: string
+          examples:
+          - 2027-01-13
         dataConsumerLegalName:
           type: string
-          description: LegalName of the data consumer taken from the uid register
+          description: LegalName of the data consumer taken from BurWeb
           examples:
           - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
           maxLength: 255
@@ -1418,6 +1486,8 @@ components:
       - TO_BE_ACTIVATED
       - ACTIVE
       - PAUSED
+      - TERMINATION_PENDING
+      - TERMINATED
     DataRequestSummaryDto:
       type: object
       description: Reduced data transfer object representing a data request
@@ -1611,10 +1681,12 @@ components:
           - TO_BE_ACTIVATED
           - ACTIVE
           - PAUSED
+          - TERMINATION_PENDING
+          - TERMINATED
           description: State of the data request
         dataConsumerLegalName:
           type: string
-          description: LegalName of the data consumer taken from the uid register
+          description: LegalName of the data consumer taken from BurWeb
           examples:
           - "Bio Suisse, Vereinigung Schweizer Biolandbau-Organisationen"
           maxLength: 255
@@ -2019,6 +2091,45 @@ components:
           description: Number of items per page.
           examples:
           - 10
+    PageResponseDtoAgbAcceptanceOverviewDto:
+      description: Generic paginated response wrapper.
+      type: object
+      required:
+      - items
+      - totalItems
+      - totalPages
+      - currentPage
+      - pageSize
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgbAcceptanceOverviewDto"
+          description: List of items on the current page.
+        totalItems:
+          type: integer
+          format: int64
+          description: Total number of items across all pages.
+          examples:
+          - 42
+        totalPages:
+          type: integer
+          format: int32
+          description: Total number of pages available.
+          examples:
+          - 5
+        currentPage:
+          type: integer
+          format: int32
+          description: Current page number (0-based ).
+          examples:
+          - 1
+        pageSize:
+          type: integer
+          format: int32
+          description: Number of items per page.
+          examples:
+          - 10
     PageResponseDtoAgbRevisionOverviewDto:
       description: Generic paginated response wrapper.
       type: object
@@ -2175,7 +2286,7 @@ components:
           description: Number of items per page.
           examples:
           - 10
-    PageResponseDtoPublicDataProductDto:
+    PageResponseDtoPublicDataProductSummaryDto:
       description: Generic paginated response wrapper.
       type: object
       required:
@@ -2188,7 +2299,7 @@ components:
         items:
           type: array
           items:
-            $ref: "#/components/schemas/PublicDataProductDto"
+            $ref: "#/components/schemas/PublicDataProductSummaryDto"
           description: List of items on the current page.
         totalItems:
           type: integer
@@ -2339,6 +2450,107 @@ components:
           description: "Legal basis for the pricing of this data product, if payment\
             \ is required"
           type: object
+        restClientPathTemplate:
+          type: string
+          description: Path template for the request
+          examples:
+          - "/farm-data/uid/{{uid}}"
+        restClientRequestTemplate:
+          type: string
+          description: Body template for the request
+          examples:
+          - |-
+            {
+              "surveyYear": "{{year}}",
+              "ids": {
+                "ber": "{{bur}}"
+              },
+              "dataTypes": {
+                "structureType": ["animalData"]
+              }
+            }
+    PublicDataProductSummaryDto:
+      type: object
+      required:
+      - id
+      - stateCode
+      - consentRequired
+      - paymentRequired
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the product
+          type: string
+          examples:
+          - 3fa85f64-5717-4562-b3fc-2c963f66afb7
+        dataSourceSystem:
+          $ref: "#/components/schemas/PublicDataSourceSystemSummaryDto"
+          description: Data source system from which this product originates
+          type: object
+        name:
+          $ref: "#/components/schemas/TranslationDto"
+          description: Localized name of the product
+          type: object
+        description:
+          $ref: "#/components/schemas/TranslationDto"
+          description: Description of the product
+          type: object
+        deprecatedSince:
+          $ref: "#/components/schemas/LocalDateTime"
+          description: Timestamp indicating when the product was marked as deprecated.
+          type: string
+          examples:
+          - 2026-03-06T00:00:00
+        stateCode:
+          type:
+          - string
+          - object
+          enum:
+          - DRAFT
+          - ACTIVE
+          description: State of the data product
+          examples:
+          - ACTIVE
+        consentRequired:
+          type: boolean
+          description: If a consent is required for this data product
+          examples:
+          - true
+        paymentRequired:
+          type: boolean
+          description: If a payment is required for this data product
+          examples:
+          - true
+    PublicDataProviderSummaryDto:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the provider
+          type: string
+        name:
+          $ref: "#/components/schemas/TranslationDto"
+          description: Display name of the provider
+          type: object
+    PublicDataSourceSystemSummaryDto:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+          description: Unique identifier of the source
+          type: string
+        name:
+          $ref: "#/components/schemas/TranslationDto"
+          description: Display name of the data source
+          type: object
+        dataProvider:
+          $ref: "#/components/schemas/PublicDataProviderSummaryDto"
+          description: Reference to the data provider
+          type: object
     ResourceQueryDto:
       type: object
       properties:
@@ -2361,6 +2573,7 @@ components:
             with - for descending
         searchTerm:
           type: string
+          maxLength: 100
           description: string to search for in the resource
         columnFilters:
           type: array
@@ -2475,28 +2688,6 @@ components:
           type: string
         legalFormCode:
           $ref: "#/components/schemas/LegalFormEnum"
-    UidRegisterAddressDto:
-      type: object
-      properties:
-        street:
-          type: string
-        zip:
-          type: string
-        city:
-          type: string
-        country:
-          type: string
-    UidRegisterOrganisationDto:
-      type: object
-      properties:
-        name:
-          type: string
-        legalName:
-          type: string
-        uid:
-          type: string
-        address:
-          $ref: "#/components/schemas/UidRegisterAddressDto"
     UserInfoDto:
       description: "Represents basic user information, such as name, contact details,\
         \ and address."
@@ -2687,9 +2878,6 @@ tags:
 - name: Public Data Source Systems
   description: Endpoints for public data source systems
 - name: Test Data
-- name: UID Register Search
-  description: Provides access to organisation details retrieved from the official
-    UID register.
 - name: Users
   description: "Provides access to UIDs and BURs authorized for specific data producers,\
     \ based on their ktIdP or UID."
@@ -4006,8 +4194,9 @@ paths:
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}/status:
     put:
-      description: sets status of data request. Only accessible to the consumer who
-        owns the data request and to admins. Only specific transitions are allowed.
+      description: "sets status of data request. Only accessible to the consumer who\
+        \ owns the data request, to the provider it is assigned to and to admins.\
+        \ Only specific transitions are allowed."
       operationId: setDataRequestStatus
       tags:
       - Data Requests
@@ -4503,6 +4692,7 @@ paths:
       - name: searchTerm
         in: query
         schema:
+          maxLength: 100
           description: string to search for in the resource
           type: string
       - name: size
@@ -4953,6 +5143,7 @@ paths:
       - name: searchTerm
         in: query
         schema:
+          maxLength: 100
           description: string to search for in the resource
           type: string
       - name: size
@@ -5763,85 +5954,6 @@ paths:
       security:
       - SecurityScheme: []
       x-api-subset: agridata.ch Web App
-  /api/uid-register/v1/search:
-    get:
-      description: Retrieves organisation details from the UID register for the UID
-        associated with the currently authenticated consumer. Only accessible to users
-        with the consumer role.
-      operationId: getByUidOfCurrentUser
-      tags:
-      - UID Register Search
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UidRegisterOrganisationDto"
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-        "500":
-          description: "Internal server error: unexpected error"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-        "404":
-          description: The resource or element was not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-      summary: Get By Uid Of Current User
-      security:
-      - SecurityScheme:
-        - agridata.ch.Agridata_Datenbezueger
-      x-api-subset: agridata.ch Web App
-  /api/uid-register/v1/search/{uid}:
-    get:
-      description: Retrieves organisation details from the UID register using the
-        specified UID. Accessible to users with the admin role.
-      operationId: getByUid
-      tags:
-      - UID Register Search
-      parameters:
-      - description: UID of the organisation without CHE prefix
-        example: 101708094
-        required: true
-        name: uid
-        in: path
-        schema:
-          type: integer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UidRegisterOrganisationDto"
-        "401":
-          description: Not Authorized
-        "403":
-          description: Not Allowed
-        "500":
-          description: "Internal server error: unexpected error"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-        "404":
-          description: The resource or element was not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ExceptionDto"
-      summary: Get By Uid
-      security:
-      - SecurityScheme:
-        - agridata.ch.Agridata_Admin
-      x-api-subset: agridata.ch Web App
   /api/user/v1/admin/agb-revisions:
     get:
       description: "Returns all Agb revisions. Supports pagination and sorting on\
@@ -5875,6 +5987,7 @@ paths:
       - name: searchTerm
         in: query
         schema:
+          maxLength: 100
           description: string to search for in the resource
           type: string
       - name: size
@@ -5919,6 +6032,89 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
+  /api/user/v1/agb-acceptances:
+    get:
+      description: "Returns the AGB acceptance state of all users who accepted the\
+        \ AGB at least once. The search term is matched against the UID (stored without\
+        \ separators, e.g. CHE123456789). Supports the filter 'status' (ACCEPTED,\
+        \ TRANSITION_PERIOD, PENDING), pagination and sorting on 'givenName', 'familyName',\
+        \ 'email', 'uid' and 'lastAcceptedAgbDate' (default: uid,familyName)."
+      operationId: getAgbAcceptances
+      tags:
+      - Users
+      parameters:
+      - name: filter
+        in: query
+        schema:
+          description: "Column filters in the form '<column>:<value>[,<value>]', multiple\
+            \ filters separated by ';'. Values of the same column are combined with\
+            \ OR, filters on different columns with AND. Duplicate values are ignored.\
+            \ The filterable columns are documented per endpoint."
+          type: object
+      - name: language
+        in: query
+        schema:
+          description: language code for multilingual fields. Must be supported by
+            application.
+          type: string
+      - name: page
+        in: query
+        schema:
+          description: page number
+          format: int32
+          type: integer
+          minimum: 0
+          default: 0
+      - name: searchTerm
+        in: query
+        schema:
+          maxLength: 100
+          description: string to search for in the resource
+          type: string
+      - name: size
+        in: query
+        schema:
+          description: page size
+          format: int32
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+      - name: sortBy
+        in: query
+        schema:
+          description: List of field names to sort by. Default is ascending prefix
+            with - for descending
+          type: object
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageResponseDtoAgbAcceptanceOverviewDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get Agb Acceptances
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+        - agridata.ch.Agridata_Support
       x-api-subset: agridata.ch Web App
   /api/user/v1/agb-revisions/{agb-revision-id}/accept:
     post:
@@ -6104,6 +6300,7 @@ paths:
       - name: searchTerm
         in: query
         schema:
+          maxLength: 100
           description: string to search for in the resource
           type: string
       - name: size
@@ -6265,6 +6462,7 @@ paths:
       - name: searchTerm
         in: query
         schema:
+          maxLength: 100
           description: string to search for in the resource
           type: string
       - name: size
@@ -6288,7 +6486,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PageResponseDtoPublicDataProductDto"
+                $ref: "#/components/schemas/PageResponseDtoPublicDataProductSummaryDto"
         "500":
           description: "Internal server error: unexpected error"
           content:
@@ -6364,7 +6562,8 @@ paths:
       x-api-subset: agridata.ch Web App
   /public/api/products/v2/{id}:
     get:
-      description: Retrieves a single publicly available data product. Publicly accessible.
+      description: "Retrieves a single publicly available data product, including\
+        \ its technical information. Publicly accessible."
       operationId: getPublicDataProduct
       tags:
       - Public Data Products
@@ -6552,7 +6751,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.21.0-rc.9
+  version: 1.22.0-rc.8
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 

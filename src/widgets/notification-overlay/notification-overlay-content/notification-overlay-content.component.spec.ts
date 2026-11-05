@@ -46,6 +46,32 @@ describe('NotificationOverlayContentComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('handleOpenNotification', () => {
+    it('should mark an unread notification as read', () => {
+      component['handleOpenNotification'](mockInboxEntries[0]);
+
+      expect(notificationService.toggleReadStatus).toHaveBeenCalledWith(mockInboxEntries[0]);
+    });
+
+    it('should not toggle an already read notification', () => {
+      component['handleOpenNotification'](mockInboxEntries[1]);
+
+      expect(notificationService.toggleReadStatus).not.toHaveBeenCalled();
+    });
+
+    it('should toggle only once when the read toggle button is clicked', () => {
+      componentRef.setInput('notifications', [mockInboxEntries[0]]);
+      fixture.detectChanges();
+
+      const toggleButton: HTMLButtonElement = fixture.nativeElement.querySelector(
+        'button[aria-label="header.notifications.markAsRead"]',
+      );
+      toggleButton.click();
+
+      expect(notificationService.toggleReadStatus).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('handleToggleReadStatus', () => {
     it('should call toggleReadStatus and notifyMutation on success', async () => {
       componentRef.setInput('notifications', mockInboxEntries);

@@ -1,34 +1,50 @@
-import { Component, computed, effect, inject, input, output, resource } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  linkedSignal,
+  output,
+  resource,
+} from '@angular/core';
 import { faCircleChf, faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
 import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DataProductSource } from '@/entities/api';
-import { DataProductDocumentMetadataDto } from '@/entities/openapi';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
-import { createDocumentDownloadHandler } from '@/shared/lib/document-download.helper';
 import { TooltipDirective } from '@/shared/tooltip';
+import { AgridataTabsComponent, Tab } from '@/shared/ui/agridata-tabs';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
-import { AgridataFileDownloadComponent } from '@/shared/ui/file-download';
-import { AgridataLinksListComponent } from '@/shared/ui/links-list';
+
+import { DataProductDetailGeneralComponent } from './data-product-detail-general/data-product-detail-general.component';
+import { DataProductDetailTechnicalComponent } from './data-product-detail-technical/data-product-detail-technical.component';
+
+enum DetailTab {
+  GENERAL = 'general',
+  TECHNICAL = 'technical',
+}
 
 /**
- * Read-only details of a single data product (badges, description, links, documents, costs). Given
- * a product id it loads the product and its documents through the `source` the host hands over
- * (public or authenticated). Hosts wrap it (modal, page) and own the open/close state.
- * `handleNameLoaded` hands the product name to the host for its title and `handleLoadFailed` lets
- * the host close on error. Translations come from the `data-catalog` keys.
+ * Read-only details of a single data product: badges plus a general and a technical tab (see the
+ * `data-product-detail-general` / `-technical` sub-components). Given a product id it loads the
+ * product and its documents through the `source` the host hands over (public or authenticated).
+ * Hosts wrap it (modal, page) and own the open/close state. `handleNameLoaded` hands the product
+ * name to the host for its title and `handleLoadFailed` lets the host close on error. Translations come from the `data-catalog` keys, tab labels from the shared
+ * `data-products.detailForm.tab` keys.
  *
- * CommentLastReviewed: 2026-10-13
+ * CommentLastReviewed: 2026-11-02
  */
 @Component({
   selector: 'app-data-product-detail',
   imports: [
     AgridataBadgeComponent,
-    AgridataFileDownloadComponent,
-    AgridataLinksListComponent,
+    AgridataTabsComponent,
+    DataProductDetailGeneralComponent,
+    DataProductDetailTechnicalComponent,
     FontAwesomeModule,
     I18nDirective,
     TooltipDirective,
@@ -43,6 +59,7 @@ export class DataProductDetailComponent {
   // Constants
   protected readonly BadgeSize = BadgeSize;
   protected readonly BadgeVariant = BadgeVariant;
+  protected readonly DetailTab = DetailTab;
   protected readonly faSpinnerThird = faSpinnerThird;
   protected readonly publicSectorIcon = faShieldCheck;
   protected readonly chfCircleIcon = faCircleChf;
@@ -74,23 +91,18 @@ export class DataProductDetailComponent {
   });
 
   // Signals
-  protected readonly downloads = createDocumentDownloadHandler(this.errorService);
+  // Every newly selected product starts on the general tab.
+  protected readonly activeTabId = linkedSignal<string>(() => {
+    this.productId();
+    return DetailTab.GENERAL;
+  });
 
   // Computed signals
   protected readonly loading = computed(() => this.productResource.isLoading());
   protected readonly product = computed(() => this.productResource.value());
+  protected readonly documents = computed(() => this.documentsResource.value() ?? []);
   protected readonly name = computed(() =>
     this.i18nService.useObjectTranslation(this.product()?.name),
-  );
-  protected readonly description = computed(() =>
-    this.i18nService.useObjectTranslation(this.product()?.description),
-  );
-  protected readonly extendedDescription = computed(() =>
-    this.i18nService.useObjectTranslation(this.product()?.extendedDescription),
-  );
-  protected readonly paymentRequired = computed(() => this.product()?.paymentRequired ?? false);
-  protected readonly pricingBasis = computed(() =>
-    this.i18nService.useObjectTranslation(this.product()?.pricingBasis),
   );
   protected readonly providerName = computed(() =>
     this.i18nService.useObjectTranslation(this.product()?.dataSourceSystem?.dataProvider.name),
@@ -98,6 +110,20 @@ export class DataProductDetailComponent {
   protected readonly sourceSystemName = computed(() =>
     this.i18nService.useObjectTranslation(this.product()?.dataSourceSystem?.name),
   );
+  protected readonly tabs = computed<Tab[]>(() => {
+    // translate() isn't reactive; reading lang re-translates the labels on a language switch.
+    this.i18nService.lang();
+    return [
+      {
+        id: DetailTab.GENERAL,
+        label: this.i18nService.translate('data-products.detailForm.tab.generalInfo'),
+      },
+      {
+        id: DetailTab.TECHNICAL,
+        label: this.i18nService.translate('data-products.detailForm.tab.technicalFields'),
+      },
+    ];
+  });
 
   // Effects
   private readonly productErrorEffect = createResourceErrorHandlerEffect(
@@ -110,21 +136,4 @@ export class DataProductDetailComponent {
   private readonly closeOnErrorEffect = effect(() => {
     if (this.productResource.error()) this.handleLoadFailed.emit();
   });
-
-  // Computed
-  protected readonly hasLinks = computed(() => !!this.product()?.links?.length);
-  protected readonly documents = computed(() => this.documentsResource.value() ?? []);
-
-  // Methods
-  protected handleDownload(doc: DataProductDocumentMetadataDto): void {
-    const id = this.productId();
-    if (!id) return;
-    this.downloads.download(doc.id, doc.fileName, () => this.source().downloadDocument(id, doc.id));
-  }
-
-  protected handleOpen(doc: DataProductDocumentMetadataDto): void {
-    const id = this.productId();
-    if (!id) return;
-    this.downloads.open(doc.id, () => this.source().downloadDocument(id, doc.id));
-  }
 }

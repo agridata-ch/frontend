@@ -10,7 +10,7 @@ import {
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { I18nFormatDirective, I18nPipe } from '@/shared/i18n';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 
 import { AlertType } from './alert.model';
 
@@ -29,6 +29,7 @@ import { AlertType } from './alert.model';
 })
 export class AlertComponent {
   protected readonly closeIcon = faClose;
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly AlertType = AlertType;
   protected readonly iconInfo = faCircleInfo;

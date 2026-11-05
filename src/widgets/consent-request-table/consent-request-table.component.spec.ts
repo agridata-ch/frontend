@@ -112,18 +112,6 @@ describe('ConsentRequestTableComponent', () => {
     );
   });
 
-  it('should get correct badge variant for different states', () => {
-    expect(component.getBadgeVariant(ConsentRequestAggregationStateEnum.Opened)).toBe('info');
-    expect(component.getBadgeVariant(ConsentRequestAggregationStateEnum.Granted)).toBe('success');
-    expect(component.getBadgeVariant(ConsentRequestAggregationStateEnum.Declined)).toBe('error');
-    expect(component.getBadgeVariant(ConsentRequestAggregationStateEnum.PartiallyOpened)).toBe(
-      'warning',
-    );
-    expect(component.getBadgeVariant(ConsentRequestAggregationStateEnum.PartiallyGranted)).toBe(
-      'success',
-    );
-  });
-
   it('should emit action when opening details', () => {
     const emitSpy = vi.spyOn(component.tableRowAction, 'emit');
     component.openDetails(mockConsentRequestAggregations[0]);
@@ -196,9 +184,7 @@ describe('ConsentRequestTableComponent', () => {
     const rows = fixture.debugElement.queryAll(By.css('tr'));
     const rowsWithState = (stateCode: ConsentRequestAggregationStateEnum) =>
       rows.filter((row) =>
-        row.nativeElement.textContent?.includes(
-          `consent-request.dataRequest.stateCode.${stateCode}`,
-        ),
+        row.nativeElement.textContent?.includes(`consent-request.stateCode.${stateCode}`),
       );
     const countAcceptButtons = (row: DebugElement) =>
       row
@@ -273,18 +259,6 @@ describe('ConsentRequestTableComponent', () => {
     await Promise.resolve();
 
     expect(errorService.handleError).toHaveBeenCalled();
-  });
-
-  it('should get translated state value', () => {
-    const i18nServiceSpy = vi.spyOn(mockI18nService, 'translate');
-
-    component.getTranslatedStateValue(ConsentRequestAggregationStateEnum.Opened);
-
-    expect(i18nServiceSpy).toHaveBeenCalledWith('consent-request.dataRequest.stateCode.OPENED');
-  });
-
-  it('should handle undefined state value', () => {
-    expect(component.getTranslatedStateValue(undefined)).toBe('');
   });
 
   it('should execute action callback correctly', () => {

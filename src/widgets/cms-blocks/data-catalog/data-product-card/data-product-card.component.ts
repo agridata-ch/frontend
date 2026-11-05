@@ -1,11 +1,11 @@
 import { Component, computed, inject, input, output } from '@angular/core';
 import { faCircleChf, faShieldCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/solid';
 
-import { PublicDataProductDto } from '@/entities/openapi';
+import { PublicDataProductSummaryDto } from '@/entities/openapi';
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { TooltipDirective } from '@/shared/tooltip';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 import { CardComponent } from '@/shared/ui/card';
 
 /**
@@ -32,12 +32,13 @@ export class DataProductCardComponent {
   // Constants
   protected readonly BadgeSize = BadgeSize;
   protected readonly BadgeVariant = BadgeVariant;
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly publicSectorIcon = faShieldCheck;
   protected readonly chfCircleIcon = faCircleChf;
 
   // Input properties
-  readonly product = input.required<PublicDataProductDto>();
+  readonly product = input.required<PublicDataProductSummaryDto>();
 
   // Output properties
   readonly handleShowDetails = output<string>();
@@ -53,6 +54,6 @@ export class DataProductCardComponent {
     this.i18nService.useObjectTranslation(this.product().dataSourceSystem?.name),
   );
   protected readonly providerName = computed(() =>
-    this.i18nService.useObjectTranslation(this.product().dataSourceSystem?.dataProvider.name),
+    this.i18nService.useObjectTranslation(this.product().dataSourceSystem?.dataProvider?.name),
   );
 }
