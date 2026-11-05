@@ -129,7 +129,6 @@ export class NotificationCenterPageComponent {
         },
       },
     ],
-    showRowActionButton: true,
     rowAction: (item) => {
       if (!item.isRead) void this.handleToggleReadStatus(item);
       const route = getNotificationRoute(item, this.authService);

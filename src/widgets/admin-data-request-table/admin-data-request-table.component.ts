@@ -16,6 +16,7 @@ import {
   DataRequestStateBadgeComponent,
 } from '@/shared/data-request';
 import { I18nService } from '@/shared/i18n';
+import { TooltipDirective } from '@/shared/tooltip';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table';
 import { ClientTableMetadata } from '@/shared/ui/agridata-client-table/client-table-model';
@@ -38,6 +39,7 @@ import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
     AgridataClientTableComponent,
     DataRequestDtoDirective,
     AgridataContactCardComponent,
+    TooltipDirective,
   ],
 })
 export class AdminDataRequestTableComponent {
@@ -118,7 +120,6 @@ export class AdminDataRequestTableComponent {
               getStateTranslation(this.i18nService, item?.stateCode, item?.terminationPeriodUntil),
           },
         ],
-        showRowActionButton: true,
         rowAction: (item) => this.tableRowAction.emit(item),
       };
     },

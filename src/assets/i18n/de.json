@@ -14,12 +14,6 @@
     "noData": "Keine Daten vorhanden",
     "loading": "Daten werden geladen",
     "pageSelector": "Einträge pro Seite",
-    "header": {
-      "ariaLabels": {
-        "sort": "Sortieren nach: {{ sortBy }}",
-        "rowActionColumnTitle": "Aktionen Spalte"
-      }
-    },
     "ariaLabels": {
       "actions": "Aktionen",
       "rowAction": "Datensatz öffnen"

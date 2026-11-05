@@ -14,12 +14,6 @@
     "noData": "Aucune donnée disponible",
     "loading": "Chargement des données",
     "pageSelector": "Entrées par page",
-    "header": {
-      "ariaLabels": {
-        "sort": "Trier par : {{ sortBy }}",
-        "rowActionColumnTitle": "Colonne Actions"
-      }
-    },
     "ariaLabels": {
       "actions": "Actions",
       "rowAction": "Ouvrir l'enregistrement"

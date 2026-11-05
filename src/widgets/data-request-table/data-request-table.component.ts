@@ -29,6 +29,7 @@ import {
 } from '@/shared/data-request';
 import { I18nService, I18nPipe, I18nDirective } from '@/shared/i18n';
 import { ToastService, ToastType } from '@/shared/toast';
+import { TooltipDirective } from '@/shared/tooltip';
 import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table';
 import { ClientTableMetadata } from '@/shared/ui/agridata-client-table/client-table-model';
 import { ActionDto, CellRendererTypes, SortDirections } from '@/shared/ui/agridata-table';
@@ -60,6 +61,7 @@ import { DATA_REQUEST_NEW_ID } from '@/widgets/data-request-wizard';
     ModalComponent,
     I18nPipe,
     I18nDirective,
+    TooltipDirective,
   ],
 })
 export class DataRequestTableComponent {
