@@ -1,3 +1,9 @@
+## [1.25.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.24.0...v1.25.0-rc.1) (2026-11-06)
+
+### Features
+
+- **agridata-table:** improve table ([7b206d1](https://github.com/agridata-ch/frontend/commit/7b206d17d012b38cc0d5e34050d85c169bab24a5)), references [DIGIB2-1784](https://github.com/agridata-ch/frontend/issues/-1784)
+
 ## [1.24.0](https://github.com/agridata-ch/frontend/compare/v1.23.1...v1.24.0) (2026-11-05)
 
 ### Features
