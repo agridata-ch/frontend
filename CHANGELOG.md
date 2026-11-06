@@ -1,3 +1,9 @@
+## [1.25.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.1...v1.25.0-rc.2) (2026-11-06)
+
+### Bug Fixes
+
+- **ui:** fix z-index, fix action menu height ([2c828d1](https://github.com/agridata-ch/frontend/commit/2c828d11fa9df0cabd9731ef4d8d5288a40bdef0)), references [DIGIB2-1762](https://github.com/agridata-ch/frontend/issues/-1762) [DIGIB2-1777](https://github.com/agridata-ch/frontend/issues/-1777)
+
 ## [1.25.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.24.0...v1.25.0-rc.1) (2026-11-06)
 
 ### Features
