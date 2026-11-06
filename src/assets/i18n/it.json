@@ -1389,7 +1389,10 @@
     "underline": "Sottolineato",
     "bulletList": "Elenco puntato",
     "orderedList": "Elenco numerato",
-    "resetFormat": "Ripristina formattazione"
+    "resetFormat": "Ripristina formattazione",
+    "heading1": "Titolo 1",
+    "heading2": "Titolo 2",
+    "heading3": "Titolo 3"
   },
   "fileDownload": {
     "download": "Scarica",
@@ -1483,7 +1486,53 @@
       "validTo": "Valido fino al",
       "enforceConsentFrom": "Blocco dal"
     },
-    "pageTitle": "Gestione dei Termini e Condizioni"
+    "pageTitle": "Gestione dei Termini e Condizioni",
+    "createNewVersion": "Aggiungi una versione dei CGC",
+    "agbText": {
+      "de": {
+        "label": "Testo delle CG in tedesco",
+        "placeholder": "Allgemeine Geschäftsbedingungen für die Nutzung..."
+      },
+      "fr": {
+        "label": "Testo delle CG in francese",
+        "placeholder": "Conditions générales régissant l’utilisation..."
+      },
+      "it": {
+        "label": "Testo delle CG in italiano",
+        "placeholder": "Condizioni generali di contratto per l’utilizzo..."
+      },
+      "heading": "Contenuto"
+    },
+    "version": {
+      "placeholder": "1.2"
+    },
+    "cancel": "Annulla",
+    "publish": "Pubblicare la versione",
+    "enforceConsentDate": {
+      "info": "Tutti i destinatari e fornitori di dati visualizzeranno una finestra modale al prossimo accesso e dovranno accettare le CGU aggiornate entro una data limite stabilita.",
+      "toggle": "Consenso dell’utente richiesto",
+      "dateHint": "A partire da questa data, il consenso sarà obbligatorio per continuare a utilizzare l’applicazione."
+    },
+    "form": {
+      "title": "Aggiungi una nuova versione dei CGC"
+    },
+    "validity": {
+      "openEnded": "A partire dal {{ date }}",
+      "label": "Validità"
+    },
+    "create": {
+      "successTitle": "Versione CG pubblicata",
+      "successMessage": "La nuova versione delle CG {{ version }} è stata creata con successo.",
+      "confirm": {
+        "title": "Pubblicare la versione delle CGC?",
+        "description": "La nuova versione delle CG sarà immediatamente visibile ed entrerà in vigore al momento della pubblicazione. Desidera continuare?",
+        "publish": "Sì, pubblicare"
+      },
+      "error": {
+        "versionAlreadyExists": "Questa versione esiste già.",
+        "versionNotNewer": "La versione deve essere più recente di quella attuale."
+      }
+    }
   },
   "agb-acceptances": {
     "pageTitle": "Consensi degli utenti",

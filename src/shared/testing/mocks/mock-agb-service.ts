@@ -24,6 +24,8 @@ export type MockAgbService = Mockify<AgbService>;
 export function createMockAgbService(): MockAgbService {
   return {
     acceptAgbs: vi.fn().mockResolvedValue(undefined),
+    createAgbRevision: vi.fn().mockResolvedValue(undefined),
+    fetchAgbRevision: vi.fn().mockResolvedValue(mockAgbRevision),
     fetchAgbs: vi.fn().mockResolvedValue(mockAgbRevision),
     fetchAllAgbRevisions: vi.fn().mockResolvedValue({ items: [], totalItems: 0 }),
   } satisfies MockAgbService;

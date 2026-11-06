@@ -1389,7 +1389,10 @@
     "underline": "Unterstrichen",
     "bulletList": "Aufzählung",
     "orderedList": "Nummerierte Liste",
-    "resetFormat": "Formatierung zurücksetzen"
+    "resetFormat": "Formatierung zurücksetzen",
+    "heading1": "Überschrift 1",
+    "heading2": "Überschrift 2",
+    "heading3": "Überschrift 3"
   },
   "fileDownload": {
     "download": "Herunterladen",
@@ -1483,7 +1486,53 @@
       "validTo": "Gültig bis",
       "enforceConsentFrom": "Sperrung ab"
     },
-    "pageTitle": "AGB-Verwaltung"
+    "pageTitle": "AGB-Verwaltung",
+    "createNewVersion": "AGB-Version erfassen",
+    "agbText": {
+      "de": {
+        "label": "AGB-Text Deutsch",
+        "placeholder": "Allgemeine Geschäftsbedingungen für die Nutzung..."
+      },
+      "fr": {
+        "label": "AGB Text Französisch",
+        "placeholder": "Conditions générales régissant l’utilisation..."
+      },
+      "it": {
+        "label": "AGB Text Italienisch",
+        "placeholder": "Condizioni generali di contratto per l’utilizzo..."
+      },
+      "heading": "Inhalt"
+    },
+    "version": {
+      "placeholder": "1.2"
+    },
+    "cancel": "Abbrechen",
+    "publish": "Version publizieren",
+    "enforceConsentDate": {
+      "info": "Alle Datenbezüger und Datenanbieter sehen beim nächsten Login ein Modal und müssen die aktualisierten AGBs bis zu einem festgelegten Zeitpunkt akzeptieren.",
+      "toggle": "Zustimmung User erforderlich",
+      "dateHint": "Ab diesem Datum ist die Zustimmung erforderlich, um die Applikation weiterhin nutzen zu können."
+    },
+    "form": {
+      "title": "Neue AGB-Version erfassen"
+    },
+    "validity": {
+      "openEnded": "Ab dem {{ date }}",
+      "label": "Gültigkeit"
+    },
+    "create": {
+      "successTitle": "AGB-Version publiziert",
+      "successMessage": "Die neue AGB-Version {{ version }} wurde erfolgreich angelegt.",
+      "confirm": {
+        "title": "AGB-Version publizieren?",
+        "description": "Mit der Veröffentlichung wird die neue AGB-Version sofort sichtbar und tritt unmittelbar in Kraft. Möchten Sie fortfahren?",
+        "publish": "Ja, publizieren"
+      },
+      "error": {
+        "versionAlreadyExists": "Diese Version existiert bereits.",
+        "versionNotNewer": "Die Version muss neuer sein als die aktuelle Version."
+      }
+    }
   },
   "agb-acceptances": {
     "pageTitle": "Nutzer-Zustimmungen",
