@@ -5,6 +5,7 @@
   @if (loaded() && !error()) {
     <app-search-input
       class="w-full sm:max-w-md"
+      [initialValue]="search()"
       [isLoading]="searching()"
       (handleInput)="handleSearchChange($event)"
     />

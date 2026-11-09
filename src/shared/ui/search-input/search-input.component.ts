@@ -1,4 +1,4 @@
-import { Component, input, OnDestroy, output, signal } from '@angular/core';
+import { Component, input, OnDestroy, OnInit, output, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -19,7 +19,7 @@ import { AgridataInputComponent } from '@/shared/ui/agridata-input';
  * minimum character validation, and loading state management.
  * It emits search queries and loading states to parent components.
  * It also exposes methods to interact with the search input programmatically.
- * CommentLastReviewed: 2025-09-24
+ * CommentLastReviewed: 2026-11-09
  */
 @Component({
   selector: 'app-search-input',
@@ -33,9 +33,11 @@ import { AgridataInputComponent } from '@/shared/ui/agridata-input';
   ],
   templateUrl: './search-input.component.html',
 })
-export class SearchInputComponent implements OnDestroy {
+export class SearchInputComponent implements OnInit, OnDestroy {
   readonly minSearchLength = input(3);
   readonly debounceTime = input(300);
+  /** Init-only: read once in ngOnInit, later changes are ignored so typing is never overwritten. */
+  readonly initialValue = input('');
   readonly isLoading = input<boolean>(false);
   readonly placeholder = input<string>();
 
@@ -72,6 +74,10 @@ export class SearchInputComponent implements OnDestroy {
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.complete();
+  }
+
+  ngOnInit() {
+    this.value.set(this.initialValue());
   }
 
   clearSearch() {
