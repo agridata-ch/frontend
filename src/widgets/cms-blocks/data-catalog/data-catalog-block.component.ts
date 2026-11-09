@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { afterNextRender, Component, computed, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { afterNextRender, Component, computed, effect, inject, signal } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { DataProductService } from '@/entities/api';
 import { MasterDataService } from '@/entities/api/master-data.service';
@@ -27,11 +27,32 @@ import { PublicDataProductDetailComponent } from './public-data-product-detail';
 
 type SelectValue = string | number | null;
 
+const SORT_OPTIONS = [
+  { value: 'productName', labelKey: 'data-catalog.sort.nameAsc' },
+  { value: '-productName', labelKey: 'data-catalog.sort.nameDesc' },
+  { value: 'systemName', labelKey: 'data-catalog.sort.systemAsc' },
+  { value: '-systemName', labelKey: 'data-catalog.sort.systemDesc' },
+  { value: 'providerName', labelKey: 'data-catalog.sort.providerAsc' },
+  { value: '-providerName', labelKey: 'data-catalog.sort.providerDesc' },
+] as const;
+const DEFAULT_SORT = SORT_OPTIONS[0].value;
+const MIN_SEARCH_LENGTH = 3;
+
+// A shared `q` shorter than the search input's minimum could never be typed, so it is ignored.
+function parseSearch(params: ParamMap): string {
+  const term = (params.get('q') ?? '').trim();
+  return term.length >= MIN_SEARCH_LENGTH ? term : '';
+}
+
+function parseSort(params: ParamMap): string {
+  return SORT_OPTIONS.find((option) => option.value === params.get('sort'))?.value ?? DEFAULT_SORT;
+}
+
 /**
  * Displays the public data catalog as a responsive grid of product cards. The first page is fetched on
  * init; further pages are appended as the user scrolls to the bottom.
  *
- * CommentLastReviewed: 2026-08-27
+ * CommentLastReviewed: 2026-11-09
  */
 @Component({
   selector: 'app-data-catalog-block',
@@ -65,8 +86,8 @@ export class DataCatalogBlockComponent {
   protected readonly loading = signal(false);
   protected readonly loaded = signal(false);
   protected readonly totalItems = signal(0);
-  protected readonly sortBy = signal<string>('productName');
-  protected readonly search = signal('');
+  protected readonly sortBy = signal<string>(parseSort(this.route.snapshot.queryParamMap));
+  protected readonly search = signal(parseSearch(this.route.snapshot.queryParamMap));
   protected readonly error = signal<unknown>(undefined);
   private readonly page = signal(0);
   protected readonly totalPages = signal(1);
@@ -74,9 +95,14 @@ export class DataCatalogBlockComponent {
   private requestId = 0;
 
   // Filter state (public data catalog). Systems are grouped by provider; selecting a provider
-  // narrows the system list. `null` selection means "all".
-  protected readonly selectedProviderId = signal<string | null>(null);
-  protected readonly selectedSystemId = signal<string | null>(null);
+  // narrows the system list. `null` selection means "all". Seeded from the query params of a shared
+  // link and validated against the loaded options in dropUnknownFilters.
+  protected readonly selectedProviderId = signal<string | null>(
+    this.route.snapshot.queryParamMap.get('provider') || null,
+  );
+  protected readonly selectedSystemId = signal<string | null>(
+    this.route.snapshot.queryParamMap.get('system') || null,
+  );
   private readonly providers = signal<DataProviderDto[]>([]);
   private readonly systems = signal<DataSourceSystemDto[]>([]);
 
@@ -105,23 +131,12 @@ export class DataCatalogBlockComponent {
 
     return Array.from({ length: Math.max(count, 0) });
   });
-  protected readonly sortOptions = computed<SelectOption[]>(() => [
-    { value: 'productName', label: this.i18nService.translate('data-catalog.sort.nameAsc') },
-    { value: '-productName', label: this.i18nService.translate('data-catalog.sort.nameDesc') },
-    { value: 'systemName', label: this.i18nService.translate('data-catalog.sort.systemAsc') },
-    {
-      value: '-systemName',
-      label: this.i18nService.translate('data-catalog.sort.systemDesc'),
-    },
-    {
-      value: 'providerName',
-      label: this.i18nService.translate('data-catalog.sort.providerAsc'),
-    },
-    {
-      value: '-providerName',
-      label: this.i18nService.translate('data-catalog.sort.providerDesc'),
-    },
-  ]);
+  protected readonly sortOptions = computed<SelectOption[]>(() =>
+    SORT_OPTIONS.map((option) => ({
+      value: option.value,
+      label: this.i18nService.translate(option.labelKey),
+    })),
+  );
   protected readonly providerOptions = computed<SelectOption[]>(() => {
     const options = this.providers()
       .map((provider) => ({
@@ -193,13 +208,12 @@ export class DataCatalogBlockComponent {
 
   // Effects
   private readonly _init = afterNextRender(() => {
-    void this.loadNext();
-    void this.loadFilterOptions();
+    void this.init();
   });
+  private readonly _syncUrl = effect(() => this.syncUrl());
 
   protected handleCloseDetail(): void {
     this.selectedProductId.set(undefined);
-    this.replacePath(['.']);
   }
 
   protected handleProviderChange(value: SelectValue): void {
@@ -241,15 +255,35 @@ export class DataCatalogBlockComponent {
 
   protected openDetail(id: string): void {
     this.selectedProductId.set(id);
-    this.replacePath([id]);
   }
 
-  // Mirrors the open product into the address bar (cms/<slug>/<id>) without navigating, so the URL is
-  // shareable/deeplinkable but no router navigation fires (which would scroll the page to top).
-  private replacePath(commands: string[]): void {
-    this.location.replaceState(
-      this.router.serializeUrl(this.router.createUrlTree(commands, { relativeTo: this.route })),
-    );
+  // A shared link may carry ids that no longer exist (or a system of another provider). Unknown
+  // values are dropped so the catalog shows the unfiltered list instead of an empty result.
+  private dropUnknownFilters(): void {
+    const providerId =
+      this.providers().find((provider) => provider.id === this.selectedProviderId())?.id ?? null;
+    const systemId =
+      this.systems().find(
+        (system) =>
+          system.id === this.selectedSystemId() &&
+          (!providerId || system.dataProvider.id === providerId),
+      )?.id ?? null;
+    this.selectedProviderId.set(providerId);
+    this.selectedSystemId.set(systemId);
+  }
+
+  // Filter ids from the URL can only be validated once the options are loaded, so the first page waits
+  // for them in that case; without filter params both requests run in parallel.
+  private async init(): Promise<void> {
+    const options = this.loadFilterOptions();
+    if (this.selectedProviderId() || this.selectedSystemId()) {
+      // Marked loading while waiting so the scroll sentinel cannot fetch with unvalidated ids.
+      this.loading.set(true);
+      // Validation happens in loadFilterOptions; a failed load keeps the shared filters.
+      await options;
+      this.loading.set(false);
+    }
+    await this.loadNext();
   }
 
   // Fetches the current page and appends it. A per-request id guards against stale responses:
@@ -296,6 +330,7 @@ export class DataCatalogBlockComponent {
       ]);
       this.providers.set(providers);
       this.systems.set(systems);
+      this.dropUnknownFilters();
     } catch (error: unknown) {
       if (error instanceof Error || error instanceof HttpErrorResponse) {
         this.errorService.handleError(error);
@@ -312,5 +347,27 @@ export class DataCatalogBlockComponent {
     this.products.set([]);
     this.error.set(undefined);
     return this.load();
+  }
+
+  // Mirrors the open product (cms/<slug>/<id>) and the active filters (query params) into the address
+  // bar without navigating, so the URL is shareable but no router navigation fires (which would scroll
+  // the page to top). Default/empty values are omitted (null).
+  private syncUrl(): void {
+    const productId = this.selectedProductId();
+    const sort = this.sortBy();
+    const queryParams = {
+      q: this.search() || null,
+      sort: sort === DEFAULT_SORT ? null : sort,
+      provider: this.selectedProviderId(),
+      system: this.selectedSystemId(),
+    };
+    this.location.replaceState(
+      this.router.serializeUrl(
+        this.router.createUrlTree(productId ? [productId] : ['.'], {
+          relativeTo: this.route,
+          queryParams,
+        }),
+      ),
+    );
   }
 }
