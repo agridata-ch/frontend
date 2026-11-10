@@ -1,3 +1,9 @@
+## [1.25.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.4...v1.25.0-rc.5) (2026-11-10)
+
+### Features
+
+- **admin-data-request:** update table metadata ([644f81c](https://github.com/agridata-ch/frontend/commit/644f81c6df1845e0076b39c1bdc3bdfeed3c1a46)), references [DIGIB2-1803](https://github.com/agridata-ch/frontend/issues/-1803)
+
 ## [1.25.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.3...v1.25.0-rc.4) (2026-11-10)
 
 ### Features
