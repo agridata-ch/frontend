@@ -44,6 +44,14 @@
         </div>
         <app-uid-switch [variant]="UidSwitchVariant.Dark" />
       </div>
+      <app-agridata-button
+        [variant]="ButtonVariants.SecondaryCms"
+        (handleClick)="authService.logout()"
+        [additionalClass]="'w-full'"
+      >
+        {{ 'account.logout' | i18n }}
+      </app-agridata-button>
+      <hr class="text-agridata-tertiary-text" />
       @if (navigationItems().length > 1) {
         <div class="flex flex-col gap-8">
           @for (item of navigationItems(); track item.route) {
@@ -59,6 +67,14 @@
         </div>
       }
     } @else {
+      <app-agridata-button
+        [variant]="ButtonVariants.SecondaryCms"
+        (handleClick)="authService.login()"
+        [additionalClass]="'w-full'"
+      >
+        {{ 'account.login' | i18n }}
+      </app-agridata-button>
+      <hr class="text-agridata-tertiary-text" />
       <div class="flex flex-col gap-8">
         <a routerLink="/" class="text-lg" (click)="toggleNavigation()">
           {{ 'navigation.menuItems.home' | i18n }}
@@ -74,23 +90,5 @@
       <app-contact-support-info (toggleMobileNavigation)="toggleNavigation()" />
     }
     <agridata-language-select />
-    <hr class="text-agridata-tertiary-text" />
-    @if (isAuthenticated()) {
-      <app-agridata-button
-        [variant]="ButtonVariants.SecondaryCms"
-        (handleClick)="authService.logout()"
-        [additionalClass]="'w-full'"
-      >
-        {{ 'account.logout' | i18n }}
-      </app-agridata-button>
-    } @else {
-      <app-agridata-button
-        [variant]="ButtonVariants.SecondaryCms"
-        (handleClick)="authService.login()"
-        [additionalClass]="'w-full'"
-      >
-        {{ 'account.login' | i18n }}
-      </app-agridata-button>
-    }
   </div>
 </div>
