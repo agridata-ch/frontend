@@ -412,7 +412,7 @@
         }
       }
     },
-    "provider": "Datenanbieter",
+    "system": "System",
     "submissionDate": "Datum der Einreichung",
     "humanFriendlyId": "ID",
     "details": {
