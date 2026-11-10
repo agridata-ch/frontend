@@ -74,7 +74,7 @@
           </div>
         </div>
         @if (store.canEdit()) {
-          <div class="flex grow w-full justify-end flex-col gap-2 items-end">
+          <div class="flex grow w-full justify-end flex-col gap-2 items-start md:items-end">
             @if (!store.editMode()) {
               <app-agridata-button
                 [size]="ButtonSize.MD"
