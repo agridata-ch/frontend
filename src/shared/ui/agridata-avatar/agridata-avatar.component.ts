@@ -38,6 +38,7 @@ export class AgridataAvatarComponent {
       this.initials.set('');
     }
   });
+  protected readonly AvatarSkin = AvatarSkin;
 
   private hash32(str: string): number {
     // FNV-1a 32-bit

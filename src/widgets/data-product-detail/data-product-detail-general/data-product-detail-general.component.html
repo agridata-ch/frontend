@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-8">
     @if (description()) {
       <section class="flex flex-col gap-6">
-        <h4>{{ t('product.description') }}</h4>
+        <h3>{{ t('product.description') }}</h3>
         <p class="whitespace-pre-line">
           {{ description() }}
         </p>
@@ -13,13 +13,13 @@
       <section class="flex flex-col sm:flex-row gap-8">
         @if (hasLinks()) {
           <div class="flex flex-1 flex-col gap-6">
-            <h4>{{ t('product.links') }}</h4>
+            <h3>{{ t('product.links') }}</h3>
             <app-agridata-links-list [links]="product().links ?? []" />
           </div>
         }
         @if (documents().length) {
           <div class="flex flex-1 flex-col gap-6">
-            <h4>{{ t('product.documents') }}</h4>
+            <h3>{{ t('product.documents') }}</h3>
             <ul
               class="flex flex-col rounded-lg border border-agridata-stroke divide-y divide-agridata-stroke"
             >
@@ -43,13 +43,13 @@
     }
     @if (extendedDescription()) {
       <section class="flex flex-col gap-6">
-        <h4>{{ t('product.extendedDescription') }}</h4>
+        <h3>{{ t('product.extendedDescription') }}</h3>
         <p [innerHTML]="extendedDescription()" class="whitespace-pre-line rich-text-content"></p>
       </section>
     }
     @if (pricingBasis()) {
       <section class="flex flex-col gap-6">
-        <h4>{{ t('product.costs') }}</h4>
+        <h3>{{ t('product.costs') }}</h3>
         <p [innerHTML]="pricingBasis()" class="whitespace-pre-line rich-text-content"></p>
       </section>
     }

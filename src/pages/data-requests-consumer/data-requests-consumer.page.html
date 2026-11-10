@@ -1,9 +1,9 @@
 <ng-container *i18n="let t; prefix: 'consumer'">
   <div class="flex justify-between">
-    <h2 class="page-title">
-      <fa-icon [icon]="icon" class="mr-3" />
-      {{ t('pageTitle') }}
-    </h2>
+    <div class="flex gap-3 items-center mb-8">
+      <fa-icon [icon]="icon" size="2xl" />
+      <h1>{{ t('pageTitle') }}</h1>
+    </div>
     <div>
       <app-agridata-button
         (handleClick)="newRequest()"

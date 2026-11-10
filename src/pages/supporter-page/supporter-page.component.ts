@@ -64,7 +64,7 @@ export class SupporterPageComponent {
   protected readonly LAST_LOGIN_HEADER = 'supporter.table.lastLogin';
   protected readonly ACTION_HEADER = 'supporter.table.actions';
 
-  protected readonly TITLE_ICON = faUsers;
+  protected readonly faUsers = faUsers;
   protected readonly AvatarSize = AvatarSize;
   protected readonly AvatarSkin = AvatarSkin;
   protected readonly ButtonSize = ButtonSize;

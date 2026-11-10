@@ -1,6 +1,6 @@
 <div *i18n="let t; prefix: 'data-request.form'" class="flex flex-col gap-4">
   <div class="mb-2">
-    <h4 class="text-agridata-primary-text">{{ t('request.advantages.heading') }}</h4>
+    <h3 class="text-agridata-primary-text">{{ t('request.advantages.heading') }}</h3>
     <span class="text-agridata-tertiary-text">{{ t('request.advantages.subHeading') }}</span>
   </div>
   @for (_ of getAdvantagesControls(); track $index) {
@@ -11,9 +11,7 @@
       (input)="syncToControl()"
     >
       <div class="flex items-center justify-between">
-        <h5 class="text-base font-semibold">
-          {{ t('request.advantages.group.heading') }} {{ $index + 1 }}
-        </h5>
+        <h4>{{ t('request.advantages.group.heading') }} {{ $index + 1 }}</h4>
         @if ($index > 0 && !formDisabled()) {
           <app-agridata-button
             [size]="ButtonSize.MD"
