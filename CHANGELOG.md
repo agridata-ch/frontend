@@ -1,3 +1,10 @@
+## [1.25.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.2...v1.25.0-rc.3) (2026-11-10)
+
+### Features
+
+- **data-catalog:** make data-catalog filter visible in url ([420ce60](https://github.com/agridata-ch/frontend/commit/420ce60b300000602e82dbb4d384ab0fd5c764c9)), references [DIGIB2-1898](https://github.com/agridata-ch/frontend/issues/-1898)
+- **mobile-navigation:** reposition login/logout button ([43051b4](https://github.com/agridata-ch/frontend/commit/43051b4122b2b42812f4897f1ad80bf8241fb8d7)), references [DIGIB2-1806](https://github.com/agridata-ch/frontend/issues/-1806)
+
 ## [1.25.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.1...v1.25.0-rc.2) (2026-11-06)
 
 ### Bug Fixes
