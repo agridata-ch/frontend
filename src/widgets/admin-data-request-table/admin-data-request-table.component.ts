@@ -52,7 +52,7 @@ export class AdminDataRequestTableComponent {
   protected readonly dataRequestConsumerHeader = 'data-request.consumerName';
   protected readonly dataRequestTitleHeader = 'data-request.title';
   protected readonly dataRequestSubmissionDateHeader = 'data-request.submissionDate';
-  protected readonly dataRequestProviderHeader = 'data-request.provider';
+  protected readonly dataRequestSystemHeader = 'data-request.system';
   protected readonly dataRequestStateHeader = 'data-request.state';
   protected readonly BadgeSize = BadgeSize;
   protected readonly AvatarSize = AvatarSize;
@@ -99,14 +99,13 @@ export class AdminDataRequestTableComponent {
             sortValueFn: (item) => item.submissionDate ?? '',
           },
           {
-            name: this.dataRequestProviderHeader,
+            name: this.dataRequestSystemHeader,
             renderer: {
               type: CellRendererTypes.FUNCTION,
-              cellRenderFn: (item) =>
-                this.getTranslation(item.dataSourceSystem?.dataProvider?.name),
+              cellRenderFn: (item) => this.getTranslation(item.dataSourceSystem?.name),
             },
             sortable: true,
-            sortValueFn: (item) => this.getTranslation(item.dataSourceSystem?.dataProvider?.name),
+            sortValueFn: (item) => this.getTranslation(item.dataSourceSystem?.name),
           },
           {
             name: this.dataRequestStateHeader,
