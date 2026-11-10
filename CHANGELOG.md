@@ -1,3 +1,10 @@
+## [1.25.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.3...v1.25.0-rc.4) (2026-11-10)
+
+### Features
+
+- **headings:** optimize headings ([4801080](https://github.com/agridata-ch/frontend/commit/4801080189469e377bd9c75df36587d25fddb6b1)), references [DIGIB2-1602](https://github.com/agridata-ch/frontend/issues/-1602)
+- **headings:** optimize headings ([a5f7954](https://github.com/agridata-ch/frontend/commit/a5f7954c42eae68b1171e91e09f2f76cbced8e9c)), references [DIGIB2-1602](https://github.com/agridata-ch/frontend/issues/-1602)
+
 ## [1.25.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.2...v1.25.0-rc.3) (2026-11-10)
 
 ### Features
