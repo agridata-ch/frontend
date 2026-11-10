@@ -28,10 +28,10 @@
         "
       />
     }
-    <h3>{{ t('title') }}</h3>
+    <h2>{{ t('title') }}</h2>
     <div class="flex gap-6">
       <div class="flex flex-1/2 flex-col gap-4 p-4 border rounded-lg border-agridata-stroke">
-        <h4>{{ t('dataRequest.heading') }}</h4>
+        <h3>{{ t('dataRequest.heading') }}</h3>
         <div class="flex gap-6">
           <div class="flex flex-col gap-1">
             <span class="text-agridata-tertiary-text text-sm">
@@ -62,7 +62,7 @@
         </div>
       </div>
       <div class="flex flex-1/2 flex-col gap-4 p-4 border rounded-lg border-agridata-stroke">
-        <h4>{{ t('dataProducts.heading') }}</h4>
+        <h3>{{ t('dataProducts.heading') }}</h3>
         <div class="flex gap-2 flex-wrap">
           @for (product of dataRequestProducts(); track product) {
             <span class="bg-gray-300 rounded-sm text-xs px-2 py-1">{{ product.name }}</span>

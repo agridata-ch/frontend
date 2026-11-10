@@ -1,9 +1,9 @@
 <ng-container *i18n="let t; prefix: 'notificationCenter'">
   <div class="flex items-center justify-between">
-    <h2 class="page-title">
-      <fa-icon [icon]="faBell" class="mr-3" />
-      {{ t('pageTitle') }}
-    </h2>
+    <div class="flex gap-3 items-center mb-8">
+      <fa-icon [icon]="faBell" size="2xl" />
+      <h1>{{ t('pageTitle') }}</h1>
+    </div>
     @if (showMarkAllAsRead()) {
       <app-agridata-button
         [variant]="ButtonVariants.IconLink"

@@ -2,7 +2,7 @@
   class="flex flex-col gap-4 items-start"
   *i18n="let t; prefix: 'data-request.privacy'; lang: lang()"
 >
-  <h4>{{ t('title') }}</h4>
+  <h3>{{ t('title') }}</h3>
   @if (isForeignConsumer()) {
     <app-alert
       [type]="AlertType.INFO"

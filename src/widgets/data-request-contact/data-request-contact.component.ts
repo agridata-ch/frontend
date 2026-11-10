@@ -25,4 +25,5 @@ export class DataRequestContactComponent {
   readonly email = input<string>();
   readonly organisationName = input<string>();
   readonly lang = input<string>();
+  readonly headingTag = input<'h2' | 'h3'>('h3');
 }

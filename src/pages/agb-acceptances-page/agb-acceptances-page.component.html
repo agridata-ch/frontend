@@ -13,10 +13,10 @@
     </div>
   </ng-template>
 
-  <h2 class="page-title">
-    <fa-icon [icon]="faFileSignature" class="mr-3" />
-    {{ t('pageTitle') }}
-  </h2>
+  <div class="flex gap-3 items-center mb-8">
+    <fa-icon [icon]="faFileSignature" size="2xl" />
+    <h1>{{ t('pageTitle') }}</h1>
+  </div>
   <app-error-outlet></app-error-outlet>
 
   <app-agridata-table
