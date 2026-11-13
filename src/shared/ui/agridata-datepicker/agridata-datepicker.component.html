@@ -1,0 +1,154 @@
+@if (isViewMode()) {
+  <div class="flex items-center bg-white rounded-md">{{ displayValue() ?? '-' }}</div>
+} @else {
+  <div
+    #host
+    class="relative inline-block w-full"
+    (appClickOutside)="isOpen.set(false)"
+    (focusout)="handleFocusOut($event, host)"
+    (keydown.escape)="handleEscape($event)"
+  >
+    <div
+      class="flex items-center rounded-md border pr-1 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2"
+      [class]="
+        hasError() ? 'border-red-500' : 'border-gray-300 hover:has-[input:enabled]:border-gray-500'
+      "
+      [class.bg-white]="!disabled()"
+      [class.bg-gray-100]="disabled()"
+    >
+      <input
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        class="min-w-0 grow rounded-md bg-transparent py-3 pl-5 pr-2 outline-none placeholder-gray-400 disabled:cursor-not-allowed"
+        [attr.aria-describedby]="describedBy()"
+        [attr.aria-invalid]="hasError()"
+        [attr.id]="id()"
+        [disabled]="disabled()"
+        [placeholder]="placeholder() || ('datepicker.placeholder' | i18n)"
+        [value]="text()"
+        (blur)="commitText()"
+        (click)="handleInputClick($event)"
+        (input)="handleInput($event)"
+        (keydown)="handleInputKeydown($event)"
+        (keydown.enter)="commitText()"
+      />
+      <button
+        #trigger
+        type="button"
+        class="size-9 shrink-0 rounded-md text-gray-500 focus-visible:outline-2 -outline-offset-2 enabled:hover:text-gray-700 disabled:cursor-not-allowed"
+        aria-haspopup="dialog"
+        [attr.aria-controls]="isOpen() ? panelId : null"
+        [attr.aria-expanded]="isOpen()"
+        [attr.aria-label]="'datepicker.ariaLabel.choose' | i18n"
+        [disabled]="disabled()"
+        (click)="toggleCalendar()"
+      >
+        <fa-icon [icon]="calendar" />
+      </button>
+    </div>
+
+    @if (isOpen()) {
+      <dialog
+        #panel
+        open
+        class="absolute left-0 z-10 w-80 bg-white border border-gray-300 rounded-md shadow-lg p-3"
+        [attr.aria-label]="'datepicker.ariaLabel.dialog' | i18n"
+        [class.bottom-full]="openAbove()"
+        [class.top-full]="!openAbove()"
+        [id]="panelId"
+        (keydown.tab)="handleDialogTab($event, false)"
+        (keydown.shift.tab)="handleDialogTab($event, true)"
+      >
+        <div class="flex items-center justify-between pb-2">
+          <span class="font-medium capitalize" aria-live="polite">{{ monthLabel() }}</span>
+          <div class="flex items-center gap-1">
+            <button
+              type="button"
+              class="rounded-md px-2 py-1 text-sm font-medium text-agridata-primary-600 focus-visible:outline-2 outline-agridata-primary-700 enabled:hover:bg-agridata-primary-50 disabled:cursor-not-allowed disabled:text-gray-300"
+              [disabled]="isTodayDisabled()"
+              (click)="goToToday()"
+            >
+              {{ 'datepicker.today' | i18n }}
+            </button>
+            <app-agridata-button
+              [variant]="ButtonVariants.Icon"
+              [size]="ButtonSize.MD"
+              [icon]="chevronLeft"
+              [ariaLabel]="'datepicker.ariaLabel.previousMonth' | i18n"
+              [disabled]="isPrevMonthDisabled()"
+              (handleClick)="showMonth(-1)"
+            />
+            <app-agridata-button
+              [variant]="ButtonVariants.Icon"
+              [size]="ButtonSize.MD"
+              [icon]="chevronRight"
+              [ariaLabel]="'datepicker.ariaLabel.nextMonth' | i18n"
+              [disabled]="isNextMonthDisabled()"
+              (handleClick)="showMonth(1)"
+            />
+          </div>
+        </div>
+
+        <table
+          class="w-full table-fixed border-separate border-spacing-1 text-center"
+          [attr.aria-label]="monthLabel()"
+        >
+          <thead>
+            <tr>
+              @for (weekday of weekdays(); track $index) {
+                <th
+                  scope="col"
+                  class="text-xs font-normal text-agridata-tertiary-text py-1"
+                  [attr.aria-label]="weekday.full"
+                >
+                  {{ weekday.short }}
+                </th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (week of weeks(); track week[0].iso) {
+              <tr>
+                @for (day of week; track day.iso) {
+                  <td class="p-0">
+                    @if (day.inMonth) {
+                      <button
+                        type="button"
+                        class="size-9 rounded-md text-sm focus-visible:outline-2 outline-agridata-primary-700"
+                        [attr.aria-pressed]="day.isSelected"
+                        [attr.data-date]="day.iso"
+                        [attr.aria-label]="day.label"
+                        [attr.aria-current]="day.isToday ? 'date' : null"
+                        [attr.tabindex]="day.iso === focusableIso() ? 0 : -1"
+                        [class]="
+                          day.isSelected
+                            ? 'bg-agridata-primary-600 text-white hover:bg-agridata-primary-700'
+                            : 'enabled:hover:bg-agridata-primary-50'
+                        "
+                        [class.border]="day.isToday && !day.isSelected"
+                        [class.border-agridata-primary-600]="day.isToday && !day.isSelected"
+                        [class.text-agridata-primary-600]="
+                          day.isToday && !day.isSelected && !day.disabled
+                        "
+                        [class.font-medium]="day.isToday"
+                        [class.text-gray-300]="day.disabled"
+                        [class.cursor-not-allowed]="day.disabled"
+                        [disabled]="day.disabled"
+                        (click)="selectDay(day)"
+                        (focus)="focusedIso.set(day.iso)"
+                        (keydown)="handleDayKeydown($event, day)"
+                      >
+                        {{ day.number }}
+                      </button>
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </dialog>
+    }
+  </div>
+}

@@ -27,8 +27,9 @@ git_push.sh
 index.ts
 model/agbAcceptanceOverviewDto.ts
 model/agbAcceptanceStatusEnum.ts
+model/agbRevisionCreateDto.ts
 model/agbRevisionDto.ts
-model/agbRevisionOverviewDto.ts
+model/agbRevisionSummaryDto.ts
 model/agbTextDto.ts
 model/burDto.ts
 model/burRegisterAddressDto.ts
@@ -93,7 +94,7 @@ model/models.ts
 model/otpChallengeDto.ts
 model/pageResponseDto.ts
 model/pageResponseDtoAgbAcceptanceOverviewDto.ts
-model/pageResponseDtoAgbRevisionOverviewDto.ts
+model/pageResponseDtoAgbRevisionSummaryDto.ts
 model/pageResponseDtoConsentRequestFundamentalViewDto.ts
 model/pageResponseDtoDataProductDto.ts
 model/pageResponseDtoInboxEntryDto.ts

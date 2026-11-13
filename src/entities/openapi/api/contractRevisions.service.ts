@@ -238,8 +238,8 @@ export class ContractRevisionsService extends BaseService {
     /**
      * Initiate Signature Challenge
      * Initiates a challenge for a specific signature slot of a specific contract revision.
-     * @param id 
-     * @param slotCode 
+     * @param id ID of the contract revision
+     * @param slotCode Code for identifying the slot for the signature
      * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -362,9 +362,9 @@ export class ContractRevisionsService extends BaseService {
     /**
      * Verify Signature
      * Verifies the otp and adds a signature to a specific signature slot.
-     * @param challengeId 
-     * @param id 
-     * @param slotCode 
+     * @param challengeId ID of the challenge that should be verified
+     * @param id ID of the contract revision
+     * @param slotCode Code for identifying the slot for the signature
      * @param verifyOtpRequestDto 
      * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

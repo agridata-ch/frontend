@@ -12,7 +12,7 @@
 /**
  * Overview of an agb revision without the agb text
  */
-export interface AgbRevisionOverviewDto { 
+export interface AgbRevisionSummaryDto { 
     id?: string;
     /**
      * Version of the agb revision
