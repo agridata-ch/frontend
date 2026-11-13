@@ -134,6 +134,19 @@ describe('AdminAgbFormComponent', () => {
       expect(date.enabled).toBe(true);
       expect(date.hasError('required')).toBe(true);
     });
+
+    it.each([
+      ['2000-01-01', true],
+      ['2999-01-01', false],
+    ])('should flag %s as in the past: %s', async (value, isPast) => {
+      component['hasEnforceConsentDate'].set(true);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const date = component['getControl']('enforceConsentFrom');
+      date.setValue(value);
+      expect(date.hasError('minToday')).toBe(isPast);
+    });
   });
 
   describe('publish', () => {

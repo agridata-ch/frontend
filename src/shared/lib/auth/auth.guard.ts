@@ -8,10 +8,10 @@ import { AuthService } from './auth.service';
 
 /**
  * Implements a route guard that checks authentication and required roles before allowing navigation.
- * Redirects to a forbidden route if access is denied.
+ * Redirects to a forbidden route if access is denied, or to the no-access route for users without any role.
  * Ensures that user preferences are fetched upon successful authorization.
  *
- * CommentLastReviewed: 2025-12-01
+ * CommentLastReviewed: 2026-11-17
  */
 @Service()
 export class AuthorizationGuard implements CanActivate {
@@ -28,15 +28,23 @@ export class AuthorizationGuard implements CanActivate {
 
     try {
       await this.authService.initializeAuth();
-      const userRoles = this.authService.userInfo()?.rolesAtLastLogin ?? [];
-
-      const requiredRoles: string[] = route.data['roles'] || [];
-      if (!requiredRoles || requiredRoles.length === 0) {
-        return true;
+      const hasRole = this.authService.hasRole();
+      if (route.routeConfig?.path === ROUTE_PATHS.NO_ACCESS) {
+        return !hasRole || this.router.parseUrl('/');
       }
 
-      const hasRole = requiredRoles.some((role) => userRoles.includes(role));
-      return hasRole || this.router.parseUrl(ROUTE_PATHS.FORBIDDEN);
+      const requiredRoles: string[] = route.data['roles'] || [];
+      if (requiredRoles.length === 0) {
+        return true;
+      }
+      if (!hasRole) {
+        return this.router.parseUrl(ROUTE_PATHS.NO_ACCESS);
+      }
+
+      const userRoles = this.authService.userInfo()?.rolesAtLastLogin ?? [];
+      return requiredRoles.some((role) => userRoles.includes(role))
+        ? true
+        : this.router.parseUrl(ROUTE_PATHS.FORBIDDEN);
     } catch (error) {
       if (route.url.toString().includes(ROUTE_PATHS.ERROR)) {
         return true;

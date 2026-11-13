@@ -1,10 +1,10 @@
 <div
-  class="py-10 md:py-20 p-6 text-center flex-col flex gap-4 items-center grow h-full w-full rounded-lg border bg-white border-gray-200"
+  class="py-10 md:py-20 p-6 text-center flex-col flex gap-4 items-center justify-center grow h-full w-full rounded-lg border bg-white border-gray-200"
 >
   <ng-content select="[emptyStateIcon]"></ng-content>
 
   <h3 class="text-agridata-secondary-text">{{ title() }}</h3>
-  <p class="text-agridata-tertiary-text max-w-xl">
+  <p class="text-agridata-tertiary-text max-w-xl mb-2">
     {{ message() }}
   </p>
   <ng-content select="[emptyStateAction]"></ng-content>

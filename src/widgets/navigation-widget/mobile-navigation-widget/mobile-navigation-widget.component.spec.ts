@@ -11,7 +11,9 @@ import {
   createMockAuthService,
   MockAuthService,
 } from '@/shared/testing/mocks';
+import { AgridataAvatarComponent } from '@/shared/ui/agridata-avatar';
 import { NavigationItem } from '@/widgets/navigation-widget/navigation-item.model';
+import { UidSwitchComponent } from '@/widgets/uid-switch/uid-switch.component';
 
 import { MobileNavigationWidgetComponent } from './mobile-navigation-widget.component';
 
@@ -61,6 +63,27 @@ describe('MobileNavigationWidgetComponent', () => {
 
     component.toggleNavigation();
     expect(component.isNavigationOpen()).toBe(false);
+  });
+
+  describe('user block', () => {
+    beforeEach(() => {
+      authService.__testSignals.isAuthenticated.set(true);
+    });
+
+    it('shows the avatar and uid switch for users with a role', () => {
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.directive(AgridataAvatarComponent))).toBeTruthy();
+      expect(fixture.debugElement.query(By.directive(UidSwitchComponent))).toBeTruthy();
+    });
+
+    it('hides the avatar and uid switch for users without a role', () => {
+      authService.__testSignals.hasRole.set(false);
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.directive(AgridataAvatarComponent))).toBeNull();
+      expect(fixture.debugElement.query(By.directive(UidSwitchComponent))).toBeNull();
+    });
   });
 
   describe('navigation items (authenticated)', () => {

@@ -19,6 +19,7 @@ export const ROUTE_PATHS = {
   FORBIDDEN: 'forbidden',
   ERROR: 'error',
   EXTERNAL_SERVICE_ERROR: 'external-service-error',
+  NO_ACCESS: 'no-access',
   NOT_FOUND: 'not-found',
   MAINTENANCE: 'maintenance',
   LOGIN: 'login',
