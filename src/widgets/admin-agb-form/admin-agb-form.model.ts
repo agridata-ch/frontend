@@ -67,9 +67,14 @@ export function buildAgbForm(i18nService: I18nService) {
 
   // Only required while the toggle is on (the control is disabled otherwise), so not a schema rule.
   const consentDate = getFormControlWithMessages(form, 'enforceConsentFrom');
-  consentDate.addValidators(Validators.required);
+  consentDate.addValidators([
+    Validators.required,
+    // The datepicker only blocks past days in its calendar, a typed one has to be rejected here.
+    ({ value }) => (value && value < format(new Date(), 'yyyy-MM-dd') ? { minToday: true } : null),
+  ]);
   consentDate.errorMessages = {
     ...consentDate.errorMessages,
+    minToday: () => i18nService.translate('datepicker.validations.minToday'),
     required: () => i18nService.translate('forms.error.required'),
   };
   return form;

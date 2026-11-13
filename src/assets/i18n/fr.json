@@ -1577,8 +1577,8 @@
   },
   "no-access": {
     "title": "Autorisations manquantes",
-    "message": "Votre profil doit d’abord être activé. N’hésitez pas à contacter le support à ce sujet.",
-    "return": "Retourner à agridata.ch",
-    "contactSupport": "Contacter le support"
+    "message": "Vous êtes connecté avec succès via Agate, mais vous ne disposez pas encore des autorisations nécessaires pour utiliser agridata.ch. Si vous avez besoin d’un accès, veuillez en faire la demande auprès de notre support.",
+    "return": "Retour à la page d’accueil",
+    "contactSupport": "Demander un accès"
   }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { faSeedling } from '@awesome.me/kit-0b6d1ed528/icons/classic/light';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { environment } from '@/environments/environment';
@@ -17,4 +18,5 @@ import { EmptyStateComponent } from '@/shared/ui/empty-state';
 })
 export class ConsentRequestEmptyStateComponent {
   protected readonly appBaseUrl = environment.appBaseUrl;
+  protected readonly seedlingIcon = faSeedling;
 }

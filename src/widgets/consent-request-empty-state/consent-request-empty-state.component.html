@@ -1,6 +1,12 @@
 <ng-container *i18n="let t; prefix: 'consent-request.emptyState'">
   <app-empty-state [title]="t('title')" [message]="t('message')">
-    <img emptyStateIcon src="assets/images/app-ok.svg" alt="{{ t('altIcon') }}" class="h-12.5" />
+    <fa-icon
+      emptyStateIcon
+      [icon]="seedlingIcon"
+      size="3x"
+      class="text-agridata-tertiary-text"
+      aria-hidden="true"
+    />
     <p class="text-agridata-tertiary-text" emptyStateAction>
       {{ t('additionalInfo') }}
       <a [href]="appBaseUrl" target="_blank" class="text-agridata-primary-600 hover:underline">

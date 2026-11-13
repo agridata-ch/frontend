@@ -69,6 +69,50 @@ describe('AuthorizationGuard', () => {
     expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.FORBIDDEN);
   });
 
+  it('redirects users without any role to no-access when a role is required', async () => {
+    authService.initializeAuth.mockResolvedValue(true);
+    authService.__testSignals.hasRole.set(false);
+    mockActivatedRouteSnapshot.data = { roles: ['ROLE_ADMIN'] };
+
+    const result = await guard.canActivate(mockActivatedRouteSnapshot);
+
+    expect(result).toBe(fakeUrlTree);
+    expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.NO_ACCESS);
+  });
+
+  it('lets users without any role open routes that require no role (e.g. footer links)', async () => {
+    authService.initializeAuth.mockResolvedValue(true);
+    authService.__testSignals.hasRole.set(false);
+
+    const result = await guard.canActivate(mockActivatedRouteSnapshot);
+
+    expect(result).toBe(true);
+    expect(mockRouter.parseUrl).not.toHaveBeenCalled();
+  });
+
+  it.each([ROUTE_PATHS.NO_ACCESS, ROUTE_PATHS.ERROR])(
+    'lets users without any role open %s',
+    async (path) => {
+      authService.initializeAuth.mockResolvedValue(true);
+      authService.__testSignals.hasRole.set(false);
+      Object.assign(mockActivatedRouteSnapshot, { routeConfig: { path } });
+
+      const result = await guard.canActivate(mockActivatedRouteSnapshot);
+
+      expect(result).toBe(true);
+    },
+  );
+
+  it('redirects users with a role away from no-access to home', async () => {
+    authService.initializeAuth.mockResolvedValue(true);
+    Object.assign(mockActivatedRouteSnapshot, { routeConfig: { path: ROUTE_PATHS.NO_ACCESS } });
+
+    const result = await guard.canActivate(mockActivatedRouteSnapshot);
+
+    expect(result).toBe(fakeUrlTree);
+    expect(mockRouter.parseUrl).toHaveBeenCalledWith('/');
+  });
+
   it('allows activation when user has one of the required roles', async () => {
     authService.initializeAuth.mockResolvedValue(true);
     authService.__testSignals.userInfo.set({ rolesAtLastLogin: ['ROLE_ADMIN', 'ROLE_USER'] });

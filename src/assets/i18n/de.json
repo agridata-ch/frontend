@@ -1577,8 +1577,8 @@
   },
   "no-access": {
     "title": "Fehlende Berechtigungen",
-    "message": "Ihr Profil muss zuerst freigeschaltet werden. Melden Sie sich dafür gerne beim Support.",
-    "return": "Zurück zu agridata.ch",
-    "contactSupport": "Support kontaktieren"
+    "message": "Sie sind erfolgreich via Agate angemeldet, verfügen jedoch noch nicht über die nötigen Rechte zur Nutzung von agridata.ch. Wenn Sie Zugriff benötigen, fordern Sie diesen bitte über unseren Support an.",
+    "return": "Zur Startseite",
+    "contactSupport": "Zugriff anfordern"
   }
 }

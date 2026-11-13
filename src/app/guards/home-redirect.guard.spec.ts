@@ -53,6 +53,18 @@ describe('HomeRedirectGuard', () => {
     expect(result).toBe(true);
   });
 
+  it('should redirect users without any role to no-access', async () => {
+    const urlTree = {} as UrlTree;
+    authService.__testSignals.hasRole.set(false);
+    authService.initializeAuth.mockResolvedValue(true);
+    (router.createUrlTree as Mock).mockReturnValue(urlTree);
+
+    const result = await guard.canActivate();
+
+    expect(router.createUrlTree).toHaveBeenCalledWith([ROUTE_PATHS.NO_ACCESS]);
+    expect(result).toBe(urlTree);
+  });
+
   it('should redirect to consent request path for producers', async () => {
     const urlTree = {} as UrlTree;
     authService.__testSignals.isAuthenticated.set(true);
