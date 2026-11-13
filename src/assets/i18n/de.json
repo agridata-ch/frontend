@@ -390,7 +390,7 @@
       "tableActions": {
         "details": "Anzeigen",
         "retreat": "Zurückziehen",
-        "delete": "Löschen"
+        "delete": "Entfernen"
       },
       "emptyState": {
         "title": "Noch keine Datenanträge erstellt",
@@ -398,16 +398,16 @@
         "createNewDataRequest": "Neuer Antrag"
       },
       "deleteRequest": {
-        "title": "Datenantrag löschen",
-        "description": "Wollen Sie den Antrag \"{{ title }}\" wirklich löschen?",
+        "title": "Datenantrag entfernen",
+        "description": "Wollen Sie den Antrag \"{{ title }}\" wirklich entfernen?",
         "cancel": "Abbrechen",
-        "delete": "Löschen",
+        "delete": "Entfernen",
         "success": {
-          "title": "Löschen erfolgreich",
+          "title": "Entfernen war erfolgreich",
           "message": "Der Antrag \"{{ title }}\" wurde erfolgreich gelöscht."
         },
         "error": {
-          "title": "Löschen fehlgeschlagen",
+          "title": "Entfernen ist fehlgeschlagen",
           "message": "Der Antrag \"{{ title }}\" konnte nicht gelöscht werden.\nFehlermeldung: {{ error }}"
         }
       }
@@ -1009,14 +1009,14 @@
       "system": "System",
       "actions": {
         "viewDetails": "Anzeigen",
-        "delete": "Löschen"
+        "delete": "Entfernen"
       },
       "stateCode": "Status",
       "deleteProduct": {
-        "title": "Entwurf unwiderruflich löschen?",
-        "description": "Möchten Sie den Entwurf {{productName}} wirklich löschen? \nDiese Aktion kann nicht rückgängig gemacht werden.",
+        "title": "Entwurf unwiderruflich entfernen?",
+        "description": "Möchten Sie den Entwurf {{productName}} wirklich entfernen? \nDiese Aktion kann nicht rückgängig gemacht werden.",
         "cancel": "Abbrechen",
-        "delete": "Unwiderruflich löschen",
+        "delete": "Unwiderruflich entfernen",
         "success": {
           "title": "Entwurf gelöscht",
           "message": "Der Entwurf wurde erfolgreich gelöscht."
@@ -1389,11 +1389,14 @@
     "underline": "Unterstrichen",
     "bulletList": "Aufzählung",
     "orderedList": "Nummerierte Liste",
-    "resetFormat": "Formatierung zurücksetzen"
+    "resetFormat": "Formatierung zurücksetzen",
+    "heading1": "Überschrift 1",
+    "heading2": "Überschrift 2",
+    "heading3": "Überschrift 3"
   },
   "fileDownload": {
     "download": "Herunterladen",
-    "remove": "Löschen",
+    "remove": "Entfernen",
     "restore": "Rückgängig"
   },
   "form-control": {
@@ -1483,7 +1486,53 @@
       "validTo": "Gültig bis",
       "enforceConsentFrom": "Sperrung ab"
     },
-    "pageTitle": "AGB-Verwaltung"
+    "pageTitle": "AGB-Verwaltung",
+    "createNewVersion": "AGB-Version erfassen",
+    "agbText": {
+      "de": {
+        "label": "AGB-Text Deutsch",
+        "placeholder": "Allgemeine Geschäftsbedingungen für die Nutzung..."
+      },
+      "fr": {
+        "label": "AGB Text Französisch",
+        "placeholder": "Conditions générales régissant l’utilisation..."
+      },
+      "it": {
+        "label": "AGB Text Italienisch",
+        "placeholder": "Condizioni generali di contratto per l’utilizzo..."
+      },
+      "heading": "Inhalt"
+    },
+    "version": {
+      "placeholder": "1.2"
+    },
+    "cancel": "Abbrechen",
+    "publish": "Version publizieren",
+    "enforceConsentDate": {
+      "info": "Alle Datenbezüger und Datenanbieter sehen beim nächsten Login ein Modal und müssen die aktualisierten AGBs bis zu einem festgelegten Zeitpunkt akzeptieren.",
+      "toggle": "Zustimmung User erforderlich",
+      "dateHint": "Ab diesem Datum ist die Zustimmung erforderlich, um die Applikation weiterhin nutzen zu können."
+    },
+    "form": {
+      "title": "Neue AGB-Version erfassen"
+    },
+    "validity": {
+      "openEnded": "Ab dem {{ date }}",
+      "label": "Gültigkeit"
+    },
+    "create": {
+      "successTitle": "AGB-Version publiziert",
+      "successMessage": "Die neue AGB-Version {{ version }} wurde erfolgreich angelegt.",
+      "confirm": {
+        "title": "AGB-Version publizieren?",
+        "description": "Mit der Veröffentlichung wird die neue AGB-Version sofort sichtbar und tritt unmittelbar in Kraft. Möchten Sie fortfahren?",
+        "publish": "Ja, publizieren"
+      },
+      "error": {
+        "versionAlreadyExists": "Diese Version existiert bereits.",
+        "versionNotNewer": "Die Version muss neuer sein als die aktuelle Version."
+      }
+    }
   },
   "agb-acceptances": {
     "pageTitle": "Nutzer-Zustimmungen",
@@ -1508,5 +1557,22 @@
       "title": "Keine Einträge vorhanden",
       "message": "Keine Einträge gefunden, ändern Sie die Suche/Filter um Ergebnisse zu erhalten"
     }
+  },
+  "datepicker": {
+    "today": "Heute",
+    "minToday": "Das Datum darf nicht in der Vergangenheit liegen.",
+    "placeholder": "TT.MM.JJJJ",
+    "ariaLabel": {
+      "choose": "Datum im Kalender wählen",
+      "dialog": "Datum wählen",
+      "nextMonth": "Nächster Monat",
+      "previousMonth": "Vorheriger Monat"
+    }
+  },
+  "no-access": {
+    "title": "Fehlende Berechtigungen",
+    "message": "Ihr Profil muss zuerst freigeschaltet werden. Melden Sie sich dafür gerne beim Support.",
+    "return": "Zurück zu agridata.ch",
+    "contactSupport": "Support kontaktieren"
   }
 }

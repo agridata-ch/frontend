@@ -1,0 +1,30 @@
+<div class="flex flex-col flex-1 min-h-0 container mx-auto px-6 lg:px-10 py-8">
+  <ng-container *i18n="let t; prefix: 'no-access'">
+    <h1 class="invisible h-8 mb-8">{{ t('title') }}</h1>
+    <app-empty-state [title]="t('title')" [message]="t('message')">
+      <fa-icon
+        emptyStateIcon
+        [icon]="seedlingIcon"
+        size="3x"
+        class="text-agridata-tertiary-text"
+        aria-hidden="true"
+      />
+      <div emptyStateAction class="flex flex-wrap items-center justify-center gap-8">
+        <app-agridata-button [variant]="ButtonVariants.Link" [href]="homeUrl">
+          <span class="flex items-center gap-1">
+            <fa-icon [icon]="backIcon" class="text-red-600" />
+            {{ t('return') }}
+          </span>
+        </app-agridata-button>
+        <app-agridata-button
+          [variant]="ButtonVariants.Primary"
+          [icon]="externalIcon"
+          [iconPosition]="IconPosition.Right"
+          [href]="supportMailto"
+        >
+          {{ t('contactSupport') }}
+        </app-agridata-button>
+      </div>
+    </app-empty-state>
+  </ng-container>
+</div>

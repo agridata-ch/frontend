@@ -17,7 +17,9 @@
     }
   </div>
   <app-error-outlet></app-error-outlet>
+  <!-- todo: check styling how simpler/cleaner and for other pages -->
   <app-agridata-table
+    class="flex flex-col flex-1 min-h-0"
     [dataProvider]="fetchNotificationsResource"
     [emptyStateTemplate]="emptyStateTemplate"
     [tableMetadata]="tableMetaData()"
@@ -61,8 +63,7 @@
     </ng-template>
 
     <ng-template #emptyStateTemplate>
-      <!-- block wrapper: app-empty-state has h-full, which would otherwise fill <main> and scroll -->
-      <div>
+      <div class="flex-1 min-h-0">
         <app-empty-state [title]="t('empty.title')" [message]="t('empty.message')">
           <fa-icon
             emptyStateIcon

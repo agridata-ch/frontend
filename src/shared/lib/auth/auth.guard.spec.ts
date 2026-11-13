@@ -69,6 +69,26 @@ describe('AuthorizationGuard', () => {
     expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.FORBIDDEN);
   });
 
+  it('redirects users without any role to no-access when a role is required', async () => {
+    authService.initializeAuth.mockResolvedValue(true);
+    authService.__testSignals.hasNoRole.set(true);
+    mockActivatedRouteSnapshot.data = { roles: ['ROLE_ADMIN'] };
+
+    const result = await guard.canActivate(mockActivatedRouteSnapshot);
+
+    expect(result).toBe(fakeUrlTree);
+    expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.NO_ACCESS);
+  });
+
+  it('allows users without any role on routes that require no role', async () => {
+    authService.initializeAuth.mockResolvedValue(true);
+    authService.__testSignals.hasNoRole.set(true);
+
+    const result = await guard.canActivate(mockActivatedRouteSnapshot);
+
+    expect(result).toBe(true);
+  });
+
   it('allows activation when user has one of the required roles', async () => {
     authService.initializeAuth.mockResolvedValue(true);
     authService.__testSignals.userInfo.set({ rolesAtLastLogin: ['ROLE_ADMIN', 'ROLE_USER'] });

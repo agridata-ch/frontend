@@ -21,6 +21,7 @@ import { ImprintPage } from '@/pages/imprint-page';
 import { LandingPage } from '@/pages/landing-page';
 import { MaintenancePage } from '@/pages/maintenance';
 import { NewsArticleDetailPage } from '@/pages/news-article-detail-page';
+import { NoAccessPage } from '@/pages/no-access';
 import { NotFoundPage } from '@/pages/not-found';
 import { NotificationCenterPageComponent } from '@/pages/notification-center-page';
 import { OnboardingPage } from '@/pages/onboarding-page';
@@ -302,6 +303,18 @@ export const routes: Routes = [
             component: DataProductDetailFormComponent,
           },
         ],
+      },
+    ],
+  },
+  {
+    // users without any agridata role; the header profile still allows logout
+    path: ROUTE_PATHS.NO_ACCESS,
+    component: FullWidthLayoutComponent,
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
+    children: [
+      {
+        path: '',
+        component: NoAccessPage,
       },
     ],
   },

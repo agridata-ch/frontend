@@ -53,6 +53,30 @@ describe('HomeRedirectGuard', () => {
     expect(result).toBe(true);
   });
 
+  it('should redirect users without any role to no-access right after login', async () => {
+    const urlTree = {} as UrlTree;
+    authService.__testSignals.hasNoRole.set(true);
+    authService.__testSignals.justLoggedIn.set(true);
+    authService.initializeAuth.mockResolvedValue(true);
+    (router.createUrlTree as Mock).mockReturnValue(urlTree);
+
+    const result = await guard.canActivate();
+
+    expect(router.createUrlTree).toHaveBeenCalledWith([ROUTE_PATHS.NO_ACCESS]);
+    expect(result).toBe(urlTree);
+  });
+
+  it('should keep users without any role on the landing page after the login', async () => {
+    authService.__testSignals.hasNoRole.set(true);
+    authService.__testSignals.justLoggedIn.set(false);
+    authService.initializeAuth.mockResolvedValue(true);
+
+    const result = await guard.canActivate();
+
+    expect(result).toBe(true);
+    expect(router.createUrlTree).not.toHaveBeenCalled();
+  });
+
   it('should redirect to consent request path for producers', async () => {
     const urlTree = {} as UrlTree;
     authService.__testSignals.isAuthenticated.set(true);

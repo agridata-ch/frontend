@@ -8,10 +8,10 @@ import { AuthService } from './auth.service';
 
 /**
  * Implements a route guard that checks authentication and required roles before allowing navigation.
- * Redirects to a forbidden route if access is denied.
+ * Redirects to a forbidden route if access is denied, or to the no-access route for users without any role.
  * Ensures that user preferences are fetched upon successful authorization.
  *
- * CommentLastReviewed: 2025-12-01
+ * CommentLastReviewed: 2026-11-12
  */
 @Service()
 export class AuthorizationGuard implements CanActivate {
@@ -36,7 +36,12 @@ export class AuthorizationGuard implements CanActivate {
       }
 
       const hasRole = requiredRoles.some((role) => userRoles.includes(role));
-      return hasRole || this.router.parseUrl(ROUTE_PATHS.FORBIDDEN);
+      if (hasRole) {
+        return true;
+      }
+      return this.router.parseUrl(
+        this.authService.hasNoRole() ? ROUTE_PATHS.NO_ACCESS : ROUTE_PATHS.FORBIDDEN,
+      );
     } catch (error) {
       if (route.url.toString().includes(ROUTE_PATHS.ERROR)) {
         return true;

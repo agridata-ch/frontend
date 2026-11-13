@@ -17,10 +17,11 @@ import { NotificationOverlayComponent } from '@/widgets/notification-overlay';
 
 /**
  * Implements the header logic. It renders the application logo, includes language selection, and
- * conditionally shows the account overlay or login button depending on authentication state. It
- * integrates authentication services and ensures reactive updates when user data changes.
+ * conditionally shows the account overlay or login button depending on authentication state (a logout
+ * button for authenticated users without any role). It integrates authentication services and ensures
+ * reactive updates when user data changes.
  *
- * CommentLastReviewed: 2025-10-09
+ * CommentLastReviewed: 2026-11-12
  */
 @Component({
   selector: 'app-header-widget',
@@ -93,10 +94,15 @@ export class HeaderWidgetComponent {
     }
   });
 
+  readonly hasNoRole = this.authService.hasNoRole;
   readonly userInfo = this.authService.userInfo;
   readonly ButtonVariants = ButtonVariants;
 
   login = () => {
     this.authService.login();
+  };
+
+  logout = () => {
+    void this.authService.logout();
   };
 }

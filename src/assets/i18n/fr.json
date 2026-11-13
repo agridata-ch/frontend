@@ -1389,7 +1389,10 @@
     "underline": "Souligné",
     "bulletList": "Puces",
     "orderedList": "Liste numérotée",
-    "resetFormat": "Réinitialiser le formatage"
+    "resetFormat": "Réinitialiser le formatage",
+    "heading1": "Titre 1",
+    "heading2": "Titre 2",
+    "heading3": "Titre 3"
   },
   "fileDownload": {
     "download": "Télécharger",
@@ -1483,7 +1486,53 @@
       "validTo": "Valide jusqu'à",
       "enforceConsentFrom": "Blocage à partir de"
     },
-    "pageTitle": "Gestion des conditions générales"
+    "pageTitle": "Gestion des conditions générales",
+    "createNewVersion": "Ajouter une version des CGU",
+    "agbText": {
+      "de": {
+        "label": "Texte des CG en allemand",
+        "placeholder": "Allgemeine Geschäftsbedingungen für die Nutzung..."
+      },
+      "fr": {
+        "label": "Texte des CG en français",
+        "placeholder": "Conditions générales régissant l’utilisation..."
+      },
+      "it": {
+        "label": "Texte des CG en italien",
+        "placeholder": "Condizioni generali di contratto per l’utilizzo..."
+      },
+      "heading": "Contenu"
+    },
+    "version": {
+      "placeholder": "1.2"
+    },
+    "cancel": "Annuler",
+    "publish": "Publier la version",
+    "enforceConsentDate": {
+      "info": "Tous les destinataires et fournisseurs de données verront une fenêtre modale lors de leur prochaine connexion et devront accepter les CGU mises à jour avant une date limite définie.",
+      "toggle": "Consentement de l’utilisateur·trice requis",
+      "dateHint": "À partir de cette date, le consentement sera obligatoire pour continuer à utiliser l’application."
+    },
+    "form": {
+      "title": "Ajouter une nouvelle version des CGU"
+    },
+    "validity": {
+      "openEnded": "Dès le {{ date }}",
+      "label": "Validité"
+    },
+    "create": {
+      "successTitle": "Publication de la version des CGV",
+      "successMessage": "La nouvelle version des CGV {{ version }} a été créée avec succès.",
+      "confirm": {
+        "title": "Publier la version des CGV ?",
+        "description": "La nouvelle version des CG sera immédiatement visible et entrera en vigueur dès sa publication. Souhaitez-vous continuer ?",
+        "publish": "Oui, publier"
+      },
+      "error": {
+        "versionAlreadyExists": "Cette version existe déjà.",
+        "versionNotNewer": "La version doit être plus récente que la version actuelle."
+      }
+    }
   },
   "agb-acceptances": {
     "pageTitle": "Consentements d'utilisateurs",
@@ -1508,5 +1557,22 @@
       "title": "Aucun enregistrement disponible",
       "message": "Aucun enregistrement trouvé, modifiez la recherche/les filtres pour obtenir des résultats"
     }
+  },
+  "datepicker": {
+    "today": "Aujourd'hui",
+    "minToday": "La date ne doit pas être antérieure à aujourd'hui.",
+    "placeholder": "JJ.MM.AAAA",
+    "ariaLabel": {
+      "choose": "Choisir la date dans le calendrier",
+      "dialog": "Choisir une date",
+      "nextMonth": "Mois suivant",
+      "previousMonth": "Mois précédent"
+    }
+  },
+  "no-access": {
+    "title": "Autorisations manquantes",
+    "message": "Votre profil doit d’abord être activé. N’hésitez pas à contacter le support à ce sujet.",
+    "return": "Retourner à agridata.ch",
+    "contactSupport": "Contacter le support"
   }
 }

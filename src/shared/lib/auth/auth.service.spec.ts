@@ -1,7 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import type { Mock } from 'vitest';
 
 import { UidDto, UserInfoDto, UsersService } from '@/entities/openapi';
@@ -71,6 +72,42 @@ describe('AuthService', () => {
     expect(authService.isProducer()).toBe(false);
     expect(authService.isConsumer()).toBe(false);
     expect(authService.isSupporter()).toBe(false);
+  });
+
+  it('should flag a user without any role when user-info answers 403', async () => {
+    userService.getUserInfo.mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status: 403 })),
+    );
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
+
+    const result = await authService.initializeAuth();
+
+    expect(result).toBe(true);
+    expect(authService.hasNoRole()).toBe(true);
+    expect(authService.userInfo()).toBeUndefined();
+    expect(authService.userRoles()).toEqual([]);
+  });
+
+  it('should keep the no-role state without refetching on repeated initialisation', async () => {
+    userService.getUserInfo.mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status: 403 })),
+    );
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
+
+    await authService.initializeAuth();
+    await authService.initializeAuth();
+
+    expect(authService.hasNoRole()).toBe(true);
+    expect(userService.getUserInfo).toHaveBeenCalledTimes(1);
+  });
+
+  it('should rethrow user-info errors other than 403', async () => {
+    const serverError = new HttpErrorResponse({ status: 500 });
+    userService.getUserInfo.mockReturnValue(throwError(() => serverError));
+    mockOidc.checkAuth.mockReturnValue(of(createLoginResponse(true)));
+
+    await expect(authService.initializeAuth()).rejects.toBe(serverError);
+    expect(authService.hasNoRole()).toBe(false);
   });
 
   it('should be producer if having producer role', async () => {

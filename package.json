@@ -46,7 +46,7 @@
     "@angular/platform-browser": "22.2.4",
     "@angular/platform-browser-dynamic": "22.2.4",
     "@angular/router": "22.2.4",
-    "@awesome.me/kit-0b6d1ed528": "1.0.46",
+    "@awesome.me/kit-0b6d1ed528": "1.0.53",
     "@jsverse/transloco": "8.4.0",
     "@tiptap/core": "3.32.0",
     "@tiptap/extensions": "3.32.0",

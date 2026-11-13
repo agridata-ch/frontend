@@ -9,6 +9,7 @@ import { MockifyWithWritableSignals } from '@/shared/testing/mocks';
  */
 export type MockAuthServiceTestSignals = {
   hasMobileNumber: WritableSignal<boolean>;
+  hasNoRole: WritableSignal<boolean>;
   isAdmin: WritableSignal<boolean>;
   isAuthenticated: WritableSignal<boolean>;
   isConsumer: WritableSignal<boolean>;
@@ -30,6 +31,7 @@ export type MockAuthService = MockifyWithWritableSignals<AuthService, MockAuthSe
  */
 export function createMockAuthService(): MockAuthService {
   const hasMobileNumber = signal(true);
+  const hasNoRole = signal(false);
   const isAdmin = signal(false);
   const isAuthenticated = signal<boolean>(false);
   const isConsumer = signal(false);
@@ -44,6 +46,7 @@ export function createMockAuthService(): MockAuthService {
 
   return {
     // Signals
+    hasNoRole,
     isAuthenticated,
     justLoggedIn,
     userInfo,
@@ -71,6 +74,7 @@ export function createMockAuthService(): MockAuthService {
     // test-only writable signals
     __testSignals: {
       hasMobileNumber,
+      hasNoRole,
       isAdmin,
       isAuthenticated,
       isConsumer,

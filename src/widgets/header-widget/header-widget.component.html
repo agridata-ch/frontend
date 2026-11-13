@@ -34,11 +34,18 @@
   <div class="hidden xl:flex flex-row gap-2 items-center shrink-0">
     @if (isAuthenticated()) {
       <app-contact-support-info />
-      <app-notification-overlay />
+
+      @if (!hasNoRole()) {
+        <app-notification-overlay />
+      }
     }
     <agridata-language-select />
     @if (isAuthenticated() && userInfo()) {
       <app-account-overlay [userInfo]="userInfo()"></app-account-overlay>
+    } @else if (hasNoRole()) {
+      <app-agridata-button [variant]="ButtonVariants.SecondaryCms" (handleClick)="logout()">
+        {{ 'account.logout' | i18n }}
+      </app-agridata-button>
     } @else {
       <app-agridata-button [variant]="ButtonVariants.SecondaryCms" (handleClick)="login()">
         {{ 'account.login' | i18n }}

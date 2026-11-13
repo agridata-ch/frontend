@@ -11,8 +11,9 @@ import { AuthService } from '@/shared/lib/auth';
  * Producers go to consent request page.
  * Consumers go to data requests page.
  * Unauthenticated users stay on the landing page.
+ * Users without any role are sent to the no-access page right after login and otherwise stay on the landing page.
  *
- * CommentLastReviewed: 2026-04-13
+ * CommentLastReviewed: 2026-11-12
  */
 @Service()
 export class HomeRedirectGuard implements CanActivate {
@@ -26,6 +27,13 @@ export class HomeRedirectGuard implements CanActivate {
 
     if (!isAuthenticated) {
       return true;
+    }
+
+    if (this.authService.hasNoRole()) {
+      // fresh login -> explain missing access; later visits (e.g. the "return" link) show the landing page
+      return this.authService.justLoggedIn()
+        ? this.router.createUrlTree([ROUTE_PATHS.NO_ACCESS])
+        : true;
     }
 
     if (this.authService.isAdmin()) {
