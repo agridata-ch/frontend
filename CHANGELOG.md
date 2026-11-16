@@ -1,3 +1,9 @@
+## [1.25.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.6...v1.25.0-rc.7) (2026-11-16)
+
+### Features
+
+- **data-request-producer:** add producer via BUR ([1dc61aa](https://github.com/agridata-ch/frontend/commit/1dc61aa7a913faa2acd543e7b18b75a95462eab5)), references [DIGIB2-1826](https://github.com/agridata-ch/frontend/issues/-1826)
+
 ## [1.25.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.5...v1.25.0-rc.6) (2026-11-16)
 
 ### Features
