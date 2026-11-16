@@ -1,3 +1,9 @@
+## [1.25.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.5...v1.25.0-rc.6) (2026-11-16)
+
+### Features
+
+- **agbs:** add AGB detail view and creation for admin ([8d2e32b](https://github.com/agridata-ch/frontend/commit/8d2e32b4660f91593d8c2f29d2b47f78394d365a)), references [DIGIB2-1532](https://github.com/agridata-ch/frontend/issues/-1532)
+
 ## [1.25.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.4...v1.25.0-rc.5) (2026-11-10)
 
 ### Features
