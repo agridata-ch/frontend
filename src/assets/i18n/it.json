@@ -465,9 +465,9 @@
         "addButton": "Richiedi produttore",
         "modal": {
           "title": "Richiedi produttore",
-          "description": "Per includere nuove aziende nella richiesta, è necessario interrogare i produttori tramite la loro IDI. Successivamente, è possibile selezionare dall'elenco delle sedi operative. È possibile controllare la richiesta anche tramite l'API.",
-          "uidLabel": "IDI",
-          "uidPlaceholder": "CHE000000000",
+          "description": "Per includere nuove aziende nella richiesta, è necessario interrogare i produttori tramite il proprio UID o BUR. Successivamente, è possibile selezionare dall'elenco delle sedi operative. È possibile controllare la richiesta anche tramite l'API.",
+          "uidLabel": "IDI / BUR",
+          "uidPlaceholder": "CHE000000000 / A00000000",
           "cancel": "Annulla",
           "confirm": "Aggiungi {{ count }} richiesta(e)",
           "uidInvalid": "formato non valido",
@@ -506,7 +506,9 @@
               "title": "Errore durante la terminazione della richiesta",
               "message": "Si è verificato un errore durante il tentativo di terminare la/e richiesta/e: {{ error }}"
             }
-          }
+          },
+          "burNotFound": "La BUR inserita non è stata trovata",
+          "resolvedUid": "IDI trovata per la BUR inserita: {{ uid }}"
         },
         "addBurs": "Aggiungi sedi operative",
         "withdrawRequest": "Terminare la richiesta"
@@ -669,7 +671,8 @@
     },
     "uid": "IDI",
     "bur": "BUR",
-    "lastChanged": "Modificato il"
+    "lastChanged": "Modificato il",
+    "provider": "Fornitore di dati"
   },
   "forms": {
     "error": {
@@ -1572,4 +1575,10 @@
       "previousMonth": "Mese precedente"
     }
   },
+  "no-access": {
+    "title": "Autorizzazioni mancanti",
+    "message": "Il suo profilo deve prima essere attivato. Non esiti a contattare il supporto per farlo.",
+    "return": "Torna a agridata.ch",
+    "contactSupport": "Contattare il supporto"
+  }
 }
