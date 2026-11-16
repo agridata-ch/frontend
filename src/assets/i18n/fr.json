@@ -465,9 +465,9 @@
         "addButton": "Demander un producteur",
         "modal": {
           "title": "Demander un producteur",
-          "description": "Pour inclure de nouvelles exploitations dans la demande, vous devez interroger les producteurs via leur IDE. Ensuite, vous pouvez choisir parmi la liste des sites d'exploitation. Vous pouvez également gérer la demande via l'API.",
-          "uidLabel": "IDE",
-          "uidPlaceholder": "CHE000000000",
+          "description": "Pour inclure de nouvelles exploitations dans la demande, vous devez interroger les producteurs via leur IDE ou leur BUR. Ensuite, vous pouvez choisir parmi la liste des sites d'exploitation. Vous pouvez également gérer la demande via l'API.",
+          "uidLabel": "IDE / BUR",
+          "uidPlaceholder": "CHE000000000 / A00000000",
           "cancel": "Annuler",
           "confirm": "Ajouter {{ count }} demande(s)",
           "uidInvalid": "format invalide",
@@ -506,7 +506,9 @@
               "title": "Échec de la clôture de la requête",
               "message": "Une erreur s’est produite lors de la tentative de clôture de la/des requête(s) : {{ error }}"
             }
-          }
+          },
+          "burNotFound": "Le BUR saisi n'a pas été trouvé",
+          "resolvedUid": "IDE trouvée pour le BUR saisi : {{ uid }}"
         },
         "addBurs": "Ajouter des sites d'exploitation",
         "withdrawRequest": "Terminer la requête"
@@ -669,7 +671,8 @@
     },
     "uid": "IDE",
     "bur": "BUR",
-    "lastChanged": "Modifié le"
+    "lastChanged": "Modifié le",
+    "provider": "Fournisseur de données"
   },
   "forms": {
     "error": {
@@ -1571,5 +1574,11 @@
       "nextMonth": "Mois suivant",
       "previousMonth": "Mois précédent"
     }
+  },
+  "no-access": {
+    "title": "Autorisations manquantes",
+    "message": "Votre profil doit d’abord être activé. N’hésitez pas à contacter le support à ce sujet.",
+    "return": "Retourner à agridata.ch",
+    "contactSupport": "Contacter le support"
   }
 }

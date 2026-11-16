@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   Component,
   computed,
@@ -21,7 +22,7 @@ import {
   DataRequestDto,
 } from '@/entities/openapi';
 import { ConsentRequestStateBadgeComponent } from '@/shared/consent-request';
-import { UID_REGEX } from '@/shared/constants/constants';
+import { BUR_REGEX, UID_REGEX } from '@/shared/constants/constants';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { isExternalServiceError } from '@/shared/error/http-error-method';
 import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
@@ -40,14 +41,16 @@ interface ProducerEntry {
 }
 
 /**
- * Modal for adding producers to a data request. The consumer enters a UID, the modal loads its
- * authorized BURs alongside the consent requests that already exist for that UID, and shows one
- * selectable entry per still-missing producer. When the data request has no BUR products, or the
- * UID has no BURs (shown as a hint in the BUR list), the entry is the UID itself and is flagged if already added.
+ * Modal for adding producers to a data request. The consumer enters a UID or a BUR (separators like
+ * in CHE-123.456.789 are stripped); a BUR is first resolved to its UID. The modal then loads the
+ * UID's authorized BURs alongside the consent requests that already exist for that UID, and shows
+ * one selectable entry per still-missing producer, preselecting a searched BUR. When the data
+ * request has no BUR products, or the UID has no BURs (shown as a hint in the BUR list), the entry
+ * is the UID itself and is flagged if already added.
  * Submitting creates the consent requests for the selected producers, shows a toast and closes the
  * modal.
  *
- * CommentLastReviewed: 2026-10-02
+ * CommentLastReviewed: 2026-11-11
  */
 @Component({
   selector: 'app-data-request-add-producers',
@@ -87,40 +90,59 @@ export class DataRequestAddProducersComponent {
   // Signals
   protected readonly isSubmitting = signal(false);
   protected readonly searchValue = signal<string>('');
-  // Cleared whenever the searched UID changes so stale BUR keys never linger.
-  private readonly selected = linkedSignal<string | undefined, ReadonlySet<string>>({
-    source: () => this.searchedUid(),
-    computation: () => new Set(),
+  // Reset whenever new entries load so stale BUR keys never linger; a searched BUR is preselected.
+  // The BUR letter prefix is optional, so A12345678 and 12345678 match on the 8 digits.
+  private readonly selected = linkedSignal({
+    source: () => ({
+      entries: this.entries(),
+      bur: this.isValidBur() ? this.searchTerm() : undefined,
+    }),
+    computation: ({ entries, bur }) => {
+      const match = bur
+        ? entries.find((entry) => entry.bur?.slice(-8) === bur.slice(-8) && !entry.existing)
+        : undefined;
+      return new Set(match ? [match.key] : []);
+    },
   });
 
   // Computed signals
-  protected readonly isValidUid = computed(() => UID_REGEX.test(this.searchValue()));
+  // Input without separators, e.g. CHE-123.456.789 becomes CHE123456789.
+  private readonly searchTerm = computed(() =>
+    this.searchValue()
+      .replaceAll(/[^A-Za-z0-9]/g, '')
+      .toUpperCase(),
+  );
+  protected readonly isValidUid = computed(() => UID_REGEX.test(this.searchTerm()));
+  protected readonly isValidBur = computed(() => BUR_REGEX.test(this.searchTerm()));
   // Stay editable while the UID is flagged as already added, so the user can correct it.
   protected readonly isUidViewMode = computed(() => this.entries().length > 0);
 
-  // Only a complete, valid UID triggers the lookup.
-  protected readonly searchedUid = computed(() =>
-    this.isValidUid() ? this.searchValue() : undefined,
-  );
-
+  // Only a complete, valid UID or BUR triggers the lookup; a BUR is resolved to its UID first.
   protected readonly lookupResource = resource({
     params: () => {
-      const uid = this.searchedUid();
-      return uid ? { id: this.dataRequest().id, uid } : undefined;
+      const isBur = this.isValidBur();
+      return this.isValidUid() || isBur
+        ? { id: this.dataRequest().id, term: this.searchTerm(), isBur }
+        : undefined;
     },
     loader: async ({ params }) => {
+      const uid = params.isBur
+        ? (await this.userService.getUidByBur(params.term)).uid
+        : params.term;
       const [burs, existing] = await Promise.all([
-        this.userService.getAuthorizedBursByUid(params.uid),
-        this.dataRequestService.getConsentRequestsOfDataRequestAndUid(params.id, params.uid),
+        this.userService.getAuthorizedBursByUid(uid),
+        this.dataRequestService.getConsentRequestsOfDataRequestAndUid(params.id, uid),
       ]);
-      return { burs, existing };
+      return { uid, burs, existing };
     },
-    defaultValue: { burs: [], existing: [] },
+    defaultValue: { uid: '', burs: [], existing: [] },
   });
 
   // value() rethrows while loading or errored; the error is surfaced by the error handler effect.
-  private readonly ready = computed(
-    () => !!this.searchedUid() && !this.lookupResource.isLoading() && !this.lookupResource.error(),
+  private readonly ready = computed(() => this.lookupResource.status() === 'resolved');
+
+  protected readonly resolvedUid = computed(() =>
+    this.ready() ? this.lookupResource.value().uid : undefined,
   );
 
   private readonly burs = computed(() =>
@@ -139,8 +161,7 @@ export class DataRequestAddProducersComponent {
   protected readonly entries = computed<ProducerEntry[]>(() => {
     if (!this.ready()) return [];
 
-    const uid = this.searchedUid()!;
-    const { existing } = this.lookupResource.value();
+    const { uid, existing } = this.lookupResource.value();
 
     if (this.usesUidEntry()) {
       return [{ key: uid, existing: existing.length > 0, stateCode: existing[0]?.stateCode }];
@@ -175,13 +196,16 @@ export class DataRequestAddProducersComponent {
   });
 
   protected readonly showUidInvalid = computed(
-    () => this.searchValue().length > 0 && !this.isValidUid(),
+    () => this.searchValue().length > 0 && !this.isValidUid() && !this.isValidBur(),
   );
 
-  // The lookup answers with EXTERNAL_SERVICE_ERROR when the entered UID does not exist.
-  protected readonly uidNotFound = computed(() =>
-    isExternalServiceError(this.lookupResource.error()),
-  );
+  // An unknown UID answers with EXTERNAL_SERVICE_ERROR, an unknown BUR with 404.
+  protected readonly uidNotFound = computed(() => {
+    const error = this.lookupResource.error();
+    const isUnknownBur =
+      this.isValidBur() && error instanceof HttpErrorResponse && error.status === 404;
+    return isExternalServiceError(error) || isUnknownBur;
+  });
 
   protected readonly hasUidError = computed(() => this.showUidInvalid() || this.uidNotFound());
 
@@ -222,16 +246,16 @@ export class DataRequestAddProducersComponent {
     });
   });
 
-  // Surface lookup errors globally, except EXTERNAL_SERVICE_ERROR (unknown UID) shown inline.
+  // Surface lookup errors globally, except an unknown UID or BUR, which is shown inline.
   private readonly errorHandler = effect(() => {
     const error = this.lookupResource.error();
-    if (error && !isExternalServiceError(error)) {
+    if (error && !this.uidNotFound()) {
       this.errorService.handleError(error);
     }
   });
 
   protected async addProducers(): Promise<void> {
-    const uid = this.searchedUid();
+    const uid = this.resolvedUid();
     if (!uid || this.isSubmitting()) return;
 
     const burs = this.usesUidEntry()
