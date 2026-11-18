@@ -1,7 +1,7 @@
 import { ApplicationRef, EnvironmentInjector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { ConsentRequestStateEnum } from '@/entities/openapi';
+import { ConsentRequestStateDto, ConsentRequestStateEnum } from '@/entities/openapi';
 import { I18nService } from '@/shared/i18n';
 import { createMockI18nService, MockI18nService } from '@/shared/testing/mocks';
 import { ToastType } from '@/shared/toast';
@@ -9,6 +9,7 @@ import { ToastType } from '@/shared/toast';
 import {
   buildConsentRequestTourSteps,
   getConsentStateTranslation,
+  getDecidableConsentRequests,
   getToastMessage,
   getToastTitle,
   getToastType,
@@ -468,5 +469,26 @@ describe('getConsentStateTranslation()', () => {
     getConsentStateTranslation(i18nService, ConsentRequestStateEnum.Opened);
 
     expect(i18nService.translate).toHaveBeenCalledWith('consent-request.stateCode.OPENED');
+  });
+});
+
+describe('getDecidableConsentRequests()', () => {
+  const uidRequest: ConsentRequestStateDto = { id: 'uid' };
+  const burRequest: ConsentRequestStateDto = { id: 'bur-1', dataProducerBur: '99910001' };
+  const secondBurRequest: ConsentRequestStateDto = { id: 'bur-2', dataProducerBur: '99910002' };
+
+  it('returns only the BUR consent requests when there are any', () => {
+    expect(getDecidableConsentRequests([uidRequest, burRequest, secondBurRequest])).toEqual([
+      burRequest,
+      secondBurRequest,
+    ]);
+  });
+
+  it('returns the UID consent request when there is no BUR one', () => {
+    expect(getDecidableConsentRequests([uidRequest])).toEqual([uidRequest]);
+  });
+
+  it('returns an empty list for no consent requests', () => {
+    expect(getDecidableConsentRequests([])).toEqual([]);
   });
 });

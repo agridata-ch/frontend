@@ -13,6 +13,10 @@ import { ConsentRequestStateEnum } from './consentRequestStateEnum';
 export interface ConsentRequestStateDto { 
     id: string;
     /**
+     * BUR of the data producer; null for UID-based consent requests
+     */
+    dataProducerBur?: string;
+    /**
      * State of the consent request
      */
     stateCode?: ConsentRequestStateEnum;

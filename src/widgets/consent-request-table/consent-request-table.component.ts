@@ -22,6 +22,7 @@ import { environment } from '@/environments/environment';
 import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import {
   ConsentRequestStateBadgeComponent,
+  getDecidableConsentRequests,
   getToastMessage,
   getToastTitle,
   getToastType,
@@ -211,9 +212,9 @@ export class ConsentRequestTableComponent {
     requestName?: string,
   ) => {
     // capture the children before the reload replaces the input array, the undo needs their ids.
-    // PARTIALLY_OPENED aggregations still hold children that already carry a decision, only the
-    // undecided ones may be decided here. For OPENED every child is open, so all are kept.
-    const openConsentRequestIds = (aggregation.consentRequests ?? [])
+    // Like the details panel, only BUR children are sent (the backend derives the UID child), and
+    // of those only the undecided ones: PARTIALLY_OPENED still holds already decided children.
+    const openConsentRequestIds = getDecidableConsentRequests(aggregation.consentRequests ?? [])
       .filter((request) => request.stateCode === ConsentRequestStateEnum.Opened)
       .map((request) => request.id);
     this.analyticsService.logEvent('consent_request_state_changed', {

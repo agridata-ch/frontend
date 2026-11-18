@@ -133,15 +133,16 @@ describe('ConsentRequestTableComponent', () => {
     expect(mockToastService.show).toHaveBeenCalled();
   });
 
-  it('should update every consent request of an opened aggregation', async () => {
+  it('should only update the BUR consent requests and leave the UID one to the backend', async () => {
     await component.updateConsentRequestState(
       mockConsentRequestAggregations[2],
       ConsentRequestStateEnum.Granted,
       'Test Request',
     );
 
+    // '4' is the UID consent request, the backend derives its state from '5'
     expect(consentRequestService.updateConsentRequestStatuses).toHaveBeenCalledWith(
-      ['4', '5'],
+      ['5'],
       ConsentRequestStateEnum.Granted,
     );
   });
