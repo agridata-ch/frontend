@@ -37,6 +37,19 @@ export function matchesAggregationStateFilter(
     : stateCode === filter;
 }
 
+/**
+ * The children a producer decides directly: every BUR child, since the backend derives the UID
+ * child's state from them. Only without any BUR child is the single UID child decided itself.
+ */
+export function getDecidableConsentRequests<T extends { dataProducerBur?: string }>(
+  consentRequests: T[],
+): T[] {
+  const burRequests = consentRequests.filter((request) => request.dataProducerBur);
+  if (burRequests.length > 0) return burRequests;
+  const uidRequest = consentRequests.find((request) => !request.dataProducerBur);
+  return uidRequest ? [uidRequest] : [];
+}
+
 export function getToastTitle(stateCode: string) {
   switch (stateCode) {
     case ConsentRequestStateEnum.Granted:

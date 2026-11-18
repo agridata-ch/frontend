@@ -45,6 +45,7 @@ export * from './dataRequestDto';
 export * from './dataRequestPurposeDto';
 export * from './dataRequestStateEnum';
 export * from './dataRequestSummaryDto';
+export * from './dataRequestTerminationResultDto';
 export * from './dataRequestTitleDto';
 export * from './dataRequestUpdateDto';
 export * from './dataRequestV1Dto';
