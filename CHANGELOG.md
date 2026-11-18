@@ -1,3 +1,9 @@
+## [1.25.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.8...v1.25.0-rc.9) (2026-11-18)
+
+### Bug Fixes
+
+- **consent-request:** fix status update on table ([7fb106c](https://github.com/agridata-ch/frontend/commit/7fb106c535a6d32c789ecc561e3554d7b177ffcb)), references [DIGIB2-1851](https://github.com/agridata-ch/frontend/issues/-1851)
+
 ## [1.25.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.7...v1.25.0-rc.8) (2026-11-18)
 
 ### Features
