@@ -1,3 +1,9 @@
+## [1.25.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.7...v1.25.0-rc.8) (2026-11-18)
+
+### Features
+
+- **no-access:** add no access page for users without agridata role ([802c287](https://github.com/agridata-ch/frontend/commit/802c28721673626e79f4e071f96bcfd25cb84f51)), references [DIGIB2-1502](https://github.com/agridata-ch/frontend/issues/-1502)
+
 ## [1.25.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.6...v1.25.0-rc.7) (2026-11-16)
 
 ### Features
