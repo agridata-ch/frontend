@@ -45,7 +45,7 @@
                 [appTooltip]="t('product.publicSectorTooltip')"
               />
             }
-            @if (product.paymentRequired) {
+            @if (source().isPublic && product.paymentRequired) {
               <app-agridata-badge
                 [icon]="chfCircleIcon"
                 [text]="t('product.paymentRequired')"
@@ -57,9 +57,11 @@
         }
       </div>
 
-      <app-agridata-tabs [tabs]="tabs()" [(activeTabId)]="activeTabId" />
+      @if (source().isPublic) {
+        <app-agridata-tabs [tabs]="tabs()" [(activeTabId)]="activeTabId" />
+      }
 
-      @if (activeTabId() === DetailTab.TECHNICAL) {
+      @if (source().isPublic && activeTabId() === DetailTab.TECHNICAL) {
         <app-data-product-detail-technical [product]="product" />
       } @else {
         <app-data-product-detail-general
