@@ -1,3 +1,9 @@
+## [1.25.1-rc.1](https://github.com/agridata-ch/frontend/compare/v1.25.0...v1.25.1-rc.1) (2026-11-19)
+
+### Bug Fixes
+
+- **core:** fix build error ([c8f8c80](https://github.com/agridata-ch/frontend/commit/c8f8c80716e721d289425c8ffe0ed600332db268))
+
 ## [1.25.0](https://github.com/agridata-ch/frontend/compare/v1.24.0...v1.25.0) (2026-11-19)
 
 ### Features
