@@ -4,6 +4,7 @@ export * from './data-request.service';
 export * from './bur-register.service';
 export * from './backend-info.service';
 export * from './contract-revision.service';
+export * from './contract-template.service';
 export * from './agb.service';
 export * from './data-product.service';
 export * from './data-providers.service';

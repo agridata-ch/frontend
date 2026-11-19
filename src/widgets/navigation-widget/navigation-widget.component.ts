@@ -5,6 +5,7 @@ import {
   faChevronRight,
   faDatabase,
   faFileCheck,
+  faFiles,
   faFileSignature,
   faGavel,
   faLayerGroup,
@@ -103,6 +104,12 @@ export class NavigationWidgetComponent {
           label: 'agb-acceptances.pageTitle',
           icon: faFileSignature,
           route: `/${ROUTE_PATHS.AGB_ACCEPTANCES_PATH}`,
+        },
+      this.userRoles()?.includes(USER_ROLES.AGRIDATA_ADMIN) &&
+        !this.agridataStateService.isImpersonating() && {
+          label: 'admin-contract-templates.pageTitle',
+          icon: faFiles,
+          route: `/${ROUTE_PATHS.ADMIN_CONTRACT_TEMPLATES_PATH}`,
         },
       this.userRoles()?.includes(USER_ROLES.AGRIDATA_SUPPORTER) &&
         !this.agridataStateService.isImpersonating() && {

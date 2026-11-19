@@ -1,0 +1,12 @@
+<ng-container *i18n="let t; prefix: 'admin-contract-templates'">
+  <div class="flex gap-3 items-center mb-8">
+    <fa-icon [icon]="faFiles" size="2xl" />
+    <h1>{{ t('pageTitle') }}</h1>
+  </div>
+  <app-error-outlet></app-error-outlet>
+  <app-agridata-table
+    [dataProvider]="fetchContractTemplateVersionsResource"
+    [tableMetadata]="tableMetaData()"
+    [(queryParameters)]="resourceQueryDto"
+  ></app-agridata-table>
+</ng-container>

@@ -1596,7 +1596,7 @@
     "contactSupport": "Richiedere l’accesso"
   },
   "admin-contract-templates": {
-    "pageTitle": "Versioni del contratto",
+    "pageTitle": "Panoramica dei modelli contrattuali",
     "table": {
       "version": "Versione",
       "validTo": "Valido fino al",
