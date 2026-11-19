@@ -1596,7 +1596,7 @@
     "contactSupport": "Zugriff anfordern"
   },
   "admin-contract-templates": {
-    "pageTitle": "Vertragsversionen",
+    "pageTitle": "Vertragsvorlagen-Übersicht",
     "table": {
       "version": "Version",
       "validTo": "Gültig bis",

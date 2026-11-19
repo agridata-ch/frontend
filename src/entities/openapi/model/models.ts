@@ -23,6 +23,7 @@ export * from './consentRequestStateEnum';
 export * from './consentRequestStatusSummaryDto';
 export * from './contractRevisionDto';
 export * from './contractRevisionSignatureDto';
+export * from './contractTemplateVersionDto';
 export * from './createConsentRequestDto';
 export * from './createConsentRequestsForUidDto';
 export * from './dataProductDescriptionDto';
