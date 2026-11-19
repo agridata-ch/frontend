@@ -1455,6 +1455,10 @@
         "pathTemplateTooltip": "Indique comment l'adresse doit être structurée pour que les utilisateurs de données puissent interroger le produit de données via l'API.",
         "requestTemplateTooltip": "Modèle qui définit comment le contenu (corps) de la requête envoyée par l'utilisateur de données au fournisseur de données doit être structuré.",
         "copyFailed": "Échec de la copie"
+      },
+      "notFound": {
+        "title": "Produit de données introuvable",
+        "message": "Ce produit de données n'existe pas ou n'est plus disponible."
       }
     },
     "list": {
@@ -1580,5 +1584,13 @@
     "message": "Vous êtes connecté avec succès via Agate, mais vous ne disposez pas encore des autorisations nécessaires pour utiliser agridata.ch. Si vous avez besoin d’un accès, veuillez en faire la demande auprès de notre support.",
     "return": "Retour à la page d’accueil",
     "contactSupport": "Demander un accès"
+  },
+  "admin-contract-templates": {
+    "pageTitle": "Versions du contrat",
+    "table": {
+      "version": "Version",
+      "validTo": "Valide jusqu'à",
+      "validFrom": "Valide depuis"
+    }
   }
 }

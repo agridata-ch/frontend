@@ -1,3 +1,4 @@
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import {
   Component,
   computed,
@@ -14,8 +15,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { DataProductSource } from '@/entities/api';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
+import { ErrorOutletComponent } from '@/shared/error-alert-outlet';
 import { I18nDirective, I18nService } from '@/shared/i18n';
-import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { TooltipDirective } from '@/shared/tooltip';
 import { AgridataTabsComponent, Tab } from '@/shared/ui/agridata-tabs';
 import { AgridataBadgeComponent, BadgeSize, BadgeVariant } from '@/shared/ui/badge';
@@ -34,10 +35,12 @@ enum DetailTab {
  * public source; producers (internal source) see the general content only. Given a product id it loads the
  * product and its documents through the `source` the host hands over (public or authenticated).
  * Hosts wrap it (modal, page) and own the open/close state. `handleNameLoaded` hands the product
- * name to the host for its title and `handleLoadFailed` lets the host close on error. Translations come from the `data-catalog` keys, tab labels from the shared
+ * name to the host for its title. An unknown product (404) shows a not-found state; any other failed load
+ * is shown in the component's own error outlet.
+ * Translations come from the `data-catalog` keys, tab labels from the shared
  * `data-products.detailForm.tab` keys.
  *
- * CommentLastReviewed: 2026-11-18
+ * CommentLastReviewed: 2026-11-19
  */
 @Component({
   selector: 'app-data-product-detail',
@@ -46,6 +49,7 @@ enum DetailTab {
     AgridataTabsComponent,
     DataProductDetailGeneralComponent,
     DataProductDetailTechnicalComponent,
+    ErrorOutletComponent,
     FontAwesomeModule,
     I18nDirective,
     TooltipDirective,
@@ -70,7 +74,6 @@ export class DataProductDetailComponent {
   readonly source = input.required<DataProductSource>();
 
   // Output properties
-  readonly handleLoadFailed = output<void>();
   readonly handleNameLoaded = output<string>();
 
   // Resources
@@ -100,8 +103,18 @@ export class DataProductDetailComponent {
 
   // Computed signals
   protected readonly loading = computed(() => this.productResource.isLoading());
-  protected readonly product = computed(() => this.productResource.value());
-  protected readonly documents = computed(() => this.documentsResource.value() ?? []);
+  // Reading value() of an errored resource throws, so an error falls back to undefined / empty.
+  protected readonly product = computed(() =>
+    this.productResource.hasValue() ? this.productResource.value() : undefined,
+  );
+  protected readonly documents = computed(() =>
+    this.documentsResource.hasValue() ? this.documentsResource.value() : [],
+  );
+  // Angular keeps an HttpErrorResponse as is (it's error-like), so the error is the response itself.
+  protected readonly notFound = computed(() => {
+    const error = this.productResource.error();
+    return error instanceof HttpErrorResponse && error.status === HttpStatusCode.NotFound;
+  });
   protected readonly name = computed(() =>
     this.i18nService.useObjectTranslation(this.product()?.name),
   );
@@ -127,14 +140,11 @@ export class DataProductDetailComponent {
   });
 
   // Effects
-  private readonly productErrorEffect = createResourceErrorHandlerEffect(
-    this.productResource,
-    this.errorService,
-  );
-  // A failed load surfaces a global error toast (above); let the host close itself so it doesn't linger empty.
+  // A 404 is an expected outcome (stale deeplink) shown as the not-found state, not an error.
+  private readonly productErrorEffect = effect(() => {
+    const error = this.productResource.error();
+    if (error && !this.notFound()) this.errorService.handleError(error);
+  });
   // Hands the (translated) name to the host, which shows it as its title; empty until loaded.
   private readonly nameEffect = effect(() => this.handleNameLoaded.emit(this.name()));
-  private readonly closeOnErrorEffect = effect(() => {
-    if (this.productResource.error()) this.handleLoadFailed.emit();
-  });
 }

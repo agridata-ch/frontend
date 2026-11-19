@@ -1,4 +1,5 @@
 <ng-container *i18n="let t; prefix: 'data-catalog'">
+  <app-error-outlet />
   @if (loading()) {
     <fa-icon
       animation="spin"
@@ -6,6 +7,13 @@
       size="3x"
       class="flex items-center justify-center py-10"
     />
+  } @else if (notFound()) {
+    <section class="flex flex-col gap-6 text-center">
+      <h3>{{ t('product.notFound.title') }}</h3>
+      <p class="whitespace-pre-line">
+        {{ t('product.notFound.message') }}
+      </p>
+    </section>
   } @else if (product(); as product) {
     <div class="flex flex-col gap-8 text-left">
       <div class="flex flex-col sm:flex-row gap-8 sm:gap-2">

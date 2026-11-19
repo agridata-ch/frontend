@@ -17,6 +17,7 @@
       }
     </span>
     <ng-container *i18n="let t; prefix: 'data-products.detailForm'">
+      <app-error-outlet />
       @if (dataProductResource.isLoading()) {
         <fa-icon
           animation="spin"
@@ -24,7 +25,7 @@
           size="3x"
           class="absolute flex items-center justify-center inset-0"
         />
-      } @else {
+      } @else if (!dataProductResource.error()) {
         <app-agridata-tabs
           class="sticky top-0 z-10 bg-white"
           [tabs]="tabs()"

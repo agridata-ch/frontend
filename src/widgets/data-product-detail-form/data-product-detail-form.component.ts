@@ -24,7 +24,10 @@ import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProductDto, DataProductDtoStateCode, DataProductStateEnum } from '@/entities/openapi';
 import { ACTING_ROLES, ROUTE_PATHS } from '@/shared/constants/constants';
 import { getBadgeVariant, getDataProductState, getStatusTranslation } from '@/shared/data-product';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
+import { ErrorOutletComponent } from '@/shared/error-alert-outlet';
 import { I18nDirective, I18nFormatDirective, I18nService } from '@/shared/i18n';
+import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { buildReactiveForm, populateFormFromDto } from '@/shared/lib/form.helper';
 import { ScrollFadeDirective } from '@/shared/scroll-fade';
 import { SidepanelComponent } from '@/shared/sidepanel';
@@ -52,7 +55,7 @@ import { DataProductDetailTechnicalComponent } from './data-product-detail-techn
  * Side panel for creating and editing a data product.
  * Handles its own API calls and navigates back to the list when done.
  *
- * CommentLastReviewed: 2026-08-03
+ * CommentLastReviewed: 2026-11-19
  */
 @Component({
   selector: 'app-data-product-detail-form',
@@ -61,6 +64,7 @@ import { DataProductDetailTechnicalComponent } from './data-product-detail-techn
     ButtonComponent,
     DataProductDetailInfoComponent,
     DataProductDetailTechnicalComponent,
+    ErrorOutletComponent,
     FontAwesomeModule,
     I18nDirective,
     I18nFormatDirective,
@@ -78,6 +82,7 @@ export class DataProductDetailFormComponent {
   protected readonly i18nService = inject(I18nService);
   private readonly dataProductService = inject(DataProductService);
   private readonly elementRef = inject(ElementRef);
+  private readonly errorService = inject(ErrorHandlerService);
   private readonly injector = inject(Injector);
   private readonly location = inject(Location);
   private readonly router = inject(Router);
@@ -122,15 +127,13 @@ export class DataProductDetailFormComponent {
     () => this.stateCode() !== DataProductStateEnum.Active,
   );
 
-  protected readonly dataProductState = computed(() =>
-    getDataProductState(this.dataProductResource.value()),
-  );
+  protected readonly dataProductState = computed(() => getDataProductState(this.dataProduct()));
 
   protected readonly dataProductTitle = computed(() =>
-    this.i18nService.useObjectTranslation(this.dataProductResource.value()?.name),
+    this.i18nService.useObjectTranslation(this.dataProduct()?.name),
   );
 
-  protected readonly stateCode = computed(() => this.dataProductResource.value()?.stateCode);
+  protected readonly stateCode = computed(() => this.dataProduct()?.stateCode);
 
   private readonly formStatusVersion = (() => {
     const version = signal(0);
@@ -168,12 +171,12 @@ export class DataProductDetailFormComponent {
   });
 
   protected readonly isViewMode = computed(() => {
-    const product = this.dataProductResource.value();
+    const product = this.dataProduct();
     return product?.stateCode === DataProductDtoStateCode.Active && !this.isEditMode();
   });
 
   protected readonly preselectedProviderId = computed(
-    () => this.dataProductResource.value()?.dataSourceSystem?.dataProvider?.id ?? '',
+    () => this.dataProduct()?.dataSourceSystem?.dataProvider?.id ?? '',
   );
 
   protected readonly sidepanelTitle = computed(() => {
@@ -183,7 +186,7 @@ export class DataProductDetailFormComponent {
     if (id === DATA_PRODUCT_NEW_ID)
       return this.i18nService.translate('data-products.detailPanel.titleCreateNew');
 
-    const dataProduct = this.dataProductResource.value();
+    const dataProduct = this.dataProduct();
     if (!dataProduct?.stateCode) return '';
     return this.isViewMode()
       ? this.i18nService.useObjectTranslation(dataProduct.name)
@@ -200,11 +203,20 @@ export class DataProductDetailFormComponent {
     },
   });
 
+  // Reading value() of an errored resource throws, so an error falls back to undefined.
+  private readonly dataProduct = computed(() =>
+    this.dataProductResource.hasValue() ? this.dataProductResource.value() : undefined,
+  );
+
   // Effects
+  private readonly dataProductErrorEffect = createResourceErrorHandlerEffect(
+    this.dataProductResource,
+    this.errorService,
+  );
   private readonly openAfterRender = afterNextRender(() => this.isOpen.set(true));
 
   private readonly patchFormEffect = effect(() => {
-    const product = this.dataProductResource.value();
+    const product = this.dataProduct();
     if (!product) return;
     untracked(() => this.populateForm(product));
   });
@@ -247,7 +259,7 @@ export class DataProductDetailFormComponent {
     if (this.isEditMode()) {
       // Discard uncommitted edits: the component stays alive in edit mode, so restore the form and
       // documents to the loaded product before leaving edit mode.
-      const product = this.dataProductResource.value();
+      const product = this.dataProduct();
       if (product) this.populateForm(product);
       const id = this.currentDataProductId();
       if (id) void this.uploadStore.loadExisting(id).catch(() => undefined);

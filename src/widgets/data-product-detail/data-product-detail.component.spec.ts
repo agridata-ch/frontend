@@ -1,3 +1,4 @@
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import type { Mocked } from 'vitest';
@@ -13,6 +14,7 @@ import { I18nService } from '@/shared/i18n';
 import {
   createMockErrorHandlerService,
   createMockI18nService,
+  MockErrorHandlerService,
   MockI18nService,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
@@ -41,6 +43,7 @@ describe('DataProductDetailComponent', () => {
   let componentRef: ComponentRef<DataProductDetailComponent>;
   let source: Mocked<DataProductSource>;
   let i18nService: MockI18nService;
+  let errorService: MockErrorHandlerService;
 
   beforeEach(async () => {
     URL.createObjectURL = vi.fn().mockReturnValue('blob:mock');
@@ -54,11 +57,12 @@ describe('DataProductDetailComponent', () => {
     };
 
     i18nService = createMockI18nService();
+    errorService = createMockErrorHandlerService();
 
     await TestBed.configureTestingModule({
       imports: [DataProductDetailComponent, createTranslocoTestingModule()],
       providers: [
-        { provide: ErrorHandlerService, useValue: createMockErrorHandlerService() },
+        { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: i18nService },
       ],
     }).compileComponents();
@@ -83,6 +87,43 @@ describe('DataProductDetailComponent', () => {
       await fixture.whenStable();
 
       expect(names.at(-1)).toBe('Produkt');
+    });
+  });
+
+  describe('load error', () => {
+    it('reports the error once and shows the error outlet instead of the spinner', async () => {
+      const error = new Error('not found');
+      source.getProduct.mockRejectedValue(error);
+      source.listDocuments.mockRejectedValue(error);
+      componentRef.setInput('productId', 'unknown');
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(errorService.handleError).toHaveBeenCalledTimes(1);
+      expect(errorService.handleError).toHaveBeenCalledWith(error);
+      expect(component['product']()).toBeUndefined();
+      expect(component['documents']()).toHaveLength(0);
+      expect(fixture.nativeElement.querySelector('app-error-outlet')).not.toBeNull();
+      expect(fixture.nativeElement.textContent).not.toContain('product.notFound.title');
+      expect(fixture.nativeElement.querySelector('fa-icon')).toBeNull();
+    });
+
+    it('shows the not-found state without reporting an error for a 404', async () => {
+      const notFound = new HttpErrorResponse({ status: HttpStatusCode.NotFound });
+      source.getProduct.mockRejectedValue(notFound);
+      source.listDocuments.mockRejectedValue(notFound);
+      componentRef.setInput('productId', 'unknown');
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(component['notFound']()).toBe(true);
+      expect(errorService.handleError).not.toHaveBeenCalled();
+      expect(fixture.nativeElement.textContent).toContain('product.notFound.title');
+      expect(
+        fixture.nativeElement.querySelector('app-error-outlet app-error-alert-list'),
+      ).toBeNull();
     });
   });
 

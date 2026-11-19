@@ -10,6 +10,7 @@ import { DataProductService } from '@/entities/api/data-product.service';
 import { DataProvidersService } from '@/entities/api/data-providers.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { DataProductDto } from '@/entities/openapi';
+import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AuthService } from '@/shared/lib/auth';
 import {
@@ -18,11 +19,13 @@ import {
   createMockDataProductDocumentService,
   createMockDataProductService,
   createMockDataProvidersService,
+  createMockErrorHandlerService,
   createMockI18nService,
   createMockMasterDataService,
   createMockToastService,
   MockAgridataStateService,
   MockDataProductService,
+  MockErrorHandlerService,
   MockToastService,
 } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
@@ -67,12 +70,14 @@ describe('DataProductDetailFormComponent', () => {
   let component: DataProductDetailFormComponent;
   let componentRef: ComponentRef<DataProductDetailFormComponent>;
   let dataProductService: MockDataProductService;
+  let errorService: MockErrorHandlerService;
   let stateService: MockAgridataStateService;
   let toastService: MockToastService;
   let router: Router;
 
   beforeEach(async () => {
     dataProductService = createMockDataProductService();
+    errorService = createMockErrorHandlerService();
     stateService = createMockAgridataStateService();
     toastService = createMockToastService();
 
@@ -84,6 +89,7 @@ describe('DataProductDetailFormComponent', () => {
         { provide: DataProductDocumentService, useValue: createMockDataProductDocumentService() },
         { provide: DataProductService, useValue: dataProductService },
         { provide: DataProvidersService, useValue: createMockDataProvidersService() },
+        { provide: ErrorHandlerService, useValue: errorService },
         { provide: I18nService, useValue: createMockI18nService() },
         { provide: MasterDataService, useValue: createMockMasterDataService() },
         { provide: ToastService, useValue: toastService },
@@ -203,6 +209,23 @@ describe('DataProductDetailFormComponent', () => {
       fixture.detectChanges();
       await fixture.whenStable();
       expect(component['currentDataProductId']()).toBeNull();
+    });
+  });
+
+  describe('load error', () => {
+    it('reports the error once and shows the error outlet instead of the form', async () => {
+      const error = new Error('not found');
+      dataProductService.getDataProductById.mockRejectedValue(error);
+      componentRef.setInput('dataProductId', 'unknown');
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+
+      expect(errorService.handleError).toHaveBeenCalledTimes(1);
+      expect(errorService.handleError).toHaveBeenCalledWith(error);
+      expect(component['sidepanelTitle']()).toBe('');
+      expect(fixture.nativeElement.querySelector('app-error-outlet')).not.toBeNull();
+      expect(fixture.nativeElement.querySelector('app-agridata-tabs')).toBeNull();
     });
   });
 
