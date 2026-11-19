@@ -575,6 +575,16 @@
             "resendCooldownAlert": {
               "title": "Bitte warten Sie kurz",
               "message": "Die Unterzeichnung ist bereits im Gange. Bitte warten Sie ca. 30  Sekunden und versuchen Sie es anschliessend erneut."
+            },
+            "templateOutdatedAlert": {
+              "title": {
+                "dataConsumer": "Vertragsvorlage nicht mehr aktuell",
+                "dataProvider": "Unterzeichnung nicht möglich"
+              },
+              "message": {
+                "dataConsumer": "Die Vertragsvorlage wurde in der Zwischenzeit aktualisiert. Dieser Vertrag kann nicht mehr unterzeichnet werden. Bitte ziehen Sie den Datenantrag auf den Status «Entwurf» zurück und reichen Sie ihn erneut ein, um einen Vertrag mit der aktuellen Vorlage zu erhalten.",
+                "dataProvider": "Die Vertragsvorlage wurde vom Administrator aktualisiert. Dieser Vertrag basiert auf einer veralteten Version und kann nicht unterzeichnet werden. Der Datenbezüger muss den Antrag zurückziehen und neu einreichen, damit der Vertrag auf der aktuellen Vorlage erstellt wird."
+              }
             }
           }
         },
@@ -1455,6 +1465,10 @@
         "pathTemplateTooltip": "Gibt an, wie die Adresse aufgebaut sein muss, über die Datenbezüger das Datenprodukt bei der API abfragen.",
         "requestTemplateTooltip": "Vorlage, die festlegt, wie der Inhalt (Body) der Anfrage aufgebaut sein muss, die der Datenbezüger an den Datenanbieter sendet.",
         "copyFailed": "Kopieren fehlgeschlagen"
+      },
+      "notFound": {
+        "title": "Datenprodukt nicht gefunden",
+        "message": "Dieses Datenprodukt existiert nicht oder ist nicht mehr verfügbar."
       }
     },
     "list": {
@@ -1580,5 +1594,13 @@
     "message": "Sie sind erfolgreich via Agate angemeldet, verfügen jedoch noch nicht über die nötigen Rechte zur Nutzung von agridata.ch. Wenn Sie Zugriff benötigen, fordern Sie diesen bitte über unseren Support an.",
     "return": "Zur Startseite",
     "contactSupport": "Zugriff anfordern"
+  },
+  "admin-contract-templates": {
+    "pageTitle": "Vertragsversionen",
+    "table": {
+      "version": "Version",
+      "validTo": "Gültig bis",
+      "validFrom": "Gültig ab"
+    }
   }
 }

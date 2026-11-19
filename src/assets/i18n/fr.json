@@ -575,6 +575,16 @@
             "resendCooldownAlert": {
               "title": "Veuillez patienter un instant",
               "message": "La signature est déjà en cours. Veuillez patienter environ 30 secondes, puis réessayez."
+            },
+            "templateOutdatedAlert": {
+              "title": {
+                "dataConsumer": "Modèle de contrat obsolète",
+                "dataProvider": "Signature impossible"
+              },
+              "message": {
+                "dataConsumer": "Le modèle de contrat a été mis à jour entre-temps. Ce contrat ne peut plus être signé. Veuillez retirer la demande de données pour la remettre au statut « Brouillon », puis soumettez-la à nouveau afin d'obtenir un contrat basé sur le modèle actuel.",
+                "dataProvider": "Le modèle de contrat a été mis à jour par l'administrateur. Ce contrat repose sur une version obsolète et ne peut pas être signé. Le demandeur de données doit retirer la demande et la soumettre à nouveau afin que le contrat soit généré sur la base du modèle actuel."
+              }
             }
           }
         },
@@ -1455,6 +1465,10 @@
         "pathTemplateTooltip": "Indique comment l'adresse doit être structurée pour que les utilisateurs de données puissent interroger le produit de données via l'API.",
         "requestTemplateTooltip": "Modèle qui définit comment le contenu (corps) de la requête envoyée par l'utilisateur de données au fournisseur de données doit être structuré.",
         "copyFailed": "Échec de la copie"
+      },
+      "notFound": {
+        "title": "Produit de données introuvable",
+        "message": "Ce produit de données n'existe pas ou n'est plus disponible."
       }
     },
     "list": {
@@ -1580,5 +1594,13 @@
     "message": "Vous êtes connecté avec succès via Agate, mais vous ne disposez pas encore des autorisations nécessaires pour utiliser agridata.ch. Si vous avez besoin d’un accès, veuillez en faire la demande auprès de notre support.",
     "return": "Retour à la page d’accueil",
     "contactSupport": "Demander un accès"
+  },
+  "admin-contract-templates": {
+    "pageTitle": "Versions du contrat",
+    "table": {
+      "version": "Version",
+      "validTo": "Valide jusqu'à",
+      "validFrom": "Valide depuis"
+    }
   }
 }

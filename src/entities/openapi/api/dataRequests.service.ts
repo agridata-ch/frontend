@@ -31,8 +31,6 @@ import { DataRequestDto } from '../model/dataRequestDto';
 // @ts-ignore
 import { DataRequestStateEnum } from '../model/dataRequestStateEnum';
 // @ts-ignore
-import { DataRequestTerminationResultDto } from '../model/dataRequestTerminationResultDto';
-// @ts-ignore
 import { DataRequestUpdateDto } from '../model/dataRequestUpdateDto';
 // @ts-ignore
 import { DataRequestValidRedirectUriRegexUpdateDto } from '../model/dataRequestValidRedirectUriRegexUpdateDto';
@@ -851,59 +849,6 @@ export class DataRequestsService extends BaseService {
                 context: localVarHttpContext,
                 body: body,
                 params: localVarQueryParameters,
-                responseType: <any>responseType_,
-                ...(withCredentials ? { withCredentials } : {}),
-                headers: localVarHeaders,
-                observe: observe,
-                transferCache: localVarTransferCache,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Trigger Data Request Termination
-     * Triggers the termination of data requests whose termination period has expired, which otherwise runs as a scheduled nightly job, and waits for it to finish. Only accessible to administrators. The run is guarded by the same cluster-wide advisory lock as the scheduled job, so a conflict is reported if a run is already in progress.
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public triggerDataRequestTermination(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<DataRequestTerminationResultDto>;
-    public triggerDataRequestTermination(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DataRequestTerminationResultDto>>;
-    public triggerDataRequestTermination(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DataRequestTerminationResultDto>>;
-    public triggerDataRequestTermination(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-
-        let localVarHeaders = this.defaultHeaders;
-
-        // authentication (SecurityScheme) required
-
-        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            'application/json'
-        ]);
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
-
-        const localVarTransferCache: boolean = options?.transferCache ?? true;
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/agreement/v1/data-requests/termination`;
-        const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<DataRequestTerminationResultDto>('post', `${basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

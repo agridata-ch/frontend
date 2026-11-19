@@ -575,6 +575,16 @@
             "resendCooldownAlert": {
               "title": "Veuillez patienter un instant",
               "message": "La procedura di firma è già in corso. Attendere circa 30 secondi e riprovare."
+            },
+            "templateOutdatedAlert": {
+              "title": {
+                "dataConsumer": "Modello di contratto non più aggiornato",
+                "dataProvider": "Firma non possibile"
+              },
+              "message": {
+                "dataConsumer": "Nel frattempo il modello di contratto è stato aggiornato. Questo contratto non può più essere firmato. Si prega di riportare la richiesta dati allo stato «Bozza» e di inviarla nuovamente per ottenere un contratto basato sul modello attuale.",
+                "dataProvider": "Il modello di contratto è stato aggiornato dall'amministratore. Questo contratto si basa su una versione obsoleta e non può essere firmato. Il richiedente dei dati deve ritirare la richiesta e inviarla nuovamente affinché il contratto venga generato sulla base del modello attuale."
+              }
             }
           }
         },
@@ -1455,6 +1465,10 @@
         "pathTemplateTooltip": "Specifica come deve essere strutturato l'indirizzo tramite il quale gli acquirenti di dati interrogano il prodotto dati dall'API.",
         "requestTemplateTooltip": "Modello che definisce come deve essere strutturato il contenuto (body) della richiesta che il fruitore dei dati invia al fornitore dei dati.",
         "copyFailed": "Copiatura non riuscita"
+      },
+      "notFound": {
+        "title": "Prodotto dati non trovato",
+        "message": "Questo prodotto di dati non esiste o non è più disponibile."
       }
     },
     "list": {
@@ -1580,5 +1594,13 @@
     "message": "Ha effettuato correttamente l’accesso tramite Agate, ma non dispone ancora dei diritti necessari per utilizzare agridata.ch. Se necessita di accesso, la preghiamo di inoltrare una richiesta tramite il nostro servizio di supporto.",
     "return": "Torna alla pagina iniziale",
     "contactSupport": "Richiedere l’accesso"
+  },
+  "admin-contract-templates": {
+    "pageTitle": "Versioni del contratto",
+    "table": {
+      "version": "Versione",
+      "validTo": "Valido fino al",
+      "validFrom": "Valido dal"
+    }
   }
 }
