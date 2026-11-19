@@ -44,6 +44,7 @@ describe('DataProductDetailGeneralComponent', () => {
     source = {
       downloadDocument: vi.fn().mockResolvedValue(new Blob()),
       getProduct: vi.fn(),
+      isPublic: true,
       listDocuments: vi.fn(),
     };
 

@@ -49,6 +49,7 @@ describe('DataProductDetailComponent', () => {
     source = {
       downloadDocument: vi.fn().mockResolvedValue(new Blob()),
       getProduct: vi.fn().mockResolvedValue(product()),
+      isPublic: true,
       listDocuments: vi.fn().mockResolvedValue([]),
     };
 
@@ -151,6 +152,15 @@ describe('DataProductDetailComponent', () => {
       expect(fixture.nativeElement.textContent).toContain(
         'fr:data-products.detailForm.tab.technicalFields',
       );
+    });
+
+    it('shows only the general content without tabs for a non-public source', async () => {
+      componentRef.setInput('source', { ...source, isPublic: false });
+      await load();
+
+      expect(fixture.nativeElement.querySelectorAll('[role="tab"]')).toHaveLength(0);
+      expect(fixture.nativeElement.querySelector('app-data-product-detail-technical')).toBeNull();
+      expect(fixture.nativeElement.querySelector('app-data-product-detail-general')).not.toBeNull();
     });
   });
 });

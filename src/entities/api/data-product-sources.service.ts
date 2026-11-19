@@ -9,6 +9,8 @@ import { DataProductService } from './data-product.service';
 export interface DataProductSource {
   downloadDocument: (productId: string, documentId: string) => Promise<Blob>;
   getProduct: (productId: string) => Promise<PublicDataProductDto>;
+  /** Public catalog context (anonymous visitors) as opposed to authenticated producers. */
+  isPublic: boolean;
   listDocuments: (productId: string) => Promise<DataProductDocumentMetadataDto[]>;
 }
 
@@ -17,7 +19,7 @@ export interface DataProductSource {
  * catalog) and the authenticated ones (producers may read all active products). Lets a view stay
  * agnostic of which API it is talking to.
  *
- * CommentLastReviewed: 2026-10-12
+ * CommentLastReviewed: 2026-11-18
  */
 @Service()
 export class DataProductSourcesService {
@@ -28,6 +30,7 @@ export class DataProductSourcesService {
     downloadDocument: (productId, documentId) =>
       this.documentService.downloadDocument(productId, documentId),
     getProduct: (productId) => this.dataProductService.getDataProductById(productId),
+    isPublic: false,
     listDocuments: (productId) => this.documentService.listDocuments(productId),
   };
 
@@ -35,6 +38,7 @@ export class DataProductSourcesService {
     downloadDocument: (productId, documentId) =>
       this.documentService.downloadDocumentPublic(productId, documentId),
     getProduct: (productId) => this.dataProductService.getPublicProductById(productId),
+    isPublic: true,
     listDocuments: (productId) => this.documentService.listDocumentsPublic(productId),
   };
 }

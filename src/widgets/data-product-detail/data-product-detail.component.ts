@@ -30,13 +30,14 @@ enum DetailTab {
 
 /**
  * Read-only details of a single data product: badges plus a general and a technical tab (see the
- * `data-product-detail-general` / `-technical` sub-components). Given a product id it loads the
+ * `data-product-detail-general` / `-technical` sub-components). The tabs are only shown for the
+ * public source; producers (internal source) see the general content only. Given a product id it loads the
  * product and its documents through the `source` the host hands over (public or authenticated).
  * Hosts wrap it (modal, page) and own the open/close state. `handleNameLoaded` hands the product
  * name to the host for its title and `handleLoadFailed` lets the host close on error. Translations come from the `data-catalog` keys, tab labels from the shared
  * `data-products.detailForm.tab` keys.
  *
- * CommentLastReviewed: 2026-11-02
+ * CommentLastReviewed: 2026-11-18
  */
 @Component({
   selector: 'app-data-product-detail',
