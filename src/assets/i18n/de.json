@@ -575,6 +575,16 @@
             "resendCooldownAlert": {
               "title": "Bitte warten Sie kurz",
               "message": "Die Unterzeichnung ist bereits im Gange. Bitte warten Sie ca. 30  Sekunden und versuchen Sie es anschliessend erneut."
+            },
+            "templateOutdatedAlert": {
+              "title": {
+                "dataConsumer": "Vertragsvorlage nicht mehr aktuell",
+                "dataProvider": "Unterzeichnung nicht möglich"
+              },
+              "message": {
+                "dataConsumer": "Die Vertragsvorlage wurde in der Zwischenzeit aktualisiert. Dieser Vertrag kann nicht mehr unterzeichnet werden. Bitte ziehen Sie den Datenantrag auf den Status «Entwurf» zurück und reichen Sie ihn erneut ein, um einen Vertrag mit der aktuellen Vorlage zu erhalten.",
+                "dataProvider": "Die Vertragsvorlage wurde vom Administrator aktualisiert. Dieser Vertrag basiert auf einer veralteten Version und kann nicht unterzeichnet werden. Der Datenbezüger muss den Antrag zurückziehen und neu einreichen, damit der Vertrag auf der aktuellen Vorlage erstellt wird."
+              }
             }
           }
         },

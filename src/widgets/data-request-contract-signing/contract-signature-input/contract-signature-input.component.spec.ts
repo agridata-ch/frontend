@@ -173,6 +173,20 @@ describe('ContractSignatureInputComponent', () => {
       expect(component['showResendCooldownAlert']()).toBe(true);
     });
 
+    it('should show template outdated alert on ContractTemplateOutdated during start', async () => {
+      contractRevisionService.startSigningProcess.mockRejectedValueOnce(
+        new HttpErrorResponse({
+          status: 409,
+          error: { type: ExceptionEnum.ContractTemplateOutdated },
+        }),
+      );
+
+      await component['handleStartSigning']();
+
+      expect(component['showTemplateOutdatedAlert']()).toBe(true);
+      expect(errorService.handleError).not.toHaveBeenCalled();
+    });
+
     it('should clear showResendCooldownAlert on successful start', async () => {
       component['showResendCooldownAlert'].set(true);
       await component['handleStartSigning']();
@@ -267,6 +281,22 @@ describe('ContractSignatureInputComponent', () => {
 
       expect(component['otpForm'].get('otpCode')?.errors).toEqual({ otpLocked: true });
       expect(component['showLockedAlert']()).toBe(true);
+    });
+
+    it('should show template outdated alert and keep verify disabled on ContractTemplateOutdated', async () => {
+      contractRevisionService.verifySigningProcess.mockRejectedValueOnce(
+        new HttpErrorResponse({
+          status: 409,
+          error: { type: ExceptionEnum.ContractTemplateOutdated },
+        }),
+      );
+
+      component['handleVerifySigning'](new Event('submit'));
+      await fixture.whenStable();
+
+      expect(component['showTemplateOutdatedAlert']()).toBe(true);
+      expect(component['isVerifyDisabled']()).toBe(true);
+      expect(errorService.handleError).not.toHaveBeenCalled();
     });
 
     it('should clear showLockedAlert after successful verification', async () => {

@@ -46,6 +46,9 @@
           [message]="t('otp.error.lockedAlert.message')"
         />
       }
+      @if (showTemplateOutdatedAlert()) {
+        <ng-container *ngTemplateOutlet="templateOutdatedAlert" />
+      }
       <form (submit)="handleVerifySigning($event)" class="flex flex-col gap-4">
         <app-form-control
           [label]="t('otp.input.label')"
@@ -66,7 +69,7 @@
             [size]="ButtonSize.MD"
             [variant]="ButtonVariants.Tertiary"
             (handleClick)="handleResendOtp()"
-            [disabled]="isResendDisabled()"
+            [disabled]="isResendDisabled() || showTemplateOutdatedAlert()"
           >
             {{ t('otp.resendButton') }}
           </app-agridata-button>
@@ -86,6 +89,9 @@
         [message]="t('otp.error.resendCooldownAlert.message')"
       />
     }
+    @if (showTemplateOutdatedAlert()) {
+      <ng-container *ngTemplateOutlet="templateOutdatedAlert" />
+    }
     @if (!hasMobileNumber()) {
       <app-alert
         [type]="AlertType.ERROR"
@@ -97,11 +103,20 @@
       {{ t('signingHint') }}
     </span>
     <app-agridata-button
-      [disabled]="!hasMobileNumber()"
+      [disabled]="!hasMobileNumber() || showTemplateOutdatedAlert()"
       (handleClick)="handleStartSigning()"
       [size]="ButtonSize.MD"
     >
       {{ t('signingButton') }}
     </app-agridata-button>
   }
+
+  <ng-template #templateOutdatedAlert>
+    @let role = isDataConsumer ? 'dataConsumer' : 'dataProvider';
+    <app-alert
+      [type]="AlertType.ERROR"
+      [title]="t('otp.error.templateOutdatedAlert.title.' + role)"
+      [message]="t('otp.error.templateOutdatedAlert.message.' + role)"
+    />
+  </ng-template>
 </div>

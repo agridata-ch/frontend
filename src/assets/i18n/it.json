@@ -575,6 +575,16 @@
             "resendCooldownAlert": {
               "title": "Veuillez patienter un instant",
               "message": "La procedura di firma è già in corso. Attendere circa 30 secondi e riprovare."
+            },
+            "templateOutdatedAlert": {
+              "title": {
+                "dataConsumer": "Modello di contratto non più aggiornato",
+                "dataProvider": "Firma non possibile"
+              },
+              "message": {
+                "dataConsumer": "Nel frattempo il modello di contratto è stato aggiornato. Questo contratto non può più essere firmato. Si prega di riportare la richiesta dati allo stato «Bozza» e di inviarla nuovamente per ottenere un contratto basato sul modello attuale.",
+                "dataProvider": "Il modello di contratto è stato aggiornato dall'amministratore. Questo contratto si basa su una versione obsoleta e non può essere firmato. Il richiedente dei dati deve ritirare la richiesta e inviarla nuovamente affinché il contratto venga generato sulla base del modello attuale."
+              }
             }
           }
         },

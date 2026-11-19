@@ -575,6 +575,16 @@
             "resendCooldownAlert": {
               "title": "Veuillez patienter un instant",
               "message": "La signature est déjà en cours. Veuillez patienter environ 30 secondes, puis réessayez."
+            },
+            "templateOutdatedAlert": {
+              "title": {
+                "dataConsumer": "Modèle de contrat obsolète",
+                "dataProvider": "Signature impossible"
+              },
+              "message": {
+                "dataConsumer": "Le modèle de contrat a été mis à jour entre-temps. Ce contrat ne peut plus être signé. Veuillez retirer la demande de données pour la remettre au statut « Brouillon », puis soumettez-la à nouveau afin d'obtenir un contrat basé sur le modèle actuel.",
+                "dataProvider": "Le modèle de contrat a été mis à jour par l'administrateur. Ce contrat repose sur une version obsolète et ne peut pas être signé. Le demandeur de données doit retirer la demande et la soumettre à nouveau afin que le contrat soit généré sur la base du modèle actuel."
+              }
             }
           }
         },
