@@ -6,6 +6,7 @@ import { HomeRedirectGuard } from '@/app/guards/home-redirect.guard';
 import { ProducerUidGuard } from '@/app/guards/producer-uid.guard';
 import { DefaultLayoutComponent, FullWidthLayoutComponent } from '@/app/layout';
 import { AdminAgbsPageComponent } from '@/pages/admin-agbs-page';
+import { AdminContractTemplatesPageComponent } from '@/pages/admin-contract-templates-page';
 import { AdminPage } from '@/pages/admin-page';
 import { AgbAcceptancesPageComponent } from '@/pages/agb-acceptances-page';
 import { AgbPage } from '@/pages/agb-page';
@@ -258,6 +259,15 @@ export const routes: Routes = [
         children: [{ path: ':agbId', component: AdminAgbFormComponent }],
       },
     ],
+  },
+  {
+    // admin contract templates routes
+    path: ROUTE_PATHS.ADMIN_CONTRACT_TEMPLATES_PATH,
+    title: 'admin-contract-templates.pageTitle',
+    component: DefaultLayoutComponent,
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
+    data: { roles: [USER_ROLES.AGRIDATA_ADMIN] },
+    children: [{ path: '', component: AdminContractTemplatesPageComponent }],
   },
   {
     // agb acceptances overview routes

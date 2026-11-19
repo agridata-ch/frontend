@@ -9,6 +9,7 @@ export const ROUTE_PATHS = {
   ADMIN_PATH: 'admin',
   ADMIN_AGBS_PATH: 'agbs',
   AGB_ACCEPTANCES_PATH: 'agb-acceptances',
+  ADMIN_CONTRACT_TEMPLATES_PATH: 'contract-templates',
   CMS_PATH: 'cms',
   NEWS_PATH: 'cms/news',
   IMPRESSUM_PATH: 'cms/imprint',

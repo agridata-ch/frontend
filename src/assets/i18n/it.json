@@ -1580,5 +1580,13 @@
     "message": "Ha effettuato correttamente l’accesso tramite Agate, ma non dispone ancora dei diritti necessari per utilizzare agridata.ch. Se necessita di accesso, la preghiamo di inoltrare una richiesta tramite il nostro servizio di supporto.",
     "return": "Torna alla pagina iniziale",
     "contactSupport": "Richiedere l’accesso"
+  },
+  "admin-contract-templates": {
+    "pageTitle": "Versioni del contratto",
+    "table": {
+      "version": "Versione",
+      "validTo": "Valido fino al",
+      "validFrom": "Valido dal"
+    }
   }
 }

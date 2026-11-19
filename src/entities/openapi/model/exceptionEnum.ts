@@ -24,6 +24,7 @@ export const ExceptionEnum = {
     ExportCapacityExhausted: 'EXPORT_CAPACITY_EXHAUSTED',
     AgbVersionAlreadyExists: 'AGB_VERSION_ALREADY_EXISTS',
     AgbVersionNotNewer: 'AGB_VERSION_NOT_NEWER',
+    ContractTemplateOutdated: 'CONTRACT_TEMPLATE_OUTDATED',
     Maintenance: 'MAINTENANCE'
 } as const;
 export type ExceptionEnum = typeof ExceptionEnum[keyof typeof ExceptionEnum];

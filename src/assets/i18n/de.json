@@ -1580,5 +1580,13 @@
     "message": "Sie sind erfolgreich via Agate angemeldet, verfügen jedoch noch nicht über die nötigen Rechte zur Nutzung von agridata.ch. Wenn Sie Zugriff benötigen, fordern Sie diesen bitte über unseren Support an.",
     "return": "Zur Startseite",
     "contactSupport": "Zugriff anfordern"
+  },
+  "admin-contract-templates": {
+    "pageTitle": "Vertragsversionen",
+    "table": {
+      "version": "Version",
+      "validTo": "Gültig bis",
+      "validFrom": "Gültig ab"
+    }
   }
 }

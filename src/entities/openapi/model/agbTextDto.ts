@@ -10,8 +10,8 @@
 
 
 export interface AgbTextDto { 
-    de?: string;
-    fr?: string;
-    it?: string;
+    de: string;
+    fr: string;
+    it: string;
 }
 

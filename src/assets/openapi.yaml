@@ -152,19 +152,19 @@ components:
         de:
           type: string
           examples:
-          - <h1>AGB</h2>
+          - <h1>AGB</h1>
           pattern: \S
           maxLength: 50000
         fr:
           type: string
           examples:
-          - <h1>CG</h2>
+          - <h1>CG</h1>
           pattern: \S
           maxLength: 50000
         it:
           type: string
           examples:
-          - <h1>CG</h2>
+          - <h1>CG</h1>
           pattern: \S
           maxLength: 50000
     BurDto:
@@ -880,6 +880,15 @@ components:
           type: string
           examples:
           - 2026-03-19T12:00:00
+    ContractTemplateVersionDto:
+      type: object
+      properties:
+        version:
+          type: string
+        validFrom:
+          $ref: "#/components/schemas/LocalDate"
+        validTo:
+          $ref: "#/components/schemas/LocalDate"
     CreateConsentRequestDto:
       type: object
       required:
@@ -1179,7 +1188,7 @@ components:
           examples:
           - true
         pricingBasis:
-          $ref: "#/components/schemas/JsonNullableDataProductDescriptionDto"
+          $ref: "#/components/schemas/JsonNullableDataProductDescriptionDto1"
           description: Pricing basis of the data product
         pricingBasisPresentWhenPaymentRequired:
           type: boolean
@@ -1558,6 +1567,30 @@ components:
           $ref: "#/components/schemas/DataRequestTitleDto"
           description: Title of the data request
           type: object
+    DataRequestTerminationResultDto:
+      description: Data transfer object representing the result of a data request
+        termination run
+      type: object
+      properties:
+        terminatedCount:
+          type: integer
+          format: int32
+          description: Number of data requests that were terminated during this run
+          examples:
+          - 3
+        failedCount:
+          type: integer
+          format: int32
+          description: Number of data requests that could not be terminated during
+            this run
+          examples:
+          - 0
+        durationMs:
+          type: integer
+          format: int64
+          description: Duration of the run in milliseconds
+          examples:
+          - 1234
     DataRequestTitleDto:
       type: object
       properties:
@@ -1926,6 +1959,7 @@ components:
       - EXPORT_CAPACITY_EXHAUSTED
       - AGB_VERSION_ALREADY_EXISTS
       - AGB_VERSION_NOT_NEWER
+      - CONTRACT_TEMPLATE_OUTDATED
       - MAINTENANCE
     FarmTypeEnum:
       type: string
@@ -2001,6 +2035,8 @@ components:
     JsonNullableBoolean:
       type: boolean
     JsonNullableDataProductDescriptionDto:
+      $ref: "#/components/schemas/DataProductDescriptionDto"
+    JsonNullableDataProductDescriptionDto1:
       $ref: "#/components/schemas/DataProductDescriptionDto"
     JsonNullableDataProductExtendedDescriptionDto:
       $ref: "#/components/schemas/DataProductExtendedDescriptionDto"
@@ -2878,7 +2914,7 @@ components:
     SecurityScheme:
       type: openIdConnect
       description: Authentication
-      openIdConnectUrl: https://idp-rf.agate.ch/auth/realms/agate/.well-known/openid-configuration
+      openIdConnectUrl: http://localhost:6999/realms/agate/.well-known/openid-configuration
 tags:
 - name: Agb Revision
   description: Provides access to Agb revisions.
@@ -2897,6 +2933,8 @@ tags:
     \ and admins have full access to all consent requests."
 - name: Contract Revisions
   description: Provides access to contract revisions for consumers and providers
+- name: Contract Template Admin
+  description: Provides admin access to the contract template.
 - name: Data Products
   description: Enables retrieval of available data products that can be requested
     and used by Users in the data sharing process.
@@ -2923,6 +2961,44 @@ tags:
   description: "Provides access to UIDs and BURs authorized for specific data producers,\
     \ based on their ktIdP or UID."
 paths:
+  /api/agreement/v1/admin/contract-template-versions:
+    get:
+      description: "Returns all contract template versions, newest first. 'validTo'\
+        \ is the start of the following version and empty for the current version.\
+        \ Not paginated."
+      operationId: getAllContractTemplateVersions
+      tags:
+      - Contract Template Admin
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ContractTemplateVersionDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Get All Contract Template Versions
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
+      x-api-subset: agridata.ch Web App
   /api/agreement/v1/consent-request-aggregations:
     get:
       description: "Retrieves summary aggregated consent requests for the current\
@@ -3731,6 +3807,44 @@ paths:
       security:
       - SecurityScheme:
         - agridata.ch.Agridata_Datenbezueger
+      x-api-subset: agridata.ch Web App
+  /api/agreement/v1/data-requests/termination:
+    post:
+      description: "Triggers the termination of data requests whose termination period\
+        \ has expired, which otherwise runs as a scheduled nightly job, and waits\
+        \ for it to finish. Only accessible to administrators. The run is guarded\
+        \ by the same cluster-wide advisory lock as the scheduled job, so a conflict\
+        \ is reported if a run is already in progress."
+      operationId: triggerDataRequestTermination
+      tags:
+      - Data Requests
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataRequestTerminationResultDto"
+        "401":
+          description: Not Authorized
+        "403":
+          description: Not Allowed
+        "500":
+          description: "Internal server error: unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+        "404":
+          description: The resource or element was not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExceptionDto"
+      summary: Trigger Data Request Termination
+      security:
+      - SecurityScheme:
+        - agridata.ch.Agridata_Admin
       x-api-subset: agridata.ch Web App
   /api/agreement/v1/data-requests/{id}:
     put:
@@ -6930,7 +7044,7 @@ paths:
       - Info Resource
 info:
   title: agridata.ch API
-  version: 1.23.0-rc.3
+  version: 1.23.0-rc.6
   description: |-
     This API provides access to the agridata.ch data exchange platform, enabling Users to discover, request, approve, and manage data sharing agreements.
 
