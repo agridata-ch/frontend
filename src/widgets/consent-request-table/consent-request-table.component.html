@@ -23,8 +23,8 @@
   </ng-template>
   <ng-template #dataRequestTitle [appConsentRequestProducerViewDtoGuard] let-item>
     <span
-      class="text-agridata-primary-600 agridata-ellipsis"
-      [title]="getTranslation(item.dataRequest?.title)"
+      class="text-agridata-primary-600 agridata-ellipsis-multiline"
+      [appTooltip]="getTranslation(item.dataRequest?.title)"
     >
       {{ getTranslation(item.dataRequest?.title) }}
     </span>

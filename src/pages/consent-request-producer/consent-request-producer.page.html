@@ -1,9 +1,9 @@
 <app-consent-request-migration-alerts [requests]="consentRequests()" />
 <ng-container *i18n="let t; prefix: 'producer'">
-  <h2 class="page-title">
-    <fa-icon [icon]="fileIcon" class="mr-3" />
-    {{ t('pageTitle') }}
-  </h2>
+  <div class="flex gap-3 items-center mb-8">
+    <fa-icon [icon]="fileIcon" size="2xl" />
+    <h1>{{ t('pageTitle') }}</h1>
+  </div>
 </ng-container>
 @if (!hasRedirectUrl()) { @if (uidMissing()) {
 <app-alert

@@ -6,14 +6,14 @@
   [emptyStateTemplate]="emptyStateTemplate()"
 >
   <ng-template #humanFriendlyId [appDataRequestDtoGuard] let-item>
-    <span class="text-agridata-primary-text font-medium" [title]="item.humanFriendlyId ?? ''">
+    <span class="text-agridata-primary-text font-medium" [appTooltip]="item.humanFriendlyId ?? ''">
       {{ item.humanFriendlyId ?? '' }}
     </span>
   </ng-template>
   <ng-template #dataRequestTitle [appDataRequestDtoGuard] let-item>
     <span
-      class="text-agridata-primary-600 agridata-ellipsis"
-      [title]="this.i18nService.useObjectTranslation(item?.title)"
+      class="text-agridata-primary-600 agridata-ellipsis-multiline"
+      [appTooltip]="this.i18nService.useObjectTranslation(item?.title)"
     >
       {{ this.i18nService.useObjectTranslation(item?.title) }}
     </span>

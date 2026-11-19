@@ -108,7 +108,7 @@ describe('TableCellComponent', () => {
       fixture.componentRef.setInput('row', testRow);
       fixture.detectChanges();
 
-      const td = fixture.nativeElement.querySelector('td');
+      const td: HTMLElement = fixture.nativeElement;
       expect(td.classList.contains('custom-class')).toBeTruthy();
     });
 

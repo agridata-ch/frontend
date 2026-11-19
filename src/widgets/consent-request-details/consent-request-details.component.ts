@@ -17,6 +17,7 @@ import {
   ConsentRequestDecisionStore,
   ConsentRequestStateBadgeComponent,
   FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM,
+  getDecidableConsentRequests,
   getToastMessage,
   getToastTitle,
   getToastType,
@@ -332,19 +333,9 @@ export class ConsentRequestDetailsComponent {
   // Children that would actually change to newState: every BUR child that differs; the single UID
   // child only when there is no BUR child (the backend derives the UID decision otherwise).
   private decisionTargets(newState: ConsentRequestStateEnum): DecisionTarget[] {
-    const consentRequests = this.request()?.consentRequests ?? [];
-    const burRequests = consentRequests.filter((request) => request.dataProducerBur);
-    const targets = burRequests
+    return getDecidableConsentRequests(this.request()?.consentRequests ?? [])
       .filter((request) => request.stateCode !== newState)
       .map((request) => ({ id: request.id, previousState: request.stateCode }));
-
-    if (burRequests.length === 0) {
-      const uidRequest = consentRequests.find((request) => !request.dataProducerBur);
-      if (uidRequest && uidRequest.stateCode !== newState) {
-        targets.push({ id: uidRequest.id, previousState: uidRequest.stateCode });
-      }
-    }
-    return targets;
   }
 
   private prepareRestoreUndoAction(targets: DecisionTarget[]) {

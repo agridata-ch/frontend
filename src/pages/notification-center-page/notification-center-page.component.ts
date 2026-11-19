@@ -51,6 +51,7 @@ import { EmptyStateComponent } from '@/shared/ui/empty-state';
     I18nDirective,
     ClickStopPropagationDirective,
   ],
+  host: { class: 'flex flex-col h-full' },
   templateUrl: './notification-center-page.component.html',
 })
 export class NotificationCenterPageComponent {
@@ -129,7 +130,6 @@ export class NotificationCenterPageComponent {
         },
       },
     ],
-    showRowActionButton: true,
     rowAction: (item) => {
       if (!item.isRead) void this.handleToggleReadStatus(item);
       const route = getNotificationRoute(item, this.authService);

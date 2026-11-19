@@ -17,7 +17,6 @@ import { faSpinnerThird } from '@awesome.me/kit-0b6d1ed528/icons/duotone/solid';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ResourceQueryDto } from '@/entities/openapi';
-import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
 import { PageResponseDto } from '@/shared/lib/api.helper';
 import { TableCellComponent } from '@/shared/ui/agridata-table/table-cell/table-cell.component';
@@ -27,7 +26,7 @@ import {
   ActionDto,
   TableRowMenuComponent,
 } from '@/shared/ui/agridata-table/table-row-menu/table-row-menu.component';
-import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ButtonComponent, ButtonSize, ButtonVariants } from '@/shared/ui/button';
 import { SearchInputComponent } from '@/shared/ui/search-input/search-input.component';
 
 import {
@@ -47,10 +46,10 @@ import {
  * - Custom cell renderers (function-based or template-based)
  * - Row highlighting and hover states
  * - Keyboard navigation support
- * - Action buttons per row
+ * - Per-row actions: chevron when details (rowAction) is the only action, menu otherwise
  * - Row highlighting when clicked/selected
  *
- * CommentLastReviewed: 2026-05-21
+ * CommentLastReviewed: 2026-11-05
  **/
 @Component({
   selector: 'app-agridata-table',
@@ -64,7 +63,6 @@ import {
     TablePaginationComponent,
     I18nDirective,
     ButtonComponent,
-    ClickStopPropagationDirective,
     I18nPipe,
   ],
   templateUrl: './agridata-table.component.html',
@@ -74,6 +72,7 @@ export class AgridataTableComponent<T> {
   private readonly i18nService = inject(I18nService);
 
   // Constants
+  protected readonly ButtonSize = ButtonSize;
   protected readonly ButtonVariants = ButtonVariants;
   protected readonly iconRowAction = faChevronRight;
   protected readonly faSpinnerThird = faSpinnerThird;
@@ -106,6 +105,9 @@ export class AgridataTableComponent<T> {
     items: [],
     totalItems: 0,
   });
+  protected readonly hasActionColumn = computed(
+    () => !!(this.tableMetadata().rowAction || this.tableMetadata().rowMenuActions),
+  );
   protected readonly shouldShowPagination = computed(
     () => this.pageData().totalPages > 1 || this.pageData().totalItems > PAGE_SIZES[0],
   );

@@ -1,6 +1,6 @@
 <ng-container *i18n="let t; prefix: 'data-products.detailForm'">
   <div class="flex flex-col gap-4">
-    <h3>{{ t('technicalFields') }}</h3>
+    <h2>{{ t('technicalFields') }}</h2>
     <div appViewSection [isViewMode]="isViewMode()">
       @if (dataSourceSystemDisabled()) {
         <app-alert class="mb-4" [type]="AlertType.INFO">

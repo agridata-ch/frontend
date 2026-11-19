@@ -38,9 +38,10 @@ src/
 │   └── openapi/      # ⚠️ Auto-generated — never edit (regenerate: npm run api:sync:local)
 ├── shared/           # Reusable infrastructure (ui, lib, utils, testing mocks)
 ├── assets/
-│   ├── de.json       # ⚠️ Auto-generated — never edit (regenerate: npm run i18n:sync)
-│   ├── fr.json       # ⚠️ Auto-generated — never edit
-│   ├── it.json       # ⚠️ Auto-generated — never edit
+│   ├── i18n/
+│   │   ├── de.json   # ⚠️ Auto-generated — never edit (regenerate: npm run i18n:sync)
+│   │   ├── fr.json   # ⚠️ Auto-generated — never edit
+│   │   └── it.json   # ⚠️ Auto-generated — never edit
 │   └── ...           # Static assets, openapi.yaml, form schemas
 ├── environments/     # Dev / staging / prod configs
 └── styles/           # Global Tailwind and CSS variable definitions

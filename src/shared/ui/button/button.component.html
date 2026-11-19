@@ -10,6 +10,18 @@
   }
 </ng-template>
 
+<ng-template #iconLinkContent>
+  <span class="flex items-center gap-2">
+    @if (iconPosition() === IconPosition.Left) {
+      <ng-container [ngTemplateOutlet]="iconContent"></ng-container>
+    }
+    <ng-container [ngTemplateOutlet]="content"></ng-container>
+    @if (iconPosition() === IconPosition.Right) {
+      <ng-container [ngTemplateOutlet]="iconContent"></ng-container>
+    }
+  </span>
+</ng-template>
+
 @if (!href()) {
   <button
     [type]="type()"
@@ -26,15 +38,7 @@
     [class.success]="showSuccess()"
   >
     @if (isIconLink()) {
-      <span class="flex items-center gap-2">
-        @if (iconPosition() === IconPosition.Left) {
-          <ng-container [ngTemplateOutlet]="iconContent"></ng-container>
-        }
-        <ng-container [ngTemplateOutlet]="content"></ng-container>
-        @if (iconPosition() === IconPosition.Right) {
-          <ng-container [ngTemplateOutlet]="iconContent"></ng-container>
-        }
-      </span>
+      <ng-container [ngTemplateOutlet]="iconLinkContent"></ng-container>
     } @else {
       @if (loading()) {
         <fa-icon
@@ -62,6 +66,6 @@
     [appTooltip]="tooltipText()"
     [class]="`agridata-button agridata-button-${variant()} agridata-button-${size()} ${selected() ? 'selected' : ''} ${additionalClass()}`"
   >
-    <ng-container [ngTemplateOutlet]="content"></ng-container>
+    <ng-container [ngTemplateOutlet]="isIconLink() ? iconLinkContent : content"></ng-container>
   </a>
 }

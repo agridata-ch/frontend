@@ -7,6 +7,7 @@ import {
   AgbAcceptanceOverviewDto,
   BurDto,
   ResourceQueryDto,
+  UidDto,
   UserInfoDto,
   UserPreferencesDto,
   UsersService,
@@ -78,6 +79,10 @@ export class UserService {
         .pipe(map((response) => asPageResponse(response))),
     );
   };
+
+  getUidByBur(bur: string): Promise<UidDto> {
+    return firstValueFrom(this.apiService.getUidByBur(bur));
+  }
 
   getUserInfo() {
     return this.apiService.getUserInfo();

@@ -28,8 +28,10 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-semibold);
   line-height: 130%;
+  white-space-collapse: break-spaces;
+  white-space: pre-line;
 
   @media screen and (max-width: 768px) {
     line-height: 120%;
@@ -45,11 +47,6 @@ h1 {
 h2 {
   font-size: var(--heading-two-font-size);
   color: var(--heading-two-color);
-
-  &.page-title {
-    font-size: var(--heading-page-title-font-size);
-    margin-bottom: 3rem;
-  }
 }
 
 h3 {

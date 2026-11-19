@@ -27,7 +27,7 @@
             [value]="searchValue()"
             [placeholder]="t('uidPlaceholder')"
             [hasError]="hasUidError()"
-            [maxCharacters]="12"
+            [maxCharacters]="15"
             (handleInput)="searchValue.set($event)"
             [disabled]="isUidViewMode()"
             [isViewMode]="isUidViewMode()"
@@ -35,7 +35,14 @@
           @if (showUidInvalid()) {
             <p class="text-sm text-red-500" role="alert">{{ t('uidInvalid') }}</p>
           } @else if (uidNotFound()) {
-            <p class="text-sm text-red-500" role="alert">{{ t('noResults') }}</p>
+            <p class="text-sm text-red-500" role="alert">
+              {{ t(isValidBur() ? 'burNotFound' : 'noResults') }}
+            </p>
+          }
+          @if (isValidBur() && resolvedUid()) {
+            <span class="text-sm text-agridata-secondary-text" [class.pl-5]="isUidViewMode()">
+              {{ t('resolvedUid', { uid: resolvedUid() }) }}
+            </span>
           }
         </div>
         @if (badgeState()) {

@@ -21,6 +21,7 @@ export const mockDataRequests: DataRequestDto[] = [
       dataProvider: {
         name: { de: 'Provider A' },
       },
+      name: { de: 'System A' },
     },
   } as DataRequestDto,
   {
@@ -34,6 +35,9 @@ export const mockDataRequests: DataRequestDto[] = [
     dataSourceSystem: {
       dataProvider: {
         name: { de: 'Provider B' },
+      },
+      name: {
+        de: 'System B',
       },
     },
   } as DataRequestDto,

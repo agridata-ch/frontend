@@ -39,7 +39,6 @@ export interface TableMetadata<T> {
   rowAction?: (item: T) => void;
   idColumn: keyof T;
   columns: ColumnDefinition<T>[];
-  showRowActionButton?: boolean;
   highlightFn?: (item: T) => boolean;
   highlightClickedRowFn?: (item: T) => boolean;
   tableId?: string;

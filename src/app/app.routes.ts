@@ -21,6 +21,7 @@ import { ImprintPage } from '@/pages/imprint-page';
 import { LandingPage } from '@/pages/landing-page';
 import { MaintenancePage } from '@/pages/maintenance';
 import { NewsArticleDetailPage } from '@/pages/news-article-detail-page';
+import { NoAccessPage } from '@/pages/no-access';
 import { NotFoundPage } from '@/pages/not-found';
 import { NotificationCenterPageComponent } from '@/pages/notification-center-page';
 import { OnboardingPage } from '@/pages/onboarding-page';
@@ -29,6 +30,7 @@ import { SlaPage } from '@/pages/sla-page';
 import { SupporterPageComponent } from '@/pages/supporter-page/';
 import { ROUTE_PATHS, USER_ROLES } from '@/shared/constants/constants';
 import { AuthorizationGuard } from '@/shared/lib/auth';
+import { AdminAgbFormComponent } from '@/widgets/admin-agb-form';
 import { AdminDataRequestDetailsComponent } from '@/widgets/admin-data-request-details';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 import { DataProductDetailFormComponent } from '@/widgets/data-product-detail-form';
@@ -253,6 +255,7 @@ export const routes: Routes = [
       {
         path: '',
         component: AdminAgbsPageComponent,
+        children: [{ path: ':agbId', component: AdminAgbFormComponent }],
       },
     ],
   },
@@ -302,6 +305,18 @@ export const routes: Routes = [
             component: DataProductDetailFormComponent,
           },
         ],
+      },
+    ],
+  },
+  {
+    // users without any agridata role; the header profile still allows logout
+    path: ROUTE_PATHS.NO_ACCESS,
+    component: FullWidthLayoutComponent,
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
+    children: [
+      {
+        path: '',
+        component: NoAccessPage,
       },
     ],
   },

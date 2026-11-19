@@ -131,7 +131,7 @@ describe('DataRequestTableComponent', () => {
     const row = component['dataRequests']()[0];
     // The client table sorts the data in place, so mockDataRequests is reordered by the time
     // this runs. Pick a request that actually carries a provider name instead of a fixed index.
-    const item = mockDataRequests.find((request) => request.dataSourceSystem?.dataProvider?.name)!;
+    const item = mockDataRequests.find((request) => request.dataSourceSystem?.name)!;
     expect(row).toBeTruthy();
 
     mockI18nService.useObjectTranslation.mockReturnValue('Translated Provider Name');
@@ -141,7 +141,7 @@ describe('DataRequestTableComponent', () => {
       const result = providerColumn.sortValueFn(item);
       expect(result).toBe('Translated Provider Name');
       expect(mockI18nService.useObjectTranslation).toHaveBeenCalledWith(
-        item.dataSourceSystem?.dataProvider.name,
+        item.dataSourceSystem?.name,
       );
     }
   });

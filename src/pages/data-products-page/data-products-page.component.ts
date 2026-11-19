@@ -37,8 +37,10 @@ import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.c
 import { I18nDirective, I18nService } from '@/shared/i18n';
 import { createResourceErrorHandlerEffect } from '@/shared/lib/api.helper';
 import { AuthService } from '@/shared/lib/auth';
+import { TooltipDirective } from '@/shared/tooltip';
 import {
   ActionDto,
+  ActionVariant,
   AgridataTableComponent,
   CellRendererTypes,
   ColumnDefinition,
@@ -71,6 +73,7 @@ import { DataProductsDeleteModalComponent } from './data-products-delete-modal';
     FaIconComponent,
     I18nDirective,
     RouterOutlet,
+    TooltipDirective,
   ],
   templateUrl: './data-products-page.component.html',
 })
@@ -159,7 +162,7 @@ export class DataProductsPageComponent {
       ],
       rowMenuActions: this.getRowMenuActions,
       rowAction: (row) => {
-        this.router.navigate([ROUTE_PATHS.DATA_PRODUCTS_PATH, row.id]);
+        void this.router.navigate([ROUTE_PATHS.DATA_PRODUCTS_PATH, row.id]);
       },
     };
   });
@@ -192,6 +195,7 @@ export class DataProductsPageComponent {
     };
     const deleteAction: ActionDto = {
       label: 'data-products.table.actions.delete',
+      variant: ActionVariant.ERROR,
       icon: this.faTrashCan,
       callback: () => {
         this.productToDelete.set(row);

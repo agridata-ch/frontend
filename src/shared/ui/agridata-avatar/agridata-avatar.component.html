@@ -1,4 +1,6 @@
-<div [class]="`agridata-avatar agridata-avatar-${size()} agridata-avatar-${skin()} ${randomBg()}`">
+<div
+  [class]="`agridata-avatar agridata-avatar-${size()} agridata-avatar-${skin()} ${skin() === AvatarSkin.COLOR ? randomBg() : ''}`"
+>
   @if (this.imageUrl()) {
     <img
       [src]="imageUrl()"

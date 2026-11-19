@@ -14,12 +14,6 @@
     "noData": "Keine Daten vorhanden",
     "loading": "Daten werden geladen",
     "pageSelector": "Einträge pro Seite",
-    "header": {
-      "ariaLabels": {
-        "sort": "Sortieren nach: {{ sortBy }}",
-        "rowActionColumnTitle": "Aktionen Spalte"
-      }
-    },
     "ariaLabels": {
       "actions": "Aktionen",
       "rowAction": "Datensatz öffnen"
@@ -396,7 +390,7 @@
       "tableActions": {
         "details": "Anzeigen",
         "retreat": "Zurückziehen",
-        "delete": "Löschen"
+        "delete": "Entfernen"
       },
       "emptyState": {
         "title": "Noch keine Datenanträge erstellt",
@@ -404,21 +398,21 @@
         "createNewDataRequest": "Neuer Antrag"
       },
       "deleteRequest": {
-        "title": "Datenantrag löschen",
-        "description": "Wollen Sie den Antrag \"{{ title }}\" wirklich löschen?",
+        "title": "Datenantrag entfernen",
+        "description": "Wollen Sie den Antrag \"{{ title }}\" wirklich entfernen?",
         "cancel": "Abbrechen",
-        "delete": "Löschen",
+        "delete": "Entfernen",
         "success": {
-          "title": "Löschen erfolgreich",
+          "title": "Entfernen war erfolgreich",
           "message": "Der Antrag \"{{ title }}\" wurde erfolgreich gelöscht."
         },
         "error": {
-          "title": "Löschen fehlgeschlagen",
+          "title": "Entfernen ist fehlgeschlagen",
           "message": "Der Antrag \"{{ title }}\" konnte nicht gelöscht werden.\nFehlermeldung: {{ error }}"
         }
       }
     },
-    "provider": "Datenanbieter",
+    "system": "System",
     "submissionDate": "Datum der Einreichung",
     "humanFriendlyId": "ID",
     "details": {
@@ -471,9 +465,9 @@
         "addButton": "Produzent anfragen",
         "modal": {
           "title": "Produzent anfragen",
-          "description": "Um neue Betriebe in den Antrag aufzunehmen, müssen Sie die Produzent:innen über ihre UID anfragen. Anschliessend können Sie aus der Liste der Betriebsstätten wählen. \nSie können die Anfrage auch über die API steuern.",
-          "uidLabel": "UID",
-          "uidPlaceholder": "CHE000000000",
+          "description": "Um neue Betriebe in den Antrag aufzunehmen, müssen Sie die Produzent:innen über ihre UID oder BUR anfragen. Anschliessend können Sie aus der Liste der Betriebsstätten wählen. \nSie können die Anfrage auch über die API steuern.",
+          "uidLabel": "UID / BUR",
+          "uidPlaceholder": "CHE000000000 / A00000000",
           "cancel": "Abbrechen",
           "confirm": "{{ count }} Anfrage(n) hinzufügen",
           "uidInvalid": "Ungültiges Format",
@@ -512,7 +506,9 @@
               "title": "Anfrage beenden fehlgeschlagen",
               "message": "Beim Beenden der Anfrage(n) ist etwas schief gelaufen: {{ error }}"
             }
-          }
+          },
+          "burNotFound": "Die eingegebene BUR wurde nicht gefunden",
+          "resolvedUid": "Gefundene UID zur eingegebenen BUR: {{ uid }}"
         },
         "addBurs": "Betriebstätten hinzufügen",
         "withdrawRequest": "Anfrage beenden"
@@ -675,7 +671,8 @@
     },
     "uid": "UID",
     "bur": "BUR",
-    "lastChanged": "Geändert am"
+    "lastChanged": "Geändert am",
+    "provider": "Datenanbieter"
   },
   "forms": {
     "error": {
@@ -1015,14 +1012,14 @@
       "system": "System",
       "actions": {
         "viewDetails": "Anzeigen",
-        "delete": "Löschen"
+        "delete": "Entfernen"
       },
       "stateCode": "Status",
       "deleteProduct": {
-        "title": "Entwurf unwiderruflich löschen?",
-        "description": "Möchten Sie den Entwurf {{productName}} wirklich löschen? \nDiese Aktion kann nicht rückgängig gemacht werden.",
+        "title": "Entwurf unwiderruflich entfernen?",
+        "description": "Möchten Sie den Entwurf {{productName}} wirklich entfernen? \nDiese Aktion kann nicht rückgängig gemacht werden.",
         "cancel": "Abbrechen",
-        "delete": "Unwiderruflich löschen",
+        "delete": "Unwiderruflich entfernen",
         "success": {
           "title": "Entwurf gelöscht",
           "message": "Der Entwurf wurde erfolgreich gelöscht."
@@ -1395,11 +1392,14 @@
     "underline": "Unterstrichen",
     "bulletList": "Aufzählung",
     "orderedList": "Nummerierte Liste",
-    "resetFormat": "Formatierung zurücksetzen"
+    "resetFormat": "Formatierung zurücksetzen",
+    "heading1": "Überschrift 1",
+    "heading2": "Überschrift 2",
+    "heading3": "Überschrift 3"
   },
   "fileDownload": {
     "download": "Herunterladen",
-    "remove": "Löschen",
+    "remove": "Entfernen",
     "restore": "Rückgängig"
   },
   "form-control": {
@@ -1487,9 +1487,55 @@
       "title": "Titel",
       "validFrom": "Gültig ab",
       "validTo": "Gültig bis",
-      "enforceConsentFrom": "Sperrung ab"
+      "enforceConsentFrom": "Zustimmung erforderlich ab"
     },
-    "pageTitle": "AGB-Verwaltung"
+    "pageTitle": "AGB-Verwaltung",
+    "createNewVersion": "AGB-Version erfassen",
+    "agbText": {
+      "de": {
+        "label": "AGB-Text Deutsch",
+        "placeholder": "Allgemeine Geschäftsbedingungen für die Nutzung..."
+      },
+      "fr": {
+        "label": "AGB Text Französisch",
+        "placeholder": "Conditions générales régissant l’utilisation..."
+      },
+      "it": {
+        "label": "AGB Text Italienisch",
+        "placeholder": "Condizioni generali di contratto per l’utilizzo..."
+      },
+      "heading": "Inhalt"
+    },
+    "version": {
+      "placeholder": "1.2"
+    },
+    "cancel": "Abbrechen",
+    "publish": "Version publizieren",
+    "enforceConsentDate": {
+      "info": "Alle Datenbezüger und Datenanbieter sehen beim nächsten Login ein Modal und müssen die aktualisierten AGBs bis zu einem festgelegten Zeitpunkt akzeptieren.",
+      "toggle": "Zustimmung User erforderlich",
+      "dateHint": "Ab diesem Datum ist die Zustimmung erforderlich, um die Applikation weiterhin nutzen zu können."
+    },
+    "form": {
+      "title": "Neue AGB-Version erfassen"
+    },
+    "validity": {
+      "openEnded": "Ab dem {{ date }}",
+      "label": "Gültigkeit"
+    },
+    "create": {
+      "successTitle": "AGB-Version publiziert",
+      "successMessage": "Die neue AGB-Version {{ version }} wurde erfolgreich angelegt.",
+      "confirm": {
+        "title": "AGB-Version publizieren?",
+        "description": "Mit der Veröffentlichung wird die neue AGB-Version sofort sichtbar und tritt unmittelbar in Kraft. Möchten Sie fortfahren?",
+        "publish": "Ja, publizieren"
+      },
+      "error": {
+        "versionAlreadyExists": "Diese Version existiert bereits.",
+        "versionNotNewer": "Die Version muss neuer sein als die aktuelle Version."
+      }
+    }
   },
   "agb-acceptances": {
     "pageTitle": "Nutzer-Zustimmungen",
@@ -1514,5 +1560,25 @@
       "title": "Keine Einträge vorhanden",
       "message": "Keine Einträge gefunden, ändern Sie die Suche/Filter um Ergebnisse zu erhalten"
     }
+  },
+  "datepicker": {
+    "today": "Heute",
+    "validations": {
+      "minToday": "Das Datum darf nicht in der Vergangenheit liegen.",
+      "invalidDate": "Datum ungültig."
+    },
+    "placeholder": "TT.MM.JJJJ",
+    "ariaLabel": {
+      "choose": "Datum im Kalender wählen",
+      "dialog": "Datum wählen",
+      "nextMonth": "Nächster Monat",
+      "previousMonth": "Vorheriger Monat"
+    }
+  },
+  "no-access": {
+    "title": "Fehlende Berechtigungen",
+    "message": "Sie sind erfolgreich via Agate angemeldet, verfügen jedoch noch nicht über die nötigen Rechte zur Nutzung von agridata.ch. Wenn Sie Zugriff benötigen, fordern Sie diesen bitte über unseren Support an.",
+    "return": "Zur Startseite",
+    "contactSupport": "Zugriff anfordern"
   }
 }

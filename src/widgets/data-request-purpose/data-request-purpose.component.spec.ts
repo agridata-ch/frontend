@@ -84,7 +84,7 @@ describe('DataRequestPurposeComponent', () => {
       componentRef.setInput('consumerName', 'Agrar AG');
       fixture.detectChanges();
 
-      const title = fixture.debugElement.nativeElement.querySelector('h4');
+      const title = fixture.debugElement.nativeElement.querySelector('h3');
       expect(title.textContent).toContain('Agrar AG');
     });
 

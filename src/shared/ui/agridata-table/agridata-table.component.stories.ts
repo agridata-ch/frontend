@@ -101,7 +101,6 @@ export const WithRowAction: Story = {
       data: SAMPLE_DATA,
       metadata: {
         ...BASE_METADATA,
-        showRowActionButton: true,
         rowAction: (row: Person) => alert(`Clicked: ${row.name}`),
       } as ClientTableMetadata<Person>,
     },

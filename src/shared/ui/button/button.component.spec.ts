@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { faPlus } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
 
 import { ButtonComponent } from './button.component';
 
@@ -70,6 +71,14 @@ describe('ButtonComponent', () => {
     expect(getButton().classList).not.toContain('success');
     expect(fixture.debugElement.query(By.css('svg.success-check'))).toBeNull();
     expect(fixture.debugElement.query(By.css('.loading-spinner, fa-icon'))).toBeTruthy();
+  });
+
+  it('should render the icon inside a link button', () => {
+    fixture.componentRef.setInput('href', 'https://example.com');
+    fixture.componentRef.setInput('icon', faPlus);
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.query(By.css('a fa-icon'))).toBeTruthy();
   });
 
   describe('accessibility', () => {

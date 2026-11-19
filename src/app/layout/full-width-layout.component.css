@@ -2,10 +2,29 @@
   --heading-one-font-size: 4rem; /* 64px */
   --heading-one-line-height: 100%;
 
+  --heading-two-font-size: 2.25rem; /* 36px */
   --heading-two-color: inherit;
 
   @media screen and (max-width: 768px) {
-    --heading-one-font-size: 1.5rem; /* 24px */
-    --heading-one-line-height: 120%;
+    --heading-one-font-size: 2.5rem; /* 40px */
+
+    --heading-two-font-size: 1.5rem; /* 24px */
+  }
+
+  @media screen and (max-width: 425px) {
+    --heading-one-font-size: 2.25rem; /* 36px */
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: var(--font-weight-bold);
+
+    @media screen and (max-width: 768px) {
+      line-height: 120%;
+    }
   }
 }

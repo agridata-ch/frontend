@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { computed, effect, inject, Service, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
@@ -14,9 +15,10 @@ import { formatFullName } from '@/shared/utils';
 
 /**
  * Manages authentication state, user profile data, and role extraction from user info. Provides login,
- * logout, and authentication status monitoring with reactive signals.
+ * logout, and authentication status monitoring with reactive signals. `hasRole` is set to false when the
+ * user-info endpoint answers 403, which is how the backend reports an authenticated user without any agridata role.
  *
- * CommentLastReviewed: 2026-04-22
+ * CommentLastReviewed: 2026-11-17
  */
 @Service()
 export class AuthService {
@@ -26,6 +28,7 @@ export class AuthService {
   private readonly userService = inject(UserService);
 
   // Signals
+  private readonly _hasRole = signal<boolean>(true);
   private readonly _isAuthenticated = signal<boolean>(false);
   // Whether this application load originated from an OIDC login callback (fresh login) rather than a
   // page refresh or silent token renew. A construction-time snapshot of the callback query params —
@@ -36,6 +39,7 @@ export class AuthService {
   private readonly _userRoles = signal<string[]>([]);
   private readonly _userUids = signal<UidDto[]>([]);
 
+  readonly hasRole = this._hasRole.asReadonly();
   readonly isAuthenticated = this._isAuthenticated.asReadonly();
   readonly justLoggedIn = this._justLoggedIn.asReadonly();
   readonly userInfo = this._userInfo.asReadonly();
@@ -64,6 +68,7 @@ export class AuthService {
   // Effects
   private readonly resetUserInfoEffect = effect(() => {
     if (!this.isAuthenticated()) {
+      this._hasRole.set(true);
       this._userInfo.set(undefined);
       this._userRoles.set([]);
       this._userUids.set([]);
@@ -118,10 +123,7 @@ export class AuthService {
     }
 
     this.userInfoPromise ??= lastValueFrom(this.userService.getUserInfo());
-    const userInfo = await this.userInfoPromise;
-    this._userInfo.set(userInfo);
-
-    this._userRoles.set(userInfo?.rolesAtLastLogin ?? []);
+    await this.applyUserInfo(this.userInfoPromise);
     return true;
   }
 
@@ -173,9 +175,24 @@ export class AuthService {
    */
   async refreshUserInfo(): Promise<void> {
     this.userInfoPromise = lastValueFrom(this.userService.getUserInfo());
-    const userInfo = await this.userInfoPromise;
-    this._userInfo.set(userInfo);
-    this._userRoles.set(userInfo?.rolesAtLastLogin ?? []);
+    await this.applyUserInfo(this.userInfoPromise);
+  }
+
+  private async applyUserInfo(userInfoPromise: Promise<UserInfoDto | undefined>): Promise<void> {
+    try {
+      const userInfo = await userInfoPromise;
+      this._hasRole.set(true);
+      this._userInfo.set(userInfo);
+      this._userRoles.set(userInfo?.rolesAtLastLogin ?? []);
+    } catch (error) {
+      // 403: authenticated (e.g. AGATE) but holds none of the agridata roles
+      if (!(error instanceof HttpErrorResponse && error.status === 403)) {
+        throw error;
+      }
+      this._hasRole.set(false);
+      this._userInfo.set(undefined);
+      this._userRoles.set([]);
+    }
   }
 
   private isLoginCallbackUrl(): boolean {

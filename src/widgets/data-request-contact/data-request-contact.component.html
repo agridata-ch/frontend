@@ -2,7 +2,11 @@
   class="flex flex-col gap-4 rounded-lg"
   *i18n="let t; prefix: 'data-request.contact'; lang: lang()"
 >
-  <h4>{{ t('title') }}</h4>
+  @if (headingTag() === 'h2') {
+    <h2>{{ t('title') }}</h2>
+  } @else if (headingTag() === 'h3') {
+    <h3>{{ t('title') }}</h3>
+  }
   <div class="flex flex-col gap-2">
     <span class="text-agridata-secondary-text">
       {{ t('description', { organisationName: organisationName() }) }}

@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 
 import { DataProductDocumentService } from '@/entities/api/data-product-document.service';
 import { DataProductService } from '@/entities/api/data-product.service';
@@ -407,6 +407,138 @@ describe('DataCatalogBlockComponent', () => {
       expect(dataProductService.getPublicProducts).toHaveBeenLastCalledWith(
         expect.objectContaining({ page: 0, columnFilters: ['dataSourceSystemId:s1'] }),
       );
+    });
+
+    describe('shared link', () => {
+      // The component reads the query params at construction, so navigate first, then recreate it.
+      async function initWithQuery(query: string): Promise<void> {
+        // The pre-built fixture would also fetch on the next render, so drop it.
+        fixture.destroy();
+        await TestBed.inject(Router).navigateByUrl(`/?${query}`);
+        fixture = TestBed.createComponent(DataCatalogBlockComponent);
+        component = fixture.componentInstance;
+        await init();
+      }
+
+      it('applies valid filters, search and sort from the URL', async () => {
+        await initWithQuery('provider=p1&system=s1&q=foo&sort=-productName');
+
+        expect(dataProductService.getPublicProducts).toHaveBeenCalledTimes(1);
+        expect(dataProductService.getPublicProducts).toHaveBeenCalledWith(
+          expect.objectContaining({
+            searchTerm: 'foo',
+            sortParams: ['-productName'],
+            columnFilters: ['dataProviderId:p1', 'dataSourceSystemId:s1'],
+          }),
+        );
+      });
+
+      it('keeps the shared filters when the filter options fail to load', async () => {
+        masterDataService.getPublicDataProviders.mockRejectedValue(new Error('boom'));
+
+        await initWithQuery('provider=p1&system=s1');
+
+        expect(dataProductService.getPublicProducts).toHaveBeenCalledWith(
+          expect.objectContaining({
+            columnFilters: ['dataProviderId:p1', 'dataSourceSystemId:s1'],
+          }),
+        );
+      });
+
+      it('does not fetch before the filter ids are validated', async () => {
+        masterDataService.getPublicDataProviders.mockReturnValue(new Promise(() => undefined));
+
+        await initWithQuery('provider=p1');
+
+        expect(component['loading']()).toBe(true);
+        expect(dataProductService.getPublicProducts).not.toHaveBeenCalled();
+      });
+
+      it('trims the q param so the search box does not trigger a second reload', async () => {
+        await initWithQuery('q=%20foo%20');
+
+        expect(dataProductService.getPublicProducts).toHaveBeenCalledWith(
+          expect.objectContaining({ searchTerm: 'foo' }),
+        );
+      });
+
+      it('ignores a q param shorter than the minimum search length', async () => {
+        await initWithQuery('q=ab');
+
+        expect(dataProductService.getPublicProducts).toHaveBeenCalledWith(
+          expect.objectContaining({ searchTerm: undefined }),
+        );
+      });
+
+      it('treats empty provider and system params as no filter', async () => {
+        await initWithQuery('provider=&system=');
+
+        expect(component['selectedProviderId']()).toBeNull();
+        expect(component['selectedSystemId']()).toBeNull();
+      });
+
+      it('removes an unknown sort from the URL on a sort-only link', async () => {
+        await initWithQuery('sort=bogus');
+
+        expect(TestBed.inject(Location).path()).not.toContain('bogus');
+      });
+
+      it('shows the unfiltered list for unknown ids and an unknown sort', async () => {
+        await initWithQuery('provider=nope&system=nope&sort=bogus');
+        await fixture.whenStable();
+
+        expect(dataProductService.getPublicProducts).toHaveBeenCalledTimes(1);
+        expect(dataProductService.getPublicProducts).toHaveBeenCalledWith(
+          expect.objectContaining({ sortParams: ['productName'], columnFilters: undefined }),
+        );
+        expect(TestBed.inject(Location).path()).not.toContain('nope');
+      });
+
+      it('shows the q param in the search box', async () => {
+        await initWithQuery('q=foo');
+
+        expect(fixture.nativeElement.querySelector('app-search-input input').value).toBe('foo');
+      });
+
+      it('keeps the open product path together with the filters', async () => {
+        await initWithQuery('provider=p1');
+        component['openDetail']('x');
+        await fixture.whenStable();
+
+        expect(TestBed.inject(Location).path()).toMatch(/x\?.*provider=p1/);
+      });
+
+      it('drops a system that does not belong to the selected provider', async () => {
+        await initWithQuery('provider=p1&system=s2');
+
+        expect(dataProductService.getPublicProducts).toHaveBeenCalledTimes(1);
+        expect(dataProductService.getPublicProducts).toHaveBeenCalledWith(
+          expect.objectContaining({ columnFilters: ['dataProviderId:p1'] }),
+        );
+      });
+
+      it('mirrors filters, search and sort into the URL and omits defaults', async () => {
+        await init();
+        component['handleSearchChange']('foo');
+        component['handleSortChange']('-productName');
+        component['handleProviderChange']('p1');
+        component['handleSystemChange']('s1');
+        await fixture.whenStable();
+
+        const path = TestBed.inject(Location).path();
+        expect(path).toContain('provider=p1');
+        expect(path).toContain('q=foo');
+        expect(path).toContain('sort=-productName');
+        expect(path).toContain('system=s1');
+
+        component['handleSearchChange']('');
+        component['handleSortChange']('productName');
+        component['handleSystemChange'](null);
+        component['handleProviderChange'](null);
+        await fixture.whenStable();
+
+        expect(TestBed.inject(Location).path()).not.toMatch(/[?&](q|sort|provider|system)=/);
+      });
     });
 
     it('combines provider and system filters', async () => {

@@ -48,7 +48,7 @@ describe('ModalComponent', () => {
     componentRef.setInput('title', testTitle);
     fixture.detectChanges();
 
-    const titleElement = fixture.debugElement.query(By.css('h3'));
+    const titleElement = fixture.debugElement.query(By.css('h2'));
     expect(titleElement.nativeElement.textContent).toContain(testTitle);
   });
 

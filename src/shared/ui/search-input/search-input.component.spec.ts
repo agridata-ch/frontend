@@ -13,10 +13,20 @@ describe('FilterInputComponent', () => {
 
     fixture = TestBed.createComponent(SearchInputComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    fixture.detectChanges();
+
     expect(component).toBeTruthy();
+  });
+
+  it('should show the initial value', async () => {
+    fixture.componentRef.setInput('initialValue', 'foo');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component['value']()).toBe('foo');
+    expect(component['trimmedValue']()).toBe('foo');
   });
 });

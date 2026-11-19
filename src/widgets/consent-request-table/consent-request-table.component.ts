@@ -22,6 +22,7 @@ import { environment } from '@/environments/environment';
 import { ClickStopPropagationDirective } from '@/shared/click-stop-propagation';
 import {
   ConsentRequestStateBadgeComponent,
+  getDecidableConsentRequests,
   getToastMessage,
   getToastTitle,
   getToastType,
@@ -35,6 +36,7 @@ import { I18nPipe } from '@/shared/i18n';
 import { I18nService } from '@/shared/i18n/i18n.service';
 import { AnalyticsService } from '@/shared/lib/analytics.service';
 import { ToastService } from '@/shared/toast';
+import { TooltipDirective } from '@/shared/tooltip';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import {
   AgridataClientTableComponent,
@@ -71,6 +73,7 @@ import { ConsentRequestProducerViewDtoDirective } from './consent-request-produc
     ClickStopPropagationDirective,
     I18nPipe,
     ConsentRequestEmptyStateComponent,
+    TooltipDirective,
   ],
   templateUrl: './consent-request-table.component.html',
 })
@@ -192,7 +195,6 @@ export class ConsentRequestTableComponent {
         },
       ],
       rowAction: this.openDetails,
-      showRowActionButton: true,
       highlightFn: (item) => isOpenAggregationState(item.stateCode),
       highlightClickedRowFn: (item) => item.id === this.aggregationId(),
       searchFn: (data, searchTerm) =>
@@ -210,9 +212,9 @@ export class ConsentRequestTableComponent {
     requestName?: string,
   ) => {
     // capture the children before the reload replaces the input array, the undo needs their ids.
-    // PARTIALLY_OPENED aggregations still hold children that already carry a decision, only the
-    // undecided ones may be decided here. For OPENED every child is open, so all are kept.
-    const openConsentRequestIds = (aggregation.consentRequests ?? [])
+    // Like the details panel, only BUR children are sent (the backend derives the UID child), and
+    // of those only the undecided ones: PARTIALLY_OPENED still holds already decided children.
+    const openConsentRequestIds = getDecidableConsentRequests(aggregation.consentRequests ?? [])
       .filter((request) => request.stateCode === ConsentRequestStateEnum.Opened)
       .map((request) => request.id);
     this.analyticsService.logEvent('consent_request_state_changed', {

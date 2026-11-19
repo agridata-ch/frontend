@@ -19,6 +19,7 @@ export const ROUTE_PATHS = {
   FORBIDDEN: 'forbidden',
   ERROR: 'error',
   EXTERNAL_SERVICE_ERROR: 'external-service-error',
+  NO_ACCESS: 'no-access',
   NOT_FOUND: 'not-found',
   MAINTENANCE: 'maintenance',
   LOGIN: 'login',
@@ -63,6 +64,9 @@ export const VIDEO_FORMATS = ['.mp4', '.webm', '.wmv', '.avi', '.mov', '.mkv', '
 
 // Swiss enterprise identification number, unformatted, e.g. CHE123456789.
 export const UID_REGEX = /^[A-Z]{3}\d{9}$/;
+
+// BUR number: optional A/B prefix + 8 digits, e.g. A12345678 or 12345678.
+export const BUR_REGEX = /^[A-B]?\d{8}$/;
 
 export const AGATE_LOGIN_ID_IMPERSONATION_HEADER = 'X-Impersonated-AgateLoginId';
 

@@ -1,3 +1,59 @@
+## [1.25.0-rc.9](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.8...v1.25.0-rc.9) (2026-11-18)
+
+### Bug Fixes
+
+- **consent-request:** fix status update on table ([7fb106c](https://github.com/agridata-ch/frontend/commit/7fb106c535a6d32c789ecc561e3554d7b177ffcb)), references [DIGIB2-1851](https://github.com/agridata-ch/frontend/issues/-1851)
+
+## [1.25.0-rc.8](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.7...v1.25.0-rc.8) (2026-11-18)
+
+### Features
+
+- **no-access:** add no access page for users without agridata role ([802c287](https://github.com/agridata-ch/frontend/commit/802c28721673626e79f4e071f96bcfd25cb84f51)), references [DIGIB2-1502](https://github.com/agridata-ch/frontend/issues/-1502)
+
+## [1.25.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.6...v1.25.0-rc.7) (2026-11-16)
+
+### Features
+
+- **data-request-producer:** add producer via BUR ([1dc61aa](https://github.com/agridata-ch/frontend/commit/1dc61aa7a913faa2acd543e7b18b75a95462eab5)), references [DIGIB2-1826](https://github.com/agridata-ch/frontend/issues/-1826)
+
+## [1.25.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.5...v1.25.0-rc.6) (2026-11-16)
+
+### Features
+
+- **agbs:** add AGB detail view and creation for admin ([8d2e32b](https://github.com/agridata-ch/frontend/commit/8d2e32b4660f91593d8c2f29d2b47f78394d365a)), references [DIGIB2-1532](https://github.com/agridata-ch/frontend/issues/-1532)
+
+## [1.25.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.4...v1.25.0-rc.5) (2026-11-10)
+
+### Features
+
+- **admin-data-request:** update table metadata ([644f81c](https://github.com/agridata-ch/frontend/commit/644f81c6df1845e0076b39c1bdc3bdfeed3c1a46)), references [DIGIB2-1803](https://github.com/agridata-ch/frontend/issues/-1803)
+
+## [1.25.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.3...v1.25.0-rc.4) (2026-11-10)
+
+### Features
+
+- **headings:** optimize headings ([4801080](https://github.com/agridata-ch/frontend/commit/4801080189469e377bd9c75df36587d25fddb6b1)), references [DIGIB2-1602](https://github.com/agridata-ch/frontend/issues/-1602)
+- **headings:** optimize headings ([a5f7954](https://github.com/agridata-ch/frontend/commit/a5f7954c42eae68b1171e91e09f2f76cbced8e9c)), references [DIGIB2-1602](https://github.com/agridata-ch/frontend/issues/-1602)
+
+## [1.25.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.2...v1.25.0-rc.3) (2026-11-10)
+
+### Features
+
+- **data-catalog:** make data-catalog filter visible in url ([420ce60](https://github.com/agridata-ch/frontend/commit/420ce60b300000602e82dbb4d384ab0fd5c764c9)), references [DIGIB2-1898](https://github.com/agridata-ch/frontend/issues/-1898)
+- **mobile-navigation:** reposition login/logout button ([43051b4](https://github.com/agridata-ch/frontend/commit/43051b4122b2b42812f4897f1ad80bf8241fb8d7)), references [DIGIB2-1806](https://github.com/agridata-ch/frontend/issues/-1806)
+
+## [1.25.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.25.0-rc.1...v1.25.0-rc.2) (2026-11-06)
+
+### Bug Fixes
+
+- **ui:** fix z-index, fix action menu height ([2c828d1](https://github.com/agridata-ch/frontend/commit/2c828d11fa9df0cabd9731ef4d8d5288a40bdef0)), references [DIGIB2-1762](https://github.com/agridata-ch/frontend/issues/-1762) [DIGIB2-1777](https://github.com/agridata-ch/frontend/issues/-1777)
+
+## [1.25.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.24.0...v1.25.0-rc.1) (2026-11-06)
+
+### Features
+
+- **agridata-table:** improve table ([7b206d1](https://github.com/agridata-ch/frontend/commit/7b206d17d012b38cc0d5e34050d85c169bab24a5)), references [DIGIB2-1784](https://github.com/agridata-ch/frontend/issues/-1784)
+
 ## [1.24.0](https://github.com/agridata-ch/frontend/compare/v1.23.1...v1.24.0) (2026-11-05)
 
 ### Features

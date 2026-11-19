@@ -1,6 +1,7 @@
 import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import { DataRequestService } from '@/entities/api';
 import { UserService } from '@/entities/api/user.service';
@@ -72,6 +73,9 @@ describe('DataRequestAddProducersComponent', () => {
     await fixture.whenStable();
   };
 
+  const alertText = () =>
+    fixture.debugElement.query(By.css('[role="alert"]'))?.nativeElement.textContent ?? '';
+
   beforeEach(async () => {
     userService = createMockUserService();
     dataRequestService = createMockDataRequestService();
@@ -101,7 +105,6 @@ describe('DataRequestAddProducersComponent', () => {
       await createComponent(withBur);
       await search('CHE-11');
 
-      expect(component['searchedUid']()).toBeUndefined();
       expect(component['showUidInvalid']()).toBe(true);
       expect(userService.getAuthorizedBursByUid).not.toHaveBeenCalled();
     });
@@ -114,6 +117,118 @@ describe('DataRequestAddProducersComponent', () => {
 
       expect(component['showUidInvalid']()).toBe(false);
       expect(userService.getAuthorizedBursByUid).toHaveBeenCalledWith(UID);
+    });
+
+    it.each(['che-111.111.111', ' CHE 111 111 111 '])(
+      'should strip separators and uppercase %s before the lookup',
+      async (input) => {
+        await createComponent(withBur);
+        await search(input);
+
+        expect(userService.getAuthorizedBursByUid).toHaveBeenCalledWith(UID);
+      },
+    );
+
+    it('should accept UIDs with any 3-letter prefix', async () => {
+      await createComponent(withBur);
+      await search('ZZZ100000001');
+
+      expect(userService.getUidByBur).not.toHaveBeenCalled();
+      expect(userService.getAuthorizedBursByUid).toHaveBeenCalledWith('ZZZ100000001');
+    });
+
+    it.each(['CHE111111', 'ZZZ10000'])(
+      'should not take the partial UID %s for a BUR',
+      async (input) => {
+        await createComponent(withBur);
+        await search(input);
+
+        expect(component['showUidInvalid']()).toBe(true);
+        expect(userService.getUidByBur).not.toHaveBeenCalled();
+        expect(userService.getAuthorizedBursByUid).not.toHaveBeenCalled();
+      },
+    );
+
+    it.each(['A1234567', 'AB12345678', '1234567'])(
+      'should not take %s for a BUR',
+      async (input) => {
+        await createComponent(withBur);
+        await search(input);
+
+        expect(component['showUidInvalid']()).toBe(true);
+        expect(userService.getUidByBur).not.toHaveBeenCalled();
+      },
+    );
+  });
+
+  describe('BUR search', () => {
+    const BUR = 'A99999999';
+
+    beforeEach(() => {
+      userService.getUidByBur.mockResolvedValue({ uid: UID });
+      userService.getAuthorizedBursByUid.mockResolvedValue([...burs, { uid: UID, bur: BUR }]);
+      dataRequestService.getConsentRequestsOfDataRequestAndUid.mockResolvedValue([]);
+    });
+
+    it('should resolve the BUR to its UID and load that UID', async () => {
+      await createComponent(withBur);
+      await search('a999-99999');
+
+      expect(userService.getUidByBur).toHaveBeenCalledWith(BUR);
+      expect(userService.getAuthorizedBursByUid).toHaveBeenCalledWith(UID);
+      expect(dataRequestService.getConsentRequestsOfDataRequestAndUid).toHaveBeenCalledWith(
+        withBur.id,
+        UID,
+      );
+      expect(component['resolvedUid']()).toBe(UID);
+      expect(component['entries']()).toHaveLength(3);
+    });
+
+    it('should preselect the searched BUR and submit it with the resolved UID', async () => {
+      await createComponent(withBur);
+      await search(BUR);
+
+      expect(component['selectedCount']()).toBe(1);
+      expect(component['isSelected'](BUR)).toBe(true);
+
+      await component['addProducers']();
+
+      expect(dataRequestService.createConsentRequestsForDataRequest).toHaveBeenCalledWith(
+        withBur.id,
+        { uid: UID, burs: [BUR] },
+      );
+    });
+
+    it('should not preselect the searched BUR when it was already added', async () => {
+      dataRequestService.getConsentRequestsOfDataRequestAndUid.mockResolvedValue([
+        consent(BUR, ConsentRequestStateEnum.Granted),
+      ]);
+      await createComponent(withBur);
+      await search(BUR);
+
+      expect(component['selectedCount']()).toBe(0);
+    });
+
+    it('should preselect the prefixed BUR when searched without its letter prefix', async () => {
+      await createComponent(withBur);
+      await search('99999999');
+
+      expect(userService.getUidByBur).toHaveBeenCalledWith('99999999');
+      expect(component['isSelected'](BUR)).toBe(true);
+    });
+
+    it('should flag an unknown BUR inline and not forward the 404', async () => {
+      userService.getUidByBur.mockRejectedValue(new HttpErrorResponse({ status: 404 }));
+      await createComponent(withBur);
+      componentRef.setInput('open', true);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      await search(BUR);
+
+      expect(component['uidNotFound']()).toBe(true);
+      expect(alertText()).toContain('burNotFound');
+      expect(userService.getAuthorizedBursByUid).not.toHaveBeenCalled();
+      expect(errorService.handleError).not.toHaveBeenCalled();
     });
   });
 
@@ -391,6 +506,16 @@ describe('DataRequestAddProducersComponent', () => {
       expect(errorService.handleError).toHaveBeenCalledWith(error);
     });
 
+    it('should forward a 404 of a UID lookup to the error handler', async () => {
+      const error = new HttpErrorResponse({ status: 404 });
+      userService.getAuthorizedBursByUid.mockRejectedValue(error);
+      await createComponent(withBur);
+      await search(UID);
+
+      expect(component['uidNotFound']()).toBe(false);
+      expect(errorService.handleError).toHaveBeenCalledWith(error);
+    });
+
     it('should flag the UID as not found and not forward EXTERNAL_SERVICE_ERROR', async () => {
       userService.getAuthorizedBursByUid.mockRejectedValue(
         new HttpErrorResponse({
@@ -399,10 +524,14 @@ describe('DataRequestAddProducersComponent', () => {
         }),
       );
       await createComponent(withBur);
+      componentRef.setInput('open', true);
+      fixture.detectChanges();
+      await fixture.whenStable();
       await search(UID);
 
       expect(component['uidNotFound']()).toBe(true);
       expect(component['hasUidError']()).toBe(true);
+      expect(alertText()).toContain('noResults');
       expect(errorService.handleError).not.toHaveBeenCalled();
     });
   });

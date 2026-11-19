@@ -16,6 +16,7 @@ import {
   DataRequestStateBadgeComponent,
 } from '@/shared/data-request';
 import { I18nService } from '@/shared/i18n';
+import { TooltipDirective } from '@/shared/tooltip';
 import { AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 import { AgridataClientTableComponent } from '@/shared/ui/agridata-client-table';
 import { ClientTableMetadata } from '@/shared/ui/agridata-client-table/client-table-model';
@@ -38,6 +39,7 @@ import { AgridataContactCardComponent } from '@/widgets/agridata-contact-card';
     AgridataClientTableComponent,
     DataRequestDtoDirective,
     AgridataContactCardComponent,
+    TooltipDirective,
   ],
 })
 export class AdminDataRequestTableComponent {
@@ -50,7 +52,7 @@ export class AdminDataRequestTableComponent {
   protected readonly dataRequestConsumerHeader = 'data-request.consumerName';
   protected readonly dataRequestTitleHeader = 'data-request.title';
   protected readonly dataRequestSubmissionDateHeader = 'data-request.submissionDate';
-  protected readonly dataRequestProviderHeader = 'data-request.provider';
+  protected readonly dataRequestSystemHeader = 'data-request.system';
   protected readonly dataRequestStateHeader = 'data-request.state';
   protected readonly BadgeSize = BadgeSize;
   protected readonly AvatarSize = AvatarSize;
@@ -97,14 +99,13 @@ export class AdminDataRequestTableComponent {
             sortValueFn: (item) => item.submissionDate ?? '',
           },
           {
-            name: this.dataRequestProviderHeader,
+            name: this.dataRequestSystemHeader,
             renderer: {
               type: CellRendererTypes.FUNCTION,
-              cellRenderFn: (item) =>
-                this.getTranslation(item.dataSourceSystem?.dataProvider?.name),
+              cellRenderFn: (item) => this.getTranslation(item.dataSourceSystem?.name),
             },
             sortable: true,
-            sortValueFn: (item) => this.getTranslation(item.dataSourceSystem?.dataProvider?.name),
+            sortValueFn: (item) => this.getTranslation(item.dataSourceSystem?.name),
           },
           {
             name: this.dataRequestStateHeader,
@@ -118,7 +119,6 @@ export class AdminDataRequestTableComponent {
               getStateTranslation(this.i18nService, item?.stateCode, item?.terminationPeriodUntil),
           },
         ],
-        showRowActionButton: true,
         rowAction: (item) => this.tableRowAction.emit(item),
       };
     },

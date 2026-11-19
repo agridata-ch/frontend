@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-10" *i18n="let t; prefix: 'data-request.form'">
     <div>
       <div class="mb-6">
-        <h4 class="text-agridata-primary-text mb-2">{{ t('request.title.label') }}</h4>
+        <h3 class="text-agridata-primary-text mb-2">{{ t('request.title.label') }}</h3>
         <span class="text-agridata-tertiary-text">{{ t('request.title.sublabel') }}</span>
       </div>
       @for (lang of availableLangs; track lang) {
@@ -17,7 +17,7 @@
     </div>
     <div>
       <div class="mb-6">
-        <h4 class="text-agridata-primary-text mb-2">{{ t('request.description.label') }}</h4>
+        <h3 class="text-agridata-primary-text mb-2">{{ t('request.description.label') }}</h3>
         <span class="text-agridata-tertiary-text">{{ t('request.description.sublabel') }}</span>
       </div>
       @for (lang of availableLangs; track lang) {
@@ -33,7 +33,7 @@
     </div>
     <div class="mb-6">
       <div class="mb-6">
-        <h4 class="text-agridata-primary-text mb-2">{{ t('request.purpose.label') }}</h4>
+        <h3 class="text-agridata-primary-text mb-2">{{ t('request.purpose.label') }}</h3>
         <span class="text-agridata-tertiary-text">
           {{ purposeSublabelParts().before }}
           <a [href]="pdfUrl()" target="_blank" class="underline hover:text-agridata-primary-600">

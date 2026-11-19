@@ -14,12 +14,6 @@
     "noData": "Nessun dato disponibile",
     "loading": "Caricamento dati in corso",
     "pageSelector": "Voci per pagina",
-    "header": {
-      "ariaLabels": {
-        "sort": "Ordina per: {{ sortBy }}",
-        "rowActionColumnTitle": "Azioni Colonna"
-      }
-    },
     "ariaLabels": {
       "actions": "Azioni",
       "rowAction": "Apri record"
@@ -418,7 +412,7 @@
         }
       }
     },
-    "provider": "Fornitore di dati",
+    "system": "Sistema",
     "submissionDate": "Data di presentazione",
     "humanFriendlyId": "ID",
     "details": {
@@ -471,9 +465,9 @@
         "addButton": "Richiedi produttore",
         "modal": {
           "title": "Richiedi produttore",
-          "description": "Per includere nuove aziende nella richiesta, è necessario interrogare i produttori tramite la loro IDI. Successivamente, è possibile selezionare dall'elenco delle sedi operative. È possibile controllare la richiesta anche tramite l'API.",
-          "uidLabel": "IDI",
-          "uidPlaceholder": "CHE000000000",
+          "description": "Per includere nuove aziende nella richiesta, è necessario interrogare i produttori tramite il proprio UID o BUR. Successivamente, è possibile selezionare dall'elenco delle sedi operative. È possibile controllare la richiesta anche tramite l'API.",
+          "uidLabel": "IDI / BUR",
+          "uidPlaceholder": "CHE000000000 / A00000000",
           "cancel": "Annulla",
           "confirm": "Aggiungi {{ count }} richiesta(e)",
           "uidInvalid": "formato non valido",
@@ -512,7 +506,9 @@
               "title": "Errore durante la terminazione della richiesta",
               "message": "Si è verificato un errore durante il tentativo di terminare la/e richiesta/e: {{ error }}"
             }
-          }
+          },
+          "burNotFound": "La BUR inserita non è stata trovata",
+          "resolvedUid": "IDI trovata per la BUR inserita: {{ uid }}"
         },
         "addBurs": "Aggiungi sedi operative",
         "withdrawRequest": "Terminare la richiesta"
@@ -675,7 +671,8 @@
     },
     "uid": "IDI",
     "bur": "BUR",
-    "lastChanged": "Modificato il"
+    "lastChanged": "Modificato il",
+    "provider": "Fornitore di dati"
   },
   "forms": {
     "error": {
@@ -1395,7 +1392,10 @@
     "underline": "Sottolineato",
     "bulletList": "Elenco puntato",
     "orderedList": "Elenco numerato",
-    "resetFormat": "Ripristina formattazione"
+    "resetFormat": "Ripristina formattazione",
+    "heading1": "Titolo 1",
+    "heading2": "Titolo 2",
+    "heading3": "Titolo 3"
   },
   "fileDownload": {
     "download": "Scarica",
@@ -1487,9 +1487,55 @@
       "title": "Titolo",
       "validFrom": "Valido dal",
       "validTo": "Valido fino al",
-      "enforceConsentFrom": "Blocco dal"
+      "enforceConsentFrom": "È richiesta l'autorizzazione a partire dal"
     },
-    "pageTitle": "Gestione dei Termini e Condizioni"
+    "pageTitle": "Gestione dei Termini e Condizioni",
+    "createNewVersion": "Aggiungi una versione dei CGC",
+    "agbText": {
+      "de": {
+        "label": "Testo delle CG in tedesco",
+        "placeholder": "Allgemeine Geschäftsbedingungen für die Nutzung..."
+      },
+      "fr": {
+        "label": "Testo delle CG in francese",
+        "placeholder": "Conditions générales régissant l’utilisation..."
+      },
+      "it": {
+        "label": "Testo delle CG in italiano",
+        "placeholder": "Condizioni generali di contratto per l’utilizzo..."
+      },
+      "heading": "Contenuto"
+    },
+    "version": {
+      "placeholder": "1.2"
+    },
+    "cancel": "Annulla",
+    "publish": "Pubblicare la versione",
+    "enforceConsentDate": {
+      "info": "Tutti i destinatari e fornitori di dati visualizzeranno una finestra modale al prossimo accesso e dovranno accettare le CGU aggiornate entro una data limite stabilita.",
+      "toggle": "Consenso dell’utente richiesto",
+      "dateHint": "A partire da questa data, il consenso sarà obbligatorio per continuare a utilizzare l’applicazione."
+    },
+    "form": {
+      "title": "Aggiungi una nuova versione dei CGC"
+    },
+    "validity": {
+      "openEnded": "A partire dal {{ date }}",
+      "label": "Validità"
+    },
+    "create": {
+      "successTitle": "Versione CG pubblicata",
+      "successMessage": "La nuova versione delle CG {{ version }} è stata creata con successo.",
+      "confirm": {
+        "title": "Pubblicare la versione delle CGC?",
+        "description": "La nuova versione delle CG sarà immediatamente visibile ed entrerà in vigore al momento della pubblicazione. Desidera continuare?",
+        "publish": "Sì, pubblicare"
+      },
+      "error": {
+        "versionAlreadyExists": "Questa versione esiste già.",
+        "versionNotNewer": "La versione deve essere più recente di quella attuale."
+      }
+    }
   },
   "agb-acceptances": {
     "pageTitle": "Consensi degli utenti",
@@ -1514,5 +1560,25 @@
       "title": "Nessuna voce disponibile",
       "message": "Nessuna voce trovata, modifica la ricerca/i filtri per ottenere risultati"
     }
+  },
+  "datepicker": {
+    "today": "Oggi",
+    "validations": {
+      "minToday": "La data non deve essere passata.",
+      "invalidDate": "Data non valida."
+    },
+    "placeholder": "GG.MM.AAAA",
+    "ariaLabel": {
+      "choose": "Scegli la data nel calendario",
+      "dialog": "Scegli una data",
+      "nextMonth": "Mese successivo",
+      "previousMonth": "Mese precedente"
+    }
+  },
+  "no-access": {
+    "title": "Autorizzazioni mancanti",
+    "message": "Ha effettuato correttamente l’accesso tramite Agate, ma non dispone ancora dei diritti necessari per utilizzare agridata.ch. Se necessita di accesso, la preghiamo di inoltrare una richiesta tramite il nostro servizio di supporto.",
+    "return": "Torna alla pagina iniziale",
+    "contactSupport": "Richiedere l’accesso"
   }
 }

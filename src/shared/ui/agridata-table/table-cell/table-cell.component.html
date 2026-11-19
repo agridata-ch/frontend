@@ -1,21 +1,16 @@
-<td
-  class="align-middle py-3 px-4 border-t border-gray-200"
-  [class]="columnDefinition().cellCssClasses"
->
-  @let renderer = columnDefinition().renderer;
-  @switch (renderer.type) {
-    @case (CellRendererTypes.FUNCTION) {
-      <span
-        class="agridata-ellipsis w-auto"
-        [appTooltip]="formatCellValue(renderer.cellRenderFn(row()))"
-        [tooltipShowDelay]="600"
-      >
-        {{ formatCellValue(renderer.cellRenderFn(row())) }}
-      </span>
-    }
-    @case (CellRendererTypes.TEMPLATE) {
-      <ng-container *ngTemplateOutlet="renderer.template; context: { $implicit: row() }">
-      </ng-container>
-    }
+@let renderer = columnDefinition().renderer;
+@switch (renderer.type) {
+  @case (CellRendererTypes.FUNCTION) {
+    <span
+      class="agridata-ellipsis w-auto"
+      [appTooltip]="formatCellValue(renderer.cellRenderFn(row()))"
+      [tooltipShowDelay]="600"
+    >
+      {{ formatCellValue(renderer.cellRenderFn(row())) }}
+    </span>
   }
-</td>
+  @case (CellRendererTypes.TEMPLATE) {
+    <ng-container *ngTemplateOutlet="renderer.template; context: { $implicit: row() }">
+    </ng-container>
+  }
+}
