@@ -72,7 +72,6 @@ model/dataRequestDto.ts
 model/dataRequestPurposeDto.ts
 model/dataRequestStateEnum.ts
 model/dataRequestSummaryDto.ts
-model/dataRequestTerminationResultDto.ts
 model/dataRequestTitleDto.ts
 model/dataRequestUpdateDto.ts
 model/dataRequestV1Dto.ts

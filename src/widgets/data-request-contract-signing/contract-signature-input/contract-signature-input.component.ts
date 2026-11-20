@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, computed, inject, input, model, output, signal } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
@@ -31,7 +32,7 @@ import {
  * Component for inputting the contract signature for a specific signing slot.
  * Handles the full OTP signing flow: starting, verifying, and error display.
  *
- * CommentLastReviewed: 2026-05-12
+ * CommentLastReviewed: 2026-11-19
  */
 @Component({
   selector: 'app-contract-signature-input',
@@ -42,6 +43,7 @@ import {
     AlertComponent,
     FormControlComponent,
     AgridataDatePipe,
+    NgTemplateOutlet,
   ],
   templateUrl: './contract-signature-input.component.html',
 })
@@ -74,6 +76,7 @@ export class ContractSignatureInputComponent {
   protected readonly countdownValue = signal(0);
   protected readonly showResendCooldownAlert = signal(false);
   protected readonly showLockedAlert = signal(false);
+  protected readonly showTemplateOutdatedAlert = signal(false);
   protected readonly isVerifyDisabled = signal(false);
 
   // Computed properties
@@ -179,6 +182,8 @@ export class ContractSignatureInputComponent {
         const type = error?.error?.type as ExceptionEnum | undefined;
         if (type === ExceptionEnum.OtpResendCooldown) {
           this.showResendCooldownAlert.set(true);
+        } else if (type === ExceptionEnum.ContractTemplateOutdated) {
+          this.showTemplateOutdatedAlert.set(true);
         } else {
           this.errorService.handleError(error);
         }
@@ -231,13 +236,18 @@ export class ContractSignatureInputComponent {
 
             break;
           }
+          case ExceptionEnum.ContractTemplateOutdated: {
+            this.showTemplateOutdatedAlert.set(true);
+
+            break;
+          }
           default: {
             this.errorService.handleError(error);
           }
         }
       })
       .finally(() => {
-        if (!this.showLockedAlert()) {
+        if (!this.showLockedAlert() && !this.showTemplateOutdatedAlert()) {
           this.isVerifyDisabled.set(false);
         }
       });
