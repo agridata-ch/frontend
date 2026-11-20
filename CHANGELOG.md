@@ -1,3 +1,9 @@
+## [1.26.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.26.0-rc.1...v1.26.0-rc.2) (2026-11-20)
+
+### Bug Fixes
+
+- **data-catalog:** fix error handling ([96ef479](https://github.com/agridata-ch/frontend/commit/96ef479fb5e91cf1cf0c866ef973be6d32203ca9)), references [DIGIB2-1882](https://github.com/agridata-ch/frontend/issues/-1882)
+
 ## [1.26.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.25.1...v1.26.0-rc.1) (2026-11-20)
 
 ### Features
