@@ -1,3 +1,9 @@
+## [1.26.0-rc.1](https://github.com/agridata-ch/frontend/compare/v1.25.1...v1.26.0-rc.1) (2026-11-20)
+
+### Features
+
+- **data-product:** hide technical tab's ([be093e9](https://github.com/agridata-ch/frontend/commit/be093e9b6d1b18f7124a5b94fc30b04370fdef3d)), references [DIGIB2-1855](https://github.com/agridata-ch/frontend/issues/-1855)
+
 ## [1.25.1](https://github.com/agridata-ch/frontend/compare/v1.25.0...v1.25.1) (2026-11-19)
 
 ### Bug Fixes
