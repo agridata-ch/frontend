@@ -1,3 +1,9 @@
+## [1.26.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.26.0-rc.2...v1.26.0-rc.3) (2026-11-25)
+
+### Features
+
+- **contract-signature:** add ContractTemplateOutdated exception ([5d5847d](https://github.com/agridata-ch/frontend/commit/5d5847dfefa8b0e10c3b9f6d53e97fe3d1d8fd10)), references [DIGIB2-1860](https://github.com/agridata-ch/frontend/issues/-1860)
+
 ## [1.26.0-rc.2](https://github.com/agridata-ch/frontend/compare/v1.26.0-rc.1...v1.26.0-rc.2) (2026-11-20)
 
 ### Bug Fixes
