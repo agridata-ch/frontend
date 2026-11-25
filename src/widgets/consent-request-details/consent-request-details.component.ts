@@ -34,12 +34,14 @@ import {
   createResourceErrorHandlerEffect,
   createResourceValueComputed,
 } from '@/shared/lib/api.helper';
+import { getRedirectUri } from '@/shared/lib/redirect-uri.helper';
 import { ScrollFadeDirective } from '@/shared/scroll-fade';
 import { SidepanelComponent } from '@/shared/sidepanel';
 import { ToastService } from '@/shared/toast';
 import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal';
+import { ReturnToAppComponent } from '@/shared/ui/return-to-app';
 import { startCountdown } from '@/shared/utils/ui.util';
 import { DataRequestContentComponent } from '@/widgets/data-request-content';
 
@@ -50,9 +52,11 @@ type DecisionTarget = { id: string; previousState?: ConsentRequestStateEnum };
  * such as dates, state, consumer identity, description, purpose, and related products. The
  * component supports approving or rejecting requests, provides undo actions, and displays
  * contextual toast notifications. When a valid redirect URI is provided, the component shows
- * a modal with a countdown timer before automatically redirecting the user to the specified URL.
+ * a modal with a countdown timer before automatically redirecting the user to the specified URL, and
+ * a button to return without (re)deciding, e.g. for public-sector or already decided requests. If
+ * the request fails to load, an unverified return is offered instead.
  *
- * CommentLastReviewed: 2026-10-06
+ * CommentLastReviewed: 2026-11-25
  */
 @Component({
   selector: 'app-consent-request-details',
@@ -65,6 +69,7 @@ type DecisionTarget = { id: string; previousState?: ConsentRequestStateEnum };
     I18nDirective,
     I18nPipe,
     ModalComponent,
+    ReturnToAppComponent,
     ScrollFadeDirective,
     SidepanelComponent,
   ],
@@ -145,6 +150,11 @@ export class ConsentRequestDetailsComponent {
   protected readonly requestTitle = computed(() =>
     this.i18nService.useObjectTranslation(this.request()?.dataRequest?.title),
   );
+  // Without a loaded request the redirect_uri can't be checked against its regex, so offer only an
+  // explicit, unverified return.
+  protected readonly unverifiedRedirectUrl = computed(() =>
+    this.consentRequestResource.error() ? getRedirectUri(this.activeRoute.snapshot) : undefined,
+  );
 
   // Effects
   private readonly checkResourceLoadedEffect = effect(() => {
@@ -159,7 +169,7 @@ export class ConsentRequestDetailsComponent {
   });
   private readonly checkForRedirectEffect = effect(() => {
     const request = this.request();
-    const redirectUri = this.activeRoute.snapshot.queryParamMap.get('redirect_uri') ?? undefined;
+    const redirectUri = getRedirectUri(this.activeRoute.snapshot);
     if (redirectUri) {
       this.redirectUrl.set(redirectUri);
       const redirectUrlPattern = request?.dataRequest?.validRedirectUriRegex;
@@ -243,15 +253,6 @@ export class ConsentRequestDetailsComponent {
         .then();
     }
   }
-
-  protected readonly redirectDirectly = (): void => {
-    const url = this.redirectUrl();
-    if (url) {
-      this.clearAllTimers();
-      this.resetRedirect();
-      this.document.location.href = url;
-    }
-  };
 
   protected async rejectRequest(): Promise<void> {
     this.showRejectedLoading.set(true);

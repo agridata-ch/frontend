@@ -1,13 +1,4 @@
-import {
-  Component,
-  computed,
-  DOCUMENT,
-  effect,
-  inject,
-  resource,
-  signal,
-  untracked,
-} from '@angular/core';
+import { Component, computed, effect, inject, resource } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { faFileCheck } from '@awesome.me/kit-0b6d1ed528/icons/classic/regular';
@@ -20,14 +11,12 @@ import { ConsentRequestAggregationSummaryDto } from '@/entities/openapi';
 import { FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM } from '@/shared/consent-request';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
-import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
+import { I18nDirective, I18nService } from '@/shared/i18n';
 import {
   createResourceErrorHandlerEffect,
   createResourceValueComputed,
 } from '@/shared/lib/api.helper';
 import { AlertComponent, AlertType } from '@/shared/ui/alert';
-import { ButtonComponent } from '@/shared/ui/button';
-import { ModalComponent } from '@/shared/ui/modal';
 import { ConsentRequestMigrationAlertsComponent } from '@/widgets/consent-request-migration-alerts';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 import { ConsentRequestsTourIntroComponent } from '@/widgets/consent-requests-tour/consent-requests-tour-intro/consent-requests-tour-intro.component';
@@ -36,24 +25,19 @@ import { ConsentRequestsTourIntroComponent } from '@/widgets/consent-requests-to
  * Handles the display and interaction of consent requests for producers. It displays a table of
  * consent requests and provides a detail view for individual requests. It updates the selected
  * request based on route parameters, synchronizes state with the URL, and reloads data as needed.
- * it also handles the redirect to an external URL if specified in the route state and validated against
- * the request's valid redirect URI regex.
  *
- * CommentLastReviewed: 2026-03-09
+ * CommentLastReviewed: 2026-11-25
  */
 @Component({
   selector: 'app-consent-request-producer-page',
   imports: [
     AlertComponent,
-    ButtonComponent,
     ConsentRequestMigrationAlertsComponent,
     ConsentRequestsTourIntroComponent,
     ConsentRequestTableComponent,
     ErrorOutletComponent,
     FontAwesomeModule,
     I18nDirective,
-    I18nPipe,
-    ModalComponent,
     RouterOutlet,
   ],
   templateUrl: './consent-request-producer.page.html',
@@ -61,11 +45,6 @@ import { ConsentRequestsTourIntroComponent } from '@/widgets/consent-requests-to
 export class ConsentRequestProducerPage {
   private readonly agridataStateService = inject(AgridataStateService);
   private readonly consentRequestService = inject(ConsentRequestService);
-  // Use the injected DOCUMENT instead of globalThis/window.location so the redirect goes through a
-  // mockable seam in tests. jsdom 26 (Angular 22 toolchain) fully locks window.location, making it
-  // impossible to stub directly. SonarQube prefers globalThis over window, but DOCUMENT is both
-  // Sonar-clean and testable.
-  private readonly document = inject(DOCUMENT);
   private readonly router = inject(Router);
   private readonly errorService = inject(ErrorHandlerService);
   private readonly i18nService = inject(I18nService);
@@ -88,7 +67,6 @@ export class ConsentRequestProducerPage {
 
   // Signals
   readonly phoneNumber = this.i18nService.translateSignal('support-info.phoneNumber');
-  private readonly redirectUrlFromQuery = signal<string | null>(null);
 
   // Resources
   readonly consentRequestResource = resource({
@@ -105,17 +83,6 @@ export class ConsentRequestProducerPage {
   });
 
   // Effects
-  private readonly checkForRedirectEffect = effect(() => {
-    const redirectUri = this.activeRoute.snapshot.queryParamMap.get('redirect_uri') ?? null;
-    if (redirectUri) {
-      this.redirectUrlFromQuery.set(redirectUri);
-      // Use untracked read to avoid making the effect reactive to route changes
-      const cleanUrl = untracked(() => this.agridataStateService.currentRouteWithoutQueryParams());
-      // Replace the URL to remove the query parameter without reloading the page to prevent potential redirect loops
-      globalThis.history.replaceState({}, '', cleanUrl);
-    }
-  });
-
   private readonly forceReloadConsentRequestsEffect = effect(() => {
     const nav = this.router.currentNavigation();
     if (nav?.extras?.state?.[FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM]) {
@@ -131,10 +98,6 @@ export class ConsentRequestProducerPage {
   // Computed
   protected readonly consentRequests = createResourceValueComputed(this.consentRequestResource, []);
 
-  protected readonly hasErrors = computed(() => this.errorService.getAllErrors()().length > 0);
-  protected readonly hasRedirectUrl = computed(() => !!this.redirectUrlFromQuery());
-  protected readonly showRedirect = computed(() => this.hasRedirectUrl() && this.hasErrors());
-  protected readonly redirectUrl = computed(() => this.redirectUrlFromQuery());
   protected readonly locale = computed(() => this.i18nService.lang());
 
   protected readonly uidMissingWarning = computed(() => {
@@ -167,14 +130,6 @@ export class ConsentRequestProducerPage {
     const aggregationId = request?.id;
     if (aggregationId) {
       void this.router.navigate([aggregationId], { relativeTo: this.activeRoute });
-    }
-  };
-
-  protected readonly redirect = (): void => {
-    const url = this.redirectUrl();
-    if (url) {
-      this.redirectUrlFromQuery.set(null);
-      this.document.location.href = url;
     }
   };
 }

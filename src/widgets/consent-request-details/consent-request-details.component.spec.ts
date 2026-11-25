@@ -37,6 +37,7 @@ import {
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 import { ToastService, ToastType } from '@/shared/toast';
 import { ButtonComponent, ButtonVariants } from '@/shared/ui/button';
+import { ReturnToAppComponent } from '@/shared/ui/return-to-app';
 import { ConsentRequestDetailsComponent } from '@/widgets/consent-request-details';
 import { DataRequestContentComponent } from '@/widgets/data-request-content';
 
@@ -396,6 +397,41 @@ describe('ConsentRequestDetailsComponent', () => {
     });
   });
 
+  describe('return to app button', () => {
+    it('should offer a verified return without deciding when the redirect is verified', () => {
+      component['redirectUrl'].set('https://example.ch/back');
+      component['shouldRedirect'].set(true);
+      fixture.detectChanges();
+
+      const returnToApp = fixture.debugElement.query(By.directive(ReturnToAppComponent));
+
+      expect(returnToApp.componentInstance.url()).toBe('https://example.ch/back');
+      expect(returnToApp.componentInstance.verified()).toBe(true);
+    });
+
+    it('should offer an unverified return when the request fails to load', async () => {
+      activeRoute.snapshot.queryParamMap.get = vi.fn().mockReturnValue('https://example.ch/back');
+      consentRequestService.fetchConsentRequestAggregation.mockRejectedValueOnce(new Error('boom'));
+      componentRef.setInput('aggregationId', '1');
+      fixture.detectChanges();
+      await fixture.whenStable().catch(() => undefined);
+      fixture.detectChanges();
+
+      const returnToApp = fixture.debugElement.query(By.directive(ReturnToAppComponent));
+
+      expect(returnToApp.componentInstance.url()).toBe('https://example.ch/back');
+      expect(returnToApp.componentInstance.verified()).toBe(false);
+    });
+
+    it('should not offer a return when the redirect is not verified', () => {
+      component['redirectUrl'].set('https://example.ch/back');
+      component['shouldRedirect'].set(false);
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.directive(ReturnToAppComponent))).toBeNull();
+    });
+  });
+
   describe('handleRouterState', () => {
     it('should start timers if showRedirect active', () => {
       const testRedirectUrl = 'https://test-redirect.com';
@@ -508,18 +544,6 @@ describe('ConsentRequestDetailsComponent', () => {
       window.clearInterval = originalClearInterval;
     });
 
-    it('should perform redirect when redirectDirectly is called', () => {
-      vi.useRealTimers();
-      component['showRedirect'].set(true);
-
-      const testRedirectUrl = 'https://test-redirect-flow.com';
-      component['redirectUrl'].set(testRedirectUrl);
-
-      component['redirectDirectly']();
-
-      expect(mockLocation.href).toBe(testRedirectUrl);
-    });
-
     it('should decrement countdown correctly when startCountdown is called', () => {
       vi.useRealTimers();
       vi.useFakeTimers();
@@ -534,27 +558,6 @@ describe('ConsentRequestDetailsComponent', () => {
       expect(component['countdownValue']()).toBe(initialValue - 1);
 
       vi.useRealTimers();
-    });
-  });
-
-  describe('redirectDirectly', () => {
-    it('should redirect to the URL in redirectUrl signal', () => {
-      const testRedirectUrl = 'https://test-direct-redirect.com';
-      component['showRedirect'].set(true);
-      component['redirectUrl'].set(testRedirectUrl);
-
-      component['redirectDirectly']();
-
-      expect(mockLocation.href).toBe(testRedirectUrl);
-    });
-
-    it('should not redirect when redirectUrl is null', () => {
-      component['redirectUrl'].set(null);
-      component['showRedirect'].set(true);
-
-      component['redirectDirectly']();
-
-      expect(mockLocation.href).toBe('');
     });
   });
 

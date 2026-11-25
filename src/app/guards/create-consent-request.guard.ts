@@ -10,6 +10,15 @@ import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ExternalServiceHttpError } from '@/shared/error/external-service-http-error';
 import { AuthService } from '@/shared/lib/auth';
+import { getRedirectUri, REDIRECT_URI_QUERY_PARAM } from '@/shared/lib/redirect-uri.helper';
+
+export enum InvitationErrorKey {
+  InvalidLink = 'invalidLink',
+  NoCompanies = 'noCompanies',
+  NotFound = 'notFound',
+  TechnicalError = 'technicalError',
+  UidNotAuthorized = 'uidNotAuthorized',
+}
 
 /**
  * Guard to create consent requests for a given data request and handle navigation based on the
@@ -18,8 +27,10 @@ import { AuthService } from '@/shared/lib/auth';
  * in the query parameters. If a uid is provided, it verifies that the uid is in the list of
  * authorized uids for the current user. It then creates consent requests for the specified
  * data request and navigates to the consent request detail page for the active uid.
+ * Every failure leads to the error page with a specific message; a given redirect_uri is passed
+ * along so the producer can return to the consumer's application from there.
  *
- * CommentLastReviewed: 2026-08-25
+ * CommentLastReviewed: 2026-11-25
  */
 @Service()
 export class CreateConsentRequestGuard implements CanActivate {
@@ -32,21 +43,36 @@ export class CreateConsentRequestGuard implements CanActivate {
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<UrlTree | boolean> {
     const { dataRequestId, redirectUrl, uid } = this.extractRouteParameters(route);
+    const queryParams: Record<string, string> = redirectUrl
+      ? { [REDIRECT_URI_QUERY_PARAM]: redirectUrl }
+      : {};
 
     if (!dataRequestId) {
-      return this.fail(new Error('No dataRequestId provided in route parameters.'));
+      return this.fail(
+        new Error('No dataRequestId provided in route parameters.'),
+        InvitationErrorKey.InvalidLink,
+        queryParams,
+      );
     }
 
     try {
       const uidDtos = await this.authService.initializeAuthorizedUids();
 
       if (!uidDtos || uidDtos.length === 0) {
-        return this.fail(new Error('user has no uids'));
+        return this.fail(
+          new Error('user has no uids'),
+          InvitationErrorKey.NoCompanies,
+          queryParams,
+        );
       }
 
       if (uid) {
         if (!this.isValidUid(uid, uidDtos)) {
-          return this.fail(new Error(`Provided uid is not authorized: ${uid}`));
+          return this.fail(
+            new Error(`Provided uid is not authorized: ${uid}`),
+            InvitationErrorKey.UidNotAuthorized,
+            queryParams,
+          );
         }
         this.agridataStateService.setActiveUid(uid);
       }
@@ -57,38 +83,16 @@ export class CreateConsentRequestGuard implements CanActivate {
       );
 
       return !consentRequests || consentRequests.length === 0
-        ? this.fail(new Error(`No consent requests created for dataRequestId: ${dataRequestId}`))
-        : this.navigateToConsentRequest(consentRequests, dataRequestId, redirectUrl);
-    } catch (error) {
-      if (error instanceof ExternalServiceHttpError) {
-        return this.router.createUrlTree([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR]);
-      }
-      if (error instanceof HttpErrorResponse && error.status === 404) {
-        // Navigate first with redirectUrl as query param if it exists
-        const queryParams = redirectUrl ? { redirect_uri: redirectUrl } : {};
-        const activeUid = this.agridataStateService.activeUid();
-        const urlTree = this.router.createUrlTree(
-          [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, activeUid],
-          {
+        ? this.fail(
+            new Error(`No consent requests created for dataRequestId: ${dataRequestId}`),
+            InvitationErrorKey.TechnicalError,
             queryParams,
-          },
-        );
-
-        setTimeout(() => {
-          // make a custom error to provide a better message
-          const newError = new Error(error.message);
-          this.errorService.handleError(
-            newError,
-            { i18n: 'errors.consentRequest.notFound.message' },
-            { i18n: 'errors.consentRequest.notFound.title' },
-          );
-        }, 100);
-
-        // Delay error handling so the error is registered after navigation and will show on the right page
-        return urlTree;
-      }
-
-      return this.handleError(error);
+          )
+        : this.navigateToConsentRequest(consentRequests, dataRequestId, queryParams);
+    } catch (error) {
+      return error instanceof ExternalServiceHttpError
+        ? this.router.createUrlTree([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR], { queryParams })
+        : this.fail(this.toError(error), this.errorKey(error, uid), queryParams);
     }
   }
 
@@ -102,6 +106,17 @@ export class CreateConsentRequestGuard implements CanActivate {
       : [...uidDtos].map((userUid) => ({ dataRequestId, uid: userUid.uid }));
   }
 
+  // A 403 only blames the UID when the link actually named one.
+  private errorKey(error: unknown, uid?: string): InvitationErrorKey {
+    const status = error instanceof HttpErrorResponse ? error.status : undefined;
+    if (status === 404) {
+      return InvitationErrorKey.NotFound;
+    }
+    return status === 403 && uid
+      ? InvitationErrorKey.UidNotAuthorized
+      : InvitationErrorKey.TechnicalError;
+  }
+
   private extractRouteParameters(route: ActivatedRouteSnapshot): {
     dataRequestId?: string;
     redirectUrl?: string;
@@ -109,26 +124,25 @@ export class CreateConsentRequestGuard implements CanActivate {
   } {
     const dataRequestId = route.paramMap.get('dataRequestId') ?? '';
     const uid = route.queryParamMap.get('uid');
-    const redirectUrl = route.queryParamMap.get('redirect_uri');
 
     return {
       dataRequestId,
-      redirectUrl: redirectUrl ?? undefined,
+      redirectUrl: getRedirectUri(route),
       uid: uid ?? undefined,
     };
   }
 
-  private fail(error: Error): UrlTree {
-    this.errorService.handleError(error);
-    return this.router.parseUrl(ROUTE_PATHS.ERROR);
-  }
-
-  private handleError(error: unknown): UrlTree {
-    return error instanceof Error
-      ? this.fail(error)
-      : this.fail(
-          new Error('Unknown error occurred during consent request creation', { cause: error }),
-        );
+  private fail(
+    error: Error | HttpErrorResponse,
+    key: InvitationErrorKey,
+    queryParams: Record<string, string>,
+  ): UrlTree {
+    this.errorService.handleError(
+      error,
+      { i18n: `errors.invitation.${key}.message` },
+      { i18n: `errors.invitation.${key}.title` },
+    );
+    return this.router.createUrlTree([ROUTE_PATHS.ERROR], { queryParams });
   }
 
   private isValidUid(uid: string, uidDtos: UidDto[]): boolean {
@@ -138,7 +152,7 @@ export class CreateConsentRequestGuard implements CanActivate {
   private navigateToConsentRequest(
     consentRequests: ConsentRequestCreatedDto[],
     dataRequestId: string,
-    redirectUrl?: string,
+    queryParams: Record<string, string>,
   ): UrlTree {
     let activeUid = this.agridataStateService.activeUid();
 
@@ -147,10 +161,15 @@ export class CreateConsentRequestGuard implements CanActivate {
       this.agridataStateService.setActiveUid(activeUid);
     }
 
-    const queryParams = redirectUrl ? { redirect_uri: redirectUrl } : {};
     return this.router.createUrlTree(
       [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, activeUid, dataRequestId],
       { queryParams },
     );
+  }
+
+  private toError(error: unknown): Error | HttpErrorResponse {
+    return error instanceof Error || error instanceof HttpErrorResponse
+      ? error
+      : new Error('Unknown error occurred during consent request creation', { cause: error });
   }
 }

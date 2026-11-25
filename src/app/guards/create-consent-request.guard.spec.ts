@@ -4,7 +4,10 @@ import { ActivatedRouteSnapshot, convertToParamMap, Router, UrlTree } from '@ang
 import { of, throwError } from 'rxjs';
 import type { Mock } from 'vitest';
 
-import { CreateConsentRequestGuard } from '@/app/guards/create-consent-request.guard';
+import {
+  CreateConsentRequestGuard,
+  InvitationErrorKey,
+} from '@/app/guards/create-consent-request.guard';
 import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { CreateConsentRequestDto, UidDto } from '@/entities/openapi';
@@ -36,11 +39,9 @@ describe('createConsentRequestGuard', () => {
   const testConsentRequestId = 'test-consent-request-id';
 
   const mockUrlTree = { toString: () => 'mock-url' } as UrlTree;
-  const mockErrorUrlTree = { toString: () => 'error-url' } as UrlTree;
 
   let mockRouter: {
     createUrlTree: Mock;
-    parseUrl: Mock;
     navigate: Mock;
   };
 
@@ -56,7 +57,6 @@ describe('createConsentRequestGuard', () => {
     errorService = createMockErrorHandlerService();
     mockRouter = {
       createUrlTree: vi.fn().mockReturnValue(mockUrlTree),
-      parseUrl: vi.fn().mockReturnValue(mockErrorUrlTree),
       navigate: vi.fn(),
     };
 
@@ -82,6 +82,18 @@ describe('createConsentRequestGuard', () => {
     createConsentRequestGuard = TestBed.inject(CreateConsentRequestGuard);
   });
 
+  function expectErrorPage(
+    key: InvitationErrorKey,
+    queryParams: Record<string, string> = {},
+  ): void {
+    expect(errorService.handleError).toHaveBeenCalledWith(
+      expect.any(Error),
+      { i18n: `errors.invitation.${key}.message` },
+      { i18n: `errors.invitation.${key}.title` },
+    );
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([ROUTE_PATHS.ERROR], { queryParams });
+  }
+
   it('should be created', () => {
     expect(createConsentRequestGuard).toBeTruthy();
   });
@@ -94,7 +106,8 @@ describe('createConsentRequestGuard', () => {
 
     const result = await createConsentRequestGuard.canActivate(route);
 
-    expect(result).toBe(mockErrorUrlTree);
+    expectErrorPage(InvitationErrorKey.InvalidLink);
+    expect(result).toBe(mockUrlTree);
   });
 
   it('should redirect to error page when no consent requests are created', async () => {
@@ -110,8 +123,8 @@ describe('createConsentRequestGuard', () => {
     const result = await createConsentRequestGuard.canActivate(route);
 
     expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-    expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.ERROR);
-    expect(result).toBe(mockErrorUrlTree);
+    expectErrorPage(InvitationErrorKey.TechnicalError);
+    expect(result).toBe(mockUrlTree);
   });
 
   it('should create multiple consent requests and redirect to consent request matching active uid', async () => {
@@ -249,8 +262,8 @@ describe('createConsentRequestGuard', () => {
 
     const result = await createConsentRequestGuard.canActivate(route);
 
-    expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.ERROR);
-    expect(result).toBe(mockErrorUrlTree);
+    expectErrorPage(InvitationErrorKey.UidNotAuthorized);
+    expect(result).toBe(mockUrlTree);
     // Verify that setActiveUid was not called with the invalid uid
     expect(agridataStateService.setActiveUid).not.toHaveBeenCalledWith(invalidUid);
   });
@@ -269,8 +282,8 @@ describe('createConsentRequestGuard', () => {
     const result = await createConsentRequestGuard.canActivate(route);
 
     expect(consentRequestService.createConsentRequests).toHaveBeenCalledWith(expectedCreateDto);
-    expect(mockRouter.parseUrl).toHaveBeenCalledWith(ROUTE_PATHS.ERROR);
-    expect(result).toBe(mockErrorUrlTree);
+    expectErrorPage(InvitationErrorKey.TechnicalError);
+    expect(result).toBe(mockUrlTree);
   });
 
   it('should redirect to consent request when no activeUid is set but consent requests exist', async () => {
@@ -305,83 +318,69 @@ describe('createConsentRequestGuard', () => {
 
     const result = await createConsentRequestGuard.canActivate(route);
 
-    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR]);
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR], {
+      queryParams: {},
+    });
     expect(result).toBe(mockUrlTree);
   });
 
-  describe('404 error handling with redirect', () => {
-    beforeEach(() => {
-      vi.useFakeTimers();
+  it('should pass the redirect_uri to the external service error page', async () => {
+    const testRedirectUri = 'https://example.com/callback';
+    const route = {
+      paramMap: convertToParamMap({ dataRequestId: testDataRequestId }),
+      queryParamMap: convertToParamMap({ redirect_uri: testRedirectUri }),
+    } as ActivatedRouteSnapshot;
+    authService.initializeAuthorizedUids.mockRejectedValueOnce(new ExternalServiceHttpError());
+
+    await createConsentRequestGuard.canActivate(route);
+
+    expect(mockRouter.createUrlTree).toHaveBeenCalledWith([ROUTE_PATHS.EXTERNAL_SERVICE_ERROR], {
+      queryParams: { redirect_uri: testRedirectUri },
     });
+  });
 
-    afterEach(() => {
-      vi.useRealTimers();
-    });
+  it('should redirect to error page when the user has no uids', async () => {
+    const route = {
+      paramMap: convertToParamMap({ dataRequestId: testDataRequestId }),
+      queryParamMap: convertToParamMap({}),
+    } as ActivatedRouteSnapshot;
+    authService.initializeAuthorizedUids.mockResolvedValue([]);
 
-    it('should navigate to producer page with redirect_uri query param on 404 error', async () => {
-      const testRedirectUri = 'https://example.com/callback';
-      const route = {
-        paramMap: convertToParamMap({ dataRequestId: testDataRequestId }),
-        queryParamMap: convertToParamMap({ redirect_uri: testRedirectUri }),
-      } as ActivatedRouteSnapshot;
+    await createConsentRequestGuard.canActivate(route);
 
-      const httpError = new HttpErrorResponse({ status: 404, statusText: 'Not Found' });
-      consentRequestService.createConsentRequests.mockReturnValue(throwError(() => httpError));
-      agridataStateService.__testSignals.activeUid.set(testUid);
+    expectErrorPage(InvitationErrorKey.NoCompanies);
+  });
 
-      const result = await createConsentRequestGuard.canActivate(route);
+  describe('http error handling', () => {
+    it.each([
+      [404, {}, InvitationErrorKey.NotFound],
+      [403, { uid: testUid }, InvitationErrorKey.UidNotAuthorized],
+      [403, {}, InvitationErrorKey.TechnicalError],
+      [500, {}, InvitationErrorKey.TechnicalError],
+    ])(
+      'should show the error page with the redirect_uri on HTTP %s (link params %o)',
+      async (status, linkParams, key) => {
+        const testRedirectUri = 'https://example.com/callback';
+        const route = {
+          paramMap: convertToParamMap({ dataRequestId: testDataRequestId }),
+          queryParamMap: convertToParamMap({ ...linkParams, redirect_uri: testRedirectUri }),
+        } as ActivatedRouteSnapshot;
+        consentRequestService.createConsentRequests.mockReturnValue(
+          throwError(() => new HttpErrorResponse({ status })),
+        );
 
-      expect(mockRouter.createUrlTree).toHaveBeenCalledWith(
-        [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, testUid],
-        { queryParams: { redirect_uri: testRedirectUri } },
-      );
-      expect(result).toBe(mockUrlTree);
-    });
+        const result = await createConsentRequestGuard.canActivate(route);
 
-    it('should navigate to producer page without query params when no redirect_uri on 404 error', async () => {
-      const route = {
-        paramMap: convertToParamMap({ dataRequestId: testDataRequestId }),
-        queryParamMap: convertToParamMap({}),
-      } as ActivatedRouteSnapshot;
-
-      const httpError = new HttpErrorResponse({ status: 404, statusText: 'Not Found' });
-      consentRequestService.createConsentRequests.mockReturnValue(throwError(() => httpError));
-      agridataStateService.__testSignals.activeUid.set(testUid);
-
-      const result = await createConsentRequestGuard.canActivate(route);
-
-      expect(mockRouter.createUrlTree).toHaveBeenCalledWith(
-        [ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, testUid],
-        { queryParams: {} },
-      );
-      expect(result).toBe(mockUrlTree);
-    });
-
-    it('should handle error with custom title and message after setTimeout on 404', async () => {
-      const route = {
-        paramMap: convertToParamMap({ dataRequestId: testDataRequestId }),
-        queryParamMap: convertToParamMap({}),
-      } as ActivatedRouteSnapshot;
-
-      const httpError = new HttpErrorResponse({
-        status: 404,
-        statusText: 'Not Found',
-        error: { message: 'Data request not found' },
-      });
-      consentRequestService.createConsentRequests.mockReturnValue(throwError(() => httpError));
-      agridataStateService.__testSignals.activeUid.set(testUid);
-
-      await createConsentRequestGuard.canActivate(route);
-
-      expect(errorService.handleError).not.toHaveBeenCalled();
-
-      vi.advanceTimersByTime(100);
-
-      expect(errorService.handleError).toHaveBeenCalledWith(
-        expect.any(Error),
-        { i18n: 'errors.consentRequest.notFound.message' },
-        { i18n: 'errors.consentRequest.notFound.title' },
-      );
-    });
+        expect(errorService.handleError).toHaveBeenCalledWith(
+          expect.any(HttpErrorResponse),
+          { i18n: `errors.invitation.${key}.message` },
+          { i18n: `errors.invitation.${key}.title` },
+        );
+        expect(mockRouter.createUrlTree).toHaveBeenCalledWith([ROUTE_PATHS.ERROR], {
+          queryParams: { redirect_uri: testRedirectUri },
+        });
+        expect(result).toBe(mockUrlTree);
+      },
+    );
   });
 });

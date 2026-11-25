@@ -1,0 +1,22 @@
+@if (target(); as target) {
+  <div
+    class="flex flex-col items-center text-center"
+    data-testid="return-to-app"
+    *i18n="let t; prefix: 'producer.returnToApp'"
+  >
+    <app-agridata-button
+      [variant]="ButtonVariants.IconLink"
+      [icon]="faExternalLink"
+      [iconPosition]="IconPosition.Right"
+      (handleClick)="returnToApp()"
+    >
+      {{ t('button') }}
+      {{ target.host }}
+    </app-agridata-button>
+    @if (!verified()) {
+      <p class="text-xs max-w-full wrap-break-word">
+        {{ t('unverified') }}
+      </p>
+    }
+  </div>
+}

@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 
+import { createMockActivatedRoute } from '@/shared/testing/mocks';
 import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
 
 import { ExternalServiceErrorPage } from './external-service-error.page';
@@ -18,6 +20,7 @@ describe('ExternalServiceErrorPage', () => {
           },
         }),
       ],
+      providers: [{ provide: ActivatedRoute, useValue: createMockActivatedRoute() }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ExternalServiceErrorPage);

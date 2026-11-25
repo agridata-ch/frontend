@@ -1,14 +1,18 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter, Router } from '@angular/router';
+import { By } from '@angular/platform-browser';
+import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 
 import { ErrorDto } from '@/shared/error/error-dto';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import {
+  createMockActivatedRoute,
   createMockErrorHandlerService,
   DummyComponent,
   MockErrorHandlerService,
 } from '@/shared/testing/mocks';
+import { createTranslocoTestingModule } from '@/shared/testing/transloco-testing.module';
+import { ReturnToAppComponent } from '@/shared/ui/return-to-app';
 
 import { ErrorPage } from './error-page.component';
 
@@ -30,16 +34,17 @@ describe('ErrorPageComponent', () => {
   let errorsSignal: ReturnType<typeof signal<ErrorDto[]>>;
   let router: Router;
 
-  beforeEach(async () => {
+  async function setup(queryParams: Record<string, string> = {}): Promise<void> {
     errorService = createMockErrorHandlerService();
     errorsSignal = signal<ErrorDto[]>([]);
     errorService.getAllErrors.mockReturnValue(errorsSignal);
 
     await TestBed.configureTestingModule({
-      imports: [ErrorPage],
+      imports: [ErrorPage, createTranslocoTestingModule({ langs: { de: {} } })],
       providers: [
         { provide: ErrorHandlerService, useValue: errorService },
         provideRouter([{ path: '', component: DummyComponent }]),
+        { provide: ActivatedRoute, useValue: createMockActivatedRoute(queryParams) },
       ],
     }).compileComponents();
 
@@ -47,7 +52,9 @@ describe('ErrorPageComponent', () => {
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     fixture.detectChanges();
-  });
+  }
+
+  beforeEach(() => setup());
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -73,5 +80,19 @@ describe('ErrorPageComponent', () => {
 
     expect(errorService.markAllAsHandled).toHaveBeenCalledTimes(1);
     expect(navSpy).toHaveBeenCalledWith(['/']);
+  });
+
+  it('offers an unverified return to the app when a redirect_uri is given', async () => {
+    TestBed.resetTestingModule();
+    await setup({ redirect_uri: 'https://example.ch/back' });
+
+    const returnToApp = fixture.debugElement.query(By.directive(ReturnToAppComponent));
+
+    expect(returnToApp.componentInstance.url()).toBe('https://example.ch/back');
+    expect(returnToApp.componentInstance.verified()).toBe(false);
+  });
+
+  it('offers no return without a redirect_uri', () => {
+    expect(fixture.debugElement.query(By.directive(ReturnToAppComponent))).toBeNull();
   });
 });

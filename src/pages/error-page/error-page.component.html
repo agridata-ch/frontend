@@ -1,5 +1,8 @@
 <h1>{{ 'errors.errorPage.title' | i18n }}</h1>
 <app-error-alert-list [errors]="errors()" (closeErrors)="closeErrors()"></app-error-alert-list>
+@if (redirectUri; as url) {
+  <app-return-to-app class="block my-6" [url]="url" [verified]="false" />
+}
 <app-agridata-button (handleClick)="back()">{{
   'errors.errorPage.back' | i18n
 }}</app-agridata-button>
