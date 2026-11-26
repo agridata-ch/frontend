@@ -1,3 +1,9 @@
+## [1.26.0-rc.4](https://github.com/agridata-ch/frontend/compare/v1.26.0-rc.3...v1.26.0-rc.4) (2026-11-26)
+
+### Features
+
+- **contract-templates:** add admin page for displaying contract template versions ([d90376c](https://github.com/agridata-ch/frontend/commit/d90376c28eed1f6ebb9012f91f46d57bae6f6e75)), references [DIGIB2-1858](https://github.com/agridata-ch/frontend/issues/-1858)
+
 ## [1.26.0-rc.3](https://github.com/agridata-ch/frontend/compare/v1.26.0-rc.2...v1.26.0-rc.3) (2026-11-25)
 
 ### Features
