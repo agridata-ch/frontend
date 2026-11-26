@@ -44,6 +44,15 @@ interface ToolbarButton {
 }
 
 /**
+ * TipTap serialises an empty paragraph as `<p></p>`, which has no height once rendered, so a blank
+ * line between paragraphs or lists would vanish after saving. Store it as `<p><br></p>` instead, which
+ * renders as one line and is read back as an empty paragraph.
+ */
+function keepEmptyParagraphs(html: string): string {
+  return html.replaceAll('<p></p>', '<p><br></p>');
+}
+
+/**
  * Blocks input that would push the serialised HTML past `limit`, matching the backend's raw-HTML
  * maxLength. Deletions are always allowed so content already over the limit (e.g. loaded from the
  * API) can be edited down.
@@ -60,14 +69,73 @@ function htmlLengthLimit(limit: number | null): Extension {
             if (limit == null || !tr.docChanged) {
               return true;
             }
-            const next = getHTMLFromFragment(tr.doc.content, schema).length;
-            return next <= limit || next <= getHTMLFromFragment(state.doc.content, schema).length;
+            const next = keepEmptyParagraphs(getHTMLFromFragment(tr.doc.content, schema)).length;
+            return (
+              next <= limit ||
+              next <= keepEmptyParagraphs(getHTMLFromFragment(state.doc.content, schema)).length
+            );
           },
         }),
       ];
     },
   });
 }
+
+const BLOCKS = 'p, ul, ol, h1, h2, h3';
+
+/**
+ * Pasted lists carry `<img>` placeholders, `<br>`s sitting directly between list items, and list items
+ * that hold nothing but breaks. TipTap would show those as empty bullets. Drop the images and turn each
+ * of those separators into an empty paragraph between two lists, so the break stays visible without a
+ * bullet. A top-level `<br>` that follows a block (e.g. after a list) likewise becomes an empty paragraph;
+ * one after inline text stays a line break.
+ */
+function cleanListHtml(html: string): string {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  doc.querySelectorAll('img').forEach((img) => img.remove());
+  doc.body.querySelectorAll(':scope > br').forEach((br) => {
+    const previous = br.previousSibling;
+    const followsBlock =
+      previous === null || (previous instanceof Element && previous.matches(BLOCKS));
+    if (followsBlock) {
+      br.replaceWith(doc.createElement('p'));
+    }
+  });
+  doc.querySelectorAll('ul > br, ol > br, li:not(:has(li))').forEach((separator) => {
+    const list = separator.parentElement;
+    if (!list || (separator.tagName === 'LI' && separator.textContent?.trim())) {
+      return;
+    }
+    const rest = list.cloneNode(false);
+    while (separator.nextSibling) {
+      rest.appendChild(separator.nextSibling);
+    }
+    // Keep numbered lists counting on across the break instead of restarting at 1.
+    if (list instanceof HTMLOListElement && rest instanceof HTMLOListElement) {
+      const itemsBefore = [...list.children].filter((c) => c !== separator && c.tagName === 'LI');
+      rest.start = list.start + itemsBefore.length;
+    }
+    separator.remove();
+    const gap = doc.createElement('p');
+    list.after(gap);
+    gap.after(rest);
+    [list, rest].forEach((l) => l instanceof Element && !l.querySelector('li') && l.remove());
+  });
+  return doc.body.innerHTML;
+}
+
+/** Applies {@link cleanListHtml} to pasted HTML. */
+const cleanPastedLists = Extension.create({
+  name: 'cleanPastedLists',
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey('cleanPastedLists'),
+        props: { transformPastedHTML: cleanListHtml },
+      }),
+    ];
+  },
+});
 
 /**
  * Angular's stock `Validators.minLength` checks `control.value.length`, but this control stores
@@ -279,11 +347,20 @@ export class AgridataWysiwygComponent {
           strike: false,
           orderedList: false,
         }),
-        OrderedList.extend({ addAttributes: () => ({}) }),
+        // Only `start` survives (needed to keep numbering across a break); `type` and others are dropped.
+        OrderedList.extend({
+          addAttributes: () => ({
+            start: {
+              default: 1,
+              parseHTML: (el: HTMLElement) => Number(el.getAttribute('start')) || 1,
+            },
+          }),
+        }),
+        cleanPastedLists,
         htmlLengthLimit(this.maxCharacters()),
         Placeholder.configure({ placeholder: this.placeholder() }),
       ],
-      content: typeof control?.value === 'string' ? control.value : '',
+      content: typeof control?.value === 'string' ? cleanListHtml(control.value) : '',
       editable: !this.disabled(),
       editorProps: {
         attributes: { class: 'rich-text-content min-h-40 px-4 py-3 focus:outline-none' },
@@ -331,9 +408,9 @@ export class AgridataWysiwygComponent {
     }
 
     const next = typeof value === 'string' ? value : '';
-    const current = editor.isEmpty ? '' : editor.getHTML();
+    const current = editor.isEmpty ? '' : keepEmptyParagraphs(editor.getHTML());
     if (next !== current) {
-      editor.commands.setContent(next, { emitUpdate: false });
+      editor.commands.setContent(cleanListHtml(next), { emitUpdate: false });
     }
   }
 
@@ -346,6 +423,6 @@ export class AgridataWysiwygComponent {
 
     // An "empty" TipTap document still serialises to <p></p>; normalise to '' so required/minLength
     // validation on the underlying control keeps working.
-    control.setValue(editor.isEmpty ? '' : editor.getHTML());
+    control.setValue(editor.isEmpty ? '' : keepEmptyParagraphs(editor.getHTML()));
   }
 }

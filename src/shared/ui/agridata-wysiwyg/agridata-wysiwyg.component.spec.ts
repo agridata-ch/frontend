@@ -51,6 +51,108 @@ describe('AgridataWysiwygComponent', () => {
 
       expect(presetFixture.nativeElement.textContent).toContain('preset text');
     });
+
+    it.each([
+      ['a br between items', '<ul><li>a</li><br><li>b</li></ul>'],
+      ['an empty item', '<ul><li><p>a</p></li><li><p><br></p></li><li><p>b</p></li></ul>'],
+      [
+        'an img-only item',
+        '<ul><li><p>a</p></li><li><p><img src="x"><br><br></p></li><li><p>b</p></li></ul>',
+      ],
+    ])(
+      'should turn %s into a break between two lists instead of an empty bullet',
+      (_label, stored) => {
+        const listFixture = TestBed.createComponent(AgridataWysiwygComponent);
+        listFixture.componentRef.setInput('control', new FormControl(stored));
+        listFixture.detectChanges();
+
+        const html: string = listFixture.componentInstance['editor']?.getHTML() ?? '';
+        expect(html).toBe('<ul><li><p>a</p></li></ul><p></p><ul><li><p>b</p></li></ul>');
+      },
+    );
+
+    it.each([
+      ['paragraphs', '<p>a</p><br><p>b</p>', '<p>a</p><p></p><p>b</p>'],
+      [
+        'an ul and a paragraph',
+        '<ul><li>a</li></ul><br><p>b</p>',
+        '<ul><li><p>a</p></li></ul><p></p><p>b</p>',
+      ],
+      [
+        'an ol and a heading',
+        '<ol><li>a</li></ol><br><p>b</p>',
+        '<ol><li><p>a</p></li></ol><p></p><p>b</p>',
+      ],
+      ['inline text', 'a<br>b', '<p>a<br>b</p>'],
+      ['inline text with a double br', 'a<br><br>b', '<p>a<br><br>b</p>'],
+    ])('should handle a top-level br between %s', (_label, stored, expected) => {
+      const brFixture = TestBed.createComponent(AgridataWysiwygComponent);
+      brFixture.componentRef.setInput('control', new FormControl(stored));
+      brFixture.detectChanges();
+
+      expect(brFixture.componentInstance['editor']?.getHTML()).toBe(expected);
+    });
+
+    it('should clean list html written to the control after init', () => {
+      control.setValue('<ul><li>a</li><br><li>b</li></ul>');
+
+      // TipTap appends a trailing paragraph after a final list once a transaction runs.
+      expect(component['editor']?.getHTML()).toBe(
+        '<ul><li><p>a</p></li></ul><p></p><ul><li><p>b</p></li></ul><p></p>',
+      );
+    });
+
+    it('should write an empty paragraph to the control as <p><br></p> so the break survives saving', () => {
+      component['editor']?.commands.setContent('<p>a</p><br><p>b</p>');
+
+      expect(control.value).toBe('<p>a</p><p><br></p><p>b</p>');
+    });
+
+    it('should keep numbering across a break inside an ordered list', () => {
+      const olFixture = TestBed.createComponent(AgridataWysiwygComponent);
+      olFixture.componentRef.setInput(
+        'control',
+        new FormControl('<ol><li>a</li><li>b</li><br><li>c</li></ol>'),
+      );
+      olFixture.detectChanges();
+
+      expect(olFixture.componentInstance['editor']?.getHTML()).toContain('<ol start="3">');
+    });
+
+    it('should keep numbering across two breaks inside an ordered list', () => {
+      const olFixture = TestBed.createComponent(AgridataWysiwygComponent);
+      olFixture.componentRef.setInput(
+        'control',
+        new FormControl('<ol><li>a</li><br><li>b</li><br><li>c</li></ol>'),
+      );
+      olFixture.detectChanges();
+
+      expect(olFixture.componentInstance['editor']?.getHTML()).toContain('<ol start="3">');
+    });
+
+    it('should keep the trailing breaks of a list item and drop its img', () => {
+      const listFixture = TestBed.createComponent(AgridataWysiwygComponent);
+      listFixture.componentRef.setInput(
+        'control',
+        new FormControl('<ul><li><p>a<img src="x"><br><br></p></li></ul>'),
+      );
+      listFixture.detectChanges();
+
+      const html: string = listFixture.componentInstance['editor']?.getHTML() ?? '';
+      expect(html).toContain('<br>');
+      expect(html).not.toContain('<img');
+    });
+
+    it('should keep intentional line breaks inside a list item', () => {
+      const listFixture = TestBed.createComponent(AgridataWysiwygComponent);
+      listFixture.componentRef.setInput(
+        'control',
+        new FormControl('<ul><li><p>a<br>b</p></li></ul>'),
+      );
+      listFixture.detectChanges();
+
+      expect(listFixture.componentInstance['editor']?.getHTML()).toContain('a<br>b');
+    });
   });
 
   describe('view mode', () => {
