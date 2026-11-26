@@ -190,7 +190,10 @@ export class AgridataStateService {
       if (this.authService.isSupporter()) return 'SUPPORT';
       return this.authService.isAdmin() ? 'ADMIN' : undefined;
     }
-    if (route.startsWith(`/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`)) {
+    if (
+      route.startsWith(`/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`) ||
+      route.startsWith(`/${ROUTE_PATHS.MY_FARM_PATH}`)
+    ) {
       if (this.authService.isProducer()) return 'PRODUCER';
       if (this.authService.isAdmin()) return 'ADMIN';
       return this.authService.isSupporter() ? 'SUPPORT' : undefined;

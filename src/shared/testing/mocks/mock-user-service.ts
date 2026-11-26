@@ -24,6 +24,7 @@ export function createMockUserService(): MockUserService {
     getProducers: vi
       .fn()
       .mockReturnValue(Promise.resolve({ items: [], totalItems: 0, totalPages: 1, page: 0 })),
+    getFarmOverview: vi.fn().mockResolvedValue({ company: { uid: '123' }, farms: [] }),
     getUidByBur: vi.fn().mockReturnValue(Promise.resolve({ uid: '123' } as UidDto)),
   };
 }

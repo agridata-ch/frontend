@@ -123,13 +123,17 @@ describe('producerUidGuard', () => {
     sessionStorage.clear();
   });
 
-  it('should not rewrite route if not on consent request route', async () => {
+  it('should set the default uid without rewriting the route if not on consent request route', async () => {
     authService.__testSignals.isAuthenticated.set(true);
     authService.__testSignals.userRoles.set([USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER]);
+    agridataStateService.getDefaultUid.mockReturnValue(uid);
 
-    const guardResult = await producerUidGuard.canActivate(activatedRouteSnapshot('', '', {}));
+    const guardResult = await producerUidGuard.canActivate(
+      activatedRouteSnapshot(ROUTE_PATHS.MY_FARM_PATH, '', {}),
+    );
 
     expect(guardResult).toEqual(true);
+    expect(agridataStateService.setActiveUid).toHaveBeenCalledWith(uid);
   });
 
   it('should redirect to error if user doesnt own uid', async () => {

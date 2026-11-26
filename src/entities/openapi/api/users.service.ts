@@ -21,6 +21,8 @@ import { BurDto } from '../model/burDto';
 // @ts-ignore
 import { ExceptionDto } from '../model/exceptionDto';
 // @ts-ignore
+import { FarmOverviewDto } from '../model/farmOverviewDto';
+// @ts-ignore
 import { PageResponseDtoAgbAcceptanceOverviewDto } from '../model/pageResponseDtoAgbAcceptanceOverviewDto';
 // @ts-ignore
 import { PageResponseDtoUserInfoDto } from '../model/pageResponseDtoUserInfoDto';
@@ -287,6 +289,69 @@ export class UsersService extends BaseService {
         let localVarPath = `/api/user/v1/authorized-uids`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<Array<UidDto>>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get Farm Overview
+     * Retrieves the company and its authorized farms (BUR, KT_ID_B, farm type, address) for the given UID.
+     * @param uid UID of the company
+     * @param actingRole Selects the role in which the authenticated user acts for this request. Optional: if the authenticated user holds exactly one of the allowed roles, the value is auto-resolved. Returns 400 if the value is unknown, not allowed for this endpoint, or omitted while the user holds multiple matching roles. Returns 403 if the user does not hold the role specified in the parameter.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getFarmOverview(uid: string, actingRole?: 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<FarmOverviewDto>;
+    public getFarmOverview(uid: string, actingRole?: 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<FarmOverviewDto>>;
+    public getFarmOverview(uid: string, actingRole?: 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<FarmOverviewDto>>;
+    public getFarmOverview(uid: string, actingRole?: 'PRODUCER' | 'ADMIN' | 'SUPPORT', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (uid === null || uid === undefined) {
+            throw new Error('Required parameter uid was null or undefined when calling getFarmOverview.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>actingRole, 'actingRole');
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (SecurityScheme) required
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'application/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/user/v1/uids/${this.configuration.encodeParam({name: "uid", value: uid, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/farm-overview`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<FarmOverviewDto>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

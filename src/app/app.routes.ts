@@ -21,6 +21,7 @@ import { ForbiddenPage } from '@/pages/forbidden';
 import { ImprintPage } from '@/pages/imprint-page';
 import { LandingPage } from '@/pages/landing-page';
 import { MaintenancePage } from '@/pages/maintenance';
+import { MyFarmPage } from '@/pages/my-farm-page';
 import { NewsArticleDetailPage } from '@/pages/news-article-detail-page';
 import { NoAccessPage } from '@/pages/no-access';
 import { NotFoundPage } from '@/pages/not-found';
@@ -180,6 +181,14 @@ export const routes: Routes = [
         ],
       },
     ],
+  },
+  {
+    path: ROUTE_PATHS.MY_FARM_PATH,
+    title: 'my-farm.pageTitle',
+    component: DefaultLayoutComponent,
+    canActivate: [autoLoginPartialRoutesGuard, AuthorizationGuard],
+    data: { roles: [USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER, USER_ROLES.AGRIDATA_SUPPORTER] },
+    children: [{ path: '', component: MyFarmPage, canActivate: [ProducerUidGuard] }],
   },
   {
     // consumer routes

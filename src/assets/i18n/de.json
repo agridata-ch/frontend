@@ -436,7 +436,8 @@
           "heading": "Vertragssiegelung",
           "description": "Alle erforderlichen Signaturen der Datenbezüger und Datenanbieter sind erfasst und im PDF abgebildet. Zur finalen Abschliessung muss nun die Siegelung des Vertrags über den Signaturdienst des BIT initiiert werden.",
           "action": "Vertrag siegeln"
-        }
+        },
+        "templateVersion": "Vertragsversion"
       },
       "producer": {
         "emptyState": {
@@ -682,7 +683,8 @@
     "uid": "UID",
     "bur": "BUR",
     "lastChanged": "Geändert am",
-    "provider": "Datenanbieter"
+    "provider": "Datenanbieter",
+    "contractTemplateVersion": "Vertragsversion"
   },
   "forms": {
     "error": {
@@ -712,8 +714,7 @@
     "pageTitle": "Datenanfragen",
     "redirect": {
       "headline": "Erledigt!",
-      "description": "Besten Dank für Ihre Entscheidung,\u2028Sie werden in {{ count }} Sekunden automatisch zurück geleitet.",
-      "redirectNow": "Direkt zurück"
+      "description": "Besten Dank für Ihre Entscheidung,\u2028Sie werden in {{ count }} Sekunden automatisch zurück geleitet."
     },
     "uidMissingWarning": "Zu Ihrer Person oder Unternehmen ist zurzeit noch keine UID vorhanden. Da verschiedene Systeme involviert sind, kann es einige Tage dauern bis wir alle relevanten Angaben haben, damit agridata.ch funktionieren kann. Bitte versuchen Sie es in ein paar Tagen nochmal. Besteht Ihr Problem weiterhin, melden Sie sich bitte beim Support ({{ phoneNumber }}).",
     "migrationInfo": {
@@ -729,6 +730,11 @@
         "requestsFromConsumer": "Übernommene Anfrage von {{consumerName}}",
         "tableHint": "Sie müssen nichts weiter tun. Sollten Sie eine Zustimmung nicht mehr wünschen, können Sie diese jederzeit hier auf agridata.ch ändern: Öffnen Sie dazu einfach die entsprechende Datenanfrage in der untenstehenden Tabelle und wählen Sie \"Ablehnen\"."
       }
+    },
+    "returnToApp": {
+      "unverified": "Achtung: Die Rücksprungadresse konnte nicht überprüft werden.",
+      "target": "Dieser Link führt zu:",
+      "button": "Zurück zur Anwendung"
     }
   },
   "header": {
@@ -862,16 +868,31 @@
       "message": "Unsere Anwendung ist derzeit wegen Wartungsarbeiten nicht erreichbar.\nWir sind bald wieder online."
     },
     "reloadPage": "Seite neu laden",
-    "consentRequest": {
-      "notFound": {
-        "title": "Dieser Link ist ungültig",
-        "message": "Der aufgerufene Link führt zu keinem Antrag. Bitte überprüfen Sie den Link oder kontaktieren Sie die Organisation, die Ihnen diesen Link geschickt hat."
-      },
-      "modalTitle": "Hoppla, etwas hat nicht funktioniert..."
-    },
     "externalServiceErrorPage": {
       "title": "Verbindung unterbrochen",
       "message": "Unsere Webseite ist derzeit wegen einem Unterbruch nicht erreichbar.\nWir sind schnellstmöglich wieder online."
+    },
+    "invitation": {
+      "invalidLink": {
+        "title": "Dieser Link ist ungültig",
+        "message": "Der aufgerufene Link führt zu keinem Antrag. Bitte überprüfen Sie den Link oder kontaktieren Sie die Organisation, die Ihnen diesen Link geschickt hat."
+      },
+      "noCompanies": {
+        "title": "Kein Betrieb gefunden",
+        "message": "Ihrem Konto ist zurzeit kein Betrieb (UID) zugeordnet. Deshalb kann die Datenanfrage nicht geöffnet werden. Bitte wenden Sie sich an den Support."
+      },
+      "uidNotAuthorized": {
+        "title": "Keine Berechtigung",
+        "message": "Sie sind nicht berechtigt, für den im Link angegebenen Betrieb (UID) Datenanfragen zu beantworten. Bitte melden Sie sich mit dem richtigen Konto an oder kontaktieren Sie die Organisation, die Ihnen diesen Link geschickt hat."
+      },
+      "notFound": {
+        "title": "Datenanfrage nicht gefunden",
+        "message": "Die Datenanfrage zu diesem Link wurde nicht gefunden. Bitte überprüfen Sie den Link oder kontaktieren Sie die Organisation, die Ihnen diesen Link geschickt hat."
+      },
+      "technicalError": {
+        "title": "Technischer Fehler",
+        "message": "Beim Erstellen Ihrer Anfrage ist ein technischer Fehler aufgetreten. Bitte versuchen Sie es später noch einmal."
+      }
     }
   },
   "breadcrumb": {
@@ -1602,5 +1623,38 @@
       "validTo": "Gültig bis",
       "validFrom": "Gültig ab"
     }
+  },
+  "my-farm": {
+    "uid": "Unternehmens-Identifikation (UID)",
+    "bur": "Betriebsstättennummer (BUR)",
+    "pageTitle": "Mein Betrieb",
+    "copyAll": "Alles kopieren",
+    "ktIdB": "Kantonale Betriebs-ID (KT_ID_B)",
+    "wrongData": {
+      "title": "Falsche Angaben oder fehlende Informationen?",
+      "text": "Wenden Sie sich für Korrekturen direkt an ihr kantonales Amt. Besten Dank."
+    },
+    "farmType": {
+      "GANZJAHRESBETRIEB": "GANZJAHRESBETRIEB",
+      "PRODUKTIONSSTAETTE": "PRODUKTIONSSTAETTE",
+      "GEMEINSCHAFTSWEIDEBETRIEB": "GEMEINSCHAFTSWEIDEBETRIEB",
+      "SOEMMERUNGSBETRIEB": "SOEMMERUNGSBETRIEB",
+      "BETRIEBSGEMEINSCHAFT": "BETRIEBSGEMEINSCHAFT",
+      "VIEHHANDELSUNTERNEHMEN": "VIEHHANDELSUNTERNEHMEN",
+      "WANDERHERDE": "WANDERHERDE",
+      "TIERKLINIK": "TIERKLINIK",
+      "SCHLACHTBETRIEB": "SCHLACHTBETRIEB",
+      "VIEHMAERKTE_UND_VERANSTALTUNGEN": "VIEHMAERKTE_UND_VERANSTALTUNGEN",
+      "BETRIEBSZWEIGGEMEINSCHAFT": "BETRIEBSZWEIGGEMEINSCHAFT",
+      "NICHTKOMMERZIELLE_TIERHALTUNG": "NICHTKOMMERZIELLE_TIERHALTUNG",
+      "OELN_GEMEINSCHAFT": "OELN_GEMEINSCHAFT",
+      "VERGAERUNG_KOMPOSTIERUNG_NAEHRSTOFFPOOL": "VERGAERUNG_KOMPOSTIERUNG_NAEHRSTOFFPOOL",
+      "TIERHALTUNG": "TIERHALTUNG",
+      "NICHT_ZUGETEILT": "Nicht zugeteilt",
+      "UNKNOWN": "Unbekannt"
+    },
+    "copy": "Kopieren",
+    "copied": "Erfolgreich in Zwischenablage kopiert",
+    "copyFailed": "Kopieren fehlgeschlagen"
   }
 }
