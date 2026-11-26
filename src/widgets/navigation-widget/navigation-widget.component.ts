@@ -4,6 +4,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faDatabase,
+  faFarm,
   faFileCheck,
   faFiles,
   faFileSignature,
@@ -74,6 +75,12 @@ export class NavigationWidgetComponent {
         label: 'producer.pageTitle',
         icon: faFileCheck,
         route: `/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`,
+      },
+      (this.userRoles()?.includes(USER_ROLES.AGRIDATA_CONSENT_REQUESTS_PRODUCER) ||
+        this.agridataStateService.isImpersonating()) && {
+        label: 'my-farm.pageTitle',
+        icon: faFarm,
+        route: `/${ROUTE_PATHS.MY_FARM_PATH}`,
       },
       this.userRoles()?.includes(USER_ROLES.AGRIDATA_DATA_REQUESTS_PROVIDER) && {
         label: 'provider.pageTitle',

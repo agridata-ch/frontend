@@ -8,6 +8,7 @@ import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { ErrorDto } from '@/shared/error/error-dto';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
@@ -100,6 +101,27 @@ describe('ConsentRequestProducerPage - component behavior', () => {
 
     expect(navSpy).toHaveBeenCalledWith([req.id], {
       relativeTo: activeRoute,
+    });
+  });
+
+  describe('uid url sync', () => {
+    it('navigates to the active uid when it differs from the route uid', async () => {
+      activeRoute.snapshot.paramMap = convertToParamMap({ uid: 'old-uid' });
+      agridataStateService.__testSignals.activeUid.set(activeUid);
+      await fixture.whenStable();
+
+      expect(mockRouter.navigate).toHaveBeenCalledWith([
+        ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH,
+        activeUid,
+      ]);
+    });
+
+    it('does not navigate when the route already shows the active uid', async () => {
+      activeRoute.snapshot.paramMap = convertToParamMap({ uid: activeUid });
+      agridataStateService.__testSignals.activeUid.set(activeUid);
+      await fixture.whenStable();
+
+      expect(mockRouter.navigate).not.toHaveBeenCalled();
     });
   });
 

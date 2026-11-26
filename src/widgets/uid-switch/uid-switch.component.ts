@@ -1,9 +1,7 @@
-import { Location } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { UidDto } from '@/entities/openapi';
-import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 import { AgridataAvatarComponent, AvatarSize, AvatarSkin } from '@/shared/ui/agridata-avatar';
 
@@ -12,9 +10,10 @@ import { UidSwitchVariant } from './uid-switch.model';
 /**
  * Implements the UID switch logic and presentation. It allows users to switch between different UIDs,
  * displays the currently selected UID, and provides a way to select a new UID. The component manages
- * the selected UID state and ensures UIDs are sorted consistently.
+ * the selected UID state and ensures UIDs are sorted consistently. Only updates the active UID;
+ * pages react to it (e.g. the consent request page syncs its URL).
  *
- * CommentLastReviewed: 2025-08-25
+ * CommentLastReviewed: 2026-11-26
  */
 @Component({
   selector: 'app-uid-switch',
@@ -23,7 +22,6 @@ import { UidSwitchVariant } from './uid-switch.model';
 })
 export class UidSwitchComponent {
   readonly agridataStateService = inject(AgridataStateService);
-  readonly location = inject(Location);
   readonly authService = inject(AuthService);
   readonly additionalClass = input<string | null>(null);
 
@@ -51,7 +49,6 @@ export class UidSwitchComponent {
   selectUid(uid: string | undefined) {
     if (uid) {
       this.agridataStateService.setActiveUid(uid);
-      this.location.go(`${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}/${uid}`);
     }
   }
 }

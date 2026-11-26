@@ -436,7 +436,8 @@
           "heading": "Scellement du contrat",
           "description": "Toutes les signatures requises des bénéficiaires et des fournisseurs de données ont été saisies et sont affichées dans le PDF. Pour finaliser le contrat, le scellement du contrat via le service de signature d’OFIT doit maintenant être initié.",
           "action": "Sceller le contrat"
-        }
+        },
+        "templateVersion": "Version du contrat"
       },
       "producer": {
         "emptyState": {
@@ -682,7 +683,8 @@
     "uid": "IDE",
     "bur": "BUR",
     "lastChanged": "Modifié le",
-    "provider": "Fournisseur de données"
+    "provider": "Fournisseur de données",
+    "contractTemplateVersion": "Version du contrat"
   },
   "forms": {
     "error": {
@@ -712,8 +714,7 @@
     "pageTitle": "Demandes",
     "redirect": {
       "headline": "C'est fait !",
-      "description": "Merci d'avoir choisi.\u2028Vous serez redirigé automatiquement dans {{ count }} secondes.",
-      "redirectNow": "Retour direct"
+      "description": "Merci d'avoir choisi.\u2028Vous serez redirigé automatiquement dans {{ count }} secondes."
     },
     "uidMissingWarning": "Aucun numéro d'identification fiscale (IDE) n'est encore enregistré pour vous ou votre entreprise. Étant donné que plusieurs systèmes sont impliqués, cela peut prendre quelques jours avant que nous disposions de toutes les informations nécessaires au bon fonctionnement d'agridata.ch. Veuillez réessayer dans quelques jours. Si le problème persiste, veuillez contacter le service d'assistance ({{ phoneNumber }}).",
     "migrationInfo": {
@@ -729,6 +730,11 @@
         "requestsFromConsumer": "Demandes transférées de {{consumerName}}",
         "tableHint": "Vous n’avez rien d’autre à faire. Si vous ne souhaitez plus donner votre accord pour une demande, vous pouvez le modifier à tout moment ici sur agridata.ch : ouvrez simplement la demande de données correspondante dans le tableau ci-dessous et sélectionnez « Refuser »."
       }
+    },
+    "returnToApp": {
+      "unverified": "Attention : L'adresse de retour n'a pas pu être vérifiée.",
+      "target": "Ce lien mène à:",
+      "button": "Retour à l'application"
     }
   },
   "header": {
@@ -862,16 +868,31 @@
       "message": "Notre application est actuellement indisponible en raison de maintenance.\nNous serons bientôt de nouveau en ligne."
     },
     "reloadPage": "Recharger la page",
-    "consentRequest": {
-      "notFound": {
-        "title": "Ce lien n'est pas valide",
-        "message": "Le lien consulté ne mène à aucune demande. Veuillez vérifier le lien ou contacter l'organisation qui vous l'a envoyé."
-      },
-      "modalTitle": "Oups, quelque chose n'a pas fonctionné..."
-    },
     "externalServiceErrorPage": {
       "title": "Connexion interrompue",
       "message": "Notre site web est actuellement indisponible en raison d'une panne.\nNous serons de nouveau en ligne dès que possible."
+    },
+    "invitation": {
+      "invalidLink": {
+        "title": "Ce lien n'est pas valide",
+        "message": "Le lien consulté ne mène à aucune demande. Veuillez vérifier le lien ou contacter l'organisation qui vous l'a envoyé."
+      },
+      "noCompanies": {
+        "title": "Aucune entreprise trouvée",
+        "message": "Aucune entreprise (UID) n'est actuellement associée à votre compte. La demande de données ne peut donc pas être ouverte. Veuillez contacter le support."
+      },
+      "uidNotAuthorized": {
+        "title": "Aucune autorisation",
+        "message": "Vous n'êtes pas autorisé à répondre aux demandes de données pour l'entreprise (UID) spécifiée dans le lien. Veuillez vous connecter avec le bon compte ou contacter l'organisation qui vous a envoyé ce lien."
+      },
+      "notFound": {
+        "title": "Demande de données non trouvée",
+        "message": "La demande de données pour ce lien n'a pas été trouvée. Veuillez vérifier le lien ou contacter l'organisation qui vous a envoyé ce lien."
+      },
+      "technicalError": {
+        "title": "Erreur technique",
+        "message": "Une erreur technique s'est produite lors de la création de votre demande. Veuillez réessayer plus tard."
+      }
     }
   },
   "breadcrumb": {
@@ -1601,6 +1622,14 @@
       "version": "Version",
       "validTo": "Valide jusqu'à",
       "validFrom": "Valide depuis"
+    }
+  },
+  "my-farm": {
+    "uid": "Numéro d'identification de l'entreprise (IDE)",
+    "bur": "Numéro d'établissement (BUR)",
+    "farmType": {
+      "NICHT_ZUGETEILT": "Non attribué",
+      "UNKNOWN": "Inconnu"
     }
   }
 }

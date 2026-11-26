@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 
 import { BackendInfoService } from '@/entities/api/backend-info.service';
 import { UserService } from '@/entities/api/user.service';
-import { AGATE_LOGIN_ID_IMPERSONATION_HEADER } from '@/shared/constants/constants';
+import { AGATE_LOGIN_ID_IMPERSONATION_HEADER, ROUTE_PATHS } from '@/shared/constants/constants';
 import { AuthService } from '@/shared/lib/auth';
 import {
   BE_VERSION,
@@ -59,6 +59,26 @@ describe('AgridataStateService', () => {
 
     expect(service.userPreferences()?.mainMenuOpened).toBe(false);
     expect(service.userPreferences()?.dismissedMigratedIds).toEqual([]);
+  });
+
+  it('resolves the producer acting role on the my farm page', () => {
+    const route = `/${ROUTE_PATHS.MY_FARM_PATH}`;
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        AgridataStateService,
+        {
+          provide: Router,
+          useValue: { url: route, events: of(new NavigationEnd(1, route, route)) },
+        },
+        { provide: UserService, useValue: userService },
+        { provide: AuthService, useValue: authService },
+        { provide: BackendInfoService, useValue: backendVersionService },
+      ],
+    });
+    authService.__testSignals.isProducer.set(true);
+
+    expect(TestBed.inject(AgridataStateService).actingRole()).toBe('PRODUCER');
   });
 
   it('setActiveUid updates preferences and calls userService.updateUserPreferences', async () => {

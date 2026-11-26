@@ -1,4 +1,3 @@
-import { provideLocationMocks } from '@angular/common/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
@@ -34,7 +33,6 @@ describe('UidSwitchComponent', () => {
           provide: AuthService,
           useValue: authService,
         },
-        provideLocationMocks(),
       ],
     }).compileComponents();
 

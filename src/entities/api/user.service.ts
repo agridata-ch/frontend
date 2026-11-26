@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import {
   AgbAcceptanceOverviewDto,
   BurDto,
+  FarmOverviewDto,
   ResourceQueryDto,
   UidDto,
   UserInfoDto,
@@ -20,6 +21,12 @@ import {
   asPageResponse,
   columnFiltersToObject,
 } from '@/shared/lib/api.helper';
+
+const UID_ACTING_ROLES = ['PRODUCER', 'ADMIN', 'SUPPORT'] as const;
+
+function isUidActingRole(role: ActingRole | undefined): role is (typeof UID_ACTING_ROLES)[number] {
+  return UID_ACTING_ROLES.some((allowed) => allowed === role);
+}
 
 /**
  * Service for interacting with participant-related API endpoints. Provides methods to retrieve UIDs
@@ -56,12 +63,18 @@ export class UserService {
     return this.apiService.getAuthorizedUids(
       undefined,
       undefined,
-      actingRole as 'PRODUCER' | 'ADMIN' | 'SUPPORT' | undefined,
+      isUidActingRole(actingRole) ? actingRole : undefined,
       undefined,
       undefined,
       {
         context: new HttpContext().set(AUTHORIZED_UIDS_ERROR_HANDLING, true),
       },
+    );
+  }
+
+  getFarmOverview(uid: string, actingRole?: ActingRole): Promise<FarmOverviewDto> {
+    return firstValueFrom(
+      this.apiService.getFarmOverview(uid, isUidActingRole(actingRole) ? actingRole : undefined),
     );
   }
 

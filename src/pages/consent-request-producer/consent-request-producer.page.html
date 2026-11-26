@@ -6,12 +6,7 @@
   </div>
 </ng-container>
 @if (!hasRedirectUrl()) { @if (uidMissing()) {
-<app-alert
-  [type]="AlertType.WARNING"
-  [showCloseButton]="false"
-  class="mb-4"
-  [message]="uidMissingWarning()"
-/>
+<app-uid-missing-alert />
 }
 <app-error-outlet></app-error-outlet>
 }

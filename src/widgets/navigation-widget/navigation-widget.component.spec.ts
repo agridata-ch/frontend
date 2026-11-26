@@ -85,8 +85,10 @@ describe('NavigationWidgetComponent', () => {
 
       const items = component.navigationItems();
       expect(Array.isArray(items)).toBe(true);
-      expect(items).toHaveLength(1);
-      expect(items[0].route).toBe(`/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`);
+      expect(items.map((item) => item.route)).toEqual([
+        `/${ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH}`,
+        `/${ROUTE_PATHS.MY_FARM_PATH}`,
+      ]);
     });
   });
 });

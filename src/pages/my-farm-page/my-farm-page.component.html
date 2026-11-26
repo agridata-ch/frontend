@@ -1,0 +1,76 @@
+<ng-container *i18n="let t; prefix: 'my-farm'">
+  <div class="flex sm:items-center justify-between gap-4 mb-8 flex-col sm:flex-row">
+    <div class="flex gap-3 items-center">
+      <fa-icon [icon]="faFarm" size="2xl" />
+      <h1>{{ t('pageTitle') }}</h1>
+    </div>
+    @if (sections().length > 0) {
+      <app-agridata-button
+        [size]="ButtonSize.MD"
+        [variant]="ButtonVariants.IconLink"
+        [icon]="faCopy"
+        dataTestId="copy-all"
+        additionalClass="self-end"
+        (handleClick)="copyAll($event)"
+      >
+        {{ t('copyAll') }}
+      </app-agridata-button>
+    }
+  </div>
+  @if (uidMissing()) {
+    <app-uid-missing-alert />
+  }
+  <app-error-outlet />
+
+  <!-- The company card spans a full row (half width from xl); farm cards take a half (md-lg) or a third (xl, 6-column grid). -->
+  <div class="grid grid-cols-1 gap-6 md:gap-8 md:grid-cols-2 xl:grid-cols-6">
+    @for (section of sections(); track $index) {
+      <div [class]="section.farmType ? 'xl:col-span-2' : 'md:col-span-2 xl:col-span-6'">
+        <section
+          class="flex flex-col h-full rounded-lg border border-agridata-stroke bg-white"
+          [class.xl:w-1/2]="!section.farmType"
+          data-testid="farm-section"
+        >
+          <div class="flex flex-col gap-2 px-4 py-6">
+            <h2 class="font-semibold">
+              {{ section.farmType ? t('farmType.' + section.farmType) : section.title }}
+            </h2>
+            <p>{{ section.address }}</p>
+          </div>
+          <div class="divide-y divide-agridata-stroke">
+            @for (field of section.fields; track field.key) {
+              <div class="flex items-center justify-between gap-4 px-4 py-4">
+                <div class="flex flex-col gap-1 min-w-0">
+                  <span class="text-agridata-secondary-text">{{ t(field.key) }}</span>
+                  <span
+                    class="text-2xl md:text-[32px] font-bold text-agridata-primary-text break-all"
+                  >
+                    {{ field.value }}
+                  </span>
+                </div>
+                <app-agridata-button
+                  [size]="ButtonSize.MD"
+                  [variant]="ButtonVariants.IconLink"
+                  [icon]="faCopy"
+                  additionalClass="shrink-0"
+                  [dataTestId]="'copy-' + field.key"
+                  (handleClick)="copyFeedback.copy(field.value, $event)"
+                  [tooltip]="t('copy')"
+                >
+                  <span class="max-md:sr-only">{{ t('copy') }}</span>
+                  <span class="sr-only">{{ t(field.key) }}</span>
+                </app-agridata-button>
+              </div>
+            }
+          </div>
+        </section>
+      </div>
+    }
+  </div>
+
+  <div class="flex flex-col gap-2 mt-8">
+    <h2 class="text-lg font-semibold">{{ t('wrongData.title') }}</h2>
+    <p class="text-md">{{ t('wrongData.text') }}</p>
+  </div>
+  <output class="sr-only">{{ copyFeedback.message() }}</output>
+</ng-container>

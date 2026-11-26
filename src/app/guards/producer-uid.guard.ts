@@ -9,9 +9,11 @@ import { ExternalServiceHttpError } from '@/shared/error/external-service-http-e
 import { AuthService } from '@/shared/lib/auth';
 
 /**
- * Guard to load the producers authorized uids and set the consent request uid parameter if not present or set active uid if parameter is provided.
+ * Guard to load the producers authorized uids and ensure an active uid is set: from the uid route
+ * parameter if provided, otherwise the default uid. On the consent request page a missing uid
+ * parameter redirects to the default uid.
  *
- * CommentLastReviewed: 2025-12-01
+ * CommentLastReviewed: 2026-11-26
  */
 @Service()
 export class ProducerUidGuard implements CanActivate {
@@ -42,10 +44,6 @@ export class ProducerUidGuard implements CanActivate {
   }
 
   private handleMissingUid(route: ActivatedRouteSnapshot, uidDtos: UidDto[]): UrlTree | boolean {
-    if (!this.isConsentRequestProducerPath(route)) {
-      return true;
-    }
-
     const defaultUid = this.agridataStateService.getDefaultUid(uidDtos);
 
     if (!defaultUid) {
@@ -58,6 +56,10 @@ export class ProducerUidGuard implements CanActivate {
     }
 
     this.agridataStateService.setActiveUid(defaultUid);
+
+    if (!this.isConsentRequestProducerPath(route)) {
+      return true;
+    }
 
     return this.isConsentRequestCreatePath(route)
       ? true

@@ -18,6 +18,7 @@ import { ConsentRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { ConsentRequestAggregationSummaryDto } from '@/entities/openapi';
 import { FORCE_RELOAD_CONSENT_REQUESTS_STATE_PARAM } from '@/shared/consent-request';
+import { ROUTE_PATHS } from '@/shared/constants/constants';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { ErrorOutletComponent } from '@/shared/error-alert-outlet/error-outlet.component';
 import { I18nDirective, I18nPipe, I18nService } from '@/shared/i18n';
@@ -25,12 +26,12 @@ import {
   createResourceErrorHandlerEffect,
   createResourceValueComputed,
 } from '@/shared/lib/api.helper';
-import { AlertComponent, AlertType } from '@/shared/ui/alert';
 import { ButtonComponent } from '@/shared/ui/button';
 import { ModalComponent } from '@/shared/ui/modal';
 import { ConsentRequestMigrationAlertsComponent } from '@/widgets/consent-request-migration-alerts';
 import { ConsentRequestTableComponent } from '@/widgets/consent-request-table';
 import { ConsentRequestsTourIntroComponent } from '@/widgets/consent-requests-tour/consent-requests-tour-intro/consent-requests-tour-intro.component';
+import { UidMissingAlertComponent } from '@/widgets/uid-missing-alert';
 
 /**
  * Handles the display and interaction of consent requests for producers. It displays a table of
@@ -39,12 +40,11 @@ import { ConsentRequestsTourIntroComponent } from '@/widgets/consent-requests-to
  * it also handles the redirect to an external URL if specified in the route state and validated against
  * the request's valid redirect URI regex.
  *
- * CommentLastReviewed: 2026-03-09
+ * CommentLastReviewed: 2026-11-27
  */
 @Component({
   selector: 'app-consent-request-producer-page',
   imports: [
-    AlertComponent,
     ButtonComponent,
     ConsentRequestMigrationAlertsComponent,
     ConsentRequestsTourIntroComponent,
@@ -55,6 +55,7 @@ import { ConsentRequestsTourIntroComponent } from '@/widgets/consent-requests-to
     I18nPipe,
     ModalComponent,
     RouterOutlet,
+    UidMissingAlertComponent,
   ],
   templateUrl: './consent-request-producer.page.html',
 })
@@ -83,11 +84,9 @@ export class ConsentRequestProducerPage {
 
   // Constants
   protected readonly fileIcon = faFileCheck;
-  protected readonly AlertType = AlertType;
   protected readonly uidMissing = this.agridataStateService.uidMissing;
 
   // Signals
-  readonly phoneNumber = this.i18nService.translateSignal('support-info.phoneNumber');
   private readonly redirectUrlFromQuery = signal<string | null>(null);
 
   // Resources
@@ -123,6 +122,14 @@ export class ConsentRequestProducerPage {
     }
   });
 
+  // The UID switch only updates the active uid; keep the :uid route param in sync with it.
+  private readonly syncUidToUrlEffect = effect(() => {
+    const uid = this.agridataStateService.activeUid();
+    if (uid && uid !== this.activeRoute.snapshot.paramMap.get('uid')) {
+      void this.router.navigate([ROUTE_PATHS.CONSENT_REQUEST_PRODUCER_PATH, uid]);
+    }
+  });
+
   private readonly handleFetchConsentRequestErrorsEffect = createResourceErrorHandlerEffect(
     this.consentRequestResource,
     this.errorService,
@@ -136,13 +143,6 @@ export class ConsentRequestProducerPage {
   protected readonly showRedirect = computed(() => this.hasRedirectUrl() && this.hasErrors());
   protected readonly redirectUrl = computed(() => this.redirectUrlFromQuery());
   protected readonly locale = computed(() => this.i18nService.lang());
-
-  protected readonly uidMissingWarning = computed(() => {
-    const phoneNumber = this.phoneNumber();
-    return phoneNumber
-      ? this.i18nService.translate('producer.uidMissingWarning', { phoneNumber })
-      : '';
-  });
 
   readonly showTourIntro = computed(() => {
     const userPreferences = this.agridataStateService.userPreferences();
