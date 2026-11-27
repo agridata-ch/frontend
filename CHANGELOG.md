@@ -1,3 +1,9 @@
+## [1.26.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.26.0-rc.5...v1.26.0-rc.6) (2026-11-27)
+
+### Features
+
+- **my-farm:** add new site my-farm ([2104d88](https://github.com/agridata-ch/frontend/commit/2104d88f28ffbe39d59b06b9a05c969b3ae2812d)), references [DIGIB2-1827](https://github.com/agridata-ch/frontend/issues/-1827)
+
 ## [1.26.0-rc.5](https://github.com/agridata-ch/frontend/compare/v1.26.0-rc.4...v1.26.0-rc.5) (2026-11-27)
 
 ### Features
