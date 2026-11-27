@@ -1,3 +1,9 @@
+## [1.26.0-rc.7](https://github.com/agridata-ch/frontend/compare/v1.26.0-rc.6...v1.26.0-rc.7) (2026-11-27)
+
+### Features
+
+- **wysiwyg:** enhance HTML handling for lists and empty paragraphs ([fbbd4d9](https://github.com/agridata-ch/frontend/commit/fbbd4d9ed1ba6671f542b921e294530d9047ce90)), references [DIGIB2-1897](https://github.com/agridata-ch/frontend/issues/-1897)
+
 ## [1.26.0-rc.6](https://github.com/agridata-ch/frontend/compare/v1.26.0-rc.5...v1.26.0-rc.6) (2026-11-27)
 
 ### Features
