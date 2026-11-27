@@ -1,6 +1,5 @@
-import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import type { Mocked } from 'vitest';
 
@@ -8,7 +7,6 @@ import { ConsentRequestService, DataRequestService } from '@/entities/api';
 import { AgridataStateService } from '@/entities/api/agridata-state.service';
 import { MasterDataService } from '@/entities/api/master-data.service';
 import { ConsentRequestProducerPage } from '@/pages/consent-request-producer';
-import { ErrorDto } from '@/shared/error/error-dto';
 import { ErrorHandlerService } from '@/shared/error/error-handler.service';
 import { I18nService } from '@/shared/i18n';
 import { AnalyticsService } from '@/shared/lib/analytics.service';
@@ -32,8 +30,6 @@ import {
   MockErrorHandlerService,
   createMockMasterDataService,
   MockMasterDataService,
-  createMockDocument,
-  MockLocation,
 } from '@/shared/testing/mocks';
 
 describe('ConsentRequestProducerPage - component behavior', () => {
@@ -48,7 +44,6 @@ describe('ConsentRequestProducerPage - component behavior', () => {
   let dataRequestService: MockDataRequestService;
   let activeRoute: MockActivatedRoute;
   let authService: MockAuthService;
-  let mockLocation: MockLocation;
   const activeUid = '123';
 
   beforeEach(async () => {
@@ -68,12 +63,9 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     authService = createMockAuthService();
     activeRoute = createMockActivatedRoute();
     agridataStateService = createMockAgridataStateService();
-    const mockDocument = createMockDocument();
-    mockLocation = mockDocument.location;
     await TestBed.configureTestingModule({
       providers: [
         ConsentRequestProducerPage,
-        mockDocument.provider,
         { provide: ConsentRequestService, useValue: consentRequestService },
         { provide: Router, useValue: mockRouter },
         { provide: I18nService, useValue: i18nService },
@@ -128,77 +120,5 @@ describe('ConsentRequestProducerPage - component behavior', () => {
     }
 
     expect(errorService.handleError).toHaveBeenCalledWith(testError);
-  });
-
-  describe('redirect functionality', () => {
-    it('should set redirectUrlFromQuery and call history.replaceState when redirect_uri is present in query params', () => {
-      const redirectUri = 'https://example.com/callback';
-      const cleanRoute = '/consent-request-producer';
-      agridataStateService.__testSignals.currentRouteWithoutQueryParams.set(cleanRoute);
-      // Mutate the shared mock so the new component instance reads redirect_uri from the snapshot
-      activeRoute.snapshot.queryParamMap = convertToParamMap({ redirect_uri: redirectUri });
-      // getAllErrors must return a signal so the computed hasErrors does not throw
-      errorService.getAllErrors.mockReturnValue(signal([]));
-      const replaceStateSpy = vi.spyOn(globalThis.history, 'replaceState');
-
-      const redirectFixture = TestBed.createComponent(ConsentRequestProducerPage);
-      redirectFixture.detectChanges();
-
-      expect(redirectFixture.componentInstance['redirectUrlFromQuery']()).toBe(redirectUri);
-      expect(redirectFixture.componentInstance['hasRedirectUrl']()).toBe(true);
-      expect(replaceStateSpy).toHaveBeenCalledWith({}, '', cleanRoute);
-
-      replaceStateSpy.mockRestore();
-    });
-
-    it('should not set redirectUrlFromQuery when no redirect_uri query param is present', () => {
-      expect(component['redirectUrlFromQuery']()).toBeNull();
-      expect(component['hasRedirectUrl']()).toBe(false);
-    });
-
-    it('should show redirect modal when redirectUrl and errors are present', () => {
-      component['redirectUrlFromQuery'].set('https://example.com/callback');
-      errorService.getAllErrors.mockReturnValue(
-        signal([
-          {
-            id: '1',
-            i18nTitle: { i18n: 'error.title' },
-            i18nReason: { i18n: 'error.reason' },
-            originalError: new Error('test'),
-            timestamp: new Date(),
-            isHandled: false,
-          },
-        ] as ErrorDto[]),
-      );
-
-      expect(component['showRedirect']()).toBe(true);
-    });
-
-    it('should not show redirect modal when redirectUrl is present but no errors exist', () => {
-      component['redirectUrlFromQuery'].set('https://example.com/callback');
-      errorService.getAllErrors.mockReturnValue(signal([]));
-
-      expect(component['hasRedirectUrl']()).toBe(true);
-      expect(component['showRedirect']()).toBe(false);
-    });
-
-    it('should redirect to URL and reset redirectUrlFromQuery when redirect is called', () => {
-      const testUrl = 'https://example.com/callback';
-
-      component['redirectUrlFromQuery'].set(testUrl);
-
-      component['redirect']();
-
-      expect(mockLocation.href).toBe(testUrl);
-      expect(component['redirectUrlFromQuery']()).toBeNull();
-    });
-
-    it('should not redirect when redirectUrl is null', () => {
-      component['redirectUrlFromQuery'].set(null);
-
-      component['redirect']();
-
-      expect(mockLocation.href).toBe('');
-    });
   });
 });

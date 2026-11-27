@@ -436,7 +436,8 @@
           "heading": "Sigillatura del contratto",
           "description": "Tutte le firme richieste dei beneficiari e dei fornitori di dati sono state acquisite e sono riportate nel PDF. Per finalizzare il contratto, deve ora essere avviata la sigillatura del contratto tramite il servizio di firma di UFIT.",
           "action": "Sigillare il contratto"
-        }
+        },
+        "templateVersion": "Versione del contratto"
       },
       "producer": {
         "emptyState": {
@@ -682,7 +683,8 @@
     "uid": "IDI",
     "bur": "BUR",
     "lastChanged": "Modificato il",
-    "provider": "Fornitore di dati"
+    "provider": "Fornitore di dati",
+    "contractTemplateVersion": "Versione del contratto"
   },
   "forms": {
     "error": {
@@ -712,8 +714,7 @@
     "pageTitle": "Richiesta di dati",
     "redirect": {
       "headline": "Fatto!",
-      "description": "Grazie per aver scelto il nostro serviziodi aver effettuato la tua scelta. Verrai reindirizzato automaticamente tra {{ count }} secondi.",
-      "redirectNow": "Direttamente indietro"
+      "description": "Grazie per aver scelto il nostro serviziodi aver effettuato la tua scelta. Verrai reindirizzato automaticamente tra {{ count }} secondi."
     },
     "uidMissingWarning": "Al momento non è ancora presente alcun numero IDI relativo alla Sua persona o alla Sua azienda. Poiché sono coinvolti diversi sistemi, potrebbero essere necessari alcuni giorni prima che disponiamo di tutti i dati necessari per il corretto funzionamento di agridata.ch. La preghiamo di riprovare tra qualche giorno. Se il problema persiste, la preghiamo di contattare l'assistenza ({{ phoneNumber }}).",
     "migrationInfo": {
@@ -729,6 +730,11 @@
         "requestsFromConsumer": "Richieste trasferite da {{consumerName}}",
         "tableHint": "Non dovete fare nulla. Se non desiderate più fornire un consenso, potete modificarlo in qualsiasi momento qui su agridata.ch: basta aprire la relativa richiesta di dati nella tabella sottostante e selezionare «Rifiuta»."
       }
+    },
+    "returnToApp": {
+      "unverified": "Attenzione: L'indirizzo di ritorno non ha potuto essere verificato.",
+      "target": "Questo link porta a:",
+      "button": "Torna all'applicazione"
     }
   },
   "header": {
@@ -862,16 +868,31 @@
       "message": "La nostra applicazione non è attualmente disponibile a causa di lavori di manutenzione.\nTorneremo presto online."
     },
     "reloadPage": "Ricarica pagina",
-    "consentRequest": {
-      "notFound": {
-        "title": "Questo link non è valido",
-        "message": "Il link richiamato non porta ad alcuna richiesta. Controlla il link o contatta l'organizzazione che ti ha inviato questo link."
-      },
-      "modalTitle": "Ops, qualcosa non ha funzionato..."
-    },
     "externalServiceErrorPage": {
       "title": "Connessione interrotta",
       "message": "Il nostro sito web non è attualmente disponibile a causa di un'interruzione.\nTorneremo online il prima possibile."
+    },
+    "invitation": {
+      "invalidLink": {
+        "title": "Questo link non è valido",
+        "message": "Il link richiamato non porta ad alcuna richiesta. Controlla il link o contatta l'organizzazione che ti ha inviato questo link."
+      },
+      "noCompanies": {
+        "title": "Nessun'azienda trovata",
+        "message": "Attualmente nessun'azienda (UID) è associata al tuo account. Per questo motivo, la richiesta di dati non può essere aperta. Contatta il supporto."
+      },
+      "uidNotAuthorized": {
+        "title": "Nessuna autorizzazione",
+        "message": "Non sei autorizzato a rispondere a richieste di dati per l'azienda (UID) specificata nel link. Accedi con l'account corretto o contatta l'organizzazione che ti ha inviato questo link."
+      },
+      "notFound": {
+        "title": "Richiesta di dati non trovata",
+        "message": "La richiesta di dati per questo link non è stata trovata. Controlla il link o contatta l'organizzazione che ti ha inviato questo link."
+      },
+      "technicalError": {
+        "title": "Errore tecnico",
+        "message": "Si è verificato un errore tecnico durante la creazione della tua richiesta. Riprova più tardi."
+      }
     }
   },
   "breadcrumb": {

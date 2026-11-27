@@ -5,7 +5,7 @@
     <h1>{{ t('pageTitle') }}</h1>
   </div>
 </ng-container>
-@if (!hasRedirectUrl()) { @if (uidMissing()) {
+@if (uidMissing()) {
 <app-alert
   [type]="AlertType.WARNING"
   [showCloseButton]="false"
@@ -14,7 +14,6 @@
 />
 }
 <app-error-outlet></app-error-outlet>
-}
 <app-consent-request-table
   [consentRequestAggregations]="consentRequests()"
   (tableRowAction)="navigateToRequest($event)"
@@ -22,17 +21,6 @@
   [aggregationId]="aggregationId()"
 />
 <router-outlet></router-outlet>
-@if (hasRedirectUrl()) {
-<app-modal
-  [open]="showRedirect()"
-  [title]="'errors.consentRequest.modalTitle' | i18n"
-  [showCloseButton]="false"
->
-  <app-error-outlet></app-error-outlet>
-  <div class="text-center" *i18n="let t; prefix: 'producer.redirect'">
-    <app-agridata-button (handleClick)="redirect()"> {{ t('redirectNow') }} </app-agridata-button>
-  </div>
-</app-modal>
-} @if (!showRedirect() && showTourIntro()) {
+@if (showTourIntro()) {
 <app-consent-requests-tour-intro (closeTourIntroCallback)="closeTourIntro()" />
 }

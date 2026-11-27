@@ -80,6 +80,11 @@
       <span class="w-full flex justify-center text-agridata-tertiary-text text-sm">
         {{ t('footerInformation') }}
       </span>
+      @if (shouldRedirect() && redirectUrl(); as url) {
+        <app-return-to-app [url]="url" [verified]="true" />
+      } @else if (unverifiedRedirectUrl(); as url) {
+        <app-return-to-app [url]="url" [verified]="false" />
+      }
     }
   </div>
 </app-sidepanel>
@@ -94,9 +99,9 @@
       <div class="flex justify-center mb-4">
         <p>{{ t('description', { count: countdownValue() }) }}</p>
       </div>
-      <app-agridata-button (handleClick)="redirectDirectly()">
-        {{ t('redirectNow') }}
-      </app-agridata-button>
+      @if (redirectUrl(); as url) {
+        <app-return-to-app [url]="url" [verified]="true" />
+      }
     </div>
   </app-modal>
 }

@@ -12,5 +12,10 @@
     <app-agridata-button [href]="'/'" [variant]="ButtonVariants.SecondaryCms">
       {{ 'errors.reloadPage' | i18n }}
     </app-agridata-button>
+    @if (redirectUri; as url) {
+    <div class="text-white">
+      <app-return-to-app [url]="url" [verified]="false" />
+    </div>
+    }
   </div>
 </div>
